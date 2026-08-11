@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mephc"
+version = "0.1.0"
+description = "Reusable Meep/MPB photonic crystal geometry, band, Berry curvature, and EFS helpers."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "MePhC contributors" }]
+dependencies = [
+  "numpy",
+  "matplotlib",
+  "scipy",
+  "shapely",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["mephc*"]
+exclude = ["examples*", "legacy*"]

@@ -1,0 +1,12 @@
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+INPUT_DIR = PROJECT_ROOT / "input"
+IMAGE_DIR = PROJECT_ROOT / "imag"
+DATA_DIR = PROJECT_ROOT / "data"
+
+C_CONST = 299792458
+DEFAULT_SI_N_EFF = 2.7
+DEFAULT_RESOLUTION = 32
+DEFAULT_HEIGHT = 1000

@@ -1,0 +1,7 @@
+{
+  "python.defaultInterpreterPath": "/home/icy/miniconda3/envs/mp/bin/python",
+  "python.terminal.activateEnvironment": false,
+  "python.analysis.extraPaths": [
+    "/home/icy/MePhC"
+  ]
+}
