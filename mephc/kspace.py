@@ -69,6 +69,18 @@ def triangular_gkm_path() -> HighSymmetryPath:
     )
 
 
+def generic_bz_path(lattice_model: BravaisLattice2D) -> HighSymmetryPath:
+    """Return a conservative Gamma-to-BZ-vertices path for a current lattice.
+
+    The labels deliberately use ``BZ1``, ``BZ2`` rather than claiming that
+    tracked reference vertices remain current K/M high-symmetry points.
+    """
+    polygon = np.asarray(first_brillouin_zone(lattice_model).vertices, dtype=float)
+    points = [(0.0, 0.0)] + [tuple(map(float, point)) for point in polygon] + [(0.0, 0.0)]
+    labels = ("Gamma",) + tuple(f"BZ{i}" for i in range(1, len(polygon) + 1)) + ("Gamma",)
+    return HighSymmetryPath(tuple(points), labels)
+
+
 def square_gxm_path() -> HighSymmetryPath:
     """Return the square-lattice Gamma-X-M-Gamma band path."""
     return HighSymmetryPath(
@@ -212,6 +224,8 @@ class TriangularKSpace:
 
     @property
     def second_bz_poly(self):
+        if self.lattice_model is not None and not self.lattice_model.supports_legacy("hbz"):
+            raise ValueError("second BZ is an identity triangular reference construction")
         return polygon_around_position(6, (0.0, 0.0), 2 * np.sqrt(3.0) / 3.0, rotation_degrees=30)
 
     @property
@@ -221,18 +235,36 @@ class TriangularKSpace:
 
     @property
     def hbz_poly(self):
+        if self.lattice_model is not None and not self.lattice_model.supports_legacy("hbz"):
+            raise ValueError("HBZ is only defined for the identity triangular lattice")
         return polygon_around_position(3, (2.0 / 3.0, 0.0), 2.0 / 3.0, rotation_degrees=60)
 
     @property
     def minpoly_by_c3(self):
+        if self.lattice_model is not None and not self.lattice_model.supports_legacy("c3"):
+            raise ValueError("C3 mini-space is only defined for the identity triangular lattice")
         return [(0.0, 0.0), (0.5, np.sqrt(3.0) / 6.0), (2.0 / 3.0, 0.0), (0.5, -np.sqrt(3.0) / 6.0)]
 
     @property
     def shrunken_hbz_poly(self):
+        if self.lattice_model is not None and not self.lattice_model.supports_legacy("hbz"):
+            raise ValueError("shrunken HBZ is only defined for the identity triangular lattice")
         return polygon_around_position(3, (2.0 / 3.0, 0.0), 2.0 / 3.0 - self.shrinking, rotation_degrees=60)
 
     def full_grid(self, range_x=(-1.5, 1.5), range_y=(-1.5, 1.5)) -> list[tuple[float, float]]:
         """Return triangular-grid points inside the Cartesian x/y bounds."""
+        if self.lattice_model is not None and not self.lattice_model.is_identity:
+            # Sample the current reciprocal primitive basis.  The old
+            # triangular Cartesian mesh is retained only for identity data.
+            basis = self.lattice_model.reciprocal_basis
+            scale = max(1, int(self.N))
+            points = []
+            for i in range(-3 * scale, 3 * scale + 1):
+                for j in range(-3 * scale, 3 * scale + 1):
+                    point = (i * basis[:, 0] + j * basis[:, 1]) / scale
+                    if range_x[0] <= point[0] <= range_x[1] and range_y[0] <= point[1] <= range_y[1]:
+                        points.append((float(point[0]), float(point[1])))
+            return points
         step = 1 / self.N
         a1 = np.array([1.0, 0.0]) * step
         a2 = np.array([0.5, np.sqrt(3.0) / 2.0]) * step
@@ -250,6 +282,13 @@ class TriangularKSpace:
         """Return sampled points inside the first hexagonal Brillouin zone."""
         return [point for point in self.full_grid() if _contains(point, self.first_bz_poly)]
 
+    def full_bz(self):
+        """Return samples inside the current validated Wigner-Seitz BZ."""
+        vertices = np.asarray(self.first_bz_poly, dtype=float)
+        bounds = ((float(vertices[:, 0].min()), float(vertices[:, 0].max())),
+                  (float(vertices[:, 1].min()), float(vertices[:, 1].max())))
+        return [point for point in self.full_grid(bounds[0], bounds[1]) if _contains(point, vertices)]
+
     def second_bz(self):
         """Return sampled points inside the larger second-zone hexagon."""
         return [point for point in self.full_grid() if _contains(point, self.second_bz_poly)]
@@ -264,6 +303,8 @@ class TriangularKSpace:
 
     def mini_space(self):
         """Return the C3-reduced K-centered domain used by MPBBC logic."""
+        if self.lattice_model is not None and not self.lattice_model.supports_legacy("mini_space"):
+            raise ValueError("C3 mini-space is not valid for a deformed triangular lattice")
         return [
             point
             for point in self.full_grid()
@@ -272,6 +313,8 @@ class TriangularKSpace:
 
     def c3_expand(self, k_points, values, origin=(2.0 / 3.0, 0.0), tolerance: float = 1e-10):
         """Expand points and values by proper C3 rotations about ``origin``."""
+        if self.lattice_model is not None and not self.lattice_model.supports_legacy("c3"):
+            raise ValueError("C3 expansion is only valid for the identity triangular lattice")
         points = np.asarray(k_points, dtype=float)
         values = np.asarray(values)
         if points.ndim != 2 or points.shape[1] != 2:

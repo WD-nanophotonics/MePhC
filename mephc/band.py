@@ -15,10 +15,12 @@ from .efs import EFSResult, plot_efs
 from .geometry import to_meep_geometry
 from .kspace import (
     HighSymmetryPath,
+    TriangularKSpace,
     square_full_zone_points,
     square_gxm_path,
     triangular_gkm_path,
     triangular_reduced_zone_points,
+    generic_bz_path,
 )
 from .plotting import plot_band_path, plot_scalar_field
 
@@ -114,10 +116,12 @@ class Band:
         return first_brillouin_zone(self.lattice_model)
 
     def default_path(self) -> HighSymmetryPath:
-        """Return Gamma-K-M-Gamma or Gamma-X-M-Gamma for this lattice."""
+        """Return an identity path or honest generic BZ landmark path."""
         if self.lattice_type == "square":
             return square_gxm_path()
-        return triangular_gkm_path()
+        if self.lattice_model.supports_legacy("gkm"):
+            return triangular_gkm_path()
+        return generic_bz_path(self.lattice_model)
 
     def create_material_block(self):
         """Return the dielectric background for a slab, or no block for pillars."""
@@ -259,7 +263,7 @@ class Band:
         calculator = self.berry_calculator(num_bands=num_bands, geometry=geometry)
         return calculator.calculate(k_point, step=step, band_index=band_index)
 
-    def compute_berry_grid(self, pattern, k_points, step, num_bands, band_index=None):
+    def compute_berry_grid(self, pattern, k_points, step, num_bands, band_index=None, symmetry=None):
         """Calculate Berry curvature at arbitrary ``(N, 2)`` Cartesian k-points.
 
         Returns ``bcs`` with shape ``(N, num_bands)`` when ``band_index=None``,
@@ -270,6 +274,8 @@ class Band:
             raise ValueError("k_points must have shape (N, 2).")
         if band_index is not None and (band_index < 0 or band_index >= num_bands):
             raise ValueError(f"band_index must be between 0 and {num_bands - 1}")
+        if symmetry == "c3" and not self.lattice_model.supports_legacy("c3"):
+            raise ValueError("C3 Berry sampling is unavailable for a non-identity lattice")
 
         geometry = self.convert_ndarray_to_meep_geo(pattern, rectify=True)
         calculator = self.berry_calculator(num_bands=num_bands, geometry=geometry)
@@ -291,6 +297,8 @@ class Band:
             "polarization": self.polarization,
             "structure_type": self.structure_type,
             "k_coordinate": "cartesian_reciprocal",
+            "symmetry": symmetry or "none",
+            "lattice": self.lattice_model.metadata(),
         }
 
     def _run_cartesian_k_frequencies(self, geometry, k_point, num_bands):
@@ -381,12 +389,18 @@ class Band:
         )
 
     def compute_triangular_efs(self, pattern, N, shrinking=0.01, num_bands=3):
-        """Calculate EFS data on the legacy triangular C3-reduced mini-space."""
-        k_points = np.asarray(triangular_reduced_zone_points(N=N, shrinking=shrinking), dtype=float)
+        """Calculate EFS data on identity C3 space or the current full BZ."""
+        kspace = TriangularKSpace(N=N, shrinking=shrinking, lattice_model=self.lattice_model)
+        if self.lattice_model.supports_legacy("mini_space"):
+            k_points = np.asarray(kspace.mini_space(), dtype=float)
+            grid_name = "triangular_reduced_zone"
+        else:
+            k_points = np.asarray(kspace.full_bz(), dtype=float)
+            grid_name = "current_first_bz"
         if len(k_points) == 0:
-            raise ValueError("triangular_reduced_zone_points returned no k-points; increase N or reduce shrinking.")
+            raise ValueError("the selected reciprocal domain contains no k-points")
         result = self.compute_efs(pattern, k_points, num_bands=num_bands)
-        result.metadata.update({"grid": "triangular_reduced_zone", "N": N, "shrinking": shrinking})
+        result.metadata.update({"grid": grid_name, "N": N, "shrinking": shrinking, "symmetry": "c3" if self.lattice_model.is_identity else "none"})
         return result
 
     def compute_square_efs(self, pattern, N, extent=0.5, num_bands=3):

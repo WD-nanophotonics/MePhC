@@ -65,10 +65,22 @@ class AffineTransform2D:
             raise ValueError("factor must be a positive finite number")
         if not np.isfinite(angle_degrees):
             raise ValueError("angle_degrees must be finite")
+        if float(factor) == 1.0:
+            # Identity has no directional parameter; keep its serialized form
+            # independent of the angle supplied by a caller.
+            return cls.identity()
+        if max(float(factor), 1.0 / float(factor)) > 1e8:
+            raise ValueError("factor produces a transform beyond the conditioning limit 1e8")
         angle = math.radians(float(angle_degrees))
         direction = np.array([math.cos(angle), math.sin(angle)], dtype=float)
         matrix = np.eye(2) + (float(factor) - 1.0) * np.outer(direction, direction)
         return cls(matrix)
+
+    @property
+    def is_identity(self) -> bool:
+        """Whether this transform is exactly the canonical identity matrix."""
+
+        return self._matrix == ((1.0, 0.0), (0.0, 1.0))
 
     @property
     def matrix(self) -> np.ndarray:

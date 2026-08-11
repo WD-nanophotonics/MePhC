@@ -22,8 +22,12 @@ class BravaisLattice2D:
     _direct_basis: tuple[tuple[float, float], tuple[float, float]]
     kind: str
     tolerance: float
+    reference_family: str
+    current_symmetry: str
+    _deformation_matrix: tuple[tuple[float, float], tuple[float, float]]
 
-    def __init__(self, direct_basis, kind: str = "custom", tolerance: float = 1e-12):
+    def __init__(self, direct_basis, kind: str = "custom", tolerance: float = 1e-12,
+                 reference_family: str | None = None, deformation_matrix=None):
         array = np.asarray(direct_basis, dtype=float)
         if array.shape != (2, 2):
             raise ValueError("direct_basis must have shape (2, 2), with vectors in columns")
@@ -38,9 +42,24 @@ class BravaisLattice2D:
         normalized_kind = str(kind).lower()
         if normalized_kind not in {"custom", "triangular", "square"}:
             raise ValueError("kind must be 'custom', 'triangular', or 'square'")
+        family = str(reference_family or normalized_kind).lower()
+        if family not in {"custom", "triangular", "square"}:
+            raise ValueError("reference_family must be 'custom', 'triangular', or 'square'")
+        deformation = np.eye(2) if deformation_matrix is None else np.asarray(deformation_matrix, dtype=float)
+        if deformation.shape != (2, 2) or not np.all(np.isfinite(deformation)):
+            raise ValueError("deformation_matrix must be a finite (2, 2) matrix")
         object.__setattr__(self, "_direct_basis", tuple(tuple(float(v) for v in row) for row in array))
         object.__setattr__(self, "kind", normalized_kind)
         object.__setattr__(self, "tolerance", float(tolerance))
+        object.__setattr__(self, "reference_family", family)
+        identity = np.allclose(deformation, np.eye(2), atol=0.0, rtol=0.0)
+        symmetry = {
+            "triangular": "triangular_c3" if identity else "generic_affine",
+            "square": "square_c4" if identity else "generic_affine",
+            "custom": "custom" if identity else "generic_affine",
+        }[family]
+        object.__setattr__(self, "current_symmetry", symmetry)
+        object.__setattr__(self, "_deformation_matrix", tuple(tuple(float(v) for v in row) for row in deformation))
 
     @classmethod
     def triangular(cls) -> "BravaisLattice2D":
@@ -103,6 +122,31 @@ class BravaisLattice2D:
         return float(np.linalg.cond(self.direct_basis))
 
     @property
+    def is_identity(self) -> bool:
+        """Whether this model is the undeformed reference lattice."""
+
+        return np.allclose(self.deformation_matrix, np.eye(2), atol=0.0, rtol=0.0)
+
+    @property
+    def deformation_matrix(self) -> np.ndarray:
+        """Return the direct-space affine matrix from the reference basis."""
+
+        result = np.asarray(self._deformation_matrix, dtype=float)
+        result.setflags(write=False)
+        return result
+
+    def supports_legacy(self, capability: str) -> bool:
+        """Return whether an identity-only named-lattice capability is valid."""
+
+        if not self.is_identity:
+            return False
+        if self.reference_family == "triangular":
+            return capability in {"c3", "hbz", "gkm", "mini_space"}
+        if self.reference_family == "square":
+            return capability in {"gxm", "c4"}
+        return False
+
+    @property
     def real_space_grid_basis(self) -> np.ndarray:
         """Return the legacy site-grid basis as an explicit canonical adapter.
 
@@ -125,7 +169,16 @@ class BravaisLattice2D:
 
         if not isinstance(transform, AffineTransform2D):
             raise TypeError("transform must be an AffineTransform2D")
-        return BravaisLattice2D(transform.matrix @ self.direct_basis, kind=self.kind, tolerance=self.tolerance)
+        deformation = transform.matrix @ self.deformation_matrix
+        if transform.is_identity:
+            return self
+        return BravaisLattice2D(
+            transform.matrix @ self.direct_basis,
+            kind=self.kind,
+            tolerance=self.tolerance,
+            reference_family=self.reference_family,
+            deformation_matrix=deformation,
+        )
 
     def fractional_to_cartesian(self, coordinates) -> np.ndarray:
         """Map direct fractional coordinates to Cartesian coordinates."""
@@ -169,6 +222,15 @@ class BravaisLattice2D:
         return {
             "type": "BravaisLattice2D",
             "kind": self.kind,
+            "reference_family": self.reference_family,
+            "current_symmetry": self.current_symmetry,
+            "legacy_eligibility": {
+                "c3": self.supports_legacy("c3"),
+                "hbz": self.supports_legacy("hbz"),
+                "gkm": self.supports_legacy("gkm"),
+                "gxm": self.supports_legacy("gxm"),
+            },
+            "deformation_matrix": self.deformation_matrix.tolist(),
             "basis_convention": "columns_are_vectors",
             "direct_basis": self.direct_basis.tolist(),
             "reciprocal_basis_no_2pi": self.reciprocal_basis.tolist(),

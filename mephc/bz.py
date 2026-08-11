@@ -14,6 +14,11 @@ def _signed_area(vertices: np.ndarray) -> float:
     return 0.5 * float(np.sum(vertices[:, 0] * np.roll(vertices[:, 1], -1) - vertices[:, 1] * np.roll(vertices[:, 0], -1)))
 
 
+def _cross2d(left: np.ndarray, right: np.ndarray) -> float:
+    """Return the scalar z-component of a 2-D cross product."""
+    return float(left[0] * right[1] - left[1] * right[0])
+
+
 def _clip_half_plane(polygon: np.ndarray, normal: np.ndarray, bound: float, tolerance: float) -> np.ndarray:
     """Clip a convex polygon against ``dot(normal, x) <= bound``."""
 
@@ -62,6 +67,23 @@ def _canonicalize(vertices: np.ndarray, tolerance: float) -> np.ndarray:
     if len(clean) > 1 and np.allclose(clean[0], clean[-1], atol=tolerance, rtol=0.0):
         clean.pop()
     result = np.asarray(clean, dtype=float)
+    # Remove clipping-generated collinear vertices so the public polygon is a
+    # strict convex open vertex list.
+    changed = True
+    while changed and len(result) > 3:
+        changed = False
+        keep = []
+        for index in range(len(result)):
+            previous = result[index - 1]
+            current = result[index]
+            following = result[(index + 1) % len(result)]
+            cross = _cross2d(current - previous, following - current)
+            if abs(float(cross)) <= tolerance:
+                changed = True
+            else:
+                keep.append(current)
+        if changed:
+            result = np.asarray(keep, dtype=float)
     if _signed_area(result) < 0:
         result = result[::-1]
     start = min(range(len(result)), key=lambda index: (-result[index, 0], result[index, 1]))
@@ -69,14 +91,34 @@ def _canonicalize(vertices: np.ndarray, tolerance: float) -> np.ndarray:
 
 
 def _polygon_valid(vertices: np.ndarray, reciprocal_basis: np.ndarray, tolerance: float) -> bool:
+    reciprocal_basis = np.asarray(reciprocal_basis, dtype=float)
+    if reciprocal_basis.shape != (2, 2) or not np.all(np.isfinite(reciprocal_basis)):
+        return False
     if vertices.ndim != 2 or vertices.shape[1] != 2 or not np.all(np.isfinite(vertices)):
+        return False
+    if len(vertices) < 3 or len({tuple(row) for row in vertices}) != len(vertices):
+        return False
+    if np.allclose(vertices[0], vertices[-1], atol=tolerance, rtol=0.0):
         return False
     if _signed_area(vertices) <= tolerance:
         return False
-    if not np.allclose(vertices[0], vertices[-1], atol=tolerance, rtol=0.0):
-        # The public closure convention is an open vertex list.
-        pass
-    for vector in _reciprocal_vectors(reciprocal_basis, 3):
+    scale = max(1.0, float(np.max(np.linalg.norm(vertices, axis=1))))
+    crosses = []
+    for index in range(len(vertices)):
+        previous = vertices[index - 1]
+        current = vertices[index]
+        following = vertices[(index + 1) % len(vertices)]
+        crosses.append(_cross2d(current - previous, following - current))
+    if any(value <= 100 * tolerance * scale * scale for value in crosses):
+        return False
+    # For a CCW polygon the origin must satisfy every edge half-plane.
+    for start, end in zip(vertices, np.roll(vertices, -1, axis=0)):
+        if _cross2d(end - start, -start) < -100 * tolerance * scale:
+            return False
+    target_area = abs(float(np.linalg.det(reciprocal_basis)))
+    if abs(abs(_signed_area(vertices)) - target_area) > 1e-6 * max(1.0, target_area):
+        return False
+    for vector in _reciprocal_vectors(reciprocal_basis, 12):
         bound = 0.5 * float(np.dot(vector, vector))
         if np.max(vertices @ vector - bound) > 100 * tolerance:
             return False
