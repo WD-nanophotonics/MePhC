@@ -1,0 +1,8 @@
+truth_source_id,concept,repository,location_before,location_after,status,canonical_provider,consumer,test_node_id,remaining_reason,r3_disposition
+TS-01,direct lattice basis,MePhC,mephc.band and mephc.kspace,mephc.bravais.BravaisLattice2D,canonicalized,BravaisLattice2D,band/lattice/kspace,R2-B-01,,retain compatibility aliases
+TS-02,reciprocal basis,MePhC,implicit MPB conventions,BravaisLattice2D.reciprocal_basis,canonicalized,BravaisLattice2D,coordinate conversion and BZ,R2-B-02,,none
+TS-03,first Brillouin zone,MePhC,hard-coded named polygons,mephc.bz.first_brillouin_zone,canonicalized,first_brillouin_zone,TriangularKSpace/SquareKSpace,R2-C-01,,add public polygon protocol only if needed
+TS-04,solver lattice adapter,MePhC,Band._make_geometry_lattice,BravaisLattice2D.to_meep_lattice,adapter-only,BravaisLattice2D.to_meep_lattice,Band,R2-D-01,,preserve MPB dimension defaults
+TS-05,triangular real-space identity,MePhC-TriLatt,config plus implicit consumers,config.canonical_lattice,canonicalized,TriLatt config factory,Band/pattern/kspace,R2-E-01,,none for undeformed path
+TS-06,square downstream behavior,MePhC-SqrLatt,square_hole case,unchanged,remaining-justified,,read-only compatibility validation,R2-F-01,R2 does not modify SqrLatt
+TS-07,deformation workflow,MePhC,not present,not added,remaining-justified,,none,,R3 only after explicit contract

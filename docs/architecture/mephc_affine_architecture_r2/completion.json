@@ -1,0 +1,326 @@
+{
+  "contract_id": "mephc-affine-architecture-r2-delivery-v1",
+  "task_id": "mephc-affine-architecture-r2-unified-lattice-kernel",
+  "status": "blocked",
+  "repositories": [
+    {
+      "name": "MePhC",
+      "path": "/home/icy/MePhC",
+      "branch": "main",
+      "upstream": "origin/main",
+      "head_before": "ba1ea29ae86e6fb72f96a3a6099b5e2127e02407",
+      "implementation_head": "f3354a1abdb4d9827bb6eb2e125ab56f432ebf99",
+      "dirty_before": false,
+      "dirty_after_implementation": true,
+      "preexisting_changes_preserved": true,
+      "push_status": "blocked"
+    },
+    {
+      "name": "MePhC-TriLatt",
+      "path": "/home/icy/TriLatt",
+      "branch": "main",
+      "upstream": "origin/main",
+      "head_before": "38f1c66ec2c0eb441a5fc5dbd440c2f45eec919c",
+      "implementation_head": "5d84f992310fbe0141df811704a9ffb3811807cb",
+      "dirty_before": false,
+      "dirty_after_implementation": false,
+      "preexisting_changes_preserved": true,
+      "push_status": "blocked"
+    },
+    {
+      "name": "MePhC-SqrLatt",
+      "path": "/home/icy/SqrLatt",
+      "branch": "main",
+      "upstream": "origin/main",
+      "head_before": "8a1e4534a48e01a83996fb199ccd55e0983e72b2",
+      "implementation_head": "8a1e4534a48e01a83996fb199ccd55e0983e72b2",
+      "dirty_before": false,
+      "dirty_after_implementation": false,
+      "preexisting_changes_preserved": true,
+      "push_status": "not-applicable"
+    }
+  ],
+  "environment": {
+    "python": "/home/icy/miniconda3/envs/mp/bin/python",
+    "python_version": "3.13.13",
+    "meep_available": true,
+    "mpb_import": "from meep import mpb",
+    "scientific_dependencies": [
+      "numpy",
+      "scipy",
+      "shapely",
+      "matplotlib"
+    ]
+  },
+  "implementation_commits": [
+    {
+      "repository": "MePhC",
+      "sha": "f3354a1abdb4d9827bb6eb2e125ab56f432ebf99",
+      "message": "Implement canonical affine lattice kernel",
+      "pushed": false
+    },
+    {
+      "repository": "MePhC-TriLatt",
+      "sha": "5d84f992310fbe0141df811704a9ffb3811807cb",
+      "message": "Migrate identity path to canonical lattice model",
+      "pushed": false
+    }
+  ],
+  "closure_commit_plan": {
+    "required": true,
+    "repository": "MePhC",
+    "message": "Add R2 architecture evidence and closure record",
+    "commit_hash": null,
+    "push_required": true,
+    "note": "Closure commit is separate from implementation commits and need not self-reference."
+  },
+  "workstreams": [
+    {
+      "id": "A",
+      "name": "AffineTransform2D",
+      "status": "completed",
+      "production_symbols": [
+        "mephc.affine.AffineTransform2D"
+      ],
+      "test_node_ids": [
+        "R2-A-01",
+        "R2-A-02"
+      ],
+      "evidence": "tests/test_r2_kernel.py",
+      "notes": "Finite, nonsingular, immutable 2x2 mathematics and metadata."
+    },
+    {
+      "id": "B",
+      "name": "Canonical Bravais and reciprocal lattice",
+      "status": "completed",
+      "production_symbols": [
+        "mephc.bravais.BravaisLattice2D"
+      ],
+      "test_node_ids": [
+        "R2-B-01",
+        "R2-B-02"
+      ],
+      "evidence": "tests/test_r2_kernel.py",
+      "notes": "Direct columns, no-2pi reciprocal basis, coordinate maps, Meep adapter."
+    },
+    {
+      "id": "C",
+      "name": "Generic first Brillouin zone",
+      "status": "completed",
+      "production_symbols": [
+        "mephc.bz.first_brillouin_zone",
+        "mephc.bz.BrillouinZone2D"
+      ],
+      "test_node_ids": [
+        "R2-C-01"
+      ],
+      "evidence": "tests/test_r2_kernel.py",
+      "notes": "Wigner-Seitz half-plane clipping with area and shell stabilization."
+    },
+    {
+      "id": "D",
+      "name": "MePhC compatibility facades",
+      "status": "completed",
+      "production_symbols": [
+        "mephc.band.Band",
+        "mephc.lattice.Lattice",
+        "mephc.kspace.SquareKSpace",
+        "mephc.kspace.TriangularKSpace"
+      ],
+      "test_node_ids": [
+        "R2-D-01",
+        "R2-D-02"
+      ],
+      "evidence": "tests/test_r2_kernel.py and unchanged R1 locks",
+      "notes": "No legacy public API removals; identity point and path behavior retained."
+    },
+    {
+      "id": "E",
+      "name": "TriLatt identity migration",
+      "status": "completed",
+      "production_symbols": [
+        "config.canonical_lattice",
+        "workflow.hbz_sampling"
+      ],
+      "test_node_ids": [
+        "R2-E-01"
+      ],
+      "evidence": "/home/icy/TriLatt/tests/test_r2_identity_migration.py",
+      "notes": "Band, pattern, and k-space consumers use one fresh canonical triangular model."
+    },
+    {
+      "id": "F",
+      "name": "Downstream compatibility hold point",
+      "status": "completed",
+      "production_symbols": [],
+      "test_node_ids": [
+        "R2-F-01"
+      ],
+      "evidence": "SqrLatt compile/import and immutable tree digest",
+      "notes": "SqrLatt was not edited; its pre-existing missing test discovery remains a hold-point limitation."
+    }
+  ],
+  "api": {
+    "additive_symbols": [
+      "AffineTransform2D",
+      "BravaisLattice2D",
+      "BrillouinZone2D",
+      "first_brillouin_zone"
+    ],
+    "legacy_public_api_removals": [],
+    "user_facing_stretch_parameters_added": false,
+    "generic_k_m_semantics_added": false,
+    "heavy_geometry_dependency_added": false
+  },
+  "truth_sources": {
+    "artifact": "truth_source_closure.csv",
+    "identity_geometry_id_changes": [],
+    "identity_record_key_changes": []
+  },
+  "compatibility": {
+    "r1_locks_passed": true,
+    "geometry_ids_unchanged": true,
+    "record_keys_unchanged": true,
+    "sqrlatt_tree_unchanged": true
+  },
+  "tests": [
+    {
+      "repository": "MePhC",
+      "phase": "baseline",
+      "command": "PYTHONPATH=/home/icy/MePhC /home/icy/miniconda3/envs/mp/bin/python -m unittest discover -s /home/icy/MePhC/tests -p 'test*.py'",
+      "exit_code": 0,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "duration_seconds": 0.01,
+      "evidence_file": "validation_report.md"
+    },
+    {
+      "repository": "MePhC-TriLatt",
+      "phase": "baseline",
+      "command": "PYTHONPATH=/home/icy/MePhC:/home/icy/TriLatt /home/icy/miniconda3/envs/mp/bin/python -m unittest discover -s /home/icy/TriLatt/tests -p 'test*.py'",
+      "exit_code": 0,
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "duration_seconds": 0.269,
+      "evidence_file": "validation_report.md"
+    },
+    {
+      "repository": "MePhC",
+      "phase": "focused",
+      "command": "PYTHONPATH=/home/icy/MePhC /home/icy/miniconda3/envs/mp/bin/python -m unittest discover -s /home/icy/MePhC/tests -p 'test*.py'",
+      "exit_code": 0,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "duration_seconds": 0.034,
+      "evidence_file": "validation_report.md"
+    },
+    {
+      "repository": "MePhC-TriLatt",
+      "phase": "focused",
+      "command": "PYTHONPATH=/home/icy/MePhC:/home/icy/TriLatt /home/icy/miniconda3/envs/mp/bin/python -m unittest discover -s /home/icy/TriLatt/tests -p 'test*.py'",
+      "exit_code": 0,
+      "passed": 23,
+      "failed": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "duration_seconds": 0.322,
+      "evidence_file": "validation_report.md"
+    },
+    {
+      "repository": "MePhC",
+      "phase": "r1-regression",
+      "command": "/home/icy/miniconda3/envs/mp/bin/python /home/icy/MePhC/tests/validate_affine_r1_1.py (pre-R2 preflight)",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "duration_seconds": 0.012,
+      "evidence_file": "r1_1_acceptance_disposition.md"
+    },
+    {
+      "repository": "MePhC-TriLatt",
+      "phase": "cross-repository",
+      "command": "PYTHONPATH=/home/icy/MePhC:/home/icy/TriLatt /home/icy/miniconda3/envs/mp/bin/python -m unittest tests.test_r2_identity_migration",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "duration_seconds": 0.009,
+      "evidence_file": "validation_report.md"
+    },
+    {
+      "repository": "MePhC-SqrLatt",
+      "phase": "downstream-hold-point",
+      "command": "/home/icy/miniconda3/envs/mp/bin/python -m compileall -q /home/icy/SqrLatt",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "duration_seconds": 0.2,
+      "evidence_file": "validation_report.md"
+    }
+  ],
+  "integrity": {
+    "r1_artifacts_digest_before": "115bd9ebff1d1ee9bbccfc01a18cd2272d5364733caaa31f16c63294fff33533",
+    "r1_artifacts_digest_after": "115bd9ebff1d1ee9bbccfc01a18cd2272d5364733caaa31f16c63294fff33533",
+    "r1_artifacts_byte_identical": true,
+    "scientific_records_digest_before": "c577e8cc64a178bac3426a1e4f3a3f603f3c4b247dcf2ab44bf97cba5d6fc5c1",
+    "scientific_records_digest_after": "c577e8cc64a178bac3426a1e4f3a3f603f3c4b247dcf2ab44bf97cba5d6fc5c1",
+    "scientific_records_byte_identical": true,
+    "sqrlatt_tree_digest_before": "92ea850d86ad9189f3c8e2f37446de8edfd052480c28c2722f8c46077e075e00",
+    "sqrlatt_tree_digest_after": "92ea850d86ad9189f3c8e2f37446de8edfd052480c28c2722f8c46077e075e00",
+    "sqrlatt_byte_identical": true,
+    "artifact_manifest_sha256": "6a6fa693b5e1458e9129de49624b40f4e610f8b142a0174a69340a55c8a7935d",
+    "manifest_valid": true,
+    "validator_command": "/home/icy/miniconda3/envs/mp/bin/python /home/icy/MePhC/tests/validate_affine_r2.py",
+    "validator_exit_code": 0,
+    "digest_inclusions": [
+      "R1 artifact files",
+      "tracked data/image/diagnostics across all three repositories",
+      "tracked SqrLatt tree"
+    ],
+    "digest_exclusions": [
+      "R2 manifest recursive self-reference",
+      "untracked build caches"
+    ]
+  },
+  "artifacts": {
+    "root": "docs/architecture/mephc_affine_architecture_r2",
+    "required_files": [
+      "README.md",
+      "r1_1_acceptance_disposition.md",
+      "api_decisions.md",
+      "dependency_after.mmd",
+      "compatibility_matrix.md",
+      "truth_source_closure.csv",
+      "bz_algorithm.md",
+      "validation_report.md",
+      "r3_activation_plan.md",
+      "artifact_manifest.json",
+      "completion.json"
+    ],
+    "manifest_policy": "sha256; self-entry excluded"
+  },
+  "r3_seams": [
+    "user-facing affine parameters",
+    "deformed geometry and record identity",
+    "affine Berry/EFS mathematics",
+    "degenerate-band handling"
+  ],
+  "deviations": [
+    "The historical R1.1 validator's whole-runtime-tree equality assertion cannot pass after an intentional R2 production migration; the unchanged validator passed pre-R2 and R1/R1.1 artifacts are independently byte-validated.",
+    "The repository GitHub CLI token is invalid and HTTPS push could not authenticate; implementation and closure commits remain local until authentication is refreshed."
+  ],
+  "blockers": [
+    "Push MePhC and MePhC-TriLatt implementation/closure commits after GitHub CLI authentication is refreshed."
+  ]
+}

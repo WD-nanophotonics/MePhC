@@ -1,0 +1,50 @@
+{
+  "schema_version": "mephc-affine-architecture-r2-manifest-v1",
+  "contract_id": "mephc-affine-architecture-r2-delivery-v1",
+  "task_id": "mephc-affine-architecture-r2-unified-lattice-kernel",
+  "artifact_root": "docs/architecture/mephc_affine_architecture_r2",
+  "algorithm": "sha256",
+  "self_entry_policy": "excluded-recursive-self-hash",
+  "reverse_reference_exclusions": [
+    "completion.json"
+  ],
+  "artifact_files": [
+    {
+      "path": "docs/architecture/mephc_affine_architecture_r2/README.md",
+      "sha256": "a207856bc955b639b2ca7a141a8b61fbe88aec822ba39b6ba5d047ca752dd7ce"
+    },
+    {
+      "path": "docs/architecture/mephc_affine_architecture_r2/api_decisions.md",
+      "sha256": "91ec0a559fdfe72433a78a564bd529885f2fa24d1b5eeacb85d1f4e328d8b21f"
+    },
+    {
+      "path": "docs/architecture/mephc_affine_architecture_r2/bz_algorithm.md",
+      "sha256": "4c840b695b4a7ca0db653af4371308d3c40f97adaf914d77eb5ce18e52facb73"
+    },
+    {
+      "path": "docs/architecture/mephc_affine_architecture_r2/compatibility_matrix.md",
+      "sha256": "ba88e6cf4a7afc59714c9c465b0e8e4b8c4819f28d30fd04e4a7cda0b4b087ab"
+    },
+    {
+      "path": "docs/architecture/mephc_affine_architecture_r2/dependency_after.mmd",
+      "sha256": "2bf431897ca894e3d16ad93a94ff190050ccffe8d17696227a1d0b8a61825a57"
+    },
+    {
+      "path": "docs/architecture/mephc_affine_architecture_r2/r1_1_acceptance_disposition.md",
+      "sha256": "6c2bedcbd2b9b6c94c86d4289ccd40e883a229685ee934a7db029a4d76c7e367"
+    },
+    {
+      "path": "docs/architecture/mephc_affine_architecture_r2/r3_activation_plan.md",
+      "sha256": "8a682d6882121b0251dc8959220d442001c73218776b48ddbd655d96b87e1622"
+    },
+    {
+      "path": "docs/architecture/mephc_affine_architecture_r2/truth_source_closure.csv",
+      "sha256": "7ae05c2944cf35ba625578f78f05abcd4c17b35c622c4f412d3970d25fab34e9"
+    },
+    {
+      "path": "docs/architecture/mephc_affine_architecture_r2/validation_report.md",
+      "sha256": "40e59fde3e94fa5eb09678f6c45b28082cc53b51773602aff1d79479d311df9d"
+    }
+  ],
+  "coverage_note": "completion.json is excluded because it records this manifest hash; this bounded reverse reference is documented in completion.deviations."
+}
