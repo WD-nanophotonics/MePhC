@@ -1,0 +1,9 @@
+concept,repository,defined_at,representation,consumers,duplicates,consistency_risk,evidence
+triangular direct basis,MePhC,mephc/band.py:Band._make_geometry_lattice,MPB lattice basis1=(0.5,sqrt3/2) basis2=(0.5,-sqrt3/2),Band and characterization,none in package; case assumes default,high,characterization test
+square direct basis,MePhC,mephc/band.py:Band._make_geometry_lattice,MPB lattice basis1=(1,0) basis2=(0,1),Band and SqrLatt,SquareKSpace is coordinate convention not basis object,medium,characterization test
+triangular motif rule,MePhC,mephc/band.py:Band.create_unitcell,normalized PolygonPattern and optional second motif,TriLatt config and examples,TriLatt config selects r2 rule,high,TriLatt config and Band API
+SqrLatt motif rule,MePhC-SqrLatt,square_hole/config.py:build_pattern,regular four-gon centered at origin,root SqrLatt runners,none in active case,medium,characterization test
+Cartesian reciprocal convention,MePhC,mephc/berry.py and mephc/band.py,dimensionless Cartesian coordinates converted by mp.cartesian_to_reciprocal,all observables,case scripts restate convention,high,characterization test
+triangular reciprocal domains,MePhC,mephc/kspace.py:TriangularKSpace,hexagonal BZ HBZ and C3 mini-space,TriLatt workflow,TriLatt workflow also chooses domain,high,characterization matrix
+square reciprocal domains,MePhC,mephc/kspace.py:SquareKSpace and SqrLatt berry_curvature.py,regular square full grid and C4 quadrant, SqrLatt,local wrapper and class both existed during R1,medium,source audit
+geometry identity,MePhC,mephc/records.py:make_geometry_id,compact ID from physical parameters,TriLatt and SqrLatt,TriLatt also has local formatter,high,record identity tests

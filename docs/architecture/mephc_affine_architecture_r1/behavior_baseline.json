@@ -1,0 +1,36 @@
+{
+  "task_id": "mephc-affine-architecture-r1",
+  "status": "baseline",
+  "environment": {
+    "python": "/home/icy/miniconda3/envs/mp/bin/python",
+    "python_version": "3.13.13",
+    "dependencies": ["meep", "mpb", "numpy", "scipy", "shapely"],
+    "dependency_status": "available"
+  },
+  "repositories": {
+    "MePhC": {"path": "/home/icy/MePhC", "branch": "main", "head": "3e9ee87d64c710ee727fe0525bb9dea292fad513"},
+    "MePhC-TriLatt": {"path": "/home/icy/TriLatt", "branch": "main", "head": "38f1c66ec2c0eb441a5fc5dbd440c2f45eec919c"},
+    "MePhC-SqrLatt": {"path": "/home/icy/SqrLatt", "branch": "main", "head": "8a1e4534a48e01a83996fb199ccd55e0983e72b2"}
+  },
+  "baseline_tests": {
+    "MePhC": {"command": "python -m unittest discover -s tests", "result": "no discoverable tests directory"},
+    "MePhC-TriLatt": {"command": "python -m unittest discover -s tests", "result": "22 tests passed"},
+    "MePhC-SqrLatt": {"command": "python -m unittest discover -s tests", "result": "no discoverable tests directory"}
+  },
+  "runtime_tree_digests": {
+    "MePhC": "fe6bd39b19ab43b46809f7b07d542f9cf8b34a10415ff6ed3b5ae9e22bacc63c",
+    "MePhC-TriLatt": "bcfd5c2aea4a6d3d56f5a3083fdced2e1bea50c10a33241be85bc7cbf31e096e",
+    "MePhC-SqrLatt": "3b230fd6238f6d4de9d84ccb7b7b0de7c152b9d5ff8551f45a8afe5d6e0d36f2"
+  },
+  "evidence_digests": {
+    "MePhC": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "MePhC-TriLatt": "fff9c76d7aebaf05ce4efad07d6935432f458e86eace83b2994b094f90d5b62d",
+    "MePhC-SqrLatt": "e6024ef25d3f33f0eebeeb5f61dbf4d96f5cc7d91f24eb80233b92d41ff0cec3"
+  },
+  "r1_constraints": {
+    "runtime_source_changes": [],
+    "preexisting_user_files_touched": [],
+    "affine_deformation_implemented": false,
+    "r2_started": false
+  }
+}

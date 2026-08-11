@@ -1,0 +1,36 @@
+flowchart TD
+    CaseTri[MePhC-TriLatt case config and runners]
+    CaseSqr[MePhC-SqrLatt case config and runners]
+    MePhC[MePhC package]
+    Lattice[mephc.lattice and patterns]
+    Geometry[mephc.geometry]
+    Band[mephc.band.Band]
+    KSpace[mephc.kspace]
+    Berry[mephc.berry]
+    EFS[mephc.efs]
+    Plot[mephc.plotting and preview]
+    Records[mephc.records and workflows]
+    MPB[Meep / MPB]
+    NumPy[NumPy / SciPy / Shapely]
+
+    CaseTri --> Band
+    CaseTri --> KSpace
+    CaseTri --> Records
+    CaseTri --> Plot
+    CaseSqr --> Band
+    CaseSqr --> KSpace
+    CaseSqr --> Records
+    CaseSqr --> Plot
+    Band --> Lattice
+    Band --> Geometry
+    Band --> KSpace
+    Band --> Berry
+    Band --> EFS
+    Band --> MPB
+    Berry --> MPB
+    EFS --> NumPy
+    Geometry --> MPB
+    Lattice --> NumPy
+    KSpace --> NumPy
+    Plot --> NumPy
+    Records --> NumPy

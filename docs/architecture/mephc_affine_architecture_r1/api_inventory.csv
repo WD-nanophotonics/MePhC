@@ -1,0 +1,33 @@
+repository,module,symbol,classification,defined_at,consumers,behavior_notes,migration_risk
+MePhC,mephc.band,Band,public,mephc/band.py:Band,TriLatt;SqrLatt;examples,Owns lattice solver geometry material and observable facade,high
+MePhC,mephc.band,Band._make_geometry_lattice,semi-public,mephc/band.py:Band._make_geometry_lattice,characterization;Band,Defines triangular and square MPB basis parity,high
+MePhC,mephc.band,Band.create_unitcell,public,mephc/band.py:Band.create_unitcell,TriLatt;SqrLatt;examples,Builds normalized case motif and optional preview,high
+MePhC,mephc.band,Band.compute_band_path_with_berry,public,mephc/band.py:Band.compute_band_path_with_berry,case band runners,Returns path frequencies and optional BC,high
+MePhC,mephc.band,Band.compute_berry_grid,public,mephc/band.py:Band.compute_berry_grid,case Berry runners,Computes Cartesian k-point BC grid raw or case-expanded,high
+MePhC,mephc.band,Band.compute_efs,public,mephc/band.py:Band.compute_efs,case EFS runners,Returns normalized and actual frequencies,medium
+MePhC,mephc.lattice,Lattice,public,mephc/lattice.py:Lattice,examples;Band,Generates direct-space lattice sites within outline,high
+MePhC,mephc.lattice,Lattice.PolygonPattern,semi-public,mephc/lattice.py:Lattice.PolygonPattern,TriLatt;examples,Places one or two polygon motifs on selected sites,high
+MePhC,mephc.geometry,to_meep_geometry,public,mephc/geometry.py:to_meep_geometry,Band;examples,Converts polygons and radius maps to Meep objects,high
+MePhC,mephc.geometry,regular_polygon_vertices,public,mephc/geometry.py:regular_polygon_vertices,SqrLatt;examples,Creates normalized regular polygon coordinates,medium
+MePhC,mephc.kspace,HighSymmetryPath,public,mephc/kspace.py:HighSymmetryPath,band runners,Interpolates path and tick distances,medium
+MePhC,mephc.kspace,TriangularKSpace,public,mephc/kspace.py:TriangularKSpace,TriLatt,Owns triangular grids BZ HBZ and C3 expansion,high
+MePhC,mephc.kspace,SquareKSpace,public,mephc/kspace.py:SquareKSpace,SqrLatt,Owns square grids and C4 quadrant expansion,high
+MePhC,mephc.kspace,triangular_gkm_path,public,mephc/kspace.py:triangular_gkm_path,TriLatt;examples,Returns Gamma-K-M-Gamma path in Cartesian coordinates,medium
+MePhC,mephc.kspace,square_gxm_path,public,mephc/kspace.py:square_gxm_path,SqrLatt;examples,Returns Gamma-X-M-Gamma path in Cartesian coordinates,medium
+MePhC,mephc.berry,BerryCurvatureCalculator,public,mephc/berry.py:BerryCurvatureCalculator,Band;examples,Abelian single-band link-variable plaquette calculation,high
+MePhC,mephc.efs,EFSResult,public,mephc/efs.py:EFSResult,case EFS runners,Stores k points frequencies metadata and optional actual values,medium
+MePhC,mephc.plotting,plot_band_path,public,mephc/plotting.py:plot_band_path,case visualizers,Plots path frequencies with optional BC colormap,medium
+MePhC,mephc.plotting,plot_scalar_field,public,mephc/plotting.py:plot_scalar_field,case Berry visualizers,Uses regular-grid direct path or scattered fallback,medium
+MePhC,mephc.plotting,plot_efs,public,mephc/plotting.py:plot_efs,case EFS visualizers,Interpolates and draws contours,medium
+MePhC,mephc.records,make_geometry_id,public,mephc/records.py:make_geometry_id,TriLatt;SqrLatt,Builds compact physical geometry ID,high
+MePhC,mephc.records,make_task_key,public,mephc/records.py:make_task_key,case runners,Canonicalizes task parameters independent of plot settings,high
+MePhC,mephc.records,find_matching_record,public,mephc/records.py:find_matching_record,case runners,Finds canonical matching record by task and compute metadata,high
+MePhC,mephc.records,save_record,public,mephc/records.py:save_record,case runners,Serializes record dict as pickle,medium
+MePhC,mephc.workflows,resolve_record,public,mephc/workflows.py:resolve_record,case runners,Implements auto compute plot-only record policy,high
+MePhC,mephc.workflows,save_record_outputs,public,mephc/workflows.py:save_record_outputs,case runners,Writes canonical archive and tmp outputs,high
+MePhC-TriLatt,config.py,geometry_id,case-public,config.py:geometry_id,workflow and runners,Local active physical parameter ID,high
+MePhC-TriLatt,workflow.py,resolve_symmetry_mode,case-public,workflow.py:resolve_symmetry_mode,band;Berry;EFS,Auto selects C3 from polygon side counts,high
+MePhC-TriLatt,workflow.py,c3_expand_arrays,case-public,workflow.py:c3_expand_arrays,Berry and EFS runners,Expands arrays with shared C3 ordering,high
+MePhC-SqrLatt,square_hole/config.py,geometry_id,case-public,square_hole/config.py:geometry_id,root runners,Local square geometry ID,high
+MePhC-SqrLatt,berry_curvature.py,compute_berry_curvature,case-public,berry_curvature.py:compute_berry_curvature,case script,Computes raw or C4-quadrant-expanded records,coupled
+MePhC-SqrLatt,band_structure.py,compute_band_structure,case-public,band_structure.py:compute_band_structure,case script,Computes path record and optional BC,coupled
