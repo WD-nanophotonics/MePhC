@@ -1,7 +1,7 @@
 {
   "contract_id": "mephc-affine-architecture-r2-delivery-v1",
   "task_id": "mephc-affine-architecture-r2-unified-lattice-kernel",
-  "status": "blocked",
+  "status": "completed",
   "repositories": [
     {
       "name": "MePhC",
@@ -13,7 +13,7 @@
       "dirty_before": false,
       "dirty_after_implementation": true,
       "preexisting_changes_preserved": true,
-      "push_status": "blocked"
+      "push_status": "pushed"
     },
     {
       "name": "MePhC-TriLatt",
@@ -25,7 +25,7 @@
       "dirty_before": false,
       "dirty_after_implementation": false,
       "preexisting_changes_preserved": true,
-      "push_status": "blocked"
+      "push_status": "pushed"
     },
     {
       "name": "MePhC-SqrLatt",
@@ -57,22 +57,22 @@
       "repository": "MePhC",
       "sha": "f3354a1abdb4d9827bb6eb2e125ab56f432ebf99",
       "message": "Implement canonical affine lattice kernel",
-      "pushed": false
+      "pushed": true
     },
     {
       "repository": "MePhC-TriLatt",
       "sha": "5d84f992310fbe0141df811704a9ffb3811807cb",
       "message": "Migrate identity path to canonical lattice model",
-      "pushed": false
+      "pushed": true
     }
   ],
   "closure_commit_plan": {
     "required": true,
     "repository": "MePhC",
     "message": "Add R2 architecture evidence and closure record",
-    "commit_hash": null,
+    "commit_hash": "62cb188c9bcb9ddb332660ba73e4a7511a4a1c56",
     "push_required": true,
-    "note": "Closure commit is separate from implementation commits and need not self-reference."
+    "note": "Closure commit was created after both implementation commits and pushed with main."
   },
   "workstreams": [
     {
@@ -318,9 +318,9 @@
   ],
   "deviations": [
     "The historical R1.1 validator's whole-runtime-tree equality assertion cannot pass after an intentional R2 production migration; the unchanged validator passed pre-R2 and R1/R1.1 artifacts are independently byte-validated.",
-    "The repository GitHub CLI token is invalid and HTTPS push could not authenticate; implementation and closure commits remain local until authentication is refreshed."
+    "Windows Git required command-local proxy removal and WSL safe-directory metadata normalization; no repository content was changed by that transport workaround."
   ],
   "blockers": [
-    "Push MePhC and MePhC-TriLatt implementation/closure commits after GitHub CLI authentication is refreshed."
+    
   ]
 }
