@@ -5,7 +5,7 @@
     "manifest": "artifact_manifest.json"
   },
   "blockers": [],
-  "closure_commit_plan": "Create and push one evidence closure commit after manifest validation.",
+  "closure_commit_plan": "Evidence closure commit ce7b13f was created and pushed after manifest validation.",
   "contract_id": "mephc-affine-architecture-r3-delivery-v1",
   "deformation_api": {
     "angle_degrees": "stretch_angle_degrees",
