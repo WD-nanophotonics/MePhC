@@ -1,0 +1,6 @@
+source,consumer,identity_behavior,nonidentity_behavior,status
+TriLatt.config.canonical_lattice,real-space builder,legacy lattice,current affine basis,closed
+BravaisLattice2D.reciprocal_vectors,band path,current reciprocal basis,current reciprocal basis,closed
+BrillouinZone2D.first_bz,Berry sampling,legacy eligible domain,current Wigner-Seitz domain,closed
+BrillouinZone2D.first_bz,EFS sampling,legacy eligible domain,current Wigner-Seitz domain,closed
+record geometry_id,metadata,legacy ID,deformation-qualified ID,closed
