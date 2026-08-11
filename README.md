@@ -35,7 +35,7 @@ For another project using the public release:
 
 ```bash
 python -m pip install \\
-  "mephc @ git+https://github.com/WD-nanophotonics/MePhC.git@v0.1.0"
+  "mephc @ git+https://github.com/WD-nanophotonics/MePhC.git@v0.1.1"
 ```
 
 ## Imports
@@ -54,6 +54,7 @@ from mephc.kspace import (
     triangular_gkm_path,
     square_gxm_path,
 )
+from mephc.workflows import resolve_record, save_record_outputs
 ```
 
 ## Minimal Examples
@@ -139,6 +140,10 @@ fig, ax = band.plot_berry_grid(berry, show=False)
 efs = band.compute_square_efs(pattern, N=3, num_bands=2)
 fig, ax = band.plot_efs(efs, band_index=0, interpolation="linear", show=False)
 ```
+
+Shared case projects can use `mephc.workflows` to resolve an explicit,
+reusable, or plot-only record and to write canonical, archive, and temporary
+outputs without duplicating the record bookkeeping.
 
 ## Data And Archive Policy
 

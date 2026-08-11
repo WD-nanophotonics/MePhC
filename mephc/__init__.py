@@ -13,6 +13,8 @@ __all__ = [
     "load_record",
     "archive_manifest_path",
     "update_archive_manifest",
+    "resolve_record",
+    "save_record_outputs",
     "preview_pattern",
     "preview_mpb_dielectric",
 ]
@@ -67,6 +69,14 @@ def __getattr__(name):
         from .records import update_archive_manifest
 
         return update_archive_manifest
+    if name == "resolve_record":
+        from .workflows import resolve_record
+
+        return resolve_record
+    if name == "save_record_outputs":
+        from .workflows import save_record_outputs
+
+        return save_record_outputs
     if name == "preview_pattern":
         from .preview import preview_pattern
 
