@@ -17,6 +17,10 @@ __all__ = [
     "save_record_outputs",
     "preview_pattern",
     "preview_mpb_dielectric",
+    "AffineTransform2D",
+    "BravaisLattice2D",
+    "BrillouinZone2D",
+    "first_brillouin_zone",
 ]
 
 
@@ -85,4 +89,20 @@ def __getattr__(name):
         from .preview import preview_mpb_dielectric
 
         return preview_mpb_dielectric
+    if name == "AffineTransform2D":
+        from .affine import AffineTransform2D
+
+        return AffineTransform2D
+    if name == "BravaisLattice2D":
+        from .bravais import BravaisLattice2D
+
+        return BravaisLattice2D
+    if name == "BrillouinZone2D":
+        from .bz import BrillouinZone2D
+
+        return BrillouinZone2D
+    if name == "first_brillouin_zone":
+        from .bz import first_brillouin_zone
+
+        return first_brillouin_zone
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

@@ -7,6 +7,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from shapely.geometry import Point, Polygon
 
+from .bravais import BravaisLattice2D
+from .bz import first_brillouin_zone
+
 
 @dataclass(frozen=True)
 class HighSymmetryPath:
@@ -120,6 +123,7 @@ class SquareKSpace:
     """
 
     N: int
+    lattice_model: BravaisLattice2D | None = None
 
     def __post_init__(self):
         if self.N < 1:
@@ -133,6 +137,12 @@ class SquareKSpace:
     def first_bz(self) -> list[tuple[float, float]]:
         """Return the square first Brillouin zone ``[-0.5, 0.5]^2``."""
         return self.full_grid(extent=0.5)
+
+    @property
+    def first_bz_poly(self) -> list[tuple[float, float]]:
+        """Return the canonical generic square first-BZ polygon."""
+        model = self.lattice_model or BravaisLattice2D.square()
+        return first_brillouin_zone(model).vertices.tolist()
 
     def c4_quadrant(self, extent: float = 1.0) -> list[tuple[float, float]]:
         """Return the ``N x N`` first-quadrant grid used for C4 reduction.
@@ -194,6 +204,7 @@ class TriangularKSpace:
 
     N: int
     shrinking: float = 0.01
+    lattice_model: BravaisLattice2D | None = None
 
     def __post_init__(self):
         if self.N < 1:
@@ -205,7 +216,8 @@ class TriangularKSpace:
 
     @property
     def first_bz_poly(self):
-        return polygon_around_position(6, (0.0, 0.0), 2.0 / 3.0)
+        model = self.lattice_model or BravaisLattice2D.triangular()
+        return first_brillouin_zone(model).vertices.tolist()
 
     @property
     def hbz_poly(self):

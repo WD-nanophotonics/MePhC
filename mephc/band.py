@@ -9,6 +9,8 @@ import numpy as np
 
 from . import lattice as ml
 from .berry import BerryCurvatureCalculator
+from .bravais import BravaisLattice2D
+from .bz import first_brillouin_zone
 from .efs import EFSResult, plot_efs
 from .geometry import to_meep_geometry
 from .kspace import (
@@ -41,6 +43,7 @@ class Band:
         lattice_type="triangular",
         polarization="TE",
         structure_type="slab",
+        lattice_model=None,
     ):
         self.a = a
         self.r1 = r1
@@ -51,9 +54,12 @@ class Band:
         self.lattice_type = self._normalize_lattice_type(lattice_type)
         self.polarization = self._normalize_polarization(polarization)
         self.structure_type = self._normalize_structure_type(structure_type)
+        self.lattice_model = lattice_model or BravaisLattice2D.named(self.lattice_type)
+        if self.lattice_model.kind in {"triangular", "square"}:
+            self.lattice_type = self.lattice_model.kind
         self.mpb_parity = mp.TE if self.polarization == "TE" else mp.TM
         self.Si = mp.Medium(epsilon=n_eff**2)
-        self.geo_latt = self._make_geometry_lattice(self.lattice_type)
+        self.geo_latt = self.lattice_model.to_meep_lattice(size=(1.0, 1.0))
         self.Gamma = mp.Vector3()
         if self.lattice_type == "square":
             self.X = mp.Vector3(0.5, 0.0)
@@ -98,13 +104,14 @@ class Band:
 
     @staticmethod
     def _make_geometry_lattice(lattice_type: str):
-        if lattice_type == "square":
-            return mp.Lattice(size=mp.Vector3(1, 1), basis1=mp.Vector3(1, 0), basis2=mp.Vector3(0, 1))
-        return mp.Lattice(
-            size=mp.Vector3(1, 1),
-            basis1=mp.Vector3(0.5, math.sqrt(3) / 2),
-            basis2=mp.Vector3(0.5, -math.sqrt(3) / 2),
-        )
+        """Compatibility factory delegating named bases to the kernel."""
+
+        return BravaisLattice2D.named(lattice_type).to_meep_lattice(size=(1.0, 1.0))
+
+    def first_bz(self):
+        """Return the generic Wigner-Seitz first BZ for this lattice model."""
+
+        return first_brillouin_zone(self.lattice_model)
 
     def default_path(self) -> HighSymmetryPath:
         """Return Gamma-K-M-Gamma or Gamma-X-M-Gamma for this lattice."""
@@ -202,11 +209,12 @@ class Band:
                 outline=[(-0.5, -0.5), (0.5, -0.5), (0.5, 0.5), (-0.5, 0.5)],
                 orientation=0,
                 lattice_type="square",
+                lattice_model=self.lattice_model,
             )
         elif self.r2 is None:
-            lattice = ml.Lattice(period=1, outline=[(-0.1, 0.6), (1, 0.6), (1, 0), (-0.1, 0)], orientation=0, lattice_type="t")
+            lattice = ml.Lattice(period=1, outline=[(-0.1, 0.6), (1, 0.6), (1, 0), (-0.1, 0)], orientation=0, lattice_type="t", lattice_model=self.lattice_model)
         else:
-            lattice = ml.Lattice(period=1, outline=[(-0.1, 0.6), (1, 0.6), (1, 0), (-0.1, 0)], orientation=0, lattice_type="hc")
+            lattice = ml.Lattice(period=1, outline=[(-0.1, 0.6), (1, 0.6), (1, 0), (-0.1, 0)], orientation=0, lattice_type="hc", lattice_model=self.lattice_model)
 
         if show:
             lattice.preview_lattice(show_outline=True)

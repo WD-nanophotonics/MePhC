@@ -9,6 +9,7 @@ from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon, orient
 
 from .patterns import convert_to_one_layer_pattern_list, convert_to_two_layer_pattern_list
+from .bravais import BravaisLattice2D
 
 
 def show_coordinate(fig, ax, scatter):
@@ -149,16 +150,26 @@ def rotate(pos, angle, origin=(0, 0)):
     return [rotate(var, angle, origin) for var in pos]
 
 
-def maketriangularlattice(period, size, draw=False, show_coords=True, angle=0.0, shift=(0, 0)):
+def maketriangularlattice(period, size, draw=False, show_coords=True, angle=0.0, shift=(0, 0), lattice_model=None):
+    """Generate legacy triangular sites from the canonical lattice adapter."""
     rows = size
     cols = size
-    pos = np.array(
-        [
-            [(i + j % 2 / 2) * period, j * np.sqrt(3) / 2 * period]
-            for i in range(cols)
-            for j in range(rows)
-        ]
-    )
+    model = lattice_model or BravaisLattice2D.triangular()
+    if model.kind == "triangular":
+        # Preserve the historical alternating-row enumeration while deriving
+        # its horizontal, vertical, and half-row vectors from the canonical
+        # MPB basis.  This is an explicit compatibility adapter, not a second
+        # named-lattice formula.
+        vector1, vector2 = model.direct_basis.T
+        horizontal = vector1 + vector2
+        vertical = 0.5 * (vector1 - vector2)
+        half_row = 0.5 * horizontal
+        pos = np.array(
+            [period * (i * horizontal + j * vertical + (j % 2) * half_row) for i in range(cols) for j in range(rows)]
+        )
+    else:
+        basis = model.real_space_grid_basis
+        pos = np.array([period * (i * basis[:, 0] + j * basis[:, 1]) for i in range(cols) for j in range(rows)])
     pos -= np.mean(pos, axis=0)
     pos = rotate(pos, angle)
     pos += np.array(shift)
@@ -167,10 +178,13 @@ def maketriangularlattice(period, size, draw=False, show_coords=True, angle=0.0,
     return pos
 
 
-def makesquarelattice(period, size, draw=False, show_coords=True, angle=0.0, shift=(0, 0)):
+def makesquarelattice(period, size, draw=False, show_coords=True, angle=0.0, shift=(0, 0), lattice_model=None):
+    """Generate legacy square sites from the canonical lattice adapter."""
     rows = size
     cols = size
-    pos = np.array([[i * period, j * period] for i in range(cols) for j in range(rows)], dtype=float)
+    model = lattice_model or BravaisLattice2D.square()
+    basis = model.real_space_grid_basis
+    pos = np.array([period * (i * basis[:, 0] + j * basis[:, 1]) for i in range(cols) for j in range(rows)], dtype=float)
     pos -= np.mean(pos, axis=0)
     pos = np.dot(pos, np.array([[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]]))
     pos += np.array(shift)
@@ -284,11 +298,19 @@ def current_datetime_as_string():
 
 
 class Lattice:
-    def __init__(self, period: float, outline: list[tuple[float, float]], orientation: float, lattice_type: str) -> None:
+    """Legacy pattern builder backed by one canonical Bravais lattice.
+
+    ``lattice_model`` is optional for compatibility.  New migrated callers
+    pass the same :class:`BravaisLattice2D` object used by the MPB adapter;
+    old callers continue to select a named lattice through ``lattice_type``.
+    """
+
+    def __init__(self, period: float, outline: list[tuple[float, float]], orientation: float, lattice_type: str, lattice_model=None) -> None:
         self.period = period
         self.outline = [(self.period * x, self.period * y) for x, y in outline]
         self.orientation = orientation
         self.lattice_type = lattice_type
+        self.lattice_model = lattice_model or BravaisLattice2D.named(lattice_type)
         self.points = self.get_points()
 
     def FreePattern(self, *args: list[tuple[float, float]]):
@@ -324,6 +346,7 @@ class Lattice:
                 show_coords=False,
                 angle=self.orientation,
                 shift=shift_vector,
+                lattice_model=self.lattice_model,
             )
             return [cut(pos, poly)]
 
@@ -335,17 +358,19 @@ class Lattice:
                 show_coords=False,
                 angle=self.orientation,
                 shift=shift_vector,
+                lattice_model=self.lattice_model,
             )
             return [cut(pos, poly)]
 
         if self.lattice_type in ["honeycomb", "hon", "hc", "h"]:
-            pos1 = maketriangularlattice(period=self.period, size=large_enough_n, draw=False, show_coords=False)
+            pos1 = maketriangularlattice(period=self.period, size=large_enough_n, draw=False, show_coords=False, lattice_model=self.lattice_model)
             pos2 = maketriangularlattice(
                 period=self.period,
                 size=large_enough_n,
                 draw=False,
                 show_coords=False,
                 shift=(self.period / 2, self.period / 2 / np.sqrt(3)),
+                lattice_model=self.lattice_model,
             )
 
             def separate_operation(pos):
