@@ -1,48 +1,45 @@
-# R1 Migration Contract
+# R1.1 Migration Contract
 
-## Hard invariants
+This is a plan artifact only. It does not implement R2 or affine behavior.
 
-1. No affine deformation is implemented in R1.
-2. No production/runtime source file is changed in any of the three repos.
-3. Existing data, image, diagnostic, cache, and archive evidence remains byte
-   identical.
-4. Existing public behavior remains available; R1 only adds characterization
-   tests and audit artifacts to `MePhC`.
-5. Plot parameters do not define simulation record identity. Result-affecting
-   task and compute parameters do.
-6. Reciprocal coordinates must retain explicit unit and `2*pi` semantics in
-   any future shared context; no silent convention change is allowed.
-7. Symmetry reduction may only be applied after checking the full structure,
-   not the lattice in isolation.
-8. Records are never implicitly rewritten when a plot is requested.
-9. TriLatt is the first migration consumer; SqrLatt follows after the shared
-   context is characterized.
+## Ordered seams
 
-## R2 proposed boundary
+| Step | Existing seam | Responsibility behind the seam | Compatibility callers/tests |
+|---|---|---|---|
+| 1 | `mephc.band.Band._make_geometry_lattice`; `mephc.lattice.maketriangularlattice`; `mephc.lattice.makesquarelattice` | One explicit direct-basis and normalized-geometry context | `test_lock_01_real_space_and_solver_basis_parity`; existing `Band` constructors |
+| 2 | `mephc.geometry.to_meep_geometry`; `Band.create_unitcell` | Convert a context-owned motif to Meep geometry without changing polygon order | geometry conversion examples and existing case smoke tests |
+| 3 | `mephc.kspace.HighSymmetryPath`; `TriangularKSpace`; `SquareKSpace` | Derive reciprocal coordinates, BZ domains, and path conventions from the context | LOCK-02 through LOCK-06 and downstream path tests |
+| 4 | `mephc.band._run_cartesian_k_frequencies`; `mephc.berry.BerryCurvatureCalculator` | Consume one shared reciprocal coordinate object and preserve Cartesian public inputs | Berry/band low-resolution tests and record metadata checks |
+| 5 | `mephc.records.make_geometry_id`; `make_task_key`; `find_matching_record` | Make result-affecting identity explicit while excluding plot parameters | LOCK-09 and case auto/plot-only tests |
+| 6 | `mephc.workflows.resolve_record`; TriLatt/SqrLatt local `_resolve_existing_record` | Move reusable record resolution behind one facade | both case workflow suites before caller switch |
 
-The proposed dependency target is:
+## Legacy facade policy
 
-```text
-math/coordinates -> lattice/structure -> reciprocal/symmetry
-    -> solver adapters -> observables/workflows
-```
+Current `Band`, k-space functions, and record helpers remain public facades while
+the context is introduced. Existing callers in `MePhC/examples`, TriLatt, and
+SqrLatt must continue to run. No removal is permitted in R2; deprecation may be
+announced only after compatibility tests pass in both consumers.
 
-R2 should introduce an explicit immutable geometry/coordinate context holding
-the direct basis, normalization, reciprocal basis, lattice type, motif, and
-units. Solver adapters should consume that context instead of reconstructing
-parallel basis and coordinate assumptions. Observable and record layers should
-receive the same context and task identity.
+## Migration order and hold point
 
-## R2 exclusions until resolved
+1. Land and validate the coordinate/context seam in MePhC.
+2. Migrate TriLatt first, preserving its C3 declaration and records.
+3. Run the full TriLatt suite and cross-repository import checks.
+4. Hold SqrLatt until a full-structure C4 decision is characterized; its current
+   `symmetry = "c4q"` is explicit and must not be silently converted to auto.
+5. Migrate SqrLatt only after the hold-point review accepts the C4 policy.
 
-- no automatic affine deformation model;
-- no non-Abelian Berry implementation without a degeneracy characterization;
-- no assumption that a polygon-side count proves full-structure symmetry;
-- no deletion of compatibility wrappers until downstream imports are audited;
-- no migration of binary records into the package repository.
+Each step stops and rolls back the caller switch if basis parity, path values,
+record identity, or solver smoke changes unexpectedly. Rollback means leaving
+the new facade unused while retaining the compatibility layer; it does not
+rewrite records or use reset/clean operations.
 
-## Evidence policy
+## Explicit exclusions
 
-Consumer repositories own `.pkl`, images, MPB caches, and diagnostic outputs.
-Only small manifests and reproducible metadata belong in Git. The MePhC R1
-artifact manifest contains hashes for the audit artifacts, not user data.
+- local motif deformation;
+- global affine or Bravais-frame deformation;
+- supercells;
+- nonperiodic structures;
+- non-Abelian Berry implementation;
+- unrelated solver redesign;
+- automatic C4 inference before full-structure verification.

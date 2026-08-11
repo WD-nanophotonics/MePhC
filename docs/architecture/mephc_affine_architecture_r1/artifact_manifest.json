@@ -1,15 +1,16 @@
 {
-    "manifest_version":  1,
-    "contract_id":  "mephc-affine-architecture-r1-delivery-v1",
-    "task_id":  "mephc-affine-architecture-r1",
-    "status":  "completed",
-    "generated_at":  "2026-08-11",
-    "repository":  "MePhC",
-    "base_head":  "3e9ee87d64c710ee727fe0525bb9dea292fad513",
+    "schema_version":  "mephc-affine-architecture-r1.1-manifest-v1",
+    "contract_id":  "mephc-affine-architecture-r1.1-delivery-v1",
+    "task_id":  "mephc-affine-architecture-r1.1-corrective",
+    "artifact_root":  "docs/architecture/mephc_affine_architecture_r1",
+    "self_entry_policy":  "excluded-recursive-self-hash",
+    "reverse_reference_exclusions":  [
+                                         "completion.json"
+                                     ],
     "artifact_files":  [
                            {
                                "path":  "docs/architecture/mephc_affine_architecture_r1/README.md",
-                               "sha256":  "c41c85f29159d3d3900a59c5c399a9134656c19ae7e000f2bc3d9fc2d2135af0"
+                               "sha256":  "04c1c37132929cfe62147b71313ed44343bc2a49bf17dbf5c032a491a8fd13ee"
                            },
                            {
                                "path":  "docs/architecture/mephc_affine_architecture_r1/current_architecture.md",
@@ -33,46 +34,44 @@
                            },
                            {
                                "path":  "docs/architecture/mephc_affine_architecture_r1/behavior_baseline.json",
-                               "sha256":  "1a6fc8539bd0b8f3177063707686c5a8fa81a719ffc9c84172b7e388dfdef645"
+                               "sha256":  "bcabd7a8f25d4adbfac50e037980a0e2fa666b0f38c19e620cdbba361b9964db"
                            },
                            {
                                "path":  "docs/architecture/mephc_affine_architecture_r1/characterization_matrix.md",
-                               "sha256":  "1a26563e608a3b24c1170dde68552eed98a2958659df749d8370f087b83c3ee3"
+                               "sha256":  "dfd86c7261a1452bef8c13d83e6ad2a7b99360f0ca5a41c663b73f4407c83b69"
                            },
                            {
                                "path":  "docs/architecture/mephc_affine_architecture_r1/migration_contract.md",
-                               "sha256":  "2d189a4f6c409fab53cbea89247511f590b51be52eafbc2263ccb9c8ad9622cb"
+                               "sha256":  "469603c40f98aad4a5343d6b0d2b11f59cc3857f364260b27f10da718dc35941"
                            },
                            {
                                "path":  "docs/architecture/mephc_affine_architecture_r1/open_questions.md",
-                               "sha256":  "a97eeeea5fdcabb112b47f8097cd2b11418f8d697e9e2f2b82dded2cc82c19dd"
+                               "sha256":  "11c1f51d1ee900069451663263c0a8328249b5d525ecabef483262aa16f8e23b"
                            },
                            {
                                "path":  "tests/test_affine_characterization.py",
-                               "sha256":  "4e6d3d2113764cc44c24e7228dd1e3c58e2752c380d30faec52b5522a2be1ece"
+                               "sha256":  "683222b33eb73e41bfb1d695879cab9c54a792f5508ddf88b31cd714fb38a658"
+                           },
+                           {
+                               "path":  "tests/validate_affine_r1_1.py",
+                               "sha256":  "d652edb919d842a5526ee364dabc1c58f9e66614b1f5ca6fbf3cb68e8a3d223d"
                            }
                        ],
-    "self_hash":  "excluded_from_manifest_to_avoid_self_reference",
-    "integrity":  {
-                      "runtime_source_changes":  [
-
-                                                 ],
-                      "preexisting_user_files_touched":  [
-
-                                                         ],
-                      "existing_evidence_byte_identical":  true,
-                      "runtime_tree_digest":  "fe6bd39b19ab43b46809f7b07d542f9cf8b34a10415ff6ed3b5ae9e22bacc63c",
-                      "evidence_digest":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-                      "exclusions":  [
-                                         "tests/",
-                                         "docs/architecture/mephc_affine_architecture_r1/"
-                                     ],
-                      "all_json_parse":  true
-                  },
-    "tests":  {
-                  "characterization":  "8 tests passed",
-                  "trilatt_baseline":  "22 tests passed",
-                  "mephc_baseline":  "no discoverable tests directory",
-                  "sqrlatt_baseline":  "no discoverable tests directory"
-              }
+    "runtime_tree_digest_before":  "fe6bd39b19ab43b46809f7b07d542f9cf8b34a10415ff6ed3b5ae9e22bacc63c",
+    "runtime_tree_digest_after":  "fe6bd39b19ab43b46809f7b07d542f9cf8b34a10415ff6ed3b5ae9e22bacc63c",
+    "existing_evidence_digest_before":  "c577e8cc64a178bac3426a1e4f3a3f603f3c4b247dcf2ab44bf97cba5d6fc5c1",
+    "existing_evidence_digest_after":  "c577e8cc64a178bac3426a1e4f3a3f603f3c4b247dcf2ab44bf97cba5d6fc5c1",
+    "digest_inclusions":  [
+                              "MePhC tracked runtime files",
+                              "tracked data/ image/ diagnostics/ files in MePhC TriLatt and SqrLatt"
+                          ],
+    "digest_exclusions":  [
+                              "MePhC/tests/",
+                              "MePhC/docs/architecture/mephc_affine_architecture_r1/",
+                              "untracked build caches"
+                          ],
+    "validation_timestamp_utc":  "2026-08-11T15:53:20.9420153Z",
+    "validator_command":  "python /home/icy/MePhC/tests/validate_affine_r1_1.py",
+    "validator_exit_code":  0,
+    "status":  "blocked"
 }

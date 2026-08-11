@@ -1,36 +1,36 @@
 {
-  "task_id": "mephc-affine-architecture-r1",
-  "status": "baseline",
+  "task_id": "mephc-affine-architecture-r1.1-corrective",
+  "parent_task_id": "mephc-affine-architecture-r1",
+  "reviewed_commit": "ec8a4ec8ec1ffd5db01e60c5e008a2af67c50ffb",
+  "preflight": {
+    "MePhC": {"path": "/home/icy/MePhC", "branch": "main", "upstream": "origin/main", "head_before": "ec8a4ec8ec1ffd5db01e60c5e008a2af67c50ffb", "dirty_before": false},
+    "MePhC-TriLatt": {"path": "/home/icy/TriLatt", "branch": "main", "upstream": "origin/main", "head_before": "38f1c66ec2c0eb441a5fc5dbd440c2f45eec919c", "dirty_before": false},
+    "MePhC-SqrLatt": {"path": "/home/icy/SqrLatt", "branch": "main", "upstream": "origin/main", "head_before": "8a1e4534a48e01a83996fb199ccd55e0983e72b2", "dirty_before": false}
+  },
   "environment": {
     "python": "/home/icy/miniconda3/envs/mp/bin/python",
     "python_version": "3.13.13",
-    "dependencies": ["meep", "mpb", "numpy", "scipy", "shapely"],
-    "dependency_status": "available"
+    "meep_available": true,
+    "mpb_available": true,
+    "scientific_dependencies": ["numpy", "scipy", "shapely", "matplotlib"]
   },
-  "repositories": {
-    "MePhC": {"path": "/home/icy/MePhC", "branch": "main", "head": "3e9ee87d64c710ee727fe0525bb9dea292fad513"},
-    "MePhC-TriLatt": {"path": "/home/icy/TriLatt", "branch": "main", "head": "38f1c66ec2c0eb441a5fc5dbd440c2f45eec919c"},
-    "MePhC-SqrLatt": {"path": "/home/icy/SqrLatt", "branch": "main", "head": "8a1e4534a48e01a83996fb199ccd55e0983e72b2"}
+  "baseline_tests": [
+    {"repository": "MePhC", "command": "python -m unittest discover -s /home/icy/MePhC/tests", "exit_code": 0, "passed": 8, "failed": 0, "skipped": 0, "xfailed": 0, "duration_seconds": 0.031},
+    {"repository": "MePhC-TriLatt", "command": "python -m unittest discover -s /home/icy/TriLatt/tests", "exit_code": 0, "passed": 22, "failed": 0, "skipped": 0, "xfailed": 0, "duration_seconds": 0.269},
+    {"repository": "MePhC-SqrLatt", "command": "python -m unittest discover -s /home/icy/SqrLatt/tests", "exit_code": 1, "passed": 0, "failed": 0, "skipped": 0, "xfailed": 0, "duration_seconds": 0.3, "result": "no importable tests directory"}
+  ],
+  "r1_1_integrity": {
+    "runtime_tree_algorithm": "sha256(sorted git-tracked relative path + NUL + file bytes + NUL), excluding tests/ and docs/architecture/mephc_affine_architecture_r1/",
+    "runtime_tree_digest_before": "fe6bd39b19ab43b46809f7b07d542f9cf8b34a10415ff6ed3b5ae9e22bacc63c",
+    "existing_evidence_algorithm": "sha256(sorted repository-name/relative path + NUL + file bytes + NUL) for tracked data/, image/, diagnostics/ files across all three repositories",
+    "existing_evidence_digest_before": "c577e8cc64a178bac3426a1e4f3a3f603f3c4b247dcf2ab44bf97cba5d6fc5c1",
+    "digest_inclusions": ["MePhC tracked runtime files", "tracked data/", "tracked image/", "tracked diagnostics/"],
+    "digest_exclusions": ["MePhC/tests/", "MePhC/docs/architecture/mephc_affine_architecture_r1/", "untracked build caches"],
+    "validator": "tests/validate_affine_r1_1.py"
   },
-  "baseline_tests": {
-    "MePhC": {"command": "python -m unittest discover -s tests", "result": "no discoverable tests directory"},
-    "MePhC-TriLatt": {"command": "python -m unittest discover -s tests", "result": "22 tests passed"},
-    "MePhC-SqrLatt": {"command": "python -m unittest discover -s tests", "result": "no discoverable tests directory"}
-  },
-  "runtime_tree_digests": {
-    "MePhC": "fe6bd39b19ab43b46809f7b07d542f9cf8b34a10415ff6ed3b5ae9e22bacc63c",
-    "MePhC-TriLatt": "bcfd5c2aea4a6d3d56f5a3083fdced2e1bea50c10a33241be85bc7cbf31e096e",
-    "MePhC-SqrLatt": "3b230fd6238f6d4de9d84ccb7b7b0de7c152b9d5ff8551f45a8afe5d6e0d36f2"
-  },
-  "evidence_digests": {
-    "MePhC": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "MePhC-TriLatt": "fff9c76d7aebaf05ce4efad07d6935432f458e86eace83b2994b094f90d5b62d",
-    "MePhC-SqrLatt": "e6024ef25d3f33f0eebeeb5f61dbf4d96f5cc7d91f24eb80233b92d41ff0cec3"
-  },
-  "r1_constraints": {
-    "runtime_source_changes": [],
-    "preexisting_user_files_touched": [],
-    "affine_deformation_implemented": false,
-    "r2_started": false
+  "characterization_baseline": {
+    "existing_r1_tests": 8,
+    "new_r1_1_lock_tests": 10,
+    "lock_07_note": "TriLatt has auto -> c3; SqrLatt currently declares c4q explicitly and has no geometry-driven C4 auto-selection."
   }
 }

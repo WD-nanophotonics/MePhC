@@ -1,0 +1,113 @@
+{
+  "contract_id": "mephc-affine-architecture-r1.1-delivery-v1",
+  "task_id": "mephc-affine-architecture-r1.1-corrective",
+  "status": "blocked",
+  "repositories": [
+    {
+      "name": "MePhC",
+      "path": "/home/icy/MePhC",
+      "branch": "main",
+      "upstream": "origin/main",
+      "head_before": "ec8a4ec8ec1ffd5db01e60c5e008a2af67c50ffb",
+      "head_after": null,
+      "dirty_before": false,
+      "dirty_after": false,
+      "commit_created": null,
+      "push_status": "pushed"
+    },
+    {
+      "name": "MePhC-TriLatt",
+      "path": "/home/icy/TriLatt",
+      "branch": "main",
+      "upstream": "origin/main",
+      "head_before": "38f1c66ec2c0eb441a5fc5dbd440c2f45eec919c",
+      "head_after": "38f1c66ec2c0eb441a5fc5dbd440c2f45eec919c",
+      "dirty_before": false,
+      "dirty_after": false,
+      "commit_created": null,
+      "push_status": "not-applicable"
+    },
+    {
+      "name": "MePhC-SqrLatt",
+      "path": "/home/icy/SqrLatt",
+      "branch": "main",
+      "upstream": "origin/main",
+      "head_before": "8a1e4534a48e01a83996fb199ccd55e0983e72b2",
+      "head_after": "8a1e4534a48e01a83996fb199ccd55e0983e72b2",
+      "dirty_before": false,
+      "dirty_after": false,
+      "commit_created": null,
+      "push_status": "not-applicable"
+    }
+  ],
+  "environment": {
+    "python": "/home/icy/miniconda3/envs/mp/bin/python",
+    "mpb_available": true,
+    "meep_available": true,
+    "notes": ["Python 3.13.13", "Meep/MPB/NumPy/SciPy/Shapely/Matplotlib available"]
+  },
+  "tests": [
+    {"repository": "MePhC", "command": "python -m unittest discover -s /home/icy/MePhC/tests", "exit_code": 0, "passed": 8, "failed": 0, "skipped": 0, "xfailed": 0, "duration_seconds": 0.031, "classification": "baseline", "evidence_file": "docs/architecture/mephc_affine_architecture_r1/behavior_baseline.json"},
+    {"repository": "MePhC-TriLatt", "command": "python -m unittest discover -s /home/icy/TriLatt/tests", "exit_code": 0, "passed": 22, "failed": 0, "skipped": 0, "xfailed": 0, "duration_seconds": 0.269, "classification": "baseline", "evidence_file": "docs/architecture/mephc_affine_architecture_r1/behavior_baseline.json"},
+    {"repository": "MePhC-SqrLatt", "command": "python -m unittest discover -s /home/icy/SqrLatt/tests", "exit_code": 1, "passed": 0, "failed": 0, "skipped": 0, "xfailed": 0, "duration_seconds": 0.3, "classification": "baseline", "evidence_file": "docs/architecture/mephc_affine_architecture_r1/behavior_baseline.json"},
+    {"repository": "MePhC", "command": "PYTHONPATH=/home/icy/MePhC python -m unittest discover -s /home/icy/MePhC/tests", "exit_code": 0, "passed": 18, "failed": 0, "skipped": 0, "xfailed": 0, "duration_seconds": 0.043, "classification": "focused", "evidence_file": "tests/test_affine_characterization.py"},
+    {"repository": "MePhC", "command": "python -m compileall -q /home/icy/MePhC/mephc /home/icy/MePhC/tests", "exit_code": 0, "passed": null, "failed": 0, "skipped": 0, "xfailed": 0, "duration_seconds": null, "classification": "final", "evidence_file": "tests/test_affine_characterization.py"}
+  ],
+  "changes": {
+    "production_runtime_files_changed": [],
+    "test_files_changed": ["tests/test_affine_characterization.py", "tests/validate_affine_r1_1.py"],
+    "artifact_files_changed": [
+      "docs/architecture/mephc_affine_architecture_r1/README.md",
+      "docs/architecture/mephc_affine_architecture_r1/current_architecture.md",
+      "docs/architecture/mephc_affine_architecture_r1/dependency_graph.mmd",
+      "docs/architecture/mephc_affine_architecture_r1/api_inventory.csv",
+      "docs/architecture/mephc_affine_architecture_r1/lattice_truth_sources.csv",
+      "docs/architecture/mephc_affine_architecture_r1/symmetry_assumptions.csv",
+      "docs/architecture/mephc_affine_architecture_r1/behavior_baseline.json",
+      "docs/architecture/mephc_affine_architecture_r1/characterization_matrix.md",
+      "docs/architecture/mephc_affine_architecture_r1/migration_contract.md",
+      "docs/architecture/mephc_affine_architecture_r1/open_questions.md",
+      "docs/architecture/mephc_affine_architecture_r1/artifact_manifest.json",
+      "docs/architecture/mephc_affine_architecture_r1/completion.json"
+    ],
+    "preexisting_user_files_touched": []
+  },
+  "characterization": [
+    {"lock_id": "LOCK-01", "target": "independent real-space versus solver-basis parity", "status": "locked", "test_node_id": "test_lock_01_real_space_and_solver_basis_parity", "evidence": "tests/test_affine_characterization.py", "expected_behavior": "real-space basis transforms to current MPB basis", "reason": null},
+    {"lock_id": "LOCK-02", "target": "MPB lattice parity", "status": "locked", "test_node_id": "test_triangular_and_square_direct_basis_are_explicit", "evidence": "tests/test_affine_characterization.py", "expected_behavior": "triangular and square basis order/orientation stable", "reason": null},
+    {"lock_id": "LOCK-03", "target": "reciprocal 2*pi convention", "status": "locked", "test_node_id": "test_direct_reciprocal_duality_and_two_pi_convention", "evidence": "tests/test_affine_characterization.py", "expected_behavior": "reciprocal vectors carry documented 2*pi scale", "reason": null},
+    {"lock_id": "LOCK-04", "target": "direct/reciprocal duality", "status": "locked", "test_node_id": "test_direct_reciprocal_duality_and_two_pi_convention", "evidence": "tests/test_affine_characterization.py", "expected_behavior": "direct transpose times reciprocal dual is identity", "reason": null},
+    {"lock_id": "LOCK-05", "target": "ordered first-BZ vertices/order/area", "status": "locked", "test_node_id": "test_lock_02_ordered_first_bz_contract", "evidence": "tests/test_affine_characterization.py", "expected_behavior": "ordered non-closed CCW hexagon with fixed start and area", "reason": null},
+    {"lock_id": "LOCK-06", "target": "Gamma/K/M/default paths", "status": "locked", "test_node_id": "test_lock_08_square_and_triangular_path_conventions", "evidence": "tests/test_affine_characterization.py", "expected_behavior": "current triangular and square high-symmetry paths stable", "reason": null},
+    {"lock_id": "LOCK-07", "target": "C3 and C4 auto-selection", "status": "blocked", "test_node_id": "test_lock_05_c4_selection_is_explicit_and_alias_stable", "evidence": "tests/test_affine_characterization.py; SqrLatt/square_hole/berry_curvature.py", "expected_behavior": "C3 auto exists; C4 should have an input-driven decision", "reason": "SqrLatt currently declares c4q explicitly; adding geometry-driven C4 auto-selection would be a forbidden production change."},
+    {"lock_id": "LOCK-08", "target": "minimal triangular motif placement", "status": "locked", "test_node_id": "test_lock_03_minimal_triangular_motif_site_placement", "evidence": "tests/test_affine_characterization.py", "expected_behavior": "site center and motif-local ordered vertices remain distinct", "reason": null},
+    {"lock_id": "LOCK-09", "target": "TriLatt/SqrLatt identity and record-key behavior", "status": "locked", "test_node_id": "test_lock_06_triangular_identity_behavior;test_lock_07_square_identity_behavior", "evidence": "tests/test_affine_characterization.py", "expected_behavior": "physical IDs and stable task keys match current case behavior", "reason": null},
+    {"lock_id": "LOCK-10", "target": "low-resolution solver smoke", "status": "locked", "test_node_id": "test_lock_10_low_resolution_solver_smoke", "evidence": "tests/test_affine_characterization.py", "expected_behavior": "MPB returns at least one frequency", "reason": null}
+  ],
+  "integrity": {
+    "runtime_tree_digest_before": "fe6bd39b19ab43b46809f7b07d542f9cf8b34a10415ff6ed3b5ae9e22bacc63c",
+    "runtime_tree_digest_after": "fe6bd39b19ab43b46809f7b07d542f9cf8b34a10415ff6ed3b5ae9e22bacc63c",
+    "runtime_byte_identical": true,
+    "existing_evidence_digest_before": "c577e8cc64a178bac3426a1e4f3a3f603f3c4b247dcf2ab44bf97cba5d6fc5c1",
+    "existing_evidence_digest_after": "c577e8cc64a178bac3426a1e4f3a3f603f3c4b247dcf2ab44bf97cba5d6fc5c1",
+    "existing_evidence_byte_identical": true,
+    "artifact_manifest_sha256": "6b8639a5f88fabed74879b31937a3263054869907c68aa2e3f6cccc246f1e557",
+    "manifest_valid": true,
+    "digest_inclusions": ["MePhC tracked runtime files", "tracked data/image/diagnostics in all three repositories"],
+    "digest_exclusions": ["MePhC/tests/", "MePhC/docs/architecture/mephc_affine_architecture_r1/", "untracked build caches"],
+    "validator_command": "python /home/icy/MePhC/tests/validate_affine_r1_1.py",
+    "validator_exit_code": 0
+  },
+  "findings": {
+    "duplicate_truth_sources": ["Direct basis is split between mephc.lattice site generation and mephc.band MPB construction.", "TriLatt and SqrLatt duplicate record orchestration."],
+    "highest_risk_couplings": ["Band combines geometry, solver, coordinate conversion, and observable facades.", "SqrLatt C4 reduction is a case declaration, not a verified auto decision."],
+    "testability_gaps": ["SqrLatt has no discoverable tests directory.", "No full-structure C4 verifier or non-Abelian Berry characterization."],
+    "open_questions": ["OQ-01 through OQ-05 in open_questions.md"]
+  },
+  "r2_recommendation": {
+    "ordered_scope": ["math/coordinates", "lattice/structure", "reciprocal/symmetry", "solver adapters", "observables/workflows"],
+    "explicit_exclusions": ["local deformation", "global affine deformation", "supercells", "nonperiodic structures", "unrelated solver redesign"],
+    "compatibility_requirements": ["preserve public facades", "TriLatt first", "SqrLatt hold until C4 policy is accepted", "no implicit record rewrite"]
+  },
+  "blockers": ["LOCK-07: SqrLatt has no current geometry-driven C4 auto-selection; implementing it is outside the R1.1 allowed scope."]
+}
