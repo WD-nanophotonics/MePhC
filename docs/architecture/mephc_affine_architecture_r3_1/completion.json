@@ -51,7 +51,7 @@
     "D": "PASS"
   },
   "final_refs": {
-    "MePhC": "d613b2bc188e0bdcfa7abc71cd23caa5a0326f1f",
+    "MePhC": "1cb0f1d55166369c914c4ca9f8ad425fcd31634f",
     "SqrLatt": "8a1e4534a48e01a83996fb199ccd55e0983e72b2",
     "TriLatt": "59d005693a8f86e110686681a610952dc817803d"
   },
@@ -109,7 +109,7 @@
     "SqrLatt remains unmigrated and unchanged"
   ],
   "push_results": {
-    "MePhC_evidence": "ready_to_push",
+    "MePhC_evidence": "pushed",
     "MePhC_production": "pushed",
     "TriLatt_production": "pushed"
   },
