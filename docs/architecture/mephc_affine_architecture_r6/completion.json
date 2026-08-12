@@ -5,7 +5,7 @@
   "runtime": "/home/icy/miniconda3/envs/mp/bin/python",
   "email_sent": false,
   "repository_only": true,
-  "final_refs": {"MePhC": "PENDING", "SqrLatt": "PENDING", "TriLatt": "PENDING"},
-  "remote_equal": false
+  "final_refs": {"MePhC": "339a1c1", "SqrLatt": "da39f45", "TriLatt": "45891d0"},
+  "remote_equal": true
 }
 
