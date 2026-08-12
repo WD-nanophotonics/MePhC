@@ -1,58 +1,46 @@
 {
-  "MePhC": {
-    "allowlist": [
-      "mephc/band.py",
-      "mephc/bravais.py",
-      "mephc/bz.py",
-      "mephc/lattice.py",
-      "tests/test_r31_kernel.py"
-    ],
-    "allowlist_passed": true,
-    "classification": {
-      "documentation": [],
-      "production": [
-        "mephc/band.py",
-        "mephc/bravais.py",
-        "mephc/bz.py",
-        "mephc/lattice.py"
-      ],
-      "tests": [
-        "tests/test_r31_kernel.py"
-      ]
-    },
-    "files_from_entry": [
-      "mephc/band.py",
-      "mephc/bravais.py",
-      "mephc/bz.py",
-      "mephc/lattice.py",
-      "tests/test_r31_kernel.py"
+  "allowed_paths": {
+    "MePhC": "docs/architecture/mephc_affine_architecture_r3_1/**",
+    "SqrLatt": [],
+    "TriLatt": [
+      "README.md"
     ]
   },
-  "MePhC-TriLatt": {
-    "allowlist": [
-      "README.md",
-      "config.py",
-      "frequency_at_k.py",
-      "tests/test_r31_trilatt.py"
-    ],
-    "allowlist_passed": true,
-    "classification": {
-      "documentation": [
-        "README.md"
-      ],
-      "production": [
-        "config.py",
-        "frequency_at_k.py"
-      ],
-      "tests": [
-        "tests/test_r31_trilatt.py"
-      ]
-    },
-    "files_from_entry": [
-      "README.md",
-      "config.py",
-      "frequency_at_k.py",
-      "tests/test_r31_trilatt.py"
-    ]
-  }
+  "allowlist_passed": true,
+  "forbidden_paths": [
+    "production Python",
+    "scientific data/records/images",
+    "R1/R2/R3 evidence",
+    "SqrLatt",
+    "R4"
+  ],
+  "payload_paths": [
+    "docs/architecture/mephc_affine_architecture_r3_1/README.md",
+    "docs/architecture/mephc_affine_architecture_r3_1/artifact_manifest.json",
+    "docs/architecture/mephc_affine_architecture_r3_1/baseline.json",
+    "docs/architecture/mephc_affine_architecture_r3_1/change_scope.json",
+    "docs/architecture/mephc_affine_architecture_r3_1/completion.json",
+    "docs/architecture/mephc_affine_architecture_r3_1/entrypoint_smoke.json",
+    "docs/architecture/mephc_affine_architecture_r3_1/geometry_validation.json",
+    "docs/architecture/mephc_affine_architecture_r3_1/integrity_digests.json",
+    "docs/architecture/mephc_affine_architecture_r3_1/k_landmark_validation.json",
+    "docs/architecture/mephc_affine_architecture_r3_1/logs/compileall.log",
+    "docs/architecture/mephc_affine_architecture_r3_1/logs/entrypoint_smoke.log",
+    "docs/architecture/mephc_affine_architecture_r3_1/logs/mephc_tests.log",
+    "docs/architecture/mephc_affine_architecture_r3_1/logs/r2_validator.log",
+    "docs/architecture/mephc_affine_architecture_r3_1/logs/r31_negative_fixtures.log",
+    "docs/architecture/mephc_affine_architecture_r3_1/logs/r3_validator.log",
+    "docs/architecture/mephc_affine_architecture_r3_1/logs/trilatt_tests.log",
+    "docs/architecture/mephc_affine_architecture_r3_1/run_r3_1_smokes.py",
+    "docs/architecture/mephc_affine_architecture_r3_1/test_runs.json",
+    "docs/architecture/mephc_affine_architecture_r3_1/validate_r3_1.py",
+    "docs/architecture/mephc_affine_architecture_r3_1/validation_report.md",
+    "docs/architecture/mephc_affine_architecture_r3_1/validator_negative_fixtures.py"
+  ],
+  "pre_change_refs": {
+    "MePhC": "ab90e51d30a949902d4e36bcc269e4355f0d14f3",
+    "SqrLatt": "8a1e4534a48e01a83996fb199ccd55e0983e72b2",
+    "TriLatt": "59d005693a8f86e110686681a610952dc817803d"
+  },
+  "task_id": "mephc-affine-architecture-r3.1-delivery-closure"
 }

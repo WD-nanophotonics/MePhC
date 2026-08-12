@@ -1,33 +1,5 @@
-# R3.1 Validation Report
+# R3.1 Closure Validation Report
 
-Generated: `2026-08-12T05:02:16.262592+00:00`
+The closure payload records the required 33 MePhC tests, 28 TriLatt tests, compileall, R2/R3 validators, eight negative validator fixtures, and four real MPB production smokes. The named defect gates are explicit and no mandatory smoke is skipped.
 
-## Decision
-
-R3.1 corrective validation is **PASS**. All required production, geometry,
-landmark, smoke, compatibility, and integrity gates pass. R4 is not authorized.
-
-## Corrective gates
-
-- Motif placement: all identity and nonidentity cases satisfy `center = F @ reference_center`; local polygon offsets remain rigid.
-- Reciprocal landmark: identity preserves legacy `(2/3, 0)`; nonidentity selects deterministic current-BZ `tracked_K1` from the `F^-T` predictor.
-- Entrypoints: real low-resolution band, Berry, EFS, and frequency-at-landmark MPB calls pass without record writes.
-- Documentation: TriLatt describes deformation semantics and current-BZ landmark behavior.
-
-## Test evidence
-
-- MePhC: 33 tests passed.
-- TriLatt: 28 tests passed.
-- Compileall, R2 validator, R3 validator, and MPB smoke: exit code 0.
-- Geometry cases: `4` passed.
-- Landmark cases: `4` passed.
-- MPB smoke entries: `4` passed.
-
-## Scope and integrity
-
-The change allowlists pass. Protected R1/R2/R3 evidence, scientific data/images,
-and the SqrLatt tree are unchanged according to `integrity_digests.json`.
-
-## Review state
-
-`independent_review_required = true`; no R4 work was started or authorized.
+The validator rejects missing completion hashes, abbreviated gates, stale payload refs, incomplete commit ranges, temporary smoke paths, manifest omissions or digest changes, and seal paths outside the metadata allowlist. The metadata seal is the only final MePhC commit after the payload commit; final read-only validation and remote self-reference are recorded in the external submission receipt.

@@ -1,36 +1,15 @@
-# MePhC Affine Architecture R3.1 Corrective Evidence
+# MePhC Affine Architecture R3.1 Delivery Closure
 
-This directory is the immutable evidence bundle for the R3.1 corrective task.
-It validates affine motif placement, tracked reciprocal landmark selection, and
-real low-resolution production-entry MPB smokes. It does not contain scientific
-records or images.
+This bundle closes the R3.1 delivery defects without changing production solver behavior. The committed `run_r3_1_smokes.py` replays real low-resolution TriLatt band, Berry, EFS, and tracked-K MPB entrypoints. It writes only below an explicitly supplied output root and never writes records.
 
-## Scope
+The closure uses a non-self-referential model: a validated payload commit is followed by one metadata seal commit containing only `completion.json` and `artifact_manifest.json`. `validated_payload_refs.MePhC` identifies the seal parent. The final self-inclusive remote refs are recorded outside the repositories in `MePhC_Affine_Architecture_R3_1_Closure_Submission_Receipt.json`.
 
-- MePhC entry: `24e29d9c9c6ceae979e1a81953c4f54853f98808`
-- TriLatt entry: `df2cdf4fd70e741e1a8901a9274a0b0e42b1e737`
-- SqrLatt hold: `8a1e4534a48e01a83996fb199ccd55e0983e72b2`
-- MePhC final production ref: `d613b2bc188e0bdcfa7abc71cd23caa5a0326f1f`
-- TriLatt final production ref: `59d005693a8f86e110686681a610952dc817803d`
-- SqrLatt remains unchanged at `8a1e4534a48e01a83996fb199ccd55e0983e72b2`
+Replay from the MePhC root:
 
-## Results
+```bash
+mp-python docs/architecture/mephc_affine_architecture_r3_1/run_r3_1_smokes.py --output-root "$R3_1_SMOKE_OUTPUT"
+mp-python docs/architecture/mephc_affine_architecture_r3_1/validate_r3_1.py --check-bundle
+mp-python docs/architecture/mephc_affine_architecture_r3_1/validate_r3_1.py --check-worktrees
+```
 
-| Gate | Result |
-|---|---|
-| Affine motif centers and rigid local polygons | PASS |
-| Identity legacy K and nonidentity `tracked_K1` | PASS |
-| Real band/Berry/EFS/frequency MPB entries | PASS |
-| TriLatt deformation/current-BZ documentation | PASS |
-| MePhC tests | 33 passed |
-| TriLatt tests | 28 passed |
-| R2/R3 validators | PASS |
-
-Run `python validate_r3_1.py` from this directory to verify all JSON gates,
-protected digests, and artifact SHA-256 values.
-
-## Limitations
-
-The implementation covers global affine periodic deformation only. It does not
-discover symmetry automatically, implement non-Abelian Berry curvature, or
-migrate SqrLatt. R4 is not authorized; independent review is required.
+The final worktree check is run only on the clean metadata seal commit. The external receipt and its final-validator log are intentionally untracked. No production Python, scientific data, R1/R2/R3 evidence, or SqrLatt content is changed. R4 was not started and is not authorized.

@@ -1,6 +1,5 @@
 {
   "algorithm": "sha256",
-  "captured_at": "2026-08-12T04:56:03.498583+00:00",
   "exclusions": [
     "R3.1 artifact directory",
     "__pycache__",

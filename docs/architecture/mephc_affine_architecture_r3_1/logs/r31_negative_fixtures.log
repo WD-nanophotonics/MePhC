@@ -1,0 +1,37 @@
+{
+  "cases": {
+    "add_out_of_allowlist_seal_path": {
+      "exit_code": 1,
+      "rejected": true
+    },
+    "change_manifested_payload_byte": {
+      "exit_code": 1,
+      "rejected": true
+    },
+    "omit_commit_from_range": {
+      "exit_code": 1,
+      "rejected": true
+    },
+    "reference_tmp_smoke_driver": {
+      "exit_code": 1,
+      "rejected": true
+    },
+    "remove_completion_from_manifest": {
+      "exit_code": 1,
+      "rejected": true
+    },
+    "remove_validator_summary": {
+      "exit_code": 1,
+      "rejected": true
+    },
+    "replace_named_gates_with_A_B_C_D": {
+      "exit_code": 1,
+      "rejected": true
+    },
+    "stale_validated_payload_ref": {
+      "exit_code": 1,
+      "rejected": true
+    }
+  },
+  "status": "PASS"
+}

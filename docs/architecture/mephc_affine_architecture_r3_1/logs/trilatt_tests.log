@@ -1,4 +1,4 @@
-Using MPI version 4.1, 1 processes
+..............Using MPI version 4.1, 1 processes
 Initializing eigensolver data
 Computing 1 bands with 1e-07 tolerance
 Working in 2 dimensions.
@@ -36,27 +36,27 @@ Solving for band polarization: te.
 Initializing fields to random numbers...
 1 k-points
   Vector3<0.33333333333333337, 0.33333333333333337, 0.0>
-elapsed time for initialization: 0.0002856254577636719
+elapsed time for initialization: 0.0002574920654296875
 solve_kpoint (0.333333,0.333333,0):
 tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
 Solving for bands 1 to 1...
     near maximum in trace
-    iteration    1: trace = 0.1006873975944918 (181.274% change)
-    iteration    2: trace = 0.08486589568893839 (17.0533% change)
-    iteration    3: trace = 0.08149703533312193 (4.05001% change)
-    iteration    4: trace = 0.07772710997736711 (4.73537% change)
-    iteration    5: trace = 0.07719135886546589 (0.691656% change)
-    iteration    6: trace = 0.07639342620952853 (1.03908% change)
-    iteration    7: trace = 0.07632862701525892 (0.084859% change)
-    iteration    8: trace = 0.07632748081196243 (0.00150168% change)
-    iteration    9: trace = 0.07632737861989959 (0.000133886% change)
-    iteration   10: trace = 0.07632728759339898 (0.000119258% change)
-    iteration   11: trace = 0.0763272803093611 (9.54316e-06% change)
+    iteration    1: trace = 0.135167199900773 (158.554% change)
+    iteration    2: trace = 0.08200248466170151 (48.9615% change)
+    iteration    3: trace = 0.07937478919535178 (3.25659% change)
+    iteration    4: trace = 0.07662416101664486 (3.52647% change)
+    iteration    5: trace = 0.07640479908795662 (0.286693% change)
+    iteration    6: trace = 0.07636886608226399 (0.0470408% change)
+    iteration    7: trace = 0.07632951086314389 (0.0515463% change)
+    iteration    8: trace = 0.07632733874237629 (0.00284576% change)
+    iteration    9: trace = 0.07632729797111132 (5.34163e-05% change)
+    iteration   10: trace = 0.07632727608500119 (2.8674e-05% change)
+    iteration   11: trace = 0.07632727344213108 (3.46255e-06% change)
 Finished solving for bands 1 to 1 after 11 iterations.
 tefreqs:, 1, 0.333333, 0.333333, 0, 0.666667, 0.276274
-elapsed time for k point: 0.0006124973297119141
-Fixing e-field (band 1) phase by 0.0749661 + 0.997186i; max ampl. = 0.463977
-total elapsed time for run: 0.0009801387786865234
+elapsed time for k point: 0.00041365623474121094
+Fixing e-field (band 1) phase by -0.632945 + 0.774197i; max ampl. = 0.463992
+total elapsed time for run: 0.0007421970367431641
 done
 Initializing eigensolver data
 Computing 1 bands with 1e-07 tolerance
@@ -95,13 +95,13 @@ Solving for band polarization: te.
 Initializing fields to random numbers...
 1 k-points
   Vector3<0.0, 0.0, 0.0>
-elapsed time for initialization: 0.00022864341735839844
+elapsed time for initialization: 0.00019288063049316406
 solve_kpoint (0,0,0):
 tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
 tefreqs:, 1, 0, 0, 0, 0, 0
-elapsed time for k point: 1.239776611328125e-05
+elapsed time for k point: 1.621246337890625e-05
 Fixing e-field (band 1) phase by 1 + -0i; max ampl. = 0
-total elapsed time for run: 0.00032806396484375
+total elapsed time for run: 0.0002791881561279297
 done
 Initializing eigensolver data
 Computing 1 bands with 1e-07 tolerance
@@ -140,27 +140,27 @@ Solving for band polarization: te.
 Initializing fields to random numbers...
 1 k-points
   Vector3<0.33333333333333337, 0.33333333333333337, 0.0>
-elapsed time for initialization: 0.0002665519714355469
+elapsed time for initialization: 0.00018024444580078125
 solve_kpoint (0.333333,0.333333,0):
 tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
 Solving for bands 1 to 1...
     near maximum in trace
-    iteration    1: trace = 0.1006873975944918 (181.274% change)
-    iteration    2: trace = 0.08486589568893839 (17.0533% change)
-    iteration    3: trace = 0.08149703533312193 (4.05001% change)
-    iteration    4: trace = 0.07772710997736711 (4.73537% change)
-    iteration    5: trace = 0.07719135886546589 (0.691656% change)
-    iteration    6: trace = 0.07639342620952853 (1.03908% change)
-    iteration    7: trace = 0.07632862701525892 (0.084859% change)
-    iteration    8: trace = 0.07632748081196243 (0.00150168% change)
-    iteration    9: trace = 0.07632737861989959 (0.000133886% change)
-    iteration   10: trace = 0.07632728759339898 (0.000119258% change)
-    iteration   11: trace = 0.0763272803093611 (9.54316e-06% change)
+    iteration    1: trace = 0.135167199900773 (158.554% change)
+    iteration    2: trace = 0.08200248466170151 (48.9615% change)
+    iteration    3: trace = 0.07937478919535178 (3.25659% change)
+    iteration    4: trace = 0.07662416101664486 (3.52647% change)
+    iteration    5: trace = 0.07640479908795662 (0.286693% change)
+    iteration    6: trace = 0.07636886608226399 (0.0470408% change)
+    iteration    7: trace = 0.07632951086314389 (0.0515463% change)
+    iteration    8: trace = 0.07632733874237629 (0.00284576% change)
+    iteration    9: trace = 0.07632729797111132 (5.34163e-05% change)
+    iteration   10: trace = 0.07632727608500119 (2.8674e-05% change)
+    iteration   11: trace = 0.07632727344213108 (3.46255e-06% change)
 Finished solving for bands 1 to 1 after 11 iterations.
 tefreqs:, 1, 0.333333, 0.333333, 0, 0.666667, 0.276274
-elapsed time for k point: 0.00025177001953125
-Fixing e-field (band 1) phase by 0.0749661 + 0.997186i; max ampl. = 0.463977
-total elapsed time for run: 0.0005693435668945312
+elapsed time for k point: 0.00040030479431152344
+Fixing e-field (band 1) phase by -0.632945 + 0.774197i; max ampl. = 0.463992
+total elapsed time for run: 0.00061798095703125
 done
 Initializing eigensolver data
 Computing 1 bands with 1e-07 tolerance
@@ -199,25 +199,25 @@ Solving for band polarization: te.
 Initializing fields to random numbers...
 1 k-points
   Vector3<0.5000000000000001, 0.0, 0.0>
-elapsed time for initialization: 0.0006046295166015625
+elapsed time for initialization: 0.00016689300537109375
 solve_kpoint (0.5,0,0):
 tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
 Solving for bands 1 to 1...
     near maximum in trace
-    iteration    1: trace = 0.07044794327519915 (185.569% change)
-    iteration    2: trace = 0.05776811336839476 (19.7788% change)
-    iteration    3: trace = 0.05576479046360304 (3.52906% change)
-    iteration    4: trace = 0.05489137827291724 (1.57861% change)
-    iteration    5: trace = 0.05484367270194711 (0.0869468% change)
-    iteration    6: trace = 0.05484300807971907 (0.00121186% change)
-    iteration    7: trace = 0.05484283612555587 (0.000313539% change)
-    iteration    8: trace = 0.05484279367967401 (7.73955e-05% change)
-    iteration    9: trace = 0.05484279290764005 (1.40772e-06% change)
+    iteration    1: trace = 0.09215465295606193 (168.671% change)
+    iteration    2: trace = 0.05994330867554124 (42.356% change)
+    iteration    3: trace = 0.05675528042333419 (5.4637% change)
+    iteration    4: trace = 0.05492499661622053 (3.27772% change)
+    iteration    5: trace = 0.05484407256207744 (0.147444% change)
+    iteration    6: trace = 0.0548430273194727 (0.00190586% change)
+    iteration    7: trace = 0.05484285268063721 (0.000318434% change)
+    iteration    8: trace = 0.05484279485564823 (0.000105438% change)
+    iteration    9: trace = 0.05484279291167073 (3.54464e-06% change)
 Finished solving for bands 1 to 1 after 9 iterations.
 tefreqs:, 1, 0.5, 0, 0, 0.57735, 0.234185
-elapsed time for k point: 0.00046443939208984375
-Fixing e-field (band 1) phase by 0.135828 + 0.990732i; max ampl. = 0.613874
-total elapsed time for run: 0.001102447509765625
+elapsed time for k point: 0.00020503997802734375
+Fixing e-field (band 1) phase by -0.572029 + 0.820233i; max ampl. = 0.613878
+total elapsed time for run: 0.00039649009704589844
 done
 Initializing eigensolver data
 Computing 1 bands with 1e-07 tolerance
@@ -256,13 +256,13 @@ Solving for band polarization: te.
 Initializing fields to random numbers...
 1 k-points
   Vector3<0.0, 0.0, 0.0>
-elapsed time for initialization: 0.0002300739288330078
+elapsed time for initialization: 0.0001652240753173828
 solve_kpoint (0,0,0):
 tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
 tefreqs:, 1, 0, 0, 0, 0, 0
-elapsed time for k point: 3.147125244140625e-05
+elapsed time for k point: 1.2874603271484375e-05
 Fixing e-field (band 1) phase by 1 + -0i; max ampl. = 0
-total elapsed time for run: 0.0003287792205810547
+.total elapsed time for run: 0.0002243518829345703
 done
 Initializing eigensolver data
 Computing 1 bands with 1e-07 tolerance
@@ -301,23 +301,23 @@ Solving for band polarization: te.
 Initializing fields to random numbers...
 1 k-points
   Vector3<0.25000000000000006, 0.25000000000000006, 0.0>
-elapsed time for initialization: 0.0002124309539794922
+elapsed time for initialization: 0.0001850128173828125
 solve_kpoint (0.25,0.25,0):
 tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
 Solving for bands 1 to 1...
     near maximum in trace
-    iteration    1: trace = 0.1032117109565134 (179.481% change)
-    iteration    2: trace = 0.05165887080792555 (66.5754% change)
-    iteration    3: trace = 0.04527597665792109 (13.1695% change)
-    iteration    4: trace = 0.04518170018821802 (0.208443% change)
-    iteration    5: trace = 0.0451775851965017 (0.00910807% change)
-    iteration    6: trace = 0.04517747533550157 (0.000243176% change)
-    iteration    7: trace = 0.04517747269818207 (5.83769e-06% change)
+    iteration    1: trace = 0.07446749851702297 (174.039% change)
+    iteration    2: trace = 0.04574455942438584 (47.7871% change)
+    iteration    3: trace = 0.04520216830476537 (1.19277% change)
+    iteration    4: trace = 0.04517815283891344 (0.0531431% change)
+    iteration    5: trace = 0.04517748404726432 (0.00148035% change)
+    iteration    6: trace = 0.04517747308743176 (2.42595e-05% change)
+    iteration    7: trace = 0.04517747265607427 (9.54807e-07% change)
 Finished solving for bands 1 to 1 after 7 iterations.
 tefreqs:, 1, 0.25, 0.25, 0, 0.5, 0.21255
-elapsed time for k point: 0.000274658203125
-Fixing e-field (band 1) phase by -0.552692 + 0.833386i; max ampl. = 0.509468
-total elapsed time for run: 0.0005369186401367188
+elapsed time for k point: 0.0001804828643798828
+Fixing e-field (band 1) phase by -0.87956 + 0.475787i; max ampl. = 0.509482
+total elapsed time for run: 0.0003952980041503906
 done
 epsilon: 2.35638-7.29, mean 5.60431, harm. mean 4.79947, 100% > 1, 65.8325% "fill"
 Initializing eigensolver data
@@ -357,23 +357,23 @@ Solving for band polarization: te.
 Initializing fields to random numbers...
 1 k-points
   Vector3<0.25500000000000006, 0.25500000000000006, 0.0>
-elapsed time for initialization: 0.00022363662719726562
+elapsed time for initialization: 0.00016880035400390625
 solve_kpoint (0.255,0.255,0):
 tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
 Solving for bands 1 to 1...
     near maximum in trace
-    iteration    1: trace = 0.1046956883616525 (179.286% change)
-    iteration    2: trace = 0.05483321472398214 (62.5122% change)
-    iteration    3: trace = 0.04707655079975077 (15.2226% change)
-    iteration    4: trace = 0.04696821033498452 (0.230402% change)
-    iteration    5: trace = 0.04696331930396362 (0.010414% change)
-    iteration    6: trace = 0.04696316016424511 (0.00033886% change)
-    iteration    7: trace = 0.04696315616746247 (8.51046e-06% change)
+    iteration    1: trace = 0.07819291221962119 (172.958% change)
+    iteration    2: trace = 0.04764745570477094 (48.5464% change)
+    iteration    3: trace = 0.04699699164135038 (1.37454% change)
+    iteration    4: trace = 0.04696407671804945 (0.0700608% change)
+    iteration    5: trace = 0.04696317172625789 (0.00192701% change)
+    iteration    6: trace = 0.04696315678061101 (3.18242e-05% change)
+    iteration    7: trace = 0.0469631561031698 (1.4425e-06% change)
 Finished solving for bands 1 to 1 after 7 iterations.
 tefreqs:, 1, 0.255, 0.255, 0, 0.51, 0.21671
-elapsed time for k point: 0.0006701946258544922
-Fixing e-field (band 1) phase by -0.535163 + 0.844749i; max ampl. = 0.509561
-total elapsed time for run: 0.0009379386901855469
+elapsed time for k point: 0.00016880035400390625
+Fixing e-field (band 1) phase by -0.876969 + 0.480547i; max ampl. = 0.509547
+total elapsed time for run: 0.0003609657287597656
 done
 epsilon: 2.35638-7.29, mean 5.60431, harm. mean 4.79947, 100% > 1, 65.8325% "fill"
 Initializing eigensolver data
@@ -413,23 +413,23 @@ Solving for band polarization: te.
 Initializing fields to random numbers...
 1 k-points
   Vector3<0.26366025403784443, 0.24633974596215566, 0.0>
-elapsed time for initialization: 0.000202178955078125
+elapsed time for initialization: 0.0001800060272216797
 solve_kpoint (0.26366,0.24634,0):
 tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
 Solving for bands 1 to 1...
     near maximum in trace
-    iteration    1: trace = 0.1032985250650412 (179.534% change)
-    iteration    2: trace = 0.05498277864367244 (61.0505% change)
-    iteration    3: trace = 0.04710000856568824 (15.4439% change)
-    iteration    4: trace = 0.04698561738759644 (0.243164% change)
-    iteration    5: trace = 0.04698015070632252 (0.0116355% change)
-    iteration    6: trace = 0.04697997297835376 (0.000378305% change)
-    iteration    7: trace = 0.0469799687297394 (9.04346e-06% change)
+    iteration    1: trace = 0.0780466799995139 (173.005% change)
+    iteration    2: trace = 0.04767722037012723 (48.3114% change)
+    iteration    3: trace = 0.04701511379511509 (1.39844% change)
+    iteration    4: trace = 0.04698092190319259 (0.0727518% change)
+    iteration    5: trace = 0.04697998375297488 (0.00199689% change)
+    iteration    6: trace = 0.04697996929753968 (3.07694e-05% change)
+    iteration    7: trace = 0.04697996866812717 (1.33975e-06% change)
 Finished solving for bands 1 to 1 after 7 iterations.
 tefreqs:, 1, 0.26366, 0.24634, 0, 0.510098, 0.216749
-elapsed time for k point: 0.0002300739288330078
-Fixing e-field (band 1) phase by -0.525476 + 0.850808i; max ampl. = 0.514935
-total elapsed time for run: 0.0005993843078613281
+elapsed time for k point: 0.00016999244689941406
+Fixing e-field (band 1) phase by -0.876445 + 0.481502i; max ampl. = 0.514937
+total elapsed time for run: 0.00037384033203125
 done
 epsilon: 2.35638-7.29, mean 5.60431, harm. mean 4.79947, 100% > 1, 65.8325% "fill"
 Initializing eigensolver data
@@ -469,23 +469,23 @@ Solving for band polarization: te.
 Initializing fields to random numbers...
 1 k-points
   Vector3<0.25866025403784443, 0.24133974596215566, 0.0>
-elapsed time for initialization: 0.00026345252990722656
+elapsed time for initialization: 0.00016760826110839844
 solve_kpoint (0.25866,0.24134,0):
 tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
 Solving for bands 1 to 1...
     near maximum in trace
-    iteration    1: trace = 0.101924011108874 (179.71% change)
-    iteration    2: trace = 0.05181025107003952 (65.1953% change)
-    iteration    3: trace = 0.04529851158912279 (13.4112% change)
-    iteration    4: trace = 0.04519930294064783 (0.219251% change)
-    iteration    5: trace = 0.04519479973311544 (0.0099635% change)
-    iteration    6: trace = 0.04519468008634408 (0.000264736% change)
-    iteration    7: trace = 0.04519467733811774 (6.08086e-06% change)
+    iteration    1: trace = 0.07432710674076382 (174.084% change)
+    iteration    2: trace = 0.04577152842001269 (47.5535% change)
+    iteration    3: trace = 0.0452202621364497 (1.21168% change)
+    iteration    4: trace = 0.04519538104442447 (0.0550371% change)
+    iteration    5: trace = 0.04519468843925628 (0.00153248% change)
+    iteration    6: trace = 0.04519467770606038 (2.37488e-05% change)
+    iteration    7: trace = 0.04519467729607607 (9.07152e-07% change)
 Finished solving for bands 1 to 1 after 7 iterations.
 tefreqs:, 1, 0.25866, 0.24134, 0, 0.5001, 0.21259
-elapsed time for k point: 0.00022292137145996094
-Fixing e-field (band 1) phase by -0.543742 + 0.839252i; max ampl. = 0.514606
-total elapsed time for run: 0.0005366802215576172
+elapsed time for k point: 0.00018024444580078125
+Fixing e-field (band 1) phase by -0.879087 + 0.476662i; max ampl. = 0.514608
+total elapsed time for run: 0.0003705024719238281
 done
 epsilon: 2.35638-7.29, mean 5.60431, harm. mean 4.79947, 100% > 1, 65.8325% "fill"
 Initializing eigensolver data
@@ -525,23 +525,23 @@ Solving for band polarization: te.
 Initializing fields to random numbers...
 1 k-points
   Vector3<0.25000000000000006, 0.25000000000000006, 0.0>
-elapsed time for initialization: 0.00021791458129882812
+elapsed time for initialization: 0.00017690658569335938
 solve_kpoint (0.25,0.25,0):
 tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
 Solving for bands 1 to 1...
     near maximum in trace
-    iteration    1: trace = 0.1032117109565134 (179.481% change)
-    iteration    2: trace = 0.05165887080792555 (66.5754% change)
-    iteration    3: trace = 0.04527597665792109 (13.1695% change)
-    iteration    4: trace = 0.04518170018821802 (0.208443% change)
-    iteration    5: trace = 0.0451775851965017 (0.00910807% change)
-    iteration    6: trace = 0.04517747533550157 (0.000243176% change)
-    iteration    7: trace = 0.04517747269818207 (5.83769e-06% change)
+    iteration    1: trace = 0.07446749851702297 (174.039% change)
+    iteration    2: trace = 0.04574455942438584 (47.7871% change)
+    iteration    3: trace = 0.04520216830476537 (1.19277% change)
+    iteration    4: trace = 0.04517815283891344 (0.0531431% change)
+    iteration    5: trace = 0.04517748404726432 (0.00148035% change)
+    iteration    6: trace = 0.04517747308743176 (2.42595e-05% change)
+    iteration    7: trace = 0.04517747265607427 (9.54807e-07% change)
 Finished solving for bands 1 to 1 after 7 iterations.
 tefreqs:, 1, 0.25, 0.25, 0, 0.5, 0.21255
-elapsed time for k point: 0.00022721290588378906
-Fixing e-field (band 1) phase by -0.552692 + 0.833386i; max ampl. = 0.509468
-total elapsed time for run: 0.0004975795745849609
+elapsed time for k point: 0.00017690658569335938
+Fixing e-field (band 1) phase by -0.87956 + 0.475787i; max ampl. = 0.509482
+.total elapsed time for run: 0.0003829002380371094
 done
 Initializing eigensolver data
 Computing 1 bands with 1e-07 tolerance
@@ -580,20 +580,20 @@ Solving for band polarization: te.
 Initializing fields to random numbers...
 1 k-points
   Vector3<0.0, 0.0, 0.0>
-elapsed time for initialization: 0.0015521049499511719
+elapsed time for initialization: 0.000179290771484375
 solve_kpoint (0,0,0):
 tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
 tefreqs:, 1, 0, 0, 0, 0, 0
-elapsed time for k point: 1.2636184692382812e-05
-total elapsed time for run: 0.0015783309936523438
+elapsed time for k point: 1.3589859008789062e-05
+total elapsed time for run: 0.00020456314086914062
 done
 epsilon: 2.35638-7.29, mean 5.60431, harm. mean 4.79947, 100% > 1, 65.8325% "fill"
 real part range: 2.35638 .. 7.29
-preview complete; run_calculation is False
-
-Elapsed run time = 0.5175 s
-............................
+............
 ----------------------------------------------------------------------
-Ran 28 tests in 0.441s
+Ran 28 tests in 0.311s
 
 OK
+preview complete; run_calculation is False
+
+Elapsed run time = 0.3516 s

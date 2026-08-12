@@ -3,23 +3,28 @@
   "artifacts": [
     {
       "path": "README.md",
-      "sha256": "b3d4e36806c67686a10943b0ea848aba8053fd105a4f25aa5d88a1f0a7491753",
-      "size": 1439
+      "sha256": "169e005b252c52678f170b84fe2a3550ed2f2b81fba52ff3140d8264ede9c1b3",
+      "size": 1347
     },
     {
       "path": "baseline.json",
-      "sha256": "30ee6e78de7bf174317d4ef6bae93eaec556974e0f32a711c6705909cced2b27",
-      "size": 1780
+      "sha256": "ccfe1127b5303e816c01885886c13c0771a13defece63a6deadf24fbb1fae5b4",
+      "size": 1705
     },
     {
       "path": "change_scope.json",
-      "sha256": "c628b4b2561748f8d9d908aab93e4c9e074fb74c7673b8fd3287629c73b3518b",
-      "size": 1157
+      "sha256": "ebacf32208ec5917ce5f5f73da5ce44769f90a872182897e4a61933a1caeb27e",
+      "size": 2238
+    },
+    {
+      "path": "completion.json",
+      "sha256": "269224bb5c0af85f62c790e2f1bb8aa5b2fb8bf4a27684b8ea06071db585d504",
+      "size": 9134
     },
     {
       "path": "entrypoint_smoke.json",
-      "sha256": "3a0af568c7510fd57a50af9a2c71d7a259d00d87d022d4f31ea6d6dda0804c02",
-      "size": 1686
+      "sha256": "6901e190628e2dfcc5fa1027b688f5d85372d3dbe1f7097e68ce4dafb3399ab1",
+      "size": 1972
     },
     {
       "path": "geometry_validation.json",
@@ -28,8 +33,8 @@
     },
     {
       "path": "integrity_digests.json",
-      "sha256": "188ed2fb6df01855ad5084b53d0e6061062173bb41b6db050d58762cbb106a12",
-      "size": 1312
+      "sha256": "e94e54b1da2fe8b2653a49ef18ad123fa37353065a71f5201705b9a870864e8c",
+      "size": 1259
     },
     {
       "path": "k_landmark_validation.json",
@@ -43,18 +48,23 @@
     },
     {
       "path": "logs/entrypoint_smoke.log",
-      "sha256": "bbbe2c8759aca85952b399ee79d93bdcc4a739f04bda270374c2dc569efc294e",
-      "size": 101172
+      "sha256": "8c13cfd47a3184a2876b3abd6b2a3e0e18b5578ddf03ec0c516469e1cbea8549",
+      "size": 97753
     },
     {
       "path": "logs/mephc_tests.log",
-      "sha256": "4a5006ad74f6e8868edbf2e2cbc07a3a74514388c25f676cc32568869cd613ef",
-      "size": 10923
+      "sha256": "e4a8b1bdb3997b5d67e244e3d0dace7a9aea1f5d70c6902252033856766adc04",
+      "size": 11030
     },
     {
       "path": "logs/r2_validator.log",
       "sha256": "d8b5d30fb2863e5f9f1966424e4e867116a1e6d566b2de9d60c7927741e2e9ab",
       "size": 27
+    },
+    {
+      "path": "logs/r31_negative_fixtures.log",
+      "sha256": "3cde1817ac6f6eb65168318fb39a34f54caef9b42daf2fc92d181b1232012a24",
+      "size": 758
     },
     {
       "path": "logs/r3_validator.log",
@@ -63,29 +73,38 @@
     },
     {
       "path": "logs/trilatt_tests.log",
-      "sha256": "975f008375f077c057b5ea45e52258a909620d90ab395b4a275b0b118aa38f94",
-      "size": 23028
+      "sha256": "fd1116706b22e97e0b1bc8c0eef98f3a35b71de043f772d18e88341bcf01a364",
+      "size": 23057
+    },
+    {
+      "path": "run_r3_1_smokes.py",
+      "sha256": "2532a874af9ba1abff880cc42e38cf034210359486352cf15dc329eedf0cb984",
+      "size": 7161
     },
     {
       "path": "test_runs.json",
-      "sha256": "d29dab5ca13b2a1ebbfba0e1ee58ae6be7e4875624ab8e29f9c812b9b3227c72",
-      "size": 3262
+      "sha256": "e847a010625e3fc7c3a6a54a26c4fd9bc8487ec4ddbbd457c24228ad306c2ca6",
+      "size": 4935
     },
     {
       "path": "validate_r3_1.py",
-      "sha256": "3e73220c527a89656a0fed5d6500cba9c8d9151ab4b634f80101ce783761deec",
-      "size": 4378
+      "sha256": "dbcc8ddd81e0d18f2a6dd1aa7b565699324caa1b8a27e68c9f17b81408f07271",
+      "size": 12780
     },
     {
       "path": "validation_report.md",
-      "sha256": "3580ef6d225501e08313ce5a88cf2b16a061dbde4e90f63a7ea8c455394bd078",
-      "size": 1258
+      "sha256": "828ecec09543407a2389dc848bce2f5959342c1207133d8c8ec0257373bd374d",
+      "size": 682
+    },
+    {
+      "path": "validator_negative_fixtures.py",
+      "sha256": "62d0c27e2bdef97359bba79f73dec7224e6525684facfb5090171cff5238dc8f",
+      "size": 3771
     }
   ],
   "excluded_paths": [
-    "artifact_manifest.json",
-    "completion.json"
+    "artifact_manifest.json"
   ],
-  "generated_at": "2026-08-12T05:02:16.266639+00:00",
+  "generated_at": "2026-08-12T06:11:58.808801+00:00",
   "status": "PASS"
 }

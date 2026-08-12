@@ -2,11 +2,12 @@
   "entries": {
     "band_non_identity_low_resolution": {
       "assertions": {
+        "c3_legacy_disabled": true,
         "deformation_metadata": true,
         "finite_freqs": true,
-        "path": "generic_bz"
+        "generic_current_bz_path": true
       },
-      "duration_seconds": 0.014438052006880753,
+      "duration_seconds": 0.010173,
       "parameters": {
         "n_per_segment": 1,
         "num_bands": 1,
@@ -20,11 +21,12 @@
     },
     "berry_non_identity_low_resolution": {
       "assertions": {
+        "c3_reduction_disabled": true,
+        "current_full_bz_domain": true,
         "deformation_metadata": true,
-        "domain": "first_bz",
         "finite_bcs": true
       },
-      "duration_seconds": 0.037383141010650434,
+      "duration_seconds": 0.025856,
       "parameters": {
         "grid_n": 2,
         "num_bands": 1,
@@ -39,11 +41,12 @@
     },
     "efs_non_identity_low_resolution": {
       "assertions": {
+        "c3_reduction_disabled": true,
+        "current_full_bz_domain": true,
         "deformation_metadata": true,
-        "domain": "first_bz",
         "finite_freqs": true
       },
-      "duration_seconds": 0.015288226000848226,
+      "duration_seconds": 0.013734,
       "parameters": {
         "grid_n": 2,
         "num_bands": 1,
@@ -55,13 +58,13 @@
       ],
       "status": "PASS"
     },
-    "frequency_at_tracked_landmark_non_identity_low_resolution": {
+    "frequency_at_tracked_K1_non_identity_low_resolution": {
       "assertions": {
         "finite_freqs": true,
         "landmark_metadata": true,
         "tracked_K1": true
       },
-      "duration_seconds": 0.006209008002770133,
+      "duration_seconds": 0.005962,
       "parameters": {
         "num_bands": 1,
         "resolution": 2
@@ -72,6 +75,14 @@
       "status": "PASS"
     }
   },
+  "parameters": {
+    "num_bands": 1,
+    "output_root": "/tmp/r31-closure-smoke-output",
+    "record_writes": false,
+    "resolution": 2,
+    "stretch_angle_degrees": 17.0,
+    "stretch_factor": 1.05
+  },
   "status": "PASS",
-  "total_duration_seconds": 0.07333212500088848
+  "total_duration_seconds": 0.055743
 }
