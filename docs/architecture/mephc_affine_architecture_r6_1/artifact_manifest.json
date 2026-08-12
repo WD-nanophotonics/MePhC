@@ -1,7 +1,7 @@
 {
   "schema": "mephc.affine_architecture.r6_1.artifact_manifest.v1",
   "status": "SEALED_PASS_SQRLATT_RESPONSE_TRILATT_BLOCKED_NONCONVERGED",
-  "payload_parent": "c2aaf2c",
+  "payload_parent": "93fd80b",
   "files": [
     "README.md",
     "preflight.json",
