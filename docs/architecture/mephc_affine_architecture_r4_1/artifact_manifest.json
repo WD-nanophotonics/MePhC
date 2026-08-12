@@ -1,0 +1,119 @@
+{
+  "schema": "mephc.r4_1.artifact_manifest.v1",
+  "algorithm": "sha256",
+  "excludes": [
+    "artifact_manifest.json",
+    "completion.json",
+    "__pycache__"
+  ],
+  "artifacts": {
+    "README.md": {
+      "sha256": "5bd03146e64e91203c1ce86d009f30e7fa398c8b742aa28259153320cebe36fe",
+      "size": 965
+    },
+    "audit_findings.md": {
+      "sha256": "34e82f5a8dbc06d49146c74a401598c50ea74ecd5891b85edcb37e9a786277a0",
+      "size": 605
+    },
+    "change_scope.json": {
+      "sha256": "2aceb6ad0a11704f08bcbd0b6fd01bb171be7ee6dd4616af32bc1e2037b3cd14",
+      "size": 294
+    },
+    "final_validation_commands.json": {
+      "sha256": "8c135878e4e6af081a5a8c4e3bdf3e0ea2e02af629b94f82ecbdd9923b5f0f2e",
+      "size": 848
+    },
+    "immutable_r4_inputs.json": {
+      "sha256": "a8e6fd612e9594449aaa76a245e55e8a537134f91ffcd084843ffe92f0012595",
+      "size": 1232
+    },
+    "integrity_digests.json": {
+      "sha256": "fef769868ed1fab4e01b9603d25b5b59c023769342677fea8ae5785ce9045ad8",
+      "size": 487
+    },
+    "logs/bundle_validation.log": {
+      "sha256": "e7e23e90abc53244281550fc29ccf75632e7232177c3df0117bdc8970043b5a3",
+      "size": 25
+    },
+    "logs/compileall.log": {
+      "sha256": "50c7d7466584ce085efba268decbe7627f2f9be3e2f164ade095d4cddfd855c7",
+      "size": 18
+    },
+    "logs/diff_check.log": {
+      "sha256": "4cd5e29b2a4713d4b23b85ca530bd7caf102c9c2a24805beec814b4c521bebdf",
+      "size": 18
+    },
+    "logs/live_worktree.log": {
+      "sha256": "add324990c064e20924b9725896e66c3a9850b1ff9dec24ad732cadac989ee95",
+      "size": 21
+    },
+    "logs/mephc_tests.log": {
+      "sha256": "0543542a7b9896c54a0d849d74d3e3a3e1e0c7869908511b6ad7934ead512441",
+      "size": 19
+    },
+    "logs/negative_fixtures.log": {
+      "sha256": "456289d9381b6588a5c28381e00c625f07188481a5df3399346b3d2186bf163a",
+      "size": 9053
+    },
+    "logs/orchestration_preseal.json": {
+      "sha256": "b28ff4a091d14acf32358c0c1c70b3be9f33292d724b1f11bd67e541a8125913",
+      "size": 108092
+    },
+    "logs/r31_validator.log": {
+      "sha256": "889a62e2697636cee598b73ad2d506a44235e14cfeab9ee4570f70372b35b5d7",
+      "size": 21
+    },
+    "logs/smoke_band_affine.log": {
+      "sha256": "19965af373dab16055d1f82b7ff9b6cdf1ba317314968b1e5d1c4648c8dc807f",
+      "size": 25
+    },
+    "logs/smoke_band_identity.log": {
+      "sha256": "3ed49e2dc8e9cef8ed35037da38ebea7b0e4af9511cfea163f2cd1dac74bcacf",
+      "size": 27
+    },
+    "logs/smoke_berry_affine_raw.log": {
+      "sha256": "1c867ce18d0aede78972af26a48fdab01c08d2770b777a1bad1335299e543515",
+      "size": 30
+    },
+    "logs/smoke_berry_identity_c4q.log": {
+      "sha256": "04173a8cc17103728bcd2916d5bf2c720a30d22579ed5167270acfbdfbf518ae",
+      "size": 32
+    },
+    "logs/smoke_efs_affine.log": {
+      "sha256": "85e76772207b26a2cb824165f3a2998f7a8c96ad28e7fafa78708f381a28e257",
+      "size": 24
+    },
+    "logs/sqrlatt_tests.log": {
+      "sha256": "7119283a7e57bf2dcdd781aa400916b542ad0b530cdf0626a859e7b480133933",
+      "size": 21
+    },
+    "logs/trilatt_tests.log": {
+      "sha256": "82a64fed7117a03fad8c8979d82cf17b7513e5eae022f97b2257d615feafd450",
+      "size": 21
+    },
+    "negative_fixture_results.json": {
+      "sha256": "456289d9381b6588a5c28381e00c625f07188481a5df3399346b3d2186bf163a",
+      "size": 9053
+    },
+    "run_final_validation.py": {
+      "sha256": "93222c6c00faaf69a7b44a77f10ed1c0015c9b0cdce3788d59bb53514037da9a",
+      "size": 3312
+    },
+    "run_negative_fixtures.py": {
+      "sha256": "c01406dff97722741476c7eb0c1069d36ab2fa36835e7cc4d5ff48b803b48d37",
+      "size": 8903
+    },
+    "test_and_smoke_summary.json": {
+      "sha256": "e0454e87786a7fa418168543cf4a9124c492383b6f69fec12996e08060de9a06",
+      "size": 1941
+    },
+    "validate_r4_1.py": {
+      "sha256": "e17813cc8b67fbb3f06f7773288894c24a95cedae5fcbaafa3ba238fdf485936",
+      "size": 12788
+    },
+    "validation_contract.md": {
+      "sha256": "fcef0fa8d14bda7f26d20c32e455ddded8027aedcc9c252165b9204b65627c02",
+      "size": 630
+    }
+  }
+}

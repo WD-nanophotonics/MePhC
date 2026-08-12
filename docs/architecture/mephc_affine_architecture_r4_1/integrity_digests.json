@@ -1,0 +1,10 @@
+{
+  "schema": "mephc.r4_1.integrity_digests.v1",
+  "algorithm": "sha256",
+  "r4_tree_sha256": "51434ca616762dda6b4e5f702c0bd1fa9933b5ebd503ff3e0248b54a99ae863b",
+  "r4_baseline": "88f1e24fdbde3ba5ccbeeba4f69cc85d4b199397",
+  "sqrlatt_hold_ref": "56b4beb21eae277266ed8893c66af95b942c3cab",
+  "trilatt_hold_ref": "16cbb988a12f46d5360c64b2c65fdf9fc51e053c",
+  "protected_inputs": "immutable_r4_inputs.json records the frozen R4 evidence digests",
+  "r5": "not started and not authorized"
+}

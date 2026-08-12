@@ -1,0 +1,11 @@
+{
+  "schema": "mephc.r4_1.change_scope.v1",
+  "status": "PASS",
+  "allowed_prefix": "docs/architecture/mephc_affine_architecture_r4_1/",
+  "production_changes": 0,
+  "sqrlatt_changes": 0,
+  "trilatt_changes": 0,
+  "scientific_data_changes": 0,
+  "r5_started": false,
+  "r5_authorized": false
+}

@@ -1,0 +1,197 @@
+{
+  "schema": "mephc.r4_1.negative_fixture_results.v1",
+  "count": 19,
+  "all_passed": true,
+  "fixtures": [
+    {
+      "id": "missing_required_artifact",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_REQUIRED_ARTIFACT",
+      "expected_code": "E_REQUIRED_ARTIFACT",
+      "stdout_sha256": "f94a78fb33832a16f825bc993bb7542da465b2644ae95503eb72aa8c0da8220c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "manifest_payload_omission",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_MANIFEST_OMISSION",
+      "expected_code": "E_MANIFEST_OMISSION",
+      "stdout_sha256": "be58193906065ea9bb63b139e82f73e6e3d208b9689ae188180359f6e07825a6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "manifest_digest_mismatch",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_MANIFEST_DIGEST_MISMATCH",
+      "expected_code": "E_MANIFEST_DIGEST_MISMATCH",
+      "stdout_sha256": "a756277b6cf34332a2ff457d6accc189b27b5f82f837af3fd6d2d170cf1026e2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "stale_required_check_set",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_REQUIRED_CHECK_SET",
+      "expected_code": "E_REQUIRED_CHECK_SET",
+      "stdout_sha256": "b331c934721a8dc4cf96377d58c72cf30a2acb38d0fecb6529ee06ecab33eac5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "completed_with_required_failure",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_COMPLETED_WITH_REQUIRED_FAILURE",
+      "expected_code": "E_COMPLETED_WITH_REQUIRED_FAILURE",
+      "stdout_sha256": "f21daa0bcc419d33ee056cc42202d60d1327d70980159c98e694a0d5b220fbd3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "c4_pass_without_verifier_evidence",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_C4_EVIDENCE",
+      "expected_code": "E_C4_EVIDENCE",
+      "stdout_sha256": "0836e5c146190b30c8cee81c666b337d6323fcab5d12d2a197c0fdb755e288d1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "nonidentity_false_c4_claim",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_NONIDENTITY_FALSE_C4_CLAIM",
+      "expected_code": "E_NONIDENTITY_FALSE_C4_CLAIM",
+      "stdout_sha256": "dc1e045d090dbf3a84630ee3c6f262606b2bc3f148e653b0efbb190350248ee3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "nonidentity_false_gxm_claim",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_NONIDENTITY_FALSE_GXM_CLAIM",
+      "expected_code": "E_NONIDENTITY_FALSE_GXM_CLAIM",
+      "stdout_sha256": "49715669b1f8563b7c42fe06f8696e5ce0ca7003cef8f6b2730aa52abb692766",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "nonidentity_fixed_square_domain_claim",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_NONIDENTITY_FIXED_SQUARE_DOMAIN",
+      "expected_code": "E_NONIDENTITY_FIXED_SQUARE_DOMAIN",
+      "stdout_sha256": "7b7a13dde87f27e8a4e3d66aa5bbd88de8d55d7c13eca7fcb7d8b19ed58fa34c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "missing_required_smoke",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_REQUIRED_SMOKE",
+      "expected_code": "E_REQUIRED_SMOKE",
+      "stdout_sha256": "57b2c0db3d90aa216ebbd753f597af7d42edde6e770077d79ec604d413f77407",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "missing_smoke_assertion",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_SMOKE_ASSERTION",
+      "expected_code": "E_SMOKE_ASSERTION",
+      "stdout_sha256": "efc5c7d65f570978f1561256d1df868bccf8716e78a2bfbf45c88e0de94f8673",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "false_smoke_assertion",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_SMOKE_ASSERTION_FALSE",
+      "expected_code": "E_SMOKE_ASSERTION_FALSE",
+      "stdout_sha256": "66856b18a2242e87134bb06544a80e6389dc5eb092acf849bb4cbf1968214c69",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "missing_or_empty_smoke_log",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_SMOKE_LOG",
+      "expected_code": "E_SMOKE_LOG",
+      "stdout_sha256": "009057a14b94658e0e34fa5417d1ce0e0cfdd65a12ad3cc7af796a45f230e7cc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "unsafe_reproducibility_path",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_UNSAFE_REPRODUCIBILITY_PATH",
+      "expected_code": "E_UNSAFE_REPRODUCIBILITY_PATH",
+      "stdout_sha256": "b53c3e81178bf465caf04c36c6c803c971e222b4aedb993ee34bffdde071144c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "immutable_r4_digest_changed",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_IMMUTABLE_R4_DIGEST_CHANGED",
+      "expected_code": "E_IMMUTABLE_R4_DIGEST_CHANGED",
+      "stdout_sha256": "1d33fb7e481a12f33dc3808acca23c57c2b6f23e99dab27f37fed4ce11567711",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "trilatt_hold_ref_changed",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_TRILATT_HOLD_REF",
+      "expected_code": "E_TRILATT_HOLD_REF",
+      "stdout_sha256": "381d66ebfd552b82b3575aa092fdf35689dca08f3e6ceb67a08c38806a99d2a6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "payload_not_seal_parent",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_PAYLOAD_NOT_SEAL_PARENT",
+      "expected_code": "E_PAYLOAD_NOT_SEAL_PARENT",
+      "stdout_sha256": "dfa0d9699cfe809ff8f0a7e4b938e1e8d50d7a36ae488c22d1bbd47eb7783662",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "seal_forbidden_path",
+      "command": "python validate_r4_1.py --check-bundle --bundle-root <isolated-fixture>",
+      "exit_code": 1,
+      "observed_code": "E_SEAL_FORBIDDEN_PATH",
+      "expected_code": "E_SEAL_FORBIDDEN_PATH",
+      "stdout_sha256": "664934f5b3820165729ca8b7fa15d1fae21922ca5140ed1ee2ddbbded252f7ad",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    },
+    {
+      "id": "repository_remote_mismatch",
+      "command": "python validate_r4_1.py --check-worktrees <explicit-temporary-roots>",
+      "exit_code": 1,
+      "observed_code": "E_REMOTE_IDENTITY",
+      "expected_code": "E_REMOTE_IDENTITY",
+      "stdout_sha256": "1aeb9a8bca408887f469880c2bd5497fe132af4812f9f96b3606ba1f6beca9cd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": true
+    }
+  ]
+}
