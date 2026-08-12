@@ -1,7 +1,7 @@
 {
   "schema": "mephc.r4_1.completion.v1",
   "status": "PASS",
-  "validated_payload_ref": "PAYLOAD_COMMIT_P",
+  "validated_payload_ref": "234c8c8",
   "r5_authorized": false,
   "r5_started": false,
   "trilatt_hold_ref": "16cbb988a12f46d5360c64b2c65fdf9fc51e053c",
@@ -39,7 +39,7 @@
     ]
   },
   "seal": {
-    "payload_ref": "PAYLOAD_COMMIT_P",
+    "payload_ref": "234c8c8",
     "diff_paths": [
       "docs/architecture/mephc_affine_architecture_r4_1/artifact_manifest.json",
       "docs/architecture/mephc_affine_architecture_r4_1/completion.json"
