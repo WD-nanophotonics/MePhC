@@ -43,7 +43,8 @@
         "d613b2bc188e0bdcfa7abc71cd23caa5a0326f1f",
         "0d6bf6182fd01ce47356c31db7363b5bdc72643a",
         "1cb0f1d55166369c914c4ca9f8ad425fcd31634f",
-        "ab90e51d30a949902d4e36bcc269e4355f0d14f3"
+        "ab90e51d30a949902d4e36bcc269e4355f0d14f3",
+        "90041fa652770dc0d8c9a695b65da98c5fdbd1ad"
       ],
       "reviewed_entry": "24e29d9c9c6ceae979e1a81953c4f54853f98808"
     },
@@ -264,7 +265,7 @@
     }
   },
   "validated_payload_refs": {
-    "MePhC": "ab90e51d30a949902d4e36bcc269e4355f0d14f3",
+    "MePhC": "90041fa652770dc0d8c9a695b65da98c5fdbd1ad",
     "TriLatt": "16cbb988a12f46d5360c64b2c65fdf9fc51e053c"
   },
   "validator_summary": {
