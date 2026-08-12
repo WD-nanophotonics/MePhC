@@ -136,8 +136,11 @@ def check_final_refs(roots: dict[str, Path]) -> None:
     for name, root in roots.items():
         head = git(root, "rev-parse", "HEAD")
         remote = git(root, "rev-parse", "origin/main")
-        if head != final[name] or remote != final[name]:
+        payload_parent = completion.get("seal", {}).get("payload_parent") if name == "MePhC" else final[name]
+        if head != remote or (name != "MePhC" and head != payload_parent):
             fail(f"remote equality mismatch: {name}")
+        if name == "MePhC" and git(root, "merge-base", "--is-ancestor", payload_parent, head) != payload_parent:
+            fail("MePhC payload parent is not an ancestor of final seal")
         if git(root, "status", "--short", "--untracked-files=all"):
             fail(f"dirty final worktree: {name}")
     allowed = {
