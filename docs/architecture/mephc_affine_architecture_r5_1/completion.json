@@ -8,7 +8,7 @@
     "MePhC-TriLatt": "0f0d1dfc3129da22b25229ecd9eee136e13a1dfb"
   },
   "final_refs": {
-    "MePhC": "3f3c34a188408212b41ee2f82134cc793d1347ec",
+    "MePhC": "1a84717b21adf13ff6cc73a0c3b94278250e6234",
     "MePhC-SqrLatt": "e2b417ac9065b1d627b68731163861d7d38da546",
     "MePhC-TriLatt": "a0c6921c1367a1e74eee893dc28b02de40ad0584"
   },
@@ -49,7 +49,7 @@
   },
   "r6": false,
   "seal": {
-    "payload_parent": "3f3c34a188408212b41ee2f82134cc793d1347ec",
+    "payload_parent": "1a84717b21adf13ff6cc73a0c3b94278250e6234",
     "metadata_only_paths": [
       "docs/architecture/mephc_affine_architecture_r5_1/artifact_manifest.json",
       "docs/architecture/mephc_affine_architecture_r5_1/completion.json"
