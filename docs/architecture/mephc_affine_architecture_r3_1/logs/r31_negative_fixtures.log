@@ -1,29 +1,5 @@
 {
   "cases": {
-    "E_REPOSITORY_REF": {
-      "actual_codes": [
-        "E_REPOSITORY_REF"
-      ],
-      "exit_code": 1,
-      "expected_code": "E_REPOSITORY_REF",
-      "status": "PASS"
-    },
-    "E_SEAL_DIFF_PATH": {
-      "actual_codes": [
-        "E_SEAL_DIFF_PATH"
-      ],
-      "exit_code": 1,
-      "expected_code": "E_SEAL_DIFF_PATH",
-      "status": "PASS"
-    },
-    "E_SEAL_PARENT": {
-      "actual_codes": [
-        "E_SEAL_PARENT"
-      ],
-      "exit_code": 1,
-      "expected_code": "E_SEAL_PARENT",
-      "status": "PASS"
-    },
     "arbitrary_pass_required_checks": {
       "actual_codes": [
         "E_VALIDATOR_REQUIRED_CHECK_MISSING"
@@ -32,7 +8,7 @@
       "expected_code": "E_VALIDATOR_REQUIRED_CHECK_MISSING",
       "intended_rule": "arbitrary_pass_required_checks",
       "status": "PASS",
-      "stderr": "R3.1 VALIDATION FAIL [E_VALIDATOR_REQUIRED_CHECK_MISSING]: missing required check: seal_and_worktree_validation\n"
+      "stderr": "R3.1 VALIDATION FAIL [E_VALIDATOR_REQUIRED_CHECK_MISSING]: missing required check: bundle_schema\n"
     },
     "compatibility_gate_non_pass": {
       "actual_codes": [
@@ -63,6 +39,15 @@
       "intended_rule": "manifested_byte_change",
       "status": "PASS",
       "stderr": "R3.1 VALIDATION FAIL [E_MANIFEST_DIGEST]: README.md\n"
+    },
+    "payload_ref_not_equal_seal_parent": {
+      "actual_codes": [
+        "E_SEAL_PARENT"
+      ],
+      "exit_code": 1,
+      "expected_code": "E_SEAL_PARENT",
+      "intended_rule": "payload_ref_not_equal_seal_parent",
+      "status": "PASS"
     },
     "remove_compatibility_gate": {
       "actual_codes": [
@@ -113,6 +98,24 @@
       "intended_rule": "remove_smoke_log",
       "status": "PASS",
       "stderr": "R3.1 VALIDATION FAIL [E_SMOKE_LOG_MISSING]: band_non_identity_low_resolution\n"
+    },
+    "repository_ref_mismatch": {
+      "actual_codes": [
+        "E_REPOSITORY_REF"
+      ],
+      "exit_code": 1,
+      "expected_code": "E_REPOSITORY_REF",
+      "intended_rule": "repository_ref_mismatch",
+      "status": "PASS"
+    },
+    "seal_diff_forbidden_path": {
+      "actual_codes": [
+        "E_SEAL_DIFF_PATH"
+      ],
+      "exit_code": 1,
+      "expected_code": "E_SEAL_DIFF_PATH",
+      "intended_rule": "seal_diff_forbidden_path",
+      "status": "PASS"
     },
     "tmp_smoke_command": {
       "actual_codes": [

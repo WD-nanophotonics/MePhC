@@ -108,9 +108,14 @@ def main() -> int:
     pure_cases = {}
     pure = subprocess.run([sys.executable, "-c", f"import importlib.util; s=importlib.util.spec_from_file_location('v', r'{VALIDATOR}'); m=importlib.util.module_from_spec(s); s.loader.exec_module(m);\nfor a,b in [('E_SEAL_PARENT', lambda: m.validate_seal_parent('0'*40,'1'*40)), ('E_SEAL_DIFF_PATH', lambda: m.validate_seal_diff(['docs/forbidden.py'])), ('E_REPOSITORY_REF', lambda: m.validate_repository_ref('0'*40,'1'*40))]:\n try: b()\n except m.DiagnosticError as e: print(a, e.code)"], capture_output=True, text=True)
     observed = pure.stdout.split()
-    for expected in ("E_SEAL_PARENT", "E_SEAL_DIFF_PATH", "E_REPOSITORY_REF"):
+    pure_fixture_ids = {
+        "payload_ref_not_equal_seal_parent": "E_SEAL_PARENT",
+        "seal_diff_forbidden_path": "E_SEAL_DIFF_PATH",
+        "repository_ref_mismatch": "E_REPOSITORY_REF",
+    }
+    for fixture_id, expected in pure_fixture_ids.items():
         actual = expected if expected in observed else ""
-        pure_cases[expected] = {"expected_code": expected, "actual_codes": [actual] if actual else [], "exit_code": 1 if actual else 0, "status": "PASS" if actual else "FAIL"}
+        pure_cases[fixture_id] = {"intended_rule": fixture_id, "expected_code": expected, "actual_codes": [actual] if actual else [], "exit_code": 1 if actual else 0, "status": "PASS" if actual else "FAIL"}
         if not actual:
             raise AssertionError(f"pure fixture failed: {expected}: {pure.stdout} {pure.stderr}")
     report = {"status": "PASS", "cases": {**results, **pure_cases}}

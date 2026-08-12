@@ -63,8 +63,8 @@
     },
     {
       "path": "logs/r31_negative_fixtures.log",
-      "sha256": "870fd5ada78dcf123f2190ec5c32a4b72b6fa0cf82a8c642b3329fcd56985596",
-      "size": 4644
+      "sha256": "0b6561a8c7f4d7b268c2ab4e5c1ccfd705f10ad7b49abf0f2bca4cb60f500f91",
+      "size": 4825
     },
     {
       "path": "logs/r3_validator.log",
@@ -98,13 +98,13 @@
     },
     {
       "path": "validator_negative_fixtures.py",
-      "sha256": "b614e89b4e4339711c0f5b352e340ebe5709da1635b6f801125ac400c29aedd9",
-      "size": 6192
+      "sha256": "92fa4bebff25fb453eeaaaaa43904356bf472f87b82df7484ed90cedecc8494c",
+      "size": 6406
     }
   ],
   "excluded_paths": [
     "artifact_manifest.json"
   ],
-  "generated_at": "2026-08-12T07:09:13.864281+00:00",
+  "generated_at": "2026-08-12T07:12:46.520170+00:00",
   "status": "PASS"
 }
