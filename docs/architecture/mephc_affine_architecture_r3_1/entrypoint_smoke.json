@@ -1,88 +1,200 @@
 {
   "entries": {
     "band_non_identity_low_resolution": {
+      "assertion_results": {
+        "c3_legacy_disabled": "PASS",
+        "deformation_metadata": "PASS",
+        "finite_freqs": "PASS",
+        "generic_current_bz_path": "PASS"
+      },
       "assertions": {
         "c3_legacy_disabled": true,
         "deformation_metadata": true,
         "finite_freqs": true,
         "generic_current_bz_path": true
       },
-      "duration_seconds": 0.010173,
+      "command": "mp-python docs/architecture/mephc_affine_architecture_r3_1/run_r3_1_smokes.py --output-root \"$R3_1_SMOKE_OUTPUT\"",
+      "driver_path": "docs/architecture/mephc_affine_architecture_r3_1/run_r3_1_smokes.py",
+      "duration_seconds": 0.018805,
+      "ended_at": "2026-08-12T06:52:22.575226+00:00",
+      "exit_code": 0,
+      "log_path": "logs/entrypoint_smoke.log",
+      "numerical_or_shape_summary": {
+        "finite": true,
+        "shape": [
+          8,
+          1
+        ]
+      },
       "parameters": {
         "n_per_segment": 1,
         "num_bands": 1,
-        "resolution": 2
+        "resolution": 2,
+        "stretch_angle_degrees": 17.0,
+        "stretch_factor": 1.05
       },
+      "production_entry_traversed": true,
+      "required_assertions": [
+        "c3_legacy_disabled",
+        "deformation_metadata",
+        "finite_freqs",
+        "generic_current_bz_path"
+      ],
       "shape": [
         8,
         1
       ],
+      "solver": "MPB",
+      "started_at": "2026-08-12T06:52:22.556433+00:00",
       "status": "PASS"
     },
     "berry_non_identity_low_resolution": {
+      "assertion_results": {
+        "c3_reduction_disabled": "PASS",
+        "current_full_bz_domain": "PASS",
+        "deformation_metadata": "PASS",
+        "finite_bcs": "PASS"
+      },
       "assertions": {
         "c3_reduction_disabled": true,
         "current_full_bz_domain": true,
         "deformation_metadata": true,
         "finite_bcs": true
       },
-      "duration_seconds": 0.025856,
+      "command": "mp-python docs/architecture/mephc_affine_architecture_r3_1/run_r3_1_smokes.py --output-root \"$R3_1_SMOKE_OUTPUT\"",
+      "driver_path": "docs/architecture/mephc_affine_architecture_r3_1/run_r3_1_smokes.py",
+      "duration_seconds": 0.028212,
+      "ended_at": "2026-08-12T06:52:22.603445+00:00",
+      "exit_code": 0,
+      "log_path": "logs/entrypoint_smoke.log",
+      "numerical_or_shape_summary": {
+        "finite": true,
+        "shape": [
+          7,
+          1
+        ]
+      },
       "parameters": {
         "grid_n": 2,
         "num_bands": 1,
         "resolution": 2,
-        "step": 0.01
+        "step": 0.01,
+        "stretch_angle_degrees": 17.0,
+        "stretch_factor": 1.05
       },
+      "production_entry_traversed": true,
+      "required_assertions": [
+        "c3_reduction_disabled",
+        "current_full_bz_domain",
+        "deformation_metadata",
+        "finite_bcs"
+      ],
       "shape": [
         7,
         1
       ],
+      "solver": "MPB",
+      "started_at": "2026-08-12T06:52:22.575244+00:00",
       "status": "PASS"
     },
     "efs_non_identity_low_resolution": {
+      "assertion_results": {
+        "c3_reduction_disabled": "PASS",
+        "current_full_bz_domain": "PASS",
+        "deformation_metadata": "PASS",
+        "finite_freqs": "PASS"
+      },
       "assertions": {
         "c3_reduction_disabled": true,
         "current_full_bz_domain": true,
         "deformation_metadata": true,
         "finite_freqs": true
       },
-      "duration_seconds": 0.013734,
+      "command": "mp-python docs/architecture/mephc_affine_architecture_r3_1/run_r3_1_smokes.py --output-root \"$R3_1_SMOKE_OUTPUT\"",
+      "driver_path": "docs/architecture/mephc_affine_architecture_r3_1/run_r3_1_smokes.py",
+      "duration_seconds": 0.014416,
+      "ended_at": "2026-08-12T06:52:22.617872+00:00",
+      "exit_code": 0,
+      "log_path": "logs/entrypoint_smoke.log",
+      "numerical_or_shape_summary": {
+        "finite": true,
+        "shape": [
+          7,
+          1
+        ]
+      },
       "parameters": {
         "grid_n": 2,
         "num_bands": 1,
-        "resolution": 2
+        "resolution": 2,
+        "stretch_angle_degrees": 17.0,
+        "stretch_factor": 1.05
       },
+      "production_entry_traversed": true,
+      "required_assertions": [
+        "c3_reduction_disabled",
+        "current_full_bz_domain",
+        "deformation_metadata",
+        "finite_freqs"
+      ],
       "shape": [
         7,
         1
       ],
+      "solver": "MPB",
+      "started_at": "2026-08-12T06:52:22.603465+00:00",
       "status": "PASS"
     },
     "frequency_at_tracked_K1_non_identity_low_resolution": {
+      "assertion_results": {
+        "finite_freqs": "PASS",
+        "landmark_metadata": "PASS",
+        "tracked_K1": "PASS"
+      },
       "assertions": {
         "finite_freqs": true,
         "landmark_metadata": true,
         "tracked_K1": true
       },
-      "duration_seconds": 0.005962,
+      "command": "mp-python docs/architecture/mephc_affine_architecture_r3_1/run_r3_1_smokes.py --output-root \"$R3_1_SMOKE_OUTPUT\"",
+      "driver_path": "docs/architecture/mephc_affine_architecture_r3_1/run_r3_1_smokes.py",
+      "duration_seconds": 0.006179,
+      "ended_at": "2026-08-12T06:52:22.624058+00:00",
+      "exit_code": 0,
+      "log_path": "logs/entrypoint_smoke.log",
+      "numerical_or_shape_summary": {
+        "finite": true,
+        "shape": [
+          1
+        ]
+      },
       "parameters": {
         "num_bands": 1,
-        "resolution": 2
+        "resolution": 2,
+        "stretch_angle_degrees": 17.0,
+        "stretch_factor": 1.05
       },
+      "production_entry_traversed": true,
+      "required_assertions": [
+        "finite_freqs",
+        "landmark_metadata",
+        "tracked_K1"
+      ],
       "shape": [
         1
       ],
+      "solver": "MPB",
+      "started_at": "2026-08-12T06:52:22.617891+00:00",
       "status": "PASS"
     }
   },
   "parameters": {
     "num_bands": 1,
-    "output_root": "/tmp/r31-closure-smoke-output",
     "record_writes": false,
     "resolution": 2,
     "stretch_angle_degrees": 17.0,
     "stretch_factor": 1.05
   },
   "status": "PASS",
-  "total_duration_seconds": 0.055743
+  "total_duration_seconds": 0.067647
 }

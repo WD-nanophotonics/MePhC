@@ -2,9 +2,7 @@
   "allowed_paths": {
     "MePhC": "docs/architecture/mephc_affine_architecture_r3_1/**",
     "SqrLatt": [],
-    "TriLatt": [
-      "README.md"
-    ]
+    "TriLatt": []
   },
   "allowlist_passed": true,
   "forbidden_paths": [
@@ -38,9 +36,9 @@
     "docs/architecture/mephc_affine_architecture_r3_1/validator_negative_fixtures.py"
   ],
   "pre_change_refs": {
-    "MePhC": "ab90e51d30a949902d4e36bcc269e4355f0d14f3",
+    "MePhC": "699d1802ff02d92de25e6ef8ff9b90386dc82cf0",
     "SqrLatt": "8a1e4534a48e01a83996fb199ccd55e0983e72b2",
-    "TriLatt": "59d005693a8f86e110686681a610952dc817803d"
+    "TriLatt": "16cbb988a12f46d5360c64b2c65fdf9fc51e053c"
   },
-  "task_id": "mephc-affine-architecture-r3.1-delivery-closure"
+  "task_id": "mephc-affine-architecture-r3.1-validator-receipt-corrective"
 }

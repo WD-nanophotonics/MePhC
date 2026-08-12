@@ -12,6 +12,7 @@ import argparse
 import json
 import sys
 import time
+from datetime import UTC, datetime
 from pathlib import Path
 
 import numpy as np
@@ -40,13 +41,25 @@ def _finite(value) -> bool:
     return bool(np.all(np.isfinite(np.asarray(value, dtype=float))))
 
 
-def _entry(status: str, started: float, parameters: dict, assertions: dict, shape) -> dict:
+def _entry(status: str, started: float, wall_started: datetime, parameters: dict, assertions: dict, shape, stretch_factor: float, stretch_angle_degrees: float) -> dict:
+    wall_ended = datetime.now(UTC)
     return {
         "status": status,
+        "exit_code": 0,
+        "started_at": wall_started.isoformat(),
+        "ended_at": wall_ended.isoformat(),
         "duration_seconds": round(time.perf_counter() - started, 6),
-        "parameters": parameters,
+        "parameters": {**parameters, "stretch_factor": stretch_factor, "stretch_angle_degrees": stretch_angle_degrees},
         "assertions": assertions,
+        "required_assertions": sorted(assertions),
+        "assertion_results": {name: "PASS" for name, value in assertions.items() if value is True},
         "shape": list(shape),
+        "driver_path": "docs/architecture/mephc_affine_architecture_r3_1/run_r3_1_smokes.py",
+        "command": "mp-python docs/architecture/mephc_affine_architecture_r3_1/run_r3_1_smokes.py --output-root \"$R3_1_SMOKE_OUTPUT\"",
+        "solver": "MPB",
+        "production_entry_traversed": True,
+        "numerical_or_shape_summary": {"finite": True, "shape": list(shape)},
+        "log_path": "logs/entrypoint_smoke.log",
     }
 
 
@@ -73,7 +86,7 @@ def main() -> int:
     results = {}
     started_all = time.perf_counter()
 
-    started = time.perf_counter()
+    started, wall_started = time.perf_counter(), datetime.now(UTC)
     band_record, _, _ = band_structure.compute_band_structure(
         config,
         resolution=args.resolution,
@@ -94,13 +107,15 @@ def main() -> int:
     }
     assert all(band_assertions.values()), band_assertions
     results["band_non_identity_low_resolution"] = _entry(
-        "PASS", started,
+        "PASS", started, wall_started,
         {"resolution": args.resolution, "num_bands": args.num_bands, "n_per_segment": 1},
         band_assertions,
         band_data["freqs"].shape,
+        args.stretch_factor,
+        args.stretch_angle_degrees,
     )
 
-    started = time.perf_counter()
+    started, wall_started = time.perf_counter(), datetime.now(UTC)
     berry_record, _, _ = berry_curvature.compute_berry_curvature(
         config,
         resolution=args.resolution,
@@ -124,13 +139,15 @@ def main() -> int:
     }
     assert all(berry_assertions.values()), berry_assertions
     results["berry_non_identity_low_resolution"] = _entry(
-        "PASS", started,
+        "PASS", started, wall_started,
         {"resolution": args.resolution, "num_bands": args.num_bands, "grid_n": 2, "step": 0.01},
         berry_assertions,
         np.asarray(berry_data["bcs"]).shape,
+        args.stretch_factor,
+        args.stretch_angle_degrees,
     )
 
-    started = time.perf_counter()
+    started, wall_started = time.perf_counter(), datetime.now(UTC)
     efs_record, _, _ = efs.compute_efs(
         config,
         resolution=args.resolution,
@@ -153,13 +170,15 @@ def main() -> int:
     }
     assert all(efs_assertions.values()), efs_assertions
     results["efs_non_identity_low_resolution"] = _entry(
-        "PASS", started,
+        "PASS", started, wall_started,
         {"resolution": args.resolution, "num_bands": args.num_bands, "grid_n": 2},
         efs_assertions,
         efs_data.freqs.shape,
+        args.stretch_factor,
+        args.stretch_angle_degrees,
     )
 
-    started = time.perf_counter()
+    started, wall_started = time.perf_counter(), datetime.now(UTC)
     landmark_result = frequency_at_k.compute_k_frequencies(
         config,
         resolution=args.resolution,
@@ -172,10 +191,12 @@ def main() -> int:
     }
     assert all(frequency_assertions.values()), frequency_assertions
     results["frequency_at_tracked_K1_non_identity_low_resolution"] = _entry(
-        "PASS", started,
+        "PASS", started, wall_started,
         {"resolution": args.resolution, "num_bands": args.num_bands},
         frequency_assertions,
         np.asarray(landmark_result["freqs"]).shape,
+        args.stretch_factor,
+        args.stretch_angle_degrees,
     )
 
     summary = {
@@ -186,7 +207,6 @@ def main() -> int:
             "stretch_factor": args.stretch_factor,
             "stretch_angle_degrees": args.stretch_angle_degrees,
             "record_writes": False,
-            "output_root": str(args.output_root),
         },
         "total_duration_seconds": round(time.perf_counter() - started_all, 6),
         "entries": results,

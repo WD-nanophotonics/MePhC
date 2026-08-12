@@ -13,18 +13,18 @@
     },
     {
       "path": "change_scope.json",
-      "sha256": "ebacf32208ec5917ce5f5f73da5ce44769f90a872182897e4a61933a1caeb27e",
-      "size": 2238
+      "sha256": "919fcc404b9929d18ad5545ac43a220249f7fa45ea3c720e99f38bbb34e5ef7a",
+      "size": 2227
     },
     {
       "path": "completion.json",
-      "sha256": "7a92989529029509d137a8d4225660c50a12c43d103a2aedb4a6e38289e2ef84",
-      "size": 9186
+      "sha256": "27a7598f38c6b635fd9e75d046ba6ea31ca34c99b55c995042c50caa24f3bff3",
+      "size": 5212
     },
     {
       "path": "entrypoint_smoke.json",
-      "sha256": "6901e190628e2dfcc5fa1027b688f5d85372d3dbe1f7097e68ce4dafb3399ab1",
-      "size": 1972
+      "sha256": "2c4795ecf0800c910bdc8beb94a730d4db6013501192bca81d4cf0d2bfed2511",
+      "size": 5879
     },
     {
       "path": "geometry_validation.json",
@@ -48,8 +48,8 @@
     },
     {
       "path": "logs/entrypoint_smoke.log",
-      "sha256": "8c13cfd47a3184a2876b3abd6b2a3e0e18b5578ddf03ec0c516469e1cbea8549",
-      "size": 97753
+      "sha256": "0789307b646e725d87fab670a67ce24802f48bdea1232b61d45ef241022f4147",
+      "size": 101164
     },
     {
       "path": "logs/mephc_tests.log",
@@ -63,8 +63,8 @@
     },
     {
       "path": "logs/r31_negative_fixtures.log",
-      "sha256": "3cde1817ac6f6eb65168318fb39a34f54caef9b42daf2fc92d181b1232012a24",
-      "size": 758
+      "sha256": "870fd5ada78dcf123f2190ec5c32a4b72b6fa0cf82a8c642b3329fcd56985596",
+      "size": 4644
     },
     {
       "path": "logs/r3_validator.log",
@@ -78,8 +78,8 @@
     },
     {
       "path": "run_r3_1_smokes.py",
-      "sha256": "2532a874af9ba1abff880cc42e38cf034210359486352cf15dc329eedf0cb984",
-      "size": 7161
+      "sha256": "29c07cdd1789c6205a9b92f02b38fd41c60cfec0026849141d7c842b0f3cf7cf",
+      "size": 8486
     },
     {
       "path": "test_runs.json",
@@ -88,8 +88,8 @@
     },
     {
       "path": "validate_r3_1.py",
-      "sha256": "dbcc8ddd81e0d18f2a6dd1aa7b565699324caa1b8a27e68c9f17b81408f07271",
-      "size": 12780
+      "sha256": "6002670e002f88beeb51db85a14bcdf467d91b453cd8a6e7627a81e7138b5303",
+      "size": 20277
     },
     {
       "path": "validation_report.md",
@@ -98,13 +98,13 @@
     },
     {
       "path": "validator_negative_fixtures.py",
-      "sha256": "62d0c27e2bdef97359bba79f73dec7224e6525684facfb5090171cff5238dc8f",
-      "size": 3771
+      "sha256": "b614e89b4e4339711c0f5b352e340ebe5709da1635b6f801125ac400c29aedd9",
+      "size": 6192
     }
   ],
   "excluded_paths": [
     "artifact_manifest.json"
   ],
-  "generated_at": "2026-08-12T06:13:47.842803+00:00",
+  "generated_at": "2026-08-12T07:09:13.864281+00:00",
   "status": "PASS"
 }

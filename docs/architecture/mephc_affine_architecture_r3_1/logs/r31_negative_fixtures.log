@@ -1,36 +1,138 @@
 {
   "cases": {
-    "add_out_of_allowlist_seal_path": {
+    "E_REPOSITORY_REF": {
+      "actual_codes": [
+        "E_REPOSITORY_REF"
+      ],
       "exit_code": 1,
-      "rejected": true
+      "expected_code": "E_REPOSITORY_REF",
+      "status": "PASS"
     },
-    "change_manifested_payload_byte": {
+    "E_SEAL_DIFF_PATH": {
+      "actual_codes": [
+        "E_SEAL_DIFF_PATH"
+      ],
       "exit_code": 1,
-      "rejected": true
+      "expected_code": "E_SEAL_DIFF_PATH",
+      "status": "PASS"
     },
-    "omit_commit_from_range": {
+    "E_SEAL_PARENT": {
+      "actual_codes": [
+        "E_SEAL_PARENT"
+      ],
       "exit_code": 1,
-      "rejected": true
+      "expected_code": "E_SEAL_PARENT",
+      "status": "PASS"
     },
-    "reference_tmp_smoke_driver": {
+    "arbitrary_pass_required_checks": {
+      "actual_codes": [
+        "E_VALIDATOR_REQUIRED_CHECK_MISSING"
+      ],
       "exit_code": 1,
-      "rejected": true
+      "expected_code": "E_VALIDATOR_REQUIRED_CHECK_MISSING",
+      "intended_rule": "arbitrary_pass_required_checks",
+      "status": "PASS",
+      "stderr": "R3.1 VALIDATION FAIL [E_VALIDATOR_REQUIRED_CHECK_MISSING]: missing required check: seal_and_worktree_validation\n"
     },
-    "remove_completion_from_manifest": {
+    "compatibility_gate_non_pass": {
+      "actual_codes": [
+        "E_COMPATIBILITY_GATE_STATUS"
+      ],
       "exit_code": 1,
-      "rejected": true
+      "expected_code": "E_COMPATIBILITY_GATE_STATUS",
+      "intended_rule": "compatibility_gate_non_pass",
+      "status": "PASS",
+      "stderr": "R3.1 VALIDATION FAIL [E_COMPATIBILITY_GATE_STATUS]: compatibility gate is not PASS\n"
     },
-    "remove_validator_summary": {
+    "manifest_payload_omission": {
+      "actual_codes": [
+        "E_MANIFEST_PAYLOAD_OMISSION"
+      ],
       "exit_code": 1,
-      "rejected": true
+      "expected_code": "E_MANIFEST_PAYLOAD_OMISSION",
+      "intended_rule": "manifest_payload_omission",
+      "status": "PASS",
+      "stderr": "R3.1 VALIDATION FAIL [E_MANIFEST_PAYLOAD_OMISSION]: change scope payload declaration does not cover the bundle\n"
     },
-    "replace_named_gates_with_A_B_C_D": {
+    "manifested_byte_change": {
+      "actual_codes": [
+        "E_MANIFEST_DIGEST"
+      ],
       "exit_code": 1,
-      "rejected": true
+      "expected_code": "E_MANIFEST_DIGEST",
+      "intended_rule": "manifested_byte_change",
+      "status": "PASS",
+      "stderr": "R3.1 VALIDATION FAIL [E_MANIFEST_DIGEST]: README.md\n"
     },
-    "stale_validated_payload_ref": {
+    "remove_compatibility_gate": {
+      "actual_codes": [
+        "E_COMPATIBILITY_GATE_MISSING"
+      ],
       "exit_code": 1,
-      "rejected": true
+      "expected_code": "E_COMPATIBILITY_GATE_MISSING",
+      "intended_rule": "remove_compatibility_gate",
+      "status": "PASS",
+      "stderr": "R3.1 VALIDATION FAIL [E_COMPATIBILITY_GATE_MISSING]: missing gates: ['record_namespace_preserved']\n"
+    },
+    "remove_integrity_entry": {
+      "actual_codes": [
+        "E_INTEGRITY_ENTRY_MISSING"
+      ],
+      "exit_code": 1,
+      "expected_code": "E_INTEGRITY_ENTRY_MISSING",
+      "intended_rule": "remove_integrity_entry",
+      "status": "PASS",
+      "stderr": "R3.1 VALIDATION FAIL [E_INTEGRITY_ENTRY_MISSING]: invalid integrity entry: manifest_payload_complete\n"
+    },
+    "remove_required_check": {
+      "actual_codes": [
+        "E_VALIDATOR_REQUIRED_CHECK_MISSING"
+      ],
+      "exit_code": 1,
+      "expected_code": "E_VALIDATOR_REQUIRED_CHECK_MISSING",
+      "intended_rule": "remove_required_check",
+      "status": "PASS",
+      "stderr": "R3.1 VALIDATION FAIL [E_VALIDATOR_REQUIRED_CHECK_MISSING]: missing required check: bundle_schema\n"
+    },
+    "remove_smoke_assertion": {
+      "actual_codes": [
+        "E_SMOKE_ASSERTION_MISSING"
+      ],
+      "exit_code": 1,
+      "expected_code": "E_SMOKE_ASSERTION_MISSING",
+      "intended_rule": "remove_smoke_assertion",
+      "status": "PASS",
+      "stderr": "R3.1 VALIDATION FAIL [E_SMOKE_ASSERTION_MISSING]: band_non_identity_low_resolution\n"
+    },
+    "remove_smoke_log": {
+      "actual_codes": [
+        "E_SMOKE_LOG_MISSING"
+      ],
+      "exit_code": 1,
+      "expected_code": "E_SMOKE_LOG_MISSING",
+      "intended_rule": "remove_smoke_log",
+      "status": "PASS",
+      "stderr": "R3.1 VALIDATION FAIL [E_SMOKE_LOG_MISSING]: band_non_identity_low_resolution\n"
+    },
+    "tmp_smoke_command": {
+      "actual_codes": [
+        "E_SMOKE_COMMAND_UNSAFE"
+      ],
+      "exit_code": 1,
+      "expected_code": "E_SMOKE_COMMAND_UNSAFE",
+      "intended_rule": "tmp_smoke_command",
+      "status": "PASS",
+      "stderr": "R3.1 VALIDATION FAIL [E_SMOKE_COMMAND_UNSAFE]: unsafe smoke command: '/tmp/runner.py'\n"
+    },
+    "windows_or_unc_smoke_command": {
+      "actual_codes": [
+        "E_SMOKE_COMMAND_UNSAFE"
+      ],
+      "exit_code": 1,
+      "expected_code": "E_SMOKE_COMMAND_UNSAFE",
+      "intended_rule": "windows_or_unc_smoke_command",
+      "status": "PASS",
+      "stderr": "R3.1 VALIDATION FAIL [E_SMOKE_COMMAND_UNSAFE]: unsafe smoke command: '\\\\\\\\server\\\\share\\\\runner.py'\n"
     }
   },
   "status": "PASS"
