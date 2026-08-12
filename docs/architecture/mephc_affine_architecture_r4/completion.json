@@ -175,12 +175,21 @@
     "MePhC-SqrLatt": "56b4beb21eae277266ed8893c66af95b942c3cab",
     "TriLatt": "16cbb988a12f46d5360c64b2c65fdf9fc51e053c"
   },
-  "metadata_seal_commit": "cedf919ebf3d632f4b851e8f258888fef48ea195",
+  "metadata_seal_commit": "11eabd6fd7f572f43ce02f348e59b75260ce19ef",
   "seal_parent": "cedf919ebf3d632f4b851e8f258888fef48ea195",
   "seal_diff_paths": [
     "docs/architecture/mephc_affine_architecture_r4/artifact_manifest.json",
     "docs/architecture/mephc_affine_architecture_r4/completion.json"
   ],
-  "external_post_push_receipt": "post_push_receipt_pending",
-  "review_gate": "payload refs verified on origin/main; external receipt pending"
+  "external_post_push_receipt": "attached_and_round_tripped",
+  "external_post_push_message": {
+    "subject": "MePhC — COMPLETE — Affine Architecture R4 SqrLatt Canonical Migration",
+    "message_id": "19ff52a39acd100a",
+    "attachments": {
+      "MePhC_Affine_Architecture_R4_Submission_Receipt.json": 2540,
+      "MePhC_R4_final_validator.log": 1757
+    },
+    "verification": "gmail_read_email_and_read_attachment_pass"
+  },
+  "review_gate": "payload refs verified on origin/main; external receipt attached and round-tripped"
 }

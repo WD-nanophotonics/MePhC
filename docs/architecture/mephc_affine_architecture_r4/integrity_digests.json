@@ -16,5 +16,5 @@
     "MePhC-SqrLatt": "56b4beb21eae277266ed8893c66af95b942c3cab",
     "TriLatt": "16cbb988a12f46d5360c64b2c65fdf9fc51e053c"
   },
-  "r4_evidence_status": "payload_pushed_preseal"
+  "r4_evidence_status": "complete_external_receipt_roundtripped"
 }
