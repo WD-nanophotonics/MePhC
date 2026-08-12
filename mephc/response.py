@@ -166,6 +166,7 @@ class EligibilityResult:
             "reason": self.reason,
             "baseline_frequency": self.baseline_frequency,
             "nearest_neighbor_gap": self.nearest_neighbor_gap,
+            "delta_max": self.maximum_perturbation,
             "maximum_perturbation": self.maximum_perturbation,
             "convergence_error_bound": self.convergence_error_bound,
         }
@@ -207,7 +208,7 @@ def q_points() -> tuple[SupercellQPoint, ...]:
     return tuple(SupercellQPoint(point_id, fractional) for point_id, fractional in R6_Q_POINTS.items())
 
 
-def benchmark_field(reference_lattice: BravaisLattice2D, amplitude: float, *, stable_id_prefix: str = "r6") -> PeriodicSupercellField:
+def benchmark_field(reference_lattice: BravaisLattice2D, amplitude: float, *, stable_id_prefix: str = "r6.1") -> PeriodicSupercellField:
     """Create the canonical R6 field ``A*sin(2πξ1)*sin(πξ2)^2*e_x``."""
 
     amplitude = float(amplitude)
@@ -219,13 +220,13 @@ def benchmark_field(reference_lattice: BravaisLattice2D, amplitude: float, *, st
     def displacement(points):
         values = _finite_array(points, (2,))
         xi = values @ inverse.T
-        shape = np.sin(2.0 * np.pi * xi[:, 0]) * np.sin(np.pi * xi[:, 1]) ** 2
+        shape = np.cos(2.0 * np.pi * xi[:, 0]) * np.cos(2.0 * np.pi * xi[:, 1])
         return np.column_stack((amplitude * shape, np.zeros(len(values))))
 
     base = AnalyticDeformationField(
         displacement,
         stable_id=f"{stable_id_prefix}-benchmark-A{amplitude:g}",
-        parameters={"amplitude": amplitude, "shape": "sin(2*pi*xi1)*sin(pi*xi2)^2", "replication": list(R6_REPLICATION)},
+        parameters={"amplitude": amplitude, "shape": "cos(2*pi*xi1)*cos(2*pi*xi2)", "replication": list(R6_REPLICATION)},
     )
     return periodic_supercell_field(reference_lattice=reference_lattice, field=base, replication_matrix=R6_REPLICATION, tolerance=1e-9, boundary_samples=9)
 
@@ -272,7 +273,21 @@ def convergence_decision(downstream: str, spectra_by_resolution: Mapping[int, Ma
     return ConvergenceEvidence(downstream, tuple(comparisons), accepted, error_bound, "PASS" if accepted is not None else "BLOCKED_NONCONVERGED")
 
 
-def eligibility(baseline: Iterable[float], perturbed: Iterable[float], *, band_ordinal: int, convergence_error_bound: float) -> EligibilityResult:
+def band_local_delta_max(baseline: Iterable[float], perturbed_spectra: Iterable[Iterable[float]], band_ordinal: int) -> float:
+    """Return max |omega_b(a)-omega_b(0)| for one band only."""
+    values = _finite_array(baseline)
+    spectra = _finite_array(perturbed_spectra)
+    index = int(band_ordinal)
+    if index < 0 or index >= len(values):
+        raise IndexError("band ordinal outside baseline spectrum")
+    if spectra.ndim == 1:
+        spectra = spectra.reshape(1, -1)
+    if spectra.ndim != 2 or spectra.shape[1] != len(values):
+        raise ValueError("perturbed_spectra must have shape (N, number_of_bands)")
+    return float(np.max(np.abs(spectra[:, index] - values[index])))
+
+
+def eligibility(baseline: Iterable[float], perturbed: Iterable[Iterable[float]], *, band_ordinal: int, convergence_error_bound: float) -> EligibilityResult:
     values = _finite_array(baseline)
     perturbed_values = _finite_array(perturbed)
     index = int(band_ordinal)
@@ -284,7 +299,7 @@ def eligibility(baseline: Iterable[float], perturbed: Iterable[float], *, band_o
     if index + 1 < len(values):
         neighbors.append(abs(values[index + 1] - values[index]))
     gap = float(min(neighbors)) if neighbors else 0.0
-    maximum = float(np.max(np.abs(perturbed_values - values)))
+    maximum = band_local_delta_max(values, perturbed_values, index)
     reasons = []
     if values[index] <= R6_FREQUENCY_FLOOR:
         reasons.append("baseline_frequency_floor")
@@ -314,10 +329,12 @@ def sign_reversal(
     whm = float(np.asarray(raw[-0.0025], dtype=float)[band_ordinal])
     baseline = [w0] if baseline_spectrum is None else baseline_spectrum
     if perturbed_spectra is None:
-        # Keep the algebra callable for small clients; production R6 passes
-        # complete spectra so the nearest-neighbor guard is meaningful.
-        perturbed_for_guard = [w0]
-        guard_band = 0
+        if baseline_spectrum is None:
+            perturbed_for_guard = np.asarray([[wp], [wm], [whp], [whm]], dtype=float)
+            guard_band = 0
+        else:
+            perturbed_for_guard = np.vstack([raw[0.005], raw[-0.005], raw[0.0025], raw[-0.0025]])
+            guard_band = band_ordinal
     else:
         perturbed_for_guard = perturbed_spectra
         guard_band = band_ordinal
@@ -343,5 +360,5 @@ __all__ = [
     "ConvergenceEvidence", "EligibilityResult", "RawSpectrum", "SignReversalResponse", "SolverSettings",
     "SupercellQPoint", "R6_AMPLITUDES", "R6_CONVERGENCE_ABSOLUTE", "R6_CONVERGENCE_RELATIVE",
     "R6_FREQUENCY_FLOOR", "R6_REPLICATION", "R6_Q_POINTS", "benchmark_field", "convergence_decision",
-    "eligibility", "fingerprint", "q_points", "sign_reversal", "verify_q_points",
+    "band_local_delta_max", "eligibility", "fingerprint", "q_points", "sign_reversal", "verify_q_points",
 ]

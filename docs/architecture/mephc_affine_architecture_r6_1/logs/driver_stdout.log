@@ -1,0 +1,7 @@
+R6.1 driver executed with /home/icy/miniconda3/envs/mp/bin/python.
+Geometry gates: SqrLatt PASS; TriLatt PASS.
+SqrLatt baseline: reproduced; accepted response resolution: 12.
+SqrLatt response: PASS; amplitudes: 0, +0.005, -0.005, +0.0025, -0.0025; raw spectra non-identical.
+TriLatt baseline: blocked at resolution 8 after bounded fresh-solve replay.
+TriLatt full response sweep: NOT RUN.
+Driver return: 2 (safety blocker recorded; no data overwritten).
