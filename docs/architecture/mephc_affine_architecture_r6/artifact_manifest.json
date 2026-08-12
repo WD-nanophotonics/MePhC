@@ -1,7 +1,7 @@
 {
   "schema": "mephc.affine_architecture.r6.artifact_manifest.v1",
   "task": "MePhC R6 Affine Architecture: Periodic-Supercell Maxwell Spectral Response Baseline",
-  "payload_parent": "339a1c1",
+  "payload_parent": "339a1c1c8caed1f78bbd11dedb4fef8faab3c4ad",
   "artifacts": [
     "README.md", "preflight.json", "response_contract.md", "benchmark_field.json",
     "call_site_matrix.csv", "runtime_probe.json", "convergence.json",
