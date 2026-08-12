@@ -12,9 +12,9 @@
   "scientific_data": "unchanged",
   "triLatt": "read-only",
   "r4_payload_refs": {
-    "MePhC": "PENDING_PAYLOAD_REF",
-    "MePhC-SqrLatt": "PENDING_PAYLOAD_REF",
+    "MePhC": "cedf919ebf3d632f4b851e8f258888fef48ea195",
+    "MePhC-SqrLatt": "56b4beb21eae277266ed8893c66af95b942c3cab",
     "TriLatt": "16cbb988a12f46d5360c64b2c65fdf9fc51e053c"
   },
-  "r4_evidence_status": "preseal_validated"
+  "r4_evidence_status": "payload_pushed_preseal"
 }
