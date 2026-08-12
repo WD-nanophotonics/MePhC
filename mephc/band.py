@@ -361,6 +361,8 @@ class Band:
             "lattice_type": self.lattice_type,
             "polarization": self.polarization,
             "structure_type": self.structure_type,
+            "lattice": self.lattice_model.metadata(),
+            "path_coordinate": "cartesian_reciprocal",
         }
 
     def compute_efs(self, pattern, k_points, num_bands=3):
@@ -385,6 +387,7 @@ class Band:
                 "lattice_type": self.lattice_type,
                 "polarization": self.polarization,
                 "structure_type": self.structure_type,
+                "lattice": self.lattice_model.metadata(),
             },
         )
 

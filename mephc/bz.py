@@ -232,3 +232,47 @@ def first_brillouin_zone(
     if abs(abs(_signed_area(vertices)) - target_area) > 100 * tolerance * max(1.0, target_area):
         raise RuntimeError("first Brillouin-zone area does not match reciprocal primitive-cell area")
     return BrillouinZone2D(vertices, reciprocal, shell, tolerance)
+
+
+def tracked_landmark(
+    lattice: BravaisLattice2D,
+    *,
+    reference_cartesian=(2.0 / 3.0, 0.0),
+    label: str = "tracked_K1",
+    tolerance: float = 1e-10,
+) -> dict[str, object]:
+    """Select a deterministic current-BZ vertex tracked from a reference point.
+
+    The predictor is ``F^{-T} @ reference_cartesian``. The current
+    Wigner-Seitz vertices are searched by Euclidean distance, with ties broken
+    by their canonical vertex index.
+    """
+
+    if not isinstance(lattice, BravaisLattice2D):
+        raise TypeError("lattice must be a BravaisLattice2D")
+    reference = np.asarray(reference_cartesian, dtype=float)
+    if reference.shape != (2,) or not np.all(np.isfinite(reference)):
+        raise ValueError("reference_cartesian must be a finite 2D point")
+    bz = first_brillouin_zone(lattice, tolerance=tolerance)
+    predictor = np.linalg.inv(lattice.deformation_matrix).T @ reference
+    vertices = bz.vertices
+    distances = np.linalg.norm(vertices - predictor, axis=1)
+    selected_index = min(
+        range(len(vertices)),
+        key=lambda index: (float(distances[index]), int(index)),
+    )
+    selected = vertices[selected_index]
+    return {
+        "landmark_kind": "legacy_K" if lattice.is_identity else str(label),
+        "display_label": "K" if lattice.is_identity else str(label),
+        "reference_cartesian": reference.copy(),
+        "predictor_cartesian": predictor,
+        "cartesian": reference.copy() if lattice.is_identity else selected.copy(),
+        "selected_vertex": selected.copy(),
+        "selected_vertex_index": int(selected_index),
+        "vertex_distances": distances,
+        "selection_strategy": "nearest_current_bz_vertex_to_F_inverse_transpose_reference_plus_x_K",
+        "tie_break": "lowest canonical vertex index after distance",
+        "tie_tolerance": float(tolerance),
+        "bz": bz,
+    }

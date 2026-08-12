@@ -307,10 +307,18 @@ class Lattice:
 
     def __init__(self, period: float, outline: list[tuple[float, float]], orientation: float, lattice_type: str, lattice_model=None) -> None:
         self.period = period
-        self.outline = [(self.period * x, self.period * y) for x, y in outline]
         self.orientation = orientation
         self.lattice_type = lattice_type
         self.lattice_model = lattice_model or BravaisLattice2D.named(lattice_type)
+        reference_outline = np.asarray(
+            [(self.period * x, self.period * y) for x, y in outline],
+            dtype=float,
+        )
+        self.reference_outline = reference_outline
+        self.outline = [
+            tuple(point)
+            for point in self.lattice_model.transform_cartesian(reference_outline)
+        ]
         self.points = self.get_points()
 
     def FreePattern(self, *args: list[tuple[float, float]]):
@@ -364,12 +372,17 @@ class Lattice:
 
         if self.lattice_type in ["honeycomb", "hon", "hc", "h"]:
             pos1 = maketriangularlattice(period=self.period, size=large_enough_n, draw=False, show_coords=False, lattice_model=self.lattice_model)
+            reference_shift = np.array(
+                (self.period / 2, self.period / 2 / np.sqrt(3)),
+                dtype=float,
+            )
+            current_shift = self.lattice_model.transform_cartesian(reference_shift)
             pos2 = maketriangularlattice(
                 period=self.period,
                 size=large_enough_n,
                 draw=False,
                 show_coords=False,
-                shift=(self.period / 2, self.period / 2 / np.sqrt(3)),
+                shift=current_shift,
                 lattice_model=self.lattice_model,
             )
 

@@ -135,6 +135,16 @@ class BravaisLattice2D:
         result.setflags(write=False)
         return result
 
+    def transform_cartesian(self, coordinates) -> np.ndarray:
+        """Map reference Cartesian vectors into the current affine frame.
+
+        Coordinates are public NumPy row vectors; this implements ``F @ c``
+        for each physical column-vector coordinate.
+        """
+
+        values = _coordinates(coordinates)
+        return values @ self.deformation_matrix.T
+
     def supports_legacy(self, capability: str) -> bool:
         """Return whether an identity-only named-lattice capability is valid."""
 
