@@ -1,0 +1,10 @@
+call_site_id,concept,repository,symbol_before,symbol_after,identity_policy,nonidentity_policy,canonical_provider,status,test_node_ids,remaining_reason
+R4-C01,basis,SqrLatt,config implicit Band default,SquareHoleStructure.lattice,legacy basis,current affine basis,canonical.py,completed,R4-T02;R4-T05;R4-T06,
+R4-C02,motif,SqrLatt,config.build_pattern,SquareHoleStructure.build_pattern,legacy rigid square,rigid local Cartesian square,canonical.py,completed,R4-T07;R4-T08,
+R4-C03,preview,SqrLatt,preview_unit_cell,config outline and pattern,same transformed outline and motif,canonical.py,completed,R4-T08,
+R4-C04,band path,SqrLatt,square_gxm_path facade,SquareHoleStructure.band_path,G-X-M,current BZ BZ labels,canonical.py,completed,R4-T09;R4-T18,
+R4-C05,berry symmetry,SqrLatt,_symmetry_token,SquareHoleStructure.resolve_symmetry,auto to c4q,auto to raw_bz,canonical.py,completed,R4-T03;R4-T04;R4-T10;R4-T19,
+R4-C06,berry grid,SqrLatt,config.square_grid,SquareKSpace and canonical sampling,legacy full grid,current BZ,canonical.py and mephc/kspace.py,completed,R4-T11;R4-T12,
+R4-C07,efs grid,SqrLatt,compute_square_efs,canonical EFS runner,legacy full grid,current BZ,canonical.py and mephc/band.py,completed,R4-T13;R4-T20,
+R4-C08,record resolver,SqrLatt,three local resolvers,mephc.workflows.resolve_record,legacy identity keys,geometry/task separated,MePhC workflows,completed,R4-T14;R4-T17,
+R4-C09,metadata,SqrLatt,runner metadata,canonical_structure metadata,legacy identity,explicit deformation/domain,canonical.py,completed,R4-T15;R4-T16,

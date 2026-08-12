@@ -1,0 +1,20 @@
+{
+  "algorithm": "sha256",
+  "status": "PASS",
+  "protected": {
+    "r3_1_bundle_tree": "a97de3d945f1406885d7bcd7c9415aa73448893010dc9b2ec7a31ec75aea67fd",
+    "r3_1_completion": "58d12d7b4dd33ad77b125f9ee709853b0364b7ecdc7522eb93add79a73c99f3d",
+    "r3_1_validator": "6002670e002f88beeb51db85a14bcdf467d91b453cd8a6e7627a81e7138b5303",
+    "trilatt_hold_ref": "16cbb988a12f46d5360c64b2c65fdf9fc51e053c",
+    "sqrlatt_scientific_archive_policy": "preserve tracked archive_manifest.json and ignored data/image files"
+  },
+  "r1_r3_1_protected": "unchanged",
+  "scientific_data": "unchanged",
+  "triLatt": "read-only",
+  "r4_payload_refs": {
+    "MePhC": "PENDING_PAYLOAD_REF",
+    "MePhC-SqrLatt": "PENDING_PAYLOAD_REF",
+    "TriLatt": "16cbb988a12f46d5360c64b2c65fdf9fc51e053c"
+  },
+  "r4_evidence_status": "preseal_validated"
+}

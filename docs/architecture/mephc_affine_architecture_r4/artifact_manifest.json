@@ -1,0 +1,127 @@
+{
+  "schema": "mephc.r4.artifact_manifest.v1",
+  "algorithm": "sha256",
+  "excludes": [
+    "artifact_manifest.json",
+    "completion.json",
+    "__pycache__"
+  ],
+  "artifacts": {
+    "README.md": {
+      "sha256": "46feaa9fc5e97fe082c8c6d74c8e75f60604805a9b0740c97088f21253b3eb2a",
+      "size": 1703
+    },
+    "c4_verification_contract.md": {
+      "sha256": "b3abd200b4c370755ec3f9ba303d9c3a561b3c659baa95700f809256bdeaed8b",
+      "size": 1344
+    },
+    "canonical_structure_contract.md": {
+      "sha256": "375383ae9366a44f7004e7298b4357c10fbfbb8bfbd510c952813d34513c8cf2",
+      "size": 1062
+    },
+    "change_scope.json": {
+      "sha256": "7ddc28c314cb3daa8a5f70b6be82cd105ab5d8d00ae4fc39a83af8c08d428f02",
+      "size": 1086
+    },
+    "final_validation_commands.json": {
+      "sha256": "7388af1e17efabe8bc77ba222300ddbcee087a25c0e96d847860a384fdeb9d25",
+      "size": 1968
+    },
+    "identity_compatibility.json": {
+      "sha256": "c6ea668355570ab06bfa264545f72ca1ce558a529cc75d475475dd2b2b77887a",
+      "size": 552
+    },
+    "integrity_digests.json": {
+      "sha256": "60c3f4a058401ca3fb0247e4b70ae25d70b6f838b5f7d45cfde649f634f1a778",
+      "size": 829
+    },
+    "known_limits_and_r5.md": {
+      "sha256": "03ec69f32e990cfceb6d737c0cae6240bdf68ade0d9713292553db9bee7d7bcc",
+      "size": 708
+    },
+    "logs/compileall.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "logs/git_diff_check_mephc.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "logs/git_diff_check_sqrlatt.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "logs/mephc_tests.log": {
+      "sha256": "2322e546903160981446be8456655a1b1ce47bd684b1fbbf38308a4b2baf5494",
+      "size": 10993
+    },
+    "logs/production_smokes.log": {
+      "sha256": "1e91981bb223680a55d850bb0e7c86ce4a1cfa277b40a00d30ac27b00d46b1a3",
+      "size": 833
+    },
+    "logs/r31_validator.log": {
+      "sha256": "a91addd6d77e89e1867ffe59a26521dfb6d1a11cd9663b0deea7a24bf2c077fb",
+      "size": 21
+    },
+    "logs/r4_negative_fixtures.log": {
+      "sha256": "38231f9f987f40321835f68169b11fe9a8f5432a28c09c85bd487d3f9e27d7f4",
+      "size": 888
+    },
+    "logs/sqrlatt_tests.log": {
+      "sha256": "5f36e81afb0d75dd4c7e8bcbd908168bc037f4679ff57a18a180f7f982a17342",
+      "size": 21394
+    },
+    "logs/trilatt_tests.log": {
+      "sha256": "db165a9e8d7cc43d6d01d0998346c933695d762301ec685e70b2ffaf1455e4a1",
+      "size": 23284
+    },
+    "negative_fixture_results.json": {
+      "sha256": "276d77833f9e0f7f079c988a9f71290115496e5678bbd84c22084182979885f4",
+      "size": 3096
+    },
+    "nonidentity_validation.json": {
+      "sha256": "03d7f8ca8ed3a30cf4a7a441c79cf4c0c5906ef438dca0e4b85b84dd4c5ba88b",
+      "size": 811
+    },
+    "preflight.json": {
+      "sha256": "c1966369fac2d2a6dd2a801b245dbeab2ee38c0a8757b38b4eb45e3c825595e7",
+      "size": 2595
+    },
+    "production_smokes.json": {
+      "sha256": "1a37b3fc6e5091fb8a6590dbb649a89db78a371c7da736818b0af5be69789bc6",
+      "size": 6917
+    },
+    "run_final_validation.py": {
+      "sha256": "42524887a479c417729054e6cb1fc785fe9b3abfb2f6d1b28fd3dec3cd315c4e",
+      "size": 2141
+    },
+    "run_r4_smokes.py": {
+      "sha256": "476df73f34e056e56685f85a8954db582bd129fe06a5632c62e243904e741ab2",
+      "size": 6198
+    },
+    "sqrlatt_call_site_matrix.csv": {
+      "sha256": "7fa5111a64a495c4a4fbc3eff7fea6a616d0b1f14049ec0139ef67a994be1dbf",
+      "size": 1546
+    },
+    "test_coverage_matrix.csv": {
+      "sha256": "f5029eb26f0586567700e479f62a8bc4dcc7b1f59132e9b0b012bef80ddc894d",
+      "size": 4287
+    },
+    "validate_r4.py": {
+      "sha256": "ef5902a48d415958bde65280b7ada4bc3cc071b292efbb88dd4b371d75888a36",
+      "size": 10281
+    },
+    "validation_report.md": {
+      "sha256": "6545367c25f224ddbb9863417456f8d9e74a5dd996ee49f16b5e476512f37e71",
+      "size": 672
+    },
+    "validator_negative_fixtures.py": {
+      "sha256": "ba19ee381774088275f82b100387556f212820dd075368b0c8528233904a2873",
+      "size": 1030
+    },
+    "workflow_matrix.md": {
+      "sha256": "3587c9111ac6664f292114f54951fed46a1c9c00ba47b606d1cad7d00f30c692",
+      "size": 952
+    }
+  }
+}

@@ -1,0 +1,313 @@
+Using MPI version 4.1, 1 processes
+Initializing eigensolver data
+Computing 1 bands with 1e-07 tolerance
+Working in 2 dimensions.
+Grid size is 2 x 2 x 1.
+Solving for 1 bands at a time.
+Creating Maxwell data...
+Mesh size is 3.
+Lattice vectors:
+     (1, 0, 0)
+     (0, 1, 0)
+     (0, 0, 1)
+Cell volume = 1
+Reciprocal lattice vectors (/ 2 pi):
+     (1, -0, 0)
+     (-0, 1, -0)
+     (0, -0, 1)
+Geometric objects:
+     block, center = (0,0,0)
+          size (1e+20,1e+20,1)
+          axes (1,0,0), (0,1,0), (0,0,1)
+     cylinder, center = (0,0,0)
+          radius 0.2, height 1, axis (0, 0, 1)
+Geometric object tree has depth 3 and 45 object nodes (vs. 2 actual objects)
+Initializing epsilon function...
+Allocating fields...
+Solving for band polarization: te.
+Initializing fields to random numbers...
+1 k-points
+  Vector3<0.0, 0.0, 0.0>
+elapsed time for initialization: 0.0001609325408935547
+solve_kpoint (0,0,0):
+tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
+tefreqs:, 1, 0, 0, 0, 0, 0
+elapsed time for k point: 1.71661376953125e-05
+total elapsed time for run: 0.00019788742065429688
+done
+Initializing eigensolver data
+Computing 1 bands with 1e-07 tolerance
+Working in 2 dimensions.
+Grid size is 2 x 2 x 1.
+Solving for 1 bands at a time.
+Creating Maxwell data...
+Mesh size is 3.
+Lattice vectors:
+     (1, 0, 0)
+     (0, 1, 0)
+     (0, 0, 1)
+Cell volume = 1
+Reciprocal lattice vectors (/ 2 pi):
+     (1, -0, 0)
+     (-0, 1, -0)
+     (0, -0, 1)
+Geometric objects:
+     block, center = (0,0,0)
+          size (1e+20,1e+20,1)
+          axes (1,0,0), (0,1,0), (0,0,1)
+     cylinder, center = (0,0,0)
+          radius 0.2, height 1, axis (0, 0, 1)
+Geometric object tree has depth 3 and 45 object nodes (vs. 2 actual objects)
+Initializing epsilon function...
+Allocating fields...
+Solving for band polarization: te.
+Initializing fields to random numbers...
+1 k-points
+  Vector3<0.0, 0.0, 0.0>
+elapsed time for initialization: 7.62939453125e-05
+solve_kpoint (0,0,0):
+tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
+tefreqs:, 1, 0, 0, 0, 0, 0
+elapsed time for k point: 1.2636184692382812e-05
+total elapsed time for run: 0.00010204315185546875
+done
+Initializing eigensolver data
+Computing 1 bands with 1e-07 tolerance
+Working in 2 dimensions.
+Grid size is 2 x 2 x 1.
+Solving for 1 bands at a time.
+Creating Maxwell data...
+Mesh size is 3.
+Lattice vectors:
+     (0.51796, 0.855405, 0)
+     (0.5, -0.866025, 0)
+     (0, 0, 1)
+Cell volume = 0.876269
+Reciprocal lattice vectors (/ 2 pi):
+     (0.98831, 0.570601, -0)
+     (0.97619, -0.591097, 0)
+     (-0, 0, 1)
+Geometric objects:
+     block, center = (0,0,0)
+          size (1e+20,1e+20,1)
+          axes (1,0,0), (0,1,0), (0,0,1)
+     prism, center = (4.62593e-18,0,0.5)
+          height 1, axis (0,0,1), sidewall angle: 0 radians, 3 vertices:
+          (0.11412,-0.118219,0)
+          (-0.225073,-0.106843,0)
+          (0.110953,0.225062,0)
+Geometric object tree has depth 3 and 45 object nodes (vs. 2 actual objects)
+Initializing epsilon function...
+Allocating fields...
+Solving for band polarization: te.
+Initializing fields to random numbers...
+1 k-points
+  Vector3<0.0, 0.0, 0.0>
+elapsed time for initialization: 0.000522613525390625
+solve_kpoint (0,0,0):
+tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
+tefreqs:, 1, 0, 0, 0, 0, 0
+elapsed time for k point: 7.987022399902344e-05
+Fixing e-field (band 1) phase by 1 + -0i; max ampl. = 0
+total elapsed time for run: 0.0010726451873779297
+done
+Initializing eigensolver data
+Computing 1 bands with 1e-07 tolerance
+Working in 2 dimensions.
+Grid size is 2 x 2 x 1.
+Solving for 1 bands at a time.
+Creating Maxwell data...
+Mesh size is 3.
+Lattice vectors:
+     (0.51796, 0.855405, 0)
+     (0.5, -0.866025, 0)
+     (0, 0, 1)
+Cell volume = 0.876269
+Reciprocal lattice vectors (/ 2 pi):
+     (0.98831, 0.570601, -0)
+     (0.97619, -0.591097, 0)
+     (-0, 0, 1)
+Geometric objects:
+     block, center = (0,0,0)
+          size (1e+20,1e+20,1)
+          axes (1,0,0), (0,1,0), (0,0,1)
+     prism, center = (4.62593e-18,0,0.5)
+          height 1, axis (0,0,1), sidewall angle: 0 radians, 3 vertices:
+          (0.11412,-0.118219,0)
+          (-0.225073,-0.106843,0)
+          (0.110953,0.225062,0)
+Geometric object tree has depth 3 and 45 object nodes (vs. 2 actual objects)
+Initializing epsilon function...
+Allocating fields...
+Solving for band polarization: te.
+Initializing fields to random numbers...
+1 k-points
+  Vector3<0.13733646502262187, -0.036602540378443876, 0.0>
+elapsed time for initialization: 0.0003905296325683594
+solve_kpoint (0.137336,-0.0366025,0):
+tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
+Solving for bands 1 to 1...
+    near maximum in trace
+    iteration    1: trace = 0.005942794131232131 (196.497% change)
+    iteration    2: trace = 0.005244726312800981 (12.4794% change)
+    iteration    3: trace = 0.005244168694582355 (0.0106325% change)
+    iteration    4: trace = 0.005244168683198911 (2.17069e-07% change)
+Finished solving for bands 1 to 1 after 4 iterations.
+tefreqs:, 1, 0.137336, -0.0366025, 0, 0.141421, 0.0724166
+elapsed time for k point: 0.0003101825714111328
+Fixing e-field (band 1) phase by -0.513505 + 0.858087i; max ampl. = 0.434123
+total elapsed time for run: 0.0007619857788085938
+done
+epsilon: 3.30158-4, mean 3.8254, harm. mean 3.79908, 100% > 1, 75% "fill"
+Initializing eigensolver data
+Computing 1 bands with 1e-07 tolerance
+Working in 2 dimensions.
+Grid size is 2 x 2 x 1.
+Solving for 1 bands at a time.
+Creating Maxwell data...
+Mesh size is 3.
+Lattice vectors:
+     (0.51796, 0.855405, 0)
+     (0.5, -0.866025, 0)
+     (0, 0, 1)
+Cell volume = 0.876269
+Reciprocal lattice vectors (/ 2 pi):
+     (0.98831, 0.570601, -0)
+     (0.97619, -0.591097, 0)
+     (-0, 0, 1)
+Geometric objects:
+     block, center = (0,0,0)
+          size (1e+20,1e+20,1)
+          axes (1,0,0), (0,1,0), (0,0,1)
+     prism, center = (4.62593e-18,0,0.5)
+          height 1, axis (0,0,1), sidewall angle: 0 radians, 3 vertices:
+          (0.11412,-0.118219,0)
+          (-0.225073,-0.106843,0)
+          (0.110953,0.225062,0)
+Geometric object tree has depth 3 and 45 object nodes (vs. 2 actual objects)
+Initializing epsilon function...
+Allocating fields...
+Solving for band polarization: te.
+Initializing fields to random numbers...
+1 k-points
+  Vector3<0.1476956554574709, -0.026602540378443874, 0.0>
+elapsed time for initialization: 0.00037741661071777344
+solve_kpoint (0.147696,-0.0266025,0):
+tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
+Solving for bands 1 to 1...
+    near maximum in trace
+    iteration    1: trace = 0.007379456604428963 (195.754% change)
+    iteration    2: trace = 0.006395861560332779 (14.2805% change)
+    iteration    3: trace = 0.006395035744211571 (0.0129126% change)
+    iteration    4: trace = 0.006395035724361971 (3.10391e-07% change)
+Finished solving for bands 1 to 1 after 4 iterations.
+tefreqs:, 1, 0.147696, -0.0266025, 0, 0.156205, 0.079969
+elapsed time for k point: 0.0002391338348388672
+Fixing e-field (band 1) phase by -0.511281 + 0.859414i; max ampl. = 0.432328
+total elapsed time for run: 0.0006532669067382812
+done
+epsilon: 3.30158-4, mean 3.8254, harm. mean 3.79908, 100% > 1, 75% "fill"
+Initializing eigensolver data
+Computing 1 bands with 1e-07 tolerance
+Working in 2 dimensions.
+Grid size is 2 x 2 x 1.
+Solving for 1 bands at a time.
+Creating Maxwell data...
+Mesh size is 3.
+Lattice vectors:
+     (0.51796, 0.855405, 0)
+     (0.5, -0.866025, 0)
+     (0, 0, 1)
+Cell volume = 0.876269
+Reciprocal lattice vectors (/ 2 pi):
+     (0.98831, 0.570601, -0)
+     (0.97619, -0.591097, 0)
+     (-0, 0, 1)
+Geometric objects:
+     block, center = (0,0,0)
+          size (1e+20,1e+20,1)
+          axes (1,0,0), (0,1,0), (0,0,1)
+     prism, center = (4.62593e-18,0,0.5)
+          height 1, axis (0,0,1), sidewall angle: 0 radians, 3 vertices:
+          (0.11412,-0.118219,0)
+          (-0.225073,-0.106843,0)
+          (0.110953,0.225062,0)
+Geometric object tree has depth 3 and 45 object nodes (vs. 2 actual objects)
+Initializing epsilon function...
+Allocating fields...
+Solving for band polarization: te.
+Initializing fields to random numbers...
+1 k-points
+  Vector3<0.16480375802714625, -0.04392304845413265, 0.0>
+elapsed time for initialization: 0.00037217140197753906
+solve_kpoint (0.164804,-0.043923,0):
+tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
+Solving for bands 1 to 1...
+    near maximum in trace
+    iteration    1: trace = 0.008898188180885105 (194.899% change)
+    iteration    2: trace = 0.007552161695122487 (16.3647% change)
+    iteration    3: trace = 0.007551059612555346 (0.014594% change)
+    iteration    4: trace = 0.007551059572633158 (5.28697e-07% change)
+Finished solving for bands 1 to 1 after 4 iterations.
+tefreqs:, 1, 0.164804, -0.043923, 0, 0.169706, 0.0868968
+elapsed time for k point: 0.0002338886260986328
+Fixing e-field (band 1) phase by -0.510868 + 0.859659i; max ampl. = 0.433804
+total elapsed time for run: 0.0006403923034667969
+done
+epsilon: 3.30158-4, mean 3.8254, harm. mean 3.79908, 100% > 1, 75% "fill"
+Initializing eigensolver data
+Computing 1 bands with 1e-07 tolerance
+Working in 2 dimensions.
+Grid size is 2 x 2 x 1.
+Solving for 1 bands at a time.
+Creating Maxwell data...
+Mesh size is 3.
+Lattice vectors:
+     (0.51796, 0.855405, 0)
+     (0.5, -0.866025, 0)
+     (0, 0, 1)
+Cell volume = 0.876269
+Reciprocal lattice vectors (/ 2 pi):
+     (0.98831, 0.570601, -0)
+     (0.97619, -0.591097, 0)
+     (-0, 0, 1)
+Geometric objects:
+     block, center = (0,0,0)
+          size (1e+20,1e+20,1)
+          axes (1,0,0), (0,1,0), (0,0,1)
+     prism, center = (4.62593e-18,0,0.5)
+          height 1, axis (0,0,1), sidewall angle: 0 radians, 3 vertices:
+          (0.11412,-0.118219,0)
+          (-0.225073,-0.106843,0)
+          (0.110953,0.225062,0)
+Geometric object tree has depth 3 and 45 object nodes (vs. 2 actual objects)
+Initializing epsilon function...
+Allocating fields...
+Solving for band polarization: te.
+Initializing fields to random numbers...
+1 k-points
+  Vector3<0.15444456759229724, -0.05392304845413265, 0.0>
+elapsed time for initialization: 0.00037217140197753906
+solve_kpoint (0.154445,-0.053923,0):
+tefreqs:, k index, k1, k2, k3, kmag/2pi, te band 1
+Solving for bands 1 to 1...
+    near maximum in trace
+    iteration    1: trace = 0.007417983100073654 (195.643% change)
+    iteration    2: trace = 0.006401090138100792 (14.7172% change)
+    iteration    3: trace = 0.006400298407189312 (0.0123695% change)
+    iteration    4: trace = 0.006400298382399608 (3.87321e-07% change)
+Finished solving for bands 1 to 1 after 4 iterations.
+tefreqs:, 1, 0.154445, -0.053923, 0, 0.156205, 0.0800019
+elapsed time for k point: 0.00024080276489257812
+Fixing e-field (band 1) phase by -0.51308 + 0.858341i; max ampl. = 0.471419
+total elapsed time for run: 0.0006461143493652344
+done
+epsilon: 3.30158-4, mean 3.8254, harm. mean 3.79908, 100% > 1, 75% "fill"
+
+Elapsed run time = 0.2601 s
+
+[stderr]
+----------------------------------------------------------------------
+Ran 33 tests in 0.139s
+
+OK

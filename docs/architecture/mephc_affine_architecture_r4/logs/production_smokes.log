@@ -1,0 +1,5 @@
+R4-SMOKE-BAND-IDENTITY PASS {"bcs_shape": null, "domain": null, "freqs_shape": [4, 1], "k_points_shape": [4, 2], "path_policy": "gxm", "symmetry": null}
+R4-SMOKE-BAND-AFFINE PASS {"bcs_shape": null, "domain": null, "freqs_shape": [8, 1], "k_points_shape": [8, 2], "path_policy": "generic_current_bz_vertices", "symmetry": null}
+R4-SMOKE-BERRY-IDENTITY-C4Q PASS {"bcs_shape": [1, 1], "domain": "c4_quadrant", "k_points_shape": [1, 2], "path_policy": null, "raw_bcs_shape": [1, 1], "raw_k_points_shape": [1, 2], "symmetry": "c4q"}
+R4-SMOKE-BERRY-AFFINE-RAW PASS {"bcs_shape": [1, 1], "domain": "current_bz", "k_points_shape": [1, 2], "path_policy": null, "raw_bcs_shape": [1, 1], "raw_k_points_shape": [1, 2], "symmetry": "raw_bz"}
+R4-SMOKE-EFS-AFFINE PASS {"actual_freqs_shape": [1, 1], "domain": "current_bz", "freqs_shape": [1, 1]}

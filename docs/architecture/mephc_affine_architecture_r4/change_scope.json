@@ -1,0 +1,45 @@
+{
+  "status": "PASS",
+  "repositories": {
+    "MePhC": {
+      "allowed_prefixes": [
+        "mephc/band.py",
+        "mephc/kspace.py",
+        "tests/test_affine_characterization.py",
+        "docs/architecture/mephc_affine_architecture_r4/"
+      ],
+      "actual_payload_paths": []
+    },
+    "MePhC-SqrLatt": {
+      "allowed_prefixes": [
+        "band_structure.py",
+        "berry_curvature.py",
+        "efs.py",
+        "square_hole/",
+        "tests/"
+      ],
+      "actual_payload_paths": []
+    },
+    "MePhC-TriLatt": {
+      "allowed_prefixes": [],
+      "actual_payload_paths": []
+    }
+  },
+  "scientific_data_policy": "existing data, images, archive manifests, and R1-R3.1 artifacts are unchanged",
+  "actual_payload_paths": {
+    "MePhC": [
+      "mephc/band.py",
+      "mephc/kspace.py",
+      "tests/test_affine_characterization.py",
+      "docs/architecture/mephc_affine_architecture_r4/"
+    ],
+    "MePhC-SqrLatt": [
+      "band_structure.py",
+      "berry_curvature.py",
+      "efs.py",
+      "square_hole/",
+      "tests/"
+    ],
+    "MePhC-TriLatt": []
+  }
+}

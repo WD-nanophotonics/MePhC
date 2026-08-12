@@ -1,0 +1,246 @@
+{
+  "schema": "mephc.r4.production_smokes.v1",
+  "status": "PASS",
+  "required_smoke_ids": [
+    "R4-SMOKE-BAND-IDENTITY",
+    "R4-SMOKE-BAND-AFFINE",
+    "R4-SMOKE-BERRY-IDENTITY-C4Q",
+    "R4-SMOKE-BERRY-AFFINE-RAW",
+    "R4-SMOKE-EFS-AFFINE"
+  ],
+  "smokes": [
+    {
+      "id": "R4-SMOKE-BAND-IDENTITY",
+      "status": "PASS",
+      "parameters": {
+        "resolution": 2,
+        "num_bands": 1,
+        "n_per_segment": 1,
+        "identity": true
+      },
+      "command": "PYTHONPATH=/home/icy/MePhC:/home/icy/SqrLatt /home/icy/miniconda3/envs/mp/bin/python docs/architecture/mephc_affine_architecture_r4/run_r4_smokes.py",
+      "driver_path": "docs/architecture/mephc_affine_architecture_r4/run_r4_smokes.py",
+      "solver": "meep.mpb.ModeSolver",
+      "production_entry_traversed": true,
+      "required_assertions": [
+        "freqs_shape",
+        "identity_structure",
+        "path_policy"
+      ],
+      "assertion_results": {
+        "freqs_shape": true,
+        "path_policy": true,
+        "identity_structure": true
+      },
+      "numerical_or_shape_summary": {
+        "k_points_shape": [
+          4,
+          2
+        ],
+        "freqs_shape": [
+          4,
+          1
+        ],
+        "bcs_shape": null,
+        "symmetry": null,
+        "domain": null,
+        "path_policy": "gxm"
+      },
+      "domain_policy": "legacy_square_gxm",
+      "symmetry_policy": "identity_legacy_path",
+      "log_path": "logs/production_smokes.log",
+      "exit_code": 0,
+      "duration_seconds": 0.01641
+    },
+    {
+      "id": "R4-SMOKE-BAND-AFFINE",
+      "status": "PASS",
+      "parameters": {
+        "resolution": 2,
+        "num_bands": 1,
+        "n_per_segment": 1,
+        "identity": false,
+        "stretch_factor": 1.1,
+        "angle": 17.0
+      },
+      "command": "PYTHONPATH=/home/icy/MePhC:/home/icy/SqrLatt /home/icy/miniconda3/envs/mp/bin/python docs/architecture/mephc_affine_architecture_r4/run_r4_smokes.py",
+      "driver_path": "docs/architecture/mephc_affine_architecture_r4/run_r4_smokes.py",
+      "solver": "meep.mpb.ModeSolver",
+      "production_entry_traversed": true,
+      "required_assertions": [
+        "affine_structure",
+        "freqs_shape",
+        "path_policy"
+      ],
+      "assertion_results": {
+        "freqs_shape": true,
+        "path_policy": true,
+        "affine_structure": true
+      },
+      "numerical_or_shape_summary": {
+        "k_points_shape": [
+          8,
+          2
+        ],
+        "freqs_shape": [
+          8,
+          1
+        ],
+        "bcs_shape": null,
+        "symmetry": null,
+        "domain": null,
+        "path_policy": "generic_current_bz_vertices"
+      },
+      "domain_policy": "current_bz",
+      "symmetry_policy": "auto_none",
+      "log_path": "logs/production_smokes.log",
+      "exit_code": 0,
+      "duration_seconds": 0.017422
+    },
+    {
+      "id": "R4-SMOKE-BERRY-IDENTITY-C4Q",
+      "status": "PASS",
+      "parameters": {
+        "resolution": 2,
+        "num_bands": 1,
+        "grid_n": 1,
+        "grid_extent": 1.0,
+        "step": 0.02,
+        "symmetry": "auto"
+      },
+      "command": "PYTHONPATH=/home/icy/MePhC:/home/icy/SqrLatt /home/icy/miniconda3/envs/mp/bin/python docs/architecture/mephc_affine_architecture_r4/run_r4_smokes.py",
+      "driver_path": "docs/architecture/mephc_affine_architecture_r4/run_r4_smokes.py",
+      "solver": "meep.mpb.ModeSolver",
+      "production_entry_traversed": true,
+      "required_assertions": [
+        "bcs_shape",
+        "domain_c4q",
+        "raw_bcs_shape",
+        "symmetry_c4q"
+      ],
+      "assertion_results": {
+        "bcs_shape": true,
+        "raw_bcs_shape": true,
+        "symmetry_c4q": true,
+        "domain_c4q": true
+      },
+      "numerical_or_shape_summary": {
+        "k_points_shape": [
+          1,
+          2
+        ],
+        "bcs_shape": [
+          1,
+          1
+        ],
+        "raw_k_points_shape": [
+          1,
+          2
+        ],
+        "raw_bcs_shape": [
+          1,
+          1
+        ],
+        "symmetry": "c4q",
+        "domain": "c4_quadrant",
+        "path_policy": null
+      },
+      "domain_policy": "c4_quadrant_expanded",
+      "symmetry_policy": "verified_c4q",
+      "log_path": "logs/production_smokes.log",
+      "exit_code": 0,
+      "duration_seconds": 0.010478
+    },
+    {
+      "id": "R4-SMOKE-BERRY-AFFINE-RAW",
+      "status": "PASS",
+      "parameters": {
+        "resolution": 2,
+        "num_bands": 1,
+        "grid_n": 1,
+        "grid_extent": 0.5,
+        "step": 0.02,
+        "symmetry": "auto"
+      },
+      "command": "PYTHONPATH=/home/icy/MePhC:/home/icy/SqrLatt /home/icy/miniconda3/envs/mp/bin/python docs/architecture/mephc_affine_architecture_r4/run_r4_smokes.py",
+      "driver_path": "docs/architecture/mephc_affine_architecture_r4/run_r4_smokes.py",
+      "solver": "meep.mpb.ModeSolver",
+      "production_entry_traversed": true,
+      "required_assertions": [
+        "bcs_shape",
+        "domain_current_bz",
+        "symmetry_raw_bz"
+      ],
+      "assertion_results": {
+        "bcs_shape": true,
+        "symmetry_raw_bz": true,
+        "domain_current_bz": true
+      },
+      "numerical_or_shape_summary": {
+        "k_points_shape": [
+          1,
+          2
+        ],
+        "bcs_shape": [
+          1,
+          1
+        ],
+        "raw_k_points_shape": [
+          1,
+          2
+        ],
+        "raw_bcs_shape": [
+          1,
+          1
+        ],
+        "symmetry": "raw_bz",
+        "domain": "current_bz",
+        "path_policy": null
+      },
+      "domain_policy": "current_bz",
+      "symmetry_policy": "auto_resolves_raw_bz",
+      "log_path": "logs/production_smokes.log",
+      "exit_code": 0,
+      "duration_seconds": 0.015376
+    },
+    {
+      "id": "R4-SMOKE-EFS-AFFINE",
+      "status": "PASS",
+      "parameters": {
+        "resolution": 2,
+        "num_bands": 1,
+        "grid_n": 1,
+        "band_index": 0
+      },
+      "command": "PYTHONPATH=/home/icy/MePhC:/home/icy/SqrLatt /home/icy/miniconda3/envs/mp/bin/python docs/architecture/mephc_affine_architecture_r4/run_r4_smokes.py",
+      "driver_path": "docs/architecture/mephc_affine_architecture_r4/run_r4_smokes.py",
+      "solver": "meep.mpb.ModeSolver",
+      "production_entry_traversed": true,
+      "required_assertions": [
+        "domain_current_bz",
+        "freqs_shape"
+      ],
+      "assertion_results": {
+        "freqs_shape": true,
+        "domain_current_bz": true
+      },
+      "numerical_or_shape_summary": {
+        "freqs_shape": [
+          1,
+          1
+        ],
+        "actual_freqs_shape": [
+          1,
+          1
+        ],
+        "domain": "current_bz"
+      },
+      "domain_policy": "current_bz",
+      "symmetry_policy": "no_c4_inference",
+      "log_path": "logs/production_smokes.log",
+      "exit_code": 0,
+      "duration_seconds": 0.013356
+    }
+  ],
+  "created_at": "2026-08-12T08:16:23.109807+00:00"
+}

@@ -1,0 +1,27 @@
+test_node_id,requirement,repository,test_file,test_name,command,result,evidence_file
+R4-T01-preflight-gates,refs branches clean env dependencies,MePhC/SqrLatt/TriLatt,preflight command,preflight_gates,preflight command,passed,preflight.json
+R4-T02-identity-square-characterization,identity basis motif path grid,SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T02_identity_square_characterization,unittest,passed,logs/sqrlatt_tests.log
+R4-T03-complete-structure-c4-verifier,complete C4 PASS/FAIL fixtures,SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T03_complete_structure_c4_verifier,unittest,passed,logs/sqrlatt_tests.log
+R4-T04-c4-authority-negative-fixtures,token and reference family are not authority,SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T04_c4_authority_negative_fixtures,unittest,passed,logs/sqrlatt_tests.log
+R4-T05-transform-validation,angles identity collapse invalid values,MePhC/SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T05_transform_validation,unittest,passed,logs/sqrlatt_tests.log
+R4-T06-basis-reciprocal-bz-invariants,current basis reciprocal and BZ area,SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T06_basis_reciprocal_bz_invariants,unittest,passed,logs/sqrlatt_tests.log
+R4-T07-rigid-motif-and-cell-outline,rigid local motif transformed outline,SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T07_rigid_motif_and_cell_outline,unittest,passed,logs/sqrlatt_tests.log
+R4-T08-preview-mpb-parity,preview and MPB share motif,SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T08_preview_mpb_parity,unittest,passed,logs/sqrlatt_tests.log
+R4-T09-band-path-policy,identity GXM current generic path,SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T09_band_path_policy,unittest,passed,logs/sqrlatt_tests.log
+R4-T10-symmetry-mode-policy,auto explicit raw modes,SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T10_symmetry_mode_policy,unittest,passed,logs/sqrlatt_tests.log
+R4-T11-identity-c4-sampling-parity,legacy c4q order and shape,SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T11_identity_c4_sampling_parity,unittest,passed,logs/sqrlatt_tests.log
+R4-T12-nonidentity-berry-domain,current BZ no reduction,SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T12_nonidentity_berry_domain,unittest,passed,logs/sqrlatt_tests.log
+R4-T13-efs-domain-policy,current BZ not fixed square,SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T13_efs_domain_policy,unittest,passed,logs/sqrlatt_tests.log
+R4-T14-identity-record-parity,identity geometry/task key,SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T14_identity_record_parity,unittest,passed,logs/sqrlatt_tests.log
+R4-T15-nonidentity-identity-and-roundtrip,distinct ID and serialization,SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T15_nonidentity_identity_and_roundtrip,unittest,passed,logs/sqrlatt_tests.log
+R4-T16-plot-fields-excluded,plot fields excluded task key,SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T16_plot_fields_excluded,unittest,passed,logs/sqrlatt_tests.log
+R4-T17-record-resolver-facade,shared resolver,SqrLatt,tests/test_r4_sqrlatt.py,test_R4_T17_record_resolver_facade,unittest,passed,logs/sqrlatt_tests.log
+R4-T18-band-smokes,real identity and nonidentity Band,MePhC/SqrLatt,run_r4_smokes.py,band_identity_low_resolution;band_nonidentity_low_resolution,smoke driver,passed,production_smokes.json
+R4-T19-berry-smokes,real identity and nonidentity Berry,MePhC/SqrLatt,run_r4_smokes.py,berry_identity_c4_low_resolution;berry_nonidentity_raw_low_resolution,smoke driver,passed,production_smokes.json
+R4-T20-efs-smoke,real nonidentity EFS,MePhC/SqrLatt,run_r4_smokes.py,efs_nonidentity_low_resolution,smoke driver,passed,production_smokes.json
+R4-T21-mephc-full-suite,full MePhC suite,MePhC,tests,unittest discover,unittest,passed,logs/mephc_tests.log
+R4-T22-sqrlatt-full-suite,full SqrLatt suite,SqrLatt,tests,unittest discover,unittest,passed,logs/sqrlatt_tests.log
+R4-T23-trilatt-full-suite-readonly,full TriLatt suite without edits,TriLatt,tests,unittest discover,unittest,passed,logs/trilatt_tests.log
+R4-T24-r1-r3_1-regression,R3.1 validator,MePhC,validate_r3_1.py,check-bundle,validator,passed,logs/r31_validator.log
+R4-T25-scientific-integrity,scientific/archive unchanged,all,preflight and git diff,integrity,passed,integrity_digests.json
+R4-T26-validator-positive-negative,bundle and targeted fixtures,MePhC,validate_r4.py,positive and negative,validator,passed,logs/r4_validator.log
