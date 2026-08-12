@@ -1,0 +1,9 @@
+{
+  "schema": "mephc.r5.change_scope.v1",
+  "repositories": {
+    "MePhC": ["mephc/deformation.py", "mephc/deformation_geometry.py", "mephc/capabilities.py", "mephc/r5.py", "mephc/band.py", "tests/test_r5_kernel.py", "docs/architecture/mephc_affine_architecture_r5/"],
+    "MePhC-SqrLatt": ["square_hole/r5_deformation.py", "tests/test_r5_sqrlatt.py"],
+    "MePhC-TriLatt": ["r5_deformation.py", "tests/test_r5_trilatt.py"]
+  },
+  "forbidden_changes": ["R1-R4.1 evidence", "scientific data regeneration", "R6"]
+}

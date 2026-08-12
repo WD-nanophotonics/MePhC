@@ -1,0 +1,4 @@
+R5 core tests: 5/5 PASS
+TriLatt R5 tests: 2/2 PASS
+SqrLatt R5 tests: 2/2 PASS
+Bundled runtime NumPy available; meep/mpb unavailable, real MPB supercell smoke blocked without weakening guards.

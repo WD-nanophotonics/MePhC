@@ -21,6 +21,20 @@ __all__ = [
     "BravaisLattice2D",
     "BrillouinZone2D",
     "first_brillouin_zone",
+    "DeformationCapability",
+    "DeformationField",
+    "ZeroDeformationField",
+    "ConstantAffineField",
+    "AnalyticDeformationField",
+    "SampledDeformationField",
+    "PeriodicSupercellField",
+    "SupercellLattice",
+    "canonicalize_field",
+    "field_capabilities",
+    "deform_points",
+    "deform_pattern_rigid",
+    "replicated_lattice_sites",
+    "replicated_rigid_pattern",
 ]
 
 
@@ -105,4 +119,25 @@ def __getattr__(name):
         from .bz import first_brillouin_zone
 
         return first_brillouin_zone
+    if name in {
+        "DeformationCapability", "DeformationField", "ZeroDeformationField",
+        "ConstantAffineField", "AnalyticDeformationField", "SampledDeformationField",
+        "PeriodicSupercellField", "SupercellLattice", "canonicalize_field",
+    }:
+        from . import deformation
+
+        return getattr(deformation, name)
+    if name == "field_capabilities":
+        from .capabilities import field_capabilities
+
+        return field_capabilities
+    if name in {"deform_points", "deform_pattern_rigid", "replicated_lattice_sites", "replicated_rigid_pattern"}:
+        from .deformation_geometry import (
+            deform_points,
+            deform_pattern_rigid,
+            replicated_lattice_sites,
+            replicated_rigid_pattern,
+        )
+
+        return locals()[name]
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

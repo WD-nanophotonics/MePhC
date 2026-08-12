@@ -1,0 +1,5 @@
+{
+  "schema": "mephc.r5.integrity_digests.v1",
+  "protected": "R4.1 bundle validator PASS before R5 writes",
+  "policy": "reference R1-R4.1 evidence read-only; final SHA-256 seal is generated after payload validation"
+}

@@ -23,6 +23,8 @@ from .kspace import (
     generic_bz_path,
 )
 from .plotting import plot_band_path, plot_scalar_field
+from .capabilities import field_capabilities, require_primitive
+from .deformation import canonicalize_field
 
 
 class Band:
@@ -46,6 +48,7 @@ class Band:
         polarization="TE",
         structure_type="slab",
         lattice_model=None,
+        deformation_field=None,
     ):
         self.a = a
         self.r1 = r1
@@ -57,6 +60,7 @@ class Band:
         self.polarization = self._normalize_polarization(polarization)
         self.structure_type = self._normalize_structure_type(structure_type)
         self.lattice_model = lattice_model or BravaisLattice2D.named(self.lattice_type)
+        self.deformation_field = canonicalize_field(deformation_field)
         if self.lattice_model.kind in {"triangular", "square"}:
             self.lattice_type = self.lattice_model.kind
         self.mpb_parity = mp.TE if self.polarization == "TE" else mp.TM
@@ -113,10 +117,19 @@ class Band:
     def first_bz(self):
         """Return the generic Wigner-Seitz first BZ for this lattice model."""
 
+        self.require_primitive_semantics("first Brillouin-zone construction")
         return first_brillouin_zone(self.lattice_model)
+
+    def require_primitive_semantics(self, operation: str):
+        return require_primitive(self.deformation_field, operation)
+
+    def deformation_capabilities(self) -> dict[str, object]:
+        return field_capabilities(self.deformation_field)
+
 
     def default_path(self) -> HighSymmetryPath:
         """Return an identity path or honest generic BZ landmark path."""
+        self.require_primitive_semantics("primitive high-symmetry path")
         if self.lattice_type == "square":
             return square_gxm_path() if self.lattice_model.is_identity else generic_bz_path(self.lattice_model)
         if self.lattice_model.supports_legacy("gkm"):
@@ -157,6 +170,7 @@ class Band:
 
     def run_simulation(self, pattern, ks, num_b, show_dielectric=False, polarization=None):
         """Run the configured TE/TM parity, optionally overriding it per call."""
+        self.require_primitive_semantics("primitive MPB band solve")
         if polarization is None:
             parity = self.mpb_parity
         else:
@@ -239,6 +253,7 @@ class Band:
 
     def berry_calculator(self, num_bands=None, geometry=None):
         """Build a Berry calculator using this lattice, material, and resolution."""
+        self.require_primitive_semantics("primitive Berry solver")
         if num_bands is None:
             num_bands = 3
         feature_geometry = [] if geometry is None else list(geometry)
@@ -270,6 +285,7 @@ class Band:
         or ``(N,)`` for one 0-based band.
         """
         k_points = np.asarray(k_points, dtype=float)
+        self.require_primitive_semantics("primitive Berry sampling")
         if k_points.ndim != 2 or k_points.shape[1] != 2:
             raise ValueError("k_points must have shape (N, 2).")
         if band_index is not None and (band_index < 0 or band_index >= num_bands):
@@ -331,6 +347,7 @@ class Band:
         high-symmetry vertices, only the Berry plaquette anchor is offset;
         frequency remains evaluated at the original path point.
         """
+        self.require_primitive_semantics("primitive band/Berry path")
         if path is None:
             path = self.default_path()
 
@@ -368,6 +385,7 @@ class Band:
     def compute_efs(self, pattern, k_points, num_bands=3):
         """Calculate normalized and THz frequencies at arbitrary k-points."""
         k_points = np.asarray(k_points, dtype=float)
+        self.require_primitive_semantics("primitive EFS sampling")
         if k_points.ndim != 2 or k_points.shape[1] != 2:
             raise ValueError("k_points must have shape (N, 2).")
         feature_geometry = self.convert_ndarray_to_meep_geo(pattern, rectify=True)

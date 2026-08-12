@@ -1,0 +1,6 @@
+{
+  "schema": "mephc.r5.artifact_manifest.v1",
+  "status": "PAYLOAD",
+  "artifacts": "all files in this directory except generated logs are covered by the bundle validator",
+  "seal_policy": "metadata-only artifact_manifest.json and completion.json seal after payload validation"
+}

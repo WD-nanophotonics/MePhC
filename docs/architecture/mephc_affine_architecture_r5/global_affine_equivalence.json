@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "fixtures": [
+    {"factor": 1.0, "angle_degrees": 0.0},
+    {"factor": 1.1, "angle_degrees": 0.0},
+    {"factor": 0.9, "angle_degrees": 30.0},
+    {"factor": 1.08, "angle_degrees": 17.0}
+  ],
+  "assertion": "field.map_points(points) equals AffineTransform2D.apply(points) within 1e-12",
+  "identity_namespace": "legacy_global_affine"
+}

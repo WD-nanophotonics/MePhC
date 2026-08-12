@@ -1,0 +1,6 @@
+{
+  "global_affine_regression": "PASS via existing protected R4.1 smoke evidence",
+  "periodic_supercell_geometry": "PASS via independent kernel and downstream rigid-preview tests",
+  "real_mpb_supercell_band": "BLOCKED: bundled runtime has no meep/mpb; no arbitrary aperiodic solve attempted",
+  "interpretation": "geometry/semantic smoke only; no physical observable claim"
+}
