@@ -1,0 +1,253 @@
+{
+  "all_passed": true,
+  "cases": [
+    {
+      "angle_degrees": 0.0,
+      "current_bz_vertices": [
+        [
+          0.6666666666666667,
+          0.0
+        ],
+        [
+          0.3333333333333335,
+          0.5773502691896257
+        ],
+        [
+          -0.33333333333333326,
+          0.577350269189626
+        ],
+        [
+          -0.6666666666666672,
+          -9.992007221626409e-16
+        ],
+        [
+          -0.3333333333333339,
+          -0.5773502691896262
+        ],
+        [
+          0.33333333333333315,
+          -0.5773502691896262
+        ]
+      ],
+      "display_label": "K",
+      "factor": 1.0,
+      "landmark_kind": "legacy_K",
+      "passed": true,
+      "predictor_cartesian": [
+        0.6666666666666666,
+        0.0
+      ],
+      "reference_cartesian": [
+        0.6666666666666666,
+        0.0
+      ],
+      "repeat_error": 0.0,
+      "round_trip_error": 3.557616665725061e-17,
+      "selected_vertex": [
+        0.6666666666666667,
+        0.0
+      ],
+      "selected_vertex_index": 0,
+      "selection_strategy": "nearest_current_bz_vertex_to_F_inverse_transpose_reference_plus_x_K",
+      "solver_reciprocal_fractional": [
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "tie_break": "lowest canonical vertex index after distance",
+      "vertex_distances": [
+        1.1102230246251565e-16,
+        0.6666666666666665,
+        1.1547005383792515,
+        1.333333333333334,
+        1.1547005383792521,
+        0.6666666666666671
+      ]
+    },
+    {
+      "angle_degrees": 0.0,
+      "current_bz_vertices": [
+        [
+          0.6378787878787866,
+          1.9984014443252818e-15
+        ],
+        [
+          0.2712121212121211,
+          0.5773502691896258
+        ],
+        [
+          -0.2712121212121215,
+          0.5773502691896257
+        ],
+        [
+          -0.6378787878787886,
+          0.0
+        ],
+        [
+          -0.2712121212121219,
+          -0.5773502691896257
+        ],
+        [
+          0.27121212121211846,
+          -0.5773502691896257
+        ]
+      ],
+      "display_label": "tracked_K1",
+      "factor": 1.1,
+      "landmark_kind": "tracked_K1",
+      "passed": true,
+      "predictor_cartesian": [
+        0.606060606060606,
+        0.0
+      ],
+      "reference_cartesian": [
+        0.6666666666666666,
+        0.0
+      ],
+      "repeat_error": 0.0,
+      "round_trip_error": 1.1886573649423299e-17,
+      "selected_vertex": [
+        0.6378787878787866,
+        1.9984014443252818e-15
+      ],
+      "selected_vertex_index": 0,
+      "selection_strategy": "nearest_current_bz_vertex_to_F_inverse_transpose_reference_plus_x_K",
+      "solver_reciprocal_fractional": [
+        0.3508333333333344,
+        0.3508333333333309
+      ],
+      "tie_break": "lowest canonical vertex index after distance",
+      "vertex_distances": [
+        0.031818181818180635,
+        0.667425532279564,
+        1.0502098701449452,
+        1.2439393939393946,
+        1.0502098701449456,
+        0.6674255322795654
+      ]
+    },
+    {
+      "angle_degrees": 30.0,
+      "current_bz_vertices": [
+        [
+          0.7026748971193415,
+          0.06593197518523541
+        ],
+        [
+          0.40843621399176977,
+          0.575568323914349
+        ],
+        [
+          -0.35288065843621386,
+          0.6112072294198816
+        ],
+        [
+          -0.7026748971193431,
+          -0.06593197518523275
+        ],
+        [
+          -0.408436213991769,
+          -0.5755683239143504
+        ],
+        [
+          0.35288065843621297,
+          -0.6112072294198829
+        ]
+      ],
+      "display_label": "tracked_K1",
+      "factor": 0.9,
+      "landmark_kind": "tracked_K1",
+      "passed": true,
+      "predictor_cartesian": [
+        0.7222222222222221,
+        0.0320750149549792
+      ],
+      "reference_cartesian": [
+        0.6666666666666666,
+        0.0
+      ],
+      "repeat_error": 0.0,
+      "round_trip_error": 2.7755575615628914e-17,
+      "selected_vertex": [
+        0.7026748971193415,
+        0.06593197518523541
+      ],
+      "selected_vertex_index": 0,
+      "selection_strategy": "nearest_current_bz_vertex_to_F_inverse_transpose_reference_plus_x_K",
+      "solver_reciprocal_fractional": [
+        0.3528806584362142,
+        0.2942386831275716
+      ],
+      "tie_break": "lowest canonical vertex index after distance",
+      "vertex_distances": [
+        0.03909465020576162,
+        0.627572016460905,
+        1.2211635131427276,
+        1.4282636909283362,
+        1.2835960917103693,
+        0.7417716876963252
+      ]
+    },
+    {
+      "angle_degrees": 17.0,
+      "current_bz_vertices": [
+        [
+          0.642361913452266,
+          -0.026753098577785295
+        ],
+        [
+          0.2779385404031829,
+          0.5797367712126937
+        ],
+        [
+          -0.3018533680585737,
+          0.5676522706105089
+        ],
+        [
+          -0.642361913452266,
+          0.026753098577788847
+        ],
+        [
+          -0.2779385404031814,
+          -0.5797367712126935
+        ],
+        [
+          0.3018533680585708,
+          -0.5676522706105089
+        ]
+      ],
+      "display_label": "tracked_K1",
+      "factor": 1.08,
+      "landmark_kind": "tracked_K1",
+      "passed": true,
+      "predictor_cartesian": [
+        0.6215052451220976,
+        -0.013807232184462899
+      ],
+      "reference_cartesian": [
+        0.6666666666666666,
+        0.0
+      ],
+      "repeat_error": 0.0,
+      "round_trip_error": 3.8163916471489756e-17,
+      "selected_vertex": [
+        0.642361913452266,
+        -0.026753098577785295
+      ],
+      "selected_vertex_index": 0,
+      "selection_strategy": "nearest_current_bz_vertex_to_F_inverse_transpose_reference_plus_x_K",
+      "solver_reciprocal_fractional": [
+        0.3334957314722922,
+        0.35526393926045363
+      ],
+      "tie_break": "lowest canonical vertex index after distance",
+      "vertex_distances": [
+        0.024547832297545223,
+        0.6858079647832459,
+        1.0911857229296524,
+        1.2645178270607256,
+        1.0626736876693381,
+        0.6394698187556505
+      ]
+    }
+  ]
+}

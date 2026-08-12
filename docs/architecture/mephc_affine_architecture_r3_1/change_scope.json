@@ -1,0 +1,58 @@
+{
+  "MePhC": {
+    "allowlist": [
+      "mephc/band.py",
+      "mephc/bravais.py",
+      "mephc/bz.py",
+      "mephc/lattice.py",
+      "tests/test_r31_kernel.py"
+    ],
+    "allowlist_passed": true,
+    "classification": {
+      "documentation": [],
+      "production": [
+        "mephc/band.py",
+        "mephc/bravais.py",
+        "mephc/bz.py",
+        "mephc/lattice.py"
+      ],
+      "tests": [
+        "tests/test_r31_kernel.py"
+      ]
+    },
+    "files_from_entry": [
+      "mephc/band.py",
+      "mephc/bravais.py",
+      "mephc/bz.py",
+      "mephc/lattice.py",
+      "tests/test_r31_kernel.py"
+    ]
+  },
+  "MePhC-TriLatt": {
+    "allowlist": [
+      "README.md",
+      "config.py",
+      "frequency_at_k.py",
+      "tests/test_r31_trilatt.py"
+    ],
+    "allowlist_passed": true,
+    "classification": {
+      "documentation": [
+        "README.md"
+      ],
+      "production": [
+        "config.py",
+        "frequency_at_k.py"
+      ],
+      "tests": [
+        "tests/test_r31_trilatt.py"
+      ]
+    },
+    "files_from_entry": [
+      "README.md",
+      "config.py",
+      "frequency_at_k.py",
+      "tests/test_r31_trilatt.py"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "algorithm": "sha256",
+  "captured_at": "2026-08-12T04:56:03.498583+00:00",
+  "exclusions": [
+    "R3.1 artifact directory",
+    "__pycache__",
+    "AIInbox",
+    "temporary solver output"
+  ],
+  "protected": {
+    "r1": {
+      "file_count": 12,
+      "sha256": "4aa35cc1282396e0a087fd92f7708a27a8290fb86f873f42ed218c6c5be1c372"
+    },
+    "r2": {
+      "file_count": 11,
+      "sha256": "6323f0b1d7e8934ffb92bec110ff49212338d85b8be72d3928a7063cf19988e2"
+    },
+    "r3": {
+      "file_count": 13,
+      "sha256": "908f165f88be9e23474dda6b00a4012ead33f4afd2c994ee38d034a3d94bfcdf"
+    },
+    "scientific": {
+      "repositories": {
+        "MePhC": {
+          "file_count": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "SqrLatt": {
+          "file_count": 2,
+          "sha256": "bf8ec51e2e32587e0c2ab646d35e46b23372ee004072d583147b707bfaa9fc86"
+        },
+        "TriLatt": {
+          "file_count": 2,
+          "sha256": "320adfa0e415d65f09527b49cae323f2cb1ea6e549603c69161fdd36b4fdd5a7"
+        }
+      },
+      "sha256": "bf24c7eab49d933c2445ad334f82574b8fed8014d5895070a439d4e1d7a9bc0e"
+    },
+    "sqrlatt_tree": {
+      "file_count": 15,
+      "sha256": "92ea850d86ad9189f3c8e2f37446de8edfd052480c28c2722f8c46077e075e00"
+    }
+  }
+}

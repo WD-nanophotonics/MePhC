@@ -1,0 +1,77 @@
+{
+  "entries": {
+    "band_non_identity_low_resolution": {
+      "assertions": {
+        "deformation_metadata": true,
+        "finite_freqs": true,
+        "path": "generic_bz"
+      },
+      "duration_seconds": 0.014438052006880753,
+      "parameters": {
+        "n_per_segment": 1,
+        "num_bands": 1,
+        "resolution": 2
+      },
+      "shape": [
+        8,
+        1
+      ],
+      "status": "PASS"
+    },
+    "berry_non_identity_low_resolution": {
+      "assertions": {
+        "deformation_metadata": true,
+        "domain": "first_bz",
+        "finite_bcs": true
+      },
+      "duration_seconds": 0.037383141010650434,
+      "parameters": {
+        "grid_n": 2,
+        "num_bands": 1,
+        "resolution": 2,
+        "step": 0.01
+      },
+      "shape": [
+        7,
+        1
+      ],
+      "status": "PASS"
+    },
+    "efs_non_identity_low_resolution": {
+      "assertions": {
+        "deformation_metadata": true,
+        "domain": "first_bz",
+        "finite_freqs": true
+      },
+      "duration_seconds": 0.015288226000848226,
+      "parameters": {
+        "grid_n": 2,
+        "num_bands": 1,
+        "resolution": 2
+      },
+      "shape": [
+        7,
+        1
+      ],
+      "status": "PASS"
+    },
+    "frequency_at_tracked_landmark_non_identity_low_resolution": {
+      "assertions": {
+        "finite_freqs": true,
+        "landmark_metadata": true,
+        "tracked_K1": true
+      },
+      "duration_seconds": 0.006209008002770133,
+      "parameters": {
+        "num_bands": 1,
+        "resolution": 2
+      },
+      "shape": [
+        1
+      ],
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "total_duration_seconds": 0.07333212500088848
+}

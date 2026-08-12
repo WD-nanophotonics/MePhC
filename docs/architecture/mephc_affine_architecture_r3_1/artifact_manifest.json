@@ -1,0 +1,91 @@
+{
+  "algorithm": "sha256",
+  "artifacts": [
+    {
+      "path": "README.md",
+      "sha256": "b3d4e36806c67686a10943b0ea848aba8053fd105a4f25aa5d88a1f0a7491753",
+      "size": 1439
+    },
+    {
+      "path": "baseline.json",
+      "sha256": "30ee6e78de7bf174317d4ef6bae93eaec556974e0f32a711c6705909cced2b27",
+      "size": 1780
+    },
+    {
+      "path": "change_scope.json",
+      "sha256": "c628b4b2561748f8d9d908aab93e4c9e074fb74c7673b8fd3287629c73b3518b",
+      "size": 1157
+    },
+    {
+      "path": "entrypoint_smoke.json",
+      "sha256": "3a0af568c7510fd57a50af9a2c71d7a259d00d87d022d4f31ea6d6dda0804c02",
+      "size": 1686
+    },
+    {
+      "path": "geometry_validation.json",
+      "sha256": "f60a8ff31c56c4bb67829de3ada954771ab56f3e9987e3e78afdd36c3236198f",
+      "size": 13565
+    },
+    {
+      "path": "integrity_digests.json",
+      "sha256": "188ed2fb6df01855ad5084b53d0e6061062173bb41b6db050d58762cbb106a12",
+      "size": 1312
+    },
+    {
+      "path": "k_landmark_validation.json",
+      "sha256": "2059d7060d9b4a9445d5d5e82c3ee0bff7824f0d21a7c4a3c8ed382a8167a0fe",
+      "size": 6119
+    },
+    {
+      "path": "logs/compileall.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "logs/entrypoint_smoke.log",
+      "sha256": "bbbe2c8759aca85952b399ee79d93bdcc4a739f04bda270374c2dc569efc294e",
+      "size": 101172
+    },
+    {
+      "path": "logs/mephc_tests.log",
+      "sha256": "4a5006ad74f6e8868edbf2e2cbc07a3a74514388c25f676cc32568869cd613ef",
+      "size": 10923
+    },
+    {
+      "path": "logs/r2_validator.log",
+      "sha256": "d8b5d30fb2863e5f9f1966424e4e867116a1e6d566b2de9d60c7927741e2e9ab",
+      "size": 27
+    },
+    {
+      "path": "logs/r3_validator.log",
+      "sha256": "6585da1481849922edcb9c8f5b6794dae3f48246e2ef0ab2be67d7606e14b2a3",
+      "size": 41
+    },
+    {
+      "path": "logs/trilatt_tests.log",
+      "sha256": "975f008375f077c057b5ea45e52258a909620d90ab395b4a275b0b118aa38f94",
+      "size": 23028
+    },
+    {
+      "path": "test_runs.json",
+      "sha256": "d29dab5ca13b2a1ebbfba0e1ee58ae6be7e4875624ab8e29f9c812b9b3227c72",
+      "size": 3262
+    },
+    {
+      "path": "validate_r3_1.py",
+      "sha256": "3e73220c527a89656a0fed5d6500cba9c8d9151ab4b634f80101ce783761deec",
+      "size": 4378
+    },
+    {
+      "path": "validation_report.md",
+      "sha256": "3580ef6d225501e08313ce5a88cf2b16a061dbde4e90f63a7ea8c455394bd078",
+      "size": 1258
+    }
+  ],
+  "excluded_paths": [
+    "artifact_manifest.json",
+    "completion.json"
+  ],
+  "generated_at": "2026-08-12T05:02:16.266639+00:00",
+  "status": "PASS"
+}

@@ -1,0 +1,323 @@
+{
+  "changed_files": {
+    "MePhC": [
+      "mephc/band.py",
+      "mephc/bravais.py",
+      "mephc/bz.py",
+      "mephc/lattice.py",
+      "tests/test_r31_kernel.py"
+    ],
+    "TriLatt": [
+      "README.md",
+      "config.py",
+      "frequency_at_k.py",
+      "tests/test_r31_trilatt.py"
+    ]
+  },
+  "commits": [
+    {
+      "message": "Implement R3.1 affine geometry and tracked K corrective",
+      "pushed": true,
+      "repository": "MePhC",
+      "sha": "d613b2bc188e0bdcfa7abc71cd23caa5a0326f1f"
+    },
+    {
+      "message": "Add R3.1 current-BZ landmark and deformation docs",
+      "pushed": true,
+      "repository": "TriLatt",
+      "sha": "59d005693a8f86e110686681a610952dc817803d"
+    },
+    {
+      "message": "Add R3.1 corrective evidence bundle",
+      "pushed": false,
+      "repository": "MePhC",
+      "sha": "pending"
+    }
+  ],
+  "compatibility_gates": {
+    "change_allowlist": "PASS",
+    "identity_behavior": "PASS",
+    "no_skips": "PASS",
+    "protected_artifacts": "PASS",
+    "remote_refs": "PASS",
+    "scientific_data": "PASS",
+    "sqrlatt_hold": "PASS",
+    "tests": "PASS"
+  },
+  "defect_gates": {
+    "A": "PASS",
+    "B": "PASS",
+    "C": "PASS",
+    "D": "PASS"
+  },
+  "final_refs": {
+    "MePhC": "d613b2bc188e0bdcfa7abc71cd23caa5a0326f1f",
+    "SqrLatt": "8a1e4534a48e01a83996fb199ccd55e0983e72b2",
+    "TriLatt": "59d005693a8f86e110686681a610952dc817803d"
+  },
+  "generated_at": "2026-08-12T05:02:16.262739+00:00",
+  "independent_review_required": true,
+  "integrity_summary": {
+    "algorithm": "sha256",
+    "captured_at": "2026-08-12T04:56:03.498583+00:00",
+    "exclusions": [
+      "R3.1 artifact directory",
+      "__pycache__",
+      "AIInbox",
+      "temporary solver output"
+    ],
+    "protected": {
+      "r1": {
+        "file_count": 12,
+        "sha256": "4aa35cc1282396e0a087fd92f7708a27a8290fb86f873f42ed218c6c5be1c372"
+      },
+      "r2": {
+        "file_count": 11,
+        "sha256": "6323f0b1d7e8934ffb92bec110ff49212338d85b8be72d3928a7063cf19988e2"
+      },
+      "r3": {
+        "file_count": 13,
+        "sha256": "908f165f88be9e23474dda6b00a4012ead33f4afd2c994ee38d034a3d94bfcdf"
+      },
+      "scientific": {
+        "repositories": {
+          "MePhC": {
+            "file_count": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "SqrLatt": {
+            "file_count": 2,
+            "sha256": "bf8ec51e2e32587e0c2ab646d35e46b23372ee004072d583147b707bfaa9fc86"
+          },
+          "TriLatt": {
+            "file_count": 2,
+            "sha256": "320adfa0e415d65f09527b49cae323f2cb1ea6e549603c69161fdd36b4fdd5a7"
+          }
+        },
+        "sha256": "bf24c7eab49d933c2445ad334f82574b8fed8014d5895070a439d4e1d7a9bc0e"
+      },
+      "sqrlatt_tree": {
+        "file_count": 15,
+        "sha256": "92ea850d86ad9189f3c8e2f37446de8edfd052480c28c2722f8c46077e075e00"
+      }
+    }
+  },
+  "known_limitations": [
+    "global affine periodic deformation only",
+    "no automatic symmetry discovery",
+    "no non-Abelian Berry curvature",
+    "SqrLatt remains unmigrated and unchanged"
+  ],
+  "push_results": {
+    "MePhC_evidence": "pending",
+    "MePhC_production": "pushed",
+    "TriLatt_production": "pushed"
+  },
+  "r4_authorized": false,
+  "reviewed_entry_refs": {
+    "MePhC": "24e29d9c9c6ceae979e1a81953c4f54853f98808",
+    "SqrLatt": "8a1e4534a48e01a83996fb199ccd55e0983e72b2",
+    "TriLatt": "df2cdf4fd70e741e1a8901a9274a0b0e42b1e737"
+  },
+  "smoke_summary": {
+    "entries": {
+      "band_non_identity_low_resolution": {
+        "assertions": {
+          "deformation_metadata": true,
+          "finite_freqs": true,
+          "path": "generic_bz"
+        },
+        "duration_seconds": 0.014438052006880753,
+        "parameters": {
+          "n_per_segment": 1,
+          "num_bands": 1,
+          "resolution": 2
+        },
+        "shape": [
+          8,
+          1
+        ],
+        "status": "PASS"
+      },
+      "berry_non_identity_low_resolution": {
+        "assertions": {
+          "deformation_metadata": true,
+          "domain": "first_bz",
+          "finite_bcs": true
+        },
+        "duration_seconds": 0.037383141010650434,
+        "parameters": {
+          "grid_n": 2,
+          "num_bands": 1,
+          "resolution": 2,
+          "step": 0.01
+        },
+        "shape": [
+          7,
+          1
+        ],
+        "status": "PASS"
+      },
+      "efs_non_identity_low_resolution": {
+        "assertions": {
+          "deformation_metadata": true,
+          "domain": "first_bz",
+          "finite_freqs": true
+        },
+        "duration_seconds": 0.015288226000848226,
+        "parameters": {
+          "grid_n": 2,
+          "num_bands": 1,
+          "resolution": 2
+        },
+        "shape": [
+          7,
+          1
+        ],
+        "status": "PASS"
+      },
+      "frequency_at_tracked_landmark_non_identity_low_resolution": {
+        "assertions": {
+          "finite_freqs": true,
+          "landmark_metadata": true,
+          "tracked_K1": true
+        },
+        "duration_seconds": 0.006209008002770133,
+        "parameters": {
+          "num_bands": 1,
+          "resolution": 2
+        },
+        "shape": [
+          1
+        ],
+        "status": "PASS"
+      }
+    },
+    "status": "PASS",
+    "total_duration_seconds": 0.07333212500088848
+  },
+  "status": "PASS",
+  "task_id": "mephc-affine-architecture-r3.1-corrective",
+  "test_summary": {
+    "all_exit_codes_zero": true,
+    "commands": [
+      {
+        "command": [
+          "/home/icy/miniconda3/envs/mp/bin/python",
+          "-m",
+          "compileall",
+          "-q",
+          "/home/icy/MePhC/mephc",
+          "/home/icy/TriLatt"
+        ],
+        "cwd": null,
+        "duration_seconds": 0.067533,
+        "exit_code": 0,
+        "finished_at": "2026-08-12T04:58:17.845978+00:00",
+        "log": "logs/compileall.log",
+        "name": "compileall",
+        "started_at": "2026-08-12T04:58:17.778289+00:00",
+        "stderr_bytes": 0,
+        "stdout_bytes": 0
+      },
+      {
+        "command": [
+          "/home/icy/miniconda3/envs/mp/bin/python",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test*.py"
+        ],
+        "cwd": "/home/icy/MePhC",
+        "duration_seconds": 2.23529,
+        "exit_code": 0,
+        "finished_at": "2026-08-12T04:58:20.082319+00:00",
+        "log": "logs/mephc_tests.log",
+        "name": "mephc_tests",
+        "started_at": "2026-08-12T04:58:17.846112+00:00",
+        "stderr_bytes": 132,
+        "stdout_bytes": 10791,
+        "tests_ok": true,
+        "tests_run": 33
+      },
+      {
+        "command": [
+          "/usr/bin/env",
+          "PYTHONPATH=/home/icy/MePhC",
+          "/home/icy/miniconda3/envs/mp/bin/python",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test*.py"
+        ],
+        "cwd": "/home/icy/TriLatt",
+        "duration_seconds": 1.274154,
+        "exit_code": 0,
+        "finished_at": "2026-08-12T04:58:21.356950+00:00",
+        "log": "logs/trilatt_tests.log",
+        "name": "trilatt_tests",
+        "started_at": "2026-08-12T04:58:20.082384+00:00",
+        "stderr_bytes": 127,
+        "stdout_bytes": 22901,
+        "tests_ok": true,
+        "tests_run": 28
+      },
+      {
+        "command": [
+          "/home/icy/miniconda3/envs/mp/bin/python",
+          "/home/icy/MePhC/tests/validate_affine_r2.py"
+        ],
+        "cwd": null,
+        "duration_seconds": 0.056563,
+        "exit_code": 0,
+        "finished_at": "2026-08-12T04:58:21.413830+00:00",
+        "log": "logs/r2_validator.log",
+        "name": "r2_validator",
+        "started_at": "2026-08-12T04:58:21.357053+00:00",
+        "stderr_bytes": 0,
+        "stdout_bytes": 27
+      },
+      {
+        "command": [
+          "/home/icy/miniconda3/envs/mp/bin/python",
+          "/home/icy/MePhC/tests/validate_affine_r3.py"
+        ],
+        "cwd": null,
+        "duration_seconds": 0.067291,
+        "exit_code": 0,
+        "finished_at": "2026-08-12T04:58:21.481414+00:00",
+        "log": "logs/r3_validator.log",
+        "name": "r3_validator",
+        "started_at": "2026-08-12T04:58:21.413858+00:00",
+        "stderr_bytes": 0,
+        "stdout_bytes": 41
+      },
+      {
+        "command": [
+          "/home/icy/miniconda3/envs/mp/bin/python",
+          "/tmp/r31_smoke.py"
+        ],
+        "cwd": null,
+        "duration_seconds": 0.822262,
+        "exit_code": 0,
+        "finished_at": "2026-08-12T04:58:22.304700+00:00",
+        "log": "logs/entrypoint_smoke.log",
+        "name": "entrypoint_smoke",
+        "started_at": "2026-08-12T04:58:21.481458+00:00",
+        "stderr_bytes": 0,
+        "stdout_bytes": 101172
+      }
+    ],
+    "generated_at": "2026-08-12T04:58:22.305148+00:00",
+    "test_counts": {
+      "mephc_tests": 33,
+      "trilatt_tests": 28
+    }
+  }
+}

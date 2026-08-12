@@ -1,0 +1,122 @@
+{
+  "all_exit_codes_zero": true,
+  "commands": [
+    {
+      "command": [
+        "/home/icy/miniconda3/envs/mp/bin/python",
+        "-m",
+        "compileall",
+        "-q",
+        "/home/icy/MePhC/mephc",
+        "/home/icy/TriLatt"
+      ],
+      "cwd": null,
+      "duration_seconds": 0.067533,
+      "exit_code": 0,
+      "finished_at": "2026-08-12T04:58:17.845978+00:00",
+      "log": "logs/compileall.log",
+      "name": "compileall",
+      "started_at": "2026-08-12T04:58:17.778289+00:00",
+      "stderr_bytes": 0,
+      "stdout_bytes": 0
+    },
+    {
+      "command": [
+        "/home/icy/miniconda3/envs/mp/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test*.py"
+      ],
+      "cwd": "/home/icy/MePhC",
+      "duration_seconds": 2.23529,
+      "exit_code": 0,
+      "finished_at": "2026-08-12T04:58:20.082319+00:00",
+      "log": "logs/mephc_tests.log",
+      "name": "mephc_tests",
+      "started_at": "2026-08-12T04:58:17.846112+00:00",
+      "stderr_bytes": 132,
+      "stdout_bytes": 10791,
+      "tests_ok": true,
+      "tests_run": 33
+    },
+    {
+      "command": [
+        "/usr/bin/env",
+        "PYTHONPATH=/home/icy/MePhC",
+        "/home/icy/miniconda3/envs/mp/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test*.py"
+      ],
+      "cwd": "/home/icy/TriLatt",
+      "duration_seconds": 1.274154,
+      "exit_code": 0,
+      "finished_at": "2026-08-12T04:58:21.356950+00:00",
+      "log": "logs/trilatt_tests.log",
+      "name": "trilatt_tests",
+      "started_at": "2026-08-12T04:58:20.082384+00:00",
+      "stderr_bytes": 127,
+      "stdout_bytes": 22901,
+      "tests_ok": true,
+      "tests_run": 28
+    },
+    {
+      "command": [
+        "/home/icy/miniconda3/envs/mp/bin/python",
+        "/home/icy/MePhC/tests/validate_affine_r2.py"
+      ],
+      "cwd": null,
+      "duration_seconds": 0.056563,
+      "exit_code": 0,
+      "finished_at": "2026-08-12T04:58:21.413830+00:00",
+      "log": "logs/r2_validator.log",
+      "name": "r2_validator",
+      "started_at": "2026-08-12T04:58:21.357053+00:00",
+      "stderr_bytes": 0,
+      "stdout_bytes": 27
+    },
+    {
+      "command": [
+        "/home/icy/miniconda3/envs/mp/bin/python",
+        "/home/icy/MePhC/tests/validate_affine_r3.py"
+      ],
+      "cwd": null,
+      "duration_seconds": 0.067291,
+      "exit_code": 0,
+      "finished_at": "2026-08-12T04:58:21.481414+00:00",
+      "log": "logs/r3_validator.log",
+      "name": "r3_validator",
+      "started_at": "2026-08-12T04:58:21.413858+00:00",
+      "stderr_bytes": 0,
+      "stdout_bytes": 41
+    },
+    {
+      "command": [
+        "/home/icy/miniconda3/envs/mp/bin/python",
+        "/tmp/r31_smoke.py"
+      ],
+      "cwd": null,
+      "duration_seconds": 0.822262,
+      "exit_code": 0,
+      "finished_at": "2026-08-12T04:58:22.304700+00:00",
+      "log": "logs/entrypoint_smoke.log",
+      "name": "entrypoint_smoke",
+      "started_at": "2026-08-12T04:58:21.481458+00:00",
+      "stderr_bytes": 0,
+      "stdout_bytes": 101172
+    }
+  ],
+  "generated_at": "2026-08-12T04:58:22.305148+00:00",
+  "test_counts": {
+    "mephc_tests": 33,
+    "trilatt_tests": 28
+  }
+}
