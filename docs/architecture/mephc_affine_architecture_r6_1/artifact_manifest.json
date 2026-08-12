@@ -1,6 +1,6 @@
 {
   "schema": "mephc.affine_architecture.r6_1.artifact_manifest.v1",
-  "status": "SEALED_BLOCKED_BASELINE_REPRODUCIBILITY",
+  "status": "SEALED_PASS_SQRLATT_RESPONSE_TRILATT_BLOCKED_NONCONVERGED",
   "payload_parent": "c2aaf2c",
   "files": [
     "README.md",

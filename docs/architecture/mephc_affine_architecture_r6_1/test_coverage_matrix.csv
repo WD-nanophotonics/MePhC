@@ -6,6 +6,6 @@ band_local_delta,tests/test_r6_1_response.py,PASS
 cross_band_guard,tests/test_r6_1_response.py,PASS
 sqrlatt_zero_ladder,baseline_reproduction.json,PASS
 sqrlatt_response,sqrlatt_response.json,PASS
-trilatt_zero_ladder,baseline_reproduction.json,BLOCKED_BASELINE_REPRODUCIBILITY
+trilatt_zero_ladder,baseline_reproduction.json,PASS_REPRODUCED
 trilatt_full_response,trilatt_status.json,NOT_RUN_BY_CONTRACT
-protected_r6_integrity,validate_r6_1.py,PENDING
+protected_r6_integrity,validate_r6_1.py,PASS

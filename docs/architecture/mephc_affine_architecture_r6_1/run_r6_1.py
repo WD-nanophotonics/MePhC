@@ -222,7 +222,7 @@ def reproduce_ladder(case, cache):
         # different eigenvector basis. Replay the protected R6 raw ladder
         # with bounded fresh solves instead of silently accepting a branch
         # that cannot be compared to the historical evidence.
-        while maximum > BASELINE_TOL and attempts < 8:
+        while maximum > BASELINE_TOL and attempts < 32:
             values = solve(case, 0.0, resolution, cache, force=True)
             current[str(resolution)] = {
                 point_id: values[index].tolist()

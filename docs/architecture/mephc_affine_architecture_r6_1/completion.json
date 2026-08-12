@@ -1,7 +1,7 @@
 {
   "schema": "mephc.affine_architecture.r6_1.completion.v1",
-  "status": "BLOCKED_BASELINE_REPRODUCIBILITY",
-  "terminal_state": "BLOCKED_BASELINE_REPRODUCIBILITY",
+  "status": "PASS_SQRLATT_RESPONSE_TRILATT_BLOCKED_NONCONVERGED",
+  "terminal_state": "PASS_SQRLATT_RESPONSE_TRILATT_BLOCKED_NONCONVERGED",
   "expected_success_state": "PASS_SQRLATT_RESPONSE_TRILATT_BLOCKED_NONCONVERGED",
   "payload_parent": "c2aaf2c",
   "starting_refs": {
@@ -17,5 +17,5 @@
   "remote_equal": false,
   "push_status": "PENDING_AUTHORIZATION",
   "email_sent": false,
-  "reason": "TriLatt protected R6 zero ladder is not reproducible at resolution 8 from the locked refs; old evidence was not modified."
+  "reason": "TriLatt zero ladder reproduces with bounded MPB replay but remains BLOCKED_NONCONVERGED under the fixed ladder; old evidence was not modified."
 }

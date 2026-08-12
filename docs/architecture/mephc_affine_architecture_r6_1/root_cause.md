@@ -17,5 +17,7 @@ while a fresh locked-ref solve exposes the intermediate band near 0.28457 and
 then 0.29306. At q2/resolution 12, fresh solves can reproduce the protected
 branch only after bounded MPB retry because a nearly-degenerate subspace is
 initialized differently. R6.1 does not rewrite or silently reinterpret the R6
-artifact. TriLatt is therefore blocked at baseline reproducibility and no
-full response sweep is claimed.
+artifact. The bounded replay records this solver-branch sensitivity without
+rewriting the protected evidence. TriLatt reproduces the zero ladder, while
+the fixed ladder still yields BLOCKED_NONCONVERGED, so no full response sweep
+is claimed.

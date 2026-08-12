@@ -11,8 +11,7 @@ that gap. Cross-band pooling is forbidden.
 
 SqrLatt may proceed only after geometry gates and zero-ladder reproduction pass.
 TriLatt must preserve BLOCKED_NONCONVERGED when the zero ladder reproduces but
-does not converge; in this realization it is even earlier blocked by the
-protected-artifact reproducibility anomaly. No full TriLatt sweep is included.
+does not converge. No full TriLatt sweep is included while this status holds.
 
 No R6 evidence is modified. No R7 claim, primitive-band interpretation,
 unfolding, topology, Berry/BCD, transport, or network installation is part of

@@ -5,42 +5,56 @@
       {
         "high": 12,
         "low": 8,
-        "max_abs_difference": 0.001580593262750285,
+        "max_abs_difference": 0.0015805933375845904,
         "passed": true,
         "point_id": "q1"
       },
       {
         "high": 12,
         "low": 8,
-        "max_abs_difference": 0.0009711992648577805,
+        "max_abs_difference": 0.000971199264822753,
         "passed": true,
         "point_id": "q2"
       }
     ],
-    "convergence_error_bound": 0.001580593262750285,
+    "convergence_error_bound": 0.0015805933375845904,
     "downstream": "SqrLatt",
     "status": "PASS"
   },
   "TriLatt": {
-    "accepted_resolution": 12,
+    "accepted_resolution": null,
     "comparisons": [
       {
         "high": 12,
         "low": 8,
-        "max_abs_difference": 0.0015156797999885119,
+        "max_abs_difference": 0.0015156808505020491,
         "passed": true,
         "point_id": "q1"
       },
       {
         "high": 12,
         "low": 8,
-        "max_abs_difference": 0.00240010993505016,
+        "max_abs_difference": 0.007766684432775006,
+        "passed": false,
+        "point_id": "q2"
+      },
+      {
+        "high": 16,
+        "low": 12,
+        "max_abs_difference": 0.005043564734389161,
         "passed": true,
+        "point_id": "q1"
+      },
+      {
+        "high": 16,
+        "low": 12,
+        "max_abs_difference": 0.006586125312509461,
+        "passed": false,
         "point_id": "q2"
       }
     ],
-    "convergence_error_bound": 0.00240010993505016,
+    "convergence_error_bound": 0.007766684432775006,
     "downstream": "TriLatt",
-    "status": "PASS"
+    "status": "BLOCKED_NONCONVERGED"
   }
 }

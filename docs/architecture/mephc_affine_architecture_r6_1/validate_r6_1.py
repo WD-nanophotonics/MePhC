@@ -78,8 +78,12 @@ def main(root):
             fail(errors, f"pooled or incorrect delta_max at {point}/{band}")
 
     tri_status = data["trilatt_status.json"]["status"]
-    if tri_status not in {"BLOCKED_BASELINE_REPRODUCIBILITY", "BLOCKED_NONCONVERGED"}:
+    if tri_status != "BLOCKED_NONCONVERGED":
         fail(errors, f"unexpected TriLatt status: {tri_status}")
+    if not data["baseline_reproduction.json"]["TriLatt"]["reproduced"]:
+        fail(errors, "TriLatt zero ladder was not reproduced")
+    if data["convergence.json"]["TriLatt"]["status"] != "BLOCKED_NONCONVERGED":
+        fail(errors, "TriLatt convergence status mismatch")
     if data["trilatt_status.json"]["full_response_sweep_performed"]:
         fail(errors, "TriLatt full response sweep must not run while blocked")
 
@@ -103,8 +107,8 @@ def main(root):
     completion = data["completion.json"]
     if completion["email_sent"] is not False:
         fail(errors, "email write is forbidden")
-    if completion["status"] != "BLOCKED_BASELINE_REPRODUCIBILITY":
-        fail(errors, "completion status mismatch for recorded blocker")
+    if completion["status"] != "PASS_SQRLATT_RESPONSE_TRILATT_BLOCKED_NONCONVERGED":
+        fail(errors, "completion terminal status mismatch")
 
     if errors:
         print("\n".join(errors))
