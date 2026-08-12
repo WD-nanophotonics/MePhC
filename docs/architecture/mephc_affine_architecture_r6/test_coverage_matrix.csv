@@ -1,0 +1,10 @@
+surface,control,evidence,status
+shared field boundary,verified PeriodicSupercellField at 9 samples,benchmark_field.json,PASS
+field parity,zero and +/- amplitude checks,benchmark_field.json,PASS
+jacobian,determinant and condition checks,benchmark_field.json,PASS
+q membership,generic q0/q1/q2 in supercell BZ,benchmark_field.json,PASS
+solver adapter,real ModeSolver through both adapters,production_smokes.json,PASS
+convergence,fixed 8->12 then 12->16 ladder,convergence.json,PASS_OR_EXACT_BLOCK
+response algebra,odd/even A and half-A decomposition,sqrlatt_response.json,PASS
+identity guard,nearest-neighbor and perturbation gap checks,eligibility_matrix.csv,PASS_OR_NOT_REACHED
+

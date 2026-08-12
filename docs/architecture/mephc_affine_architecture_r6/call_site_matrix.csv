@@ -1,0 +1,4 @@
+consumer,production_entry_point,solver,field_guard,q_semantics,status
+SqrLatt,square_hole.r5_deformation.build_supercell_solver,meep.mpb.ModeSolver,PeriodicSupercellField,q0/q1/q2 generic,covered
+TriLatt,r5_deformation.build_supercell_solver,meep.mpb.ModeSolver,PeriodicSupercellField,q0/q1/q2 generic,covered
+

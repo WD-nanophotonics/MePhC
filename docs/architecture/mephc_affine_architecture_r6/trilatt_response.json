@@ -1,0 +1,378 @@
+{
+  "bz_membership": {
+    "bz": {
+      "area": 0.28867513459481187,
+      "closure": "open",
+      "reciprocal_basis": [
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.28867513459481287,
+          -0.2886751345948129
+        ]
+      ],
+      "reciprocal_cell_area": 0.28867513459481287,
+      "shell": 2,
+      "tolerance": 1e-10,
+      "type": "BrillouinZone2D",
+      "vertices": [
+        [
+          0.33333333333333337,
+          -1.1102230246251565e-16
+        ],
+        [
+          0.16666666666666669,
+          0.28867513459481275
+        ],
+        [
+          -0.16666666666666663,
+          0.2886751345948129
+        ],
+        [
+          -0.3333333333333325,
+          1.4432899320127035e-15
+        ],
+        [
+          -0.16666666666666607,
+          -0.2886751345948113
+        ],
+        [
+          0.16666666666666757,
+          -0.2886751345948113
+        ]
+      ],
+      "winding": "counter_clockwise"
+    },
+    "points": {
+      "q0": {
+        "cartesian": [
+          0.0,
+          0.0
+        ],
+        "fractional": [
+          0.0,
+          0.0
+        ],
+        "inside": true
+      },
+      "q1": {
+        "cartesian": [
+          0.095,
+          0.014433756729740633
+        ],
+        "fractional": [
+          0.12,
+          0.07
+        ],
+        "inside": true
+      },
+      "q2": {
+        "cartesian": [
+          0.02500000000000001,
+          -0.06639528095680697
+        ],
+        "fractional": [
+          -0.09,
+          0.14
+        ],
+        "inside": true
+      }
+    },
+    "semantic_domain": "supercell_bz"
+  },
+  "convergence": {
+    "accepted_resolution": null,
+    "comparisons": [
+      {
+        "high": 12,
+        "low": 8,
+        "max_abs_difference": 0.0015156800862071718,
+        "passed": true,
+        "point_id": "q1"
+      },
+      {
+        "high": 12,
+        "low": 8,
+        "max_abs_difference": 0.007766686443040127,
+        "passed": false,
+        "point_id": "q2"
+      },
+      {
+        "high": 16,
+        "low": 12,
+        "max_abs_difference": 0.005043561719988043,
+        "passed": true,
+        "point_id": "q1"
+      },
+      {
+        "high": 16,
+        "low": 12,
+        "max_abs_difference": 0.006586148621552601,
+        "passed": false,
+        "point_id": "q2"
+      }
+    ],
+    "convergence_error_bound": 0.007766686443040127,
+    "downstream": "TriLatt",
+    "status": "BLOCKED_NONCONVERGED"
+  },
+  "downstream": "TriLatt",
+  "eligible_count": 0,
+  "field_invariants": [
+    {
+      "amplitude": 0.0,
+      "boundary_verification": {
+        "boundary_samples": 9,
+        "max_displacement_residual": 0.0,
+        "tolerance": 1e-09,
+        "translations": [
+          [
+            1.0,
+            1.7320508075688772
+          ],
+          [
+            1.0,
+            -1.7320508075688772
+          ]
+        ],
+        "verified": true
+      },
+      "capability": "SUPERCELL_PERIODIC",
+      "field_fingerprint": "401bdd18af119f187bdf557236a3cca39418c665a337e831832df7306fa0bc19",
+      "jacobian": {
+        "max_condition": 1.0,
+        "max_determinant": 1.0,
+        "min_determinant": 1.0,
+        "samples": 9
+      },
+      "verified": true
+    },
+    {
+      "amplitude": 0.005,
+      "boundary_verification": {
+        "boundary_samples": 9,
+        "max_displacement_residual": 2.4460101032377036e-18,
+        "tolerance": 1e-09,
+        "translations": [
+          [
+            1.0,
+            1.7320508075688772
+          ],
+          [
+            1.0,
+            -1.7320508075688772
+          ]
+        ],
+        "verified": true
+      },
+      "capability": "SUPERCELL_PERIODIC",
+      "field_fingerprint": "6ef5e8af0071a2a584a7d96008aa8b8d98b24f1e1e59ed4e368f52a75f510e7b",
+      "jacobian": {
+        "max_condition": 1.016444153008286,
+        "max_determinant": 1.0007768890355249,
+        "min_determinant": 0.985201484916297,
+        "samples": 9
+      },
+      "verified": true
+    },
+    {
+      "amplitude": -0.005,
+      "boundary_verification": {
+        "boundary_samples": 9,
+        "max_displacement_residual": 2.4460101032377036e-18,
+        "tolerance": 1e-09,
+        "translations": [
+          [
+            1.0,
+            1.7320508075688772
+          ],
+          [
+            1.0,
+            -1.7320508075688772
+          ]
+        ],
+        "verified": true
+      },
+      "capability": "SUPERCELL_PERIODIC",
+      "field_fingerprint": "a8f47c53f0aa93f2a793434464566c2709966e2ee6ca194ca5f8147844ea7e24",
+      "jacobian": {
+        "max_condition": 1.0162006372173744,
+        "max_determinant": 1.0147985150837031,
+        "min_determinant": 0.999223110964475,
+        "samples": 9
+      },
+      "verified": true
+    },
+    {
+      "amplitude": 0.0025,
+      "boundary_verification": {
+        "boundary_samples": 9,
+        "max_displacement_residual": 1.2230050516188518e-18,
+        "tolerance": 1e-09,
+        "translations": [
+          [
+            1.0,
+            1.7320508075688772
+          ],
+          [
+            1.0,
+            -1.7320508075688772
+          ]
+        ],
+        "verified": true
+      },
+      "capability": "SUPERCELL_PERIODIC",
+      "field_fingerprint": "a457053a456a4fd4f72ff4a16b056d961c35bdb6a0c469d8927c410cae1c4397",
+      "jacobian": {
+        "max_condition": 1.008157916689596,
+        "max_determinant": 1.0003884445177624,
+        "min_determinant": 0.9926007424581484,
+        "samples": 9
+      },
+      "verified": true
+    },
+    {
+      "amplitude": -0.0025,
+      "boundary_verification": {
+        "boundary_samples": 9,
+        "max_displacement_residual": 1.2230050516188518e-18,
+        "tolerance": 1e-09,
+        "translations": [
+          [
+            1.0,
+            1.7320508075688772
+          ],
+          [
+            1.0,
+            -1.7320508075688772
+          ]
+        ],
+        "verified": true
+      },
+      "capability": "SUPERCELL_PERIODIC",
+      "field_fingerprint": "36ceaee1e869fb4ab762a8b9e55891f4a51b72a8e897393cf72dcc307ab349de",
+      "jacobian": {
+        "max_condition": 1.008097533327911,
+        "max_determinant": 1.0073992575418516,
+        "min_determinant": 0.9996115554822376,
+        "samples": 9
+      },
+      "verified": true
+    }
+  ],
+  "fixed_ladder_raw": {
+    "12": {
+      "q1": [
+        0.04374727553594749,
+        0.2169471480801926,
+        0.22305697329101867,
+        0.24060546026713697,
+        0.27976249830517014,
+        0.3026688189521083
+      ],
+      "q2": [
+        0.03159502406551347,
+        0.22213328093222062,
+        0.2303149112543529,
+        0.2422834401937869,
+        0.2852897432078771,
+        0.29193154825719875
+      ]
+    },
+    "16": {
+      "q1": [
+        0.04300062349472391,
+        0.2147873283338097,
+        0.22140637032578375,
+        0.241130462270288,
+        0.2848060600251582,
+        0.29921439393091676
+      ],
+      "q2": [
+        0.03185274041712009,
+        0.22352814691841608,
+        0.22774429574063287,
+        0.2394049465200347,
+        0.2918758918294297,
+        0.29646039627366183
+      ]
+    },
+    "8": {
+      "q1": [
+        0.043265238902690344,
+        0.21543146799398544,
+        0.22193337590796408,
+        0.24188226595759665,
+        0.2806217116574411,
+        0.30138682146267814
+      ],
+      "q2": [
+        0.03176401869330746,
+        0.22337665944136048,
+        0.22863449135817457,
+        0.23988333030774872,
+        0.2930564296509172,
+        0.2935738076052173
+      ]
+    }
+  },
+  "num_bands": 6,
+  "polarization": "TE",
+  "q_points": [
+    {
+      "fractional": [
+        0.0,
+        0.0
+      ],
+      "id": "q0",
+      "primitive_labels_allowed": false,
+      "semantic_domain": "supercell_bz"
+    },
+    {
+      "fractional": [
+        0.12,
+        0.07
+      ],
+      "id": "q1",
+      "primitive_labels_allowed": false,
+      "semantic_domain": "supercell_bz"
+    },
+    {
+      "fractional": [
+        -0.09,
+        0.14
+      ],
+      "id": "q2",
+      "primitive_labels_allowed": false,
+      "semantic_domain": "supercell_bz"
+    }
+  ],
+  "raw_provenance": [],
+  "raw_spectra": {},
+  "replication": [
+    2,
+    2
+  ],
+  "responses": [],
+  "runtime": "/home/icy/miniconda3/envs/mp/bin/python",
+  "schema": "mephc.affine_architecture.r6.response.v1",
+  "solver": "meep.mpb.ModeSolver",
+  "status": "BLOCKED_NONCONVERGED",
+  "structure_metadata": {
+    "geometry_id": "geometry_id",
+    "geometry_parameters": {
+      "a": 400,
+      "height": 100,
+      "n1": 3,
+      "n2": 3,
+      "n_eff": 2.7,
+      "r1": 120,
+      "r2": 110,
+      "theta1": 0,
+      "theta2": 60
+    },
+    "motif_policy": "canonical_rigid_pattern"
+  }
+}

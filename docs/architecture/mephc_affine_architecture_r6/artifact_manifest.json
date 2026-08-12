@@ -1,0 +1,15 @@
+{
+  "schema": "mephc.affine_architecture.r6.artifact_manifest.v1",
+  "task": "MePhC R6 Affine Architecture: Periodic-Supercell Maxwell Spectral Response Baseline",
+  "payload_parent": "PENDING_PAYLOAD_COMMIT",
+  "artifacts": [
+    "README.md", "preflight.json", "response_contract.md", "benchmark_field.json",
+    "call_site_matrix.csv", "runtime_probe.json", "convergence.json",
+    "sqrlatt_response.json", "trilatt_response.json", "eligibility_matrix.csv",
+    "production_smokes.json", "test_coverage_matrix.csv", "validation_report.md",
+    "change_scope.json", "integrity_digests.json", "known_limits_and_r7.md",
+    "run_r6_response.py", "validate_r6.py", "validator_negative_fixtures.py",
+    "logs/driver_stdout.log"
+  ]
+}
+

@@ -1,0 +1,520 @@
+{
+  "SqrLatt": {
+    "amplitudes": [
+      0.0,
+      0.005,
+      -0.005,
+      0.0025,
+      -0.0025
+    ],
+    "bz_membership": {
+      "bz": {
+        "area": 0.25,
+        "closure": "open",
+        "reciprocal_basis": [
+          [
+            0.5,
+            0.0
+          ],
+          [
+            0.0,
+            0.5
+          ]
+        ],
+        "reciprocal_cell_area": 0.25,
+        "shell": 2,
+        "tolerance": 1e-10,
+        "type": "BrillouinZone2D",
+        "vertices": [
+          [
+            0.25,
+            -0.25
+          ],
+          [
+            0.25,
+            0.25
+          ],
+          [
+            -0.25,
+            0.25
+          ],
+          [
+            -0.25,
+            -0.25
+          ]
+        ],
+        "winding": "counter_clockwise"
+      },
+      "points": {
+        "q0": {
+          "cartesian": [
+            0.0,
+            0.0
+          ],
+          "fractional": [
+            0.0,
+            0.0
+          ],
+          "inside": true
+        },
+        "q1": {
+          "cartesian": [
+            0.06,
+            0.035
+          ],
+          "fractional": [
+            0.12,
+            0.07
+          ],
+          "inside": true
+        },
+        "q2": {
+          "cartesian": [
+            -0.045,
+            0.07
+          ],
+          "fractional": [
+            -0.09,
+            0.14
+          ],
+          "inside": true
+        }
+      },
+      "semantic_domain": "supercell_bz"
+    },
+    "invariants": [
+      {
+        "amplitude": 0.0,
+        "boundary_verification": {
+          "boundary_samples": 9,
+          "max_displacement_residual": 0.0,
+          "tolerance": 1e-09,
+          "translations": [
+            [
+              2.0,
+              0.0
+            ],
+            [
+              0.0,
+              2.0
+            ]
+          ],
+          "verified": true
+        },
+        "capability": "SUPERCELL_PERIODIC",
+        "field_fingerprint": "21eea3f94906d5027e0effe3875dff30fb68b05968eae110b8a062e6a680130f",
+        "jacobian": {
+          "max_condition": 1.0,
+          "max_determinant": 1.0,
+          "min_determinant": 1.0,
+          "samples": 9
+        },
+        "verified": true
+      },
+      {
+        "amplitude": 0.005,
+        "boundary_verification": {
+          "boundary_samples": 9,
+          "max_displacement_residual": 1.2246467991473532e-18,
+          "tolerance": 1e-09,
+          "translations": [
+            [
+              2.0,
+              0.0
+            ],
+            [
+              0.0,
+              2.0
+            ]
+          ],
+          "verified": true
+        },
+        "capability": "SUPERCELL_PERIODIC",
+        "field_fingerprint": "41eee6eb3d77370ff4a84a031b01fcbcb0302a243afd5af2d58d4c5aebb26ff1",
+        "jacobian": {
+          "max_condition": 1.0141568938537584,
+          "max_determinant": 1.004202166719626,
+          "min_determinant": 0.9860898409210488,
+          "samples": 9
+        },
+        "verified": true
+      },
+      {
+        "amplitude": -0.005,
+        "boundary_verification": {
+          "boundary_samples": 9,
+          "max_displacement_residual": 1.2246467991473532e-18,
+          "tolerance": 1e-09,
+          "translations": [
+            [
+              2.0,
+              0.0
+            ],
+            [
+              0.0,
+              2.0
+            ]
+          ],
+          "verified": true
+        },
+        "capability": "SUPERCELL_PERIODIC",
+        "field_fingerprint": "1629dc2314151282bb7d7ee7ed2a13caf0f737e48201f5a62364428040f2b479",
+        "jacobian": {
+          "max_condition": 1.0139599644055146,
+          "max_determinant": 1.0139101590789512,
+          "min_determinant": 0.9957978332803741,
+          "samples": 9
+        },
+        "verified": true
+      },
+      {
+        "amplitude": 0.0025,
+        "boundary_verification": {
+          "boundary_samples": 9,
+          "max_displacement_residual": 6.123233995736766e-19,
+          "tolerance": 1e-09,
+          "translations": [
+            [
+              2.0,
+              0.0
+            ],
+            [
+              0.0,
+              2.0
+            ]
+          ],
+          "verified": true
+        },
+        "capability": "SUPERCELL_PERIODIC",
+        "field_fingerprint": "682df420441e7bddb27759aabee7efab981a5a48f1217181d865b5af33f3df5b",
+        "jacobian": {
+          "max_condition": 1.007028783130756,
+          "max_determinant": 1.002101083359813,
+          "min_determinant": 0.9930449204605244,
+          "samples": 9
+        },
+        "verified": true
+      },
+      {
+        "amplitude": -0.0025,
+        "boundary_verification": {
+          "boundary_samples": 9,
+          "max_displacement_residual": 6.123233995736766e-19,
+          "tolerance": 1e-09,
+          "translations": [
+            [
+              2.0,
+              0.0
+            ],
+            [
+              0.0,
+              2.0
+            ]
+          ],
+          "verified": true
+        },
+        "capability": "SUPERCELL_PERIODIC",
+        "field_fingerprint": "9c268b0c360a44e661cd0749ae7b8974dfc617555f49a9135153846ce85518b6",
+        "jacobian": {
+          "max_condition": 1.0069798967847106,
+          "max_determinant": 1.0069550795394755,
+          "min_determinant": 0.997898916640187,
+          "samples": 9
+        },
+        "verified": true
+      }
+    ],
+    "q_points": [
+      {
+        "fractional": [
+          0.0,
+          0.0
+        ],
+        "id": "q0",
+        "primitive_labels_allowed": false,
+        "semantic_domain": "supercell_bz"
+      },
+      {
+        "fractional": [
+          0.12,
+          0.07
+        ],
+        "id": "q1",
+        "primitive_labels_allowed": false,
+        "semantic_domain": "supercell_bz"
+      },
+      {
+        "fractional": [
+          -0.09,
+          0.14
+        ],
+        "id": "q2",
+        "primitive_labels_allowed": false,
+        "semantic_domain": "supercell_bz"
+      }
+    ]
+  },
+  "TriLatt": {
+    "amplitudes": [
+      0.0,
+      0.005,
+      -0.005,
+      0.0025,
+      -0.0025
+    ],
+    "bz_membership": {
+      "bz": {
+        "area": 0.28867513459481187,
+        "closure": "open",
+        "reciprocal_basis": [
+          [
+            0.5,
+            0.5
+          ],
+          [
+            0.28867513459481287,
+            -0.2886751345948129
+          ]
+        ],
+        "reciprocal_cell_area": 0.28867513459481287,
+        "shell": 2,
+        "tolerance": 1e-10,
+        "type": "BrillouinZone2D",
+        "vertices": [
+          [
+            0.33333333333333337,
+            -1.1102230246251565e-16
+          ],
+          [
+            0.16666666666666669,
+            0.28867513459481275
+          ],
+          [
+            -0.16666666666666663,
+            0.2886751345948129
+          ],
+          [
+            -0.3333333333333325,
+            1.4432899320127035e-15
+          ],
+          [
+            -0.16666666666666607,
+            -0.2886751345948113
+          ],
+          [
+            0.16666666666666757,
+            -0.2886751345948113
+          ]
+        ],
+        "winding": "counter_clockwise"
+      },
+      "points": {
+        "q0": {
+          "cartesian": [
+            0.0,
+            0.0
+          ],
+          "fractional": [
+            0.0,
+            0.0
+          ],
+          "inside": true
+        },
+        "q1": {
+          "cartesian": [
+            0.095,
+            0.014433756729740633
+          ],
+          "fractional": [
+            0.12,
+            0.07
+          ],
+          "inside": true
+        },
+        "q2": {
+          "cartesian": [
+            0.02500000000000001,
+            -0.06639528095680697
+          ],
+          "fractional": [
+            -0.09,
+            0.14
+          ],
+          "inside": true
+        }
+      },
+      "semantic_domain": "supercell_bz"
+    },
+    "invariants": [
+      {
+        "amplitude": 0.0,
+        "boundary_verification": {
+          "boundary_samples": 9,
+          "max_displacement_residual": 0.0,
+          "tolerance": 1e-09,
+          "translations": [
+            [
+              1.0,
+              1.7320508075688772
+            ],
+            [
+              1.0,
+              -1.7320508075688772
+            ]
+          ],
+          "verified": true
+        },
+        "capability": "SUPERCELL_PERIODIC",
+        "field_fingerprint": "401bdd18af119f187bdf557236a3cca39418c665a337e831832df7306fa0bc19",
+        "jacobian": {
+          "max_condition": 1.0,
+          "max_determinant": 1.0,
+          "min_determinant": 1.0,
+          "samples": 9
+        },
+        "verified": true
+      },
+      {
+        "amplitude": 0.005,
+        "boundary_verification": {
+          "boundary_samples": 9,
+          "max_displacement_residual": 2.4460101032377036e-18,
+          "tolerance": 1e-09,
+          "translations": [
+            [
+              1.0,
+              1.7320508075688772
+            ],
+            [
+              1.0,
+              -1.7320508075688772
+            ]
+          ],
+          "verified": true
+        },
+        "capability": "SUPERCELL_PERIODIC",
+        "field_fingerprint": "6ef5e8af0071a2a584a7d96008aa8b8d98b24f1e1e59ed4e368f52a75f510e7b",
+        "jacobian": {
+          "max_condition": 1.016444153008286,
+          "max_determinant": 1.0007768890355249,
+          "min_determinant": 0.985201484916297,
+          "samples": 9
+        },
+        "verified": true
+      },
+      {
+        "amplitude": -0.005,
+        "boundary_verification": {
+          "boundary_samples": 9,
+          "max_displacement_residual": 2.4460101032377036e-18,
+          "tolerance": 1e-09,
+          "translations": [
+            [
+              1.0,
+              1.7320508075688772
+            ],
+            [
+              1.0,
+              -1.7320508075688772
+            ]
+          ],
+          "verified": true
+        },
+        "capability": "SUPERCELL_PERIODIC",
+        "field_fingerprint": "a8f47c53f0aa93f2a793434464566c2709966e2ee6ca194ca5f8147844ea7e24",
+        "jacobian": {
+          "max_condition": 1.0162006372173744,
+          "max_determinant": 1.0147985150837031,
+          "min_determinant": 0.999223110964475,
+          "samples": 9
+        },
+        "verified": true
+      },
+      {
+        "amplitude": 0.0025,
+        "boundary_verification": {
+          "boundary_samples": 9,
+          "max_displacement_residual": 1.2230050516188518e-18,
+          "tolerance": 1e-09,
+          "translations": [
+            [
+              1.0,
+              1.7320508075688772
+            ],
+            [
+              1.0,
+              -1.7320508075688772
+            ]
+          ],
+          "verified": true
+        },
+        "capability": "SUPERCELL_PERIODIC",
+        "field_fingerprint": "a457053a456a4fd4f72ff4a16b056d961c35bdb6a0c469d8927c410cae1c4397",
+        "jacobian": {
+          "max_condition": 1.008157916689596,
+          "max_determinant": 1.0003884445177624,
+          "min_determinant": 0.9926007424581484,
+          "samples": 9
+        },
+        "verified": true
+      },
+      {
+        "amplitude": -0.0025,
+        "boundary_verification": {
+          "boundary_samples": 9,
+          "max_displacement_residual": 1.2230050516188518e-18,
+          "tolerance": 1e-09,
+          "translations": [
+            [
+              1.0,
+              1.7320508075688772
+            ],
+            [
+              1.0,
+              -1.7320508075688772
+            ]
+          ],
+          "verified": true
+        },
+        "capability": "SUPERCELL_PERIODIC",
+        "field_fingerprint": "36ceaee1e869fb4ab762a8b9e55891f4a51b72a8e897393cf72dcc307ab349de",
+        "jacobian": {
+          "max_condition": 1.008097533327911,
+          "max_determinant": 1.0073992575418516,
+          "min_determinant": 0.9996115554822376,
+          "samples": 9
+        },
+        "verified": true
+      }
+    ],
+    "q_points": [
+      {
+        "fractional": [
+          0.0,
+          0.0
+        ],
+        "id": "q0",
+        "primitive_labels_allowed": false,
+        "semantic_domain": "supercell_bz"
+      },
+      {
+        "fractional": [
+          0.12,
+          0.07
+        ],
+        "id": "q1",
+        "primitive_labels_allowed": false,
+        "semantic_domain": "supercell_bz"
+      },
+      {
+        "fractional": [
+          -0.09,
+          0.14
+        ],
+        "id": "q2",
+        "primitive_labels_allowed": false,
+        "semantic_domain": "supercell_bz"
+      }
+    ]
+  }
+}

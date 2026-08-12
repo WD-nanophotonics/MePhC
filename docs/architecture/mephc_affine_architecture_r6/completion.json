@@ -1,0 +1,11 @@
+{
+  "schema": "mephc.affine_architecture.r6.completion.v1",
+  "overall_status": "BLOCKED_NONCONVERGED",
+  "downstream_status": {"SqrLatt": "PASS", "TriLatt": "BLOCKED_NONCONVERGED"},
+  "runtime": "/home/icy/miniconda3/envs/mp/bin/python",
+  "email_sent": false,
+  "repository_only": true,
+  "final_refs": {"MePhC": "PENDING", "SqrLatt": "PENDING", "TriLatt": "PENDING"},
+  "remote_equal": false
+}
+

@@ -23,7 +23,7 @@ from .kspace import (
     generic_bz_path,
 )
 from .plotting import plot_band_path, plot_scalar_field
-from .capabilities import field_capabilities, require_primitive
+from .capabilities import field_capabilities, require_primitive, require_supercell
 from .deformation import canonicalize_field
 
 
@@ -168,6 +168,64 @@ class Band:
             shape=shape,
         )
 
+    def build_supercell_solver(self, pattern, field, *, q_points, num_bands, resolution=None):
+        """Build a periodic-supercell MPB solver from explicit R6 inputs.
+        This path is intentionally separate from the legacy primitive-cell
+        workflow.  The field capability and generic q-point IDs are checked
+        before any solver object is created.
+        """
+        field = canonicalize_field(field)
+        require_supercell(field, "periodic-supercell MPB solve")
+        lattice_model = BravaisLattice2D(
+            field.direct_basis,
+            kind="custom",
+            reference_family="custom",
+            deformation_matrix=np.eye(2),
+        )
+        replication = np.asarray(field.supercell.matrix, dtype=int)
+        if not np.array_equal(replication, np.diag(np.diag(replication))):
+            raise ValueError("R6 supercell solver currently requires diagonal replication")
+        size = tuple(int(value) for value in np.diag(replication))
+        geometry_lattice = field.supercell.reference_lattice.to_meep_lattice(size=size)
+        geometry = to_meep_geometry(
+            pattern,
+            material=self.feature_material,
+            height=self.h,
+            geometry_lattice=geometry_lattice,
+            rectify=True,
+            shape="auto",
+        )
+        vectors = []
+        for point in q_points:
+            point_id = getattr(point, "point_id", None)
+            if point_id in {"Gamma", "K", "M", "X"}:
+                raise ValueError("R6 supercell q-point IDs must remain generic")
+            fractional = getattr(point, "fractional", point)
+            values = np.asarray(fractional, dtype=float)
+            if values.shape != (2,) or not np.all(np.isfinite(values)):
+                raise ValueError("supercell q-points must be finite 2D fractional coordinates")
+            vectors.append(mp.Vector3(float(values[0]), float(values[1])))
+        return mpb.ModeSolver(
+            geometry_lattice=geometry_lattice,
+            geometry=self.create_material_block() + geometry,
+            default_material=mp.air,
+            resolution=self.resolution if resolution is None else int(resolution),
+            num_bands=int(num_bands),
+            k_points=vectors,
+            verbose=False,
+        )
+    def run_supercell(self, pattern, field, *, q_points, num_bands, resolution=None, polarization=None):
+        """Run the verified periodic-supercell solver and return its raw solver."""
+        solver = self.build_supercell_solver(
+            pattern,
+            field,
+            q_points=q_points,
+            num_bands=num_bands,
+            resolution=resolution,
+        )
+        normalized = self._normalize_polarization(self.polarization if polarization is None else polarization)
+        solver.run_parity(p=mp.TE if normalized == "TE" else mp.TM, reset_fields=True)
+        return solver
     def run_simulation(self, pattern, ks, num_b, show_dielectric=False, polarization=None):
         """Run the configured TE/TM parity, optionally overriding it per call."""
         self.require_primitive_semantics("primitive MPB band solve")

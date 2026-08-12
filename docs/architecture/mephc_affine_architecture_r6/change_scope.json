@@ -1,0 +1,11 @@
+{
+  "schema": "mephc.affine_architecture.r6.change_scope.v1",
+  "repositories": {
+    "MePhC": ["mephc/response.py", "mephc/band.py", "tests/test_r6_response.py", "docs/architecture/mephc_affine_architecture_r6/"],
+    "SqrLatt": ["square_hole/r5_deformation.py"],
+    "TriLatt": ["r5_deformation.py"]
+  },
+  "forbidden_changes": ["TriLatt/.vscode", "TriLatt/README.md", "MePhC public primitive API semantics", "MPB result files"],
+  "network_installation": false
+}
+
