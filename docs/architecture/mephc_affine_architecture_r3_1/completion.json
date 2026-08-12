@@ -29,9 +29,9 @@
     },
     {
       "message": "Add R3.1 corrective evidence bundle",
-      "pushed": false,
       "repository": "MePhC",
-      "sha": "pending"
+      "sha": "0d6bf6182fd01ce47356c31db7363b5bdc72643a",
+      "pushed": true
     }
   ],
   "compatibility_gates": {
@@ -109,7 +109,7 @@
     "SqrLatt remains unmigrated and unchanged"
   ],
   "push_results": {
-    "MePhC_evidence": "pending",
+    "MePhC_evidence": "ready_to_push",
     "MePhC_production": "pushed",
     "TriLatt_production": "pushed"
   },
