@@ -1,0 +1,22 @@
+{
+  "schema": "mephc.r5_1.change_scope.v1",
+  "production_changes": {
+    "MePhC": [],
+    "MePhC-SqrLatt": [],
+    "MePhC-TriLatt": ["r5_deformation.py"]
+  },
+  "evidence_changes": {
+    "MePhC": ["docs/architecture/mephc_affine_architecture_r5_1/"],
+    "MePhC-SqrLatt": [],
+    "MePhC-TriLatt": []
+  },
+  "preexisting_user_changes_preserved": {
+    "MePhC-TriLatt": ["README.md", ".vscode/launch.json", ".vscode/settings.json"]
+  },
+  "allowlist_check": {
+    "production_paths_within_r5_1_allowlist": true,
+    "global_affine_r4_semantics_unchanged": true,
+    "no_r6": true
+  },
+  "final_refs": "recorded_in_completion.json"
+}

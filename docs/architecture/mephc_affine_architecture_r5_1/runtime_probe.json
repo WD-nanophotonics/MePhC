@@ -1,0 +1,38 @@
+{
+  "schema": "mephc.r5_1.runtime_probe.v1",
+  "candidates": [
+    {
+      "label": "default-python3",
+      "executable": "/usr/bin/python3",
+      "version": "3.14.4",
+      "import_meep": false,
+      "import_mpb": false,
+      "modesolver_available": false,
+      "error": "ModuleNotFoundError: No module named 'meep'"
+    },
+    {
+      "label": "accepted-r4-runtime",
+      "executable": "/home/icy/miniconda3/envs/mp/bin/python",
+      "version": "3.13.13",
+      "import_meep": true,
+      "meep_origin": "/home/icy/miniconda3/envs/mp/lib/python3.13/site-packages/meep/__init__.py",
+      "mpb_origin": "/home/icy/miniconda3/envs/mp/lib/python3.13/site-packages/meep/mpb/__init__.py",
+      "import_mpb": true,
+      "modesolver_available": true,
+      "preferred": true
+    }
+  ],
+  "existing_conda_environments": [
+    {"name": "base", "path": "/home/icy/miniconda3"},
+    {"name": "mp", "path": "/home/icy/miniconda3/envs/mp"}
+  ],
+  "selected_runtime": "/home/icy/miniconda3/envs/mp/bin/python",
+  "no_install_or_upgrade_performed": true,
+  "r4_control": {
+    "status": "PASS",
+    "solver": "meep.mpb.ModeSolver",
+    "log_path": "logs/r4_control_smoke.log",
+    "smoke_count": 5,
+    "exit_code": 0
+  }
+}
