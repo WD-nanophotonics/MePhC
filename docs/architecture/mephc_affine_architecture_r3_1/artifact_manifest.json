@@ -18,8 +18,8 @@
     },
     {
       "path": "completion.json",
-      "sha256": "27a7598f38c6b635fd9e75d046ba6ea31ca34c99b55c995042c50caa24f3bff3",
-      "size": 5212
+      "sha256": "58d12d7b4dd33ad77b125f9ee709853b0364b7ecdc7522eb93add79a73c99f3d",
+      "size": 13541
     },
     {
       "path": "entrypoint_smoke.json",
@@ -105,6 +105,6 @@
   "excluded_paths": [
     "artifact_manifest.json"
   ],
-  "generated_at": "2026-08-12T07:12:46.520170+00:00",
+  "generated_at": "2026-08-12T07:16:12.589400+00:00",
   "status": "PASS"
 }
