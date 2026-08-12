@@ -14,8 +14,8 @@
     "SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
     "TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
   },
-  "remote_equal": true,
-  "push_status": "PASS",
+  "remote_equal": false,
+  "push_status": "PENDING_AUTHORIZATION",
   "email_sent": false,
   "reason": "TriLatt protected R6 zero ladder is not reproducible at resolution 8 from the locked refs; old evidence was not modified."
 }
