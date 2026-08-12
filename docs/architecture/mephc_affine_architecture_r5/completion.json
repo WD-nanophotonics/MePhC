@@ -1,6 +1,6 @@
 {
   "schema": "mephc.r5.completion.v1",
-  "status": "PAYLOAD",
+  "status": "COMPLETE_WITH_BLOCKED_SMOKE",
   "contract_id": "mephc-affine-architecture-r5-local-deformation-foundation",
   "required_modes": ["GLOBAL_AFFINE_PERIODIC", "SUPERCELL_PERIODIC", "APERIODIC_LOCAL"],
   "r6": false,
@@ -8,5 +8,5 @@
   "constant_affine_equivalent_to_r4": true,
   "downstreams_use_shared_field": ["MePhC-SqrLatt", "MePhC-TriLatt"],
   "real_mpb_supercell_smoke": "BLOCKED_NO_MEEP_RUNTIME",
-  "seal": {"payload_parent": null, "metadata_only_paths": ["artifact_manifest.json", "completion.json"]}
+  "seal": {"payload_parent": "824e480", "metadata_only_paths": ["artifact_manifest.json", "completion.json"]}
 }
