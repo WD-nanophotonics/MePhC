@@ -118,7 +118,7 @@ class Band:
     def default_path(self) -> HighSymmetryPath:
         """Return an identity path or honest generic BZ landmark path."""
         if self.lattice_type == "square":
-            return square_gxm_path()
+            return square_gxm_path() if self.lattice_model.is_identity else generic_bz_path(self.lattice_model)
         if self.lattice_model.supports_legacy("gkm"):
             return triangular_gkm_path()
         return generic_bz_path(self.lattice_model)
@@ -407,10 +407,23 @@ class Band:
         return result
 
     def compute_square_efs(self, pattern, N, extent=0.5, num_bands=3):
-        """Calculate EFS data on an ``N x N`` square over ``[-extent, extent]^2``."""
-        k_points = np.asarray(square_full_zone_points(N=N, extent=extent), dtype=float)
+        """Calculate identity square-grid or current-BZ EFS data.
+
+        The legacy square grid and ordering are retained only for the identity
+        square lattice. An affine square lattice dispatches to its validated
+        current Wigner-Seitz BZ through the canonical lattice model.
+        """
+        if self.lattice_model.is_identity:
+            k_points = np.asarray(square_full_zone_points(N=N, extent=extent), dtype=float)
+            grid_name = "square_full_zone"
+        else:
+            k_points = np.asarray(
+                SquareKSpace(N=N, lattice_model=self.lattice_model).current_bz(),
+                dtype=float,
+            )
+            grid_name = "current_first_bz"
         result = self.compute_efs(pattern, k_points, num_bands=num_bands)
-        result.metadata.update({"grid": "square_full_zone", "N": N, "extent": extent})
+        result.metadata.update({"grid": grid_name, "N": N, "extent": extent, "domain": grid_name})
         return result
 
     def plot_efs(self, result: EFSResult, band_index=0, **kwargs):

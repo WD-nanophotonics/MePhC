@@ -147,8 +147,45 @@ class SquareKSpace:
         return [(float(kx), float(ky)) for kx in values for ky in values]
 
     def first_bz(self) -> list[tuple[float, float]]:
-        """Return the square first Brillouin zone ``[-0.5, 0.5]^2``."""
+        """Return the legacy square grid or the current validated BZ grid.
+
+        The identity square lattice keeps the historical [-0.5, 0.5]^2
+        ordering. A deformed model uses its reconstructed Wigner-Seitz cell.
+        """
+        if self.lattice_model is not None and not self.lattice_model.is_identity:
+            return self.current_bz()
         return self.full_grid(extent=0.5)
+
+    def current_bz(self, lattice_model: BravaisLattice2D | None = None) -> list[tuple[float, float]]:
+        """Sample the current Wigner-Seitz BZ in Cartesian reciprocal space.
+
+        N controls the spacing relative to the shortest reciprocal basis
+        vector. Points are filtered by the actual polygon and ordered by
+        increasing kx then ky; a bounding rectangle is never claimed to be
+        the BZ.
+        """
+        model = lattice_model or self.lattice_model
+        if model is None:
+            raise ValueError("current_bz requires a BravaisLattice2D model")
+        polygon = np.asarray(first_brillouin_zone(model).vertices, dtype=float)
+        reciprocal = np.asarray(model.reciprocal_basis, dtype=float)
+        spacing = min(float(np.linalg.norm(reciprocal[:, 0])), float(np.linalg.norm(reciprocal[:, 1]))) / float(self.N)
+        if not np.isfinite(spacing) or spacing <= 0:
+            raise ValueError("current BZ sampling spacing must be positive")
+        lower = polygon.min(axis=0) - 0.5 * spacing
+        upper = polygon.max(axis=0) + 0.5 * spacing
+        x_values = np.arange(np.ceil(lower[0] / spacing), np.floor(upper[0] / spacing) + 1.0) * spacing
+        y_values = np.arange(np.ceil(lower[1] / spacing), np.floor(upper[1] / spacing) + 1.0) * spacing
+        polygon_shape = Polygon(polygon)
+        tolerance = 1e-10 * max(1.0, float(np.max(np.linalg.norm(polygon, axis=1))))
+        accepted = []
+        for kx in x_values:
+            for ky in y_values:
+                if polygon_shape.buffer(tolerance).covers(Point(float(kx), float(ky))):
+                    accepted.append((float(kx), float(ky)))
+        if not accepted:
+            raise ValueError("current BZ sampling produced no points; increase N")
+        return accepted
 
     @property
     def first_bz_poly(self) -> list[tuple[float, float]]:

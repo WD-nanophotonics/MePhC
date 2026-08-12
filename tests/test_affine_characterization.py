@@ -110,7 +110,7 @@ class AffineCharacterizationTests(unittest.TestCase):
     self.assertEqual(workflow.resolve_symmetry_mode(config, "auto"), "c3")
 
   def test_lock_05_c4_selection_is_explicit_and_alias_stable(self):
-    """Record that SqrLatt currently selects C4 explicitly, not heuristically."""
+    """Record that SqrLatt auto-selects verified C4, not a raw token."""
     config = load_module(SQRLATT_ROOT / "square_hole" / "config.py", "mephc_r1_1_sqrlatt_config_c4")
     runner = load_module(SQRLATT_ROOT / "berry_curvature.py", "mephc_r1_1_sqrlatt_runner_c4")
     sys.path.insert(0, str(SQRLATT_ROOT / "square_hole"))
@@ -120,7 +120,8 @@ class AffineCharacterizationTests(unittest.TestCase):
       sys.path.remove(str(SQRLATT_ROOT / "square_hole"))
     self.assertEqual(config.lattice_type, "square")
     self.assertEqual(config.hole_shape, "square_hole")
-    self.assertEqual(case.symmetry, "c4q")
+    self.assertEqual(case.symmetry, "auto")
+    self.assertEqual(config.resolve_symmetry(case.symmetry), "c4q")
     self.assertEqual(runner._symmetry_token("c4", False), "c4q")
     self.assertEqual(runner._symmetry_token("c4q", False), "c4q")
 
