@@ -6,6 +6,7 @@
   "email_sent": false,
   "repository_only": true,
   "final_refs": {"MePhC": "339a1c1", "SqrLatt": "da39f45", "TriLatt": "45891d0"},
-  "remote_equal": true
+  "remote_equal": false,
+  "push_status": "BLOCKED_AUTHENTICATION"
 }
 
