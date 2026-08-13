@@ -52,8 +52,8 @@
     },
     {
       "path": "logs/mpb_stdout.log",
-      "sha256": "a7a5e2a68ce78b5e9babf1aa1426977656d4ae82ca78c33c779c3ba98363fee7",
-      "size_bytes": 402495
+      "sha256": "e0182fbdc0efeff1b8f1f61e04b0ac26abac63024d8388ca489b348f6eaef7b0",
+      "size_bytes": 397712
     },
     {
       "path": "mechanism_adjudication.json",
