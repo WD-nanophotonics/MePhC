@@ -1,0 +1,38 @@
+{
+  "contract_sha256": "c06f22d8b01fd3c3a6809553bb94ff6577501dfd540bdcf4275076209481e1ab",
+  "derived_from_contract": true,
+  "resolution_plan": {
+    "above_112_forbidden": true,
+    "mandatory": [
+      80,
+      96
+    ],
+    "optional_112": "run complete matrix exactly once iff 80_to_96 closure unresolved"
+  },
+  "runtime": {
+    "environment_mutation_allowed": false,
+    "python": "/home/icy/miniconda3/envs/mp/bin/python",
+    "solver": "meep.mpb.ModeSolver",
+    "solver_tolerance": 1e-10
+  },
+  "starting_refs": {
+    "MePhC": "fe2ecd8ade61fcb6cd4d23a4b26c363c3dd04961",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  },
+  "tangent_basis": {
+    "adaptive_h_forbidden": true,
+    "derivative": "s_j(h)=(omega_j(+h)-omega_j(-h))/(2h)",
+    "h_absolute_levels": [
+      0.0005,
+      0.001
+    ],
+    "single_site_rigid_translation_only": true,
+    "sites": [
+      0,
+      1,
+      2
+    ],
+    "weighted_prediction": "G=sum_j d_j*s_j"
+  }
+}

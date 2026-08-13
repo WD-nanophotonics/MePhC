@@ -1,0 +1,9 @@
+area,check,result
+contract,byte-exact SHA,PASS
+inheritance,R10 immutable and R6-R10 digests,PASS
+selection_rule,scoped translated-generator derivation,PASS
+tangent,three sites two fixed h levels,PASS
+full_pattern,three fixed amplitudes and c1 fit,PASS
+controls,three repeats representation uniform translation,PASS
+uncertainty,band3-specific components,PASS
+validator,positive and negative fixtures,PENDING

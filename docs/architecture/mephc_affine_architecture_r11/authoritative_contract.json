@@ -1,0 +1,138 @@
+{
+  "contract_id": "mephc-affine-architecture-r11-nondegenerate-first-order-tangent-basis-closure",
+  "version": "1.0",
+  "starting_refs": {
+    "MePhC": "fe2ecd8ade61fcb6cd4d23a4b26c363c3dd04961",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  },
+  "delivery": {
+    "completion_gmail_required": false,
+    "post_seal_record_commit_forbidden": true,
+    "r12_authorized": false
+  },
+  "runtime": {
+    "python": "/home/icy/miniconda3/envs/mp/bin/python",
+    "solver": "meep.mpb.ModeSolver",
+    "solver_tolerance": 1e-10,
+    "environment_mutation_allowed": false
+  },
+  "r10_inheritance": {
+    "terminal_state": "BLOCKED_FIRST_ORDER_MECHANISM_UNRESOLVED",
+    "final_pair": [64, 80],
+    "primary_q": "q2",
+    "primary_band": 3,
+    "primary_sector": 2,
+    "gap_class": "NONDEGENERATE",
+    "immutable": true
+  },
+  "benchmark": {
+    "replication": [3, 1],
+    "q2": [-0.09, 0.14],
+    "polarization": "TE",
+    "response_bands": [1, 2, 3, 4, 5, 6],
+    "primary_band": 3,
+    "field": "u_A=A*(2*sin(2*pi*xi1)+cos(2*pi*xi1))/sqrt(5)*e_x",
+    "site_coefficients": [0.4472135954999579, 0.5509898714915044, -0.9982034669914622]
+  },
+  "gap_clarification": {
+    "record_global_minimum": true,
+    "record_primary_band3_minimum": true,
+    "primary_nearest_allowed_partner_required": true,
+    "global_as_primary_forbidden": true
+  },
+  "selection_rule": {
+    "generator": "V[d]=sum_j d_j T^j V0 T^-j",
+    "derive_translation_phase_cancellation": true,
+    "require_non_degenerate_assumption": true,
+    "required_scoped_label": "NONDEGENERATE_ZERO_MEAN_FIRST_ORDER_SELECTION_RULE_DERIVED"
+  },
+  "tangent_basis": {
+    "sites": [0, 1, 2],
+    "h_absolute_levels": [0.0005, 0.001],
+    "adaptive_h_forbidden": true,
+    "single_site_rigid_translation_only": true,
+    "derivative": "s_j(h)=(omega_j(+h)-omega_j(-h))/(2h)",
+    "weighted_prediction": "G=sum_j d_j*s_j"
+  },
+  "full_pattern_derivative": {
+    "absolute_levels": [0.0005, 0.001, 0.002],
+    "signed_levels": [-0.002, -0.001, -0.0005, 0.0, 0.0005, 0.001, 0.002],
+    "model": "D(A)=c1+c3*A^2",
+    "adaptive_amplitude_forbidden": true
+  },
+  "resolution_plan": {
+    "mandatory": [80, 96],
+    "optional_112": "run complete matrix exactly once iff 80_to_96 closure unresolved",
+    "above_112_forbidden": true
+  },
+  "controls": {
+    "same_input_repeats_exactly": 3,
+    "same_input_cases": ["A0", "full_A_plus_0.001", "single_site_j0_h_plus_0.001"],
+    "representation_control_full_A": 0.001,
+    "uniform_translation_delta": 0.001,
+    "tangent_geometry_translation_equivalence_required": true
+  },
+  "primary_uncertainty_policy": {
+    "band3_specific_required": true,
+    "global_band_maxima_diagnostic_only": true,
+    "tangent_components": [
+      "low_high_sj_change",
+      "band3_repeat_over_hmin",
+      "band3_representation_over_hmin",
+      "band3_uniform_translation_over_0.001",
+      "finite_h_drift"
+    ],
+    "c1_components": [
+      "abs_c1_high_minus_low",
+      "band3_repeat_over_0.0005",
+      "band3_representation_over_0.001",
+      "band3_uniform_translation_over_0.001",
+      "leave_one_out_c1_spread"
+    ],
+    "combine": "maximum"
+  },
+  "closed_terminals": {
+    "full_numeric_zero": "CLOSED_NONDEGENERATE_FIRST_ORDER_ZERO_SUPPORTED",
+    "analytic_zero_numeric_residual_bounded": "CLOSED_ANALYTIC_FIRST_ORDER_ZERO_NUMERICAL_RESIDUAL_BOUNDED"
+  },
+  "scientific_terminal_states": [
+    "CLOSED_NONDEGENERATE_FIRST_ORDER_ZERO_SUPPORTED",
+    "CLOSED_ANALYTIC_FIRST_ORDER_ZERO_NUMERICAL_RESIDUAL_BOUNDED",
+    "BLOCKED_SELECTION_RULE_NUMERICAL_INCONSISTENCY",
+    "BLOCKED_FIRST_ORDER_ZERO_NUMERICALLY_UNRESOLVED",
+    "BLOCKED_PRIMARY_GAP_AUDIT",
+    "BLOCKED_BAND_IDENTITY_GUARD",
+    "BLOCKED_COMPATIBILITY",
+    "BLOCKED_RUNTIME",
+    "BLOCKED_SCOPE_EXPANSION"
+  ],
+  "holds": {
+    "SqrLatt_ref": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "TriLatt_ref": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b",
+    "TriLatt_fresh_mpb_calls": 0,
+    "production_changes_expected": false
+  },
+  "forbidden": [
+    "q_search",
+    "field_search",
+    "band_search",
+    "adaptive_h",
+    "adaptive_amplitude",
+    "solver_tolerance_other_than_1e-10",
+    "berry_curvature",
+    "berry_curvature_dipole",
+    "topology",
+    "unfolding",
+    "transport",
+    "far_field",
+    "local_aperiodic_deformation",
+    "strain_gauge_field",
+    "curved_space_physics",
+    "elastic_relaxation",
+    "motif_deformation",
+    "strain_dependent_material",
+    "inverse_design",
+    "r12"
+  ]
+}

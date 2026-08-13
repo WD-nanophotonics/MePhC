@@ -1,0 +1,24 @@
+{
+  "assumptions": [
+    "nondegenerate isolated eigenvalue",
+    "identical rigid motifs related by primitive translation at A=0",
+    "differentiable Maxwell/shape perturbation"
+  ],
+  "coefficient_sum": 1.1102230246251565e-16,
+  "coefficient_sum_zero": true,
+  "coefficients": [
+    0.4472135954999579,
+    0.5509898714915044,
+    -0.9982034669914622
+  ],
+  "diagonal_matrix_element": "<psi_s|V[d]|psi_s> = (<psi_s|V0|psi_s>) * sum_j d_j = 0",
+  "generator": "V[d]=sum_j d_j T^j V0 T^-j",
+  "label": "NONDEGENERATE_ZERO_MEAN_FIRST_ORDER_SELECTION_RULE_DERIVED",
+  "limits": [
+    "no degenerate-subspace claim",
+    "no motif/material deformation",
+    "no local/aperiodic claim",
+    "no Berry or transport claim"
+  ],
+  "translation_phase_cancellation": "<psi_s|T^j V0 T^-j|psi_s> is independent of j for T-eigenstate psi_s; bra/ket phases cancel"
+}

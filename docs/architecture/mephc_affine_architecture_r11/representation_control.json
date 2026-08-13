@@ -1,0 +1,86 @@
+{
+  "112": {
+    "all_bands_1_to_6": [
+      2.597269621595899e-12,
+      1.5821233212420793e-12,
+      6.256106743762757e-14,
+      9.673928325071302e-13,
+      3.3977820557140603e-12,
+      6.0285110237146e-14
+    ],
+    "band3": 6.256106743762757e-14,
+    "geometry_equivalent": {
+      "assignment": [
+        2,
+        1,
+        0
+      ],
+      "equivalent": true,
+      "material_types": [
+        "air",
+        "air",
+        "air"
+      ],
+      "maximum_coordinate_residual": 0.0,
+      "polygon_count": 3,
+      "tolerance": 1e-10,
+      "total_coordinate_residual": 0.0
+    }
+  },
+  "80": {
+    "all_bands_1_to_6": [
+      3.3068270344216444e-12,
+      1.4460654895742664e-14,
+      8.9125928859346e-13,
+      5.663802760125236e-13,
+      1.6308066008718924e-12,
+      1.39238620633364e-11
+    ],
+    "band3": 8.9125928859346e-13,
+    "geometry_equivalent": {
+      "assignment": [
+        2,
+        1,
+        0
+      ],
+      "equivalent": true,
+      "material_types": [
+        "air",
+        "air",
+        "air"
+      ],
+      "maximum_coordinate_residual": 0.0,
+      "polygon_count": 3,
+      "tolerance": 1e-10,
+      "total_coordinate_residual": 0.0
+    }
+  },
+  "96": {
+    "all_bands_1_to_6": [
+      3.702690931639552e-12,
+      1.5260015473472777e-13,
+      4.0670244949581047e-13,
+      8.921752225887758e-13,
+      1.025901585904876e-12,
+      4.820477350619967e-12
+    ],
+    "band3": 4.0670244949581047e-13,
+    "geometry_equivalent": {
+      "assignment": [
+        2,
+        1,
+        0
+      ],
+      "equivalent": true,
+      "material_types": [
+        "air",
+        "air",
+        "air"
+      ],
+      "maximum_coordinate_residual": 0.0,
+      "polygon_count": 3,
+      "tolerance": 1e-10,
+      "total_coordinate_residual": 0.0
+    }
+  }
+}

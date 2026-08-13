@@ -1,0 +1,13 @@
+{
+  "final_pair": [
+    64,
+    80
+  ],
+  "gap_class": "NONDEGENERATE",
+  "immutable": true,
+  "primary_band": 3,
+  "primary_q": "q2",
+  "primary_sector": 2,
+  "source_commit": "fe2ecd8ade61fcb6cd4d23a4b26c363c3dd04961",
+  "terminal_state": "BLOCKED_FIRST_ORDER_MECHANISM_UNRESOLVED"
+}
