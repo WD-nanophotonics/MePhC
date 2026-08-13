@@ -1,0 +1,25 @@
+{
+  "schema": "mephc.affine_architecture.r7.integrity.v1",
+  "algorithm": "sha256",
+  "protected_r6": {
+    "source": "docs/architecture/mephc_affine_architecture_r6/integrity_digests.json",
+    "verified": true
+  },
+  "protected_r6_1": {
+    "source": "docs/architecture/mephc_affine_architecture_r6_1/integrity_digests.json",
+    "verified": true
+  },
+  "payload": {
+    "docs/architecture/mephc_affine_architecture_r7/README.md": "a52f55d7c00dc0c770155b7df9eb1c8a87339d95983732dd341dc67b874a79e1",
+    "docs/architecture/mephc_affine_architecture_r7/response_contract.md": "3d83107d8839943b556e6e95a4665cb85c0f378e1d55bc9aacfa975789a41c3a",
+    "docs/architecture/mephc_affine_architecture_r7/change_scope.json": "2ab7f3fe4a983fae49a8949c17b8f4525ae61de16b15e569dbf42e83c867df2c",
+    "docs/architecture/mephc_affine_architecture_r7/qualification_matrix.json": "fcce34e73922daf2a6142c5ec0299ebadcc77ae4be1018eb63ab9ebeeeee8142",
+    "docs/architecture/mephc_affine_architecture_r7/validation_report.md": "810fb112e9500cfccbb9a72332b8fa1449168949a2969768f1fc8e38a0a74be6",
+    "docs/architecture/mephc_affine_architecture_r7/run_r7_qualification.py": "7c157367156ce69be70cbd41441372e186ccb7ec4111b01c865cd85ecc1e9487",
+    "docs/architecture/mephc_affine_architecture_r7/validate_r7.py": "2649c239c9e53eda4fca28ce7286f62df73fc614c418fd3cd53d2de18905841f",
+    "docs/architecture/mephc_affine_architecture_r7/test_coverage_matrix.csv": "c814013d82f744445f274b471b1e6bb86c77c653ba90116484eeb329ac67676d",
+    "mephc/r7_response.py": "81a2be8419a28deb9b86a235d3e09b0cbcf0f0480054b8e9c680c00de47ccc29",
+    "mephc/__init__.py": "d0be5e51c262c4e5cb248b68c03da30ac53016a35d8913a0cbcef18d62434e9e",
+    "tests/test_r7_response.py": "227f0ad0702389372ce4458870627e956e3402742dfd2bdd795ce57faa18a3ae"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "mephc.affine_architecture.r7.change_scope.v1",
+  "in_scope": [
+    "equivalence-aware one-to-one Maxwell spectrum matching",
+    "semantic identity guard for RawSpectrum",
+    "mapped central odd/even differential response",
+    "regression tests and contract evidence"
+  ],
+  "forbidden": [
+    "primitive-band unfolding",
+    "topological interpretation",
+    "Berry/BCD/EFS/transport claims",
+    "modification of protected R6/R6.1 evidence",
+    "implicit network installation"
+  ]
+}

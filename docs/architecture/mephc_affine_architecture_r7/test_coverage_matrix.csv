@@ -1,0 +1,7 @@
+test_id,scope,status,evidence
+R7-01,semantic identity mismatch blocks, PASS,tests/test_r7_response.py
+R7-02,minimum-cost band permutation matching, PASS,tests/test_r7_response.py
+R7-03,pure permutation null response is not qualified, PASS,tests/test_r7_response.py
+R7-04,physical shift is permutation invariant, PASS,tests/test_r7_response.py
+R7-05,protected R6.1 raw Maxwell spectra post-hoc qualification, PASS,qualification_matrix.json
+R7-06,strict evidence validator, PASS,validate_r7.py

@@ -35,6 +35,10 @@ __all__ = [
     "deform_pattern_rigid",
     "replicated_lattice_sites",
     "replicated_rigid_pattern",
+    "DifferentialMaxwellResponse",
+    "SpectralEquivalence",
+    "match_equivalent_spectrum",
+    "qualify_differential_maxwell_response",
 ]
 
 
@@ -140,4 +144,11 @@ def __getattr__(name):
         )
 
         return locals()[name]
+    if name in {
+        "DifferentialMaxwellResponse", "SpectralEquivalence",
+        "match_equivalent_spectrum", "qualify_differential_maxwell_response",
+    }:
+        from . import r7_response
+
+        return getattr(r7_response, name)
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
