@@ -6,6 +6,11 @@
     20,
     24
   ],
+  "final_refs": {
+    "MePhC": "PENDING_FINAL_SEAL",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  },
   "geometry_equivalence": "EQUIVALENT_BY_VERIFIED_OPERATION",
   "geometry_matching_candidate": {
     "match": {
@@ -43,12 +48,18 @@
       0
     ]
   },
+  "payload_parent": "61ea464b7f571c3ef33eb536cc2b3885744ef827",
   "push_status": "PENDING",
   "r8_authorized": false,
   "remote_equal": false,
   "resolved_count": 1,
   "schema": "mephc.affine_architecture.r7_3.completion.v1",
   "scientific_terminal_state": "BLOCKED_EQUIVALENCE_SPECTRAL_MISMATCH",
+  "starting_refs": {
+    "MePhC": "6ca30e56de14b526dcd81fcd7000760f0602d71c",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  },
   "target_denominator": 5,
   "terminal_state": "BLOCKED_EQUIVALENCE_SPECTRAL_MISMATCH",
   "trilatt_fresh_solver_calls": 0

@@ -8,7 +8,7 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parent
 LOCKED_CONTRACT_SHA256 = "c2f9d2c8f1b0742cb032abf8b9bd94172ba49d8bcf1a814342b0b181d684a37a"
-REQUIRED = {"README.md", "authoritative_contract.json", "contract_preflight.json", "preflight.json", "protected_digest_check.json", "candidate_operations.json", "geometry_sign_equivalence.json", "geometry_negative_fixtures.json", "replay_floor.json", "fresh_solver_execution.json", "raw_spectra.json", "target_differential_by_resolution.json", "differential_convergence.json", "resolved_targets.json", "quadratic_diagnostic.json", "trilatt_hold.json", "change_scope.json", "test_coverage_matrix.csv", "validation_report.md", "known_limits_and_r8.md", "run_r7_3_closure.py", "validate_r7_3.py", "validator_negative_fixtures.py", "completion.json"}
+REQUIRED = {"README.md", "authoritative_contract.json", "contract_preflight.json", "preflight.json", "protected_digest_check.json", "candidate_operations.json", "geometry_sign_equivalence.json", "geometry_negative_fixtures.json", "replay_floor.json", "fresh_solver_execution.json", "raw_spectra.json", "target_differential_by_resolution.json", "differential_convergence.json", "resolved_targets.json", "quadratic_diagnostic.json", "trilatt_hold.json", "change_scope.json", "test_coverage_matrix.csv", "validation_report.md", "known_limits_and_r8.md", "run_r7_3_closure.py", "validate_r7_3.py", "validator_negative_fixtures.py", "artifact_manifest.json", "integrity_digests.json", "completion.json"}
 
 
 class ValidationError(RuntimeError):
@@ -27,6 +27,15 @@ def validate_bundle(root=ROOT):
     missing = sorted(name for name in REQUIRED if not (root / name).is_file())
     if missing or not (root / "logs").is_dir():
         fail(f"missing required evidence: {missing}; logs_dir={(root / 'logs').is_dir()}")
+    manifest = read(root, "artifact_manifest.json")
+    integrity = read(root, "integrity_digests.json")
+    if manifest.get("schema") != "mephc.affine_architecture.r7_3.artifact_manifest.v1" or integrity.get("algorithm") != "sha256":
+        fail("seal metadata schema mismatch")
+    if set(manifest.get("files", [])) != set(integrity.get("payload", {})):
+        fail("manifest and integrity payload file sets differ")
+    for name, expected in integrity.get("payload", {}).items():
+        if hashlib.sha256((root.parent.parent.parent / name).read_bytes()).hexdigest() != expected:
+            fail(f"payload SHA-256 mismatch: {name}")
     contract_path = root / "authoritative_contract.json"
     contract = json.loads(contract_path.read_text(encoding="utf-8"))
     digest = hashlib.sha256(contract_path.read_bytes()).hexdigest()

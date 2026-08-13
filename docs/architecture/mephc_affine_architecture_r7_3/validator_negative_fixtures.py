@@ -20,7 +20,9 @@ def main():
     results = {}
     for name, (relative, mutate) in cases.items():
         with tempfile.TemporaryDirectory(prefix="r73-negative-") as directory:
-            copy = Path(directory) / ROOT.name
+            repo_copy = Path(directory)
+            copy = repo_copy / "docs" / "architecture" / ROOT.name
+            copy.parent.mkdir(parents=True)
             shutil.copytree(ROOT, copy)
             path = copy / relative
             path.write_bytes(mutate(path.read_bytes()))
