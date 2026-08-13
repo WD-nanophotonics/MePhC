@@ -1,0 +1,13 @@
+{
+  "SqrLatt": "PASS_REAL_MPB",
+  "TriLatt": "AUDITED_NOT_QUALIFIED_NONCONVERGED",
+  "geometry": {
+    "SqrLatt": "PASS",
+    "TriLatt": "PASS"
+  },
+  "protected_r6_inputs_modified": false,
+  "solver": "meep.mpb.ModeSolver",
+  "status": "PASS_R7_1_REAL_MPB_SQRLATT_TRILATT_AUDITED",
+  "tri_real_data_recorded": true,
+  "tri_response_claim": false
+}

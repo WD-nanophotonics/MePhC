@@ -1,0 +1,26 @@
+{
+  "schema": "mephc.affine_architecture.r7_1.artifact_manifest.v1",
+  "status": "SEALED_PASS_R7_1_REAL_MPB_SQRLATT_TRILATT_AUDITED",
+  "payload_parent": "PENDING_PAYLOAD_COMMIT",
+  "files": [
+    "README.md",
+    "response_contract.md",
+    "change_scope.json",
+    "geometry_equivalence.json",
+    "real_mpb_response.json",
+    "runtime_probe.json",
+    "completion_probe.json",
+    "run_r7_1_closure.py",
+    "validate_r7_1.py",
+    "test_coverage_matrix.csv",
+    "validation_report.md",
+    "mephc/geometry_equivalence.py",
+    "mephc/__init__.py",
+    "tests/test_geometry_equivalence.py"
+  ],
+  "protected_inputs": [
+    "docs/architecture/mephc_affine_architecture_r6/integrity_digests.json",
+    "docs/architecture/mephc_affine_architecture_r6_1/integrity_digests.json",
+    "docs/architecture/mephc_affine_architecture_r6_1/sqrlatt_response.json"
+  ]
+}

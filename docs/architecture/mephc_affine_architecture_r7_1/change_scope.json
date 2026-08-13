@@ -1,0 +1,16 @@
+{
+  "schema": "mephc.affine_architecture.r7_1.change_scope.v1",
+  "in_scope": [
+    "polygon-set geometry equivalence with ordering invariance",
+    "real MPB five-amplitude differential closure",
+    "RawSpectrum provenance and R7 qualification integration",
+    "SqrLatt closure and explicit TriLatt non-converged status"
+  ],
+  "forbidden": [
+    "modification of protected R6/R6.1 evidence",
+    "primitive-band unfolding",
+    "topological interpretation",
+    "Berry/BCD/EFS/transport claims",
+    "implicit network installation"
+  ]
+}

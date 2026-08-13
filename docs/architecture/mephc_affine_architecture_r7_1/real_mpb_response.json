@@ -1,0 +1,5628 @@
+{
+  "SqrLatt": {
+    "counts": {
+      "blocked": 12,
+      "equivalent_null": 1,
+      "pass_differential": 5,
+      "total": 18
+    },
+    "raw_provenance": [
+      {
+        "frequencies": [
+          0.0,
+          0.1951188400604619,
+          0.19545512897127626,
+          0.2608548134420354,
+          0.26156388391852453,
+          0.28128632818727717
+        ],
+        "point": {
+          "fractional": [
+            0.0,
+            0.0
+          ],
+          "id": "q0",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.0,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.03133788996648689,
+          0.18678052314980353,
+          0.19380205559834163,
+          0.2651646227154987,
+          0.27075154374312077,
+          0.2728311491363138
+        ],
+        "point": {
+          "fractional": [
+            0.12,
+            0.07
+          ],
+          "id": "q1",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.0,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.03747836894601791,
+          0.18407084828548728,
+          0.19277412435848237,
+          0.26778190368030913,
+          0.26901981885012255,
+          0.2734130061814965
+        ],
+        "point": {
+          "fractional": [
+            -0.09,
+            0.14
+          ],
+          "id": "q2",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.0,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.0,
+          0.19507130574043108,
+          0.19538398998634976,
+          0.2605337984624095,
+          0.26122824320709326,
+          0.2811426705652173
+        ],
+        "point": {
+          "fractional": [
+            0.0,
+            0.0
+          ],
+          "id": "q0",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.005,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.03127144786067903,
+          0.18640453932217266,
+          0.19403266711358566,
+          0.2655146209628057,
+          0.26985413136992603,
+          0.2725157167766599
+        ],
+        "point": {
+          "fractional": [
+            0.12,
+            0.07
+          ],
+          "id": "q1",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.005,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.037493133297873474,
+          0.18427619730627987,
+          0.19239806992469324,
+          0.26706069530804777,
+          0.2687919553933227,
+          0.27367015389972216
+        ],
+        "point": {
+          "fractional": [
+            -0.09,
+            0.14
+          ],
+          "id": "q2",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.005,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.0,
+          0.19507130590078553,
+          0.1953839910664638,
+          0.2605337993277885,
+          0.2612282446391522,
+          0.28114267685756106
+        ],
+        "point": {
+          "fractional": [
+            0.0,
+            0.0
+          ],
+          "id": "q0",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": -0.005,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.03127144786455588,
+          0.18640453932484602,
+          0.1940326671136534,
+          0.2655146209760801,
+          0.2698541313643015,
+          0.2725157167785585
+        ],
+        "point": {
+          "fractional": [
+            0.12,
+            0.07
+          ],
+          "id": "q1",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": -0.005,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.03749313329797938,
+          0.18427619730629372,
+          0.19239806992470856,
+          0.26706069530807447,
+          0.2687919553933739,
+          0.2736701538999699
+        ],
+        "point": {
+          "fractional": [
+            -0.09,
+            0.14
+          ],
+          "id": "q2",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": -0.005,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.0,
+          0.19506547852952744,
+          0.19541013210149652,
+          0.260589787330253,
+          0.26139543546347477,
+          0.2811724497909464
+        ],
+        "point": {
+          "fractional": [
+            0.0,
+            0.0
+          ],
+          "id": "q0",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.0025,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.031275049365435084,
+          0.18640079867839393,
+          0.19406576353645333,
+          0.2656759332997444,
+          0.2699041791072302,
+          0.2725524926102292
+        ],
+        "point": {
+          "fractional": [
+            0.12,
+            0.07
+          ],
+          "id": "q1",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.0025,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.03750313097526683,
+          0.18431301067354822,
+          0.19239920023751378,
+          0.2671144244041946,
+          0.2688299885305249,
+          0.27382118980913234
+        ],
+        "point": {
+          "fractional": [
+            -0.09,
+            0.14
+          ],
+          "id": "q2",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.0025,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.0,
+          0.19506547846696456,
+          0.19541013304446822,
+          0.2605897879029771,
+          0.2613954365351703,
+          0.28117245460207296
+        ],
+        "point": {
+          "fractional": [
+            0.0,
+            0.0
+          ],
+          "id": "q0",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": -0.0025,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.03127504937257348,
+          0.1864007986882916,
+          0.19406576353666594,
+          0.26567593333819683,
+          0.26990417910231423,
+          0.272552492605571
+        ],
+        "point": {
+          "fractional": [
+            0.12,
+            0.07
+          ],
+          "id": "q1",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": -0.0025,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.03750313097542893,
+          0.18431301067357128,
+          0.19239920023754004,
+          0.26711442440416017,
+          0.2688299885305943,
+          0.2738211898096604
+        ],
+        "point": {
+          "fractional": [
+            -0.09,
+            0.14
+          ],
+          "id": "q2",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": -0.0025,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      }
+    ],
+    "raw_spectra": {
+      "-0.0025": [
+        [
+          0.0,
+          0.19506547846696456,
+          0.19541013304446822,
+          0.2605897879029771,
+          0.2613954365351703,
+          0.28117245460207296
+        ],
+        [
+          0.03127504937257348,
+          0.1864007986882916,
+          0.19406576353666594,
+          0.26567593333819683,
+          0.26990417910231423,
+          0.272552492605571
+        ],
+        [
+          0.03750313097542893,
+          0.18431301067357128,
+          0.19239920023754004,
+          0.26711442440416017,
+          0.2688299885305943,
+          0.2738211898096604
+        ]
+      ],
+      "-0.005": [
+        [
+          0.0,
+          0.19507130590078553,
+          0.1953839910664638,
+          0.2605337993277885,
+          0.2612282446391522,
+          0.28114267685756106
+        ],
+        [
+          0.03127144786455588,
+          0.18640453932484602,
+          0.1940326671136534,
+          0.2655146209760801,
+          0.2698541313643015,
+          0.2725157167785585
+        ],
+        [
+          0.03749313329797938,
+          0.18427619730629372,
+          0.19239806992470856,
+          0.26706069530807447,
+          0.2687919553933739,
+          0.2736701538999699
+        ]
+      ],
+      "0.0": [
+        [
+          0.0,
+          0.1951188400604619,
+          0.19545512897127626,
+          0.2608548134420354,
+          0.26156388391852453,
+          0.28128632818727717
+        ],
+        [
+          0.03133788996648689,
+          0.18678052314980353,
+          0.19380205559834163,
+          0.2651646227154987,
+          0.27075154374312077,
+          0.2728311491363138
+        ],
+        [
+          0.03747836894601791,
+          0.18407084828548728,
+          0.19277412435848237,
+          0.26778190368030913,
+          0.26901981885012255,
+          0.2734130061814965
+        ]
+      ],
+      "0.0025": [
+        [
+          0.0,
+          0.19506547852952744,
+          0.19541013210149652,
+          0.260589787330253,
+          0.26139543546347477,
+          0.2811724497909464
+        ],
+        [
+          0.031275049365435084,
+          0.18640079867839393,
+          0.19406576353645333,
+          0.2656759332997444,
+          0.2699041791072302,
+          0.2725524926102292
+        ],
+        [
+          0.03750313097526683,
+          0.18431301067354822,
+          0.19239920023751378,
+          0.2671144244041946,
+          0.2688299885305249,
+          0.27382118980913234
+        ]
+      ],
+      "0.005": [
+        [
+          0.0,
+          0.19507130574043108,
+          0.19538398998634976,
+          0.2605337984624095,
+          0.26122824320709326,
+          0.2811426705652173
+        ],
+        [
+          0.03127144786067903,
+          0.18640453932217266,
+          0.19403266711358566,
+          0.2655146209628057,
+          0.26985413136992603,
+          0.2725157167766599
+        ],
+        [
+          0.037493133297873474,
+          0.18427619730627987,
+          0.19239806992469324,
+          0.26706069530804777,
+          0.2687919553933227,
+          0.27367015389972216
+        ]
+      ]
+    },
+    "resolution": 12,
+    "responses": [
+      {
+        "band_ordinal": 0,
+        "baseline_frequency": 0.0,
+        "eligibility": {
+          "baseline_frequency": 0.0,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 0.0,
+          "eligible": false,
+          "maximum_perturbation": 0.0,
+          "nearest_neighbor_gap": 0.1951188400604619,
+          "reason": "baseline_frequency_floor"
+        },
+        "even_A": 0.0,
+        "even_half": 0.0,
+        "even_ratio": null,
+        "mapped_spectra": [
+          [
+            0.0,
+            0.19507130574043108,
+            0.19538398998634976,
+            0.2605337984624095,
+            0.26122824320709326,
+            0.2811426705652173
+          ],
+          [
+            0.0,
+            0.19507130590078553,
+            0.1953839910664638,
+            0.2605337993277885,
+            0.2612282446391522,
+            0.28114267685756106
+          ],
+          [
+            0.0,
+            0.19506547852952744,
+            0.19541013210149652,
+            0.260589787330253,
+            0.26139543546347477,
+            0.2811724497909464
+          ],
+          [
+            0.0,
+            0.19506547846696456,
+            0.19541013304446822,
+            0.2605897879029771,
+            0.2613954365351703,
+            0.28117245460207296
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.00033564071143127316,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.00033563927937235727,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0002650261117824182,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0002650255390583278,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": 0.0,
+        "odd_half": 0.0,
+        "odd_ratio": null,
+        "point_id": "q0",
+        "qualified": false,
+        "reason": "target_band_equivalent_to_baseline",
+        "status": "EQUIVALENT_NULL"
+      },
+      {
+        "band_ordinal": 1,
+        "baseline_frequency": 0.1951188400604619,
+        "eligibility": {
+          "baseline_frequency": 0.1951188400604619,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 5.336159349733638e-05,
+          "eligible": false,
+          "maximum_perturbation": 5.336159349733638e-05,
+          "nearest_neighbor_gap": 0.0003362889108143585,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": -4.753423985359717e-05,
+        "even_half": -5.3361562215886726e-05,
+        "even_ratio": 0.8907955067223527,
+        "mapped_spectra": [
+          [
+            0.0,
+            0.19507130574043108,
+            0.19538398998634976,
+            0.2605337984624095,
+            0.26122824320709326,
+            0.2811426705652173
+          ],
+          [
+            0.0,
+            0.19507130590078553,
+            0.1953839910664638,
+            0.2605337993277885,
+            0.2612282446391522,
+            0.28114267685756106
+          ],
+          [
+            0.0,
+            0.19506547852952744,
+            0.19541013210149652,
+            0.260589787330253,
+            0.26139543546347477,
+            0.2811724497909464
+          ],
+          [
+            0.0,
+            0.19506547846696456,
+            0.19541013304446822,
+            0.2605897879029771,
+            0.2613954365351703,
+            0.28117245460207296
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.00033564071143127316,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.00033563927937235727,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0002650261117824182,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0002650255390583278,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -8.017722596953547e-11,
+        "odd_half": 3.1281435775021293e-11,
+        "odd_ratio": null,
+        "point_id": "q0",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 2,
+        "baseline_frequency": 0.19545512897127626,
+        "eligibility": {
+          "baseline_frequency": 0.19545512897127626,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 7.113898492649984e-05,
+          "eligible": false,
+          "maximum_perturbation": 7.113898492649984e-05,
+          "nearest_neighbor_gap": 0.0003362889108143585,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": -7.113844486947296e-05,
+        "even_half": -4.499639829388946e-05,
+        "even_ratio": 1.5809808688428648,
+        "mapped_spectra": [
+          [
+            0.0,
+            0.19507130574043108,
+            0.19538398998634976,
+            0.2605337984624095,
+            0.26122824320709326,
+            0.2811426705652173
+          ],
+          [
+            0.0,
+            0.19507130590078553,
+            0.1953839910664638,
+            0.2605337993277885,
+            0.2612282446391522,
+            0.28114267685756106
+          ],
+          [
+            0.0,
+            0.19506547852952744,
+            0.19541013210149652,
+            0.260589787330253,
+            0.26139543546347477,
+            0.2811724497909464
+          ],
+          [
+            0.0,
+            0.19506547846696456,
+            0.19541013304446822,
+            0.2605897879029771,
+            0.2613954365351703,
+            0.28117245460207296
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.00033564071143127316,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.00033563927937235727,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0002650261117824182,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0002650255390583278,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -5.400570268765392e-10,
+        "odd_half": -4.714858503618302e-10,
+        "odd_ratio": 1.145436340161822,
+        "point_id": "q0",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 3,
+        "baseline_frequency": 0.2608548134420354,
+        "eligibility": {
+          "baseline_frequency": 0.2608548134420354,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 0.0003210149796259443,
+          "eligible": false,
+          "maximum_perturbation": 0.0003210149796259443,
+          "nearest_neighbor_gap": 0.0007090704764891043,
+          "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap"
+        },
+        "even_A": -0.00032101454693644893,
+        "even_half": -0.000265025825420373,
+        "even_ratio": 1.2112576064135219,
+        "mapped_spectra": [
+          [
+            0.0,
+            0.19507130574043108,
+            0.19538398998634976,
+            0.2605337984624095,
+            0.26122824320709326,
+            0.2811426705652173
+          ],
+          [
+            0.0,
+            0.19507130590078553,
+            0.1953839910664638,
+            0.2605337993277885,
+            0.2612282446391522,
+            0.28114267685756106
+          ],
+          [
+            0.0,
+            0.19506547852952744,
+            0.19541013210149652,
+            0.260589787330253,
+            0.26139543546347477,
+            0.2811724497909464
+          ],
+          [
+            0.0,
+            0.19506547846696456,
+            0.19541013304446822,
+            0.2605897879029771,
+            0.2613954365351703,
+            0.28117245460207296
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.00033564071143127316,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.00033563927937235727,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0002650261117824182,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0002650255390583278,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -4.3268949534436274e-10,
+        "odd_half": -2.863620451876159e-10,
+        "odd_ratio": 1.510987585875347,
+        "point_id": "q0",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 4,
+        "baseline_frequency": 0.26156388391852453,
+        "eligibility": {
+          "baseline_frequency": 0.26156388391852453,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 0.00033564071143127316,
+          "eligible": false,
+          "maximum_perturbation": 0.00033564071143127316,
+          "nearest_neighbor_gap": 0.0007090704764891043,
+          "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap"
+        },
+        "even_A": -0.0003356399954018152,
+        "even_half": -0.0001684479192020083,
+        "even_ratio": 1.992544621458367,
+        "mapped_spectra": [
+          [
+            0.0,
+            0.19507130574043108,
+            0.19538398998634976,
+            0.2605337984624095,
+            0.26122824320709326,
+            0.2811426705652173
+          ],
+          [
+            0.0,
+            0.19507130590078553,
+            0.1953839910664638,
+            0.2605337993277885,
+            0.2612282446391522,
+            0.28114267685756106
+          ],
+          [
+            0.0,
+            0.19506547852952744,
+            0.19541013210149652,
+            0.260589787330253,
+            0.26139543546347477,
+            0.2811724497909464
+          ],
+          [
+            0.0,
+            0.19506547846696456,
+            0.19541013304446822,
+            0.2605897879029771,
+            0.2613954365351703,
+            0.28117245460207296
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.00033564071143127316,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.00033563927937235727,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0002650261117824182,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0002650255390583278,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -7.160294579477977e-10,
+        "odd_half": -5.35847755056551e-10,
+        "odd_ratio": 1.3362554031270153,
+        "point_id": "q0",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 5,
+        "baseline_frequency": 0.28128632818727717,
+        "eligibility": {
+          "baseline_frequency": 0.28128632818727717,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 0.00014365762205986732,
+          "eligible": true,
+          "maximum_perturbation": 0.00014365762205986732,
+          "nearest_neighbor_gap": 0.019722444268752637,
+          "reason": "PASS"
+        },
+        "even_A": -0.00014365447588798874,
+        "even_half": -0.0001138759907675091,
+        "even_ratio": 1.261499240707164,
+        "mapped_spectra": [
+          [
+            0.0,
+            0.19507130574043108,
+            0.19538398998634976,
+            0.2605337984624095,
+            0.26122824320709326,
+            0.2811426705652173
+          ],
+          [
+            0.0,
+            0.19507130590078553,
+            0.1953839910664638,
+            0.2605337993277885,
+            0.2612282446391522,
+            0.28114267685756106
+          ],
+          [
+            0.0,
+            0.19506547852952744,
+            0.19541013210149652,
+            0.260589787330253,
+            0.26139543546347477,
+            0.2811724497909464
+          ],
+          [
+            0.0,
+            0.19506547846696456,
+            0.19541013304446822,
+            0.2605897879029771,
+            0.2613954365351703,
+            0.28117245460207296
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.00033564071143127316,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.00033563927937235727,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0002650261117824182,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0002650255390583278,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -3.1461718785763537e-09,
+        "odd_half": -2.4055632763531065e-09,
+        "odd_ratio": 1.3078732575873158,
+        "point_id": "q0",
+        "qualified": true,
+        "reason": "PASS",
+        "status": "PASS_DIFFERENTIAL"
+      },
+      {
+        "band_ordinal": 0,
+        "baseline_frequency": 0.03133788996648689,
+        "eligibility": {
+          "baseline_frequency": 0.03133788996648689,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 6.644210580786236e-05,
+          "eligible": true,
+          "maximum_perturbation": 6.644210580786236e-05,
+          "nearest_neighbor_gap": 0.15544263318331664,
+          "reason": "PASS"
+        },
+        "even_A": -6.644210386943378e-05,
+        "even_half": -6.284059748260656e-05,
+        "even_ratio": 1.0573117782310084,
+        "mapped_spectra": [
+          [
+            0.03127144786067903,
+            0.18640453932217266,
+            0.19403266711358566,
+            0.2655146209628057,
+            0.26985413136992603,
+            0.2725157167766599
+          ],
+          [
+            0.03127144786455588,
+            0.18640453932484602,
+            0.1940326671136534,
+            0.2655146209760801,
+            0.2698541313643015,
+            0.2725157167785585
+          ],
+          [
+            0.031275049365435084,
+            0.18640079867839393,
+            0.19406576353645333,
+            0.2656759332997444,
+            0.2699041791072302,
+            0.2725524926102292
+          ],
+          [
+            0.03127504937257348,
+            0.1864007986882916,
+            0.19406576353666594,
+            0.26567593333819683,
+            0.26990417910231423,
+            0.272552492605571
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008974123731947392,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008974123788192956,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008473646358905795,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008473646408065361,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -1.9384251148668596e-12,
+        "odd_half": -3.5691970212692326e-12,
+        "odd_ratio": null,
+        "point_id": "q1",
+        "qualified": true,
+        "reason": "PASS",
+        "status": "PASS_DIFFERENTIAL"
+      },
+      {
+        "band_ordinal": 1,
+        "baseline_frequency": 0.18678052314980353,
+        "eligibility": {
+          "baseline_frequency": 0.18678052314980353,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 0.00037972447140960375,
+          "eligible": false,
+          "maximum_perturbation": 0.00037972447140960375,
+          "nearest_neighbor_gap": 0.0070215324485380926,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": -0.00037598382629419613,
+        "even_half": -0.0003797244664607846,
+        "even_ratio": 0.9901490672922578,
+        "mapped_spectra": [
+          [
+            0.03127144786067903,
+            0.18640453932217266,
+            0.19403266711358566,
+            0.2655146209628057,
+            0.26985413136992603,
+            0.2725157167766599
+          ],
+          [
+            0.03127144786455588,
+            0.18640453932484602,
+            0.1940326671136534,
+            0.2655146209760801,
+            0.2698541313643015,
+            0.2725157167785585
+          ],
+          [
+            0.031275049365435084,
+            0.18640079867839393,
+            0.19406576353645333,
+            0.2656759332997444,
+            0.2699041791072302,
+            0.2725524926102292
+          ],
+          [
+            0.03127504937257348,
+            0.1864007986882916,
+            0.19406576353666594,
+            0.26567593333819683,
+            0.26990417910231423,
+            0.272552492605571
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008974123731947392,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008974123788192956,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008473646358905795,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008473646408065361,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -1.3366807660730728e-12,
+        "odd_half": -4.948833010054443e-12,
+        "odd_ratio": null,
+        "point_id": "q1",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 2,
+        "baseline_frequency": 0.19380205559834163,
+        "eligibility": {
+          "baseline_frequency": 0.19380205559834163,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 0.00026370793832430905,
+          "eligible": false,
+          "maximum_perturbation": 0.00026370793832430905,
+          "nearest_neighbor_gap": 0.0070215324485380926,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": 0.00023061151527792312,
+        "even_half": 0.0002637079382180052,
+        "even_ratio": 0.874495917097795,
+        "mapped_spectra": [
+          [
+            0.03127144786067903,
+            0.18640453932217266,
+            0.19403266711358566,
+            0.2655146209628057,
+            0.26985413136992603,
+            0.2725157167766599
+          ],
+          [
+            0.03127144786455588,
+            0.18640453932484602,
+            0.1940326671136534,
+            0.2655146209760801,
+            0.2698541313643015,
+            0.2725157167785585
+          ],
+          [
+            0.031275049365435084,
+            0.18640079867839393,
+            0.19406576353645333,
+            0.2656759332997444,
+            0.2699041791072302,
+            0.2725524926102292
+          ],
+          [
+            0.03127504937257348,
+            0.1864007986882916,
+            0.19406576353666594,
+            0.26567593333819683,
+            0.26990417910231423,
+            0.272552492605571
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008974123731947392,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008974123788192956,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008473646358905795,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008473646408065361,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -3.387568003887509e-14,
+        "odd_half": -1.0630385460785874e-13,
+        "odd_ratio": null,
+        "point_id": "q1",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 3,
+        "baseline_frequency": 0.2651646227154987,
+        "eligibility": {
+          "baseline_frequency": 0.2651646227154987,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 0.0005113106226981579,
+          "eligible": false,
+          "maximum_perturbation": 0.0005113106226981579,
+          "nearest_neighbor_gap": 0.005586921027622094,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": 0.000349998253944217,
+        "even_half": 0.0005113106034719817,
+        "even_ratio": 0.68451201983218,
+        "mapped_spectra": [
+          [
+            0.03127144786067903,
+            0.18640453932217266,
+            0.19403266711358566,
+            0.2655146209628057,
+            0.26985413136992603,
+            0.2725157167766599
+          ],
+          [
+            0.03127144786455588,
+            0.18640453932484602,
+            0.1940326671136534,
+            0.2655146209760801,
+            0.2698541313643015,
+            0.2725157167785585
+          ],
+          [
+            0.031275049365435084,
+            0.18640079867839393,
+            0.19406576353645333,
+            0.2656759332997444,
+            0.2699041791072302,
+            0.2725524926102292
+          ],
+          [
+            0.03127504937257348,
+            0.1864007986882916,
+            0.19406576353666594,
+            0.26567593333819683,
+            0.26990417910231423,
+            0.272552492605571
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008974123731947392,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008974123788192956,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008473646358905795,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008473646408065361,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -6.637190796965342e-12,
+        "odd_half": -1.92262039622193e-11,
+        "odd_ratio": null,
+        "point_id": "q1",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 4,
+        "baseline_frequency": 0.27075154374312077,
+        "eligibility": {
+          "baseline_frequency": 0.27075154374312077,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 0.0008974123788192956,
+          "eligible": false,
+          "maximum_perturbation": 0.0008974123788192956,
+          "nearest_neighbor_gap": 0.002079605393193018,
+          "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap"
+        },
+        "even_A": -0.0008974123760069896,
+        "even_half": -0.0008473646383485578,
+        "even_ratio": 1.0590628112071925,
+        "mapped_spectra": [
+          [
+            0.03127144786067903,
+            0.18640453932217266,
+            0.19403266711358566,
+            0.2655146209628057,
+            0.26985413136992603,
+            0.2725157167766599
+          ],
+          [
+            0.03127144786455588,
+            0.18640453932484602,
+            0.1940326671136534,
+            0.2655146209760801,
+            0.2698541313643015,
+            0.2725157167785585
+          ],
+          [
+            0.031275049365435084,
+            0.18640079867839393,
+            0.19406576353645333,
+            0.2656759332997444,
+            0.2699041791072302,
+            0.2725524926102292
+          ],
+          [
+            0.03127504937257348,
+            0.1864007986882916,
+            0.19406576353666594,
+            0.26567593333819683,
+            0.26990417910231423,
+            0.272552492605571
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008974123731947392,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008974123788192956,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008473646358905795,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008473646408065361,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": 2.8122781881023684e-12,
+        "odd_half": 2.4579782653688653e-12,
+        "odd_ratio": null,
+        "point_id": "q1",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 5,
+        "baseline_frequency": 0.2728311491363138,
+        "eligibility": {
+          "baseline_frequency": 0.2728311491363138,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 0.0003154323596538666,
+          "eligible": false,
+          "maximum_perturbation": 0.0003154323596538666,
+          "nearest_neighbor_gap": 0.002079605393193018,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": -0.0003154323587045704,
+        "even_half": -0.00027865652841368993,
+        "even_ratio": 1.131975484300456,
+        "mapped_spectra": [
+          [
+            0.03127144786067903,
+            0.18640453932217266,
+            0.19403266711358566,
+            0.2655146209628057,
+            0.26985413136992603,
+            0.2725157167766599
+          ],
+          [
+            0.03127144786455588,
+            0.18640453932484602,
+            0.1940326671136534,
+            0.2655146209760801,
+            0.2698541313643015,
+            0.2725157167785585
+          ],
+          [
+            0.031275049365435084,
+            0.18640079867839393,
+            0.19406576353645333,
+            0.2656759332997444,
+            0.2699041791072302,
+            0.2725524926102292
+          ],
+          [
+            0.03127504937257348,
+            0.1864007986882916,
+            0.19406576353666594,
+            0.26567593333819683,
+            0.26990417910231423,
+            0.272552492605571
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008974123731947392,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008974123788192956,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008473646358905795,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0008473646408065361,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -9.4929619720574e-13,
+        "odd_half": 2.3290813722098846e-12,
+        "odd_ratio": null,
+        "point_id": "q1",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 0,
+        "baseline_frequency": 0.03747836894601791,
+        "eligibility": {
+          "baseline_frequency": 0.03747836894601791,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 2.4762029411019848e-05,
+          "eligible": true,
+          "maximum_perturbation": 2.4762029411019848e-05,
+          "nearest_neighbor_gap": 0.14659247933946937,
+          "reason": "PASS"
+        },
+        "even_A": 1.4764351908523599e-05,
+        "even_half": 2.4762029329973567e-05,
+        "even_ratio": 0.5962496737152261,
+        "mapped_spectra": [
+          [
+            0.037493133297873474,
+            0.18427619730627987,
+            0.19239806992469324,
+            0.26706069530804777,
+            0.2687919553933227,
+            0.27367015389972216
+          ],
+          [
+            0.03749313329797938,
+            0.18427619730629372,
+            0.19239806992470856,
+            0.26706069530807447,
+            0.2687919553933739,
+            0.2736701538999699
+          ],
+          [
+            0.03750313097526683,
+            0.18431301067354822,
+            0.19239920023751378,
+            0.2671144244041946,
+            0.2688299885305249,
+            0.27382118980913234
+          ],
+          [
+            0.03750313097542893,
+            0.18431301067357128,
+            0.19239920023754004,
+            0.26711442440416017,
+            0.2688299885305943,
+            0.2738211898096604
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0007212083722613616,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0007212083722346607,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0006674792761145465,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0006674792761489634,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -5.2954168827668013e-14,
+        "odd_half": -8.104975024458838e-14,
+        "odd_ratio": null,
+        "point_id": "q2",
+        "qualified": true,
+        "reason": "PASS",
+        "status": "PASS_DIFFERENTIAL"
+      },
+      {
+        "band_ordinal": 1,
+        "baseline_frequency": 0.18407084828548728,
+        "eligibility": {
+          "baseline_frequency": 0.18407084828548728,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 0.0002421623880839996,
+          "eligible": true,
+          "maximum_perturbation": 0.0002421623880839996,
+          "nearest_neighbor_gap": 0.008703276072995092,
+          "reason": "PASS"
+        },
+        "even_A": 0.00020534902079952233,
+        "even_half": 0.00024216238807248103,
+        "even_ratio": 0.8479806564265455,
+        "mapped_spectra": [
+          [
+            0.037493133297873474,
+            0.18427619730627987,
+            0.19239806992469324,
+            0.26706069530804777,
+            0.2687919553933227,
+            0.27367015389972216
+          ],
+          [
+            0.03749313329797938,
+            0.18427619730629372,
+            0.19239806992470856,
+            0.26706069530807447,
+            0.2687919553933739,
+            0.2736701538999699
+          ],
+          [
+            0.03750313097526683,
+            0.18431301067354822,
+            0.19239920023751378,
+            0.2671144244041946,
+            0.2688299885305249,
+            0.27382118980913234
+          ],
+          [
+            0.03750313097542893,
+            0.18431301067357128,
+            0.19239920023754004,
+            0.26711442440416017,
+            0.2688299885305943,
+            0.2738211898096604
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0007212083722613616,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0007212083722346607,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0006674792761145465,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0006674792761489634,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -6.925016116099414e-15,
+        "odd_half": -1.1532441668293814e-14,
+        "odd_ratio": null,
+        "point_id": "q2",
+        "qualified": true,
+        "reason": "PASS",
+        "status": "PASS_DIFFERENTIAL"
+      },
+      {
+        "band_ordinal": 2,
+        "baseline_frequency": 0.19277412435848237,
+        "eligibility": {
+          "baseline_frequency": 0.19277412435848237,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 0.0003760544337891303,
+          "eligible": true,
+          "maximum_perturbation": 0.0003760544337891303,
+          "nearest_neighbor_gap": 0.008703276072995092,
+          "reason": "PASS"
+        },
+        "even_A": -0.00037605443378146974,
+        "even_half": -0.00037492412095546657,
+        "even_ratio": 1.0030147775585168,
+        "mapped_spectra": [
+          [
+            0.037493133297873474,
+            0.18427619730627987,
+            0.19239806992469324,
+            0.26706069530804777,
+            0.2687919553933227,
+            0.27367015389972216
+          ],
+          [
+            0.03749313329797938,
+            0.18427619730629372,
+            0.19239806992470856,
+            0.26706069530807447,
+            0.2687919553933739,
+            0.2736701538999699
+          ],
+          [
+            0.03750313097526683,
+            0.18431301067354822,
+            0.19239920023751378,
+            0.2671144244041946,
+            0.2688299885305249,
+            0.27382118980913234
+          ],
+          [
+            0.03750313097542893,
+            0.18431301067357128,
+            0.19239920023754004,
+            0.26711442440416017,
+            0.2688299885305943,
+            0.2738211898096604
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0007212083722613616,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0007212083722346607,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0006674792761145465,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0006674792761489634,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -7.66053886991358e-15,
+        "odd_half": -1.3128387266192476e-14,
+        "odd_ratio": null,
+        "point_id": "q2",
+        "qualified": true,
+        "reason": "PASS",
+        "status": "PASS_DIFFERENTIAL"
+      },
+      {
+        "band_ordinal": 3,
+        "baseline_frequency": 0.26778190368030913,
+        "eligibility": {
+          "baseline_frequency": 0.26778190368030913,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 0.0007212083722613616,
+          "eligible": false,
+          "maximum_perturbation": 0.0007212083722613616,
+          "nearest_neighbor_gap": 0.0012379151698134194,
+          "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap"
+        },
+        "even_A": -0.0007212083722480389,
+        "even_half": -0.000667479276131755,
+        "even_ratio": 1.0804955270336787,
+        "mapped_spectra": [
+          [
+            0.037493133297873474,
+            0.18427619730627987,
+            0.19239806992469324,
+            0.26706069530804777,
+            0.2687919553933227,
+            0.27367015389972216
+          ],
+          [
+            0.03749313329797938,
+            0.18427619730629372,
+            0.19239806992470856,
+            0.26706069530807447,
+            0.2687919553933739,
+            0.2736701538999699
+          ],
+          [
+            0.03750313097526683,
+            0.18431301067354822,
+            0.19239920023751378,
+            0.2671144244041946,
+            0.2688299885305249,
+            0.27382118980913234
+          ],
+          [
+            0.03750313097542893,
+            0.18431301067357128,
+            0.19239920023754004,
+            0.26711442440416017,
+            0.2688299885305943,
+            0.2738211898096604
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0007212083722613616,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0007212083722346607,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0006674792761145465,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0006674792761489634,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -1.3350431871117507e-14,
+        "odd_half": 1.7208456881689926e-14,
+        "odd_ratio": null,
+        "point_id": "q2",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 4,
+        "baseline_frequency": 0.26901981885012255,
+        "eligibility": {
+          "baseline_frequency": 0.26901981885012255,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 0.00022786345679987052,
+          "eligible": false,
+          "maximum_perturbation": 0.00022786345679987052,
+          "nearest_neighbor_gap": 0.0012379151698134194,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": -0.00022786345677422437,
+        "even_half": -0.00018983031956293361,
+        "even_ratio": 1.2003533329072957,
+        "mapped_spectra": [
+          [
+            0.037493133297873474,
+            0.18427619730627987,
+            0.19239806992469324,
+            0.26706069530804777,
+            0.2687919553933227,
+            0.27367015389972216
+          ],
+          [
+            0.03749313329797938,
+            0.18427619730629372,
+            0.19239806992470856,
+            0.26706069530807447,
+            0.2687919553933739,
+            0.2736701538999699
+          ],
+          [
+            0.03750313097526683,
+            0.18431301067354822,
+            0.19239920023751378,
+            0.2671144244041946,
+            0.2688299885305249,
+            0.27382118980913234
+          ],
+          [
+            0.03750313097542893,
+            0.18431301067357128,
+            0.19239920023754004,
+            0.26711442440416017,
+            0.2688299885305943,
+            0.2738211898096604
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0007212083722613616,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0007212083722346607,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0006674792761145465,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0006674792761489634,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -2.5618396293225487e-14,
+        "odd_half": -3.469446951953614e-14,
+        "odd_ratio": null,
+        "point_id": "q2",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 5,
+        "baseline_frequency": 0.2734130061814965,
+        "eligibility": {
+          "baseline_frequency": 0.2734130061814965,
+          "convergence_error_bound": 0.0015805933375845904,
+          "delta_max": 0.0004081836281639162,
+          "eligible": false,
+          "maximum_perturbation": 0.0004081836281639162,
+          "nearest_neighbor_gap": 0.004393187331373949,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": 0.00025714771834955963,
+        "even_half": 0.00040818362789990514,
+        "even_ratio": 0.6299804812666749,
+        "mapped_spectra": [
+          [
+            0.037493133297873474,
+            0.18427619730627987,
+            0.19239806992469324,
+            0.26706069530804777,
+            0.2687919553933227,
+            0.27367015389972216
+          ],
+          [
+            0.03749313329797938,
+            0.18427619730629372,
+            0.19239806992470856,
+            0.26706069530807447,
+            0.2687919553933739,
+            0.2736701538999699
+          ],
+          [
+            0.03750313097526683,
+            0.18431301067354822,
+            0.19239920023751378,
+            0.2671144244041946,
+            0.2688299885305249,
+            0.27382118980913234
+          ],
+          [
+            0.03750313097542893,
+            0.18431301067357128,
+            0.19239920023754004,
+            0.26711442440416017,
+            0.2688299885305943,
+            0.2738211898096604
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0007212083722613616,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0007212083722346607,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0006674792761145465,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0006674792761489634,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -1.2387313397255184e-13,
+        "odd_half": -2.6403879083147785e-13,
+        "odd_ratio": null,
+        "point_id": "q2",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      }
+    ],
+    "status": "PASS_REAL_MPB"
+  },
+  "TriLatt": {
+    "counts": {
+      "blocked": 15,
+      "equivalent_null": 1,
+      "pass_differential": 2,
+      "total": 18
+    },
+    "raw_provenance": [
+      {
+        "frequencies": [
+          0.0,
+          0.23742167373439843,
+          0.24017913597274165,
+          0.24061756561014186,
+          0.2763619562737415,
+          0.28338585127255395
+        ],
+        "point": {
+          "fractional": [
+            0.0,
+            0.0
+          ],
+          "id": "q0",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.0,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.043747284217660096,
+          0.2169471560152114,
+          0.22305697498338686,
+          0.24060546077423392,
+          0.2797625042882647,
+          0.3026687930494396
+        ],
+        "point": {
+          "fractional": [
+            0.12,
+            0.07
+          ],
+          "id": "q1",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.0,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.03159502538888563,
+          0.22213328110411004,
+          0.23031491090315456,
+          0.24228344046050623,
+          0.2919315410776565,
+          0.29453704661761165
+        ],
+        "point": {
+          "fractional": [
+            -0.09,
+            0.14
+          ],
+          "id": "q2",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.0,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.0,
+          0.2372534133041359,
+          0.23910905457349432,
+          0.23910977699847655,
+          0.27630171978556656,
+          0.2807044858282237
+        ],
+        "point": {
+          "fractional": [
+            0.0,
+            0.0
+          ],
+          "id": "q0",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.005,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.04331920339171254,
+          0.2154416622589095,
+          0.221977596841768,
+          0.24035621004680324,
+          0.27966705691523774,
+          0.30004993880611447
+        ],
+        "point": {
+          "fractional": [
+            0.12,
+            0.07
+          ],
+          "id": "q1",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.005,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.031562281505814874,
+          0.22198622903760554,
+          0.2289430258097376,
+          0.24078975780600154,
+          0.2824150531006048,
+          0.29183738657675684
+        ],
+        "point": {
+          "fractional": [
+            -0.09,
+            0.14
+          ],
+          "id": "q2",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.005,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.0,
+          0.2372534132380565,
+          0.23910905454011677,
+          0.23910977707509576,
+          0.276301719670634,
+          0.2807037988316461
+        ],
+        "point": {
+          "fractional": [
+            0.0,
+            0.0
+          ],
+          "id": "q0",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": -0.005,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.043319203476269816,
+          0.21544166251812832,
+          0.22197759681120716,
+          0.24035621007130245,
+          0.27966705668144237,
+          0.30004994735243956
+        ],
+        "point": {
+          "fractional": [
+            0.12,
+            0.07
+          ],
+          "id": "q1",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": -0.005,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.03156228093769769,
+          0.22198622543413463,
+          0.22894302316863593,
+          0.24078975492802557,
+          0.28241493552845737,
+          0.29183739533354414
+        ],
+        "point": {
+          "fractional": [
+            -0.09,
+            0.14
+          ],
+          "id": "q2",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": -0.005,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.0,
+          0.23718262250479577,
+          0.2391034598970106,
+          0.23910423778372827,
+          0.2760169672257236,
+          0.28038127565070875
+        ],
+        "point": {
+          "fractional": [
+            0.0,
+            0.0
+          ],
+          "id": "q0",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.0025,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.043293374646544876,
+          0.21536862526334058,
+          0.2219085916071008,
+          0.24027923706903898,
+          0.27939581617064085,
+          0.29979652083240976
+        ],
+        "point": {
+          "fractional": [
+            0.12,
+            0.07
+          ],
+          "id": "q1",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.0025,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.03154334938825263,
+          0.22188514121529868,
+          0.2289074811414217,
+          0.24075918261243293,
+          0.2821194809115635,
+          0.29158238268011044
+        ],
+        "point": {
+          "fractional": [
+            -0.09,
+            0.14
+          ],
+          "id": "q2",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": 0.0025,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.0,
+          0.23718262252860117,
+          0.2391034599281134,
+          0.2391042377260584,
+          0.27601696728570857,
+          0.28038097702639625
+        ],
+        "point": {
+          "fractional": [
+            0.0,
+            0.0
+          ],
+          "id": "q0",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": -0.0025,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.04329337416770331,
+          0.21536862499666806,
+          0.22190859146071623,
+          0.24027923701174733,
+          0.2793958163760868,
+          0.2997965004992795
+        ],
+        "point": {
+          "fractional": [
+            0.12,
+            0.07
+          ],
+          "id": "q1",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": -0.0025,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      },
+      {
+        "frequencies": [
+          0.03154334949694112,
+          0.22188514307556306,
+          0.22890748421980267,
+          0.24075918819833225,
+          0.28211948104602863,
+          0.29158234650690423
+        ],
+        "point": {
+          "fractional": [
+            -0.09,
+            0.14
+          ],
+          "id": "q2",
+          "primitive_labels_allowed": false,
+          "semantic_domain": "supercell_bz"
+        },
+        "settings": {
+          "amplitude": -0.0025,
+          "berry_or_efs_interpretation": false,
+          "num_bands": 6,
+          "polarization": "TE",
+          "primitive_labels_allowed": false,
+          "primitive_symmetry_reduction": false,
+          "replication": [
+            2,
+            2
+          ],
+          "resolution": 12,
+          "semantic_domain": "supercell_bz",
+          "unfolding": false
+        },
+        "solver": "meep.mpb.ModeSolver"
+      }
+    ],
+    "raw_spectra": {
+      "-0.0025": [
+        [
+          0.0,
+          0.23718262252860117,
+          0.2391034599281134,
+          0.2391042377260584,
+          0.27601696728570857,
+          0.28038097702639625
+        ],
+        [
+          0.04329337416770331,
+          0.21536862499666806,
+          0.22190859146071623,
+          0.24027923701174733,
+          0.2793958163760868,
+          0.2997965004992795
+        ],
+        [
+          0.03154334949694112,
+          0.22188514307556306,
+          0.22890748421980267,
+          0.24075918819833225,
+          0.28211948104602863,
+          0.29158234650690423
+        ]
+      ],
+      "-0.005": [
+        [
+          0.0,
+          0.2372534132380565,
+          0.23910905454011677,
+          0.23910977707509576,
+          0.276301719670634,
+          0.2807037988316461
+        ],
+        [
+          0.043319203476269816,
+          0.21544166251812832,
+          0.22197759681120716,
+          0.24035621007130245,
+          0.27966705668144237,
+          0.30004994735243956
+        ],
+        [
+          0.03156228093769769,
+          0.22198622543413463,
+          0.22894302316863593,
+          0.24078975492802557,
+          0.28241493552845737,
+          0.29183739533354414
+        ]
+      ],
+      "0.0": [
+        [
+          0.0,
+          0.23742167373439843,
+          0.24017913597274165,
+          0.24061756561014186,
+          0.2763619562737415,
+          0.28338585127255395
+        ],
+        [
+          0.043747284217660096,
+          0.2169471560152114,
+          0.22305697498338686,
+          0.24060546077423392,
+          0.2797625042882647,
+          0.3026687930494396
+        ],
+        [
+          0.03159502538888563,
+          0.22213328110411004,
+          0.23031491090315456,
+          0.24228344046050623,
+          0.2919315410776565,
+          0.29453704661761165
+        ]
+      ],
+      "0.0025": [
+        [
+          0.0,
+          0.23718262250479577,
+          0.2391034598970106,
+          0.23910423778372827,
+          0.2760169672257236,
+          0.28038127565070875
+        ],
+        [
+          0.043293374646544876,
+          0.21536862526334058,
+          0.2219085916071008,
+          0.24027923706903898,
+          0.27939581617064085,
+          0.29979652083240976
+        ],
+        [
+          0.03154334938825263,
+          0.22188514121529868,
+          0.2289074811414217,
+          0.24075918261243293,
+          0.2821194809115635,
+          0.29158238268011044
+        ]
+      ],
+      "0.005": [
+        [
+          0.0,
+          0.2372534133041359,
+          0.23910905457349432,
+          0.23910977699847655,
+          0.27630171978556656,
+          0.2807044858282237
+        ],
+        [
+          0.04331920339171254,
+          0.2154416622589095,
+          0.221977596841768,
+          0.24035621004680324,
+          0.27966705691523774,
+          0.30004993880611447
+        ],
+        [
+          0.031562281505814874,
+          0.22198622903760554,
+          0.2289430258097376,
+          0.24078975780600154,
+          0.2824150531006048,
+          0.29183738657675684
+        ]
+      ]
+    },
+    "resolution": 12,
+    "responses": [
+      {
+        "band_ordinal": 0,
+        "baseline_frequency": 0.0,
+        "eligibility": {
+          "baseline_frequency": 0.0,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.0,
+          "eligible": false,
+          "maximum_perturbation": 0.0,
+          "nearest_neighbor_gap": 0.23742167373439843,
+          "reason": "baseline_frequency_floor"
+        },
+        "even_A": 0.0,
+        "even_half": 0.0,
+        "even_ratio": null,
+        "mapped_spectra": [
+          [
+            0.0,
+            0.2372534133041359,
+            0.23910905457349432,
+            0.23910977699847655,
+            0.27630171978556656,
+            0.2807044858282237
+          ],
+          [
+            0.0,
+            0.2372534132380565,
+            0.23910905454011677,
+            0.23910977707509576,
+            0.276301719670634,
+            0.2807037988316461
+          ],
+          [
+            0.0,
+            0.23718262250479577,
+            0.2391034598970106,
+            0.23910423778372827,
+            0.2760169672257236,
+            0.28038127565070875
+          ],
+          [
+            0.0,
+            0.23718262252860117,
+            0.2391034599281134,
+            0.2391042377260584,
+            0.27601696728570857,
+            0.28038097702639625
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026813654443302304,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.002682052440907856,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0030045756218451958,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.003004874246157696,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": 0.0,
+        "odd_half": 0.0,
+        "odd_ratio": null,
+        "point_id": "q0",
+        "qualified": false,
+        "reason": "target_band_equivalent_to_baseline",
+        "status": "EQUIVALENT_NULL"
+      },
+      {
+        "band_ordinal": 1,
+        "baseline_frequency": 0.23742167373439843,
+        "eligibility": {
+          "baseline_frequency": 0.23742167373439843,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.00023905122960266034,
+          "eligible": false,
+          "maximum_perturbation": 0.00023905122960266034,
+          "nearest_neighbor_gap": 0.0027574622383432223,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": -0.00016826046330223332,
+        "even_half": -0.0002390512176999593,
+        "even_ratio": 0.7038678360276011,
+        "mapped_spectra": [
+          [
+            0.0,
+            0.2372534133041359,
+            0.23910905457349432,
+            0.23910977699847655,
+            0.27630171978556656,
+            0.2807044858282237
+          ],
+          [
+            0.0,
+            0.2372534132380565,
+            0.23910905454011677,
+            0.23910977707509576,
+            0.276301719670634,
+            0.2807037988316461
+          ],
+          [
+            0.0,
+            0.23718262250479577,
+            0.2391034598970106,
+            0.23910423778372827,
+            0.2760169672257236,
+            0.28038127565070875
+          ],
+          [
+            0.0,
+            0.23718262252860117,
+            0.2391034599281134,
+            0.2391042377260584,
+            0.27601696728570857,
+            0.28038097702639625
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026813654443302304,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.002682052440907856,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0030045756218451958,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.003004874246157696,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": 3.303970985690796e-11,
+        "odd_half": -1.1902701047006303e-11,
+        "odd_ratio": null,
+        "point_id": "q0",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 2,
+        "baseline_frequency": 0.24017913597274165,
+        "eligibility": {
+          "baseline_frequency": 0.24017913597274165,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.001075676075731058,
+          "eligible": false,
+          "maximum_perturbation": 0.001075676075731058,
+          "nearest_neighbor_gap": 0.00043842963740020613,
+          "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap"
+        },
+        "even_A": -0.0010700814159361194,
+        "even_half": -0.0010756760601796644,
+        "even_ratio": 0.994798950677948,
+        "mapped_spectra": [
+          [
+            0.0,
+            0.2372534133041359,
+            0.23910905457349432,
+            0.23910977699847655,
+            0.27630171978556656,
+            0.2807044858282237
+          ],
+          [
+            0.0,
+            0.2372534132380565,
+            0.23910905454011677,
+            0.23910977707509576,
+            0.276301719670634,
+            0.2807037988316461
+          ],
+          [
+            0.0,
+            0.23718262250479577,
+            0.2391034598970106,
+            0.23910423778372827,
+            0.2760169672257236,
+            0.28038127565070875
+          ],
+          [
+            0.0,
+            0.23718262252860117,
+            0.2391034599281134,
+            0.2391042377260584,
+            0.27601696728570857,
+            0.28038097702639625
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026813654443302304,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.002682052440907856,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0030045756218451958,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.003004874246157696,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": 1.66887753616507e-11,
+        "odd_half": -1.5551407384073457e-11,
+        "odd_ratio": null,
+        "point_id": "q0",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 3,
+        "baseline_frequency": 0.24061756561014186,
+        "eligibility": {
+          "baseline_frequency": 0.24061756561014186,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.001513327884083454,
+          "eligible": false,
+          "maximum_perturbation": 0.001513327884083454,
+          "nearest_neighbor_gap": 0.00043842963740020613,
+          "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap"
+        },
+        "even_A": -0.0015077885733557062,
+        "even_half": -0.0015133278552485196,
+        "even_ratio": 0.9963396683186646,
+        "mapped_spectra": [
+          [
+            0.0,
+            0.2372534133041359,
+            0.23910905457349432,
+            0.23910977699847655,
+            0.27630171978556656,
+            0.2807044858282237
+          ],
+          [
+            0.0,
+            0.2372534132380565,
+            0.23910905454011677,
+            0.23910977707509576,
+            0.276301719670634,
+            0.2807037988316461
+          ],
+          [
+            0.0,
+            0.23718262250479577,
+            0.2391034598970106,
+            0.23910423778372827,
+            0.2760169672257236,
+            0.28038127565070875
+          ],
+          [
+            0.0,
+            0.23718262252860117,
+            0.2391034599281134,
+            0.2391042377260584,
+            0.27601696728570857,
+            0.28038097702639625
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026813654443302304,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.002682052440907856,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0030045756218451958,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.003004874246157696,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -3.830960548789619e-11,
+        "odd_half": 2.883493444016949e-11,
+        "odd_ratio": null,
+        "point_id": "q0",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 4,
+        "baseline_frequency": 0.2763619562737415,
+        "eligibility": {
+          "baseline_frequency": 0.2763619562737415,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.0003449890480178852,
+          "eligible": false,
+          "maximum_perturbation": 0.0003449890480178852,
+          "nearest_neighbor_gap": 0.007023894998812452,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": -6.02365456412457e-05,
+        "even_half": -0.00034498901802537674,
+        "even_ratio": 0.17460424098721547,
+        "mapped_spectra": [
+          [
+            0.0,
+            0.2372534133041359,
+            0.23910905457349432,
+            0.23910977699847655,
+            0.27630171978556656,
+            0.2807044858282237
+          ],
+          [
+            0.0,
+            0.2372534132380565,
+            0.23910905454011677,
+            0.23910977707509576,
+            0.276301719670634,
+            0.2807037988316461
+          ],
+          [
+            0.0,
+            0.23718262250479577,
+            0.2391034598970106,
+            0.23910423778372827,
+            0.2760169672257236,
+            0.28038127565070875
+          ],
+          [
+            0.0,
+            0.23718262252860117,
+            0.2391034599281134,
+            0.2391042377260584,
+            0.27601696728570857,
+            0.28038097702639625
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026813654443302304,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.002682052440907856,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0030045756218451958,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.003004874246157696,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": 5.7466281733198343e-11,
+        "odd_half": -2.9992480721219295e-11,
+        "odd_ratio": null,
+        "point_id": "q0",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 5,
+        "baseline_frequency": 0.28338585127255395,
+        "eligibility": {
+          "baseline_frequency": 0.28338585127255395,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.003004874246157696,
+          "eligible": false,
+          "maximum_perturbation": 0.003004874246157696,
+          "nearest_neighbor_gap": 0.007023894998812452,
+          "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap"
+        },
+        "even_A": -0.0026817089426190432,
+        "even_half": -0.003004724934001446,
+        "even_ratio": 0.8924973172328834,
+        "mapped_spectra": [
+          [
+            0.0,
+            0.2372534133041359,
+            0.23910905457349432,
+            0.23910977699847655,
+            0.27630171978556656,
+            0.2807044858282237
+          ],
+          [
+            0.0,
+            0.2372534132380565,
+            0.23910905454011677,
+            0.23910977707509576,
+            0.276301719670634,
+            0.2807037988316461
+          ],
+          [
+            0.0,
+            0.23718262250479577,
+            0.2391034598970106,
+            0.23910423778372827,
+            0.2760169672257236,
+            0.28038127565070875
+          ],
+          [
+            0.0,
+            0.23718262252860117,
+            0.2391034599281134,
+            0.2391042377260584,
+            0.27601696728570857,
+            0.28038097702639625
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026813654443302304,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.002682052440907856,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0030045756218451958,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.003004874246157696,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": 3.4349828881286015e-07,
+        "odd_half": 1.493121562501365e-07,
+        "odd_ratio": 2.300537996634458,
+        "point_id": "q0",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 0,
+        "baseline_frequency": 0.043747284217660096,
+        "eligibility": {
+          "baseline_frequency": 0.043747284217660096,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.0004539100499567836,
+          "eligible": true,
+          "maximum_perturbation": 0.0004539100499567836,
+          "nearest_neighbor_gap": 0.1731998717975513,
+          "reason": "PASS"
+        },
+        "even_A": -0.0004280807836689188,
+        "even_half": -0.00045390981053600177,
+        "even_ratio": 0.9430965661733932,
+        "mapped_spectra": [
+          [
+            0.04331920339171254,
+            0.2154416622589095,
+            0.221977596841768,
+            0.24035621004680324,
+            0.27966705691523774,
+            0.30004993880611447
+          ],
+          [
+            0.043319203476269816,
+            0.21544166251812832,
+            0.22197759681120716,
+            0.24035621007130245,
+            0.27966705668144237,
+            0.30004994735243956
+          ],
+          [
+            0.043293374646544876,
+            0.21536862526334058,
+            0.2219085916071008,
+            0.24027923706903898,
+            0.27939581617064085,
+            0.29979652083240976
+          ],
+          [
+            0.04329337416770331,
+            0.21536862499666806,
+            0.22190859146071623,
+            0.24027923701174733,
+            0.2793958163760868,
+            0.2997965004992795
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026188542433251416,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026188456970000495,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0028722722170298476,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.002872292550160138,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -4.227863892314332e-11,
+        "odd_half": 2.394207818112726e-10,
+        "odd_ratio": -0.17658717260588583,
+        "point_id": "q1",
+        "qualified": true,
+        "reason": "PASS",
+        "status": "PASS_DIFFERENTIAL"
+      },
+      {
+        "band_ordinal": 1,
+        "baseline_frequency": 0.2169471560152114,
+        "eligibility": {
+          "baseline_frequency": 0.2169471560152114,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.0015785310185433277,
+          "eligible": false,
+          "maximum_perturbation": 0.0015785310185433277,
+          "nearest_neighbor_gap": 0.006109818968175473,
+          "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap"
+        },
+        "even_A": -0.0015054936266924723,
+        "even_half": -0.001578530885207069,
+        "even_ratio": 0.9537308650726743,
+        "mapped_spectra": [
+          [
+            0.04331920339171254,
+            0.2154416622589095,
+            0.221977596841768,
+            0.24035621004680324,
+            0.27966705691523774,
+            0.30004993880611447
+          ],
+          [
+            0.043319203476269816,
+            0.21544166251812832,
+            0.22197759681120716,
+            0.24035621007130245,
+            0.27966705668144237,
+            0.30004994735243956
+          ],
+          [
+            0.043293374646544876,
+            0.21536862526334058,
+            0.2219085916071008,
+            0.24027923706903898,
+            0.27939581617064085,
+            0.29979652083240976
+          ],
+          [
+            0.04329337416770331,
+            0.21536862499666806,
+            0.22190859146071623,
+            0.24027923701174733,
+            0.2793958163760868,
+            0.2997965004992795
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026188542433251416,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026188456970000495,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0028722722170298476,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.002872292550160138,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -1.2960940654060948e-10,
+        "odd_half": 1.3333625870082244e-10,
+        "odd_ratio": -0.9720492220456313,
+        "point_id": "q1",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 2,
+        "baseline_frequency": 0.22305697498338686,
+        "eligibility": {
+          "baseline_frequency": 0.22305697498338686,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.0011483835226706318,
+          "eligible": false,
+          "maximum_perturbation": 0.0011483835226706318,
+          "nearest_neighbor_gap": 0.006109818968175473,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": -0.001079378156899291,
+        "even_half": -0.0011483834494783463,
+        "even_ratio": 0.9399109307867499,
+        "mapped_spectra": [
+          [
+            0.04331920339171254,
+            0.2154416622589095,
+            0.221977596841768,
+            0.24035621004680324,
+            0.27966705691523774,
+            0.30004993880611447
+          ],
+          [
+            0.043319203476269816,
+            0.21544166251812832,
+            0.22197759681120716,
+            0.24035621007130245,
+            0.27966705668144237,
+            0.30004994735243956
+          ],
+          [
+            0.043293374646544876,
+            0.21536862526334058,
+            0.2219085916071008,
+            0.24027923706903898,
+            0.27939581617064085,
+            0.29979652083240976
+          ],
+          [
+            0.04329337416770331,
+            0.21536862499666806,
+            0.22190859146071623,
+            0.24027923701174733,
+            0.2793958163760868,
+            0.2997965004992795
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026188542433251416,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026188456970000495,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0028722722170298476,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.002872292550160138,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": 1.5280415821550264e-11,
+        "odd_half": 7.319228556568191e-11,
+        "odd_ratio": null,
+        "point_id": "q1",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 3,
+        "baseline_frequency": 0.24060546077423392,
+        "eligibility": {
+          "baseline_frequency": 0.24060546077423392,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.00032622376248658824,
+          "eligible": false,
+          "maximum_perturbation": 0.00032622376248658824,
+          "nearest_neighbor_gap": 0.017548485790847057,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": -0.00024925071518108743,
+        "even_half": -0.00032622373384075254,
+        "even_ratio": 0.7640483794559233,
+        "mapped_spectra": [
+          [
+            0.04331920339171254,
+            0.2154416622589095,
+            0.221977596841768,
+            0.24035621004680324,
+            0.27966705691523774,
+            0.30004993880611447
+          ],
+          [
+            0.043319203476269816,
+            0.21544166251812832,
+            0.22197759681120716,
+            0.24035621007130245,
+            0.27966705668144237,
+            0.30004994735243956
+          ],
+          [
+            0.043293374646544876,
+            0.21536862526334058,
+            0.2219085916071008,
+            0.24027923706903898,
+            0.27939581617064085,
+            0.29979652083240976
+          ],
+          [
+            0.04329337416770331,
+            0.21536862499666806,
+            0.22190859146071623,
+            0.24027923701174733,
+            0.2793958163760868,
+            0.2997965004992795
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026188542433251416,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026188456970000495,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0028722722170298476,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.002872292550160138,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -1.2249604108838241e-11,
+        "odd_half": 2.8645821825712403e-11,
+        "odd_ratio": null,
+        "point_id": "q1",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 4,
+        "baseline_frequency": 0.2797625042882647,
+        "eligibility": {
+          "baseline_frequency": 0.2797625042882647,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.000366688117623859,
+          "eligible": false,
+          "maximum_perturbation": 0.000366688117623859,
+          "nearest_neighbor_gap": 0.022906288761174898,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": -9.544748992468266e-05,
+        "even_half": -0.0003666880149008622,
+        "even_ratio": 0.2602961810750423,
+        "mapped_spectra": [
+          [
+            0.04331920339171254,
+            0.2154416622589095,
+            0.221977596841768,
+            0.24035621004680324,
+            0.27966705691523774,
+            0.30004993880611447
+          ],
+          [
+            0.043319203476269816,
+            0.21544166251812832,
+            0.22197759681120716,
+            0.24035621007130245,
+            0.27966705668144237,
+            0.30004994735243956
+          ],
+          [
+            0.043293374646544876,
+            0.21536862526334058,
+            0.2219085916071008,
+            0.24027923706903898,
+            0.27939581617064085,
+            0.29979652083240976
+          ],
+          [
+            0.04329337416770331,
+            0.21536862499666806,
+            0.22190859146071623,
+            0.24027923701174733,
+            0.2793958163760868,
+            0.2997965004992795
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026188542433251416,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026188456970000495,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0028722722170298476,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.002872292550160138,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": 1.1689768597555883e-10,
+        "odd_half": -1.0272296901980837e-10,
+        "odd_ratio": -1.1379897513769983,
+        "point_id": "q1",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 5,
+        "baseline_frequency": 0.3026687930494396,
+        "eligibility": {
+          "baseline_frequency": 0.3026687930494396,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.002872292550160138,
+          "eligible": false,
+          "maximum_perturbation": 0.002872292550160138,
+          "nearest_neighbor_gap": 0.022906288761174898,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": -0.0026188499701625956,
+        "even_half": -0.002872282383594993,
+        "even_ratio": 0.9117661916252129,
+        "mapped_spectra": [
+          [
+            0.04331920339171254,
+            0.2154416622589095,
+            0.221977596841768,
+            0.24035621004680324,
+            0.27966705691523774,
+            0.30004993880611447
+          ],
+          [
+            0.043319203476269816,
+            0.21544166251812832,
+            0.22197759681120716,
+            0.24035621007130245,
+            0.27966705668144237,
+            0.30004994735243956
+          ],
+          [
+            0.043293374646544876,
+            0.21536862526334058,
+            0.2219085916071008,
+            0.24027923706903898,
+            0.27939581617064085,
+            0.29979652083240976
+          ],
+          [
+            0.04329337416770331,
+            0.21536862499666806,
+            0.22190859146071623,
+            0.24027923701174733,
+            0.2793958163760868,
+            0.2997965004992795
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026188542433251416,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0026188456970000495,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.0028722722170298476,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.002872292550160138,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -4.273162546031273e-09,
+        "odd_half": 1.0166565145297568e-08,
+        "odd_ratio": -0.4203152672471466,
+        "point_id": "q1",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 0,
+        "baseline_frequency": 0.03159502538888563,
+        "eligibility": {
+          "baseline_frequency": 0.03159502538888563,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 5.1676000633001096e-05,
+          "eligible": true,
+          "maximum_perturbation": 5.1676000633001096e-05,
+          "nearest_neighbor_gap": 0.19053825571522442,
+          "reason": "PASS"
+        },
+        "even_A": -3.274416712935324e-05,
+        "even_half": -5.167594628875671e-05,
+        "even_ratio": 0.6336442674195883,
+        "mapped_spectra": [
+          [
+            0.031562281505814874,
+            0.22198622903760554,
+            0.2289430258097376,
+            0.24078975780600154,
+            0.2824150531006048,
+            0.29183738657675684
+          ],
+          [
+            0.03156228093769769,
+            0.22198622543413463,
+            0.22894302316863593,
+            0.24078975492802557,
+            0.28241493552845737,
+            0.29183739533354414
+          ],
+          [
+            0.03154334938825263,
+            0.22188514121529868,
+            0.2289074811414217,
+            0.24075918261243293,
+            0.2821194809115635,
+            0.29158238268011044
+          ],
+          [
+            0.03154334949694112,
+            0.22188514307556306,
+            0.22890748421980267,
+            0.24075918819833225,
+            0.28211948104602863,
+            0.29158234650690423
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009516487977051735,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009516605549199142,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009812060166092984,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009812060031627878,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": 2.8405859262004007e-10,
+        "odd_half": -5.434424438233165e-11,
+        "odd_ratio": null,
+        "point_id": "q2",
+        "qualified": true,
+        "reason": "PASS",
+        "status": "PASS_DIFFERENTIAL"
+      },
+      {
+        "band_ordinal": 1,
+        "baseline_frequency": 0.22213328110411004,
+        "eligibility": {
+          "baseline_frequency": 0.22213328110411004,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.00024813988881136617,
+          "eligible": false,
+          "maximum_perturbation": 0.00024813988881136617,
+          "nearest_neighbor_gap": 0.00818162979904452,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": -0.00014705386823996025,
+        "even_half": -0.0002481389586791727,
+        "even_ratio": 0.5926270869464364,
+        "mapped_spectra": [
+          [
+            0.031562281505814874,
+            0.22198622903760554,
+            0.2289430258097376,
+            0.24078975780600154,
+            0.2824150531006048,
+            0.29183738657675684
+          ],
+          [
+            0.03156228093769769,
+            0.22198622543413463,
+            0.22894302316863593,
+            0.24078975492802557,
+            0.28241493552845737,
+            0.29183739533354414
+          ],
+          [
+            0.03154334938825263,
+            0.22188514121529868,
+            0.2289074811414217,
+            0.24075918261243293,
+            0.2821194809115635,
+            0.29158238268011044
+          ],
+          [
+            0.03154334949694112,
+            0.22188514307556306,
+            0.22890748421980267,
+            0.24075918819833225,
+            0.28211948104602863,
+            0.29158234650690423
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009516487977051735,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009516605549199142,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009812060166092984,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009812060031627878,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": 1.8017354552757325e-09,
+        "odd_half": -9.301321934884754e-10,
+        "odd_ratio": -1.9370746092749411,
+        "point_id": "q2",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 2,
+        "baseline_frequency": 0.23031491090315456,
+        "eligibility": {
+          "baseline_frequency": 0.23031491090315456,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.001407429761732859,
+          "eligible": false,
+          "maximum_perturbation": 0.001407429761732859,
+          "nearest_neighbor_gap": 0.00818162979904452,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": -0.0013718864139677933,
+        "even_half": -0.0014074282225423895,
+        "even_ratio": 0.9747469831815698,
+        "mapped_spectra": [
+          [
+            0.031562281505814874,
+            0.22198622903760554,
+            0.2289430258097376,
+            0.24078975780600154,
+            0.2824150531006048,
+            0.29183738657675684
+          ],
+          [
+            0.03156228093769769,
+            0.22198622543413463,
+            0.22894302316863593,
+            0.24078975492802557,
+            0.28241493552845737,
+            0.29183739533354414
+          ],
+          [
+            0.03154334938825263,
+            0.22188514121529868,
+            0.2289074811414217,
+            0.24075918261243293,
+            0.2821194809115635,
+            0.29158238268011044
+          ],
+          [
+            0.03154334949694112,
+            0.22188514307556306,
+            0.22890748421980267,
+            0.24075918819833225,
+            0.28211948104602863,
+            0.29158234650690423
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009516487977051735,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009516605549199142,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009812060166092984,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009812060031627878,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": 1.320550835348655e-09,
+        "odd_half": -1.5391904834016756e-09,
+        "odd_ratio": -0.8579515333476999,
+        "point_id": "q2",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 3,
+        "baseline_frequency": 0.24228344046050623,
+        "eligibility": {
+          "baseline_frequency": 0.24228344046050623,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.0015242578480733071,
+          "eligible": false,
+          "maximum_perturbation": 0.0015242578480733071,
+          "nearest_neighbor_gap": 0.01196852955735167,
+          "reason": "nearest_neighbor_gap"
+        },
+        "even_A": -0.001493684093492681,
+        "even_half": -0.00152425505512363,
+        "even_ratio": 0.979943670497803,
+        "mapped_spectra": [
+          [
+            0.031562281505814874,
+            0.22198622903760554,
+            0.2289430258097376,
+            0.24078975780600154,
+            0.2824150531006048,
+            0.29183738657675684
+          ],
+          [
+            0.03156228093769769,
+            0.22198622543413463,
+            0.22894302316863593,
+            0.24078975492802557,
+            0.28241493552845737,
+            0.29183739533354414
+          ],
+          [
+            0.03154334938825263,
+            0.22188514121529868,
+            0.2289074811414217,
+            0.24075918261243293,
+            0.2821194809115635,
+            0.29158238268011044
+          ],
+          [
+            0.03154334949694112,
+            0.22188514307556306,
+            0.22890748421980267,
+            0.24075918819833225,
+            0.28211948104602863,
+            0.29158234650690423
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009516487977051735,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009516605549199142,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009812060166092984,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009812060031627878,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": 1.4389879843257347e-09,
+        "odd_half": -2.792949663210642e-09,
+        "odd_ratio": -0.515221596464987,
+        "point_id": "q2",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 4,
+        "baseline_frequency": 0.2919315410776565,
+        "eligibility": {
+          "baseline_frequency": 0.2919315410776565,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.009812060166092984,
+          "eligible": false,
+          "maximum_perturbation": 0.009812060166092984,
+          "nearest_neighbor_gap": 0.002605505539955144,
+          "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap"
+        },
+        "even_A": -0.00951654676312541,
+        "even_half": -0.009812060098860431,
+        "even_ratio": 0.9698826410807103,
+        "mapped_spectra": [
+          [
+            0.031562281505814874,
+            0.22198622903760554,
+            0.2289430258097376,
+            0.24078975780600154,
+            0.2824150531006048,
+            0.29183738657675684
+          ],
+          [
+            0.03156228093769769,
+            0.22198622543413463,
+            0.22894302316863593,
+            0.24078975492802557,
+            0.28241493552845737,
+            0.29183739533354414
+          ],
+          [
+            0.03154334938825263,
+            0.22188514121529868,
+            0.2289074811414217,
+            0.24075918261243293,
+            0.2821194809115635,
+            0.29158238268011044
+          ],
+          [
+            0.03154334949694112,
+            0.22188514307556306,
+            0.22890748421980267,
+            0.24075918819833225,
+            0.28211948104602863,
+            0.29158234650690423
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009516487977051735,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009516605549199142,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009812060166092984,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009812060031627878,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": 5.878607370335409e-08,
+        "odd_half": -6.723255285834284e-11,
+        "odd_ratio": null,
+        "point_id": "q2",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      },
+      {
+        "band_ordinal": 5,
+        "baseline_frequency": 0.29453704661761165,
+        "eligibility": {
+          "baseline_frequency": 0.29453704661761165,
+          "convergence_error_bound": 0.007766684432775006,
+          "delta_max": 0.00295470011070742,
+          "eligible": false,
+          "maximum_perturbation": 0.00295470011070742,
+          "nearest_neighbor_gap": 0.002605505539955144,
+          "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap"
+        },
+        "even_A": -0.0026996556624611645,
+        "even_half": -0.002954682024104316,
+        "even_ratio": 0.9136873749653449,
+        "mapped_spectra": [
+          [
+            0.031562281505814874,
+            0.22198622903760554,
+            0.2289430258097376,
+            0.24078975780600154,
+            0.2824150531006048,
+            0.29183738657675684
+          ],
+          [
+            0.03156228093769769,
+            0.22198622543413463,
+            0.22894302316863593,
+            0.24078975492802557,
+            0.28241493552845737,
+            0.29183739533354414
+          ],
+          [
+            0.03154334938825263,
+            0.22188514121529868,
+            0.2289074811414217,
+            0.24075918261243293,
+            0.2821194809115635,
+            0.29158238268011044
+          ],
+          [
+            0.03154334949694112,
+            0.22188514307556306,
+            0.22890748421980267,
+            0.24075918819833225,
+            0.28211948104602863,
+            0.29158234650690423
+          ]
+        ],
+        "matches": [
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009516487977051735,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009516605549199142,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009812060166092984,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          },
+          {
+            "assignment": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "equivalent": false,
+            "identity_match": true,
+            "maximum_difference": 0.009812060031627878,
+            "reason": "frequency_difference",
+            "tolerance": 1e-08
+          }
+        ],
+        "odd_A": -4.3783936476415874e-09,
+        "odd_half": 1.8086603104094934e-08,
+        "odd_ratio": -0.24207937899904977,
+        "point_id": "q2",
+        "qualified": false,
+        "reason": "nearest_neighbor_gap;perturbation_fraction_of_gap",
+        "status": "BLOCKED_INELIGIBLE"
+      }
+    ],
+    "status": "PASS_REAL_MPB"
+  }
+}
