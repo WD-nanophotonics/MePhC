@@ -39,6 +39,13 @@ __all__ = [
     "SpectralEquivalence",
     "match_equivalent_spectrum",
     "qualify_differential_maxwell_response",
+    "GeometryEquivalence",
+    "match_geometry",
+    "SignEquivalence",
+    "DifferentialResolutionLadder",
+    "compare_differential_resolution_ladder",
+    "verify_periodic_sign_geometry",
+    "verify_sign_spectrum",
 ]
 
 
@@ -151,4 +158,12 @@ def __getattr__(name):
         from . import r7_response
 
         return getattr(r7_response, name)
+    if name in {"GeometryEquivalence", "match_geometry"}:
+        from .geometry_equivalence import GeometryEquivalence, match_geometry
+
+        return {"GeometryEquivalence": GeometryEquivalence, "match_geometry": match_geometry}[name]
+    if name in {"SignEquivalence", "DifferentialResolutionLadder", "compare_differential_resolution_ladder", "verify_periodic_sign_geometry", "verify_sign_spectrum"}:
+        from . import r7_2_response
+
+        return getattr(r7_2_response, name)
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

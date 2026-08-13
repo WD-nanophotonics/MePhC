@@ -1,0 +1,48 @@
+{
+  "SqrLatt": {
+    "accepted_resolution": 12,
+    "comparisons": [
+      {
+        "high": 12,
+        "low": 8,
+        "maximum_difference": 0.0010497498031782904,
+        "passed": true,
+        "records": 18,
+        "tolerance": 0.002
+      },
+      {
+        "high": 16,
+        "low": 12,
+        "maximum_difference": 0.0004019860815102638,
+        "passed": true,
+        "records": 18,
+        "tolerance": 0.002
+      }
+    ],
+    "convergence_error_bound": 0.0010497498031782904,
+    "status": "PASS"
+  },
+  "TriLatt": {
+    "accepted_resolution": null,
+    "comparisons": [
+      {
+        "high": 12,
+        "low": 8,
+        "maximum_difference": 0.017135961465184868,
+        "passed": false,
+        "records": 18,
+        "tolerance": 0.002
+      },
+      {
+        "high": 16,
+        "low": 12,
+        "maximum_difference": 0.010854384093676783,
+        "passed": false,
+        "records": 18,
+        "tolerance": 0.002
+      }
+    ],
+    "convergence_error_bound": 0.017135961465184868,
+    "status": "BLOCKED_DIFFERENTIAL_NONCONVERGED"
+  }
+}

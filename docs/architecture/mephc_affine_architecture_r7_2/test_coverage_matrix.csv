@@ -1,0 +1,9 @@
+check,scope,evidence,expected
+import_api,mephc.r7_2_response,tests/test_r7_2_response.py,PASS
+geometry_sign,SqrLatt;TriLatt,sign_equivalence_geometry.json,PASS_PERIODIC_TRANSLATION
+spectrum_sign,all downstreams x 3 q-points x 3 resolutions,sign_equivalence_spectra.json,PASS
+real_mpb_runtime,mp.MPB ModeSolver,runtime_probe.json,PASS
+raw_provenance,5 amplitudes x 3 q-points x 3 resolutions x 2 downstreams,real_mpb_response.json,PASS
+differential_ladder,SqrLatt 8->12->16,differential_resolution_ladder.json,PASS at 12
+differential_ladder,TriLatt 8->12->16,differential_resolution_ladder.json,BLOCKED non-converged
+protected_inputs,R6/R6.1 evidence trees,completion_probe.json,PRESERVED

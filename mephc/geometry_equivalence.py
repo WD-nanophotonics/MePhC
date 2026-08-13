@@ -75,8 +75,13 @@ def match_geometry(reference, candidate, *, tolerance: float = 1e-9, shape_only:
     left_centers = [np.mean(item, axis=0) for item in left]
     right_centers = [np.mean(item, axis=0) for item in right]
     costs = np.asarray([[_shape_cost(a, b) for b in right_shapes] for a in left_shapes], dtype=float)
+    position_costs = np.asarray([[float(np.linalg.norm(left_centers[i] - right_centers[j])) for j in range(len(right))] for i in range(len(left))], dtype=float)
     if len(left) <= 8:
-        assignment = min(permutations(range(len(left))), key=lambda p: sum(costs[i, p[i]] for i in range(len(left))))
+        candidates = list(permutations(range(len(left))))
+        shape_errors = [max((costs[i, candidate[i]] for i in range(len(left))), default=0.0) for candidate in candidates]
+        best_shape = min(shape_errors, default=0.0)
+        eligible = [candidate for candidate, error in zip(candidates, shape_errors) if error <= best_shape + max(tolerance, 1e-12)]
+        assignment = min(eligible, key=lambda candidate: sum(position_costs[i, candidate[i]] for i in range(len(left))))
     else:
         from scipy.optimize import linear_sum_assignment
 
@@ -85,7 +90,7 @@ def match_geometry(reference, candidate, *, tolerance: float = 1e-9, shape_only:
         assignment_array[rows] = columns
         assignment = tuple(int(item) for item in assignment_array)
     shape_error = float(max((costs[i, assignment[i]] for i in range(len(left))), default=0.0))
-    position_error = float(max((np.linalg.norm(left_centers[i] - right_centers[assignment[i]]) for i in range(len(left))), default=0.0))
+    position_error = float(max((position_costs[i, assignment[i]] for i in range(len(left))), default=0.0))
     equivalent = shape_error <= tolerance and (shape_only or position_error <= tolerance)
     if equivalent:
         reason = "EQUIVALENT_SHAPE" if shape_only else "EQUIVALENT_ABSOLUTE"
