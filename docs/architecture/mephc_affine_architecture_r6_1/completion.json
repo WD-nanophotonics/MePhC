@@ -12,10 +12,11 @@
   "final_refs": {
     "MePhC_payload": "93fd80b",
     "SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
-    "TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+    "TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b",
+    "MePhC_seal": "c3fbf2ded7e5d17a6007a3cc1d004a46e87c3ab0"
   },
-  "remote_equal": false,
-  "push_status": "PENDING_AUTHORIZATION",
+  "remote_equal": true,
+  "push_status": "PASS",
   "email_sent": false,
-  "reason": "TriLatt zero ladder reproduces with bounded MPB replay but remains BLOCKED_NONCONVERGED under the fixed ladder; old evidence was not modified."
+  "reason": "TriLatt zero ladder reproduces with bounded MPB replay but remains BLOCKED_NONCONVERGED under the fixed ladder; old evidence was not modified; the sealed commit is now equal to origin/main."
 }
