@@ -1,0 +1,1144 @@
+{
+  "primary_band": 3,
+  "primary_gap_class": "NONDEGENERATE",
+  "rows": [
+    {
+      "a0_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "coupled_pair_count": 48,
+      "coupling_rule": "nonzero Fourier m=+1 and m=-1 couple s to s\u00b11",
+      "field_fourier_components": {
+        "m_minus_1_magnitude": 0.5,
+        "m_plus_1_magnitude": 0.5
+      },
+      "gap_class": "NONDEGENERATE",
+      "gap_ratio_to_repeat_floor": 646250.0348551059,
+      "independent_eigenfrequency_repeat_floor": 1.0578741715949747e-08,
+      "minimum_coupled_sector_gap": 0.006836512202655687,
+      "pair_rows": [
+        {
+          "band_i": 1,
+          "band_j": 2,
+          "frequency_gap": 0.0842945994834725,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 1,
+          "band_j": 3,
+          "frequency_gap": 0.10695959987743679,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 1,
+          "band_j": 4,
+          "frequency_gap": 0.2358692126494762,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 1,
+          "band_j": 5,
+          "frequency_gap": 0.25752588523606745,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 1,
+          "band_j": 7,
+          "frequency_gap": 0.3451533230498748,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 1,
+          "band_j": 8,
+          "frequency_gap": 0.35198983525253047,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 1,
+          "band_j": 11,
+          "frequency_gap": 0.41493732841295977,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 1,
+          "band_j": 12,
+          "frequency_gap": 0.4249652478752861,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 2,
+          "band_j": 3,
+          "frequency_gap": 0.022665000393964296,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 2,
+          "band_j": 4,
+          "frequency_gap": 0.1515746131660037,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 2,
+          "band_j": 6,
+          "frequency_gap": 0.2320822017857507,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 2,
+          "band_j": 8,
+          "frequency_gap": 0.26769523576905796,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 2,
+          "band_j": 9,
+          "frequency_gap": 0.27686009747591867,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 2,
+          "band_j": 10,
+          "frequency_gap": 0.3181354070076077,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 2,
+          "band_j": 11,
+          "frequency_gap": 0.3306427289294873,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 3,
+          "band_j": 5,
+          "frequency_gap": 0.15056628535863067,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 3,
+          "band_j": 6,
+          "frequency_gap": 0.2094172013917864,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 3,
+          "band_j": 7,
+          "frequency_gap": 0.238193723172438,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 3,
+          "band_j": 9,
+          "frequency_gap": 0.2541950970819543,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 3,
+          "band_j": 10,
+          "frequency_gap": 0.2954704066136433,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 3,
+          "band_j": 12,
+          "frequency_gap": 0.31800564799784936,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 4,
+          "band_j": 5,
+          "frequency_gap": 0.021656672586591263,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 4,
+          "band_j": 6,
+          "frequency_gap": 0.080507588619747,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 4,
+          "band_j": 7,
+          "frequency_gap": 0.10928411040039859,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 4,
+          "band_j": 9,
+          "frequency_gap": 0.12528548430991493,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 4,
+          "band_j": 10,
+          "frequency_gap": 0.16656079384160394,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 4,
+          "band_j": 12,
+          "frequency_gap": 0.18909603522580992,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 5,
+          "band_j": 6,
+          "frequency_gap": 0.05885091603315573,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 5,
+          "band_j": 8,
+          "frequency_gap": 0.09446395001646302,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 5,
+          "band_j": 9,
+          "frequency_gap": 0.10362881172332367,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 5,
+          "band_j": 10,
+          "frequency_gap": 0.14490412125501267,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 5,
+          "band_j": 11,
+          "frequency_gap": 0.15741144317689232,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 6,
+          "band_j": 7,
+          "frequency_gap": 0.0287765217806516,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 6,
+          "band_j": 8,
+          "frequency_gap": 0.035613033983307285,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 6,
+          "band_j": 11,
+          "frequency_gap": 0.09856052714373659,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 6,
+          "band_j": 12,
+          "frequency_gap": 0.10858844660606293,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 7,
+          "band_j": 8,
+          "frequency_gap": 0.006836512202655687,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 7,
+          "band_j": 9,
+          "frequency_gap": 0.016001373909516337,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 7,
+          "band_j": 10,
+          "frequency_gap": 0.057276683441205345,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 7,
+          "band_j": 11,
+          "frequency_gap": 0.06978400536308499,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 8,
+          "band_j": 9,
+          "frequency_gap": 0.00916486170686065,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 8,
+          "band_j": 10,
+          "frequency_gap": 0.05044017123854966,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 8,
+          "band_j": 12,
+          "frequency_gap": 0.07297541262275564,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 9,
+          "band_j": 11,
+          "frequency_gap": 0.05378263145356865,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 9,
+          "band_j": 12,
+          "frequency_gap": 0.06381055091589499,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 10,
+          "band_j": 11,
+          "frequency_gap": 0.012507321921879644,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 10,
+          "band_j": 12,
+          "frequency_gap": 0.022535241384205984,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 11,
+          "band_j": 12,
+          "frequency_gap": 0.01002791946232634,
+          "sector_i": 2,
+          "sector_j": 1
+        }
+      ],
+      "resolution": 48,
+      "sector_assignments": [
+        0,
+        1,
+        2,
+        2,
+        1,
+        0,
+        1,
+        2,
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    {
+      "a0_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "coupled_pair_count": 48,
+      "coupling_rule": "nonzero Fourier m=+1 and m=-1 couple s to s\u00b11",
+      "field_fourier_components": {
+        "m_minus_1_magnitude": 0.5,
+        "m_plus_1_magnitude": 0.5
+      },
+      "gap_class": "NONDEGENERATE",
+      "gap_ratio_to_repeat_floor": 907046.2326882088,
+      "independent_eigenfrequency_repeat_floor": 7.54561785276664e-09,
+      "minimum_coupled_sector_gap": 0.0068442242466568715,
+      "pair_rows": [
+        {
+          "band_i": 1,
+          "band_j": 2,
+          "frequency_gap": 0.08435500208020497,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 1,
+          "band_j": 3,
+          "frequency_gap": 0.10702323553321885,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 1,
+          "band_j": 4,
+          "frequency_gap": 0.2361417520689645,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 1,
+          "band_j": 5,
+          "frequency_gap": 0.2577817193208578,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 1,
+          "band_j": 7,
+          "frequency_gap": 0.3452421301831866,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 1,
+          "band_j": 8,
+          "frequency_gap": 0.3520863544298435,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 1,
+          "band_j": 11,
+          "frequency_gap": 0.41500383031373944,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 1,
+          "band_j": 12,
+          "frequency_gap": 0.4250570352082258,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 2,
+          "band_j": 3,
+          "frequency_gap": 0.022668233453013886,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 2,
+          "band_j": 4,
+          "frequency_gap": 0.15178674998875955,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 2,
+          "band_j": 6,
+          "frequency_gap": 0.232078747078137,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 2,
+          "band_j": 8,
+          "frequency_gap": 0.2677313523496385,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 2,
+          "band_j": 9,
+          "frequency_gap": 0.2769290623400459,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 2,
+          "band_j": 10,
+          "frequency_gap": 0.31843400161968705,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 2,
+          "band_j": 11,
+          "frequency_gap": 0.3306488282335345,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 3,
+          "band_j": 5,
+          "frequency_gap": 0.15075848378763898,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 3,
+          "band_j": 6,
+          "frequency_gap": 0.2094105136251231,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 3,
+          "band_j": 7,
+          "frequency_gap": 0.23821889464996773,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 3,
+          "band_j": 9,
+          "frequency_gap": 0.25426082888703194,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 3,
+          "band_j": 10,
+          "frequency_gap": 0.2957657681666731,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 3,
+          "band_j": 12,
+          "frequency_gap": 0.3180337996750069,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 4,
+          "band_j": 5,
+          "frequency_gap": 0.02163996725189332,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 4,
+          "band_j": 6,
+          "frequency_gap": 0.08029199708937745,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 4,
+          "band_j": 7,
+          "frequency_gap": 0.10910037811422207,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 4,
+          "band_j": 9,
+          "frequency_gap": 0.1251423123512863,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 4,
+          "band_j": 10,
+          "frequency_gap": 0.16664725163092747,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 4,
+          "band_j": 12,
+          "frequency_gap": 0.18891528313926126,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 5,
+          "band_j": 6,
+          "frequency_gap": 0.05865202983748413,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 5,
+          "band_j": 8,
+          "frequency_gap": 0.09430463510898562,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 5,
+          "band_j": 9,
+          "frequency_gap": 0.10350234509939299,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 5,
+          "band_j": 10,
+          "frequency_gap": 0.14500728437903415,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 5,
+          "band_j": 11,
+          "frequency_gap": 0.15722211099288158,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 6,
+          "band_j": 7,
+          "frequency_gap": 0.02880838102484462,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 6,
+          "band_j": 8,
+          "frequency_gap": 0.03565260527150149,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 6,
+          "band_j": 11,
+          "frequency_gap": 0.09857008115539745,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 6,
+          "band_j": 12,
+          "frequency_gap": 0.1086232860498838,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 7,
+          "band_j": 8,
+          "frequency_gap": 0.0068442242466568715,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 7,
+          "band_j": 9,
+          "frequency_gap": 0.016041934237064237,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 7,
+          "band_j": 10,
+          "frequency_gap": 0.0575468735167054,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 7,
+          "band_j": 11,
+          "frequency_gap": 0.06976170013055283,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 8,
+          "band_j": 9,
+          "frequency_gap": 0.009197709990407366,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 8,
+          "band_j": 10,
+          "frequency_gap": 0.05070264927004853,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 8,
+          "band_j": 12,
+          "frequency_gap": 0.07297068077838231,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 9,
+          "band_j": 11,
+          "frequency_gap": 0.05371976589348859,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 9,
+          "band_j": 12,
+          "frequency_gap": 0.06377297078797495,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 10,
+          "band_j": 11,
+          "frequency_gap": 0.01221482661384743,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 10,
+          "band_j": 12,
+          "frequency_gap": 0.022268031508333785,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 11,
+          "band_j": 12,
+          "frequency_gap": 0.010053204894486356,
+          "sector_i": 2,
+          "sector_j": 1
+        }
+      ],
+      "resolution": 64,
+      "sector_assignments": [
+        0,
+        1,
+        2,
+        2,
+        1,
+        0,
+        1,
+        2,
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    {
+      "a0_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "coupled_pair_count": 48,
+      "coupling_rule": "nonzero Fourier m=+1 and m=-1 couple s to s\u00b11",
+      "field_fourier_components": {
+        "m_minus_1_magnitude": 0.5,
+        "m_plus_1_magnitude": 0.5
+      },
+      "gap_class": "NONDEGENERATE",
+      "gap_ratio_to_repeat_floor": 730175.8105790421,
+      "independent_eigenfrequency_repeat_floor": 9.368212261495756e-09,
+      "minimum_coupled_sector_gap": 0.006840441981714185,
+      "pair_rows": [
+        {
+          "band_i": 1,
+          "band_j": 2,
+          "frequency_gap": 0.08439083124851889,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 1,
+          "band_j": 3,
+          "frequency_gap": 0.10706706476768611,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 1,
+          "band_j": 4,
+          "frequency_gap": 0.23631736435711792,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 1,
+          "band_j": 5,
+          "frequency_gap": 0.25795448005692234,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 1,
+          "band_j": 7,
+          "frequency_gap": 0.3453108547538096,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 1,
+          "band_j": 8,
+          "frequency_gap": 0.3521512967355238,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 1,
+          "band_j": 11,
+          "frequency_gap": 0.41507469549768045,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 1,
+          "band_j": 12,
+          "frequency_gap": 0.4251253481009694,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 2,
+          "band_j": 3,
+          "frequency_gap": 0.022676233519167227,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 2,
+          "band_j": 4,
+          "frequency_gap": 0.15192653310859905,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 2,
+          "band_j": 6,
+          "frequency_gap": 0.23209958783099888,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 2,
+          "band_j": 8,
+          "frequency_gap": 0.26776046548700494,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 2,
+          "band_j": 9,
+          "frequency_gap": 0.2769802384389987,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 2,
+          "band_j": 10,
+          "frequency_gap": 0.31862743059874177,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 2,
+          "band_j": 11,
+          "frequency_gap": 0.3306838642491616,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 3,
+          "band_j": 5,
+          "frequency_gap": 0.15088741528923624,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 3,
+          "band_j": 6,
+          "frequency_gap": 0.20942335431183165,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 3,
+          "band_j": 7,
+          "frequency_gap": 0.23824378998612353,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 3,
+          "band_j": 9,
+          "frequency_gap": 0.2543040049198315,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 3,
+          "band_j": 10,
+          "frequency_gap": 0.2959511970795745,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 3,
+          "band_j": 12,
+          "frequency_gap": 0.31805828333328334,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 4,
+          "band_j": 5,
+          "frequency_gap": 0.02163711569980442,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 4,
+          "band_j": 6,
+          "frequency_gap": 0.08017305472239983,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 4,
+          "band_j": 7,
+          "frequency_gap": 0.1089934903966917,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 4,
+          "band_j": 9,
+          "frequency_gap": 0.12505370533039967,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 4,
+          "band_j": 10,
+          "frequency_gap": 0.16670089749014272,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 4,
+          "band_j": 12,
+          "frequency_gap": 0.1888079837438515,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 5,
+          "band_j": 6,
+          "frequency_gap": 0.05853593902259541,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 5,
+          "band_j": 8,
+          "frequency_gap": 0.09419681667860147,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 5,
+          "band_j": 9,
+          "frequency_gap": 0.10341658963059525,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 5,
+          "band_j": 10,
+          "frequency_gap": 0.1450637817903383,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 5,
+          "band_j": 11,
+          "frequency_gap": 0.1571202154407581,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 6,
+          "band_j": 7,
+          "frequency_gap": 0.028820435674291878,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 6,
+          "band_j": 8,
+          "frequency_gap": 0.03566087765600606,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 6,
+          "band_j": 11,
+          "frequency_gap": 0.0985842764181627,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 6,
+          "band_j": 12,
+          "frequency_gap": 0.10863492902145166,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 7,
+          "band_j": 8,
+          "frequency_gap": 0.006840441981714185,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 7,
+          "band_j": 9,
+          "frequency_gap": 0.01606021493370796,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 7,
+          "band_j": 10,
+          "frequency_gap": 0.05770740709345101,
+          "sector_i": 1,
+          "sector_j": 0
+        },
+        {
+          "band_i": 7,
+          "band_j": 11,
+          "frequency_gap": 0.06976384074387082,
+          "sector_i": 1,
+          "sector_j": 2
+        },
+        {
+          "band_i": 8,
+          "band_j": 9,
+          "frequency_gap": 0.009219772951993777,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 8,
+          "band_j": 10,
+          "frequency_gap": 0.05086696511173683,
+          "sector_i": 2,
+          "sector_j": 0
+        },
+        {
+          "band_i": 8,
+          "band_j": 12,
+          "frequency_gap": 0.0729740513654456,
+          "sector_i": 2,
+          "sector_j": 1
+        },
+        {
+          "band_i": 9,
+          "band_j": 11,
+          "frequency_gap": 0.05370362581016286,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 9,
+          "band_j": 12,
+          "frequency_gap": 0.06375427841345183,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 10,
+          "band_j": 11,
+          "frequency_gap": 0.012056433650419807,
+          "sector_i": 0,
+          "sector_j": 2
+        },
+        {
+          "band_i": 10,
+          "band_j": 12,
+          "frequency_gap": 0.022107086253708774,
+          "sector_i": 0,
+          "sector_j": 1
+        },
+        {
+          "band_i": 11,
+          "band_j": 12,
+          "frequency_gap": 0.010050652603288968,
+          "sector_i": 2,
+          "sector_j": 1
+        }
+      ],
+      "resolution": 80,
+      "sector_assignments": [
+        0,
+        1,
+        2,
+        2,
+        1,
+        0,
+        1,
+        2,
+        0,
+        0,
+        2,
+        1
+      ]
+    }
+  ],
+  "translation_sector_coupling": "nonzero \u00b11 Fourier components"
+}

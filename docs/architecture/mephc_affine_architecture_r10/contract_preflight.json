@@ -1,0 +1,50 @@
+{
+  "amplitude_policy": {
+    "adaptive_tuning_forbidden": true,
+    "amplitude_0_02_forbidden_in_primary_fit": true,
+    "fit_absolute_levels": [
+      0.00125,
+      0.0025,
+      0.005,
+      0.01
+    ],
+    "signed_ladder": [
+      -0.01,
+      -0.005,
+      -0.0025,
+      -0.00125,
+      0.0,
+      0.00125,
+      0.0025,
+      0.005,
+      0.01
+    ]
+  },
+  "contract_sha256": "9ae0c4262451827c7ae559ea9a635b2304316b0a880d462ee4b217241b56a219",
+  "derived_from_contract": true,
+  "immutable_r9_inheritance": {
+    "channel_count": 18,
+    "cubic_support_count": 0,
+    "eligible_odd_channels": 1,
+    "immutable": true,
+    "linear_support_count": 1,
+    "sole_linear_channel": [
+      "q2",
+      3
+    ],
+    "terminal_state": "BLOCKED_ODD_RESPONSE_ORDER_UNRESOLVED"
+  },
+  "resolution_policy": {
+    "above_80_forbidden": true,
+    "mandatory": [
+      48,
+      64
+    ],
+    "optional_80": "run exactly once complete iff 48_to_64 adjudication unresolved"
+  },
+  "starting_refs": {
+    "MePhC": "8fdfc2d61d25c03ca86f0e13c99c88be623724c9",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  }
+}

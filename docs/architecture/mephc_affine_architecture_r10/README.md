@@ -1,0 +1,1 @@
+R10 folded-sector first-order mechanism adjudication. Evidence-only bundle: q2=(-0.09,0.14), TE, response bands 1-6, A=0 sector bands 1-12, fixed signed ladder, mandatory resolutions 48 and 64, and optional 80 exactly once only if 48-to-64 remains unresolved. Production APIs and TriLatt are unchanged.

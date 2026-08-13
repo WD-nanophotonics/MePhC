@@ -1,0 +1,1704 @@
+{
+  "above_80_ran": false,
+  "fresh_solver_call_count": 48,
+  "fresh_solver_calls": [
+    {
+      "amplitude": -0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 1,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": -0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 2,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": -0.0025,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 3,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": -0.00125,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 4,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.0,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "call_index": 5,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 12,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.00125,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 6,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.0025,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 7,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 8,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 9,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.0,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "call_index": 10,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "same_input_repeat_A0",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 12,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.0,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "call_index": 11,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "same_input_repeat_A0",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 12,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 12,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "same_input_repeat_A_plus_0.005",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 13,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "same_input_repeat_A_plus_0.005",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 14,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": -0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 15,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 16,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "independent_representation_control",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 48,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": -0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 17,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": -0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 18,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": -0.0025,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 19,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": -0.00125,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 20,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.0,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "call_index": 21,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 12,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.00125,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 22,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.0025,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 23,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 24,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 25,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.0,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "call_index": 26,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "same_input_repeat_A0",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 12,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.0,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "call_index": 27,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "same_input_repeat_A0",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 12,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 28,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "same_input_repeat_A_plus_0.005",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 29,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "same_input_repeat_A_plus_0.005",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 30,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": -0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 31,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 32,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "independent_representation_control",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 64,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": -0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 33,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": -0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 34,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": -0.0025,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 35,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": -0.00125,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 36,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.0,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "call_index": 37,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 12,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.00125,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 38,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.0025,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 39,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 40,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 41,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "response_ladder",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.0,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "call_index": 42,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "same_input_repeat_A0",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 12,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.0,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "call_index": 43,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "same_input_repeat_A0",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 12,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 44,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "same_input_repeat_A_plus_0.005",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 45,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "same_input_repeat_A_plus_0.005",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 46,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": -0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 47,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "call_index": 48,
+      "field_is_periodic_supercell": true,
+      "fresh_solver_call": true,
+      "kind": "independent_representation_control",
+      "polarization": "TE",
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 80,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07
+    }
+  ],
+  "mandatory_resolutions": [
+    48,
+    64
+  ],
+  "no_retry_hunting": true,
+  "optional_80_policy": "run exactly once complete iff 48_to_64 adjudication unresolved",
+  "resolutions_used": [
+    48,
+    64,
+    80
+  ],
+  "trilatt_fresh_solver_calls": 0
+}

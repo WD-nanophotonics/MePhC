@@ -1,0 +1,116 @@
+{
+  "48": {
+    "amplitude": 0.005,
+    "bands": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "full_typed_geometry_equivalence": {
+      "assignment": [
+        2,
+        1,
+        0
+      ],
+      "equivalent": true,
+      "material_types": [
+        "air",
+        "air",
+        "air"
+      ],
+      "maximum_coordinate_residual": 0.0,
+      "polygon_count": 3,
+      "tolerance": 1e-10,
+      "total_coordinate_residual": 0.0
+    },
+    "max_spectral_difference": 1.0960724328157312e-08,
+    "q_point": "q2",
+    "spectral_difference_by_band": [
+      2.7793553986077413e-09,
+      9.358911701173867e-10,
+      1.277514177777661e-09,
+      6.589342405050047e-10,
+      5.321391660650931e-10,
+      1.0960724328157312e-08
+    ]
+  },
+  "64": {
+    "amplitude": 0.005,
+    "bands": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "full_typed_geometry_equivalence": {
+      "assignment": [
+        2,
+        1,
+        0
+      ],
+      "equivalent": true,
+      "material_types": [
+        "air",
+        "air",
+        "air"
+      ],
+      "maximum_coordinate_residual": 0.0,
+      "polygon_count": 3,
+      "tolerance": 1e-10,
+      "total_coordinate_residual": 0.0
+    },
+    "max_spectral_difference": 9.00335012099518e-09,
+    "q_point": "q2",
+    "spectral_difference_by_band": [
+      3.507702281413394e-09,
+      7.414052705101426e-10,
+      5.225450350199168e-10,
+      1.547767469745054e-11,
+      4.923071950102553e-10,
+      9.00335012099518e-09
+    ]
+  },
+  "80": {
+    "amplitude": 0.005,
+    "bands": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "full_typed_geometry_equivalence": {
+      "assignment": [
+        2,
+        1,
+        0
+      ],
+      "equivalent": true,
+      "material_types": [
+        "air",
+        "air",
+        "air"
+      ],
+      "maximum_coordinate_residual": 0.0,
+      "polygon_count": 3,
+      "tolerance": 1e-10,
+      "total_coordinate_residual": 0.0
+    },
+    "max_spectral_difference": 1.3188398206853691e-08,
+    "q_point": "q2",
+    "spectral_difference_by_band": [
+      2.3992859504717856e-09,
+      8.449269062182907e-11,
+      6.494207394069917e-10,
+      1.2083661293793568e-09,
+      1.933908255757899e-09,
+      1.3188398206853691e-08
+    ]
+  }
+}
