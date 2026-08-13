@@ -1,0 +1,28 @@
+{
+  "112": {
+    "band3": {
+      "A0": 2.5454638397093277e-13,
+      "canonical_anchor_plus_h": 1.304512053934559e-14,
+      "full_plus_A_phase0": 5.10702591327572e-15
+    },
+    "exactly_two_repeats": {
+      "A0": true,
+      "canonical_anchor_plus_h": true,
+      "full_plus_A_phase0": true
+    },
+    "retry_hunting": false
+  },
+  "96": {
+    "band3": {
+      "A0": 8.928413564035509e-13,
+      "canonical_anchor_plus_h": 7.448486272210175e-13,
+      "full_plus_A_phase0": 1.6153745008296028e-13
+    },
+    "exactly_two_repeats": {
+      "A0": true,
+      "canonical_anchor_plus_h": true,
+      "full_plus_A_phase0": true
+    },
+    "retry_hunting": false
+  }
+}

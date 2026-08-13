@@ -1,0 +1,100 @@
+{
+  "coefficients": [
+    0.4472135954999579,
+    0.5509898714915044,
+    -0.9982034669914622
+  ],
+  "common_uncertainty": {
+    "112": {
+      "common_tangent_uncertainty": 0.008097638642123872,
+      "cross_resolution_sensitivity_drift": 5.804170200018888e-07,
+      "epsilon_pass": true,
+      "geometry_pass": true,
+      "repeat_over_hmin": 2.609024107869118e-11,
+      "representation_over_hmin": 0.008097638642123872,
+      "uniform_translation_over_delta": 0.0021721030145777087
+    },
+    "96": {
+      "common_tangent_uncertainty": 0.01018692033177837,
+      "cross_resolution_sensitivity_drift": 5.804170200018888e-07,
+      "epsilon_pass": true,
+      "geometry_pass": true,
+      "repeat_over_hmin": 1.489697254442035e-09,
+      "representation_over_hmin": 0.01018692033177837,
+      "uniform_translation_over_delta": 0.002787302291237803
+    }
+  },
+  "definition": "s_j^can(h)=(omega_j^can(+h)-omega_j^can(-h))/(2h)",
+  "resolutions": {
+    "112": {
+      "0.0005": {
+        "coefficients": [
+          0.4472135954999579,
+          0.5509898714915044,
+          -0.9982034669914622
+        ],
+        "max_pairwise_difference": 2.390920794681506e-09,
+        "mean": 8.394587155032459e-07,
+        "s_j_can": [
+          8.403773787968305e-07,
+          8.400123097107581e-07,
+          8.37986458002149e-07
+        ],
+        "site_uniformity": true,
+        "weighted_G_can": 2.185476057732557e-09
+      },
+      "0.001": {
+        "coefficients": [
+          0.4472135954999579,
+          0.5509898714915044,
+          -0.9982034669914622
+        ],
+        "max_pairwise_difference": 7.127215484459271e-10,
+        "mean": 8.185839228680436e-07,
+        "s_j_can": [
+          8.187901051615043e-07,
+          8.181244709470903e-07,
+          8.188371924955362e-07
+        ],
+        "site_uniformity": true,
+        "weighted_G_can": -4.1376045034233523e-10
+      }
+    },
+    "96": {
+      "0.0005": {
+        "coefficients": [
+          0.4472135954999579,
+          0.5509898714915044,
+          -0.9982034669914622
+        ],
+        "max_pairwise_difference": 2.171152146956956e-09,
+        "mean": 2.594860807706804e-07,
+        "s_j_can": [
+          2.605170523750644e-07,
+          2.5959528970886936e-07,
+          2.5834590022810744e-07
+        ],
+        "site_uniformity": true,
+        "weighted_G_can": 1.659369707465958e-09
+      },
+      "0.001": {
+        "coefficients": [
+          0.4472135954999579,
+          0.5509898714915044,
+          -0.9982034669914622
+        ],
+        "max_pairwise_difference": 1.3237466678361898e-09,
+        "mean": 2.406744803451488e-07,
+        "s_j_can": [
+          2.4058482983591034e-07,
+          2.4005743226584997e-07,
+          2.4138117893368616e-07
+        ],
+        "site_uniformity": true,
+        "weighted_G_can": -1.0855091496878353e-09
+      }
+    }
+  },
+  "tangent_covariant_closed": true,
+  "weighted_definition": "G_can(h)=sum_j d_j*s_j^can(h)"
+}

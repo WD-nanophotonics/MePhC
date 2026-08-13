@@ -1,0 +1,148 @@
+{
+  "112": {
+    "alternative_fingerprint": "b46d4e767d91cfa064ded7ec2900472164a01987132a53cb9b7f413070a39828",
+    "alternative_grid": {
+      "array_shape": [
+        336,
+        112
+      ],
+      "byte_order": "native_normalized_float64",
+      "dtype": "float64",
+      "grid_size": [
+        336,
+        112,
+        1
+      ],
+      "normalized_byte_sha256": "cba49324bd83a7c1557b2a083b75684c89d9bff46924c6cf960840a69cc7404a"
+    },
+    "alternative_spectrum": [
+      0.06452296147974924,
+      0.1490798669131296,
+      0.17176637452986124,
+      0.301510036491311,
+      0.3231206435796133,
+      0.381088885462875
+    ],
+    "canonical_fingerprint": "8fdf30e456e1ad095b00ba680e7c7d3bb5947777a47ed2efd690945deaef5da8",
+    "canonical_geometry": {
+      "assignment": [
+        2,
+        1,
+        0
+      ],
+      "equivalent": true,
+      "materials": [
+        "air",
+        "air",
+        "air"
+      ],
+      "maximum_coordinate_residual": 0.0,
+      "polygon_count": 3,
+      "tolerance": 1e-10,
+      "total_coordinate_residual": 0.0
+    },
+    "canonical_grid": {
+      "array_shape": [
+        336,
+        112
+      ],
+      "byte_order": "native_normalized_float64",
+      "dtype": "float64",
+      "grid_size": [
+        336,
+        112,
+        1
+      ],
+      "normalized_byte_sha256": "cba49324bd83a7c1557b2a083b75684c89d9bff46924c6cf960840a69cc7404a"
+    },
+    "canonical_spectrum": [
+      0.06452196117121832,
+      0.14908404094660027,
+      0.17176232571054018,
+      0.3015141255901546,
+      0.3231165824092592,
+      0.381089284865936
+    ],
+    "spectral_difference": [
+      1.0003085309240323e-06,
+      4.174033470666361e-06,
+      4.048819321061936e-06,
+      4.089098843640393e-06,
+      4.061170354063837e-06,
+      3.994030610132704e-07
+    ]
+  },
+  "96": {
+    "alternative_fingerprint": "b46d4e767d91cfa064ded7ec2900472164a01987132a53cb9b7f413070a39828",
+    "alternative_grid": {
+      "array_shape": [
+        288,
+        96
+      ],
+      "byte_order": "native_normalized_float64",
+      "dtype": "float64",
+      "grid_size": [
+        288,
+        96,
+        1
+      ],
+      "normalized_byte_sha256": "21943597cd68084713a07798f5f8ffb9bcf9de1001d026e45fa4f13015beba8f"
+    },
+    "alternative_spectrum": [
+      0.06451673172167316,
+      0.14907986178176816,
+      0.17176862987815003,
+      0.3015168010441196,
+      0.32312947027657934,
+      0.38105924079176356
+    ],
+    "canonical_fingerprint": "8fdf30e456e1ad095b00ba680e7c7d3bb5947777a47ed2efd690945deaef5da8",
+    "canonical_geometry": {
+      "assignment": [
+        2,
+        1,
+        0
+      ],
+      "equivalent": true,
+      "materials": [
+        "air",
+        "air",
+        "air"
+      ],
+      "maximum_coordinate_residual": 0.0,
+      "polygon_count": 3,
+      "tolerance": 1e-10,
+      "total_coordinate_residual": 0.0
+    },
+    "canonical_grid": {
+      "array_shape": [
+        288,
+        96
+      ],
+      "byte_order": "native_normalized_float64",
+      "dtype": "float64",
+      "grid_size": [
+        288,
+        96,
+        1
+      ],
+      "normalized_byte_sha256": "21943597cd68084713a07798f5f8ffb9bcf9de1001d026e45fa4f13015beba8f"
+    },
+    "canonical_spectrum": [
+      0.06451547363995325,
+      0.14908511175234,
+      0.17176353641798414,
+      0.30152196447829327,
+      0.3231243483695756,
+      0.3810597497862955
+    ],
+    "spectral_difference": [
+      1.258081719912596e-06,
+      5.249970571830076e-06,
+      5.093460165889185e-06,
+      5.1634341736717104e-06,
+      5.121907003746706e-06,
+      5.089945319114442e-07
+    ]
+  }
+}

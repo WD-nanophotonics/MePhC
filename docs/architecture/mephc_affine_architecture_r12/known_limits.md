@@ -1,0 +1,1 @@
+The result is scoped to the inherited nondegenerate q2 band-3 3x1 rigid motif benchmark and the declared translation-covariant rasterization controls. It does not establish cubic response, Berry/BCD, topology, transport, far field, local deformation physics, or an arbitrary zero-mean theorem.

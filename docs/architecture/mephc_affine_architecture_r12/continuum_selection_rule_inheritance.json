@@ -1,0 +1,17 @@
+{
+  "R11_tangent_not_reinterpreted_as_physical": true,
+  "coefficient_sum": 1.1102230246251565e-16,
+  "coefficient_sum_zero": true,
+  "coefficients": [
+    0.4472135954999579,
+    0.5509898714915044,
+    -0.9982034669914622
+  ],
+  "generator": "V[d]=sum_j d_j T^j V0 T^-j",
+  "label": "NONDEGENERATE_ZERO_MEAN_FIRST_ORDER_SELECTION_RULE_DERIVED",
+  "scope": [
+    "nondegenerate isolated eigenvalue",
+    "identical rigid motifs",
+    "primitive translation"
+  ]
+}

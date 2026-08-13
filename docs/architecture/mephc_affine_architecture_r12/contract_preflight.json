@@ -1,0 +1,60 @@
+{
+  "canonical_tangent": {
+    "all_site_variants_mandatory": true,
+    "anchor_site": 1,
+    "epsilon_equivalence_tolerance": 1e-12,
+    "full_typed_geometry_tolerance": 1e-10,
+    "global_integer_primitive_translation_to_anchor_required": true,
+    "h_levels": [
+      0.0005,
+      0.001
+    ],
+    "sites": [
+      0,
+      1,
+      2
+    ],
+    "special_site_tolerance_forbidden": true
+  },
+  "contract_sha256": "cfd2bf0dee4d7c186e2c428cad3620ececdc7bde256b00dd97de33f5dcf34343",
+  "origin_phase_ensemble": {
+    "all_phases_mandatory": true,
+    "amplitudes": [
+      0.0005,
+      0.001,
+      0.002
+    ],
+    "fit": "Dbar(A)=c1bar+c3bar*A^2",
+    "phase_cherry_picking_forbidden": true,
+    "phases_in_grid_cell": [
+      0.0,
+      0.25,
+      0.5,
+      0.75
+    ],
+    "physical_shifts": [
+      "0",
+      "dx/4",
+      "dx/2",
+      "3*dx/4"
+    ]
+  },
+  "resolution_plan": {
+    "above_112_forbidden": true,
+    "exact": [
+      96,
+      112
+    ]
+  },
+  "runtime": {
+    "environment_mutation_allowed": false,
+    "python": "/home/icy/miniconda3/envs/mp/bin/python",
+    "solver": "meep.mpb.ModeSolver",
+    "solver_tolerance": 1e-10
+  },
+  "starting_refs": {
+    "MePhC": "b8304cb0050ee184929a217662a02dc05ae5e16c",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  }
+}

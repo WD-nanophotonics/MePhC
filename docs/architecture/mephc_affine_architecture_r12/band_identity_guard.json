@@ -1,0 +1,2886 @@
+{
+  "band_identity_rule": "ordinal_bands_1_to_6",
+  "pass": true,
+  "rows": [
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 4.54304587899218e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 3.4630737419744095e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 3.0424463751566044e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 9.2038924061566e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 9.617065744738085e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 0.0003005004129814637,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 4.54329900324707e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 3.463828807301339e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 3.0406134937432938e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 9.198499351270595e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 9.612454571655826e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00030044462357192714,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 3.891691297421007e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 3.152473001885592e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 2.7530494998068145e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 8.743466915472897e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 9.04572385090896e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.0002621866498781489,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 3.8917593715270815e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 3.153914935910551e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 2.750761546418956e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 8.75941430045768e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 9.00815189997517e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.0002620805716068708,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 3.583290739379852e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 3.0649619430250796e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 2.6182062384139115e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 9.127873353864668e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 8.992473058982986e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00024764560994344764,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 3.5838785127029205e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 3.069564066288111e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 2.613399249681847e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 9.190974376954708e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 8.889646254350847e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00024798903238426595,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 3.4143520126372895e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 2.893319698360486e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 2.5689825127184207e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 8.248387119147438e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 8.617500837787562e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00023783000222021844,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 4.638356014889655e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 3.5165022218730524e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 3.5000525339751176e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 0.00010499158936627673,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 0.00011452108628728919,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 0.0003194700441093157,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 3.704810939211822e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 3.07979970908534e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 2.717179620775889e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 8.876022875337064e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 9.150364474425077e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.0002577101093698686,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 4.0643348488925146e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 3.1398991861025793e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 2.7425632011773837e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 9.016451571480788e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 9.363300747405878e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00028104062351153036,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 4.176047196305377e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 3.215734458858477e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 2.729825256186924e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 9.619942454353048e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 9.351097841492351e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00029006444442170043,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 2.1495618262534766e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 2.1086398843545018e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 1.7563260444275475e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 6.637521045299577e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 5.952118265206696e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00015715895409240677,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 5.256455836349927e-06,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 6.726727140443645e-06,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 5.343715864414289e-06,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 2.2123361789583296e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 2.5714144406996375e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 6.744992059393162e-05,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 5.2572205279655115e-06,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 6.727620396440592e-06,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 5.343069709062842e-06,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 2.214500508962436e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 2.5687096629090078e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 6.748665404832099e-05,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 1.4296381274397918e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 1.3510928886351081e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 1.2444132874045444e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 4.224246682660304e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 4.496903126960383e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00012049974573208333,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 1.3983449875729081e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 1.3259128537751463e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 1.1209214309942928e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 4.030867543886041e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 4.190667891068589e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.0001183735709547884,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 2.9977803247482893e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 2.3673957358916198e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 1.9623172809346556e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 7.308812183731694e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 6.727355277169611e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00021608808956569137,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 3.05525384567823e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 2.4126120926004635e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 2.188733524424724e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 7.657302526176135e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 7.290079964317187e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00022002794267522718,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 4.51083720088008e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 3.4180806999239977e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 3.0119752464308203e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 9.71400761032859e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 0.00010257962367249407,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00031056021062386696,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 3.4141126963357915e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 2.892512685567783e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 2.5695303446149342e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 8.234398154227662e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 8.636912323367607e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 0.0002376478341927779,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 4.065001032492466e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 3.1416601255884746e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 2.741380597420795e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 9.052397184872163e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 9.315688489541785e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00028150406679344764,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 3.704858874542527e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 3.079919885551341e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 2.717108846436722e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 8.878681519214338e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 9.146809031740366e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00025774453599208824,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 2.1496207019564006e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 2.108669450173739e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 1.7562575255231083e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 6.640034111321524e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 5.95006305449397e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00015718135829617674,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 4.176688774459869e-05,
+      "limit": 0.02110366499276042,
+      "nearest_gap": 0.08441465997104168,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 3.2181831206179456e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 2.7281413686519596e-05,
+      "limit": 0.005667895723716558,
+      "nearest_gap": 0.022671582894866232,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 9.65435497521927e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 9.300748426599448e-05,
+      "limit": 0.005406485345149772,
+      "nearest_gap": 0.02162594138059909,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.0002905651173580881,
+      "limit": 0.014618087268966656,
+      "nearest_gap": 0.058472349075866625,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 96
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 3.874141069307169e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 2.9386428192973435e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 2.594041599285335e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 7.773492596402365e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 8.123510246899057e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 0.0002550254905921978,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 3.874311598053848e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 2.9390961126279924e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 2.5928952186449195e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 7.77244678190625e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 8.117160778536858e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 0.000255004784810553,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 3.324478677253773e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 2.6818421309887652e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 2.3522672653403243e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 7.432627122511137e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 7.664599127926719e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00022311888639031663,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 3.324584445293932e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 2.6828271714712804e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 2.3507598262140217e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 7.450173741302413e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 7.630724381624265e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.0002230947626088442,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 3.049174681893363e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 2.596474777141755e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 2.214754287679921e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 7.788702875993758e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 7.538755865477142e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00021007397425221175,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 3.049770499088944e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 2.6000293663508423e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 2.211210436020572e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 7.844510623195022e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 7.452474835695222e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00021044836455857974,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.0,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 3.0753802542929365e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 2.5658509432452403e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 2.289824303236543e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 7.316222421865914e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 7.657751960182813e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00021290586723538008,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 3.9081624634049184e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 2.9839352663846297e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 2.965143719887986e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 8.888023907704934e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 9.653744484655613e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 0.0002682862966266186,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 3.1237968458996956e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 2.595800155558159e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 2.2960408863820225e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 7.503201776432045e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 7.692030510791925e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00021661135433487244,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 3.339976471490591e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 2.6124597963722573e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 2.2902751914660735e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 7.527650450761536e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 7.760920943106209e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00023051296262432963,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 2.878450645464603e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 2.2932167802747205e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 1.9208746845744695e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 6.637508766543787e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 6.0945966097347704e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00019607072612881637,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 1.3747998079863266e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 1.484505861809593e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 1.198439431340792e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 4.936518999110184e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 4.1292335312581585e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00010442362056722887,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.25,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 5.482102476764283e-06,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 6.393134801219169e-06,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 5.1307485145202225e-06,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 2.082407845349632e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 2.327624814796314e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 6.0528226072109614e-05,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 5.4828180927335435e-06,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 6.3939739651242e-06,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 5.1301371264689255e-06,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 2.084488062359391e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 2.3250476995417824e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 6.0563133660929136e-05,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 1.716789039829525e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 1.3858122542897977e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 1.2564589286390149e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 4.272854882542143e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 4.4765835141014065e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.0001321420172062937,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 1.6878314644697134e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 1.3640324175029361e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 1.1449882408087753e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 4.099558361964073e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 4.198375446756719e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00013019376221323764,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 2.7764945188427093e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 2.194721743428718e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 1.825523931114903e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 6.822303804188135e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 6.156660088824095e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00019606815348727213,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 2.8289148952559406e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 2.2333189171996892e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 2.0268377902449286e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 7.129582741377538e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 6.661029523236106e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00019961924046096868,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.5,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 3.804954703209851e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 2.9089356717554304e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 2.5794450201427344e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 8.26814367649864e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 8.707981300604128e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00026110893883868336,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 1,
+      "frequency_delta": 3.075400613287982e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 2,
+      "frequency_delta": 2.565898990247728e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 3,
+      "frequency_delta": 2.2897940039845466e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 4,
+      "frequency_delta": 7.317277968427183e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 5,
+      "frequency_delta": 7.656358044338951e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.0005,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00021291909627346728,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 3.447970123382493e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 2.6909005787306706e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 2.690358983717389e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 8.209237716538809e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 8.695033739852809e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.0002384068174569598,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 1,
+      "frequency_delta": 3.123838202397089e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 2,
+      "frequency_delta": 2.595892724638338e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 3,
+      "frequency_delta": 2.2959890193297028e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 4,
+      "frequency_delta": 7.505445982697312e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 5,
+      "frequency_delta": 7.689074823929998e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.001,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00021664018342870683,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 1.3748878810809773e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 1.4846288680592234e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 1.1983009598204308e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 4.940643976053538e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 4.125020440498561e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": 0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.00010446687056991921,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 1,
+      "frequency_delta": 2.8788645340144248e-05,
+      "limit": 0.021107887902434678,
+      "nearest_gap": 0.08443155160973871,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 2,
+      "frequency_delta": 2.2948997094263124e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 3,
+      "frequency_delta": 1.9197165387480064e-05,
+      "limit": 0.005668135959082832,
+      "nearest_gap": 0.022672543836331327,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 4,
+      "frequency_delta": 6.658317267260738e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 5,
+      "frequency_delta": 6.06323036572709e-05,
+      "limit": 0.005405601423625839,
+      "nearest_gap": 0.021622405694503355,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    },
+    {
+      "amplitude": -0.002,
+      "band_ordinal": 6,
+      "frequency_delta": 0.000196401924605627,
+      "limit": 0.014606186340505062,
+      "nearest_gap": 0.05842474536202025,
+      "pass": true,
+      "phase": 0.75,
+      "resolution": 112
+    }
+  ]
+}
