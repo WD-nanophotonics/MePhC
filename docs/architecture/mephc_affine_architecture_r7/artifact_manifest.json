@@ -1,7 +1,7 @@
 {
   "schema": "mephc.affine_architecture.r7.artifact_manifest.v1",
   "status": "SEALED_PASS_R7_EQUIVALENCE_AWARE_DIFFERENTIAL",
-  "payload_parent": "PENDING_PAYLOAD_COMMIT",
+  "payload_parent": "efc0d98",
   "files": [
     "README.md",
     "response_contract.md",
