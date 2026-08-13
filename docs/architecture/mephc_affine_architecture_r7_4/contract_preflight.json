@@ -1,0 +1,70 @@
+{
+  "contract_sha256": "60b1979544d6ba3c6fe4840c97f8e291fed1c591836d4b8d52860d2997951a47",
+  "derived": {
+    "classification": {
+      "identity_representation_reference": "canonical_plus_A",
+      "no_retry_hunting": true,
+      "no_tolerance_widening_to_obtain_desired_state": true,
+      "numerical_floor_states": [
+        "DISCRETE_OPERATOR_EQUIVALENT_EIGENSOLVER_FLOOR",
+        "DISCRETIZATION_TRANSLATION_REPRESENTATION_FLOOR",
+        "UNEXPLAINED_EQUIVALENCE_MISMATCH"
+      ]
+    },
+    "diagnostic_scope": {
+      "amplitude": 0.005,
+      "band_reselection_forbidden": true,
+      "differential_threshold_changes_forbidden": true,
+      "downstream": "MePhC-SqrLatt",
+      "fresh_five_amplitude_response_sweep_forbidden": true,
+      "fresh_trilatt_solver_calls": 0,
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q0",
+        "q1",
+        "q2"
+      ],
+      "resolutions": [
+        12,
+        16,
+        20,
+        24
+      ]
+    },
+    "epsilon_grid_control": {
+      "attempt_required": true,
+      "primitive_a1_expected_integer_grid_shift_per_resolution": "resolution_cells_along_supercell_x",
+      "record_shape_hash_and_max_difference_only": true,
+      "store_large_arrays_forbidden": true,
+      "unavailable_state_allowed": "EPSILON_GRID_API_UNAVAILABLE"
+    },
+    "geometry_control": {
+      "center_only_forbidden": true,
+      "frequency_based_geometry_inference_forbidden": true,
+      "full_typed_polygon_geometry_required": true,
+      "primitive_a1_translated_plus_must_match_canonical_minus": true,
+      "tolerance": 1e-10
+    },
+    "representation_controls": [
+      "canonical_plus_A",
+      "polygon_list_reversed_plus_A",
+      "deterministic_vertex_cycle_and_winding_plus_A",
+      "supercell_vector_wrap_plus_A",
+      "primitive_a1_translated_plus_A",
+      "canonical_minus_A"
+    ],
+    "scientific_terminal_states": [
+      "CLOSED_NUMERICAL_EQUIVALENCE_FLOOR_DIFFERENTIAL_UNRESOLVED",
+      "BLOCKED_UNEXPLAINED_EQUIVALENCE_MISMATCH",
+      "BLOCKED_CONTROL_CONSTRUCTION",
+      "BLOCKED_COMPATIBILITY",
+      "BLOCKED_RUNTIME"
+    ]
+  },
+  "starting_refs": {
+    "MePhC": "d51c90bc8d1489139912415af85c0c5a887dc4d2",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  }
+}

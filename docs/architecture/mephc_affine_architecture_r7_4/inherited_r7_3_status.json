@@ -1,0 +1,9 @@
+{
+  "geometry_equivalence": "identity_plus_translation_1_0",
+  "maximum_geometry_residual": 2.220446049250313e-16,
+  "final_differential_pair": [20, 24],
+  "resolved_count": 1,
+  "target_denominator": 5,
+  "response_baseline": "UNQUALIFIED",
+  "immutable": true
+}

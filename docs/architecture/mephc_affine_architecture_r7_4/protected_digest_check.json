@@ -1,0 +1,13 @@
+{
+  "method": "R7.3 contract-first validator and protected evidence digest check",
+  "protected_paths": [
+    "docs/architecture/mephc_affine_architecture_r6/",
+    "docs/architecture/mephc_affine_architecture_r6_1/",
+    "docs/architecture/mephc_affine_architecture_r7/",
+    "docs/architecture/mephc_affine_architecture_r7_1/",
+    "docs/architecture/mephc_affine_architecture_r7_2/",
+    "docs/architecture/mephc_affine_architecture_r7_3/"
+  ],
+  "r7_3_validator": "PASS_R7_3_EVIDENCE_VALIDATOR",
+  "verified": true
+}

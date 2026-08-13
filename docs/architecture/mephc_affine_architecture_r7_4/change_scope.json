@@ -1,0 +1,9 @@
+{
+  "production_code_modified": false,
+  "downstream": "MePhC-SqrLatt",
+  "fresh_trilatt_solver_calls": 0,
+  "fresh_five_amplitude_response_sweep": false,
+  "solver_tolerance_changed": false,
+  "r8_authorized": false,
+  "post_seal_record_commit": false
+}

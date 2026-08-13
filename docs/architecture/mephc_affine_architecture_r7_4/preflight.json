@@ -1,0 +1,35 @@
+{
+  "allowed_new_bundle": "docs/architecture/mephc_affine_architecture_r7_4/",
+  "protected_paths_verified": true,
+  "r7_3_negative_fixtures": "PASS_R7_3_NEGATIVE_FIXTURES",
+  "r7_3_validator": "PASS_R7_3_EVIDENCE_VALIDATOR {\"final_pair\": [20, 24], \"resolved_count\": 1, \"terminal_state\": \"BLOCKED_EQUIVALENCE_SPECTRAL_MISMATCH\", \"tri_calls\": 0, \"used_resolutions\": [12, 16, 20, 24]}",
+  "remote_main": {
+    "MePhC": "d51c90bc8d1489139912415af85c0c5a887dc4d2",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  },
+  "remote_main_matches_contract": true,
+  "runtime": {
+    "environment_mutation_allowed": false,
+    "python": "/home/icy/miniconda3/envs/mp/bin/python",
+    "solver": "meep.mpb.ModeSolver",
+    "solver_import": "meep.mpb.solver"
+  },
+  "worktrees": {
+    "MePhC": {
+      "allowed_new_bundle": "docs/architecture/mephc_affine_architecture_r7_4/",
+      "clean": true,
+      "clean_except": []
+    },
+    "MePhC-SqrLatt": {
+      "clean": true,
+      "clean_except": []
+    },
+    "MePhC-TriLatt": {
+      "clean": false,
+      "clean_except": [
+        " M AGENTS.md"
+      ]
+    }
+  }
+}

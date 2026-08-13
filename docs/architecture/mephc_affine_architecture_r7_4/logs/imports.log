@@ -1,0 +1,1 @@
+PASS runtime=/home/icy/miniconda3/envs/mp/bin/python solver=meep.mpb.ModeSolver module=meep.mpb.solver

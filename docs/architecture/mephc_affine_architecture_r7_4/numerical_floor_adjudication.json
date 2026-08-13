@@ -1,0 +1,32 @@
+{
+  "classification": "DISCRETE_OPERATOR_EQUIVALENT_EIGENSOLVER_FLOOR",
+  "epsilon_grid_classification": "IDENTICAL_AFTER_EXPECTED_ROLL_AND_DIRECT_SIGN_PAIR",
+  "geometry_controls_pass": true,
+  "inherited_r7_3_response_baseline": {
+    "pass_forbidden": true,
+    "resolved_count": 1,
+    "target_denominator": 5
+  },
+  "no_tolerance_widening": true,
+  "q0_maxima_by_resolution": {
+    "D_construct": {
+      "12": 3.885780586188048e-16,
+      "16": 5.551115123125783e-16,
+      "20": 2.1838261754503208e-09,
+      "24": 4.996003610813204e-16
+    },
+    "D_sign": {
+      "12": 2.016106170898979e-08,
+      "16": 1.818376449413961e-09,
+      "20": 1.668626831152764e-08,
+      "24": 2.4380110152932843e-09
+    },
+    "D_translate": {
+      "12": 2.016106170898979e-08,
+      "16": 1.8183770045254732e-09,
+      "20": 1.6987968476378512e-08,
+      "24": 2.4380105156929233e-09
+    }
+  },
+  "scientific_terminal_state": "CLOSED_NUMERICAL_EQUIVALENCE_FLOOR_DIFFERENTIAL_UNRESOLVED"
+}
