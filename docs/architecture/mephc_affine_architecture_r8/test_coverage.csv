@@ -1,8 +1,10 @@
 area,check,method,status
-contract,authoritative SHA and starting refs,preflight,planned
-obstruction,2x2 rigid-center proof,finite geometry regression,planned
-geometry,3x1 periodic field and Jacobian,analytic and sampled checks,planned
-symmetry,full typed polygon sign candidates,enumerated comparison,planned
-baseline,A=0 target freeze,real MPB at 12/16/20,planned
-response,odd finite differences,real MPB signed amplitudes,planned
-convergence,16-to-20 and optional 20-to-24,derived target diagnostics,planned
+contract,authoritative SHA and starting refs,preflight,PASS
+obstruction,2x2 rigid-center proof,finite geometry regression,PASS
+geometry,3x1 periodic field and Jacobian,analytic and sampled checks,PASS
+symmetry,full typed polygon sign candidates,enumerated comparison,PASS
+baseline,A=0 target freeze,real MPB at 12/16/20,PASS
+response,odd finite differences,real MPB signed amplitudes,PASS
+convergence,16-to-20 differential,full and half odd diagnostics,PASS
+resolvability,5x error and 5e-5 floor,per-target adjudication,BLOCKED_ODD_RESPONSE_UNRESOLVED
+validator,bundle validator and negative fixtures,contract-first semantic checks,PASS

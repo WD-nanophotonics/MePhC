@@ -1,0 +1,173 @@
+{
+  "pass": true,
+  "rows": {
+    "12": [
+      {
+        "band_ordinal": 1,
+        "baseline_gap": 0.0973056255570552,
+        "delta_max": 0.000187764699131919,
+        "limit": 0.0243264063892638,
+        "pass": true,
+        "q_point": "q1",
+        "resolution": 12
+      },
+      {
+        "band_ordinal": 2,
+        "baseline_gap": 0.031951728335396945,
+        "delta_max": 0.0002727913976657004,
+        "limit": 0.007987932083849236,
+        "pass": true,
+        "q_point": "q1",
+        "resolution": 12
+      },
+      {
+        "band_ordinal": 1,
+        "baseline_gap": 0.08396227947145136,
+        "delta_max": 0.0003858055651503045,
+        "limit": 0.02099056986786284,
+        "pass": true,
+        "q_point": "q2",
+        "resolution": 12
+      },
+      {
+        "band_ordinal": 2,
+        "baseline_gap": 0.02269981604689364,
+        "delta_max": 0.0003651211253828668,
+        "limit": 0.00567495401172341,
+        "pass": true,
+        "q_point": "q2",
+        "resolution": 12
+      },
+      {
+        "band_ordinal": 1,
+        "baseline_gap": 0.07674011529848479,
+        "delta_max": 0.00030077015525847156,
+        "limit": 0.019185028824621198,
+        "pass": true,
+        "q_point": "q3",
+        "resolution": 12
+      },
+      {
+        "band_ordinal": 2,
+        "baseline_gap": 0.04375599435041186,
+        "delta_max": 0.0003038671941191229,
+        "limit": 0.010938998587602965,
+        "pass": true,
+        "q_point": "q3",
+        "resolution": 12
+      }
+    ],
+    "16": [
+      {
+        "band_ordinal": 1,
+        "baseline_gap": 0.0973056255570552,
+        "delta_max": 0.00013408476195751057,
+        "limit": 0.0243264063892638,
+        "pass": true,
+        "q_point": "q1",
+        "resolution": 16
+      },
+      {
+        "band_ordinal": 2,
+        "baseline_gap": 0.031951728335396945,
+        "delta_max": 0.00018695734277160425,
+        "limit": 0.007987932083849236,
+        "pass": true,
+        "q_point": "q1",
+        "resolution": 16
+      },
+      {
+        "band_ordinal": 1,
+        "baseline_gap": 0.08396227947145136,
+        "delta_max": 0.00027360205359910905,
+        "limit": 0.02099056986786284,
+        "pass": true,
+        "q_point": "q2",
+        "resolution": 16
+      },
+      {
+        "band_ordinal": 2,
+        "baseline_gap": 0.02269981604689364,
+        "delta_max": 0.0002523539348505688,
+        "limit": 0.00567495401172341,
+        "pass": true,
+        "q_point": "q2",
+        "resolution": 16
+      },
+      {
+        "band_ordinal": 1,
+        "baseline_gap": 0.07674011529848479,
+        "delta_max": 0.00021266376222153077,
+        "limit": 0.019185028824621198,
+        "pass": true,
+        "q_point": "q3",
+        "resolution": 16
+      },
+      {
+        "band_ordinal": 2,
+        "baseline_gap": 0.04375599435041186,
+        "delta_max": 0.00020934607091541158,
+        "limit": 0.010938998587602965,
+        "pass": true,
+        "q_point": "q3",
+        "resolution": 16
+      }
+    ],
+    "20": [
+      {
+        "band_ordinal": 1,
+        "baseline_gap": 0.0973056255570552,
+        "delta_max": 0.00010456447182108364,
+        "limit": 0.0243264063892638,
+        "pass": true,
+        "q_point": "q1",
+        "resolution": 20
+      },
+      {
+        "band_ordinal": 2,
+        "baseline_gap": 0.031951728335396945,
+        "delta_max": 0.00020167276065463646,
+        "limit": 0.007987932083849236,
+        "pass": true,
+        "q_point": "q1",
+        "resolution": 20
+      },
+      {
+        "band_ordinal": 1,
+        "baseline_gap": 0.08396227947145136,
+        "delta_max": 0.00022374208193931544,
+        "limit": 0.02099056986786284,
+        "pass": true,
+        "q_point": "q2",
+        "resolution": 20
+      },
+      {
+        "band_ordinal": 2,
+        "baseline_gap": 0.02269981604689364,
+        "delta_max": 0.00021937961953902296,
+        "limit": 0.00567495401172341,
+        "pass": true,
+        "q_point": "q2",
+        "resolution": 20
+      },
+      {
+        "band_ordinal": 1,
+        "baseline_gap": 0.07674011529848479,
+        "delta_max": 0.0001820015316230661,
+        "limit": 0.019185028824621198,
+        "pass": true,
+        "q_point": "q3",
+        "resolution": 20
+      },
+      {
+        "band_ordinal": 2,
+        "baseline_gap": 0.04375599435041186,
+        "delta_max": 0.00018805008005423618,
+        "limit": 0.010938998587602965,
+        "pass": true,
+        "q_point": "q3",
+        "resolution": 20
+      }
+    ]
+  }
+}

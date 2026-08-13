@@ -1,7 +1,7 @@
 {
+  "baseline_freeze_sha": "a3d86a124a81a0d1bb0b5d4011c0addb742c13e3",
   "downstream": "MePhC-SqrLatt",
   "fresh_trilatt_solver_calls": 0,
-  "nonzero_response_started": false,
   "production_changes": [],
   "r9_authorized": false
 }
