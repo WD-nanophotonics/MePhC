@@ -1,0 +1,1213 @@
+{
+  "eligible_even_channels": [
+    {
+      "band_identity_pass": true,
+      "band_ordinal": 4,
+      "cubic_supported": false,
+      "even_convergence_errors": [
+        9.248365218406107e-05,
+        0.0001092441063743621,
+        0.00010432902690582502
+      ],
+      "even_eligible": true,
+      "even_fit": {
+        "fit_amplitudes": [
+          0.005,
+          0.01,
+          0.02
+        ],
+        "intercept": -4.280664498784753,
+        "log_residuals": [
+          0.12991205236633796,
+          -0.25982410473267414,
+          0.12991205236633707
+        ],
+        "r_squared": 0.868215372570837,
+        "raw_values": [
+          -0.00019057203205585793,
+          -0.00022994646862106727,
+          -0.0006049435473361453
+        ],
+        "slope": 0.8332320550093822
+      },
+      "even_values_high": [
+        -0.00019057203205585793,
+        -0.00022994646862106727,
+        -0.0006049435473361453
+      ],
+      "even_values_low": [
+        -0.000283055684239919,
+        -0.00033919057499542937,
+        -0.0007092725742419703
+      ],
+      "final_pair": [
+        40,
+        48
+      ],
+      "highest_odd_convergence_error": 4.579368081236712e-06,
+      "highest_odd_signal": 4.494707561475408e-06,
+      "linear_supported": false,
+      "odd_convergence_errors": [
+        1.6477012221294274e-07,
+        3.52291863237042e-07,
+        4.579368081236712e-06
+      ],
+      "odd_convergence_pass": false,
+      "odd_eligible": false,
+      "odd_fit": null,
+      "odd_translation_floor_pass": true,
+      "odd_values_high": [
+        -9.687531468960398e-07,
+        -1.220219301517611e-06,
+        4.494707561475408e-06
+      ],
+      "odd_values_low": [
+        -1.1335232691089825e-06,
+        -1.572511164754653e-06,
+        -8.466051976130373e-08
+      ],
+      "q_point": "q1",
+      "quadratic_even_supported": false,
+      "same_sign_nonzero_odd": false,
+      "translation_floor_at_delta_0.02": 1.2122366999101075e-10
+    },
+    {
+      "band_identity_pass": true,
+      "band_ordinal": 4,
+      "cubic_supported": false,
+      "even_convergence_errors": [
+        8.626682830226162e-05,
+        0.00010491656837247065,
+        9.81403581173379e-05
+      ],
+      "even_eligible": true,
+      "even_fit": {
+        "fit_amplitudes": [
+          0.005,
+          0.01,
+          0.02
+        ],
+        "intercept": -4.091223140536748,
+        "log_residuals": [
+          0.12292689798730017,
+          -0.2458537959746021,
+          0.12292689798729928
+        ],
+        "r_squared": 0.8820148315654235,
+        "raw_values": [
+          -0.00022082606707374275,
+          -0.00027334657447614097,
+          -0.0007074500386921589
+        ],
+        "slope": 0.8398588915559955
+      },
+      "even_values_high": [
+        -0.00022082606707374275,
+        -0.00027334657447614097,
+        -0.0007074500386921589
+      ],
+      "even_values_low": [
+        -0.00030709289537600437,
+        -0.0003782631428486116,
+        -0.0008055903968094968
+      ],
+      "final_pair": [
+        40,
+        48
+      ],
+      "highest_odd_convergence_error": 6.9599003577891505e-06,
+      "highest_odd_signal": 5.3633353067628065e-06,
+      "linear_supported": false,
+      "odd_convergence_errors": [
+        1.9166635825684786e-07,
+        6.523062551777592e-07,
+        6.9599003577891505e-06
+      ],
+      "odd_convergence_pass": false,
+      "odd_eligible": false,
+      "odd_fit": null,
+      "odd_translation_floor_pass": true,
+      "odd_values_high": [
+        -1.5644153185667697e-06,
+        -2.570695676606949e-06,
+        5.3633353067628065e-06
+      ],
+      "odd_values_low": [
+        -1.7560816768236176e-06,
+        -3.223001931784708e-06,
+        -1.596565051026344e-06
+      ],
+      "q_point": "q2",
+      "quadratic_even_supported": false,
+      "same_sign_nonzero_odd": false,
+      "translation_floor_at_delta_0.02": 1.940114735532461e-14
+    },
+    {
+      "band_identity_pass": true,
+      "band_ordinal": 4,
+      "cubic_supported": false,
+      "even_convergence_errors": [
+        8.680191762411305e-05,
+        0.00010638246127542272,
+        9.824840376898569e-05
+      ],
+      "even_eligible": true,
+      "even_fit": {
+        "fit_amplitudes": [
+          0.005,
+          0.01,
+          0.02
+        ],
+        "intercept": -5.0856002067700565,
+        "log_residuals": [
+          0.12824435458376904,
+          -0.2564887091675345,
+          0.12824435458376904
+        ],
+        "r_squared": 0.8148692062969927,
+        "raw_values": [
+          -0.00019953176757492308,
+          -0.00021642829004503428,
+          -0.0005067466656382691
+        ],
+        "slope": 0.6723231168919349
+      },
+      "even_values_high": [
+        -0.00019953176757492308,
+        -0.00021642829004503428,
+        -0.0005067466656382691
+      ],
+      "even_values_low": [
+        -0.0002863336851990361,
+        -0.000322810751320457,
+        -0.0006049950694072548
+      ],
+      "final_pair": [
+        40,
+        48
+      ],
+      "highest_odd_convergence_error": 3.244641103877788e-06,
+      "highest_odd_signal": 2.634695809800025e-06,
+      "linear_supported": false,
+      "odd_convergence_errors": [
+        8.606510776276721e-08,
+        2.0747839704626792e-07,
+        3.244641103877788e-06
+      ],
+      "odd_convergence_pass": false,
+      "odd_eligible": false,
+      "odd_fit": null,
+      "odd_translation_floor_pass": true,
+      "odd_values_high": [
+        -6.570786637571935e-07,
+        -8.689059228517149e-07,
+        2.634695809800025e-06
+      ],
+      "odd_values_low": [
+        -7.431437715199607e-07,
+        -1.0763843198979828e-06,
+        -6.099452940777628e-07
+      ],
+      "q_point": "q3",
+      "quadratic_even_supported": false,
+      "same_sign_nonzero_odd": false,
+      "translation_floor_at_delta_0.02": 4.2049697057677804e-14
+    }
+  ],
+  "eligible_odd_channels": [
+    {
+      "band_identity_pass": true,
+      "band_ordinal": 3,
+      "cubic_supported": false,
+      "even_convergence_errors": [
+        3.655193069071472e-05,
+        4.6387419568832966e-05,
+        4.8636373861349336e-05
+      ],
+      "even_eligible": false,
+      "even_fit": null,
+      "even_values_high": [
+        -5.37613596097164e-05,
+        -2.3514561032611514e-05,
+        4.303832260785234e-05
+      ],
+      "even_values_low": [
+        -9.031329030043111e-05,
+        -6.990198060144448e-05,
+        -5.598051253496994e-06
+      ],
+      "final_pair": [
+        40,
+        48
+      ],
+      "highest_odd_convergence_error": 2.503631761630043e-08,
+      "highest_odd_signal": 7.091686839294509e-07,
+      "linear_supported": true,
+      "odd_convergence_errors": [
+        7.558315963385187e-08,
+        1.1508116451452999e-07,
+        2.503631761630043e-08
+      ],
+      "odd_convergence_pass": true,
+      "odd_eligible": true,
+      "odd_fit": {
+        "fit_amplitudes": [
+          0.005,
+          0.01,
+          0.02
+        ],
+        "intercept": -10.201595102713572,
+        "log_residuals": [
+          0.09236496550768081,
+          -0.18472993101537405,
+          0.09236496550768258
+        ],
+        "r_squared": 0.9526496470709732,
+        "raw_values": [
+          1.6883550979507334e-07,
+          2.6228042995790624e-07,
+          7.091686839294509e-07
+        ],
+        "slope": 1.0352552318306314
+      },
+      "odd_translation_floor_pass": true,
+      "odd_values_high": [
+        1.6883550979507334e-07,
+        2.6228042995790624e-07,
+        7.091686839294509e-07
+      ],
+      "odd_values_low": [
+        2.444186694289252e-07,
+        3.773615944724362e-07,
+        6.841323663131504e-07
+      ],
+      "q_point": "q2",
+      "quadratic_even_supported": false,
+      "same_sign_nonzero_odd": true,
+      "translation_floor_at_delta_0.02": 2.955968803064479e-14
+    }
+  ],
+  "fit_amplitudes": [
+    0.005,
+    0.01,
+    0.02
+  ],
+  "fits": [
+    {
+      "band_ordinal": 3,
+      "cubic_supported": false,
+      "linear_supported": true,
+      "odd_fit": {
+        "fit_amplitudes": [
+          0.005,
+          0.01,
+          0.02
+        ],
+        "intercept": -10.201595102713572,
+        "log_residuals": [
+          0.09236496550768081,
+          -0.18472993101537405,
+          0.09236496550768258
+        ],
+        "r_squared": 0.9526496470709732,
+        "raw_values": [
+          1.6883550979507334e-07,
+          2.6228042995790624e-07,
+          7.091686839294509e-07
+        ],
+        "slope": 1.0352552318306314
+      },
+      "q_point": "q2"
+    }
+  ],
+  "translation_floors_by_resolution": {
+    "24": {
+      "0.005": [
+        {
+          "band_ordinal": 1,
+          "delta": 0.005,
+          "floor": 3.123933368931464e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.005,
+          "floor": 3.8775345434505226e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.005,
+          "floor": 2.52906251496654e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.005,
+          "floor": 4.267600162144447e-11,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.005,
+          "floor": 1.0868553279586024e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.005,
+          "floor": 6.904314064914985e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.005,
+          "floor": 8.423817199343375e-15,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.005,
+          "floor": 5.882794251732548e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.005,
+          "floor": 2.2773449792623524e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.005,
+          "floor": 3.017031069418863e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.005,
+          "floor": 9.492406860545088e-15,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.005,
+          "floor": 5.00904873135255e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.005,
+          "floor": 1.0408340855860843e-17,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.005,
+          "floor": 2.0816681711721685e-16,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.005,
+          "floor": 1.942890293094024e-16,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.005,
+          "floor": 2.7755575615628914e-17,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.005,
+          "floor": 1.5543122344752192e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.005,
+          "floor": 6.106226635438361e-16,
+          "q_point": "q3"
+        }
+      ],
+      "0.02": [
+        {
+          "band_ordinal": 1,
+          "delta": 0.02,
+          "floor": 4.121223189101908e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.02,
+          "floor": 6.824976972463759e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.02,
+          "floor": 1.3156539746539408e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.02,
+          "floor": 1.5061435432173198e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.02,
+          "floor": 3.9699563081363465e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.02,
+          "floor": 9.080874385780646e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.02,
+          "floor": 4.305583667374435e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.02,
+          "floor": 7.006895064165519e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.02,
+          "floor": 4.8003268027230206e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.02,
+          "floor": 3.2834845953289005e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.02,
+          "floor": 7.93809462606987e-15,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.02,
+          "floor": 3.2653602044518948e-12,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.02,
+          "floor": 1.061650767297806e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.02,
+          "floor": 6.800116025829084e-16,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.02,
+          "floor": 6.800116025829084e-16,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.02,
+          "floor": 8.049116928532385e-16,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.02,
+          "floor": 4.6351811278100286e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.02,
+          "floor": 1.1379786002407855e-15,
+          "q_point": "q3"
+        }
+      ]
+    },
+    "32": {
+      "0.005": [
+        {
+          "band_ordinal": 1,
+          "delta": 0.005,
+          "floor": 8.960003260172211e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.005,
+          "floor": 1.9869220158064138e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.005,
+          "floor": 2.8284430353409107e-11,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.005,
+          "floor": 2.5441676543280778e-11,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.005,
+          "floor": 3.683162108636395e-11,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.005,
+          "floor": 3.0850494381340354e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.005,
+          "floor": 1.4548778848322286e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.005,
+          "floor": 6.48925357893404e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.005,
+          "floor": 4.017619570362285e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.005,
+          "floor": 3.885780586188048e-16,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.005,
+          "floor": 2.5396351688300456e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.005,
+          "floor": 4.2280068335287524e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.005,
+          "floor": 4.614364446098307e-16,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.005,
+          "floor": 3.0531133177191805e-16,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.005,
+          "floor": 4.0245584642661925e-16,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.005,
+          "floor": 1.3877787807814457e-16,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.005,
+          "floor": 2.1649348980190553e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.005,
+          "floor": 2.275957200481571e-15,
+          "q_point": "q3"
+        }
+      ],
+      "0.02": [
+        {
+          "band_ordinal": 1,
+          "delta": 0.02,
+          "floor": 4.864716410951653e-09,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.02,
+          "floor": 2.181773789411423e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.02,
+          "floor": 4.770612238580441e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.02,
+          "floor": 5.358655741360963e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.02,
+          "floor": 4.897808825177208e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.02,
+          "floor": 1.3562525269517067e-09,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.02,
+          "floor": 2.941050181171079e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.02,
+          "floor": 4.343747583845925e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.02,
+          "floor": 7.306655280814311e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.02,
+          "floor": 1.3780643293159756e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.02,
+          "floor": 6.894484982922222e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.02,
+          "floor": 2.7516877665334505e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.02,
+          "floor": 1.6653345369377348e-16,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.02,
+          "floor": 6.938893903907228e-17,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.02,
+          "floor": 1.1102230246251565e-16,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.02,
+          "floor": 1.942890293094024e-16,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.02,
+          "floor": 1.1934897514720433e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.02,
+          "floor": 2.525757381022231e-15,
+          "q_point": "q3"
+        }
+      ]
+    },
+    "40": {
+      "0.005": [
+        {
+          "band_ordinal": 1,
+          "delta": 0.005,
+          "floor": 4.281874119160811e-09,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.005,
+          "floor": 4.380802387515814e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.005,
+          "floor": 1.698079316048151e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.005,
+          "floor": 1.9850482368966027e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.005,
+          "floor": 6.26072221843188e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.005,
+          "floor": 5.166612693230377e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.005,
+          "floor": 5.522596269180724e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.005,
+          "floor": 2.5954238758174597e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.005,
+          "floor": 1.0628997682005092e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.005,
+          "floor": 8.198997036856781e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.005,
+          "floor": 5.714873019257993e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.005,
+          "floor": 2.5105473255848665e-12,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.005,
+          "floor": 4.2847669856627135e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.005,
+          "floor": 7.396860901565105e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.005,
+          "floor": 7.521760991835436e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.005,
+          "floor": 2.2787327580431338e-14,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.005,
+          "floor": 6.303291222309326e-14,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.005,
+          "floor": 1.5931700403370996e-14,
+          "q_point": "q3"
+        }
+      ],
+      "0.02": [
+        {
+          "band_ordinal": 1,
+          "delta": 0.02,
+          "floor": 6.0915267344197055e-09,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.02,
+          "floor": 2.3192998910293028e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.02,
+          "floor": 6.820209674796018e-11,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.02,
+          "floor": 2.8026156395632995e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.02,
+          "floor": 1.081655265355863e-09,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.02,
+          "floor": 4.304839401614302e-09,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.02,
+          "floor": 2.525757381022231e-15,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.02,
+          "floor": 8.920642002863133e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.02,
+          "floor": 6.723788192886104e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.02,
+          "floor": 1.7774670624248756e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.02,
+          "floor": 3.4872105203476167e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.02,
+          "floor": 1.26704202685346e-12,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.02,
+          "floor": 3.9170056087556304e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.02,
+          "floor": 6.813993813636898e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.02,
+          "floor": 6.938893903907228e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.02,
+          "floor": 2.1788126858268697e-14,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.02,
+          "floor": 5.739853037312059e-14,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.02,
+          "floor": 1.687538997430238e-14,
+          "q_point": "q3"
+        }
+      ]
+    },
+    "48": {
+      "0.005": [
+        {
+          "band_ordinal": 1,
+          "delta": 0.005,
+          "floor": 6.240854014127883e-11,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.005,
+          "floor": 9.310797965955686e-11,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.005,
+          "floor": 5.682509046645023e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.005,
+          "floor": 3.4772118517878425e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.005,
+          "floor": 3.004113624527349e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.005,
+          "floor": 3.810769005907488e-09,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.005,
+          "floor": 1.8021001357837463e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.005,
+          "floor": 1.7995327450393006e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.005,
+          "floor": 8.198997036856781e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.005,
+          "floor": 1.779687508474126e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.005,
+          "floor": 3.58268970046538e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.005,
+          "floor": 1.3655743202889425e-12,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.005,
+          "floor": 2.5396351688300456e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.005,
+          "floor": 6.175615574477433e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.005,
+          "floor": 7.119305145408816e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.005,
+          "floor": 2.245426067304379e-14,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.005,
+          "floor": 5.259681579161679e-14,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.005,
+          "floor": 3.1002977962657496e-14,
+          "q_point": "q3"
+        }
+      ],
+      "0.02": [
+        {
+          "band_ordinal": 1,
+          "delta": 0.02,
+          "floor": 1.865896409602996e-09,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.02,
+          "floor": 5.276311471069661e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.02,
+          "floor": 3.836868461837284e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.02,
+          "floor": 1.2122366999101075e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.02,
+          "floor": 1.6439638539367252e-10,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.02,
+          "floor": 3.4922760239197714e-09,
+          "q_point": "q1"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.02,
+          "floor": 8.019973574135975e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.02,
+          "floor": 2.867150961094467e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.02,
+          "floor": 2.955968803064479e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.02,
+          "floor": 1.940114735532461e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.02,
+          "floor": 2.711719737646945e-13,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.02,
+          "floor": 3.982925100842749e-14,
+          "q_point": "q2"
+        },
+        {
+          "band_ordinal": 1,
+          "delta": 0.02,
+          "floor": 2.9524993561125257e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 2,
+          "delta": 0.02,
+          "floor": 9.728329253277934e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 3,
+          "delta": 0.02,
+          "floor": 8.43769498715119e-15,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 4,
+          "delta": 0.02,
+          "floor": 4.2049697057677804e-14,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 5,
+          "delta": 0.02,
+          "floor": 1.0724754417879012e-13,
+          "q_point": "q3"
+        },
+        {
+          "band_ordinal": 6,
+          "delta": 0.02,
+          "floor": 3.963496197911809e-14,
+          "q_point": "q3"
+        }
+      ]
+    }
+  }
+}

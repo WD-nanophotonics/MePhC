@@ -1,0 +1,10 @@
+area,check,method,status
+contract,authoritative SHA and refs,preflight,PASS
+inheritance,R8 immutable and 0/6,protected validator,PASS
+analytic,zero mean and site-shift DFT,exact discrete calculation,PASS
+posthoc,all 18 R8 channels without solver,protected raw data,PASS
+geometry,A=+/-0.02 controls,periodicity/Jacobian/no-overlap,PASS
+response,all signed amplitudes and 18 channels,real MPB ledger,PASS
+translation,uniform +/-0.005 and +/-0.02 controls,exact geometry equivalence and MPB,PASS
+convergence,32-to-40 then 40-to-48,per-channel odd/even gates,PASS
+classification,mechanism terminal,contract policy,BLOCKED_ODD_RESPONSE_ORDER_UNRESOLVED

@@ -1,0 +1,31 @@
+{
+  "discrete_fourier_components": {
+    "0": {
+      "imag": 0.0,
+      "magnitude": 3.700743415417188e-17,
+      "real": 3.700743415417188e-17
+    },
+    "1": {
+      "imag": -0.44721359549995776,
+      "magnitude": 0.4999999999999999,
+      "real": 0.22360679774997916
+    },
+    "2": {
+      "imag": 0.447213595499958,
+      "magnitude": 0.4999999999999999,
+      "real": 0.22360679774997863
+    }
+  },
+  "first_order_label": "FIRST_ORDER_ZERO_MEAN_SELECTION_RULE_SUPPORTED",
+  "full_formal_maxwell_proof_claimed": false,
+  "momentum_cycle_label": "CUBIC_ODD_TERM_ALLOWED_NOT_GUARANTEED",
+  "r8_target_reselection": false,
+  "scope": "rigid translations of identical primitive motifs about the primitive-periodic A=0 structure; diagonal first-order contribution cancels when summed over the 3 primitive cells because the site-shift mean is zero",
+  "site_center_normalized_x_shifts": [
+    0.4472135954999579,
+    0.5509898714915044,
+    -0.9982034669914622
+  ],
+  "zero_mean": 3.700743415417188e-17,
+  "zero_mean_verified": true
+}

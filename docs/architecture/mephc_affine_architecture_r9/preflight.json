@@ -1,0 +1,26 @@
+{
+  "contract_sha256": "ec660f973d65c330bf582143d5adbfa086f6d62b71968dc2e1973292bcc877d6",
+  "protected_paths_unchanged": true,
+  "r8_validator": "{\"resolved_count\": 0, \"solver_call_count\": 15, \"status\": \"PASS_R8_EVIDENCE_VALIDATOR\", \"target_count\": 6, \"terminal_state\": \"BLOCKED_ODD_RESPONSE_UNRESOLVED\"}",
+  "r9_scope": "evidence-first; no production changes expected",
+  "remote_main": {
+    "MePhC": "9e1ef6de45a12eeaf32e7dae1fc1730824fbb6d6",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  },
+  "runtime": {
+    "python": "/home/icy/miniconda3/envs/mp/bin/python",
+    "solver": "meep.mpb.ModeSolver",
+    "solver_module": "meep.mpb.solver",
+    "solver_tolerance": 1e-07
+  },
+  "worktrees": {
+    "MePhC": [
+      "?? docs/architecture/mephc_affine_architecture_r9/"
+    ],
+    "MePhC-SqrLatt": [],
+    "MePhC-TriLatt": [
+      "M AGENTS.md"
+    ]
+  }
+}

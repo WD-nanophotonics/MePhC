@@ -1,0 +1,19 @@
+{
+  "channel_denominator": 18,
+  "completion_gmail_required": false,
+  "cubic_allowed_label": "CUBIC_ODD_TERM_ALLOWED_NOT_GUARANTEED",
+  "cubic_support_count": 0,
+  "eligible_odd_channels": 1,
+  "final_resolution_pair": [
+    40,
+    48
+  ],
+  "first_order_label": "FIRST_ORDER_ZERO_MEAN_SELECTION_RULE_SUPPORTED",
+  "fresh_solver_call_count": 56,
+  "linear_support_count": 1,
+  "payload_parent": "PENDING_RESPONSE_PAYLOAD_COMMIT",
+  "r10_authorized": false,
+  "resolution_48_ran": true,
+  "schema": "mephc.affine_architecture.r9.completion.v1",
+  "scientific_terminal_state": "BLOCKED_ODD_RESPONSE_ORDER_UNRESOLVED"
+}

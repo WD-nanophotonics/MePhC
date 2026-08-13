@@ -1,0 +1,1353 @@
+{
+  "expected_initial_fresh_calls": 43,
+  "fresh_calls": [
+    {
+      "amplitude": 0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 20,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 20,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 20,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 20,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 24,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 24,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 24,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.0025,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 24,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.0,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 24,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.0025,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 24,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 24,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 24,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 24,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 32,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 32,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 32,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.0025,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 32,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.0,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 32,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.0025,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 32,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 32,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 32,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 32,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 40,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 40,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 40,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.0025,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 40,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.0,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 40,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.0025,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 40,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 40,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 40,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 40,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 24,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": 0.005
+    },
+    {
+      "amplitude": -0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 24,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": -0.005
+    },
+    {
+      "amplitude": 0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 24,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": 0.02
+    },
+    {
+      "amplitude": -0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 24,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": -0.02
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 32,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": 0.005
+    },
+    {
+      "amplitude": -0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 32,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": -0.005
+    },
+    {
+      "amplitude": 0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 32,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": 0.02
+    },
+    {
+      "amplitude": -0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 32,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": -0.02
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 40,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": 0.005
+    },
+    {
+      "amplitude": -0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 40,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": -0.005
+    },
+    {
+      "amplitude": 0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 40,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": 0.02
+    },
+    {
+      "amplitude": -0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 40,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": -0.02
+    },
+    {
+      "amplitude": -0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 48,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 48,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 48,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": -0.0025,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 48,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.0,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 48,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.0025,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 48,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 48,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.01,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 48,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "deformation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 48,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": null
+    },
+    {
+      "amplitude": 0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 48,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": 0.005
+    },
+    {
+      "amplitude": -0.005,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 48,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": -0.005
+    },
+    {
+      "amplitude": 0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 48,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": 0.02
+    },
+    {
+      "amplitude": -0.02,
+      "bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "fresh_solver_call": true,
+      "kind": "uniform_translation",
+      "num_bands": 6,
+      "polarization": "TE",
+      "q_points": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "resolution": 48,
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-07,
+      "translation_delta": -0.02
+    }
+  ],
+  "fresh_solver_call_count": 56,
+  "resolution_48_ran": true,
+  "resolution_above_48_ran": false,
+  "reused_r8_solver_call_count": 5
+}
