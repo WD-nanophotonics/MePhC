@@ -1,0 +1,237 @@
+{
+  "baseline_error_pair": [
+    16,
+    20
+  ],
+  "baseline_only": true,
+  "candidate_rows": [
+    {
+      "active": true,
+      "band_ordinal": 1,
+      "baseline_error": 1.1600481123391626e-05,
+      "eligible": true,
+      "frequency_16": 0.03633942056316207,
+      "frequency_20": 0.03635102104428546,
+      "isolated": true,
+      "nearest_gap": 0.0973056255570552,
+      "q_point": "q1"
+    },
+    {
+      "active": true,
+      "band_ordinal": 2,
+      "baseline_error": 0.0002298531326376252,
+      "eligible": true,
+      "frequency_16": 0.13342679346870304,
+      "frequency_20": 0.13365664660134066,
+      "isolated": true,
+      "nearest_gap": 0.031951728335396945,
+      "q_point": "q1"
+    },
+    {
+      "active": true,
+      "band_ordinal": 3,
+      "baseline_error": 0.00018941783655015976,
+      "eligible": true,
+      "frequency_16": 0.16541895710018745,
+      "frequency_20": 0.1656083749367376,
+      "isolated": true,
+      "nearest_gap": 0.031951728335396945,
+      "q_point": "q1"
+    },
+    {
+      "active": true,
+      "band_ordinal": 4,
+      "baseline_error": 0.0009059517124012095,
+      "eligible": true,
+      "frequency_16": 0.2911467448979361,
+      "frequency_20": 0.29205269661033734,
+      "isolated": true,
+      "nearest_gap": 0.030002702210316035,
+      "q_point": "q1"
+    },
+    {
+      "active": true,
+      "band_ordinal": 5,
+      "baseline_error": 0.000774008875427723,
+      "eligible": true,
+      "frequency_16": 0.32128138994522565,
+      "frequency_20": 0.32205539882065337,
+      "isolated": true,
+      "nearest_gap": 0.030002702210316035,
+      "q_point": "q1"
+    },
+    {
+      "active": true,
+      "band_ordinal": 6,
+      "baseline_error": 3.85880531545979e-05,
+      "eligible": true,
+      "frequency_16": 0.40197646444917523,
+      "frequency_20": 0.40193787639602063,
+      "isolated": true,
+      "nearest_gap": 0.07988247757536726,
+      "q_point": "q1"
+    },
+    {
+      "active": true,
+      "band_ordinal": 1,
+      "baseline_error": 1.120358319119108e-05,
+      "eligible": true,
+      "frequency_16": 0.06446637451604889,
+      "frequency_20": 0.06447757809924008,
+      "isolated": true,
+      "nearest_gap": 0.08396227947145136,
+      "q_point": "q2"
+    },
+    {
+      "active": true,
+      "band_ordinal": 2,
+      "baseline_error": 0.00017762246276989413,
+      "eligible": true,
+      "frequency_16": 0.14826223510792155,
+      "frequency_20": 0.14843985757069145,
+      "isolated": true,
+      "nearest_gap": 0.02269981604689364,
+      "q_point": "q2"
+    },
+    {
+      "active": true,
+      "band_ordinal": 3,
+      "baseline_error": 0.00022750845481694926,
+      "eligible": true,
+      "frequency_16": 0.17091216516276814,
+      "frequency_20": 0.1711396736175851,
+      "isolated": true,
+      "nearest_gap": 0.02269981604689364,
+      "q_point": "q2"
+    },
+    {
+      "active": true,
+      "band_ordinal": 4,
+      "baseline_error": 0.0007927273588902994,
+      "eligible": true,
+      "frequency_16": 0.29816662551583606,
+      "frequency_20": 0.29895935287472636,
+      "isolated": true,
+      "nearest_gap": 0.021848610114611644,
+      "q_point": "q2"
+    },
+    {
+      "active": true,
+      "band_ordinal": 5,
+      "baseline_error": 0.0007502109671788104,
+      "eligible": true,
+      "frequency_16": 0.3200577520221592,
+      "frequency_20": 0.320807962989338,
+      "isolated": true,
+      "nearest_gap": 0.021848610114611644,
+      "q_point": "q2"
+    },
+    {
+      "active": true,
+      "band_ordinal": 6,
+      "baseline_error": 6.397437617688961e-05,
+      "eligible": true,
+      "frequency_16": 0.3810477842812487,
+      "frequency_20": 0.3809838099050718,
+      "isolated": true,
+      "nearest_gap": 0.0601758469157338,
+      "q_point": "q2"
+    },
+    {
+      "active": true,
+      "band_ordinal": 1,
+      "baseline_error": 3.526862874549813e-05,
+      "eligible": true,
+      "frequency_16": 0.055730254801783355,
+      "frequency_20": 0.05576552343052885,
+      "isolated": true,
+      "nearest_gap": 0.07674011529848479,
+      "q_point": "q3"
+    },
+    {
+      "active": true,
+      "band_ordinal": 2,
+      "baseline_error": 0.00018129842997813284,
+      "eligible": true,
+      "frequency_16": 0.1323243402990355,
+      "frequency_20": 0.13250563872901364,
+      "isolated": true,
+      "nearest_gap": 0.04375599435041186,
+      "q_point": "q3"
+    },
+    {
+      "active": true,
+      "band_ordinal": 3,
+      "baseline_error": 0.0002068135867635268,
+      "eligible": true,
+      "frequency_16": 0.17605481949266197,
+      "frequency_20": 0.1762616330794255,
+      "isolated": true,
+      "nearest_gap": 0.04375599435041186,
+      "q_point": "q3"
+    },
+    {
+      "active": true,
+      "band_ordinal": 4,
+      "baseline_error": 0.0008691216759880716,
+      "eligible": true,
+      "frequency_16": 0.28700987984143356,
+      "frequency_20": 0.28787900151742163,
+      "isolated": true,
+      "nearest_gap": 0.04166675218981919,
+      "q_point": "q3"
+    },
+    {
+      "active": true,
+      "band_ordinal": 5,
+      "baseline_error": 0.0007514677781967904,
+      "eligible": true,
+      "frequency_16": 0.32879428592904403,
+      "frequency_20": 0.3295457537072408,
+      "isolated": true,
+      "nearest_gap": 0.04166675218981919,
+      "q_point": "q3"
+    },
+    {
+      "active": true,
+      "band_ordinal": 6,
+      "baseline_error": 3.954818390061732e-05,
+      "eligible": true,
+      "frequency_16": 0.3902521309153406,
+      "frequency_20": 0.39021258273144,
+      "isolated": true,
+      "nearest_gap": 0.060666829024199176,
+      "q_point": "q3"
+    }
+  ],
+  "frozen_targets": [
+    [
+      "q1",
+      1
+    ],
+    [
+      "q1",
+      2
+    ],
+    [
+      "q2",
+      1
+    ],
+    [
+      "q2",
+      2
+    ],
+    [
+      "q3",
+      1
+    ],
+    [
+      "q3",
+      2
+    ]
+  ],
+  "nonzero_spectra_present": false,
+  "required_target_count": 6,
+  "selection_rule": "lowest_two_band_ordinals_passing_active_and_gap_guard",
+  "target_count": 6
+}

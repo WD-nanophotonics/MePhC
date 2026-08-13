@@ -1,0 +1,14 @@
+{
+  "protected_paths": [
+    "docs/architecture/mephc_affine_architecture_r6/",
+    "docs/architecture/mephc_affine_architecture_r6_1/",
+    "docs/architecture/mephc_affine_architecture_r7/",
+    "docs/architecture/mephc_affine_architecture_r7_1/",
+    "docs/architecture/mephc_affine_architecture_r7_2/",
+    "docs/architecture/mephc_affine_architecture_r7_3/",
+    "docs/architecture/mephc_affine_architecture_r7_4/"
+  ],
+  "r7_3_validator": "PASS_R7_3_EVIDENCE_VALIDATOR {\"final_pair\": [20, 24], \"resolved_count\": 1, \"terminal_state\": \"BLOCKED_EQUIVALENCE_SPECTRAL_MISMATCH\", \"tri_calls\": 0, \"used_resolutions\": [12, 16, 20, 24]}",
+  "r7_4_validator": "PASS_R7_4_EVIDENCE_VALIDATOR {\"call_count\": 24, \"classification\": \"DISCRETE_OPERATOR_EQUIVALENT_EIGENSOLVER_FLOOR\", \"resolved_count\": 1, \"terminal_state\": \"CLOSED_NUMERICAL_EQUIVALENCE_FLOOR_DIFFERENTIAL_UNRESOLVED\"}",
+  "verified": true
+}

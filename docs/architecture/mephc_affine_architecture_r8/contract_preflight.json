@@ -1,0 +1,10 @@
+{
+  "baseline_only_before_nonzero": true,
+  "contract_sha256": "73f128dd4a52d4b313e2c8bce1a929f1f3111dad800b5fb8cf3d69172733ef91",
+  "derived_from_contract": true,
+  "starting_refs": {
+    "MePhC": "03f692f2fdeb6da87f7ec7600e7a54435e44c278",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  }
+}
