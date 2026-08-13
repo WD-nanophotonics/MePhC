@@ -1,5 +1,5 @@
 {
-  "manifest_sha256": "f2d0ae81171c370447284d850a99dc535d9b3ce15c880aaf1da194fc61717d79",
+  "manifest_sha256": "674eb1ee2811b09efe3c4ab21c2db426cb9b97cc43c8707baa1a754c715cee3e",
   "payload_files_sha256": {
     "README.md": "58a35eb6c6fc3dac080c0a67b550fd987636e5267aaa3d71ea2715e99428f610",
     "analytic_selection_rule.json": "6178dbba70fd2b54286ebb20c25c367edbba56279262882f14b172a39f83bd98",
@@ -21,6 +21,7 @@
     "response_by_resolution_and_amplitude.json": "8cabda9444dda0b3d520509d931e22a57d566ede0c8eefd11b32b336c686f2dd",
     "run_r9.py": "abbc8cdf2eb7b6788edd050d01d495434d812a83973419f4cbe972a8653ae839",
     "scaling_fits.json": "456946a916610dfaa280d1b28234e3625b9592fb7748e341439b21db840b6cb3",
+    "site_shift_dft.json": "8817ed5d99d34a19085befea1449e362758d46fcf1a9a2fc1060095d56e46cb8",
     "solver_execution.json": "37f3021758c61c64fe12471c15013c7a4bada60f104cc40962c2ea9c391e3e34",
     "test_coverage.csv": "18762087bded599a7c5f2e00be1b550b92e13b6f267459e3dd13045684d57224",
     "trilatt_hold.json": "b80b0778a917a7cdd21c294e8eb775a217fe62d8f47eda2bc7a27da6e2c552a0",
@@ -29,7 +30,7 @@
     "validation_report.md": "d3c9527e528a16cb3684c73698d913885136819e10fd0527a7f99b8a3d78423b",
     "validator_negative_fixtures.py": "262395661a2d0880d3127cee5f294028ca927f4061fb789f2bf2508e61165302"
   },
-  "payload_parent": "22c68d1d09c2cd5c9a076d0f76b087cba0e524f5",
+  "payload_parent": "40ada90ec6515f23763075b41a05a4211d9f925b",
   "post_seal_record_commit_forbidden": true,
   "schema": "mephc.affine_architecture.r9.integrity.v1",
   "seal_commit_sha_reported_in_chat": true

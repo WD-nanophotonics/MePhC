@@ -1,5 +1,5 @@
 {
-  "file_count": 27,
+  "file_count": 28,
   "files": [
     {
       "bytes": 1218,
@@ -102,6 +102,11 @@
       "sha256": "456946a916610dfaa280d1b28234e3625b9592fb7748e341439b21db840b6cb3"
     },
     {
+      "bytes": 1029,
+      "path": "site_shift_dft.json",
+      "sha256": "8817ed5d99d34a19085befea1449e362758d46fcf1a9a2fc1060095d56e46cb8"
+    },
+    {
       "bytes": 24980,
       "path": "solver_execution.json",
       "sha256": "37f3021758c61c64fe12471c15013c7a4bada60f104cc40962c2ea9c391e3e34"
@@ -137,7 +142,7 @@
       "sha256": "262395661a2d0880d3127cee5f294028ca927f4061fb789f2bf2508e61165302"
     }
   ],
-  "payload_parent": "22c68d1d09c2cd5c9a076d0f76b087cba0e524f5",
+  "payload_parent": "40ada90ec6515f23763075b41a05a4211d9f925b",
   "schema": "mephc.affine_architecture.r9.artifact_manifest.v1",
   "seal_files_excluded": [
     "artifact_manifest.json",
