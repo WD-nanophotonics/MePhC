@@ -1,7 +1,7 @@
 {
   "schema": "mephc.affine_architecture.r7_1.artifact_manifest.v1",
   "status": "SEALED_PASS_R7_1_REAL_MPB_SQRLATT_TRILATT_AUDITED",
-  "payload_parent": "PENDING_PAYLOAD_COMMIT",
+  "payload_parent": "2157fd0",
   "files": [
     "README.md",
     "response_contract.md",
