@@ -1,0 +1,13 @@
+{
+  "method": "git diff --quiet against the R7.3 starting MePhC tree; no protected path staged or written",
+  "protected_paths": [
+    "docs/architecture/mephc_affine_architecture_r6/",
+    "docs/architecture/mephc_affine_architecture_r6_1/",
+    "docs/architecture/mephc_affine_architecture_r7/",
+    "docs/architecture/mephc_affine_architecture_r7_1/",
+    "docs/architecture/mephc_affine_architecture_r7_2/"
+  ],
+  "r7_2_preserved_as_historical_evidence": true,
+  "schema": "mephc.affine_architecture.r7_3.protected_digest_check.v1",
+  "verified": true
+}

@@ -1,0 +1,147 @@
+{
+  "accepted_resolution_policy": {
+    "pass_at_16_to_20": 20,
+    "pass_at_20_to_24": 24,
+    "resolution_12_forbidden": true
+  },
+  "benchmark": {
+    "amplitudes": [
+      0.0,
+      0.005,
+      -0.005,
+      0.0025,
+      -0.0025
+    ],
+    "downstream": "MePhC-SqrLatt",
+    "field": "A*cos(2*pi*xi1)*cos(2*pi*xi2)*e_x",
+    "num_bands": 6,
+    "polarization": "TE",
+    "q_points": {
+      "q0": [
+        0.0,
+        0.0
+      ],
+      "q1": [
+        0.12,
+        0.07
+      ],
+      "q2": [
+        -0.09,
+        0.14
+      ]
+    },
+    "replication": [
+      2,
+      2
+    ]
+  },
+  "contract_id": "mephc-affine-architecture-r7.3-authoritative-contract-execution-recovery",
+  "contract_sha256": "c2f9d2c8f1b0742cb032abf8b9bd94172ba49d8bcf1a814342b0b181d684a37a",
+  "differential_convergence": {
+    "absolute": 2e-05,
+    "absolute_spectrum_tolerance_0_002_forbidden": true,
+    "full_and_half_amplitude_must_both_pass": true,
+    "old_absolute_frequency_error_forbidden": true,
+    "quantity": "even_differential_response_per_locked_target",
+    "relative_fraction": 0.1
+  },
+  "fresh_sqrlatt_resolution_ladder": [
+    12,
+    16,
+    20,
+    24
+  ],
+  "geometry_equivalence": {
+    "center_only_forbidden": true,
+    "frequency_inference_forbidden": true,
+    "full_typed_polygon_geometry_required": true,
+    "point_operations_source": "R4_R4.1_verified_identity_square_complete_structure_policy",
+    "shape_only_forbidden_as_final_proof": true,
+    "tolerance": 1e-10,
+    "translations_mod_2x2": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ]
+  },
+  "locked_contract_sha256": "c2f9d2c8f1b0742cb032abf8b9bd94172ba49d8bcf1a814342b0b181d684a37a",
+  "locked_targets": [
+    [
+      "q0",
+      5
+    ],
+    [
+      "q1",
+      0
+    ],
+    [
+      "q2",
+      0
+    ],
+    [
+      "q2",
+      1
+    ],
+    [
+      "q2",
+      2
+    ]
+  ],
+  "mandatory_fresh_sqrlatt_resolutions": [
+    12,
+    16,
+    20
+  ],
+  "replay_tolerance": {
+    "exact_additional_replays_per_used_resolution": 2,
+    "formula": "max(1e-10, 10*measured_max_replay_difference_at_same_resolution)",
+    "q_points_used": [
+      "q1",
+      "q2"
+    ],
+    "replayed_amplitude": 0.005,
+    "retry_hunting_for_pass_forbidden": true
+  },
+  "resolution_24_policy": "run_once_iff_any_of_five_targets_not_differential_converged_at_16_to_20",
+  "resolvability": {
+    "absolute_even_shift_min": 5e-05,
+    "minimum_resolved_targets_for_pass": 2,
+    "signal_to_error_min": 5.0
+  },
+  "schema": "mephc.affine_architecture.r7_3.contract_preflight.v1",
+  "starting_refs": {
+    "MePhC": "6ca30e56de14b526dcd81fcd7000760f0602d71c",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  },
+  "target_denominator": 5,
+  "terminal_states": [
+    "PASS_DIFFERENTIAL_RESPONSE_BASELINE",
+    "BLOCKED_EQUIVALENCE_SPECTRAL_MISMATCH",
+    "BLOCKED_DIFFERENTIAL_RESPONSE_UNRESOLVED",
+    "BLOCKED_COMPATIBILITY",
+    "BLOCKED_SCOPE_EXPANSION",
+    "BLOCKED_RUNTIME"
+  ],
+  "trilatt_hold": {
+    "authoritative_ref": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b",
+    "convergence_tuning_forbidden": true,
+    "five_amplitude_sweep_forbidden": true,
+    "fresh_mpb_solver_calls": 0,
+    "new_nonzero_mpb_runs_forbidden": true,
+    "production_change_expected": false
+  }
+}

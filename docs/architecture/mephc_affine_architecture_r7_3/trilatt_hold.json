@@ -1,0 +1,8 @@
+{
+  "authoritative_ref": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b",
+  "downstream": "MePhC-TriLatt",
+  "five_amplitude_sweep": false,
+  "fresh_mpb_solver_calls": 0,
+  "new_nonzero_mpb_runs": 0,
+  "production_change": false
+}

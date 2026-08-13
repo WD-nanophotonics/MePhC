@@ -1,0 +1,44 @@
+{
+  "one_center_plus_1e-3": {
+    "assignment": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "equivalent": false,
+    "expected_rejection": true,
+    "maximum_coordinate_residual": 0.0010000000000000009,
+    "reason": "coordinate_residual",
+    "tolerance": 1e-10,
+    "total_coordinate_residual": 0.0010000000000000009
+  },
+  "polygon_size_change": {
+    "assignment": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "equivalent": false,
+    "expected_rejection": true,
+    "maximum_coordinate_residual": 0.0003571064267133267,
+    "reason": "coordinate_residual",
+    "tolerance": 1e-10,
+    "total_coordinate_residual": 0.0003571064267133267
+  },
+  "type_material_identity_change": {
+    "assignment": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "equivalent": false,
+    "expected_rejection": true,
+    "maximum_coordinate_residual": null,
+    "reason": "type_material_mismatch",
+    "tolerance": 1e-10,
+    "total_coordinate_residual": null
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "final_pair": [
+    20,
+    24
+  ],
+  "initial_16_to_20": [
+    {
+      "err_A": 1.906315167793382e-05,
+      "err_half": 1.7013234532514687e-05,
+      "full_pass": true,
+      "half_pass": true,
+      "high": 20,
+      "low": 16,
+      "status": "DIFFERENTIAL_CONVERGED",
+      "target": [
+        "q0",
+        5
+      ],
+      "tol_A": 2e-05,
+      "tol_half": 2e-05
+    },
+    {
+      "err_A": 1.1630521371611136e-05,
+      "err_half": 1.1387152644377896e-05,
+      "full_pass": true,
+      "half_pass": true,
+      "high": 20,
+      "low": 16,
+      "status": "DIFFERENTIAL_CONVERGED",
+      "target": [
+        "q1",
+        0
+      ],
+      "tol_A": 2e-05,
+      "tol_half": 2e-05
+    },
+    {
+      "err_A": 7.230684391304476e-06,
+      "err_half": 7.899286995100008e-06,
+      "full_pass": true,
+      "half_pass": true,
+      "high": 20,
+      "low": 16,
+      "status": "DIFFERENTIAL_CONVERGED",
+      "target": [
+        "q2",
+        0
+      ],
+      "tol_A": 2e-05,
+      "tol_half": 2e-05
+    },
+    {
+      "err_A": 5.5891746382097374e-05,
+      "err_half": 5.818390911169202e-05,
+      "full_pass": false,
+      "half_pass": false,
+      "high": 20,
+      "low": 16,
+      "status": "NOT_DIFFERENTIAL_CONVERGED",
+      "target": [
+        "q2",
+        1
+      ],
+      "tol_A": 2e-05,
+      "tol_half": 2e-05
+    },
+    {
+      "err_A": 7.488887260564958e-05,
+      "err_half": 7.432450068078911e-05,
+      "full_pass": false,
+      "half_pass": false,
+      "high": 20,
+      "low": 16,
+      "status": "NOT_DIFFERENTIAL_CONVERGED",
+      "target": [
+        "q2",
+        2
+      ],
+      "tol_A": 2e-05,
+      "tol_half": 2e-05
+    }
+  ],
+  "target_denominator": 5,
+  "targets": [
+    {
+      "err_A": 1.2279291615902022e-05,
+      "err_half": 1.0477394833841025e-05,
+      "full_pass": true,
+      "half_pass": true,
+      "high": 24,
+      "low": 20,
+      "status": "DIFFERENTIAL_CONVERGED",
+      "target": [
+        "q0",
+        5
+      ],
+      "tol_A": 2e-05,
+      "tol_half": 2e-05
+    },
+    {
+      "err_A": 7.080541830878362e-06,
+      "err_half": 6.839106572682774e-06,
+      "full_pass": true,
+      "half_pass": true,
+      "high": 24,
+      "low": 20,
+      "status": "DIFFERENTIAL_CONVERGED",
+      "target": [
+        "q1",
+        0
+      ],
+      "tol_A": 2e-05,
+      "tol_half": 2e-05
+    },
+    {
+      "err_A": 1.5185916852136772e-06,
+      "err_half": 2.105470129541709e-06,
+      "full_pass": true,
+      "half_pass": true,
+      "high": 24,
+      "low": 20,
+      "status": "DIFFERENTIAL_CONVERGED",
+      "target": [
+        "q2",
+        0
+      ],
+      "tol_A": 2e-05,
+      "tol_half": 2e-05
+    },
+    {
+      "err_A": 2.3998411879999626e-05,
+      "err_half": 2.5914525529829868e-05,
+      "full_pass": false,
+      "half_pass": false,
+      "high": 24,
+      "low": 20,
+      "status": "NOT_DIFFERENTIAL_CONVERGED",
+      "target": [
+        "q2",
+        1
+      ],
+      "tol_A": 2e-05,
+      "tol_half": 2e-05
+    },
+    {
+      "err_A": 4.1583475922729596e-05,
+      "err_half": 4.099446547037311e-05,
+      "full_pass": false,
+      "half_pass": false,
+      "high": 24,
+      "low": 20,
+      "status": "NOT_DIFFERENTIAL_CONVERGED",
+      "target": [
+        "q2",
+        2
+      ],
+      "tol_A": 2e-05,
+      "tol_half": 2e-05
+    }
+  ],
+  "terminal_state": "BLOCKED_EQUIVALENCE_SPECTRAL_MISMATCH"
+}

@@ -1,0 +1,55 @@
+{
+  "accepted_final_resolution": null,
+  "completion_gmail_required": false,
+  "email_sent": false,
+  "final_comparison_pair": [
+    20,
+    24
+  ],
+  "geometry_equivalence": "EQUIVALENT_BY_VERIFIED_OPERATION",
+  "geometry_matching_candidate": {
+    "match": {
+      "assignment": [
+        2,
+        3,
+        0,
+        1
+      ],
+      "equivalent": true,
+      "maximum_coordinate_residual": 2.220446049250313e-16,
+      "reason": "EQUIVALENT",
+      "tolerance": 1e-10,
+      "total_coordinate_residual": 8.326672684688674e-16
+    },
+    "matrix": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "operation": "identity",
+    "target_fingerprint": "f5119f496ed85fdecbade1c8431b2dc7dcdbb6f38936e5ede6ff327200281776",
+    "transformed_fingerprint": "f5119f496ed85fdecbade1c8431b2dc7dcdbb6f38936e5ede6ff327200281776",
+    "translation_cartesian": [
+      1.0,
+      0.0
+    ],
+    "translation_fractional": [
+      1,
+      0
+    ]
+  },
+  "push_status": "PENDING",
+  "r8_authorized": false,
+  "remote_equal": false,
+  "resolved_count": 1,
+  "schema": "mephc.affine_architecture.r7_3.completion.v1",
+  "scientific_terminal_state": "BLOCKED_EQUIVALENCE_SPECTRAL_MISMATCH",
+  "target_denominator": 5,
+  "terminal_state": "BLOCKED_EQUIVALENCE_SPECTRAL_MISMATCH",
+  "trilatt_fresh_solver_calls": 0
+}

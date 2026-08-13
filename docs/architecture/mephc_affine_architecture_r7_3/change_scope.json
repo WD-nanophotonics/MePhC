@@ -1,0 +1,14 @@
+{
+  "evidence_only": true,
+  "production_changes": [],
+  "protected_paths": [
+    "docs/architecture/mephc_affine_architecture_r6/",
+    "docs/architecture/mephc_affine_architecture_r6_1/",
+    "docs/architecture/mephc_affine_architecture_r7/",
+    "docs/architecture/mephc_affine_architecture_r7_1/",
+    "docs/architecture/mephc_affine_architecture_r7_2/"
+  ],
+  "schema": "mephc.affine_architecture.r7_3.change_scope.v1",
+  "sqrlatt_changes": [],
+  "trilatt_changes": []
+}

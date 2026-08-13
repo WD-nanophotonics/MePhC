@@ -1,0 +1,7 @@
+check,contract_source,evidence,expected
+contract_digest,authoritative_contract.json,contract_preflight.json,PASS
+geometry_operations,geometry_equivalence,candidate_operations.json;geometry_sign_equivalence.json,PASS_OR_EXPLICIT_NEGATIVE
+replay_floor,replay_tolerance,replay_floor.json,PASS
+resolution_policy,fresh_sqrlatt_resolution_ladder,fresh_solver_execution.json,PASS
+locked_targets,locked_targets;target_denominator,target_differential_by_resolution.json,PASS_5_TARGETS
+trilatt_hold,trilatt_hold,trilatt_hold.json,PASS_ZERO_CALLS

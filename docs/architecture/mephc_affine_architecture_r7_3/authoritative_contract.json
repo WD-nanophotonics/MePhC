@@ -1,0 +1,133 @@
+{
+  "contract_id": "mephc-affine-architecture-r7.3-authoritative-contract-execution-recovery",
+  "version": "1.0",
+  "starting_refs": {
+    "MePhC": "6ca30e56de14b526dcd81fcd7000760f0602d71c",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  },
+  "delivery": {
+    "authoritative_channel": "repository_main",
+    "completion_gmail_required": false,
+    "chat_receipt": "short_summary_only",
+    "force_push_allowed": false,
+    "r8_authorized": false
+  },
+  "protected_paths": [
+    "docs/architecture/mephc_affine_architecture_r6/",
+    "docs/architecture/mephc_affine_architecture_r6_1/",
+    "docs/architecture/mephc_affine_architecture_r7/",
+    "docs/architecture/mephc_affine_architecture_r7_1/",
+    "docs/architecture/mephc_affine_architecture_r7_2/"
+  ],
+  "runtime": {
+    "python": "/home/icy/miniconda3/envs/mp/bin/python",
+    "solver": "meep.mpb.ModeSolver",
+    "real_mpb_required": true,
+    "environment_mutation_allowed": false
+  },
+  "benchmark": {
+    "downstream": "MePhC-SqrLatt",
+    "replication": [2, 2],
+    "field": "A*cos(2*pi*xi1)*cos(2*pi*xi2)*e_x",
+    "amplitudes": [0.0, 0.005, -0.005, 0.0025, -0.0025],
+    "q_points": {
+      "q0": [0.0, 0.0],
+      "q1": [0.12, 0.07],
+      "q2": [-0.09, 0.14]
+    },
+    "polarization": "TE",
+    "num_bands": 6
+  },
+  "locked_targets": [
+    ["q0", 5],
+    ["q1", 0],
+    ["q2", 0],
+    ["q2", 1],
+    ["q2", 2]
+  ],
+  "target_denominator": 5,
+  "geometry_equivalence": {
+    "point_operations_source": "R4_R4.1_verified_identity_square_complete_structure_policy",
+    "translations_mod_2x2": [[0,0],[1,0],[0,1],[1,1]],
+    "full_typed_polygon_geometry_required": true,
+    "tolerance": 1e-10,
+    "center_only_forbidden": true,
+    "shape_only_forbidden_as_final_proof": true,
+    "frequency_inference_forbidden": true
+  },
+  "replay_tolerance": {
+    "formula": "max(1e-10, 10*measured_max_replay_difference_at_same_resolution)",
+    "replayed_amplitude": 0.005,
+    "q_points_used": ["q1", "q2"],
+    "exact_additional_replays_per_used_resolution": 2,
+    "retry_hunting_for_pass_forbidden": true
+  },
+  "fresh_sqrlatt_resolution_ladder": [12, 16, 20, 24],
+  "mandatory_fresh_sqrlatt_resolutions": [12, 16, 20],
+  "fresh_resolution_8_forbidden": true,
+  "resolution_24_policy": "run_once_iff_any_of_five_targets_not_differential_converged_at_16_to_20",
+  "accepted_resolution_policy": {
+    "resolution_12_forbidden": true,
+    "pass_at_16_to_20": 20,
+    "pass_at_20_to_24": 24
+  },
+  "differential_convergence": {
+    "quantity": "even_differential_response_per_locked_target",
+    "absolute": 0.00002,
+    "relative_fraction": 0.10,
+    "full_and_half_amplitude_must_both_pass": true,
+    "absolute_spectrum_tolerance_0_002_forbidden": true,
+    "old_absolute_frequency_error_forbidden": true
+  },
+  "resolvability": {
+    "signal_to_error_min": 5.0,
+    "absolute_even_shift_min": 0.00005,
+    "minimum_resolved_targets_for_pass": 2
+  },
+  "band_identity": {
+    "locked_ordinal_tracking": true,
+    "frequency_assignment_target_relabel_forbidden": true,
+    "unsafe_identity_terminal": "BLOCKED_COMPATIBILITY"
+  },
+  "trilatt_hold": {
+    "authoritative_ref": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b",
+    "fresh_mpb_solver_calls": 0,
+    "new_nonzero_mpb_runs_forbidden": true,
+    "five_amplitude_sweep_forbidden": true,
+    "convergence_tuning_forbidden": true,
+    "production_change_expected": false
+  },
+  "terminal_states": [
+    "PASS_DIFFERENTIAL_RESPONSE_BASELINE",
+    "BLOCKED_EQUIVALENCE_SPECTRAL_MISMATCH",
+    "BLOCKED_DIFFERENTIAL_RESPONSE_UNRESOLVED",
+    "BLOCKED_COMPATIBILITY",
+    "BLOCKED_SCOPE_EXPANSION",
+    "BLOCKED_RUNTIME"
+  ],
+  "forbidden_stage_semantics": [
+    "accepted_resolution_12",
+    "stage_denominator_18",
+    "all_band_stage_gate",
+    "fresh_resolution_8",
+    "fresh_trilatt_mpb",
+    "absolute_spectrum_0.002_as_differential_convergence",
+    "invented_terminal_state"
+  ],
+  "forbidden_claims": [
+    "berry_curvature",
+    "berry_curvature_dipole",
+    "band_unfolding",
+    "topological_invariant",
+    "strain_gauge_field",
+    "curved_space_physics",
+    "elastic_relaxation",
+    "motif_deformation",
+    "strain_dependent_material",
+    "transport",
+    "far_field",
+    "inverse_design",
+    "r8"
+  ]
+}
