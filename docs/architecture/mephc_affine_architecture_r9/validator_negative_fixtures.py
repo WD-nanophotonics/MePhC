@@ -37,7 +37,7 @@ def drop_channel(data):
 
 
 def adaptive_amplitude(data):
-    data["40"]["0.03"] = data["40"].pop("0.02")
+    data["resolutions"]["40"]["0.03"] = data["resolutions"]["40"].pop("0.02")
 
 
 def tolerance(data):
