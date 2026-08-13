@@ -1,0 +1,30 @@
+{
+  "files": [
+    "docs/architecture/mephc_affine_architecture_r7_2/README.md",
+    "docs/architecture/mephc_affine_architecture_r7_2/response_contract.md",
+    "docs/architecture/mephc_affine_architecture_r7_2/change_scope.json",
+    "docs/architecture/mephc_affine_architecture_r7_2/real_mpb_response.json",
+    "docs/architecture/mephc_affine_architecture_r7_2/sign_equivalence_spectra.json",
+    "docs/architecture/mephc_affine_architecture_r7_2/sign_equivalence_geometry.json",
+    "docs/architecture/mephc_affine_architecture_r7_2/differential_resolution_ladder.json",
+    "docs/architecture/mephc_affine_architecture_r7_2/runtime_probe.json",
+    "docs/architecture/mephc_affine_architecture_r7_2/completion_probe.json",
+    "docs/architecture/mephc_affine_architecture_r7_2/run_r7_2_closure.py",
+    "docs/architecture/mephc_affine_architecture_r7_2/validate_r7_2.py",
+    "docs/architecture/mephc_affine_architecture_r7_2/test_coverage_matrix.csv",
+    "docs/architecture/mephc_affine_architecture_r7_2/validation_report.md",
+    "mephc/r7_2_response.py",
+    "mephc/geometry_equivalence.py",
+    "mephc/__init__.py",
+    "tests/test_r7_2_response.py"
+  ],
+  "payload_parent": "aea00f41eeb5d434f500e2479109c7ad4b907a47",
+  "protected_inputs": [
+    "docs/architecture/mephc_affine_architecture_r6/integrity_digests.json",
+    "docs/architecture/mephc_affine_architecture_r6_1/integrity_digests.json",
+    "docs/architecture/mephc_affine_architecture_r6_1/sqrlatt_response.json",
+    "docs/architecture/mephc_affine_architecture_r7_1/integrity_digests.json"
+  ],
+  "schema": "mephc.affine_architecture.r7_2.artifact_manifest.v1",
+  "status": "SEALED_PASS_R7_2_SIGN_EQUIVALENCE_DIFFERENTIAL_LADDER"
+}
