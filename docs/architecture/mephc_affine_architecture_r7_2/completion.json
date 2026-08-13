@@ -7,9 +7,9 @@
     "TriLatt": "2ae554650c49b7a32fd9d297a76eddbae1aa22e2"
   },
   "payload_parent": "aea00f41eeb5d434f500e2479109c7ad4b907a47",
-  "push_status": "PENDING",
+  "push_status": "PASS",
   "reason": "R7.2 real MPB evidence closes periodic +A/-A geometry and spectral equivalence for SqrLatt and TriLatt. SqrLatt differential response accepts resolution 12; TriLatt raw data is retained with an explicit non-convergence block and no response claim.",
-  "remote_equal": false,
+  "remote_equal": true,
   "schema": "mephc.affine_architecture.r7_2.completion.v1",
   "starting_refs": {
     "MePhC": "8ab4af27ea2dda92bb50f514169c7b7d4b8dbd69",
