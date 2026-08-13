@@ -1,0 +1,155 @@
+{
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "590de4089dd5d6c4b24fcc4f33d7f3ad2ba4d07702aefea42b22a3e4cd2b1cba",
+      "size_bytes": 303
+    },
+    {
+      "path": "a0_12band_spectrum.json",
+      "sha256": "4f33bf778f8b8a2d9534c8af77730e3d8b7805e0b11a2f5ab3e3d35cdaba6bac",
+      "size_bytes": 1121
+    },
+    {
+      "path": "authoritative_contract.json",
+      "sha256": "9ae0c4262451827c7ae559ea9a635b2304316b0a880d462ee4b217241b56a219",
+      "size_bytes": 4193
+    },
+    {
+      "path": "band_identity_guard.json",
+      "sha256": "15d3c0196edc0fba6339fc36272230d724f8e6fc4a7bf276c06003c0e9e0b3b7",
+      "size_bytes": 44609
+    },
+    {
+      "path": "c1_extrapolation.json",
+      "sha256": "3fc0fba2288504131cd08579fb7486bb44a34fc1c3122940b1248647b11c686c",
+      "size_bytes": 22290
+    },
+    {
+      "path": "central_derivatives.json",
+      "sha256": "7de876c20a5f387b0d4d1cacaeb6c2d1fd225c48b79990f0a61c2ff920cfe603",
+      "size_bytes": 20933
+    },
+    {
+      "path": "change_scope.json",
+      "sha256": "435c7bc59878d9741acab788726c1efc413e2ce3204d4020a3758a503f14b092",
+      "size_bytes": 717
+    },
+    {
+      "path": "contract_preflight.json",
+      "sha256": "033d99b7a6025af3b8c35f8e9c07341e9d6fa83ede5374807842af559970be87",
+      "size_bytes": 1185
+    },
+    {
+      "path": "coupled_sector_gap_audit.json",
+      "sha256": "5df8761458a46f757bd19d6dbb207c4039f3929a30040d408818d4ef7a59e775",
+      "size_bytes": 26343
+    },
+    {
+      "path": "geometry_controls.json",
+      "sha256": "054ffb368494ea5c8d5d05ecd3a835a40581d5de837e62b6229938af7098120d",
+      "size_bytes": 3740
+    },
+    {
+      "path": "known_limits.md",
+      "sha256": "d2853bb972b92fd779dd5eb0224eb86fd80fcb5013adb298f37eb1fcf537bc26",
+      "size_bytes": 362
+    },
+    {
+      "path": "logs/mpb_stdout.log",
+      "sha256": "322572e3870332595251e96d7246c4c539e299b1effa4540c70cf911816a788b",
+      "size_bytes": 171844
+    },
+    {
+      "path": "mechanism_adjudication.json",
+      "sha256": "9d06391e7451133c8411b090f1b991c8992daaa87d8ab218e7b9b0c4c9aafba0",
+      "size_bytes": 13809
+    },
+    {
+      "path": "preflight.json",
+      "sha256": "b6d1323b54af75e7026bd3fb6217ee658a2ef17c1fe913853da36380bcac9a43",
+      "size_bytes": 1189
+    },
+    {
+      "path": "primitive_translation_sector_data.json",
+      "sha256": "ad4f4d12aad205ce94c5f4b8f53340228674f0096f99f8fc4bd2ed8b9c8f6f68",
+      "size_bytes": 80880
+    },
+    {
+      "path": "primitive_translation_sector_method.md",
+      "sha256": "4dbbb0efb181ff2fa5dc9dd05b7de60217b57dfefcd71ecb40b40e1382d94f5a",
+      "size_bytes": 394
+    },
+    {
+      "path": "protected_digest_check.json",
+      "sha256": "2944acc0125f454822e3d98d68994314daaba8d219871cf0ab96c9e930222d7b",
+      "size_bytes": 199
+    },
+    {
+      "path": "r9_inheritance.json",
+      "sha256": "a64a2fa40cfee3c6456155bb90491dd47887ed856dfa4da4545d4d37d9ea1091",
+      "size_bytes": 340
+    },
+    {
+      "path": "raw_q2_response_spectra.json",
+      "sha256": "5b856cac045756319a9d8f749c5c26893788ae1f6bcc1795df053e85a1472362",
+      "size_bytes": 5693
+    },
+    {
+      "path": "representation_control.json",
+      "sha256": "90811d085249d888f487ef11af3ce131bac7d89f21113d8c6a4f7e18d012e25a",
+      "size_bytes": 2270
+    },
+    {
+      "path": "run_r10.py",
+      "sha256": "2efac862b59ef9af74f6eca2452c5c96c74e694acdbbf5be19c83622d2ae0117",
+      "size_bytes": 31358
+    },
+    {
+      "path": "same_input_repeat_floor.json",
+      "sha256": "455c03a4ebd520fac461776a1d2324eaba98c599bc497d7b7cb994f1e5ac8721",
+      "size_bytes": 994
+    },
+    {
+      "path": "solver_execution.json",
+      "sha256": "1906e103f2b49b1dba59c88faba214c967a446788092ec2a0448d78ca416fcbc",
+      "size_bytes": 33096
+    },
+    {
+      "path": "test_coverage.csv",
+      "sha256": "84e47349a749bca83f455d322f0579f9bcda3bf662304fcdc9de0c088566ddd4",
+      "size_bytes": 321
+    },
+    {
+      "path": "trilatt_hold.json",
+      "sha256": "b80b0778a917a7cdd21c294e8eb775a217fe62d8f47eda2bc7a27da6e2c552a0",
+      "size_bytes": 131
+    },
+    {
+      "path": "uniform_translation_floor.json",
+      "sha256": "c3e88936cb9f470c44e62e54f1234ab814e49d97c731e24418518b135a60aaf7",
+      "size_bytes": 1292
+    },
+    {
+      "path": "validate_r10.py",
+      "sha256": "f5ed6851977b0d4a76b114500fca2cbb4736906a5d7bfaf879fe8f4e8284c859",
+      "size_bytes": 4931
+    },
+    {
+      "path": "validation_report.md",
+      "sha256": "1149092f535dace4192e3dea22061cf07a88e9fa5caeb0162462217903c76f4d",
+      "size_bytes": 395
+    },
+    {
+      "path": "validator_negative_fixtures.py",
+      "sha256": "31a208f9b8e441722ea69598a4a8993f2d0b3225b1a5c24b2f712af4b57b7ca3",
+      "size_bytes": 543
+    },
+    {
+      "path": "zero_mean_rule_interpretation.json",
+      "sha256": "8aa4090b153c5b740ff7387a60f11ea0a01bf284edc832a565ad5937e051cd68",
+      "size_bytes": 284
+    }
+  ],
+  "schema": "mephc.affine_architecture.r10.artifact_manifest.v1"
+}
