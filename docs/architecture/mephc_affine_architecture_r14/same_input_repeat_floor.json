@@ -1,0 +1,30 @@
+{
+  "112": {
+    "baseline_A0": {
+      "band3_frequency_difference": 9.3119956190435e-14,
+      "exactly_two_additional": true
+    },
+    "pair_minus_hstar": {
+      "band3_frequency_difference": 1.0506873149296325e-12,
+      "exactly_two_additional": true
+    },
+    "pair_plus_hstar": {
+      "band3_frequency_difference": 5.687394999398521e-13,
+      "exactly_two_additional": true
+    }
+  },
+  "96": {
+    "baseline_A0": {
+      "band3_frequency_difference": 5.804523528496475e-13,
+      "exactly_two_additional": true
+    },
+    "pair_minus_hstar": {
+      "band3_frequency_difference": 1.0406397965567749e-12,
+      "exactly_two_additional": true
+    },
+    "pair_plus_hstar": {
+      "band3_frequency_difference": 9.89763826453327e-14,
+      "exactly_two_additional": true
+    }
+  }
+}

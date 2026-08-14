@@ -1,0 +1,3718 @@
+{
+  "112": {
+    "0": {
+      "0.005": {
+        "minus": {
+          "anchor_fingerprint": "e5187e439490121c48249b0b1211a2110fedab7e183f88feee662054d251eba6",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.005,
+          "phase_shift": 0.0,
+          "rows": [
+            {
+              "epsilon_hash_expected": "e5187e439490121c48249b0b1211a2110fedab7e183f88feee662054d251eba6",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "e5187e439490121c48249b0b1211a2110fedab7e183f88feee662054d251eba6",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "e5187e439490121c48249b0b1211a2110fedab7e183f88feee662054d251eba6",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "e5187e439490121c48249b0b1211a2110fedab7e183f88feee662054d251eba6",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "e5187e439490121c48249b0b1211a2110fedab7e183f88feee662054d251eba6",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "e5187e439490121c48249b0b1211a2110fedab7e183f88feee662054d251eba6",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "c412e9c4e0ab8cf801bf2e6e55aa16cc46308eaa392ae5ad6ac858ae016caed8",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.005,
+          "phase_shift": 0.0,
+          "rows": [
+            {
+              "epsilon_hash_expected": "c412e9c4e0ab8cf801bf2e6e55aa16cc46308eaa392ae5ad6ac858ae016caed8",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "c412e9c4e0ab8cf801bf2e6e55aa16cc46308eaa392ae5ad6ac858ae016caed8",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "c412e9c4e0ab8cf801bf2e6e55aa16cc46308eaa392ae5ad6ac858ae016caed8",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "c412e9c4e0ab8cf801bf2e6e55aa16cc46308eaa392ae5ad6ac858ae016caed8",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "c412e9c4e0ab8cf801bf2e6e55aa16cc46308eaa392ae5ad6ac858ae016caed8",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "c412e9c4e0ab8cf801bf2e6e55aa16cc46308eaa392ae5ad6ac858ae016caed8",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.01": {
+        "minus": {
+          "anchor_fingerprint": "f437e916753d8264afd597c9137fafbb64311dafa1880542e565beb01df2a900",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.01,
+          "phase_shift": 0.0,
+          "rows": [
+            {
+              "epsilon_hash_expected": "f437e916753d8264afd597c9137fafbb64311dafa1880542e565beb01df2a900",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "f437e916753d8264afd597c9137fafbb64311dafa1880542e565beb01df2a900",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "f437e916753d8264afd597c9137fafbb64311dafa1880542e565beb01df2a900",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "f437e916753d8264afd597c9137fafbb64311dafa1880542e565beb01df2a900",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "f437e916753d8264afd597c9137fafbb64311dafa1880542e565beb01df2a900",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "f437e916753d8264afd597c9137fafbb64311dafa1880542e565beb01df2a900",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "6fd6a792eaf806f2fdbddc94a8584626a64908181cb7b3706005a4c8357c125c",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.01,
+          "phase_shift": 0.0,
+          "rows": [
+            {
+              "epsilon_hash_expected": "6fd6a792eaf806f2fdbddc94a8584626a64908181cb7b3706005a4c8357c125c",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "6fd6a792eaf806f2fdbddc94a8584626a64908181cb7b3706005a4c8357c125c",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "6fd6a792eaf806f2fdbddc94a8584626a64908181cb7b3706005a4c8357c125c",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "6fd6a792eaf806f2fdbddc94a8584626a64908181cb7b3706005a4c8357c125c",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "6fd6a792eaf806f2fdbddc94a8584626a64908181cb7b3706005a4c8357c125c",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "6fd6a792eaf806f2fdbddc94a8584626a64908181cb7b3706005a4c8357c125c",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.02": {
+        "minus": {
+          "anchor_fingerprint": "5b7a1e114730cccebf56aa37a881cdfdd7743de5e8f13c1ee53cd1dadb4ce838",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.02,
+          "phase_shift": 0.0,
+          "rows": [
+            {
+              "epsilon_hash_expected": "5b7a1e114730cccebf56aa37a881cdfdd7743de5e8f13c1ee53cd1dadb4ce838",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "5b7a1e114730cccebf56aa37a881cdfdd7743de5e8f13c1ee53cd1dadb4ce838",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "5b7a1e114730cccebf56aa37a881cdfdd7743de5e8f13c1ee53cd1dadb4ce838",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "5b7a1e114730cccebf56aa37a881cdfdd7743de5e8f13c1ee53cd1dadb4ce838",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "5b7a1e114730cccebf56aa37a881cdfdd7743de5e8f13c1ee53cd1dadb4ce838",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "5b7a1e114730cccebf56aa37a881cdfdd7743de5e8f13c1ee53cd1dadb4ce838",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "cc77107113b95bd18f492d3847390d4fa6a9e193e92033071bb0a3e907aea17f",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.02,
+          "phase_shift": 0.0,
+          "rows": [
+            {
+              "epsilon_hash_expected": "cc77107113b95bd18f492d3847390d4fa6a9e193e92033071bb0a3e907aea17f",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "cc77107113b95bd18f492d3847390d4fa6a9e193e92033071bb0a3e907aea17f",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "cc77107113b95bd18f492d3847390d4fa6a9e193e92033071bb0a3e907aea17f",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "cc77107113b95bd18f492d3847390d4fa6a9e193e92033071bb0a3e907aea17f",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "cc77107113b95bd18f492d3847390d4fa6a9e193e92033071bb0a3e907aea17f",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "cc77107113b95bd18f492d3847390d4fa6a9e193e92033071bb0a3e907aea17f",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "0.25": {
+      "0.005": {
+        "minus": {
+          "anchor_fingerprint": "a071988bfe4b6f0b5601d2098c6fff8d30f7e021f3fa5abc65224b3be75f2b83",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.005,
+          "phase_shift": 0.002232142857142857,
+          "rows": [
+            {
+              "epsilon_hash_expected": "a071988bfe4b6f0b5601d2098c6fff8d30f7e021f3fa5abc65224b3be75f2b83",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "a071988bfe4b6f0b5601d2098c6fff8d30f7e021f3fa5abc65224b3be75f2b83",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "a071988bfe4b6f0b5601d2098c6fff8d30f7e021f3fa5abc65224b3be75f2b83",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "a071988bfe4b6f0b5601d2098c6fff8d30f7e021f3fa5abc65224b3be75f2b83",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "a071988bfe4b6f0b5601d2098c6fff8d30f7e021f3fa5abc65224b3be75f2b83",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "a071988bfe4b6f0b5601d2098c6fff8d30f7e021f3fa5abc65224b3be75f2b83",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "a585cf6c765b7708af0e66dfab9f51ab2f2eef624be4ee92f4711d672487bedd",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.005,
+          "phase_shift": 0.002232142857142857,
+          "rows": [
+            {
+              "epsilon_hash_expected": "a585cf6c765b7708af0e66dfab9f51ab2f2eef624be4ee92f4711d672487bedd",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "a585cf6c765b7708af0e66dfab9f51ab2f2eef624be4ee92f4711d672487bedd",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "a585cf6c765b7708af0e66dfab9f51ab2f2eef624be4ee92f4711d672487bedd",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "a585cf6c765b7708af0e66dfab9f51ab2f2eef624be4ee92f4711d672487bedd",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "a585cf6c765b7708af0e66dfab9f51ab2f2eef624be4ee92f4711d672487bedd",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "a585cf6c765b7708af0e66dfab9f51ab2f2eef624be4ee92f4711d672487bedd",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.01": {
+        "minus": {
+          "anchor_fingerprint": "506640bd0574d1e897f7686b448e881f075d7b615fc23ba5dc0721460dbd916b",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.01,
+          "phase_shift": 0.002232142857142857,
+          "rows": [
+            {
+              "epsilon_hash_expected": "506640bd0574d1e897f7686b448e881f075d7b615fc23ba5dc0721460dbd916b",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "506640bd0574d1e897f7686b448e881f075d7b615fc23ba5dc0721460dbd916b",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "506640bd0574d1e897f7686b448e881f075d7b615fc23ba5dc0721460dbd916b",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "506640bd0574d1e897f7686b448e881f075d7b615fc23ba5dc0721460dbd916b",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "506640bd0574d1e897f7686b448e881f075d7b615fc23ba5dc0721460dbd916b",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "506640bd0574d1e897f7686b448e881f075d7b615fc23ba5dc0721460dbd916b",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "e6918acd2565355da765cb0aee85de6c9e6ebe810f6acb1767763b6694ffe41d",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.01,
+          "phase_shift": 0.002232142857142857,
+          "rows": [
+            {
+              "epsilon_hash_expected": "e6918acd2565355da765cb0aee85de6c9e6ebe810f6acb1767763b6694ffe41d",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "e6918acd2565355da765cb0aee85de6c9e6ebe810f6acb1767763b6694ffe41d",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "e6918acd2565355da765cb0aee85de6c9e6ebe810f6acb1767763b6694ffe41d",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "e6918acd2565355da765cb0aee85de6c9e6ebe810f6acb1767763b6694ffe41d",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "e6918acd2565355da765cb0aee85de6c9e6ebe810f6acb1767763b6694ffe41d",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "e6918acd2565355da765cb0aee85de6c9e6ebe810f6acb1767763b6694ffe41d",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.02": {
+        "minus": {
+          "anchor_fingerprint": "c4e8f5e703af2cf95939275787e2712db15901b577fd656f9ac32f752a9400be",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.02,
+          "phase_shift": 0.002232142857142857,
+          "rows": [
+            {
+              "epsilon_hash_expected": "c4e8f5e703af2cf95939275787e2712db15901b577fd656f9ac32f752a9400be",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "c4e8f5e703af2cf95939275787e2712db15901b577fd656f9ac32f752a9400be",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "c4e8f5e703af2cf95939275787e2712db15901b577fd656f9ac32f752a9400be",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "c4e8f5e703af2cf95939275787e2712db15901b577fd656f9ac32f752a9400be",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "c4e8f5e703af2cf95939275787e2712db15901b577fd656f9ac32f752a9400be",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "c4e8f5e703af2cf95939275787e2712db15901b577fd656f9ac32f752a9400be",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "4225a4f59262c9e5c6f3976e6fcfc88d364a0f7520e0ae5d829e1250ef71cad6",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.02,
+          "phase_shift": 0.002232142857142857,
+          "rows": [
+            {
+              "epsilon_hash_expected": "4225a4f59262c9e5c6f3976e6fcfc88d364a0f7520e0ae5d829e1250ef71cad6",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "4225a4f59262c9e5c6f3976e6fcfc88d364a0f7520e0ae5d829e1250ef71cad6",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "4225a4f59262c9e5c6f3976e6fcfc88d364a0f7520e0ae5d829e1250ef71cad6",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "4225a4f59262c9e5c6f3976e6fcfc88d364a0f7520e0ae5d829e1250ef71cad6",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "4225a4f59262c9e5c6f3976e6fcfc88d364a0f7520e0ae5d829e1250ef71cad6",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "4225a4f59262c9e5c6f3976e6fcfc88d364a0f7520e0ae5d829e1250ef71cad6",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "0.5": {
+      "0.005": {
+        "minus": {
+          "anchor_fingerprint": "2b803473bffe652853760eeaea5df419a0563460c31741798b1cbb9c5f7c1eda",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.005,
+          "phase_shift": 0.004464285714285714,
+          "rows": [
+            {
+              "epsilon_hash_expected": "2b803473bffe652853760eeaea5df419a0563460c31741798b1cbb9c5f7c1eda",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "2b803473bffe652853760eeaea5df419a0563460c31741798b1cbb9c5f7c1eda",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "2b803473bffe652853760eeaea5df419a0563460c31741798b1cbb9c5f7c1eda",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "2b803473bffe652853760eeaea5df419a0563460c31741798b1cbb9c5f7c1eda",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "2b803473bffe652853760eeaea5df419a0563460c31741798b1cbb9c5f7c1eda",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "2b803473bffe652853760eeaea5df419a0563460c31741798b1cbb9c5f7c1eda",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "8b7bd6dff1ecb3a7a99073b68997ba60e84d326c9ff53ac4260efb0ab4db4782",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.005,
+          "phase_shift": 0.004464285714285714,
+          "rows": [
+            {
+              "epsilon_hash_expected": "8b7bd6dff1ecb3a7a99073b68997ba60e84d326c9ff53ac4260efb0ab4db4782",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "8b7bd6dff1ecb3a7a99073b68997ba60e84d326c9ff53ac4260efb0ab4db4782",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "8b7bd6dff1ecb3a7a99073b68997ba60e84d326c9ff53ac4260efb0ab4db4782",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "8b7bd6dff1ecb3a7a99073b68997ba60e84d326c9ff53ac4260efb0ab4db4782",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "8b7bd6dff1ecb3a7a99073b68997ba60e84d326c9ff53ac4260efb0ab4db4782",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "8b7bd6dff1ecb3a7a99073b68997ba60e84d326c9ff53ac4260efb0ab4db4782",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.01": {
+        "minus": {
+          "anchor_fingerprint": "812301c1153e7d6d05404ea7982d531b7768530f5ab2aeacc83ec805aed2c9dd",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.01,
+          "phase_shift": 0.004464285714285714,
+          "rows": [
+            {
+              "epsilon_hash_expected": "812301c1153e7d6d05404ea7982d531b7768530f5ab2aeacc83ec805aed2c9dd",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "812301c1153e7d6d05404ea7982d531b7768530f5ab2aeacc83ec805aed2c9dd",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "812301c1153e7d6d05404ea7982d531b7768530f5ab2aeacc83ec805aed2c9dd",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "812301c1153e7d6d05404ea7982d531b7768530f5ab2aeacc83ec805aed2c9dd",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "812301c1153e7d6d05404ea7982d531b7768530f5ab2aeacc83ec805aed2c9dd",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "812301c1153e7d6d05404ea7982d531b7768530f5ab2aeacc83ec805aed2c9dd",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "384d2b1ef33195768c6e92dee539e510b4db3ea06d8e79eadf528131124db85b",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.01,
+          "phase_shift": 0.004464285714285714,
+          "rows": [
+            {
+              "epsilon_hash_expected": "384d2b1ef33195768c6e92dee539e510b4db3ea06d8e79eadf528131124db85b",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "384d2b1ef33195768c6e92dee539e510b4db3ea06d8e79eadf528131124db85b",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "384d2b1ef33195768c6e92dee539e510b4db3ea06d8e79eadf528131124db85b",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "384d2b1ef33195768c6e92dee539e510b4db3ea06d8e79eadf528131124db85b",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "384d2b1ef33195768c6e92dee539e510b4db3ea06d8e79eadf528131124db85b",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "384d2b1ef33195768c6e92dee539e510b4db3ea06d8e79eadf528131124db85b",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.02": {
+        "minus": {
+          "anchor_fingerprint": "598f88d0f584438a5d38a1150e9cc8047862f6b795321d2da24ceca3201cd591",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.02,
+          "phase_shift": 0.004464285714285714,
+          "rows": [
+            {
+              "epsilon_hash_expected": "598f88d0f584438a5d38a1150e9cc8047862f6b795321d2da24ceca3201cd591",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "598f88d0f584438a5d38a1150e9cc8047862f6b795321d2da24ceca3201cd591",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "598f88d0f584438a5d38a1150e9cc8047862f6b795321d2da24ceca3201cd591",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "598f88d0f584438a5d38a1150e9cc8047862f6b795321d2da24ceca3201cd591",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "598f88d0f584438a5d38a1150e9cc8047862f6b795321d2da24ceca3201cd591",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "598f88d0f584438a5d38a1150e9cc8047862f6b795321d2da24ceca3201cd591",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "8bcc7b4ec7851fe1b578024d756d69e3b1cdab19e41d827e0ded2065cb253e9a",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.02,
+          "phase_shift": 0.004464285714285714,
+          "rows": [
+            {
+              "epsilon_hash_expected": "8bcc7b4ec7851fe1b578024d756d69e3b1cdab19e41d827e0ded2065cb253e9a",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "8bcc7b4ec7851fe1b578024d756d69e3b1cdab19e41d827e0ded2065cb253e9a",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "8bcc7b4ec7851fe1b578024d756d69e3b1cdab19e41d827e0ded2065cb253e9a",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "8bcc7b4ec7851fe1b578024d756d69e3b1cdab19e41d827e0ded2065cb253e9a",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "8bcc7b4ec7851fe1b578024d756d69e3b1cdab19e41d827e0ded2065cb253e9a",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "8bcc7b4ec7851fe1b578024d756d69e3b1cdab19e41d827e0ded2065cb253e9a",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "0.75": {
+      "0.005": {
+        "minus": {
+          "anchor_fingerprint": "e2c87b65533967f22d15b0030891feaf48cbc18c3f7d7e38145550ca238c3d20",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.005,
+          "phase_shift": 0.006696428571428571,
+          "rows": [
+            {
+              "epsilon_hash_expected": "e2c87b65533967f22d15b0030891feaf48cbc18c3f7d7e38145550ca238c3d20",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "e2c87b65533967f22d15b0030891feaf48cbc18c3f7d7e38145550ca238c3d20",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "e2c87b65533967f22d15b0030891feaf48cbc18c3f7d7e38145550ca238c3d20",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "e2c87b65533967f22d15b0030891feaf48cbc18c3f7d7e38145550ca238c3d20",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "e2c87b65533967f22d15b0030891feaf48cbc18c3f7d7e38145550ca238c3d20",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "e2c87b65533967f22d15b0030891feaf48cbc18c3f7d7e38145550ca238c3d20",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "053a3bd0e5d362bab954c704f33fb064861611301ccc64bea31b3ede2428dc37",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.005,
+          "phase_shift": 0.006696428571428571,
+          "rows": [
+            {
+              "epsilon_hash_expected": "053a3bd0e5d362bab954c704f33fb064861611301ccc64bea31b3ede2428dc37",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "053a3bd0e5d362bab954c704f33fb064861611301ccc64bea31b3ede2428dc37",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "053a3bd0e5d362bab954c704f33fb064861611301ccc64bea31b3ede2428dc37",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "053a3bd0e5d362bab954c704f33fb064861611301ccc64bea31b3ede2428dc37",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "053a3bd0e5d362bab954c704f33fb064861611301ccc64bea31b3ede2428dc37",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "053a3bd0e5d362bab954c704f33fb064861611301ccc64bea31b3ede2428dc37",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.01": {
+        "minus": {
+          "anchor_fingerprint": "1c27af234d8def69ebc94b5582856982fa772374ccd0ca58e9a29a695b0df085",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.01,
+          "phase_shift": 0.006696428571428571,
+          "rows": [
+            {
+              "epsilon_hash_expected": "1c27af234d8def69ebc94b5582856982fa772374ccd0ca58e9a29a695b0df085",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "1c27af234d8def69ebc94b5582856982fa772374ccd0ca58e9a29a695b0df085",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "1c27af234d8def69ebc94b5582856982fa772374ccd0ca58e9a29a695b0df085",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "1c27af234d8def69ebc94b5582856982fa772374ccd0ca58e9a29a695b0df085",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "1c27af234d8def69ebc94b5582856982fa772374ccd0ca58e9a29a695b0df085",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "1c27af234d8def69ebc94b5582856982fa772374ccd0ca58e9a29a695b0df085",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "fc0be5a3e67ef95f718c6c1430c9f74d8fb1cfa20e6b6ea20970a63ac43cc7c1",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.01,
+          "phase_shift": 0.006696428571428571,
+          "rows": [
+            {
+              "epsilon_hash_expected": "fc0be5a3e67ef95f718c6c1430c9f74d8fb1cfa20e6b6ea20970a63ac43cc7c1",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "fc0be5a3e67ef95f718c6c1430c9f74d8fb1cfa20e6b6ea20970a63ac43cc7c1",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "fc0be5a3e67ef95f718c6c1430c9f74d8fb1cfa20e6b6ea20970a63ac43cc7c1",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "fc0be5a3e67ef95f718c6c1430c9f74d8fb1cfa20e6b6ea20970a63ac43cc7c1",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "fc0be5a3e67ef95f718c6c1430c9f74d8fb1cfa20e6b6ea20970a63ac43cc7c1",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "fc0be5a3e67ef95f718c6c1430c9f74d8fb1cfa20e6b6ea20970a63ac43cc7c1",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.02": {
+        "minus": {
+          "anchor_fingerprint": "5f9b1716a5fa68224963ece80e9381c5be63cbb7d54bbc6bc4823f4c96fda0db",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.02,
+          "phase_shift": 0.006696428571428571,
+          "rows": [
+            {
+              "epsilon_hash_expected": "5f9b1716a5fa68224963ece80e9381c5be63cbb7d54bbc6bc4823f4c96fda0db",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "5f9b1716a5fa68224963ece80e9381c5be63cbb7d54bbc6bc4823f4c96fda0db",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "5f9b1716a5fa68224963ece80e9381c5be63cbb7d54bbc6bc4823f4c96fda0db",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "5f9b1716a5fa68224963ece80e9381c5be63cbb7d54bbc6bc4823f4c96fda0db",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "5f9b1716a5fa68224963ece80e9381c5be63cbb7d54bbc6bc4823f4c96fda0db",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "5f9b1716a5fa68224963ece80e9381c5be63cbb7d54bbc6bc4823f4c96fda0db",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "14209f69d5e371166b3bf9bfa37b28a0daf7af8641c909a737e0bc176b7dc4d8",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.02,
+          "phase_shift": 0.006696428571428571,
+          "rows": [
+            {
+              "epsilon_hash_expected": "14209f69d5e371166b3bf9bfa37b28a0daf7af8641c909a737e0bc176b7dc4d8",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "14209f69d5e371166b3bf9bfa37b28a0daf7af8641c909a737e0bc176b7dc4d8",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "14209f69d5e371166b3bf9bfa37b28a0daf7af8641c909a737e0bc176b7dc4d8",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "14209f69d5e371166b3bf9bfa37b28a0daf7af8641c909a737e0bc176b7dc4d8",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "14209f69d5e371166b3bf9bfa37b28a0daf7af8641c909a737e0bc176b7dc4d8",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "14209f69d5e371166b3bf9bfa37b28a0daf7af8641c909a737e0bc176b7dc4d8",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "96": {
+    "0": {
+      "0.005": {
+        "minus": {
+          "anchor_fingerprint": "e5187e439490121c48249b0b1211a2110fedab7e183f88feee662054d251eba6",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.005,
+          "phase_shift": 0.0,
+          "rows": [
+            {
+              "epsilon_hash_expected": "e5187e439490121c48249b0b1211a2110fedab7e183f88feee662054d251eba6",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "e5187e439490121c48249b0b1211a2110fedab7e183f88feee662054d251eba6",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "e5187e439490121c48249b0b1211a2110fedab7e183f88feee662054d251eba6",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "e5187e439490121c48249b0b1211a2110fedab7e183f88feee662054d251eba6",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "e5187e439490121c48249b0b1211a2110fedab7e183f88feee662054d251eba6",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "e5187e439490121c48249b0b1211a2110fedab7e183f88feee662054d251eba6",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "c412e9c4e0ab8cf801bf2e6e55aa16cc46308eaa392ae5ad6ac858ae016caed8",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.005,
+          "phase_shift": 0.0,
+          "rows": [
+            {
+              "epsilon_hash_expected": "c412e9c4e0ab8cf801bf2e6e55aa16cc46308eaa392ae5ad6ac858ae016caed8",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "c412e9c4e0ab8cf801bf2e6e55aa16cc46308eaa392ae5ad6ac858ae016caed8",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "c412e9c4e0ab8cf801bf2e6e55aa16cc46308eaa392ae5ad6ac858ae016caed8",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "c412e9c4e0ab8cf801bf2e6e55aa16cc46308eaa392ae5ad6ac858ae016caed8",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "c412e9c4e0ab8cf801bf2e6e55aa16cc46308eaa392ae5ad6ac858ae016caed8",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "c412e9c4e0ab8cf801bf2e6e55aa16cc46308eaa392ae5ad6ac858ae016caed8",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.01": {
+        "minus": {
+          "anchor_fingerprint": "f437e916753d8264afd597c9137fafbb64311dafa1880542e565beb01df2a900",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.01,
+          "phase_shift": 0.0,
+          "rows": [
+            {
+              "epsilon_hash_expected": "f437e916753d8264afd597c9137fafbb64311dafa1880542e565beb01df2a900",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "f437e916753d8264afd597c9137fafbb64311dafa1880542e565beb01df2a900",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "f437e916753d8264afd597c9137fafbb64311dafa1880542e565beb01df2a900",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "f437e916753d8264afd597c9137fafbb64311dafa1880542e565beb01df2a900",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "f437e916753d8264afd597c9137fafbb64311dafa1880542e565beb01df2a900",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "f437e916753d8264afd597c9137fafbb64311dafa1880542e565beb01df2a900",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "6fd6a792eaf806f2fdbddc94a8584626a64908181cb7b3706005a4c8357c125c",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.01,
+          "phase_shift": 0.0,
+          "rows": [
+            {
+              "epsilon_hash_expected": "6fd6a792eaf806f2fdbddc94a8584626a64908181cb7b3706005a4c8357c125c",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "6fd6a792eaf806f2fdbddc94a8584626a64908181cb7b3706005a4c8357c125c",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "6fd6a792eaf806f2fdbddc94a8584626a64908181cb7b3706005a4c8357c125c",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "6fd6a792eaf806f2fdbddc94a8584626a64908181cb7b3706005a4c8357c125c",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "6fd6a792eaf806f2fdbddc94a8584626a64908181cb7b3706005a4c8357c125c",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "6fd6a792eaf806f2fdbddc94a8584626a64908181cb7b3706005a4c8357c125c",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.02": {
+        "minus": {
+          "anchor_fingerprint": "5b7a1e114730cccebf56aa37a881cdfdd7743de5e8f13c1ee53cd1dadb4ce838",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.02,
+          "phase_shift": 0.0,
+          "rows": [
+            {
+              "epsilon_hash_expected": "5b7a1e114730cccebf56aa37a881cdfdd7743de5e8f13c1ee53cd1dadb4ce838",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "5b7a1e114730cccebf56aa37a881cdfdd7743de5e8f13c1ee53cd1dadb4ce838",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "5b7a1e114730cccebf56aa37a881cdfdd7743de5e8f13c1ee53cd1dadb4ce838",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "5b7a1e114730cccebf56aa37a881cdfdd7743de5e8f13c1ee53cd1dadb4ce838",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "5b7a1e114730cccebf56aa37a881cdfdd7743de5e8f13c1ee53cd1dadb4ce838",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "5b7a1e114730cccebf56aa37a881cdfdd7743de5e8f13c1ee53cd1dadb4ce838",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "cc77107113b95bd18f492d3847390d4fa6a9e193e92033071bb0a3e907aea17f",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.02,
+          "phase_shift": 0.0,
+          "rows": [
+            {
+              "epsilon_hash_expected": "cc77107113b95bd18f492d3847390d4fa6a9e193e92033071bb0a3e907aea17f",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "cc77107113b95bd18f492d3847390d4fa6a9e193e92033071bb0a3e907aea17f",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "cc77107113b95bd18f492d3847390d4fa6a9e193e92033071bb0a3e907aea17f",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "cc77107113b95bd18f492d3847390d4fa6a9e193e92033071bb0a3e907aea17f",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "cc77107113b95bd18f492d3847390d4fa6a9e193e92033071bb0a3e907aea17f",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "cc77107113b95bd18f492d3847390d4fa6a9e193e92033071bb0a3e907aea17f",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "0.25": {
+      "0.005": {
+        "minus": {
+          "anchor_fingerprint": "840821aa1ea46fb2449a7162887d41471805b14e1bd2f98f711a9ba0adae56ad",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.005,
+          "phase_shift": 0.0026041666666666665,
+          "rows": [
+            {
+              "epsilon_hash_expected": "840821aa1ea46fb2449a7162887d41471805b14e1bd2f98f711a9ba0adae56ad",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "840821aa1ea46fb2449a7162887d41471805b14e1bd2f98f711a9ba0adae56ad",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "840821aa1ea46fb2449a7162887d41471805b14e1bd2f98f711a9ba0adae56ad",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "840821aa1ea46fb2449a7162887d41471805b14e1bd2f98f711a9ba0adae56ad",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "840821aa1ea46fb2449a7162887d41471805b14e1bd2f98f711a9ba0adae56ad",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "840821aa1ea46fb2449a7162887d41471805b14e1bd2f98f711a9ba0adae56ad",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "fd164304024e57208237b13a5b8fed9b9a0b1d635d994782bd244a12674a4d20",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.005,
+          "phase_shift": 0.0026041666666666665,
+          "rows": [
+            {
+              "epsilon_hash_expected": "fd164304024e57208237b13a5b8fed9b9a0b1d635d994782bd244a12674a4d20",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "fd164304024e57208237b13a5b8fed9b9a0b1d635d994782bd244a12674a4d20",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "fd164304024e57208237b13a5b8fed9b9a0b1d635d994782bd244a12674a4d20",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "fd164304024e57208237b13a5b8fed9b9a0b1d635d994782bd244a12674a4d20",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "fd164304024e57208237b13a5b8fed9b9a0b1d635d994782bd244a12674a4d20",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "fd164304024e57208237b13a5b8fed9b9a0b1d635d994782bd244a12674a4d20",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.01": {
+        "minus": {
+          "anchor_fingerprint": "bd703d11284a8f58a046a68e95652b56f465d8658585b58669b11c71f9da78c9",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.01,
+          "phase_shift": 0.0026041666666666665,
+          "rows": [
+            {
+              "epsilon_hash_expected": "bd703d11284a8f58a046a68e95652b56f465d8658585b58669b11c71f9da78c9",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "bd703d11284a8f58a046a68e95652b56f465d8658585b58669b11c71f9da78c9",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "bd703d11284a8f58a046a68e95652b56f465d8658585b58669b11c71f9da78c9",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "bd703d11284a8f58a046a68e95652b56f465d8658585b58669b11c71f9da78c9",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "bd703d11284a8f58a046a68e95652b56f465d8658585b58669b11c71f9da78c9",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "bd703d11284a8f58a046a68e95652b56f465d8658585b58669b11c71f9da78c9",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "d087670ea579cc16e1fb676ab56a24c9ddfb238b3314a6e75cee3e2c3baf732b",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.01,
+          "phase_shift": 0.0026041666666666665,
+          "rows": [
+            {
+              "epsilon_hash_expected": "d087670ea579cc16e1fb676ab56a24c9ddfb238b3314a6e75cee3e2c3baf732b",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "d087670ea579cc16e1fb676ab56a24c9ddfb238b3314a6e75cee3e2c3baf732b",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "d087670ea579cc16e1fb676ab56a24c9ddfb238b3314a6e75cee3e2c3baf732b",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "d087670ea579cc16e1fb676ab56a24c9ddfb238b3314a6e75cee3e2c3baf732b",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "d087670ea579cc16e1fb676ab56a24c9ddfb238b3314a6e75cee3e2c3baf732b",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "d087670ea579cc16e1fb676ab56a24c9ddfb238b3314a6e75cee3e2c3baf732b",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.02": {
+        "minus": {
+          "anchor_fingerprint": "0d55c1ef397a91ebf2bdd218de6a3cec9564c012f0a37845b3a7e79f99d8e013",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.02,
+          "phase_shift": 0.0026041666666666665,
+          "rows": [
+            {
+              "epsilon_hash_expected": "0d55c1ef397a91ebf2bdd218de6a3cec9564c012f0a37845b3a7e79f99d8e013",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "0d55c1ef397a91ebf2bdd218de6a3cec9564c012f0a37845b3a7e79f99d8e013",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "0d55c1ef397a91ebf2bdd218de6a3cec9564c012f0a37845b3a7e79f99d8e013",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "0d55c1ef397a91ebf2bdd218de6a3cec9564c012f0a37845b3a7e79f99d8e013",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "0d55c1ef397a91ebf2bdd218de6a3cec9564c012f0a37845b3a7e79f99d8e013",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "0d55c1ef397a91ebf2bdd218de6a3cec9564c012f0a37845b3a7e79f99d8e013",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "6c20c1afdcfcc4139370db820522aced2a4e8a54c7fd80eceba835f7d1ee9973",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.02,
+          "phase_shift": 0.0026041666666666665,
+          "rows": [
+            {
+              "epsilon_hash_expected": "6c20c1afdcfcc4139370db820522aced2a4e8a54c7fd80eceba835f7d1ee9973",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "6c20c1afdcfcc4139370db820522aced2a4e8a54c7fd80eceba835f7d1ee9973",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "6c20c1afdcfcc4139370db820522aced2a4e8a54c7fd80eceba835f7d1ee9973",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "6c20c1afdcfcc4139370db820522aced2a4e8a54c7fd80eceba835f7d1ee9973",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "6c20c1afdcfcc4139370db820522aced2a4e8a54c7fd80eceba835f7d1ee9973",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "6c20c1afdcfcc4139370db820522aced2a4e8a54c7fd80eceba835f7d1ee9973",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "0.5": {
+      "0.005": {
+        "minus": {
+          "anchor_fingerprint": "7b3419bc1d9cc4f42d1e567f402f155833b3c2b1f351812747dcb5446d9fdf0d",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.005,
+          "phase_shift": 0.005208333333333333,
+          "rows": [
+            {
+              "epsilon_hash_expected": "7b3419bc1d9cc4f42d1e567f402f155833b3c2b1f351812747dcb5446d9fdf0d",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "7b3419bc1d9cc4f42d1e567f402f155833b3c2b1f351812747dcb5446d9fdf0d",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "7b3419bc1d9cc4f42d1e567f402f155833b3c2b1f351812747dcb5446d9fdf0d",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "7b3419bc1d9cc4f42d1e567f402f155833b3c2b1f351812747dcb5446d9fdf0d",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "7b3419bc1d9cc4f42d1e567f402f155833b3c2b1f351812747dcb5446d9fdf0d",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "7b3419bc1d9cc4f42d1e567f402f155833b3c2b1f351812747dcb5446d9fdf0d",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "4d35954d2349b3f7c896c8050b7de07eceec38a561147423cddb4477633fcc65",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.005,
+          "phase_shift": 0.005208333333333333,
+          "rows": [
+            {
+              "epsilon_hash_expected": "4d35954d2349b3f7c896c8050b7de07eceec38a561147423cddb4477633fcc65",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "4d35954d2349b3f7c896c8050b7de07eceec38a561147423cddb4477633fcc65",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "4d35954d2349b3f7c896c8050b7de07eceec38a561147423cddb4477633fcc65",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "4d35954d2349b3f7c896c8050b7de07eceec38a561147423cddb4477633fcc65",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "4d35954d2349b3f7c896c8050b7de07eceec38a561147423cddb4477633fcc65",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "4d35954d2349b3f7c896c8050b7de07eceec38a561147423cddb4477633fcc65",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.01": {
+        "minus": {
+          "anchor_fingerprint": "cf1d5dee9159d0517fb5d92af1d318e35d431fddcc41d705a69160332f71cee9",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.01,
+          "phase_shift": 0.005208333333333333,
+          "rows": [
+            {
+              "epsilon_hash_expected": "cf1d5dee9159d0517fb5d92af1d318e35d431fddcc41d705a69160332f71cee9",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "cf1d5dee9159d0517fb5d92af1d318e35d431fddcc41d705a69160332f71cee9",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "cf1d5dee9159d0517fb5d92af1d318e35d431fddcc41d705a69160332f71cee9",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "cf1d5dee9159d0517fb5d92af1d318e35d431fddcc41d705a69160332f71cee9",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "cf1d5dee9159d0517fb5d92af1d318e35d431fddcc41d705a69160332f71cee9",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "cf1d5dee9159d0517fb5d92af1d318e35d431fddcc41d705a69160332f71cee9",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "6d7a7670bcd3a317965a20541209e1af0e3e604bb4cffd011d788d85fb3ec1b0",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.01,
+          "phase_shift": 0.005208333333333333,
+          "rows": [
+            {
+              "epsilon_hash_expected": "6d7a7670bcd3a317965a20541209e1af0e3e604bb4cffd011d788d85fb3ec1b0",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "6d7a7670bcd3a317965a20541209e1af0e3e604bb4cffd011d788d85fb3ec1b0",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "6d7a7670bcd3a317965a20541209e1af0e3e604bb4cffd011d788d85fb3ec1b0",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "6d7a7670bcd3a317965a20541209e1af0e3e604bb4cffd011d788d85fb3ec1b0",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "6d7a7670bcd3a317965a20541209e1af0e3e604bb4cffd011d788d85fb3ec1b0",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "6d7a7670bcd3a317965a20541209e1af0e3e604bb4cffd011d788d85fb3ec1b0",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.02": {
+        "minus": {
+          "anchor_fingerprint": "87ee1a0dad5aeb54c330ab30b31851b1d2cbd4312ccd107625a11c6c90c64473",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.02,
+          "phase_shift": 0.005208333333333333,
+          "rows": [
+            {
+              "epsilon_hash_expected": "87ee1a0dad5aeb54c330ab30b31851b1d2cbd4312ccd107625a11c6c90c64473",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "87ee1a0dad5aeb54c330ab30b31851b1d2cbd4312ccd107625a11c6c90c64473",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "87ee1a0dad5aeb54c330ab30b31851b1d2cbd4312ccd107625a11c6c90c64473",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "87ee1a0dad5aeb54c330ab30b31851b1d2cbd4312ccd107625a11c6c90c64473",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "87ee1a0dad5aeb54c330ab30b31851b1d2cbd4312ccd107625a11c6c90c64473",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "87ee1a0dad5aeb54c330ab30b31851b1d2cbd4312ccd107625a11c6c90c64473",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "c596c345248847b7d12abc53bc252d403ee37cc80b4fee31bab15a100e6e56f0",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.02,
+          "phase_shift": 0.005208333333333333,
+          "rows": [
+            {
+              "epsilon_hash_expected": "c596c345248847b7d12abc53bc252d403ee37cc80b4fee31bab15a100e6e56f0",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "c596c345248847b7d12abc53bc252d403ee37cc80b4fee31bab15a100e6e56f0",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "c596c345248847b7d12abc53bc252d403ee37cc80b4fee31bab15a100e6e56f0",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "c596c345248847b7d12abc53bc252d403ee37cc80b4fee31bab15a100e6e56f0",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "c596c345248847b7d12abc53bc252d403ee37cc80b4fee31bab15a100e6e56f0",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "c596c345248847b7d12abc53bc252d403ee37cc80b4fee31bab15a100e6e56f0",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "0.75": {
+      "0.005": {
+        "minus": {
+          "anchor_fingerprint": "4eda2e38aa73883fc321a0b3e5b6562f196e6c268a7f94ddbff40177d3f98b7e",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.005,
+          "phase_shift": 0.0078125,
+          "rows": [
+            {
+              "epsilon_hash_expected": "4eda2e38aa73883fc321a0b3e5b6562f196e6c268a7f94ddbff40177d3f98b7e",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "4eda2e38aa73883fc321a0b3e5b6562f196e6c268a7f94ddbff40177d3f98b7e",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "4eda2e38aa73883fc321a0b3e5b6562f196e6c268a7f94ddbff40177d3f98b7e",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "4eda2e38aa73883fc321a0b3e5b6562f196e6c268a7f94ddbff40177d3f98b7e",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "4eda2e38aa73883fc321a0b3e5b6562f196e6c268a7f94ddbff40177d3f98b7e",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "4eda2e38aa73883fc321a0b3e5b6562f196e6c268a7f94ddbff40177d3f98b7e",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "e6042ae3ccc73c4e1c1352eb01ef18a29afd97837c45996d2cddf995118600e2",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.005,
+          "phase_shift": 0.0078125,
+          "rows": [
+            {
+              "epsilon_hash_expected": "e6042ae3ccc73c4e1c1352eb01ef18a29afd97837c45996d2cddf995118600e2",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "e6042ae3ccc73c4e1c1352eb01ef18a29afd97837c45996d2cddf995118600e2",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "e6042ae3ccc73c4e1c1352eb01ef18a29afd97837c45996d2cddf995118600e2",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "e6042ae3ccc73c4e1c1352eb01ef18a29afd97837c45996d2cddf995118600e2",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "e6042ae3ccc73c4e1c1352eb01ef18a29afd97837c45996d2cddf995118600e2",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "e6042ae3ccc73c4e1c1352eb01ef18a29afd97837c45996d2cddf995118600e2",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.01": {
+        "minus": {
+          "anchor_fingerprint": "6a59d0fbf6a9a462ec47316e6396141040fe921488bd4405788d24299044965a",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.01,
+          "phase_shift": 0.0078125,
+          "rows": [
+            {
+              "epsilon_hash_expected": "6a59d0fbf6a9a462ec47316e6396141040fe921488bd4405788d24299044965a",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "6a59d0fbf6a9a462ec47316e6396141040fe921488bd4405788d24299044965a",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "6a59d0fbf6a9a462ec47316e6396141040fe921488bd4405788d24299044965a",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "6a59d0fbf6a9a462ec47316e6396141040fe921488bd4405788d24299044965a",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "6a59d0fbf6a9a462ec47316e6396141040fe921488bd4405788d24299044965a",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "6a59d0fbf6a9a462ec47316e6396141040fe921488bd4405788d24299044965a",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "f9b2293eff8c5811b9d819ffc14aa064a0c2be22ec722f49317c3317d8264dd8",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.01,
+          "phase_shift": 0.0078125,
+          "rows": [
+            {
+              "epsilon_hash_expected": "f9b2293eff8c5811b9d819ffc14aa064a0c2be22ec722f49317c3317d8264dd8",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "f9b2293eff8c5811b9d819ffc14aa064a0c2be22ec722f49317c3317d8264dd8",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "f9b2293eff8c5811b9d819ffc14aa064a0c2be22ec722f49317c3317d8264dd8",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "f9b2293eff8c5811b9d819ffc14aa064a0c2be22ec722f49317c3317d8264dd8",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "f9b2293eff8c5811b9d819ffc14aa064a0c2be22ec722f49317c3317d8264dd8",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "f9b2293eff8c5811b9d819ffc14aa064a0c2be22ec722f49317c3317d8264dd8",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      },
+      "0.02": {
+        "minus": {
+          "anchor_fingerprint": "35301f655a34bcb21cbbccfc1df240a7f85ba2fb7ba8af553330ae02f98758fa",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": -0.02,
+          "phase_shift": 0.0078125,
+          "rows": [
+            {
+              "epsilon_hash_expected": "35301f655a34bcb21cbbccfc1df240a7f85ba2fb7ba8af553330ae02f98758fa",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "35301f655a34bcb21cbbccfc1df240a7f85ba2fb7ba8af553330ae02f98758fa",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "35301f655a34bcb21cbbccfc1df240a7f85ba2fb7ba8af553330ae02f98758fa",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "35301f655a34bcb21cbbccfc1df240a7f85ba2fb7ba8af553330ae02f98758fa",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "35301f655a34bcb21cbbccfc1df240a7f85ba2fb7ba8af553330ae02f98758fa",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "35301f655a34bcb21cbbccfc1df240a7f85ba2fb7ba8af553330ae02f98758fa",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        },
+        "plus": {
+          "anchor_fingerprint": "89360361fc9bcbbf3a94d72cd0c76f78a8c4bacd297c92f2b63afcd0172139e7",
+          "anchor_variant": 0,
+          "epsilon_covariance_pass": true,
+          "geometry_pass": true,
+          "h": 0.02,
+          "phase_shift": 0.0078125,
+          "rows": [
+            {
+              "epsilon_hash_expected": "89360361fc9bcbbf3a94d72cd0c76f78a8c4bacd297c92f2b63afcd0172139e7",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "89360361fc9bcbbf3a94d72cd0c76f78a8c4bacd297c92f2b63afcd0172139e7",
+              "variant_index": 0,
+              "vector": [
+                1.0,
+                -1.0,
+                0.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "89360361fc9bcbbf3a94d72cd0c76f78a8c4bacd297c92f2b63afcd0172139e7",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "89360361fc9bcbbf3a94d72cd0c76f78a8c4bacd297c92f2b63afcd0172139e7",
+              "variant_index": 1,
+              "vector": [
+                0.0,
+                1.0,
+                -1.0
+              ]
+            },
+            {
+              "epsilon_hash_expected": "89360361fc9bcbbf3a94d72cd0c76f78a8c4bacd297c92f2b63afcd0172139e7",
+              "geometry": {
+                "assignment": [
+                  0,
+                  1,
+                  2
+                ],
+                "equivalent": true,
+                "maximum_coordinate_residual": 0.0,
+                "polygon_count": 3,
+                "tolerance": 1e-10,
+                "total_coordinate_residual": 0.0
+              },
+              "mapped_fingerprint": "89360361fc9bcbbf3a94d72cd0c76f78a8c4bacd297c92f2b63afcd0172139e7",
+              "variant_index": 2,
+              "vector": [
+                -1.0,
+                0.0,
+                1.0
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

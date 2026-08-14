@@ -1,0 +1,22 @@
+{
+  "H_form": "[[a,b,b],[b,a,b],[b,b,a]]",
+  "cyclic_translation_invariant": true,
+  "d": [
+    0.4472135954999579,
+    0.5509898714915044,
+    -0.9982034669914622
+  ],
+  "d_norm_squared": 1.4999999999999998,
+  "d_sum": 1.1102230246251565e-16,
+  "full_pattern_c2": "0.75*lambda",
+  "pair_norm_squared": 2.0,
+  "pair_vector": [
+    1,
+    -1,
+    0
+  ],
+  "real_symmetric": true,
+  "sign_not_predetermined": true,
+  "uniform_translation_null": "a+2b=0",
+  "zero_mean_eigenvalue": "lambda=a-b"
+}

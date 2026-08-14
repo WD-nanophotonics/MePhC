@@ -1,0 +1,12 @@
+{
+  "c2_field_112": 3.6462023582047074,
+  "c2_field_96": 4.271853765788311,
+  "canonical_gates": true,
+  "cubic_nonzero_claimed": false,
+  "hessian_crosscheck_pass": true,
+  "lambda_uncertainty": 5.500260985875668,
+  "primary_lambda_112": 4.8616031442729435,
+  "primary_lambda_96": 5.695805021051081,
+  "r13_medium_K_used_as_pass_criterion": false,
+  "scientific_terminal_state": "BLOCKED_TRANSLATION_COVARIANT_QUADRATIC_UNRESOLVED"
+}

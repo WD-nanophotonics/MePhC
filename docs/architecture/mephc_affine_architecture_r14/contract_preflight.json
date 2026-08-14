@@ -1,0 +1,23 @@
+{
+  "call_count_expected": 120,
+  "contract_sha256": "06049090c64cdfe362f6d694d748696b60d943959f88f9a4267fb4b767e8960a",
+  "repeat_convention": "two_additional_calls_per_case",
+  "resolution_plan": {
+    "above_112_forbidden": true,
+    "exact": [
+      96,
+      112
+    ]
+  },
+  "runtime": {
+    "environment_mutation_allowed": false,
+    "python": "/home/icy/miniconda3/envs/mp/bin/python",
+    "solver": "meep.mpb.ModeSolver",
+    "solver_tolerance": 1e-10
+  },
+  "starting_refs": {
+    "MePhC": "dbe2225232d34781bd40b6c2686206095948d3a0",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  }
+}
