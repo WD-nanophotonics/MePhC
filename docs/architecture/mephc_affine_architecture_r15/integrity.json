@@ -1,0 +1,12 @@
+{
+  "artifact_manifest_sha256": "29cc43978df8cfa7f5ef290ad0b106ac46047979d50d3370582c9db6f379bd9c",
+  "contract_sha256": "1345b7e7485c4efbc170111a4d86eb489684cf233cedae86897567e2a6d56cad",
+  "payload_digest": "3a0d1463896db3f0838a5f69ec09ee4c3cf6e5cdeb5b344aafe7c4b7062d650c",
+  "payload_file_count": 35,
+  "schema": "mephc.affine_architecture.r15.integrity.v1",
+  "seal_files": [
+    "artifact_manifest.json",
+    "integrity.json",
+    "completion.json"
+  ]
+}
