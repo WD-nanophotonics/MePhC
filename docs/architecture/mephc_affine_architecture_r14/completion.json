@@ -1,0 +1,15 @@
+{
+  "completion_gmail_required": false,
+  "contract_sha256": "06049090c64cdfe362f6d694d748696b60d943959f88f9a4267fb4b767e8960a",
+  "final_resolution_pair": [
+    96,
+    112
+  ],
+  "payload_parent": "28e63e101c401adfe9b9e97d818af4d6694a22fd",
+  "post_seal_record_commit_forbidden": true,
+  "primary_band": 3,
+  "r15_authorized": false,
+  "schema": "mephc_affine_architecture_r14.completion.v1",
+  "scientific_terminal_state": "BLOCKED_TRANSLATION_COVARIANT_QUADRATIC_UNRESOLVED",
+  "seal_status": "SEALED"
+}
