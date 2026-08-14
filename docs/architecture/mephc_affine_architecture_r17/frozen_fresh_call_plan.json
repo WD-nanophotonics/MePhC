@@ -1,0 +1,2080 @@
+{
+  "calls": [
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.375,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.625,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.875,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "repeat",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "repeat",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "repeat",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "repeat",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "repeat",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "repeat",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "representation",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "representation",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "representation",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.375,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.625,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.005,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.01,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "pair",
+      "h": 0.02,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.005,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.01,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "full",
+      "h": 0.02,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.01,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.875,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "repeat",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "repeat",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "repeat",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "repeat",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "repeat",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "repeat",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "representation",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "representation",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "representation",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.125,
+      "resolution": 112,
+      "sign": "plus"
+    }
+  ],
+  "counts": {
+    "optional_band_identity_A0": 0,
+    "primary": 240,
+    "repeat": 12,
+    "representation": 6,
+    "total": 258
+  },
+  "no_adaptive_calls": true,
+  "no_fresh_a0": true,
+  "no_retries": true,
+  "status": "FROZEN",
+  "triLatt_fresh_mpb_calls": 0
+}

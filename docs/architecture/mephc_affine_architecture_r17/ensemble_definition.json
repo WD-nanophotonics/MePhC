@@ -1,0 +1,24 @@
+{
+  "all_required": true,
+  "band_identity_convention": "use frozen R16 A0 nearest-gap envelope; A0 never enters primary estimator",
+  "ensemble": "B",
+  "fresh_a0_calls": 0,
+  "grid_cell_fractions": [
+    0.125,
+    0.375,
+    0.625,
+    0.875
+  ],
+  "phase_adaptation": false,
+  "phase_dropping": false,
+  "physical_shifts": [
+    "dx/8",
+    "3dx/8",
+    "5dx/8",
+    "7dx/8"
+  ],
+  "resolutions": [
+    96,
+    112
+  ]
+}

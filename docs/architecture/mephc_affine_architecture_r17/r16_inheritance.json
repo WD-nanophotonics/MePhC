@@ -1,0 +1,23 @@
+{
+  "accepted_completion": {
+    "completion_gmail_required": false,
+    "contract_sha256": "91300498afee0ac523ccc69076bd82ecbc271d64d8a840f746609895745e6231",
+    "final_resolution_pair": [
+      96,
+      112
+    ],
+    "fresh_solver_calls": 142,
+    "payload_parent": "faf72d5b2b225366a741edf270334935964836ff",
+    "post_seal_record_commit_forbidden": true,
+    "prevalidation_freeze_commit": "c6f256353e9113d46c6b33b1fe59c48ea0a23e5f",
+    "primary_band": 3,
+    "primary_q_point": "q2",
+    "r17_authorized": false,
+    "schema": "mephc_affine_architecture_r16.completion.v1",
+    "scientific_terminal_state": "BLOCKED_BASELINE_FREE_QUADRATIC_UNRESOLVED",
+    "seal_status": "SEALED"
+  },
+  "fresh_solver_calls": 0,
+  "immutable": true,
+  "terminal_state": "BLOCKED_BASELINE_FREE_QUADRATIC_UNRESOLVED"
+}
