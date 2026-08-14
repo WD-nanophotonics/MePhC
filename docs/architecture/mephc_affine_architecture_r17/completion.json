@@ -1,0 +1,13 @@
+{
+  "completion_gmail_required": false,
+  "contract_sha256": "f2a874d2114e38b4e25a45a7b43232f56b66e654abb96eca29b6bdabe341b5eb",
+  "ensemble": "B",
+  "fresh_solver_calls": 258,
+  "payload_parent": "476bc8d90a97ac7a7c9e78447154d56e88c29fa7",
+  "post_seal_record_commit_forbidden": true,
+  "prevalidation_freeze_commit": "4f8f34594c3d2ed5f4157f313d049411c68aaa14",
+  "r18_authorized": false,
+  "schema": "mephc_affine_architecture_r17.completion.v1",
+  "scientific_terminal_state": "BLOCKED_INDEPENDENT_ENSEMBLE_QUADRATIC_UNRESOLVED",
+  "seal_status": "SEALED"
+}
