@@ -1,0 +1,16 @@
+{
+  "completion_gmail_required": false,
+  "contract_sha256": "8f5813f9e3c8aa1050ac990badf3398064287ad702750468d2677da303341ce0",
+  "final_resolution_pair": [
+    96,
+    112
+  ],
+  "payload_parent": "e9468678da8c835e00fca680a174f7d5a0a0b875",
+  "post_seal_record_commit_forbidden": true,
+  "primary_band": 3,
+  "primary_q_point": "q2",
+  "r14_authorized": false,
+  "schema": "mephc_affine_architecture_r13.completion.v1",
+  "scientific_terminal_state": "CLOSED_QUADRATIC_EVEN_ZERO_SUPPORTED",
+  "seal_status": "SEALED"
+}
