@@ -1,0 +1,25 @@
+{
+  "authorized_in_r16": true,
+  "contractual_only": true,
+  "missing_uniform": {
+    "0.005": [
+      0.25,
+      0.5,
+      0.75
+    ],
+    "0.02": [
+      0.0,
+      0.25,
+      0.5,
+      0.75
+    ]
+  },
+  "prohibited_in_r15": [
+    "fresh uniform 0.005 phase0",
+    "fresh uniform 0.010",
+    "fresh uniform 0.020"
+  ],
+  "r15_fresh_solver_calls": 0,
+  "r15_terminal": "BLOCKED_COMPATIBILITY",
+  "status": "R15_COMPATIBILITY_CORRECTIVE"
+}

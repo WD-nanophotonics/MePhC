@@ -1,0 +1,1150 @@
+{
+  "calls": [
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.25,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.5,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.75,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "repeat",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "repeat",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "repeat",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "repeat",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "repeat",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "repeat",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "minus"
+    },
+    {
+      "class": "representation",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "representation",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "representation",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 96,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "pair",
+      "h": 0.015,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "full",
+      "h": 0.015,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.005,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.015,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.25,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.5,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "response_control_matrix",
+      "direction": "uniform",
+      "h": 0.02,
+      "phase": 0.75,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "repeat",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "repeat",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "repeat",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "repeat",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "repeat",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "repeat",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "minus"
+    },
+    {
+      "class": "representation",
+      "direction": "pair",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "representation",
+      "direction": "full",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "plus"
+    },
+    {
+      "class": "representation",
+      "direction": "uniform",
+      "h": 0.0075,
+      "phase": 0.0,
+      "resolution": 112,
+      "sign": "plus"
+    }
+  ],
+  "counts": {
+    "repeat": 12,
+    "representation": 6,
+    "response_control_matrix": 124,
+    "total": 142
+  },
+  "no_adaptive_calls": true,
+  "no_retries": true,
+  "status": "FROZEN",
+  "triLatt_fresh_mpb_calls": 0
+}

@@ -1,0 +1,39 @@
+{
+  "contract_sha256": "91300498afee0ac523ccc69076bd82ecbc271d64d8a840f746609895745e6231",
+  "fixed_benchmark": {
+    "bands": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "phases": [
+      0.0,
+      0.25,
+      0.5,
+      0.75
+    ],
+    "primary_band": 3,
+    "q_point": [
+      -0.09,
+      0.14
+    ],
+    "resolutions": [
+      96,
+      112
+    ]
+  },
+  "fresh_solver_calls_before_freeze": 0,
+  "runtime": {
+    "python": "/home/icy/miniconda3/envs/mp/bin/python",
+    "solver": "meep.mpb.ModeSolver",
+    "solver_tolerance": 1e-10
+  },
+  "starting_refs": {
+    "MePhC": "9e8367f5f57df87759255ba1358cb7f1a43da765",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  }
+}
