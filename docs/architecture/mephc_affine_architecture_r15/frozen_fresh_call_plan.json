@@ -1,0 +1,47 @@
+{
+  "compatibility_blocker": "uniform protected spectra do not cover the required five-level, four-phase ladder: 0.005 exists only at phase 0, 0.010 exists at all phases, and 0.020 is absent; the contract forbids fresh magnitudes other than 0.0075 and 0.015",
+  "directions": {
+    "full": [
+      0.4472135954999579,
+      0.5509898714915044,
+      -0.9982034669914622
+    ],
+    "pair": [
+      1,
+      -1,
+      0
+    ],
+    "uniform": [
+      1,
+      1,
+      1
+    ]
+  },
+  "expected_total_fresh_calls": 112,
+  "fresh_levels": [
+    0.0075,
+    0.015
+  ],
+  "fresh_primary_control_calls": 96,
+  "phases": [
+    0.0,
+    0.25,
+    0.5,
+    0.75
+  ],
+  "protected_levels": [
+    0.005,
+    0.01,
+    0.02
+  ],
+  "repeat_calls": 12,
+  "representation_calls": 4,
+  "resolutions": [
+    96,
+    112
+  ],
+  "solver": "meep.mpb.ModeSolver",
+  "solver_tolerance": 1e-10,
+  "status": "FROZEN_BEFORE_FRESH_SOLVER",
+  "stop_before_fresh_solver": true
+}

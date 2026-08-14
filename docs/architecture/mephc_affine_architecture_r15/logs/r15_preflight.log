@@ -1,0 +1,2 @@
+R15 prevalidation completed with zero fresh solver calls.
+uniform protected spectra do not cover the required five-level, four-phase ladder: 0.005 exists only at phase 0, 0.010 exists at all phases, and 0.020 is absent; the contract forbids fresh magnitudes other than 0.0075 and 0.015

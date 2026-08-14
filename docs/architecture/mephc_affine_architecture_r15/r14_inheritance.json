@@ -1,0 +1,8 @@
+{
+  "historical_state_immutable": true,
+  "immutable": true,
+  "lambda_112": 4.8616031442729435,
+  "lambda_96": 5.695805021051081,
+  "lambda_uncertainty": 5.500260985875668,
+  "terminal_state": "BLOCKED_TRANSLATION_COVARIANT_QUADRATIC_UNRESOLVED"
+}
