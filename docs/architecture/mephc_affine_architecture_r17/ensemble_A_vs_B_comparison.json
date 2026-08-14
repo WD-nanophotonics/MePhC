@@ -1,0 +1,35 @@
+{
+  "R16_A": {
+    "c2_full_112": 0.20312424926371087,
+    "c2_full_96": 0.2828468713090149,
+    "delta_cross_112": 0.01486167965187013,
+    "historical_state_immutable": true,
+    "known_raw_uniform_value_exceeding_reported_floor": 0.2850798537483712,
+    "lambda_pair_112": 0.29064790522077466,
+    "lambda_pair_96": 0.3125649389582502,
+    "reported_uniform_floor": 0.2760229105702727,
+    "terminal_state": "BLOCKED_BASELINE_FREE_QUADRATIC_UNRESOLVED"
+  },
+  "R17_B": {
+    "full": {
+      "112": 0.2009619321831601,
+      "96": 0.11991366137914156
+    },
+    "pair": {
+      "112": 0.29928967126496137,
+      "96": 0.32473305423206184
+    },
+    "uniform": {
+      "112": 0.004818833435968414,
+      "96": 0.024553953682194058
+    }
+  },
+  "differences": {
+    "full": 0.0021623170805507574,
+    "pair": 0.008641766044186705
+  },
+  "internal_nonraw_uncertainty": {
+    "full": 0.15136297724714093,
+    "pair": 0.15136297724714093
+  }
+}

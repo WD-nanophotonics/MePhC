@@ -1,0 +1,8 @@
+area,check,result
+contract,byte-exact SHA,PASS
+inheritance,R6-R16 protected digests and R16 literal-max corrective,PASS
+execution,exact 258 fresh MPB calls,PASS
+ensemble_B,disjoint phases all five levels and signs,PASS
+transferability,raw-versus-estimator-matched uniform gate,RECORDED
+controls,repeats representation band identity,PASS
+TriLatt,fresh MPB calls,0
