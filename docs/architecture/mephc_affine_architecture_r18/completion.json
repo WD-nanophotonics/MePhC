@@ -1,0 +1,13 @@
+{
+  "completion_gmail_required": false,
+  "contract_sha256": "393a40c2da894669515384939b6828d654f5d11738dc3f6e930ba6d0d129152e",
+  "fresh_solver_calls": 0,
+  "post_seal_record_commit_forbidden": true,
+  "prevalidation_ref": "7606b4534ee245ae4546a82f88af04e7b6bd6762",
+  "r17_terminal_unchanged": true,
+  "r19_authorized": false,
+  "schema": "mephc.affine_architecture_r18.completion.v1",
+  "scientific_terminal_state": "CLOSED_R17_LOGIC_CORRECTIVE_QUADRATIC_EVIDENCE_SYNTHESIZED",
+  "seal_status": "SEALED",
+  "trilatt_solver_calls": 0
+}
