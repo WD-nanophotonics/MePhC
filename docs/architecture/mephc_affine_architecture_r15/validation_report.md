@@ -1,0 +1,1 @@
+R15 prevalidation is immutable and the zero-solver protected diagnostic passes. The fixed response matrix was not started because required uniform protected provenance is incomplete; terminal is BLOCKED_COMPATIBILITY.
