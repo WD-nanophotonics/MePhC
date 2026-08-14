@@ -1,0 +1,168 @@
+{
+  "contract_id": "mephc-affine-architecture-r13-quadratic-even-period3-selection",
+  "version": "1.0",
+  "starting_refs": {
+    "MePhC": "fb996f4be42676b49b9e166aa81eba9d31875a9b",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  },
+  "delivery": {
+    "completion_gmail_required": false,
+    "post_seal_record_commit_forbidden": true,
+    "r14_authorized": false
+  },
+  "runtime": {
+    "python": "/home/icy/miniconda3/envs/mp/bin/python",
+    "solver": "meep.mpb.ModeSolver",
+    "solver_tolerance": 1e-10,
+    "environment_mutation_allowed": false
+  },
+  "r12_inheritance": {
+    "terminal_state": "CLOSED_TRANSLATION_COVARIANT_FIRST_ORDER_ZERO_SUPPORTED",
+    "primary_q": "q2",
+    "primary_band": 3,
+    "gap_class": "NONDEGENERATE",
+    "selection_rule_label": "NONDEGENERATE_ZERO_MEAN_FIRST_ORDER_SELECTION_RULE_DERIVED",
+    "canonical_tangent_covariance_closed": true,
+    "origin_phase_c1_is_consistency_not_high_precision_measurement": true,
+    "immutable": true
+  },
+  "benchmark": {
+    "replication": [
+      3,
+      1
+    ],
+    "q2": [
+      -0.09,
+      0.14
+    ],
+    "polarization": "TE",
+    "bands": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "primary_band": 3,
+    "field": "u_A=A*(2*sin(2*pi*xi1)+cos(2*pi*xi1))/sqrt(5)*e_x"
+  },
+  "perturbative_labels": [
+    "FIRST_ORDER_FORBIDDEN_NONDEGENERATE_ZERO_MEAN",
+    "SECOND_ORDER_EVEN_ALLOWED",
+    "THIRD_ORDER_ODD_ALLOWED_NOT_GUARANTEED"
+  ],
+  "resolution_plan": {
+    "exact": [
+      96,
+      112
+    ],
+    "above_112_forbidden": true
+  },
+  "origin_phase_ensemble": {
+    "phases_in_grid_cell": [
+      0.0,
+      0.25,
+      0.5,
+      0.75
+    ],
+    "amplitudes": [
+      0.0025,
+      0.005,
+      0.01,
+      0.02
+    ],
+    "per_phase_a0_required": true,
+    "phase_cherry_picking_forbidden": true
+  },
+  "even_response": {
+    "E": "([omega(+A)+omega(-A)]/2)-omega(0)",
+    "K": "E/A^2",
+    "fit": "Kbar(A)=c2+c4*A^2",
+    "primary_coefficient": "c2"
+  },
+  "controls": {
+    "same_input_repeats_exactly_two_per_resolution": [
+      "phase0_A0",
+      "phase0_plus_A_0.010",
+      "phase0_minus_A_0.010"
+    ],
+    "representation_controls": [
+      "phase0_A0",
+      "phase0_plus_A_0.010"
+    ],
+    "representation_geometry_tolerance": 1e-10,
+    "representation_epsilon_tolerance": 1e-12,
+    "uniform_translation_delta": 0.005,
+    "retry_hunting_forbidden": true
+  },
+  "c2_uncertainty_components": [
+    "abs(c2_112-c2_96)",
+    "leave_one_origin_phase_out_spread_112",
+    "leave_one_amplitude_out_spread_112",
+    "same_input_repeat_frequency_floor_over_Amin2",
+    "representation_control_band3_difference_over_Amin2",
+    "uniform_translation_K_floor",
+    "phase_half_range_K_at_Amin"
+  ],
+  "nonzero_c2_criteria": {
+    "same_sign_96_112": true,
+    "signal_to_uncertainty_min": 5.0,
+    "at_least_three_of_four_phase_c2_same_sign": true,
+    "two_smallest_amplitude_mean_even_shifts_gt_5x_frequency_floor": true,
+    "band_identity_required": true
+  },
+  "band_identity": {
+    "ordinal_bands": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "max_shift_fraction_of_nearest_a0_gap": 0.25,
+    "relabel_forbidden": true
+  },
+  "scientific_terminal_states": [
+    "CLOSED_QUADRATIC_EVEN_RESPONSE_SUPPORTED",
+    "CLOSED_QUADRATIC_EVEN_ZERO_SUPPORTED",
+    "BLOCKED_QUADRATIC_EVEN_NUMERICALLY_UNRESOLVED",
+    "BLOCKED_PERTURBATIVE_SECTOR_AUDIT",
+    "BLOCKED_BAND_IDENTITY_GUARD",
+    "BLOCKED_COMPATIBILITY",
+    "BLOCKED_RUNTIME",
+    "BLOCKED_SCOPE_EXPANSION"
+  ],
+  "holds": {
+    "SqrLatt_ref": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "TriLatt_ref": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b",
+    "TriLatt_fresh_mpb_calls": 0,
+    "production_changes_expected": false
+  },
+  "forbidden": [
+    "resolution_above_112",
+    "q_search",
+    "field_search",
+    "band_search",
+    "adaptive_amplitude",
+    "adaptive_origin_phase",
+    "tolerance_tuning",
+    "resolved_cubic_odd_claim",
+    "berry_curvature",
+    "berry_curvature_dipole",
+    "topology",
+    "unfolding",
+    "transport",
+    "far_field",
+    "local_aperiodic_deformation",
+    "strain_gauge_field",
+    "curved_space_physics",
+    "elastic_relaxation",
+    "motif_deformation",
+    "strain_dependent_material",
+    "inverse_design",
+    "r14"
+  ]
+}

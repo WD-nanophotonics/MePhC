@@ -1,0 +1,25 @@
+{
+  "amplitudes": [
+    0.0025,
+    0.005,
+    0.01,
+    0.02
+  ],
+  "phase_cherry_picking": false,
+  "phases": [
+    0.0,
+    0.25,
+    0.5,
+    0.75
+  ],
+  "physical_shifts": [
+    "0",
+    "dx/4",
+    "dx/2",
+    "3dx/4"
+  ],
+  "resolutions": [
+    96,
+    112
+  ]
+}

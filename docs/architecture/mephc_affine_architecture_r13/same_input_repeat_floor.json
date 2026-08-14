@@ -1,0 +1,30 @@
+{
+  "112": {
+    "A0": {
+      "band3_frequency_difference": 6.480649350493195e-13,
+      "exactly_two": true
+    },
+    "minus_A_0.010": {
+      "band3_frequency_difference": 7.969180870759374e-13,
+      "exactly_two": true
+    },
+    "plus_A_0.010": {
+      "band3_frequency_difference": 5.0681681074138396e-14,
+      "exactly_two": true
+    }
+  },
+  "96": {
+    "A0": {
+      "band3_frequency_difference": 1.5856760349208798e-13,
+      "exactly_two": true
+    },
+    "minus_A_0.010": {
+      "band3_frequency_difference": 7.273626145831713e-13,
+      "exactly_two": true
+    },
+    "plus_A_0.010": {
+      "band3_frequency_difference": 5.174471962021698e-13,
+      "exactly_two": true
+    }
+  }
+}

@@ -1,0 +1,286 @@
+{
+  "112": {
+    "A0": {
+      "alternative_fingerprint": "15682bc571b9fd2ab41f7f2c704d0b3535c808f72be160c0b6e7d6ec6c73b6b1",
+      "alternative_grid": {
+        "array_shape": [
+          336,
+          112
+        ],
+        "byte_order": "native_normalized_float64",
+        "dtype": "float64",
+        "grid_size": [
+          336,
+          112,
+          1
+        ],
+        "normalized_byte_sha256": "8d79429b86cb4521e751eae78033118a3ace657d43e8030427ede9f5eb74bad7"
+      },
+      "alternative_spectrum": [
+        0.06453093279464901,
+        0.14896248441349735,
+        0.1716350282491506,
+        0.3010231221354546,
+        0.32264552782737793,
+        0.38107027320000514
+      ],
+      "canonical_fingerprint": "b63125f94cc473b9ac6d27162bcee12ce05bb6bce228f0966b89c082091da920",
+      "canonical_geometry": {
+        "assignment": [
+          2,
+          1,
+          0
+        ],
+        "equivalent": true,
+        "maximum_coordinate_residual": 0.0,
+        "polygon_count": 3,
+        "tolerance": 1e-10,
+        "total_coordinate_residual": 0.0
+      },
+      "canonical_grid": {
+        "array_shape": [
+          336,
+          112
+        ],
+        "byte_order": "native_normalized_float64",
+        "dtype": "float64",
+        "grid_size": [
+          336,
+          112,
+          1
+        ],
+        "normalized_byte_sha256": "8d79429b86cb4521e751eae78033118a3ace657d43e8030427ede9f5eb74bad7"
+      },
+      "canonical_spectrum": [
+        0.06453093279516868,
+        0.14896248441307447,
+        0.17163502824916796,
+        0.30102312213608284,
+        0.32264552782780986,
+        0.3810702731925125
+      ],
+      "epsilon_identity": true,
+      "epsilon_max_difference": 0.0,
+      "spectral_difference": [
+        5.196676422514201e-13,
+        4.2288395007972213e-13,
+        1.734723475976807e-14,
+        6.282196984841448e-13,
+        4.3193226773041715e-13,
+        7.492617637439025e-12
+      ]
+    },
+    "plus_A_0.010": {
+      "alternative_fingerprint": "665a5d0e868950c9894a462197cd73aeba854cab02038fe9c590651e458ecac0",
+      "alternative_grid": {
+        "array_shape": [
+          336,
+          112
+        ],
+        "byte_order": "native_normalized_float64",
+        "dtype": "float64",
+        "grid_size": [
+          336,
+          112,
+          1
+        ],
+        "normalized_byte_sha256": "fba654a19f0c619f83fc28f0d09adcf2261e706198dd33e8adf75a14b3d2b5aa"
+      },
+      "alternative_spectrum": [
+        0.06451866942535542,
+        0.1489451591054639,
+        0.17164695239297267,
+        0.30085068034958967,
+        0.32268213930394646,
+        0.3809758015169821
+      ],
+      "canonical_fingerprint": "cee9b7f7b792b864660df6f76b3266fd950ade310978d6ac3d431440f8f9f3db",
+      "canonical_geometry": {
+        "assignment": [
+          2,
+          1,
+          0
+        ],
+        "equivalent": true,
+        "maximum_coordinate_residual": 0.0,
+        "polygon_count": 3,
+        "tolerance": 1e-10,
+        "total_coordinate_residual": 0.0
+      },
+      "canonical_grid": {
+        "array_shape": [
+          336,
+          112
+        ],
+        "byte_order": "native_normalized_float64",
+        "dtype": "float64",
+        "grid_size": [
+          336,
+          112,
+          1
+        ],
+        "normalized_byte_sha256": "fba654a19f0c619f83fc28f0d09adcf2261e706198dd33e8adf75a14b3d2b5aa"
+      },
+      "canonical_spectrum": [
+        0.06451866942499843,
+        0.1489451591057624,
+        0.17164695239306535,
+        0.30085068034963824,
+        0.3226821393036757,
+        0.3809758015205137
+      ],
+      "epsilon_identity": true,
+      "epsilon_max_difference": 0.0,
+      "spectral_difference": [
+        3.569922135682191e-13,
+        2.9848346017047334e-13,
+        9.267586698058494e-14,
+        4.85722573273506e-14,
+        2.707833957060757e-13,
+        3.5315639301813917e-12
+      ]
+    }
+  },
+  "96": {
+    "A0": {
+      "alternative_fingerprint": "15682bc571b9fd2ab41f7f2c704d0b3535c808f72be160c0b6e7d6ec6c73b6b1",
+      "alternative_grid": {
+        "array_shape": [
+          288,
+          96
+        ],
+        "byte_order": "native_normalized_float64",
+        "dtype": "float64",
+        "grid_size": [
+          288,
+          96,
+          1
+        ],
+        "normalized_byte_sha256": "99efab131ae7dbd64589a2f19b28832d58a6629ef02ee3ee4a2c5a25a4e96ba4"
+      },
+      "alternative_spectrum": [
+        0.06452647026580124,
+        0.14894113023585345,
+        0.17161271313173942,
+        0.30094078401933416,
+        0.3225667254000082,
+        0.3810390744739293
+      ],
+      "canonical_fingerprint": "b63125f94cc473b9ac6d27162bcee12ce05bb6bce228f0966b89c082091da920",
+      "canonical_geometry": {
+        "assignment": [
+          2,
+          1,
+          0
+        ],
+        "equivalent": true,
+        "maximum_coordinate_residual": 0.0,
+        "polygon_count": 3,
+        "tolerance": 1e-10,
+        "total_coordinate_residual": 0.0
+      },
+      "canonical_grid": {
+        "array_shape": [
+          288,
+          96
+        ],
+        "byte_order": "native_normalized_float64",
+        "dtype": "float64",
+        "grid_size": [
+          288,
+          96,
+          1
+        ],
+        "normalized_byte_sha256": "99efab131ae7dbd64589a2f19b28832d58a6629ef02ee3ee4a2c5a25a4e96ba4"
+      },
+      "canonical_spectrum": [
+        0.06452647026952128,
+        0.14894113023853447,
+        0.17161271313220716,
+        0.3009407840202332,
+        0.3225667254008442,
+        0.38103907449202845
+      ],
+      "epsilon_identity": true,
+      "epsilon_max_difference": 0.0,
+      "spectral_difference": [
+        3.72003816639932e-12,
+        2.6810220710160593e-12,
+        4.677369602745785e-13,
+        8.990586053414518e-13,
+        8.359979375427429e-13,
+        1.8099133303195458e-11
+      ]
+    },
+    "plus_A_0.010": {
+      "alternative_fingerprint": "665a5d0e868950c9894a462197cd73aeba854cab02038fe9c590651e458ecac0",
+      "alternative_grid": {
+        "array_shape": [
+          288,
+          96
+        ],
+        "byte_order": "native_normalized_float64",
+        "dtype": "float64",
+        "grid_size": [
+          288,
+          96,
+          1
+        ],
+        "normalized_byte_sha256": "6e7ae57b0e511ee1b1f2f5bc366b2d85569aaa6d19769f9350bcbff0aa28ff37"
+      },
+      "alternative_spectrum": [
+        0.06449683991617641,
+        0.14891325054734916,
+        0.17161595586334463,
+        0.3007315712903207,
+        0.32257931424108455,
+        0.38082498140992205
+      ],
+      "canonical_fingerprint": "cee9b7f7b792b864660df6f76b3266fd950ade310978d6ac3d431440f8f9f3db",
+      "canonical_geometry": {
+        "assignment": [
+          2,
+          1,
+          0
+        ],
+        "equivalent": true,
+        "maximum_coordinate_residual": 0.0,
+        "polygon_count": 3,
+        "tolerance": 1e-10,
+        "total_coordinate_residual": 0.0
+      },
+      "canonical_grid": {
+        "array_shape": [
+          288,
+          96
+        ],
+        "byte_order": "native_normalized_float64",
+        "dtype": "float64",
+        "grid_size": [
+          288,
+          96,
+          1
+        ],
+        "normalized_byte_sha256": "6e7ae57b0e511ee1b1f2f5bc366b2d85569aaa6d19769f9350bcbff0aa28ff37"
+      },
+      "canonical_spectrum": [
+        0.06449683991257704,
+        0.1489132505470123,
+        0.1716159558631151,
+        0.3007315712899175,
+        0.32257931424038977,
+        0.3808249813940438
+      ],
+      "epsilon_identity": true,
+      "epsilon_max_difference": 0.0,
+      "spectral_difference": [
+        3.599370801410373e-12,
+        3.368694212468881e-13,
+        2.295386103412511e-13,
+        4.031774913926256e-13,
+        6.94777568810423e-13,
+        1.5878243164735295e-11
+      ]
+    }
+  }
+}

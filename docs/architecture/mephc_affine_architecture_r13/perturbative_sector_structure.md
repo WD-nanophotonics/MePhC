@@ -1,0 +1,1 @@
+R13 records period-3 sector return: first order is forbidden by the inherited nondegenerate zero-mean rule; two opposite sector steps return to sector 0 and permit an even A^2 term; three equal steps return modulo 3 and permit an odd A^3 term without establishing it as nonzero.

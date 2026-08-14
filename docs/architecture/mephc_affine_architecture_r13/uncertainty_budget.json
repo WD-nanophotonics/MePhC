@@ -1,0 +1,14 @@
+{
+  "components": {
+    "abs(c2_112-c2_96)": 0.11273971315662157,
+    "leave_one_amplitude_out_spread_112": 0.6376394055983571,
+    "leave_one_origin_phase_out_spread_112": 2.7796066712498564,
+    "phase_half_range_K_at_Amin": 3.298360946693002,
+    "representation_control_band3_difference_over_Amin2": 7.483791364393255e-08,
+    "same_input_repeat_frequency_floor_over_Amin2": 1.2750689393214998e-07,
+    "uniform_translation_K_floor": 0.4408623452789584
+  },
+  "phase_c2_same_sign_count": 2,
+  "small_amplitude_E_gt_5x_floor": true,
+  "uncertainty": 3.298360946693002
+}
