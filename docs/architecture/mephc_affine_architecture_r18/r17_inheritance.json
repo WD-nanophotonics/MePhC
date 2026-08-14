@@ -1,0 +1,27 @@
+{
+  "full": {
+    "112": 0.2009619321831601,
+    "96": 0.11991366137914156
+  },
+  "immutable": true,
+  "matched_floor": 0.15136297724714093,
+  "pair": {
+    "112": 0.29928967126496137,
+    "96": 0.32473305423206184
+  },
+  "r16": {
+    "corrected_raw_uniform_max": 0.2850798537483712,
+    "full112": 0.20312424926371087,
+    "pair112": 0.29064790522077466,
+    "uniform112": -0.004816872481870957
+  },
+  "r17_integrity_payload_digest": "402e0167ae4d937b9325638ed672353fa3484f1ebd277743ebab0924dc2cc6ea",
+  "r17_manifest_file_count": 39,
+  "raw_uniform_max": 0.3022214274199797,
+  "source": "docs/architecture/mephc_affine_architecture_r17",
+  "terminal": "BLOCKED_INDEPENDENT_ENSEMBLE_QUADRATIC_UNRESOLVED",
+  "uniform": {
+    "112": 0.004818833435968414,
+    "96": 0.024553953682194058
+  }
+}

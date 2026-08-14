@@ -1,0 +1,12 @@
+{
+  "adaptive_sampling": false,
+  "fresh_solver_calls": 0,
+  "meep_or_mpb_imported": false,
+  "production_changes": false,
+  "source_only": [
+    "R16 protected evidence",
+    "R17 protected evidence",
+    "R18 authoritative contract"
+  ],
+  "trilatt_solver_calls": 0
+}

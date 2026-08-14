@@ -1,0 +1,1 @@
+This is a protected-evidence logic correction only. It does not rerun MPB, alter R17, certify a 5-sigma quadratic response, prove an exact physical nonzero theorem, or address cubic, Berry/BCD/topology, transport/far-field, local deformation, arbitrary zero-mean fields, or R19.

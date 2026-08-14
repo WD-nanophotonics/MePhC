@@ -1,0 +1,8 @@
+{
+  "environment_mutation": false,
+  "new_files_only_under": "docs/architecture/mephc_affine_architecture_r18/",
+  "production_changes": [],
+  "r17_immutable": true,
+  "r17_terminal_unchanged": true,
+  "r19_authorized": false
+}

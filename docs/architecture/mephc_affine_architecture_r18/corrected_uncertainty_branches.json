@@ -1,0 +1,90 @@
+{
+  "R17_terminal_rewritten": false,
+  "branches": {
+    "estimator_matched": {
+      "components": {
+        "full": {
+          "cross_ensemble_alpha_drift": 0.0021623170805507574,
+          "cross_resolution_alpha_drift": 0.08104827080401855,
+          "estimator_matched_uniform_floor": 0.15136297724714093,
+          "leave_one_interval_out_spread": 0.029313220298414544,
+          "leave_one_phase_out_spread": 0.008263122074616908,
+          "max_phase_mean_fit_residual": 0.015295961353061216,
+          "repeat_over_min_delta_h2": 2.8618885039577435e-08,
+          "representation_over_min_delta_h2": 1.9110046878267894e-08,
+          "smallest_interval_phase_half_range": 0.006917107180370863
+        },
+        "pair": {
+          "cross_ensemble_alpha_drift": 0.008641766044186705,
+          "cross_resolution_alpha_drift": 0.02544338296710047,
+          "estimator_matched_uniform_floor": 0.15136297724714093,
+          "leave_one_interval_out_spread": 0.014952901110711236,
+          "leave_one_phase_out_spread": 0.05559056371858179,
+          "max_phase_mean_fit_residual": 0.006803722804898271,
+          "repeat_over_min_delta_h2": 4.134470543704083e-08,
+          "representation_over_min_delta_h2": 1.3346657112833782e-08,
+          "smallest_interval_phase_half_range": 0.003948851123314334
+        }
+      },
+      "cross_direction": {
+        "delta": 0.02350532126556093,
+        "pass": true,
+        "u_cross": 0.15136297724714093
+      },
+      "full_5x": false,
+      "full_signal": 0.2009619321831601,
+      "full_signal_over_u": 1.3276822102609378,
+      "pair_5x": false,
+      "pair_signal": 0.29928967126496137,
+      "pair_signal_over_u": 1.9772977296574326,
+      "terminal_counterfactual": "BLOCKED_INDEPENDENT_ENSEMBLE_QUADRATIC_UNRESOLVED",
+      "u_full": 0.15136297724714093,
+      "u_pair": 0.15136297724714093,
+      "uniform_floor_used": 0.15136297724714093
+    },
+    "literal_raw_uniform_stress": {
+      "components": {
+        "full": {
+          "cross_ensemble_alpha_drift": 0.0021623170805507574,
+          "cross_resolution_alpha_drift": 0.08104827080401855,
+          "estimator_matched_uniform_floor": 0.3022214274199797,
+          "leave_one_interval_out_spread": 0.029313220298414544,
+          "leave_one_phase_out_spread": 0.008263122074616908,
+          "literal_raw_uniform_stress": 0.3022214274199797,
+          "max_phase_mean_fit_residual": 0.015295961353061216,
+          "repeat_over_min_delta_h2": 2.8618885039577435e-08,
+          "representation_over_min_delta_h2": 1.9110046878267894e-08,
+          "smallest_interval_phase_half_range": 0.006917107180370863
+        },
+        "pair": {
+          "cross_ensemble_alpha_drift": 0.008641766044186705,
+          "cross_resolution_alpha_drift": 0.02544338296710047,
+          "estimator_matched_uniform_floor": 0.3022214274199797,
+          "leave_one_interval_out_spread": 0.014952901110711236,
+          "leave_one_phase_out_spread": 0.05559056371858179,
+          "literal_raw_uniform_stress": 0.3022214274199797,
+          "max_phase_mean_fit_residual": 0.006803722804898271,
+          "repeat_over_min_delta_h2": 4.134470543704083e-08,
+          "representation_over_min_delta_h2": 1.3346657112833782e-08,
+          "smallest_interval_phase_half_range": 0.003948851123314334
+        }
+      },
+      "cross_direction": {
+        "delta": 0.02350532126556093,
+        "pass": true,
+        "u_cross": 0.3022214274199797
+      },
+      "full_5x": false,
+      "full_signal": 0.2009619321831601,
+      "full_signal_over_u": 0.6649493184475463,
+      "pair_5x": false,
+      "pair_signal": 0.29928967126496137,
+      "pair_signal_over_u": 0.9902993107403194,
+      "terminal_counterfactual": "BLOCKED_INDEPENDENT_ENSEMBLE_QUADRATIC_UNRESOLVED",
+      "u_full": 0.3022214274199797,
+      "u_pair": 0.3022214274199797,
+      "uniform_floor_used": 0.3022214274199797
+    }
+  },
+  "source_components": "R17 uncertainty_budget.json with only the uniform branch replaced"
+}

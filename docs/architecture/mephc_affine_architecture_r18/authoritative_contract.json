@@ -1,0 +1,64 @@
+{
+  "contract_id": "mephc-affine-architecture-r18-r17-logic-corrective",
+  "version": "1.0",
+  "starting_refs": {
+    "MePhC": "7606b4534ee245ae4546a82f88af04e7b6bd6762",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  },
+  "delivery": {
+    "completion_gmail_required": false,
+    "post_seal_record_commit_forbidden": true,
+    "r19_authorized": false
+  },
+  "solver_policy": {
+    "fresh_solver_calls_exact": 0,
+    "trilatt_solver_calls_exact": 0
+  },
+  "r17": {
+    "terminal": "BLOCKED_INDEPENDENT_ENSEMBLE_QUADRATIC_UNRESOLVED",
+    "pair112": 0.29928967126496137,
+    "pair96": 0.32473305423206184,
+    "full112": 0.2009619321831601,
+    "full96": 0.11991366137914156,
+    "uniform112": 0.004818833435968414,
+    "uniform96": 0.024553953682194058,
+    "raw_uniform_max": 0.3022214274199797,
+    "matched_floor": 0.15136297724714093,
+    "immutable": true
+  },
+  "r16": {
+    "pair112": 0.29064790522077466,
+    "full112": 0.20312424926371087,
+    "uniform112": -0.004816872481870957,
+    "corrected_raw_uniform_max": 0.2850798537483712
+  },
+  "required_gate_reconstruction": true,
+  "uncertainty_branches": [
+    "estimator_matched",
+    "literal_raw_uniform_stress"
+  ],
+  "classifications": [
+    "QUADRATIC_SIGNAL_REPRODUCED_BUT_NOT_5SIGMA_CERTIFIED",
+    "QUADRATIC_SIGNAL_NOT_ROBUST_ACROSS_ENSEMBLES",
+    "QUADRATIC_EVIDENCE_INTERNALLY_INCONSISTENT"
+  ],
+  "next_method_labels": [
+    "RECOMMEND_INDEPENDENT_DISCRETIZATION_CROSSCHECK",
+    "RECOMMEND_ANALYTIC_SECOND_ORDER_PERTURBATION_IMPLEMENTATION",
+    "RECOMMEND_STOP_QUADRATIC_CERTIFICATION_AND_MOVE_TO_OBSERVABLE",
+    "RECOMMEND_MORE_MPB_ORIGIN_SAMPLING"
+  ],
+  "terminal_states": [
+    "CLOSED_R17_LOGIC_CORRECTIVE_QUADRATIC_EVIDENCE_SYNTHESIZED",
+    "BLOCKED_R17_GATE_RECONSTRUCTION_INCONSISTENT",
+    "BLOCKED_PROTECTED_EVIDENCE_INCONSISTENT",
+    "BLOCKED_COMPATIBILITY",
+    "BLOCKED_SCOPE_EXPANSION"
+  ],
+  "holds": {
+    "SqrLatt_ref": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "TriLatt_ref": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b",
+    "production_changes_expected": false
+  }
+}
