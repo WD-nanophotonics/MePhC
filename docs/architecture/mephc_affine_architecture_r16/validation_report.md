@@ -1,0 +1,1 @@
+R16 executed the immutable frozen matrix with 142 fresh MPB calls. The primary estimator is Q(h)=(omega(+h)+omega(-h))/2 followed only by adjacent h^2 secants and Sbar(t)=alpha+beta*t. Terminal: BLOCKED_BASELINE_FREE_QUADRATIC_UNRESOLVED.

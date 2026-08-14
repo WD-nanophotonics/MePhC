@@ -1,0 +1,1 @@
+The result is limited to the audited q2 TE band-3 channel and fixed 3x1 zero-mean rigid-center periodic deformation. It does not establish cubic, Berry/BCD/topology, transport/far-field, local-deformation, elastic/gauge-field, or general zero-mean claims.

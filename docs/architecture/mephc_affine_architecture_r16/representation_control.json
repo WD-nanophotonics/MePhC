@@ -1,0 +1,437 @@
+{
+  "floor_band3": {
+    "full": 1.8973711490843925e-13,
+    "pair": 1.2122525205882084e-12,
+    "uniform": 1.2996548282018239e-12
+  },
+  "requirements": {
+    "epsilon_maxdiff": 1e-12,
+    "geometry_tolerance": 1e-10
+  },
+  "resolutions": {
+    "112": {
+      "full": {
+        "alternative_fingerprint": "3f7b7e2fee6456806efa28493a971665d8e3e1276860712bef41c0a0792e78a8",
+        "alternative_grid": {
+          "array_shape": [
+            336,
+            112
+          ],
+          "byte_order": "native_normalized_float64",
+          "dtype": "float64",
+          "grid_size": [
+            336,
+            112,
+            1
+          ],
+          "normalized_byte_sha256": "0451368e20216d9c9f76eccc7999fdef0487fe992b4412321deff45e16419e85"
+        },
+        "alternative_spectrum": [
+          0.06450746286105814,
+          0.14893990298308926,
+          0.17163050030520646,
+          0.3008853410274185,
+          0.3226323569582535,
+          0.38090151272203476
+        ],
+        "canonical_fingerprint": "cde27855e7f8a1c14cc0a040b4029b060ad196cc3cb435742248d414633a6f9d",
+        "canonical_geometry": {
+          "assignment": [
+            2,
+            1,
+            0
+          ],
+          "equivalent": true,
+          "maximum_coordinate_residual": 0.0,
+          "polygon_count": 3,
+          "tolerance": 1e-10,
+          "total_coordinate_residual": 0.0
+        },
+        "canonical_grid": {
+          "array_shape": [
+            336,
+            112
+          ],
+          "byte_order": "native_normalized_float64",
+          "dtype": "float64",
+          "grid_size": [
+            336,
+            112,
+            1
+          ],
+          "normalized_byte_sha256": "0451368e20216d9c9f76eccc7999fdef0487fe992b4412321deff45e16419e85"
+        },
+        "canonical_spectrum": [
+          0.06450746286254362,
+          0.14893990298382634,
+          0.1716305003055782,
+          0.3008853410281494,
+          0.3226323569581524,
+          0.38090151273575784
+        ],
+        "epsilon_identity": true,
+        "epsilon_max_difference": 0.0,
+        "spectral_difference": [
+          3.614927801542933e-12,
+          9.223177777073488e-14,
+          1.8973711490843925e-13,
+          1.974309604690916e-12,
+          3.2701619190333986e-13,
+          5.373812506093145e-12
+        ]
+      },
+      "pair": {
+        "alternative_fingerprint": "202f17c6c983744231dedcb3cbe494523ef1837241749cbf2ad1d23bceeca901",
+        "alternative_grid": {
+          "array_shape": [
+            336,
+            112
+          ],
+          "byte_order": "native_normalized_float64",
+          "dtype": "float64",
+          "grid_size": [
+            336,
+            112,
+            1
+          ],
+          "normalized_byte_sha256": "89514adba0f2771c575dba9ecbbe2cb1925bfc0a3b7806c5e8bf5a11dfd9e111"
+        },
+        "alternative_spectrum": [
+          0.06454225529596506,
+          0.1490876797221788,
+          0.17178923514346373,
+          0.30143459265435835,
+          0.32320239628748226,
+          0.3812275779836711
+        ],
+        "canonical_fingerprint": "347f9e027da82eb057d1c02ac8b60dc9368aa4aa76010a9df8288ecf6a5366c0",
+        "canonical_geometry": {
+          "assignment": [
+            2,
+            1,
+            0
+          ],
+          "equivalent": true,
+          "maximum_coordinate_residual": 0.0,
+          "polygon_count": 3,
+          "tolerance": 1e-10,
+          "total_coordinate_residual": 0.0
+        },
+        "canonical_grid": {
+          "array_shape": [
+            336,
+            112
+          ],
+          "byte_order": "native_normalized_float64",
+          "dtype": "float64",
+          "grid_size": [
+            336,
+            112,
+            1
+          ],
+          "normalized_byte_sha256": "89514adba0f2771c575dba9ecbbe2cb1925bfc0a3b7806c5e8bf5a11dfd9e111"
+        },
+        "canonical_spectrum": [
+          0.06454225529563418,
+          0.14908767972170964,
+          0.17178923514270975,
+          0.30143459265266764,
+          0.3232023962870383,
+          0.38122757797867035
+        ],
+        "epsilon_identity": true,
+        "epsilon_max_difference": 0.0,
+        "spectral_difference": [
+          1.8526291611919987e-12,
+          1.356414980335785e-13,
+          1.2122525205882084e-12,
+          1.5089041127680503e-12,
+          1.24145138613585e-12,
+          4.17449408374182e-12
+        ]
+      },
+      "uniform": {
+        "alternative_fingerprint": "b89477c669a875ef94254e94dce996e29cb4fb889826dd3d9a48915f53234ffe",
+        "alternative_grid": {
+          "array_shape": [
+            336,
+            112
+          ],
+          "byte_order": "native_normalized_float64",
+          "dtype": "float64",
+          "grid_size": [
+            336,
+            112,
+            1
+          ],
+          "normalized_byte_sha256": "8f74c0f2fe06be285aaa7aa627818c9d97660a7b9a045c833746fd8779ddf9e4"
+        },
+        "alternative_spectrum": [
+          0.06451033350025577,
+          0.14894193277462436,
+          0.17161663011588615,
+          0.300964145362812,
+          0.32258456596222046,
+          0.3809259563086486
+        ],
+        "canonical_fingerprint": "932b890129393c74486ae5e7674c90cf41148d2975e0eb4eaf806861d07cca7f",
+        "canonical_geometry": {
+          "assignment": [
+            2,
+            1,
+            0
+          ],
+          "equivalent": true,
+          "maximum_coordinate_residual": 0.0,
+          "polygon_count": 3,
+          "tolerance": 1e-10,
+          "total_coordinate_residual": 0.0
+        },
+        "canonical_grid": {
+          "array_shape": [
+            336,
+            112
+          ],
+          "byte_order": "native_normalized_float64",
+          "dtype": "float64",
+          "grid_size": [
+            336,
+            112,
+            1
+          ],
+          "normalized_byte_sha256": "8f74c0f2fe06be285aaa7aa627818c9d97660a7b9a045c833746fd8779ddf9e4"
+        },
+        "canonical_spectrum": [
+          0.06451033349557231,
+          0.14894193277505374,
+          0.17161663011505526,
+          0.30096414536191407,
+          0.32258456596078294,
+          0.3809259563082309
+        ],
+        "epsilon_identity": true,
+        "epsilon_max_difference": 0.0,
+        "spectral_difference": [
+          3.4294234119158773e-12,
+          2.708111512816913e-13,
+          1.2996548282018239e-12,
+          1.0050849041931542e-12,
+          1.5417112031457236e-12,
+          5.65558710974301e-12
+        ]
+      }
+    },
+    "96": {
+      "full": {
+        "alternative_fingerprint": "3f7b7e2fee6456806efa28493a971665d8e3e1276860712bef41c0a0792e78a8",
+        "alternative_grid": {
+          "array_shape": [
+            288,
+            96
+          ],
+          "byte_order": "native_normalized_float64",
+          "dtype": "float64",
+          "grid_size": [
+            288,
+            96,
+            1
+          ],
+          "normalized_byte_sha256": "d463252d4a821cc853c7b67e43eb6d3fa03bf50add95f47294258fe92c6296a8"
+        },
+        "alternative_spectrum": [
+          0.06450290757968222,
+          0.1489154576282963,
+          0.17160480518158688,
+          0.30079607535714725,
+          0.32254514472944446,
+          0.3808702637295294
+        ],
+        "canonical_fingerprint": "cde27855e7f8a1c14cc0a040b4029b060ad196cc3cb435742248d414633a6f9d",
+        "canonical_geometry": {
+          "assignment": [
+            2,
+            1,
+            0
+          ],
+          "equivalent": true,
+          "maximum_coordinate_residual": 0.0,
+          "polygon_count": 3,
+          "tolerance": 1e-10,
+          "total_coordinate_residual": 0.0
+        },
+        "canonical_grid": {
+          "array_shape": [
+            288,
+            96
+          ],
+          "byte_order": "native_normalized_float64",
+          "dtype": "float64",
+          "grid_size": [
+            288,
+            96,
+            1
+          ],
+          "normalized_byte_sha256": "d463252d4a821cc853c7b67e43eb6d3fa03bf50add95f47294258fe92c6296a8"
+        },
+        "canonical_spectrum": [
+          0.0645029075803116,
+          0.1489154576276427,
+          0.17160480518133603,
+          0.3007960753565406,
+          0.3225451447298493,
+          0.38087026373435634
+        ],
+        "epsilon_identity": true,
+        "epsilon_max_difference": 0.0,
+        "spectral_difference": [
+          2.055314252125129e-12,
+          4.0467629247586956e-13,
+          1.451339048941236e-13,
+          6.912803662828537e-13,
+          3.111400026512001e-13,
+          1.44944611868425e-11
+        ]
+      },
+      "pair": {
+        "alternative_fingerprint": "202f17c6c983744231dedcb3cbe494523ef1837241749cbf2ad1d23bceeca901",
+        "alternative_grid": {
+          "array_shape": [
+            288,
+            96
+          ],
+          "byte_order": "native_normalized_float64",
+          "dtype": "float64",
+          "grid_size": [
+            288,
+            96,
+            1
+          ],
+          "normalized_byte_sha256": "b0874bcb1c6d5c9498ef3789f63c67f64f5ec70e443f4db687afa5d2f584141a"
+        },
+        "alternative_spectrum": [
+          0.06452427636058285,
+          0.14908512904632507,
+          0.1717891299001447,
+          0.30143559521434476,
+          0.3232014682462475,
+          0.38112394920383164
+        ],
+        "canonical_fingerprint": "347f9e027da82eb057d1c02ac8b60dc9368aa4aa76010a9df8288ecf6a5366c0",
+        "canonical_geometry": {
+          "assignment": [
+            2,
+            1,
+            0
+          ],
+          "equivalent": true,
+          "maximum_coordinate_residual": 0.0,
+          "polygon_count": 3,
+          "tolerance": 1e-10,
+          "total_coordinate_residual": 0.0
+        },
+        "canonical_grid": {
+          "array_shape": [
+            288,
+            96
+          ],
+          "byte_order": "native_normalized_float64",
+          "dtype": "float64",
+          "grid_size": [
+            288,
+            96,
+            1
+          ],
+          "normalized_byte_sha256": "b0874bcb1c6d5c9498ef3789f63c67f64f5ec70e443f4db687afa5d2f584141a"
+        },
+        "canonical_spectrum": [
+          0.064524276363815,
+          0.14908512904518437,
+          0.1717891298999173,
+          0.30143559521446534,
+          0.3232014682457019,
+          0.3811239492084912
+        ],
+        "epsilon_identity": true,
+        "epsilon_max_difference": 0.0,
+        "spectral_difference": [
+          3.4409142202207477e-12,
+          6.050437928450947e-13,
+          6.137312880127865e-13,
+          1.1859957460558235e-12,
+          1.2719270081618106e-12,
+          1.5905110561931224e-11
+        ]
+      },
+      "uniform": {
+        "alternative_fingerprint": "b89477c669a875ef94254e94dce996e29cb4fb889826dd3d9a48915f53234ffe",
+        "alternative_grid": {
+          "array_shape": [
+            288,
+            96
+          ],
+          "byte_order": "native_normalized_float64",
+          "dtype": "float64",
+          "grid_size": [
+            288,
+            96,
+            1
+          ],
+          "normalized_byte_sha256": "1dd0cb7ac090610a25c6246a24283887cd50189d55dd4b87ad2dcd7e75403811"
+        },
+        "alternative_spectrum": [
+          0.0644758318108599,
+          0.1489052068736297,
+          0.17157765588139878,
+          0.3008350148434983,
+          0.3224505037859736,
+          0.38069116766019123
+        ],
+        "canonical_fingerprint": "932b890129393c74486ae5e7674c90cf41148d2975e0eb4eaf806861d07cca7f",
+        "canonical_geometry": {
+          "assignment": [
+            2,
+            1,
+            0
+          ],
+          "equivalent": true,
+          "maximum_coordinate_residual": 0.0,
+          "polygon_count": 3,
+          "tolerance": 1e-10,
+          "total_coordinate_residual": 0.0
+        },
+        "canonical_grid": {
+          "array_shape": [
+            288,
+            96
+          ],
+          "byte_order": "native_normalized_float64",
+          "dtype": "float64",
+          "grid_size": [
+            288,
+            96,
+            1
+          ],
+          "normalized_byte_sha256": "1dd0cb7ac090610a25c6246a24283887cd50189d55dd4b87ad2dcd7e75403811"
+        },
+        "canonical_spectrum": [
+          0.06447583180796751,
+          0.14890520687299147,
+          0.17157765588183793,
+          0.30083501484244113,
+          0.3224505037864119,
+          0.38069116765743855
+        ],
+        "epsilon_identity": true,
+        "epsilon_max_difference": 0.0,
+        "spectral_difference": [
+          1.7542911567858255e-13,
+          5.115075030204252e-13,
+          1.703914787043459e-13,
+          1.195599175218831e-12,
+          8.619771563189715e-13,
+          1.2409517857747687e-12
+        ]
+      }
+    }
+  }
+}

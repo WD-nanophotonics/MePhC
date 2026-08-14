@@ -1,0 +1,8 @@
+area,check,result
+contract,byte-exact SHA,PASS
+inheritance,R6-R15 protected digests and R15 compatibility cause,PASS
+execution,exact 142 fresh MPB calls,PASS
+primary,baseline-free adjacent secants on five levels,PASS
+controls,repeats representation uniform floor and band identity,PASS
+closure,pair/full/uniform/cross adjudication,RECORDED
+TriLatt,fresh MPB calls,0

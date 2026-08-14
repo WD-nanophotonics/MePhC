@@ -1,0 +1,4147 @@
+{
+  "above_112_ran": false,
+  "bands": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "expected_total": 142,
+  "fresh_solver_call_count": 142,
+  "fresh_solver_calls": [
+    {
+      "call_index": 1,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 2,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 3,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 4,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 5,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 6,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 7,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 8,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 9,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 10,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 11,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 12,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 13,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 14,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 15,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 16,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 17,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 18,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 19,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 20,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 21,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 22,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 23,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 24,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 25,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 26,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 27,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 28,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 29,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 30,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 31,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 32,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 33,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 34,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 35,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 36,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 37,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 38,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 39,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 40,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 41,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 42,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 43,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 44,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 45,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 46,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 47,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 48,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 49,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 50,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 51,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 52,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 53,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 54,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 55,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 56,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 57,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 58,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 59,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 60,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 61,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 62,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 63,
+      "control_role": "repeat",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "same_input_repeat",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 64,
+      "control_role": "repeat",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "same_input_repeat",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 65,
+      "control_role": "repeat",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "same_input_repeat",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 66,
+      "control_role": "repeat",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "same_input_repeat",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 67,
+      "control_role": "repeat",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "same_input_repeat",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 68,
+      "control_role": "repeat",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "same_input_repeat",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 69,
+      "control_role": "representation",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "representation_control",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 70,
+      "control_role": "representation",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "representation_control",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 71,
+      "control_role": "representation",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "representation_control",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 96,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 72,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 73,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 74,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 75,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 76,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 77,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 78,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 79,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 80,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 81,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 82,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 83,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 84,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 85,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 86,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 87,
+      "control_role": "primary",
+      "direction": "pair",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 88,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 89,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 90,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 91,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 92,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 93,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 94,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 95,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 96,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 97,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 98,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 99,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 100,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 101,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 102,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 103,
+      "control_role": "primary",
+      "direction": "full",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 104,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 105,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 106,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 107,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 108,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 109,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.005,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 110,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 111,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 112,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 113,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 114,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 115,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 116,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 117,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 118,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 119,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 120,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 121,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 122,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 123,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 124,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 125,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.015,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 126,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 127,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 128,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 129,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.25,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 130,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 131,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.5,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 132,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 133,
+      "control_role": "primary",
+      "direction": "uniform",
+      "h": 0.02,
+      "kind": "response_control_matrix",
+      "phase": 0.75,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 134,
+      "control_role": "repeat",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "same_input_repeat",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 135,
+      "control_role": "repeat",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "same_input_repeat",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 136,
+      "control_role": "repeat",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "same_input_repeat",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 137,
+      "control_role": "repeat",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "same_input_repeat",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 138,
+      "control_role": "repeat",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "same_input_repeat",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 139,
+      "control_role": "repeat",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "same_input_repeat",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "minus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 140,
+      "control_role": "representation",
+      "direction": "pair",
+      "h": 0.0075,
+      "kind": "representation_control",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 141,
+      "control_role": "representation",
+      "direction": "full",
+      "h": 0.0075,
+      "kind": "representation_control",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    },
+    {
+      "call_index": 142,
+      "control_role": "representation",
+      "direction": "uniform",
+      "h": 0.0075,
+      "kind": "representation_control",
+      "phase": 0.0,
+      "polarization": "TE",
+      "primary_band": 3,
+      "q_fractional": [
+        -0.09,
+        0.14
+      ],
+      "q_point": "q2",
+      "requested_bands": 6,
+      "resolution": 112,
+      "response_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "runtime_python": "/home/icy/miniconda3/envs/mp/bin/python",
+      "sign": "plus",
+      "solver": "meep.mpb.ModeSolver",
+      "solver_tolerance": 1e-10
+    }
+  ],
+  "no_retry_hunting": true,
+  "q_point": [
+    -0.09,
+    0.14
+  ],
+  "repeat_calls": 12,
+  "representation_control_calls": 6,
+  "resolutions_used": [
+    96,
+    112
+  ],
+  "response_control_matrix_calls": 124,
+  "solver_tolerance_all_calls": 1e-10,
+  "triLatt_fresh_mpb_calls": 0
+}

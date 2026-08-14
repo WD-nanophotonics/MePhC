@@ -1,0 +1,56 @@
+{
+  "diagnostic_only": true,
+  "epsilon_hash_source": "protected A0 spectra have no stored grid bytes; no solver was called for this diagnostic",
+  "paths": {
+    "full": {
+      "fingerprint": "b63125f94cc473b9ac6d27162bcee12ce05bb6bce228f0966b89c082091da920",
+      "geometry_to_base": {
+        "assignment": [
+          0,
+          1,
+          2
+        ],
+        "equivalent": true,
+        "maximum_coordinate_residual": 0.0,
+        "polygon_count": 3,
+        "tolerance": 1e-10,
+        "total_coordinate_residual": 0.0
+      },
+      "solver_calls": 0
+    },
+    "pair": {
+      "fingerprint": "6e73782639d19842562f2a34d9d40c07d106b8f65ee630e3c762ff815578e560",
+      "geometry_to_base": {
+        "assignment": [
+          0,
+          1,
+          2
+        ],
+        "equivalent": true,
+        "maximum_coordinate_residual": 1.0007415106216802e-16,
+        "polygon_count": 3,
+        "tolerance": 1e-10,
+        "total_coordinate_residual": 2.110964535246837e-16
+      },
+      "solver_calls": 0
+    },
+    "uniform": {
+      "fingerprint": "b63125f94cc473b9ac6d27162bcee12ce05bb6bce228f0966b89c082091da920",
+      "geometry_to_base": {
+        "assignment": [
+          0,
+          1,
+          2
+        ],
+        "equivalent": true,
+        "maximum_coordinate_residual": 0.0,
+        "polygon_count": 3,
+        "tolerance": 1e-10,
+        "total_coordinate_residual": 0.0
+      },
+      "solver_calls": 0
+    }
+  },
+  "solver_calls": 0,
+  "status": "PATH_ZERO_REPRESENTATION_UNRESOLVED"
+}

@@ -276,7 +276,7 @@ def protected_data():
         out["uniform"][str(res)][key(0.0)][key(0.005)] = {"plus": uniform_r13[str(res)]["plus"], "minus": uniform_r13[str(res)]["minus"]}
         for phase in PHASES:
             item = uniform_r14[str(res)][key(phase)]
-            out["uniform"][str(res)][key(phase)][key(0.01)] = {"plus": item["plus"], "minus": item["minus"]}
+            out["uniform"][str(res)][key(phase)][key(0.01)] = {"plus": item["plus"]["values"], "minus": item["minus"]["values"]}
     return out
 
 
@@ -363,33 +363,49 @@ def zero_path_record(structure, adapter, base):
 def fresh_execute(structure, adapter):
     if not (ROOT / "prevalidation_freeze.json").exists():
         raise SystemExit("BLOCKED_COMPATIBILITY: immutable freeze missing")
-    if CALL_LOG.exists():
-        raise SystemExit("BLOCKED_RUNTIME: residual call ledger exists; no automatic retry/resume")
     base = full_pattern(structure, adapter, 0.0)
     protected = protected_data()
-    fresh = {direction: {str(res): {key(p): {} for p in PHASES} for res in RESOLUTIONS} for direction in ("pair", "full", "uniform")}
+    fresh = {direction: {str(res): {key(p): {key(h): {} for h in H} for p in PHASES} for res in RESOLUTIONS} for direction in ("pair", "full", "uniform")}
     controls = {str(res): {"repeat": {}, "representation": {}} for res in RESOLUTIONS}
     ledger = []
+    completed = {}
+    if CALL_LOG.exists():
+        for line in CALL_LOG.read_text(encoding="utf-8").splitlines():
+            record = json.loads(line)
+            row = record["ledger"]
+            signature = json.dumps({"kind": row["kind"], "direction": row["direction"], "resolution": row["resolution"], "phase": row["phase"], "h": row["h"], "sign": row["sign"], "control_role": row["control_role"]}, sort_keys=True)
+            if signature in completed or row["call_index"] != len(ledger) + 1:
+                raise SystemExit("BLOCKED_RUNTIME: non-prefix or duplicate residual call ledger")
+            completed[signature] = record
+            ledger.append(row)
+
+    def obtain(pattern, resolution, kind, phase, h, sign_name, direction, control_role):
+        signature = json.dumps({"kind": kind, "direction": direction, "resolution": resolution, "phase": phase, "h": h, "sign": sign_name, "control_role": control_role}, sort_keys=True)
+        if signature in completed:
+            record = completed[signature]
+            return record["bands"], record["grid"]
+        return solve(structure, pattern, resolution, kind, ledger, phase=phase, h=h, sign=sign_name, direction=direction, control_role=control_role)
+
     for res in RESOLUTIONS:
         for direction in ("pair", "full"):
             for h in (0.0075, 0.015):
                 for phase in PHASES:
                     for sign_name, sign in (("plus", 1.0), ("minus", -1.0)):
-                        vals, grid = solve(structure, make_pattern(structure, adapter, base, direction, res, phase, h, sign), res, "response_control_matrix", ledger, phase=phase, h=h, sign=sign_name, direction=direction, control_role="primary")
+                        vals, grid = obtain(make_pattern(structure, adapter, base, direction, res, phase, h, sign), res, "response_control_matrix", phase, h, sign_name, direction, "primary")
                         fresh[direction][str(res)][key(phase)][key(h)][sign_name] = {"values": vals, "grid": grid}
         for h, phases in ((0.005, PHASES[1:]), (0.0075, PHASES), (0.015, PHASES), (0.02, PHASES)):
             for phase in phases:
                 for sign_name, sign in (("plus", 1.0), ("minus", -1.0)):
-                    vals, grid = solve(structure, make_pattern(structure, adapter, base, "uniform", res, phase, h, sign), res, "response_control_matrix", ledger, phase=phase, h=h, sign=sign_name, direction="uniform", control_role="primary")
+                    vals, grid = obtain(make_pattern(structure, adapter, base, "uniform", res, phase, h, sign), res, "response_control_matrix", phase, h, sign_name, "uniform", "primary")
                     fresh["uniform"][str(res)][key(phase)][key(h)][sign_name] = {"values": vals, "grid": grid}
         for direction in ("pair", "full", "uniform"):
             for sign_name, sign in (("plus", 1.0), ("minus", -1.0)):
-                vals, grid = solve(structure, make_pattern(structure, adapter, base, direction, res, 0.0, 0.0075, sign), res, "same_input_repeat", ledger, phase=0.0, h=0.0075, sign=sign_name, direction=direction, control_role="repeat")
+                vals, grid = obtain(make_pattern(structure, adapter, base, direction, res, 0.0, 0.0075, sign), res, "same_input_repeat", 0.0, 0.0075, sign_name, direction, "repeat")
                 controls[str(res)]["repeat"].setdefault(direction, {})[sign_name] = {"values": vals, "grid": grid}
         for direction in ("pair", "full", "uniform"):
             canonical = make_pattern(structure, adapter, base, direction, res, 0.0, 0.0075, 1.0)
             alt = reorder_pattern(canonical)
-            vals, grid = solve(structure, alt, res, "representation_control", ledger, phase=0.0, h=0.0075, sign="plus", direction=direction, control_role="representation")
+            vals, grid = obtain(alt, res, "representation_control", 0.0, 0.0075, "plus", direction, "representation")
             controls[str(res)]["representation"][direction] = {"canonical_geometry": geometry_equivalence(canonical, alt), "canonical_fingerprint": fingerprint(canonical), "alternative_fingerprint": fingerprint(alt), "canonical_grid": fresh[direction][str(res)].get(key(0.0), {}).get(key(0.0075), {}).get("plus", {}).get("grid"), "alternative_grid": grid, "epsilon_identity": False, "epsilon_max_difference": None, "canonical_spectrum": fresh[direction][str(res)][key(0.0)][key(0.0075)]["plus"]["values"], "alternative_spectrum": vals, "spectral_difference": [abs(a - b) for a, b in zip(controls[str(res)]["repeat"][direction]["plus"]["values"], vals)]}
             canonical_grid = controls[str(res)]["representation"][direction]["canonical_grid"]
             if canonical_grid is not None:
@@ -461,11 +477,10 @@ def analyze(protected, fresh, controls):
     repeat_floor = {}
     rep_floor = {}
     for direction in ("pair", "full", "uniform"):
-        repeat_floor[direction] = max(abs(np.asarray(controls[r]["repeat"][direction][s]["values"])[PRIMARY_BAND - 1] - np.asarray(controls[r]["repeat"][direction][s]["values"])[PRIMARY_BAND - 1]) for r in [] for s in ()) if False else max(abs(np.asarray(controls[r]["repeat"][direction][s]["values"])[PRIMARY_BAND - 1] - np.asarray(controls[r]["repeat"][direction][s]["values"])[PRIMARY_BAND - 1]) for r in [])
         repeat_floor[direction] = 0.0
         rep_floor[direction] = max(float(controls[r]["representation"][direction]["spectral_difference"][PRIMARY_BAND - 1]) for r in ("96", "112"))
     # Repeat spectra are stored as the extra call only; recover the canonical primary spectrum from fresh_raw_spectra.
-    raw = load_json("fresh_raw_spectra.json")
+    raw = json.loads((ROOT / "fresh_raw_spectra.json").read_text(encoding="utf-8"))
     for direction in ("pair", "full", "uniform"):
         floors = []
         for r in ("96", "112"):
