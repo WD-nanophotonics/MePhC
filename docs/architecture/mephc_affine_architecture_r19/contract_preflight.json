@@ -1,0 +1,29 @@
+{
+  "byte_exact": true,
+  "contract_sha256": "c5678f4d3a0f3ce7afa293b21fe218833a3a293b5f05e4ff97c398ecc60e4e42",
+  "fresh_solver_calls_before_freeze": 0,
+  "method": {
+    "dependencies_existing_only": [
+      "numpy",
+      "scipy",
+      "shapely"
+    ],
+    "equation": "-div[(1/epsilon) grad Hz]=(omega/c)^2 Hz",
+    "production_integration": false,
+    "type": "independent_real_space_scalar_TE_FDFD"
+  },
+  "solver": {
+    "api": "scipy.sparse.linalg.eigsh",
+    "eigenpair_residual_max": 1e-08,
+    "k": 8,
+    "mpb_target_shift_forbidden": true,
+    "sigma": 0.0,
+    "tol": 1e-10,
+    "which": "LM"
+  },
+  "starting_refs": {
+    "MePhC": "6fe1b1fd61d40ef9b2083223a2b8dc591f3c4be0",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  }
+}

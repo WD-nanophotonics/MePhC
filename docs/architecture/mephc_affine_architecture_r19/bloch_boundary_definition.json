@@ -1,0 +1,12 @@
+{
+  "plus_x": "exp(+i*2*pi*qx)",
+  "plus_y": "exp(+i*2*pi*qy)",
+  "primitive_remap": false,
+  "q2": [
+    -0.09,
+    0.14
+  ],
+  "q_sign_flip": false,
+  "result_driven_tuning": false,
+  "reverse": "complex_conjugate"
+}

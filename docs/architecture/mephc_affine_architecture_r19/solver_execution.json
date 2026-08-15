@@ -1,0 +1,12 @@
+{
+  "dielectric_array_storage_in_git": false,
+  "fresh_solver_calls": 102,
+  "independent_method": "real_space_conservative_scalar_TE_FDFD",
+  "matrix_storage_in_git": false,
+  "mpb_or_meep_independent_solver_calls": 0,
+  "production_changes": false,
+  "solver": "scipy.sparse.linalg.eigsh",
+  "stage_A_calls": 6,
+  "stage_B_calls": 96,
+  "trilatt_fresh_solver_calls": 0
+}

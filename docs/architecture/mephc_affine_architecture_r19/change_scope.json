@@ -1,0 +1,9 @@
+{
+  "A0_subtracted_primary": false,
+  "environment_mutation": false,
+  "new_files_only_under": "docs/architecture/mephc_affine_architecture_r19/",
+  "production_changes": [],
+  "r18_immutable": true,
+  "r19_authorized": true,
+  "r20_authorized": false
+}

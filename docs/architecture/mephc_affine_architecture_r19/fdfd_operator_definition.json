@@ -1,0 +1,23 @@
+{
+  "a_cell": "f_air+(1-f_air)/7.29",
+  "cell_centered": true,
+  "domain": [
+    3.0,
+    1.0
+  ],
+  "eigenpair_residual_max": 1e-08,
+  "eigensolver": {
+    "api": "scipy.sparse.linalg.eigsh",
+    "eigenpair_residual_max": 1e-08,
+    "k": 8,
+    "mpb_target_shift_forbidden": true,
+    "sigma": 0.0,
+    "tol": 1e-10,
+    "which": "LM"
+  },
+  "equation": "-div[(1/epsilon) grad Hz]=(omega/c)^2 Hz",
+  "face_average": "harmonic",
+  "grid_map": "Nx=3N, Ny=N, dx=dy=1/N",
+  "hermiticity_tolerance": 1e-12,
+  "matrix": "Hermitian complex sparse 5-point finite-volume"
+}
