@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from dataclasses import dataclass
+from numbers import Real
 from typing import Any
 
 import meep as mp
@@ -37,6 +38,8 @@ class BerryCurvatureCalculator:
         default_material=mp.air,
         verbose: bool = False,
         overlap_tol: float = 1e-14,
+        eigensolver_tolerance: float = 1e-7,
+        deterministic: bool = False,
     ):
         """Configure an Abelian, single-band plaquette calculation.
 
@@ -54,6 +57,8 @@ class BerryCurvatureCalculator:
         self.default_material = default_material
         self.verbose = verbose
         self.overlap_tol = overlap_tol
+        self.eigensolver_tolerance = self._validate_eigensolver_tolerance(eigensolver_tolerance)
+        self.deterministic = self._validate_deterministic(deterministic)
         self.eps = None
 
     def cartesian_to_reciprocal(self, k_point) -> mp.Vector3:
@@ -72,6 +77,8 @@ class BerryCurvatureCalculator:
             num_bands=self.num_bands,
             default_material=self.default_material,
             verbose=self.verbose,
+            tolerance=self.eigensolver_tolerance,
+            deterministic=self.deterministic,
         )
 
     def _run_solver(self, ms: mpb.ModeSolver) -> None:
@@ -79,6 +86,21 @@ class BerryCurvatureCalculator:
             ms.run_parity(self.polarization, False)
         else:
             ms.run_parity(self.polarization, False, self.run_band_func)
+
+    @staticmethod
+    def _validate_eigensolver_tolerance(value):
+        if isinstance(value, bool) or not isinstance(value, Real):
+            raise ValueError("eigensolver_tolerance must be a finite positive real number.")
+        normalized = float(value)
+        if not np.isfinite(normalized) or normalized <= 0.0:
+            raise ValueError("eigensolver_tolerance must be a finite positive real number.")
+        return normalized
+
+    @staticmethod
+    def _validate_deterministic(value):
+        if type(value) is not bool:
+            raise ValueError("deterministic must be a bool.")
+        return value
 
     def _spatial_shape(self) -> tuple[int, int]:
         size = getattr(self.geometry_lattice, "size", None)

@@ -239,6 +239,8 @@ class Band:
         overlap_tol=1e-14,
         run_band_func=mpb.fix_efield_phase,
         polarization=None,
+        eigensolver_tolerance=1e-7,
+        deterministic=False,
     ):
         """Configure BerryCurvatureCalculator with the verified R6 geometry."""
         context = self._prepare_supercell_geometry(pattern, field)
@@ -255,6 +257,8 @@ class Band:
             default_material=mp.air,
             verbose=False,
             overlap_tol=overlap_tol,
+            eigensolver_tolerance=eigensolver_tolerance,
+            deterministic=deterministic,
         )
 
     def run_supercell(self, pattern, field, *, q_points, num_bands, resolution=None, polarization=None):
