@@ -1,0 +1,27 @@
+{
+  "byte_exact": true,
+  "contract_sha256": "000cd0b87efc6df50a2af6d98326493d3b016ca818da8bf8368d12728ad715ba",
+  "fresh_solver_calls_before_freeze": 0,
+  "method": {
+    "dependencies_existing_only": [
+      "numpy",
+      "scipy",
+      "shapely"
+    ],
+    "face_coefficient": "exact Shapely line fraction of a=1/epsilon",
+    "production_integration": false,
+    "type": "exact_face_conservative_scalar_TE_finite_volume"
+  },
+  "solver": {
+    "k": 8,
+    "maxiter": 10000,
+    "sigma": 0,
+    "tol": 1e-10,
+    "which": "LM"
+  },
+  "starting_refs": {
+    "MePhC": "1c839f0060404f50a3d0949f3696afb1473f5cb4",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  }
+}

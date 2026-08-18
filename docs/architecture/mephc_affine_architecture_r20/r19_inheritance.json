@@ -1,0 +1,7 @@
+{
+  "R20_method": "exact_face_conservative_scalar_TE_finite_volume",
+  "R21_authorized": false,
+  "immutable": true,
+  "source": "docs/architecture/mephc_affine_architecture_r19",
+  "terminal": "BLOCKED_FDFD_QUADRATIC_UNRESOLVED"
+}

@@ -1,0 +1,164 @@
+{
+  "analytic_field_match_at_centers": {
+    "full": true,
+    "pair": true,
+    "uniform": true
+  },
+  "canonical_expected_centers": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      1.0,
+      0.0
+    ],
+    [
+      2.0,
+      0.0
+    ]
+  ],
+  "canonical_motif_centers": [
+    [
+      -2.0816681711721685e-17,
+      -1.3877787807814457e-17
+    ],
+    [
+      1.0,
+      -1.3877787807814457e-17
+    ],
+    [
+      2.0,
+      -1.3877787807814457e-17
+    ]
+  ],
+  "canonical_order_by_primitive_fractional_x": [
+    0,
+    1,
+    2
+  ],
+  "cases": [
+    {
+      "direction": "pair",
+      "h": 0.0,
+      "material": "air",
+      "no_overlap": true,
+      "sum_polygon_area": 0.7499999999999999,
+      "union_area": 0.7499999999999999
+    },
+    {
+      "direction": "pair",
+      "h": 0.04,
+      "material": "air",
+      "no_overlap": true,
+      "sum_polygon_area": 0.7499999999999999,
+      "union_area": 0.7499999999999999
+    },
+    {
+      "direction": "full",
+      "h": 0.0,
+      "material": "air",
+      "no_overlap": true,
+      "sum_polygon_area": 0.7499999999999999,
+      "union_area": 0.7499999999999999
+    },
+    {
+      "direction": "full",
+      "h": 0.04,
+      "material": "air",
+      "no_overlap": true,
+      "sum_polygon_area": 0.7499999999999997,
+      "union_area": 0.7499999999999998
+    },
+    {
+      "direction": "uniform",
+      "h": 0.0,
+      "material": "air",
+      "no_overlap": true,
+      "sum_polygon_area": 0.7499999999999999,
+      "union_area": 0.7499999999999999
+    },
+    {
+      "direction": "uniform",
+      "h": 0.04,
+      "material": "air",
+      "no_overlap": true,
+      "sum_polygon_area": 0.7499999999999999,
+      "union_area": 0.7499999999999999
+    }
+  ],
+  "cyclic_permutations": {
+    "full": [
+      [
+        0.4472135954999579,
+        0.5509898714915044,
+        -0.9982034669914622
+      ],
+      [
+        -0.9982034669914622,
+        0.4472135954999579,
+        0.5509898714915044
+      ],
+      [
+        0.5509898714915044,
+        -0.9982034669914622,
+        0.4472135954999579
+      ]
+    ],
+    "pair": [
+      [
+        1.0,
+        -1.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        -1.0
+      ],
+      [
+        -1.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "uniform": [
+      [
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0
+      ]
+    ]
+  },
+  "cyclic_translation_assignment": true,
+  "material_assignment": "air",
+  "no_overlap": true,
+  "pass": true,
+  "vectors": {
+    "full": [
+      0.4472135954999579,
+      0.5509898714915044,
+      -0.9982034669914622
+    ],
+    "pair": [
+      1.0,
+      -1.0,
+      0.0
+    ],
+    "uniform": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  }
+}

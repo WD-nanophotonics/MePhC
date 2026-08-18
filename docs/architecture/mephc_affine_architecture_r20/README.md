@@ -1,0 +1,1 @@
+R20 exact-face conservative scalar-TE finite-volume cross-check. Terminal=BLOCKED_EFFV_SHAPE_DERIVATIVE_UNRESOLVED; fresh eigensolves=204; exact Shapely line fractions; no production integration.\n

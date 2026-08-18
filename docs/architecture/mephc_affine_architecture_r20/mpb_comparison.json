@@ -1,0 +1,15 @@
+{
+  "full_alpha": 0.2287362654255366,
+  "full_relative_difference": 0.13211624612612852,
+  "full_same_sign": true,
+  "full_within_35pct": true,
+  "mpb_full_mean": 0.2020430907234355,
+  "mpb_pair_mean": 0.294968788242868,
+  "pair_alpha": 0.3106033080504378,
+  "pair_relative_difference": 0.0530039801861912,
+  "pair_same_sign": true,
+  "pair_within_35pct": true,
+  "relation_delta": 0.0042162156122917405,
+  "relation_limit": 0.1326142689441711,
+  "relation_pass": true
+}

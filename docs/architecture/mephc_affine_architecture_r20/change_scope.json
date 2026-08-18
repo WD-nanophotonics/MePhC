@@ -1,0 +1,9 @@
+{
+  "R19_immutable": true,
+  "R21_authorized": false,
+  "adaptive_resolution": false,
+  "dependencies_changed": false,
+  "mpb_meep_independent_solves": 0,
+  "new_files_only_under": "docs/architecture/mephc_affine_architecture_r20/",
+  "production_changes": []
+}

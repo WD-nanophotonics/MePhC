@@ -1,0 +1,1 @@
+R20 fixed-call evidence bundle. Stage A=12; Stage B=192; translation covariance=True; terminal=BLOCKED_EFFV_SHAPE_DERIVATIVE_UNRESOLVED.\n

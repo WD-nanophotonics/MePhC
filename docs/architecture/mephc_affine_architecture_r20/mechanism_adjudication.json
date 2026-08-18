@@ -1,0 +1,15 @@
+{
+  "forbidden_claims_not_made": [
+    "exact theorem",
+    "5sigma certification",
+    "Berry/BCD/topology",
+    "transport/far-field",
+    "R21"
+  ],
+  "fresh_solver_calls": 204,
+  "r19_vs_r20_diagnostic": "EFFV_PARTIAL_IMPROVEMENT",
+  "scientific_terminal_state": "BLOCKED_EFFV_SHAPE_DERIVATIVE_UNRESOLVED",
+  "stage_A_calls": 12,
+  "stage_B_calls": 192,
+  "translation_covariance_pass": true
+}

@@ -1,0 +1,18 @@
+{
+  "environment_mutation": false,
+  "fresh_solver_calls": 0,
+  "mephc_head": "1c839f0060404f50a3d0949f3696afb1473f5cb4",
+  "production_changes": false,
+  "remote_refs": {
+    "MePhC": "1c839f0060404f50a3d0949f3696afb1473f5cb4",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  },
+  "starting_refs": {
+    "MePhC": "1c839f0060404f50a3d0949f3696afb1473f5cb4",
+    "MePhC-SqrLatt": "da39f45de67e72b5ec79d9b04202af6d9c212380",
+    "MePhC-TriLatt": "45891d075d3d5a00d2ee07f8719a94d32e0ae98b"
+  },
+  "status": "IMMUTABLE_EFFV_PREFLIGHT",
+  "trilatt_fresh_solver_calls": 0
+}

@@ -1,0 +1,10 @@
+{
+  "hermiticity_tolerance": 1e-12,
+  "plus_x": "exp(+i*2*pi*qx)",
+  "plus_y": "exp(+i*2*pi*qy)",
+  "q2": [
+    -0.09,
+    0.14
+  ],
+  "reverse": "complex_conjugate"
+}

@@ -1,0 +1,17 @@
+{
+  "N128_origin_half_range": 0.00016689872014306883,
+  "all_pass": true,
+  "gates": {
+    "N128_origin_half_range_relative": true,
+    "N96_MPB_relative_max": true,
+    "N96_to_N128_mean_drift": true,
+    "operator_validation": true,
+    "six_positive_bands": true
+  },
+  "mean_band3": {
+    "N128": 0.17187145885487645,
+    "N96": 0.17190721905546785
+  },
+  "stage_B_allowed": true,
+  "target": 0.1716210835278862
+}

@@ -1,0 +1,488 @@
+{
+  "all_pass": true,
+  "eigensolves": 0,
+  "max_face_coefficient_difference": 0.0,
+  "max_operator_difference": 0.0,
+  "rows": [
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.01,
+      "matched_origin": [
+        -0.9600000000000001,
+        0.0
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "pass": true
+    },
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.02,
+      "matched_origin": [
+        -1.9200000000000002,
+        0.0
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "pass": true
+    },
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.03,
+      "matched_origin": [
+        -2.88,
+        0.0
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "pass": true
+    },
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.04,
+      "matched_origin": [
+        -3.8400000000000003,
+        0.0
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "pass": true
+    },
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.01,
+      "matched_origin": [
+        -0.7100000000000001,
+        0.25
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.25,
+        0.25
+      ],
+      "pass": true
+    },
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.02,
+      "matched_origin": [
+        -1.6700000000000002,
+        0.25
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.25,
+        0.25
+      ],
+      "pass": true
+    },
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.03,
+      "matched_origin": [
+        -2.63,
+        0.25
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.25,
+        0.25
+      ],
+      "pass": true
+    },
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.04,
+      "matched_origin": [
+        -3.5900000000000003,
+        0.25
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.25,
+        0.25
+      ],
+      "pass": true
+    },
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.01,
+      "matched_origin": [
+        -0.4600000000000001,
+        0.5
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "pass": true
+    },
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.02,
+      "matched_origin": [
+        -1.4200000000000002,
+        0.5
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "pass": true
+    },
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.03,
+      "matched_origin": [
+        -2.38,
+        0.5
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "pass": true
+    },
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.04,
+      "matched_origin": [
+        -3.3400000000000003,
+        0.5
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "pass": true
+    },
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.01,
+      "matched_origin": [
+        -0.21000000000000008,
+        0.75
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.75,
+        0.75
+      ],
+      "pass": true
+    },
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.02,
+      "matched_origin": [
+        -1.1700000000000002,
+        0.75
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.75,
+        0.75
+      ],
+      "pass": true
+    },
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.03,
+      "matched_origin": [
+        -2.13,
+        0.75
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.75,
+        0.75
+      ],
+      "pass": true
+    },
+    {
+      "N": 96,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.04,
+      "matched_origin": [
+        -3.0900000000000003,
+        0.75
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.75,
+        0.75
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.01,
+      "matched_origin": [
+        -1.28,
+        0.0
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.02,
+      "matched_origin": [
+        -2.56,
+        0.0
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.03,
+      "matched_origin": [
+        -3.84,
+        0.0
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.04,
+      "matched_origin": [
+        -5.12,
+        0.0
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.01,
+      "matched_origin": [
+        -1.03,
+        0.25
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.25,
+        0.25
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.02,
+      "matched_origin": [
+        -2.31,
+        0.25
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.25,
+        0.25
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.03,
+      "matched_origin": [
+        -3.59,
+        0.25
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.25,
+        0.25
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.04,
+      "matched_origin": [
+        -4.87,
+        0.25
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.25,
+        0.25
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.01,
+      "matched_origin": [
+        -0.78,
+        0.5
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.02,
+      "matched_origin": [
+        -2.06,
+        0.5
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.03,
+      "matched_origin": [
+        -3.34,
+        0.5
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.04,
+      "matched_origin": [
+        -4.62,
+        0.5
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.01,
+      "matched_origin": [
+        -0.53,
+        0.75
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.75,
+        0.75
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.02,
+      "matched_origin": [
+        -1.81,
+        0.75
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.75,
+        0.75
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.03,
+      "matched_origin": [
+        -3.09,
+        0.75
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.75,
+        0.75
+      ],
+      "pass": true
+    },
+    {
+      "N": 128,
+      "face_coefficient_max_difference": 0.0,
+      "h": 0.04,
+      "matched_origin": [
+        -4.37,
+        0.75
+      ],
+      "operator_max_difference": 0.0,
+      "origin": [
+        0.75,
+        0.75
+      ],
+      "pass": true
+    }
+  ]
+}
