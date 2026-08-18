@@ -241,6 +241,7 @@ class Band:
         polarization=None,
         eigensolver_tolerance=1e-7,
         deterministic=False,
+        overlap_formulation="energy_eh",
     ):
         """Configure BerryCurvatureCalculator with the verified R6 geometry."""
         context = self._prepare_supercell_geometry(pattern, field)
@@ -259,6 +260,7 @@ class Band:
             overlap_tol=overlap_tol,
             eigensolver_tolerance=eigensolver_tolerance,
             deterministic=deterministic,
+            overlap_formulation=overlap_formulation,
         )
 
     def run_supercell(self, pattern, field, *, q_points, num_bands, resolution=None, polarization=None):

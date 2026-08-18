@@ -40,6 +40,7 @@ class BerryCurvatureCalculator:
         overlap_tol: float = 1e-14,
         eigensolver_tolerance: float = 1e-7,
         deterministic: bool = False,
+        overlap_formulation: str = "energy_eh",
     ):
         """Configure an Abelian, single-band plaquette calculation.
 
@@ -59,6 +60,7 @@ class BerryCurvatureCalculator:
         self.overlap_tol = overlap_tol
         self.eigensolver_tolerance = self._validate_eigensolver_tolerance(eigensolver_tolerance)
         self.deterministic = self._validate_deterministic(deterministic)
+        self.overlap_formulation = self._validate_overlap_formulation(overlap_formulation)
         self.eps = None
 
     def cartesian_to_reciprocal(self, k_point) -> mp.Vector3:
@@ -101,6 +103,43 @@ class BerryCurvatureCalculator:
         if type(value) is not bool:
             raise ValueError("deterministic must be a bool.")
         return value
+
+    @staticmethod
+    def _validate_overlap_formulation(value):
+        if type(value) is not str or value not in {"energy_eh", "mpb_h"}:
+            raise ValueError("overlap_formulation must be exactly 'energy_eh' or 'mpb_h'.")
+        return value
+
+    def _validate_h_fields(self, h_fields, operation):
+        h_fields = np.asarray(h_fields)
+        expected = self._spatial_shape()
+        if h_fields.ndim != 4 or h_fields.shape[3] != 3:
+            raise ValueError(f"{operation} requires H fields with shape (bands, nx, ny, 3); received {h_fields.shape}.")
+        if h_fields.shape[1:3] != expected:
+            raise ValueError(f"{operation} received H spatial shape {h_fields.shape[1:3]}; expected spatial shape {expected}.")
+        self._require_finite(h_fields, "H")
+        return h_fields
+
+    def normalize_h_fields(self, h_fields):
+        """Normalize H-only MPB eigenvector fields in the native L2 metric."""
+        h_fields = self._validate_h_fields(h_fields, "H-field normalization")
+        energy = np.sum(np.conj(h_fields) * h_fields, axis=(1, 2, 3))
+        norm = np.sqrt(np.real(energy))
+        if np.any(norm <= self.overlap_tol):
+            raise FloatingPointError("Encountered a near-zero H norm during Berry curvature normalization.")
+        return h_fields / norm[:, None, None, None]
+
+    def _h_link_overlap(self, h1, h2):
+        """Return MPB-native H-space unit links from periodic H envelopes."""
+        h1 = self._validate_h_fields(h1, "H-space link overlap")
+        h2 = self._validate_h_fields(h2, "H-space link overlap")
+        if h1.shape != h2.shape:
+            raise ValueError(f"H-space link overlap requires matching H shapes; received {h1.shape} and {h2.shape}.")
+        overlap = np.sum(np.conj(h1) * h2, axis=(1, 2, 3))
+        magnitude = np.abs(overlap)
+        if np.any(magnitude <= self.overlap_tol):
+            raise FloatingPointError("Encountered a near-zero H-space link overlap while computing Berry curvature.")
+        return overlap / magnitude
 
     def _spatial_shape(self) -> tuple[int, int]:
         size = getattr(self.geometry_lattice, "size", None)
@@ -267,23 +306,29 @@ class BerryCurvatureCalculator:
         fields = []
         for point in plaquette:
             e_fields, h_fields = self.calculate_fields(point)
-            e_fields, h_fields = self.normalize_fields(e_fields, h_fields)
-            fields.append((e_fields, h_fields, self.eps.copy()))
+            if self.overlap_formulation == "mpb_h":
+                fields.append((None, self.normalize_h_fields(h_fields), None))
+            else:
+                e_fields, h_fields = self.normalize_fields(e_fields, h_fields)
+                fields.append((e_fields, h_fields, self.eps.copy()))
 
         def compute_one_band(idx: int) -> float:
             links = []
             for i in range(4):
                 e1, h1, eps1 = fields[i]
                 e2, h2, _ = fields[(i + 1) % 4]
-                links.append(
-                    self.link_overlap(
-                        e1[idx : idx + 1],
-                        h1[idx : idx + 1],
-                        e2[idx : idx + 1],
-                        h2[idx : idx + 1],
-                        eps=eps1,
+                if self.overlap_formulation == "mpb_h":
+                    links.append(self._h_link_overlap(h1[idx : idx + 1], h2[idx : idx + 1]))
+                else:
+                    links.append(
+                        self.link_overlap(
+                            e1[idx : idx + 1],
+                            h1[idx : idx + 1],
+                            e2[idx : idx + 1],
+                            h2[idx : idx + 1],
+                            eps=eps1,
+                        )
                     )
-                )
             flux = np.angle(links[0] * links[1] * links[2] * links[3])
             curvature = flux / (step * step)
             curvature /= (2 * np.pi) ** 2
