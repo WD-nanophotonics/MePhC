@@ -1,0 +1,1 @@
+Fixed q2=(-0.09,0.14), scalar TE, 3x1 square-hole supercell, bands 1-6, band 3, N in {96,128}, B origins {1/8,3/8,5/8,7/8}, and h in {0.01,0.02,0.03,0.04}. No theorem, retroactive MPB 5sigma, cubic, Berry/BCD/topology, transport/far-field, local-deformation, or universal grid-error claim is made.

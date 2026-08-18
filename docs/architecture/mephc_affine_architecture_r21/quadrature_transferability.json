@@ -1,0 +1,15 @@
+{
+  "A_B_baseline_gate": true,
+  "all_pass": true,
+  "full_B96_B128_same_sign": true,
+  "full_all_three_B128_mean_secants_same_sign": true,
+  "full_alpha_A_B_same_sign": true,
+  "full_relative_drift_le_15pct": true,
+  "full_vs_075_pair_relation": true,
+  "pair_B96_B128_same_sign": true,
+  "pair_all_three_B128_mean_secants_same_sign": true,
+  "pair_alpha_A_B_same_sign": true,
+  "pair_relative_drift_le_10pct": true,
+  "uniform_B_mean_secants_do_not_mimic_pair_full": true,
+  "uniform_alpha_A_B_null_consistent": true
+}

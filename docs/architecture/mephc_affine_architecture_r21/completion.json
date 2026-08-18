@@ -1,0 +1,13 @@
+{
+  "completion_gmail_required": false,
+  "contract_sha256": "631d8468b5e9d33b657d0c2456cdebf3b76534ae000468ddbc3c313cc01b249d",
+  "fresh_solver_calls": 200,
+  "post_seal_record_commit_forbidden": true,
+  "r22_authorized": false,
+  "schema": "mephc.affine_architecture_r21.completion.v1",
+  "scientific_terminal_state": "CLOSED_SHIFTED_QUADRATURE_EFFV_CROSSCHECK_SUPPORTED",
+  "seal_status": "SEALED",
+  "stage_A_calls": 8,
+  "stage_B_calls": 192,
+  "trilatt_fresh_solver_calls": 0
+}

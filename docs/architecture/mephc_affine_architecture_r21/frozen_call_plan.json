@@ -1,0 +1,2211 @@
+{
+  "calls": [
+    {
+      "N": 96,
+      "direction": "baseline",
+      "h": 0.0,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "zero",
+      "stage": "A"
+    },
+    {
+      "N": 96,
+      "direction": "baseline",
+      "h": 0.0,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "zero",
+      "stage": "A"
+    },
+    {
+      "N": 96,
+      "direction": "baseline",
+      "h": 0.0,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "zero",
+      "stage": "A"
+    },
+    {
+      "N": 96,
+      "direction": "baseline",
+      "h": 0.0,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "zero",
+      "stage": "A"
+    },
+    {
+      "N": 128,
+      "direction": "baseline",
+      "h": 0.0,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "zero",
+      "stage": "A"
+    },
+    {
+      "N": 128,
+      "direction": "baseline",
+      "h": 0.0,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "zero",
+      "stage": "A"
+    },
+    {
+      "N": 128,
+      "direction": "baseline",
+      "h": 0.0,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "zero",
+      "stage": "A"
+    },
+    {
+      "N": 128,
+      "direction": "baseline",
+      "h": 0.0,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "zero",
+      "stage": "A"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 96,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.125,
+        0.125
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.375,
+        0.375
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.625,
+        0.625
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.01,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.02,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.03,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "pair",
+      "h": 0.04,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.01,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.02,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.03,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "full",
+      "h": 0.04,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.01,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.02,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.03,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "plus",
+      "stage": "B"
+    },
+    {
+      "N": 128,
+      "direction": "uniform",
+      "h": 0.04,
+      "origin": [
+        0.875,
+        0.875
+      ],
+      "sign": "minus",
+      "stage": "B"
+    }
+  ],
+  "expected_total": 200,
+  "independent_method": "exact_face_conservative_scalar_TE_finite_volume",
+  "no_adaptation": true,
+  "no_retries": true,
+  "stage_A_calls": 8,
+  "stage_B_calls": 192,
+  "status": "FROZEN"
+}

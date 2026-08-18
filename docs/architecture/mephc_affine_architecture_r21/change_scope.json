@@ -1,0 +1,9 @@
+{
+  "R20_immutable": true,
+  "R22_authorized": false,
+  "dependencies_changed": false,
+  "mpb_meep_solver_calls": 0,
+  "new_files_only_under": "docs/architecture/mephc_affine_architecture_r21/",
+  "production_changes": [],
+  "trilatt_fresh_solver_calls": 0
+}
