@@ -80,27 +80,90 @@ class BerryCurvatureCalculator:
         else:
             ms.run_parity(self.polarization, False, self.run_band_func)
 
+    def _spatial_shape(self) -> tuple[int, int]:
+        size = getattr(self.geometry_lattice, "size", None)
+        if size is None or not hasattr(size, "x") or not hasattr(size, "y"):
+            raise ValueError("geometry_lattice must expose a 2D size for MPB field validation.")
+        lattice_size = np.asarray([float(size.x), float(size.y)], dtype=float)
+        if not np.all(np.isfinite(lattice_size)) or np.any(lattice_size <= 0.0):
+            raise ValueError(f"geometry_lattice has invalid 2D size {tuple(lattice_size)}.")
+        scaled = lattice_size * self.resolution
+        rounded = np.rint(scaled).astype(int)
+        if not np.allclose(scaled, rounded, rtol=0.0, atol=1e-12) or np.any(rounded < 1):
+            raise ValueError(
+                f"geometry_lattice size {tuple(lattice_size)} and resolution {self.resolution} "
+                "do not define integral positive spatial dimensions."
+            )
+        return int(rounded[0]), int(rounded[1])
+
+    @staticmethod
+    def _require_finite(array, kind):
+        try:
+            finite = np.all(np.isfinite(array))
+        except TypeError as error:
+            raise ValueError(f"{kind} field contains values that are not finite numeric data.") from error
+        if not finite:
+            raise ValueError(f"{kind} field contains non-finite values.")
+
+    def _shape_error(self, kind, array) -> ValueError:
+        return ValueError(
+            f"Cannot reshape MPB {kind} field with received shape {array.shape}; "
+            f"expected spatial shape {self._spatial_shape()} for geometry_lattice size "
+            f"{self.geometry_lattice.size} at resolution {self.resolution}."
+        )
+
     def _reshape_vector_field(self, field) -> np.ndarray:
         array = np.asarray(field)
-        expected = self.resolution * self.resolution * 3
-        if array.size == expected:
-            return array.reshape(self.resolution, self.resolution, 3)
-        if array.ndim == 4 and array.shape[-1] == 3 and array.shape[2] == 1:
-            return array[:, :, 0, :]
-        if array.ndim == 3 and array.shape[-1] == 3:
-            return array
-        raise ValueError(f"Cannot reshape MPB vector field with shape {array.shape} for resolution {self.resolution}.")
+        nx, ny = self._spatial_shape()
+        expected_count = nx * ny * 3
+        result = None
+        if array.ndim == 1 and array.size == expected_count:
+            result = array.reshape(nx, ny, 3)
+        elif array.ndim == 2 and array.shape == (nx * ny, 3):
+            result = array.reshape(nx, ny, 3)
+        elif array.ndim == 4 and array.shape[2:] == (1, 3) and array.shape[:2] == (nx, ny):
+            result = array[:, :, 0, :]
+        elif array.ndim == 3 and array.shape == (nx, ny, 3):
+            result = array
+        if result is None:
+            raise self._shape_error("vector", array)
+        self._require_finite(result, "vector")
+        return result
 
     def _reshape_epsilon(self, epsilon) -> np.ndarray:
         array = np.asarray(epsilon)
-        expected = self.resolution * self.resolution
-        if array.size == expected:
-            return array.reshape(self.resolution, self.resolution)
-        if array.ndim == 3 and array.shape[2] == 1:
-            return array[:, :, 0]
-        if array.ndim == 2:
-            return array
-        raise ValueError(f"Cannot reshape MPB epsilon with shape {array.shape} for resolution {self.resolution}.")
+        nx, ny = self._spatial_shape()
+        expected_count = nx * ny
+        result = None
+        if array.ndim == 1 and array.size == expected_count:
+            result = array.reshape(nx, ny)
+        elif array.ndim == 3 and array.shape[2:] == (1,) and array.shape[:2] == (nx, ny):
+            result = array[:, :, 0]
+        elif array.ndim == 2 and array.shape == (nx, ny):
+            result = array
+        if result is None:
+            raise self._shape_error("epsilon", array)
+        self._require_finite(result, "epsilon")
+        return result
+
+    def _validate_field_shapes(self, e_fields, h_fields, eps, operation):
+        e_fields = np.asarray(e_fields)
+        h_fields = np.asarray(h_fields)
+        expected = self._spatial_shape()
+        if e_fields.ndim != 4 or e_fields.shape[3] != 3:
+            raise ValueError(f"{operation} requires E fields with shape (bands, nx, ny, 3); received {e_fields.shape}.")
+        if h_fields.ndim != 4 or h_fields.shape[3] != 3:
+            raise ValueError(f"{operation} requires H fields with shape (bands, nx, ny, 3); received {h_fields.shape}.")
+        if e_fields.shape != h_fields.shape:
+            raise ValueError(f"{operation} requires matching E/H shapes; received {e_fields.shape} and {h_fields.shape}.")
+        if e_fields.shape[1:3] != expected:
+            raise ValueError(f"{operation} received E/H spatial shape {e_fields.shape[1:3]}; expected spatial shape {expected}.")
+        eps = self._reshape_epsilon(eps)
+        if eps.shape != expected:
+            raise ValueError(f"{operation} received epsilon spatial shape {eps.shape}; expected spatial shape {expected}.")
+        self._require_finite(e_fields, "E")
+        self._require_finite(h_fields, "H")
+        return e_fields, h_fields, eps
 
     def calculate_fields(self, k_point):
         """Return E and H fields for all bands at one Cartesian k-point."""
@@ -124,9 +187,12 @@ class BerryCurvatureCalculator:
                 raise RuntimeError("epsilon is unavailable; call calculate_fields first or pass eps explicitly.")
             eps = self.eps
 
-        eps = np.asarray(eps).reshape(1, self.resolution, self.resolution, 1)
+        e_fields, h_fields, eps = self._validate_field_shapes(
+            e_fields, h_fields, eps, "field normalization"
+        )
+        eps_weight = eps[None, :, :, None]
         energy = (
-            np.sum(eps * np.conj(e_fields) * e_fields, axis=(1, 2, 3))
+            np.sum(eps_weight * np.conj(e_fields) * e_fields, axis=(1, 2, 3))
             + np.sum(np.conj(h_fields) * h_fields, axis=(1, 2, 3))
         )
         norm = np.sqrt(np.real(energy))
@@ -141,9 +207,11 @@ class BerryCurvatureCalculator:
                 raise RuntimeError("epsilon is unavailable; call calculate_fields first or pass eps explicitly.")
             eps = self.eps
 
-        eps = np.asarray(eps).reshape(1, self.resolution, self.resolution, 1)
+        e1, h1, eps = self._validate_field_shapes(e1, h1, eps, "link overlap")
+        e2, h2, _ = self._validate_field_shapes(e2, h2, eps, "link overlap")
+        eps_weight = eps[None, :, :, None]
         overlap = (
-            np.sum(eps * np.conj(e1) * e2, axis=(1, 2, 3))
+            np.sum(eps_weight * np.conj(e1) * e2, axis=(1, 2, 3))
             + np.sum(np.conj(h1) * h2, axis=(1, 2, 3))
         )
         magnitude = np.abs(overlap)
