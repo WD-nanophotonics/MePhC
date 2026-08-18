@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+from dataclasses import dataclass
 
 import meep as mp
 from matplotlib import pyplot as plt
@@ -25,6 +26,17 @@ from .kspace import (
 from .plotting import plot_band_path, plot_scalar_field
 from .capabilities import field_capabilities, require_primitive, require_supercell
 from .deformation import canonicalize_field
+
+
+@dataclass(frozen=True)
+class SupercellGeometryContext:
+    """Verified geometry artifacts shared by R6 consumers."""
+
+    field: object
+    replication: tuple[int, int]
+    geometry_lattice: object
+    feature_geometry: list
+    geometry: list
 
 
 class Band:
@@ -168,26 +180,16 @@ class Band:
             shape=shape,
         )
 
-    def build_supercell_solver(self, pattern, field, *, q_points, num_bands, resolution=None):
-        """Build a periodic-supercell MPB solver from explicit R6 inputs.
-        This path is intentionally separate from the legacy primitive-cell
-        workflow.  The field capability and generic q-point IDs are checked
-        before any solver object is created.
-        """
+    def _prepare_supercell_geometry(self, pattern, field):
+        """Prepare the sole verified R6 geometry/context authority."""
         field = canonicalize_field(field)
-        require_supercell(field, "periodic-supercell MPB solve")
-        lattice_model = BravaisLattice2D(
-            field.direct_basis,
-            kind="custom",
-            reference_family="custom",
-            deformation_matrix=np.eye(2),
-        )
-        replication = np.asarray(field.supercell.matrix, dtype=int)
-        if not np.array_equal(replication, np.diag(np.diag(replication))):
+        require_supercell(field, "periodic-supercell geometry")
+        replication_matrix = np.asarray(field.supercell.matrix, dtype=int)
+        if not np.array_equal(replication_matrix, np.diag(np.diag(replication_matrix))):
             raise ValueError("R6 supercell solver currently requires diagonal replication")
-        size = tuple(int(value) for value in np.diag(replication))
-        geometry_lattice = field.supercell.reference_lattice.to_meep_lattice(size=size)
-        geometry = to_meep_geometry(
+        replication = tuple(int(value) for value in np.diag(replication_matrix))
+        geometry_lattice = field.supercell.reference_lattice.to_meep_lattice(size=replication)
+        feature_geometry = to_meep_geometry(
             pattern,
             material=self.feature_material,
             height=self.h,
@@ -195,6 +197,18 @@ class Band:
             rectify=True,
             shape="auto",
         )
+        geometry = self.create_material_block() + feature_geometry
+        return SupercellGeometryContext(
+            field=field,
+            replication=replication,
+            geometry_lattice=geometry_lattice,
+            feature_geometry=feature_geometry,
+            geometry=geometry,
+        )
+
+    def build_supercell_solver(self, pattern, field, *, q_points, num_bands, resolution=None):
+        """Build a periodic-supercell MPB solver from explicit R6 inputs."""
+        context = self._prepare_supercell_geometry(pattern, field)
         vectors = []
         for point in q_points:
             point_id = getattr(point, "point_id", None)
@@ -206,14 +220,43 @@ class Band:
                 raise ValueError("supercell q-points must be finite 2D fractional coordinates")
             vectors.append(mp.Vector3(float(values[0]), float(values[1])))
         return mpb.ModeSolver(
-            geometry_lattice=geometry_lattice,
-            geometry=self.create_material_block() + geometry,
+            geometry_lattice=context.geometry_lattice,
+            geometry=context.geometry,
             default_material=mp.air,
             resolution=self.resolution if resolution is None else int(resolution),
             num_bands=int(num_bands),
             k_points=vectors,
             verbose=False,
         )
+
+    def build_supercell_berry_calculator(
+        self,
+        pattern,
+        field,
+        *,
+        num_bands,
+        resolution=None,
+        overlap_tol=1e-14,
+        run_band_func=mpb.fix_efield_phase,
+        polarization=None,
+    ):
+        """Configure BerryCurvatureCalculator with the verified R6 geometry."""
+        context = self._prepare_supercell_geometry(pattern, field)
+        normalized = self._normalize_polarization(
+            self.polarization if polarization is None else polarization
+        )
+        return BerryCurvatureCalculator(
+            geometry=context.geometry,
+            geometry_lattice=context.geometry_lattice,
+            resolution=self.resolution if resolution is None else int(resolution),
+            num_bands=int(num_bands),
+            polarization=mp.TE if normalized == "TE" else mp.TM,
+            run_band_func=run_band_func,
+            default_material=mp.air,
+            verbose=False,
+            overlap_tol=overlap_tol,
+        )
+
     def run_supercell(self, pattern, field, *, q_points, num_bands, resolution=None, polarization=None):
         """Run the verified periodic-supercell solver and return its raw solver."""
         solver = self.build_supercell_solver(
