@@ -64,6 +64,11 @@ __all__ = [
     "build_supercell_geometry_identity",
     "identity_from_geometry",
     "EigenmodeQualifiedSupercellBerryCalculator",
+    "BerryObservableThresholds",
+    "BerryObservableProvenance",
+    "QualifiedBerrySample",
+    "BerryObservableConvergenceCertificate",
+    "certify_berry_observable_convergence",
 ]
 
 
@@ -204,4 +209,11 @@ def __getattr__(name):
     if name == "EigenmodeQualifiedSupercellBerryCalculator":
         from .qualified_berry import EigenmodeQualifiedSupercellBerryCalculator
         return EigenmodeQualifiedSupercellBerryCalculator
+    if name in {
+        "BerryObservableThresholds", "BerryObservableProvenance",
+        "QualifiedBerrySample", "BerryObservableConvergenceCertificate",
+        "certify_berry_observable_convergence",
+    }:
+        from . import berry_convergence
+        return getattr(berry_convergence, name)
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
