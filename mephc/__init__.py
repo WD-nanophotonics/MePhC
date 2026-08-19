@@ -150,6 +150,14 @@ __all__ = [
     "SubspaceQualificationResult",
     "qualify_local_subspace",
     "qualify_subspace_pair",
+    "WILSON_LINE_QUALIFIED",
+    "WILSON_LOOP_QUALIFIED",
+    "WILSON_INPUT_INCOMPLETE",
+    "WILSON_INPUT_UNQUALIFIED",
+    "WILSON_TRANSPORT_AUTHORIZATION_SCOPE",
+    "WilsonTransportResult",
+    "compose_wilson_transport",
+    "compose_wilson_line_or_loop",
 
 ]
 
@@ -316,6 +324,15 @@ def __getattr__(name):
     }:
         from . import spectral_association
         return getattr(spectral_association, name)
+
+    if name in {
+        "WILSON_LINE_QUALIFIED", "WILSON_LOOP_QUALIFIED",
+        "WILSON_INPUT_INCOMPLETE", "WILSON_INPUT_UNQUALIFIED",
+        "WILSON_TRANSPORT_AUTHORIZATION_SCOPE", "WilsonTransportResult",
+        "compose_wilson_transport", "compose_wilson_line_or_loop",
+    }:
+        from . import wilson_geometry
+        return getattr(wilson_geometry, name)
 
     if name in {"EigenmodeCertificateBinding", "bind_eigenmode_certificate", "EigenmodeCertificateScopeBinding", "bind_eigenmode_certificate_for_resolution"}:
         from . import convergence_binding
