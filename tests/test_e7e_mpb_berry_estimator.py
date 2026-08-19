@@ -140,7 +140,7 @@ def test_analytic_dirac_sign_and_refinement_error_decrease():
     errors = [abs(value - expected) for value in result.estimates]
     assert result.is_qualified
     assert result.is_live_qualified is False
-    assert errors[-1] < errors[0]
+    assert all(right < left for left, right in zip(errors, errors[1:]))
     assert abs(result.estimates[-1] - expected) < 2e-3
 
 
@@ -175,10 +175,19 @@ def test_live_mpb_estimates_are_finite_at_all_three_levels():
     assert all(np.isfinite(value) for value in result.estimates)
 
 
-def test_live_phase_callback_preserves_estimates():
+def _phase_delta(left, right):
+    return abs(np.angle(np.exp(1j * (left - right))))
+
+
+def test_live_phase_callback_preserves_area_phase_and_estimates():
     base = estimate_mpb_rank1_berry_curvature(live_e7d())
     phased = estimate_mpb_rank1_berry_curvature(live_e7d(mpb.fix_hfield_phase))
-    assert np.allclose(base.estimates, phased.estimates, atol=LIVE_ESTIMATE_TOLERANCE)
+    area_deltas = [abs(a.signed_area - b.signed_area) for a, b in zip(base.levels, phased.levels)]
+    phase_deltas = [_phase_delta(a.wilson_phase, b.wilson_phase) for a, b in zip(base.levels, phased.levels)]
+    estimate_deltas = [abs(a - b) for a, b in zip(base.estimates, phased.estimates)]
+    assert max(area_deltas) == pytest.approx(0.0, abs=1e-14)
+    assert max(phase_deltas) < 1e-6
+    assert max(estimate_deltas) < LIVE_ESTIMATE_TOLERANCE
 
 
 def test_live_orientation_reversal_preserves_curvature():
@@ -195,13 +204,57 @@ def test_live_orientation_reversal_preserves_curvature():
     )
     forward = estimate_mpb_rank1_berry_curvature(compose_mpb_plaquette_holonomy(source))
     reverse_result = estimate_mpb_rank1_berry_curvature(compose_mpb_plaquette_holonomy(reverse_source))
-    assert np.allclose(forward.estimates, reverse_result.estimates, atol=LIVE_ESTIMATE_TOLERANCE)
+    area_residuals = [abs(a.signed_area + b.signed_area) for a, b in zip(forward.levels, reverse_result.levels)]
+    phase_residuals = [_phase_delta(a.wilson_phase, -b.wilson_phase) for a, b in zip(forward.levels, reverse_result.levels)]
+    estimate_residuals = [abs(a - b) for a, b in zip(forward.estimates, reverse_result.estimates)]
+    assert max(area_residuals) < 1e-14
+    assert max(phase_residuals) < 1e-6
+    assert max(estimate_residuals) < LIVE_ESTIMATE_TOLERANCE
 
 
 def test_symmetry_zero_is_only_a_diagnostic():
     result = estimate_mpb_rank1_berry_curvature(live_e7d())
     assert np.isfinite(result.estimates[-1])
     assert "observable-convergence" not in json.dumps(result.to_dict()).lower()
+
+
+def test_e7e_serialization_conventions_and_scope_guard():
+    result = estimate_mpb_rank1_berry_curvature(dirac_e7d(), require_live=False)
+    payload = result.to_dict()
+    encoded = json.dumps(payload).lower()
+    assert payload["coordinate_convention"] == "exact ordered two-dimensional Cartesian reciprocal k coordinates"
+    assert payload["sign_convention"] == "Omega_est = -phi_W / A_signed; A=i<u|grad_k u>"
+    for forbidden in (
+        "observable-convergence", "chern", "valley-chern", "bcd",
+        "matrix logarithm", "local non-abelian curvature",
+        "global-map", "production-authorization",
+    ):
+        assert forbidden not in encoded
+
+
+def test_e7e_spoofed_live_provenance_stays_non_live_and_preserves_readonly_evidence():
+    base = e7d_static()
+    spoofed_levels = tuple(
+        tuple(replace(
+            snapshot,
+            provenance={
+                **dict(snapshot.provenance),
+                "live_mpb_extraction_validated": True,
+            },
+        ) for snapshot in level)
+        for level in base.source_result.snapshots
+    )
+    spoofed_source = replace(
+        base.source_result, snapshots=spoofed_levels, require_live=False
+    )
+    result = estimate_mpb_rank1_berry_curvature(
+        replace(base, source_result=spoofed_source), require_live=False
+    )
+    assert result.is_live_qualified is False
+    product = result.levels[0].wilson_result.product
+    assert product.flags.writeable is False
+    with pytest.raises(ValueError):
+        product[0, 0] = 2.0
 
 
 def test_fail_closed_rank_live_and_unqualified_inputs():
