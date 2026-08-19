@@ -103,8 +103,10 @@ def _eigenmode_certificate(resolution, *, backend="fixture", digest="e7f"):
 
 
 def _sample(plus, tr, *, resolution, level, cert=True, provenance=None):
-    plus = _tune(plus, (.1, .10001, .100011))
-    tr = _tune(tr, (-.1, -.10001, -.100011))
+    if all(level.status == "BERRY_ESTIMATE_QUALIFIED" for level in plus.levels):
+        plus = _tune(plus, (.1, .10001, .100011))
+    if all(level.status == "BERRY_ESTIMATE_QUALIFIED" for level in tr.levels):
+        tr = _tune(tr, (-.1, -.10001, -.100011))
     return E7FBerryObservableSample(
         plus_result=plus, tr_result=tr, selected_level=level,
         resolution=resolution, step=plus.levels[level].step,
@@ -187,12 +189,13 @@ def test_e7f_center_orientation_and_provenance_are_fail_closed():
     assert failed.status == "FAIL"
 
 
-def _live_e7d(center):
+def _live_e7d(center, phase_callback=None):
     provider = MPBLiveSpectralProvider(
         geometry=[mp.Cylinder(.2, material=mp.Medium(epsilon=12))],
         geometry_lattice=mp.Lattice(size=mp.Vector3(1, 1)), resolution=6,
         num_bands=2, polarization=mp.TE, default_material=mp.air,
         eigensolver_tolerance=1e-7, deterministic=True, mesh_size=3,
+        phase_callback=phase_callback,
     )
     levels = []
     for h in (.02, .01, .005):
@@ -232,3 +235,248 @@ def test_e7f_live_tr_smoke_remains_incomplete_until_resolution_tail_exists():
     assert np.isfinite(samples[-1].omega_plus)
     assert np.isfinite(samples[-1].omega_tr)
     assert certificate.status == "INCOMPLETE"
+
+def _transform(result, center, transform):
+    center = np.asarray(center, dtype=float)
+    old_center = np.mean(
+        np.asarray([v.k_point for v in result.levels[0].boundary_vertices]), axis=0
+    )
+    levels, boundaries, paths = [], [], []
+    for level, path, boundary in zip(
+        result.levels, result.source_result.path_results,
+        result.source_result.source_result.boundary_results,
+    ):
+        vertices = tuple(
+            replace(
+                vertex,
+                k_point=tuple(center + transform(np.asarray(vertex.k_point) - old_center)),
+            )
+            for vertex in level.boundary_vertices
+        )
+        boundaries.append(replace(boundary, vertices=vertices))
+        paths.append(replace(path, vertices=vertices))
+        levels.append(replace(level, boundary_vertices=vertices,
+                              boundary_result=boundaries[-1], path_result=paths[-1]))
+    e7c = replace(result.source_result.source_result,
+                  boundary_results=tuple(boundaries))
+    e7d = replace(result.source_result, source_result=e7c,
+                  path_results=tuple(paths))
+    return replace(result, source_result=e7d, levels=tuple(levels))
+
+
+def _live_samples(plus, tr):
+    return tuple(
+        E7FBerryObservableSample(
+            plus_result=plus, tr_result=tr, selected_level=level,
+            resolution=6, step=plus.levels[level].step,
+            eigenmode_plus=_eigenmode_certificate(6, backend="mpb", digest="live"),
+            eigenmode_tr=_eigenmode_certificate(6, backend="mpb", digest="live"),
+            provenance={"backend": "mpb", "center": [.17, .23]},
+        )
+        for level in (0, 1, 2)
+    )
+
+
+def test_e7f_incomplete_e7e_and_nonpass_eigenmode_never_become_fail():
+    resolution, step = _static_ladders()
+    incomplete_level = replace(
+        resolution[0].plus_result.levels[2],
+        status="BERRY_INPUT_INCOMPLETE", curvature_estimate=None,
+    )
+    incomplete_result = replace(
+        resolution[0].plus_result,
+        levels=resolution[0].plus_result.levels[:2] + (incomplete_level,),
+    )
+    incomplete = replace(resolution[0], plus_result=incomplete_result)
+    assert certify_e7e_berry_observable_convergence(
+        (incomplete, *resolution[1:]), step,
+        thresholds=_thresholds(), require_live=False,
+    ).status == "INCOMPLETE"
+    for state in ("FAIL", "INCOMPLETE"):
+        nonpass = replace(resolution[0], eigenmode_plus=replace(
+            resolution[0].eigenmode_plus, status=state,
+        ))
+        result = certify_e7e_berry_observable_convergence(
+            (nonpass, *resolution[1:]), step,
+            thresholds=_thresholds(), require_live=False,
+        )
+        assert result.status == "INCOMPLETE"
+
+
+def test_e7f_mixed_incomplete_and_numeric_fail_preserves_both_diagnostics():
+    resolution, step = _static_ladders()
+    mixed = replace(
+        resolution[0],
+        plus_result=_tune(resolution[0].plus_result, (.1, .2, .3)),
+        eigenmode_plus=None,
+    )
+    result = certify_e7e_berry_observable_convergence(
+        (mixed, *resolution[1:]), step,
+        thresholds=_thresholds(), require_live=False,
+    )
+    assert result.status == "INCOMPLETE"
+    assert any(
+        check.status == "FAIL" and check.name.startswith("resolution.plus")
+        for check in result.checks
+    )
+
+
+def test_e7f_semantic_fail_matrix():
+    resolution, step = _static_ladders()
+    cases = []
+    cases.append(replace(resolution[0], tr_result=_relocate(
+        resolution[0].tr_result, (-.2, -.29),
+    )))
+    cases.append(replace(resolution[0], tr_result=_transform(
+        resolution[0].tr_result, (-.2, -.3),
+        lambda point: point * np.asarray((1.5, 1.0)),
+    )))
+    cases.append(replace(resolution[0], tr_result=_transform(
+        resolution[0].tr_result, (-.2, -.3),
+        lambda point: point[::-1],
+    )))
+    cases.append(replace(
+        resolution[0],
+        plus_result=replace(
+            resolution[0].plus_result,
+            coordinate_convention="wrong",
+        ),
+    ))
+    cases.append(replace(
+        resolution[0],
+        plus_result=replace(
+            resolution[0].plus_result,
+            sign_convention="wrong",
+        ),
+    ))
+    rank_two = estimate_mpb_rank1_berry_curvature(
+        _E7E.e7d_static(rank=2), require_live=False,
+    )
+    cases.append(_sample(
+        _relocate(rank_two, (.2, .3)),
+        _relocate(rank_two, (-.2, -.3)),
+        resolution=3, level=2,
+    ))
+    cases.append(replace(
+        resolution[0],
+        eigenmode_plus=_eigenmode_certificate(4),
+    ))
+    cases.append(replace(
+        resolution[0],
+        eigenmode_plus=_eigenmode_certificate(3, digest="other"),
+    ))
+    for altered in cases:
+        result = certify_e7e_berry_observable_convergence(
+            (altered, *resolution[1:]), step,
+            thresholds=_thresholds(), require_live=False,
+        )
+        assert result.status == "FAIL"
+
+
+def test_e7f_distinct_overlap_identity_and_curvature_guard():
+    resolution, step = _static_ladders()
+    accepted = certify_e7e_berry_observable_convergence(
+        resolution, step, thresholds=_thresholds(), require_live=False,
+    )
+    assert accepted.status == "PASS"
+    altered = replace(
+        step[-1],
+        plus_result=_tune(step[-1].plus_result, (.1, .2, .3)),
+    )
+    rejected = certify_e7e_berry_observable_convergence(
+        resolution, (step[0], step[1], altered),
+        thresholds=_thresholds(), require_live=False,
+    )
+    assert rejected.status == "FAIL"
+
+
+def test_e7f_provenance_serialization_is_immutable_and_scoped():
+    resolution, step = _static_ladders()
+    sample = replace(resolution[0], provenance={"nested": {"values": [1, 2]}})
+    with pytest.raises(TypeError):
+        sample.provenance["new"] = "blocked"
+    with pytest.raises(TypeError):
+        sample.provenance["nested"]["values"] = 3
+    payload = certify_e7e_berry_observable_convergence(
+        (sample, *resolution[1:]), step,
+        thresholds=_thresholds(), require_live=False,
+    ).to_dict()
+    import json
+    encoded = json.dumps(payload).lower()
+    assert payload["estimator_schema"].startswith("mephc-e7e-native")
+    assert "center_tr = -center_plus" in payload["center_pair_semantics"]
+    assert payload["authorization_scope"].startswith("e7e_native")
+    for forbidden in ("chern", "valley-chern", "bcd", "global-map",
+                      "matrix-logarithm", "local non-abelian-curvature",
+                      "production-authorization"):
+        assert forbidden not in encoded
+    assert not sample.plus_result.levels[0].wilson_result.product.flags.writeable
+
+
+def test_e7f_gauge_and_solver_order_variants_preserve_certificate_status():
+    base = estimate_mpb_rank1_berry_curvature(_E7E.dirac_e7d(), require_live=False)
+    gauged = estimate_mpb_rank1_berry_curvature(
+        _E7E.dirac_e7d(phases=((.2, -.1, .4, -.3, .7),
+                                (-.4, .6, -.2, .1, -.5),
+                                (.3, .1, -.6, .2, -.8))),
+        require_live=False,
+    )
+    permuted = estimate_mpb_rank1_berry_curvature(
+        _E7E.dirac_e7d(order=(1, 0, 2)), require_live=False,
+    )
+    def certify_variant(result):
+        plus = _relocate(result, (.2, .3))
+        tr = _relocate(result, (-.2, -.3))
+        resolution = tuple(_sample(plus, tr, resolution=x, level=2)
+                           for x in (3, 4, 5))
+        step = tuple(_sample(plus, tr, resolution=5, level=x)
+                     for x in (0, 1, 2))
+        return certify_e7e_berry_observable_convergence(
+            resolution, step, thresholds=_thresholds(), require_live=False,
+        )
+    statuses = [certify_variant(item).status
+                for item in (base, gauged, permuted)]
+    assert statuses == ["PASS", "PASS", "PASS"]
+
+
+def test_e7f_live_trs_and_phase_callback_invariance():
+    plus = estimate_mpb_rank1_berry_curvature(_live_e7d((.17, .23)))
+    tr = estimate_mpb_rank1_berry_curvature(_live_e7d((-.17, -.23)))
+    plus_phase = estimate_mpb_rank1_berry_curvature(_live_e7d((.17, .23), mpb.fix_hfield_phase))
+    tr_phase = estimate_mpb_rank1_berry_curvature(_live_e7d((-.17, -.23), mpb.fix_hfield_phase))
+    base_samples = _live_samples(plus, tr)
+    phase_samples = _live_samples(plus_phase, tr_phase)
+    live_thresholds = BerryObservableThresholds(
+        max_resolution_abs_change=.01, max_resolution_relative_change=0.0,
+        max_step_abs_change=.01, max_step_relative_change=0.0,
+        max_trs_abs_residual=.01, max_trs_relative_residual=0.0,
+        required_resolution_tail_pairs=2, required_step_tail_pairs=2,
+    )
+    base_certificate = certify_e7e_berry_observable_convergence(
+        base_samples[:1], base_samples, thresholds=live_thresholds,
+    )
+    phase_certificate = certify_e7e_berry_observable_convergence(
+        phase_samples[:1], phase_samples, thresholds=live_thresholds,
+    )
+    base_values = [(x.omega_plus, x.omega_tr,
+                    abs(x.omega_plus + x.omega_tr))
+                   for x in base_samples]
+    phase_values = [(x.omega_plus, x.omega_tr,
+                     abs(x.omega_plus + x.omega_tr))
+                    for x in phase_samples]
+    assert base_certificate.status == phase_certificate.status == "INCOMPLETE"
+    assert all(np.isfinite(value) for row in base_values + phase_values
+               for value in row)
+    assert all(row[2] <= .01 for row in base_values + phase_values)
+    assert max(abs(a - b) for left, right in zip(base_values, phase_values)
+               for a, b in zip(left, right)) < 2e-3
+
+
+def test_e7f_step_tail_and_provenance_input_guards():
+    resolution, step = _static_ladders()
+    result = certify_e7e_berry_observable_convergence(resolution, step[:1], thresholds=_thresholds(), require_live=False)
+    assert result.status == "INCOMPLETE"
+    with pytest.raises(ValueError):
+        replace(resolution[0], provenance={"bad": float("nan")})
+    with pytest.raises(ValueError):
+        replace(resolution[0], provenance={"bad": object()})

@@ -9,6 +9,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 import math
 from collections.abc import Mapping, Iterable
+from types import MappingProxyType
+from numbers import Real
 from typing import Any
 
 from .berry_convergence import BerryObservableThresholds
@@ -27,6 +29,35 @@ _SCHEMA = "mephc-e7f-berry-observable-convergence/v1"
 _QUALIFIED = "BERRY_ESTIMATE_QUALIFIED"
 _COORDINATES = "exact ordered two-dimensional Cartesian reciprocal k coordinates"
 _SIGN = "Omega_est = -phi_W / A_signed; A=i<u|grad_k u>"
+_ESTIMATOR_SCHEMA = "mephc-e7e-native-mpb-rank1-local-berry-estimator/v1"
+_CENTER_PAIR_SEMANTICS = "centers are arithmetic means of the exact four preserved boundary vertices; center_tr = -center_plus within coordinate_tolerance"
+
+
+def _freeze_json(value: Any, path: str = "provenance") -> Any:
+    if value is None or isinstance(value, (str, bool)):
+        return value
+    if isinstance(value, int) and not isinstance(value, bool):
+        return value
+    if isinstance(value, Real) and not isinstance(value, bool):
+        number = float(value)
+        if not math.isfinite(number):
+            raise ValueError(f"{path} must contain finite numbers")
+        return number
+    if isinstance(value, Mapping):
+        if any(not isinstance(key, str) for key in value):
+            raise ValueError(f"{path} mapping keys must be strings")
+        return MappingProxyType({key: _freeze_json(item, f"{path}.{key}") for key, item in value.items()})
+    if isinstance(value, (list, tuple)):
+        return tuple(_freeze_json(item, f"{path}[]") for item in value)
+    raise ValueError(f"{path} must be JSON-safe")
+
+
+def _thaw_json(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return {str(key): _thaw_json(item) for key, item in value.items()}
+    if isinstance(value, tuple):
+        return [_thaw_json(item) for item in value]
+    return value
 
 
 def _finite(value: Any, name: str) -> float:
@@ -104,7 +135,7 @@ class E7FBerryObservableSample:
         if not isinstance(self.provenance, Mapping):
             raise TypeError("provenance must be a mapping")
         object.__setattr__(self, "step", step)
-        object.__setattr__(self, "provenance", dict(self.provenance))
+        object.__setattr__(self, "provenance", _freeze_json(self.provenance))
 
     @property
     def plus_level(self) -> MPBQualifiedBerryEstimateLevel:
@@ -153,7 +184,7 @@ class E7FBerryObservableSample:
             "area_tr": self.area_tr,
             "eigenmode_plus": None if self.eigenmode_plus is None else self.eigenmode_plus.to_dict(),
             "eigenmode_tr": None if self.eigenmode_tr is None else self.eigenmode_tr.to_dict(),
-            "provenance": dict(self.provenance),
+            "provenance": _thaw_json(self.provenance),
         }
 
 
@@ -217,6 +248,8 @@ class E7FBerryObservableCertificate:
             "status": self.status,
             "authorization_scope": self.authorization_scope,
             "e7e_scope": E7E_MPB_BERRY_ESTIMATOR_SCOPE,
+            "estimator_schema": _ESTIMATOR_SCHEMA,
+            "center_pair_semantics": _CENTER_PAIR_SEMANTICS,
             "coordinate_convention": _COORDINATES,
             "sign_convention": _SIGN,
             "thresholds": self.thresholds.to_dict(),
@@ -231,7 +264,7 @@ class E7FBerryObservableCertificate:
         }
 
 
-def _ladder_checks(resolutions: tuple[E7FBerryObservableSample, ...], steps: tuple[E7FBerryObservableSample, ...], checks: list[ConvergenceCheck]) -> None:
+def _ladder_checks(resolutions: tuple[E7FBerryObservableSample, ...], steps: tuple[E7FBerryObservableSample, ...], checks: list[ConvergenceCheck], thresholds: BerryObservableThresholds) -> None:
     if not resolutions:
         checks.append(_check("resolution.completeness", "INCOMPLETE", {"count": 0}, {"minimum": 1}, "resolution ladder is missing"))
     if not steps:
@@ -242,10 +275,12 @@ def _ladder_checks(resolutions: tuple[E7FBerryObservableSample, ...], steps: tup
     for left, right in zip(steps, steps[1:]):
         ok = right.step < left.step and right.resolution == left.resolution
         checks.append(_check("step.order", "PASS" if ok else "FAIL", [left.step, right.step], "strictly decreasing step and fixed resolution", "step ladder contract"))
-    if resolutions and len(resolutions) < 2:
-        checks.append(_check("resolution.completeness", "INCOMPLETE", {"count": len(resolutions)}, {"minimum": 3}, "resolution ladder lacks a convergence tail"))
-    if steps and len(steps) < 2:
-        checks.append(_check("step.completeness", "INCOMPLETE", {"count": len(steps)}, {"minimum": 3}, "step ladder lacks a convergence tail"))
+    resolution_minimum = thresholds.required_resolution_tail_pairs + 1
+    step_minimum = thresholds.required_step_tail_pairs + 1
+    if resolutions and len(resolutions) < resolution_minimum:
+        checks.append(_check("resolution.completeness", "INCOMPLETE", {"count": len(resolutions)}, {"minimum": resolution_minimum}, "resolution ladder lacks a convergence tail"))
+    if steps and len(steps) < step_minimum:
+        checks.append(_check("step.completeness", "INCOMPLETE", {"count": len(steps)}, {"minimum": step_minimum}, "step ladder lacks a convergence tail"))
     if resolutions and steps:
         overlap = [x for x in steps if x.resolution == resolutions[-1].resolution and x.step == resolutions[-1].step]
         exact = len(overlap) == 1 and overlap[0].omega_plus == resolutions[-1].omega_plus and overlap[0].omega_tr == resolutions[-1].omega_tr
@@ -274,8 +309,16 @@ def certify_e7e_berry_observable_convergence(
     if any(not isinstance(x, E7FBerryObservableSample) for x in resolutions + steps):
         raise TypeError("sample ladders must contain E7F samples")
     checks: list[ConvergenceCheck] = []
-    _ladder_checks(resolutions, steps, checks)
-    all_samples = resolutions + tuple(x for x in steps if x not in resolutions)
+    _ladder_checks(resolutions, steps, checks, thresholds)
+    def sample_key(sample: E7FBerryObservableSample) -> tuple[Any, ...]:
+        return (sample.resolution, sample.step, sample.omega_plus, sample.omega_tr, sample.selected_level)
+    seen_keys: set[tuple[Any, ...]] = set()
+    all_samples = []
+    for candidate in resolutions + steps:
+        key = sample_key(candidate)
+        if key not in seen_keys:
+            seen_keys.add(key)
+            all_samples.append(candidate)
     anchor_center: tuple[float, float] | None = None
     anchor_provenance: dict[str, Any] | None = None
     expected_eigenmode = None
@@ -284,8 +327,8 @@ def certify_e7e_berry_observable_convergence(
         tr = sample.tr_level
         if plus.path_result.authorization_scope != "path_domain_only" or plus.wilson_result.authorization_scope != "wilson_transport_only":
             checks.append(_check(f"sample.{index}.e7e_scope", "FAIL", {"path": plus.path_result.authorization_scope, "wilson": plus.wilson_result.authorization_scope}, "sealed E7E/E7D scopes", "E7E source scope is not preserved"))
-        if plus_result_bad := (plus.status != _QUALIFIED or tr.status != _QUALIFIED):
-            incomplete = "INCOMPLETE" in {plus.status, tr.status}
+        if plus.status != _QUALIFIED or tr.status != _QUALIFIED:
+            incomplete = "INCOMPLETE" in plus.status or "INCOMPLETE" in tr.status
             checks.append(_check(f"sample.{index}.qualification", "INCOMPLETE" if incomplete else "FAIL", [plus.status, tr.status], [_QUALIFIED, _QUALIFIED], "both selected E7E values must be rank-one qualified"))
         rank_ok = plus.boundary_vertices[0].dimension == 1 and tr.boundary_vertices[0].dimension == 1
         checks.append(_check(f"sample.{index}.rank", "PASS" if rank_ok else "FAIL", [plus.boundary_vertices[0].dimension, tr.boundary_vertices[0].dimension], [1, 1], "E7F is rank-one only"))
@@ -313,6 +356,8 @@ def certify_e7e_berry_observable_convergence(
             if certificate is None:
                 checks.append(_check(f"sample.{index}.eigenmode.{label}", "INCOMPLETE", None, "PASS certificate", "caller-supplied eigenmode evidence is missing"))
                 continue
+            if certificate.status != "PASS":
+                checks.append(_check(f"sample.{index}.eigenmode.{label}.certificate", "INCOMPLETE", certificate.status, "PASS", "non-PASS eigenmode evidence keeps E7F incomplete"))
             if expected_eigenmode is None:
                 expected_eigenmode = certificate.provenance
             same = certificate.provenance == expected_eigenmode
@@ -320,7 +365,8 @@ def certify_e7e_berry_observable_convergence(
                 checks.append(_check(f"sample.{index}.eigenmode.{label}.provenance", "FAIL", certificate.provenance.to_dict(), expected_eigenmode.to_dict(), "all eigenmode evidence must share exact provenance"))
                 continue
             binding = bind_eigenmode_certificate_for_resolution(certificate, expected_provenance=expected_eigenmode, expected_resolution=sample.resolution)
-            checks.append(_check(f"sample.{index}.eigenmode.{label}.binding", binding.status, binding.to_dict(), "PASS", "eigenmode evidence must bind to the exact resolution"))
+            binding_status = binding.status if certificate.status == "PASS" else "INCOMPLETE"
+            checks.append(_check(f"sample.{index}.eigenmode.{label}.binding", binding_status, binding.to_dict(), "PASS", "eigenmode evidence must bind to the exact resolution; non-PASS supplied evidence remains INCOMPLETE"))
     def tail(items: tuple[E7FBerryObservableSample, ...], required: int) -> tuple[E7FBerryObservableSample, ...]:
         if len(items) < required + 1:
             checks.append(_check("tail.completeness", "INCOMPLETE", {"count": len(items)}, {"minimum": required + 1}, "required convergence tail is missing"))
@@ -328,8 +374,11 @@ def certify_e7e_berry_observable_convergence(
     resolution_tail = tail(resolutions, thresholds.required_resolution_tail_pairs)
     step_tail = tail(steps, thresholds.required_step_tail_pairs)
     gating: list[E7FBerryObservableSample] = []
+    gating_keys: set[tuple[Any, ...]] = set()
     for sample in resolution_tail + step_tail:
-        if sample not in gating:
+        key = (sample.resolution, sample.step, sample.omega_plus, sample.omega_tr, sample.selected_level)
+        if key not in gating_keys:
+            gating_keys.add(key)
             gating.append(sample)
     for left, right in zip(resolution_tail, resolution_tail[1:]):
         for label, a, b in (("plus", left.omega_plus, right.omega_plus), ("tr", left.omega_tr, right.omega_tr)):
@@ -350,10 +399,10 @@ def certify_e7e_berry_observable_convergence(
         residual = abs(sample.omega_plus + sample.omega_tr)
         limit = max(thresholds.max_trs_abs_residual, thresholds.max_trs_relative_residual * signal)
         checks.append(_check(f"trs.{index}", "PASS" if residual <= limit else "FAIL", {"residual": residual, "omega_plus": sample.omega_plus, "omega_tr": sample.omega_tr}, {"limit": limit}, "TRS compares Omega(+) + Omega(-)"))
-    if any(x.status == "FAIL" for x in checks):
-        status = "FAIL"
-    elif any(x.status == "INCOMPLETE" for x in checks):
+    if any(x.status == "INCOMPLETE" for x in checks):
         status = "INCOMPLETE"
+    elif any(x.status == "FAIL" for x in checks):
+        status = "FAIL"
     else:
         status = "PASS"
     qualified_resolution = resolutions[-1].resolution if status == "PASS" and resolutions else None
