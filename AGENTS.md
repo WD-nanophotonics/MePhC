@@ -24,7 +24,7 @@ Never print, copy, or manually extract a password/token. After a successful push
 
 ## Persistent Gmail task-intake note
 
-When the user sends a standalone title that looks like a task or project title (for example, `MePhC — TASK — ...`), treat it as a Gmail email subject unless the user explicitly says it is not email-related.
+When the user sends a standalone title that looks like a task or project title (for example, `<PROJECT> — TASK — <TITLE>`), treat it as a Gmail email subject unless the user explicitly says it is not email-related. Do not preserve the concrete title as a default or historical task value.
 
 Before implementing the task:
 
@@ -64,7 +64,7 @@ git diff --check
 
 - WSL `/usr/bin/python3` and `/home/icy/miniconda3/bin/python` are base interpreters, not the project environment. They may lack pytest and scientific packages; do not switch to Windows or create a second environment when the `mp` environment is available.
 - Windows Python 3.12 is reserved for the Gmail Courier transport. It is not the normal MePhC test or development environment. Do not copy the source tree to Windows for ordinary work.
-- The full current MePhC suite was verified in the `mp` environment: 187 passed and 27 subtests passed.
+- Do not record one-off test counts, commit hashes, task names, URLs, timestamps, or current-work status in this file. Re-run checks when current results are needed.
 
 ### Sandbox and editing facts
 
@@ -74,12 +74,12 @@ git diff --check
 
 ## Courier transport contract for Codex Agents
 
-This is the authoritative MePhC-side procedure for the Chat relay. It exists to prevent an Agent from changing the command, choosing `chat-test`, using direct browser/Gmail tools, or misdiagnosing a Codex audit block as a Courier failure.
+This is the authoritative project-side procedure for the Chat relay. It exists to prevent an Agent from changing the configured command, choosing an unsupported test path, using direct browser/Gmail tools, or misdiagnosing a Codex audit block as a Courier failure. Runtime URLs, project names, task IDs, correlation IDs, keywords, message contents, and timing values must come from the current request or local configuration; they must never be copied into this file as defaults.
 
 ### Scope and authorization
 
 - Use this procedure only when the user has explicitly authorized the current message to be sent to the configured ChatGPT conversation.
-- The Courier is an external side-effect transport. The Agent must state the target conversation, task ID, correlation ID, and message purpose before creating `READY`.
+- The Courier is an external side-effect transport. Before creating `READY`, the Agent must state the runtime target conversation, runtime identifiers, and message purpose. Do not write those values into persistent instructions.
 - Do not infer authorization from a Python filename, a previous task, or a stale request directory.
 - Do not ask the user to run the command manually merely because a different Agent previously received a sandbox denial. First report the exact denied path, command, and policy error.
 
@@ -93,10 +93,10 @@ This is the authoritative MePhC-side procedure for the Chat relay. It exists to 
 
 ### Required file protocol
 
-Create exactly one new directory per request:
+Create exactly one new directory per request, using runtime values supplied by the caller:
 
 ```text
-C:\Users\icywo\PycharmProjects\MePhC-Windows\.courier_outbox\<PROJECT>\<TASK_ID>\
+<OUTBOX_ROOT>/<PROJECT_ID>/<UNIQUE_TASK_ID>/
 ```
 
 Write these files in this order:
@@ -114,37 +114,37 @@ The manifest must contain:
   "version": 1,
   "operation": "chat-send",
   "request_id": "<UNIQUE_REQUEST_ID>",
-  "project_id": "TRILATT",
+  "project_id": "<PROJECT_ID_FROM_CURRENT_REQUEST>",
   "correlation_id": "<UNIQUE_CORRELATION_ID>",
   "task_id": "<UNIQUE_ASCII_TASK_ID>",
   "keyword": "<UNIQUE_ASCII_KEYWORD>",
-  "chat_url": "https://chatgpt.com/c/<conversation-id>",
-  "workflow_window_seconds": 360,
+  "chat_url": "<CHAT_URL_FROM_CURRENT_REQUEST>",
+  "workflow_window_seconds": "<WINDOW_FROM_CURRENT_REQUEST_OR_CONFIG>",
   "message_file": "message.txt"
 }
 ```
 
-Use ASCII for task ID, keyword, request ID, correlation ID, and message text. The Chat URL may be the user-provided project/GPT URL or a standalone `https://chatgpt.com/c/<id>` URL.
+Use the protocol's required encoding and validation rules. The Chat URL and every identifier must be taken from the current request or approved local configuration. Never put a real URL, ID, subject, or message from one task into examples, fixtures, defaults, or a database record used by another task.
 
 ### Only supported send command
 
-Use the Windows Courier Python exactly as follows:
+Use the configured Courier runtime and module exactly as follows; substitute only values resolved for the current machine and request:
 
 ```text
-wsl.exe -d Ubuntu -- cmd.exe /c "set PYTHONPATH=C:\Users\icywo\PycharmProjects\GmailCourier && C:\Users\icywo\AppData\Local\Programs\Python\Python312\python.exe -m gmail_courier.cli chat-send-request --request C:\Users\icywo\PycharmProjects\MePhC-Windows\.courier_outbox\<PROJECT>\<TASK_ID>"
+<CONFIGURED_COURIER_RUNTIME> -m <CONFIGURED_COURIER_MODULE> chat-send-request --request <REQUEST_DIRECTORY>
 ```
 
-Do not substitute `chat-test`. Do not pipe a prompt through a different CLI. Do not use direct Chrome, Gmail, Browser, or Gmail connector tools for this relay.
+Do not substitute an ad-hoc test command for the configured send operation. Do not pipe a prompt through a different CLI. Do not use direct Chrome, Gmail, Browser, or Gmail connector tools for this relay.
 
 ### Submission and receive states
 
 - Keep the same process alive until it emits `"event": "chat_submitted"`.
 - `chat_submitted` confirms Chat submission only. It does not confirm a Gmail response.
 - Never start a second send while the first process is alive or while its `receipt.json` is being written.
-- For a closed loop, run `sync_until_received` separately with `max_seconds=360`, `interval_seconds=10`, `lookback_seconds=1200`, the exact project/task/keyword/correlation ID, and expected attachment `result.json`.
+- For a closed loop, run the configured receive operation separately with the caller-provided wait window, polling interval, lookback, runtime identifiers, and expected artifact. Do not copy these values from an earlier task.
 - `gmail_received` means the validated delivery is in the project inbox.
 - `gmail_candidate` is not a timeout. Inspect its `candidate_path/body.txt` and attachment `result.json`; a natural-language or non-ASCII subject can be a valid same-correlation response.
-- If the Chat response says `Do not start E3 automatically`, accept the current result and stop. Do not invent a next task.
+- If the Chat response explicitly says not to start the next phase automatically, accept the current result and stop. Do not invent a next task.
 
 ### Codex audit and failure reporting
 
@@ -156,5 +156,9 @@ A local `READY` file is only the Courier outbox trigger; no network action occur
 4. Do not retry with `chat-test`, direct browser control, or a second task ID.
 5. A dry-run may validate a synthetic request in an isolated directory, but it must not invoke Courier or contain private project status.
 
-Courier-side improvements should expose separate operations for `validate-only`, `create-ready`, `submit`, and `poll`; emit machine-readable permission/configuration/submission errors; and provide a dry-run that cannot send. The Agent must never guess which stage failed.
+Courier-side improvements should expose separate operations for `validate-only`, `create-ready`, `submit`, and `poll`; emit machine-readable permission/configuration/submission errors; and provide a dry-run that cannot send. Tests must use generated synthetic values and must not persist real URLs, IDs, subjects, or project data. The Agent must never guess which stage failed.
+
+## Handoff hygiene
+
+This file contains only durable operating rules. It is not a task ledger, message archive, URL registry, or database of current work. Runtime values belong in the current request and its isolated request directory. When updating this file, use placeholders and abstract examples; remove one-off URLs, identifiers, timestamps, branch names, commit hashes, email subjects, response text, and test results before committing.
 
