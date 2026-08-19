@@ -46,6 +46,13 @@ __all__ = [
     "compare_differential_resolution_ladder",
     "verify_periodic_sign_geometry",
     "verify_sign_spectrum",
+    "ConvergenceCheck",
+    "EigenmodeConvergenceCertificate",
+    "EigenmodeConvergenceProvenance",
+    "EigenmodeConvergenceThresholds",
+    "EigenmodePairEvidence",
+    "NumericalConvergenceError",
+    "certify_eigenmode_convergence",
 ]
 
 
@@ -166,4 +173,12 @@ def __getattr__(name):
         from . import r7_2_response
 
         return getattr(r7_2_response, name)
+    if name in {
+        "ConvergenceCheck", "EigenmodeConvergenceCertificate",
+        "EigenmodeConvergenceProvenance", "EigenmodeConvergenceThresholds",
+        "EigenmodePairEvidence", "NumericalConvergenceError",
+        "certify_eigenmode_convergence",
+    }:
+        from . import convergence
+        return getattr(convergence, name)
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
