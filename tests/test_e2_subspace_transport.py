@@ -5,6 +5,8 @@ import pytest
 
 from mephc.eigenspace import EigenSubspace
 from mephc.subspace_transport import (
+    DEFAULT_VALIDATION_TOLERANCE,
+    SubspaceOverlap,
     SubspaceTransportError,
     parallel_transport_link,
     subspace_overlap,
@@ -37,6 +39,9 @@ def test_identical_rank_two_subspaces_have_zero_angles_and_aligned_frames():
     link = parallel_transport_link(left, right)
     assert link.min_singular_value > 1.0 - 1e-13
     assert np.allclose(link.aligned_right_frame(right), left.frame, atol=1e-13)
+    wrong_ambient = subspace(np.eye(4, 2), k_point=right.k_point)
+    with pytest.raises(ValueError):
+        link.aligned_right_frame(wrong_ambient)
 
 
 def test_gauge_covariance_for_overlap_and_polar_link():
@@ -146,6 +151,26 @@ def test_result_arrays_are_read_only_and_json_safe():
     encoded_link = json.dumps(link.to_dict(include_matrices=True), sort_keys=True)
     assert json.loads(encoded_overlap)["matrix"]
     assert json.loads(encoded_link)["unitary"]
+
+
+def test_nondefault_validation_tolerance_is_stored_and_used_consistently():
+    matrix = np.array([[1]], dtype=complex)
+    with pytest.raises(SubspaceTransportError):
+        SubspaceOverlap(
+            left_k_point=(0.0,), right_k_point=(0.1,),
+            left_dimension=1, right_dimension=1, ambient_dimension=1,
+            matrix=matrix, singular_values=np.array([1.0 + 2e-10]),
+            principal_angles=np.array([0.0]),
+            validation_tolerance=DEFAULT_VALIDATION_TOLERANCE,
+        )
+    overlap = SubspaceOverlap(
+        left_k_point=(0.0,), right_k_point=(0.1,),
+        left_dimension=1, right_dimension=1, ambient_dimension=1,
+        matrix=matrix, singular_values=np.array([1.0 + 2e-10]),
+        principal_angles=np.array([0.0]), validation_tolerance=1e-9,
+    )
+    assert overlap.validation_tolerance == 1e-9
+    assert overlap.to_dict()["validation_tolerance"] == 1e-9
 
 
 def test_transport_does_not_expose_branch_or_wilson_semantics():

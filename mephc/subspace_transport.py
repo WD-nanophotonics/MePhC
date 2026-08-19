@@ -98,6 +98,7 @@ class SubspaceOverlap:
     matrix: np.ndarray
     singular_values: np.ndarray
     principal_angles: np.ndarray
+    validation_tolerance: float = DEFAULT_VALIDATION_TOLERANCE
 
     def __post_init__(self) -> None:
         for name, value in (("left_dimension", self.left_dimension), ("right_dimension", self.right_dimension), ("ambient_dimension", self.ambient_dimension)):
@@ -110,6 +111,7 @@ class SubspaceOverlap:
             name="matrix",
             shape=(self.left_dimension, self.right_dimension),
         )
+        tolerance = _tolerance(self.validation_tolerance, name="validation_tolerance")
         singular_values = np.asarray(self.singular_values, dtype=float).copy()
         principal_angles = np.asarray(self.principal_angles, dtype=float).copy()
         expected = min(self.left_dimension, self.right_dimension)
@@ -119,13 +121,14 @@ class SubspaceOverlap:
             raise ValueError("principal_angles must have min(N_L, N_R) entries")
         if not np.all(np.isfinite(singular_values)) or not np.all(np.isfinite(principal_angles)):
             raise ValueError("singular_values and principal_angles must be finite")
-        if np.any(singular_values < 0.0) or np.any(singular_values > 1.0 + DEFAULT_VALIDATION_TOLERANCE):
+        if np.any(singular_values < 0.0) or np.any(singular_values > 1.0 + tolerance):
             raise SubspaceTransportError("singular values violate orthonormal-frame bounds")
         singular_values.setflags(write=False)
         principal_angles.setflags(write=False)
         object.__setattr__(self, "matrix", matrix)
         object.__setattr__(self, "singular_values", singular_values)
         object.__setattr__(self, "principal_angles", principal_angles)
+        object.__setattr__(self, "validation_tolerance", tolerance)
 
     @property
     def min_singular_value(self) -> float:
@@ -146,6 +149,7 @@ class SubspaceOverlap:
             "left_dimension": self.left_dimension,
             "right_dimension": self.right_dimension,
             "ambient_dimension": self.ambient_dimension,
+            "validation_tolerance": self.validation_tolerance,
             "singular_values": [float(value) for value in self.singular_values],
             "principal_angles": [float(value) for value in self.principal_angles],
         }
@@ -179,6 +183,7 @@ def subspace_overlap(
         matrix=matrix,
         singular_values=singular_values,
         principal_angles=principal_angles,
+        validation_tolerance=tolerance,
     )
 
 
@@ -189,6 +194,7 @@ class SubspaceTransportLink:
     left_k_point: tuple[float, ...]
     right_k_point: tuple[float, ...]
     dimension: int
+    ambient_dimension: int
     overlap: np.ndarray
     unitary: np.ndarray
     min_singular_value: float
@@ -198,6 +204,10 @@ class SubspaceTransportLink:
     def __post_init__(self) -> None:
         if isinstance(self.dimension, bool) or not isinstance(self.dimension, int) or self.dimension < 1:
             raise ValueError("dimension must be a positive integer")
+        if isinstance(self.ambient_dimension, bool) or not isinstance(self.ambient_dimension, int) or self.ambient_dimension < 1:
+            raise ValueError("ambient_dimension must be a positive integer")
+        if self.dimension > self.ambient_dimension:
+            raise ValueError("dimension cannot exceed ambient_dimension")
         shape = (self.dimension, self.dimension)
         object.__setattr__(self, "overlap", _read_only(self.overlap, name="overlap", shape=shape))
         object.__setattr__(self, "unitary", _read_only(self.unitary, name="unitary", shape=shape))
@@ -216,7 +226,7 @@ class SubspaceTransportLink:
             raise TypeError("right must be EigenSubspace")
         if right.k_point != self.right_k_point:
             raise ValueError("right k_point does not match this transport link")
-        if right.dimension != self.dimension:
+        if right.ambient_dimension != self.ambient_dimension or right.dimension != self.dimension:
             raise ValueError("right subspace dimensions do not match this transport link")
         aligned = np.asarray(right.frame @ self.unitary.conj().T, dtype=np.complex128)
         aligned.setflags(write=False)
@@ -227,6 +237,7 @@ class SubspaceTransportLink:
             "left_k_point": list(self.left_k_point),
             "right_k_point": list(self.right_k_point),
             "dimension": self.dimension,
+            "ambient_dimension": self.ambient_dimension,
             "min_singular_value": self.min_singular_value,
             "condition_number": self.condition_number,
             "unitarity_residual": self.unitarity_residual,
@@ -270,6 +281,7 @@ def parallel_transport_link(
         left_k_point=left.k_point,
         right_k_point=right.k_point,
         dimension=left.dimension,
+        ambient_dimension=left.ambient_dimension,
         overlap=matrix,
         unitary=unitary,
         min_singular_value=smallest,
