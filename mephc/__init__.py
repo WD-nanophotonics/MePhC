@@ -69,6 +69,9 @@ __all__ = [
     "QualifiedBerrySample",
     "BerryObservableConvergenceCertificate",
     "certify_berry_observable_convergence",
+    "RawEigenstate",
+    "EigenSubspace",
+    "solve_hermitian",
 ]
 
 
@@ -216,4 +219,10 @@ def __getattr__(name):
     }:
         from . import berry_convergence
         return getattr(berry_convergence, name)
+    if name in {"RawEigenstate", "EigenSubspace"}:
+        from .eigenspace import RawEigenstate, EigenSubspace
+        return {"RawEigenstate": RawEigenstate, "EigenSubspace": EigenSubspace}[name]
+    if name == "solve_hermitian":
+        from .toy_eigensolver import solve_hermitian
+        return solve_hermitian
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
