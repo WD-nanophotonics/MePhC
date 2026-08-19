@@ -169,6 +169,11 @@ __all__ = [
     "MPB_LIVE_H_PROVIDER_REPRESENTATION",
     "MPBLiveSpectralProvider",
     "solve_mpb_h_spectrum",
+    "MPB_PATH_AUTHORIZATION_SCOPE",
+    "MPBQualifiedPathInput",
+    "MPBQualifiedPathResult",
+    "qualify_mpb_spectral_path",
+    "qualify_mpb_path",
 
 ]
 
@@ -360,6 +365,14 @@ def __getattr__(name):
     }:
         from . import mpb_spectral_provider
         return getattr(mpb_spectral_provider, name)
+
+    if name in {
+        "MPB_PATH_AUTHORIZATION_SCOPE", "MPBQualifiedPathInput",
+        "MPBQualifiedPathResult", "qualify_mpb_spectral_path",
+        "qualify_mpb_path",
+    }:
+        from . import mpb_qualified_path
+        return getattr(mpb_qualified_path, name)
 
     if name in {"EigenmodeCertificateBinding", "bind_eigenmode_certificate", "EigenmodeCertificateScopeBinding", "bind_eigenmode_certificate_for_resolution"}:
         from . import convergence_binding
