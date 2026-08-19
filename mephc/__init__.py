@@ -78,6 +78,24 @@ __all__ = [
     "subspace_overlap",
     "SubspaceTransportLink",
     "parallel_transport_link",
+    "CLEAR",
+    "AMBIGUOUS",
+    "INCOMPLETE",
+    "SINGLE_BAND_QUALIFIED",
+    "SUBSPACE_QUALIFIED",
+    "SUBSPACE_NOT_ISOLATED",
+    "SUBSPACE_CONTINUITY_UNQUALIFIED",
+    "NUMERICALLY_INCOMPLETE",
+    "RawAssociationThresholds",
+    "RawStateAssociation",
+    "associate_raw_states",
+    "associate_raw_eigenstates",
+    "ExternalIsolationContext",
+    "SubspaceQualificationThresholds",
+    "SubspaceQualificationResult",
+    "qualify_local_subspace",
+    "qualify_subspace_pair",
+
 ]
 
 
@@ -207,8 +225,19 @@ def __getattr__(name):
         "revalidate_eigenmode_certificate",
     }:
         from . import convergence
-
         return getattr(convergence, name)
+    if name in {
+        "CLEAR", "AMBIGUOUS", "INCOMPLETE", "SINGLE_BAND_QUALIFIED",
+        "SUBSPACE_QUALIFIED", "SUBSPACE_NOT_ISOLATED",
+        "SUBSPACE_CONTINUITY_UNQUALIFIED", "NUMERICALLY_INCOMPLETE",
+        "RawAssociationThresholds", "RawStateAssociation", "associate_raw_states",
+        "associate_raw_eigenstates", "ExternalIsolationContext",
+        "SubspaceQualificationThresholds", "SubspaceQualificationResult",
+        "qualify_local_subspace", "qualify_subspace_pair",
+    }:
+        from . import spectral_association
+        return getattr(spectral_association, name)
+
     if name in {"EigenmodeCertificateBinding", "bind_eigenmode_certificate", "EigenmodeCertificateScopeBinding", "bind_eigenmode_certificate_for_resolution"}:
         from . import convergence_binding
         return getattr(convergence_binding, name)
