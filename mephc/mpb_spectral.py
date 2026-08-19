@@ -23,6 +23,7 @@ MPB_H_ENVELOPE_QUALIFIED = "MPB_H_ENVELOPE_QUALIFIED"
 MPB_H_ENVELOPE_UNQUALIFIED = "MPB_H_ENVELOPE_UNQUALIFIED"
 MPB_H_ORTHOGONAL_QUALIFIED = MPB_H_ENVELOPE_QUALIFIED
 MPB_H_ORTHOGONAL_UNQUALIFIED = MPB_H_ENVELOPE_UNQUALIFIED
+_LIVE_PROVENANCE_TOKEN = object()
 
 
 def _finite(value: Any, *, name: str, positive: bool = False) -> float:
@@ -109,6 +110,7 @@ def _base_provenance(
     spatial_shape: tuple[int, int],
     mpb_k_point: tuple[float, ...] | None,
     provenance: Mapping[str, Any] | None,
+    live_mpb_extraction_validated: bool = False,
 ) -> Mapping[str, Any]:
     if provenance is not None and not isinstance(provenance, Mapping):
         raise TypeError("provenance must be a mapping or None")
@@ -123,7 +125,7 @@ def _base_provenance(
         "periodic_h_envelope": True,
         "bloch_phase_excluded": True,
         "solver_index_semantics": "ordering metadata only",
-        "live_mpb_extraction_validated": False,
+        "live_mpb_extraction_validated": bool(live_mpb_extraction_validated),
         "mpb_k_point": None if mpb_k_point is None else list(mpb_k_point),
         "caller_provenance": {} if provenance is None else dict(provenance),
     }
@@ -270,6 +272,7 @@ def adapt_mpb_h_envelopes(
     norm_tolerance: float = 1e-14,
     orthogonality_tolerance: float = 1e-10,
     provenance: Mapping[str, Any] | None = None,
+    _trusted_live_provenance: Any = None,
 ) -> MPBHEnvelopeSnapshot:
     """Convert explicit periodic H envelopes into ordered RawEigenstate values.
 
@@ -281,6 +284,9 @@ def adapt_mpb_h_envelopes(
     normalized_mpb_k_point = None if mpb_k_point is None else _k_point(mpb_k_point, name="mpb_k_point")
     norm_tolerance = _finite(norm_tolerance, name="norm_tolerance", positive=True)
     orthogonality_tolerance = _finite(orthogonality_tolerance, name="orthogonality_tolerance")
+    if _trusted_live_provenance is not None and _trusted_live_provenance is not _LIVE_PROVENANCE_TOKEN:
+        raise ValueError("trusted live provenance is reserved for the live provider")
+    trusted_live_provenance = _trusted_live_provenance is _LIVE_PROVENANCE_TOKEN
     fields_input = _numeric(h_fields, name="h_fields", ndim=4)
     if fields_input.shape[0] < 1 or fields_input.shape[1] < 1 or fields_input.shape[2] < 1 or fields_input.shape[3] != 3:
         raise ValueError("h_fields must have shape (bands, nx, ny, 3) with positive dimensions")
@@ -318,6 +324,7 @@ def adapt_mpb_h_envelopes(
         spatial_shape=(fields.shape[1], fields.shape[2]),
         mpb_k_point=normalized_mpb_k_point,
         provenance=provenance,
+        live_mpb_extraction_validated=trusted_live_provenance,
     )
     state_metadata = {
         "representation": MPB_H_ENVELOPE_REPRESENTATION,
@@ -334,6 +341,7 @@ def adapt_mpb_h_envelopes(
         "batch_orthogonality_status": status,
         "batch_max_off_diagonal_gram": max_off_diagonal_gram,
         "batch_max_normalization_error": max_normalization_error,
+        "representation_provenance": _json_thaw(frozen_provenance),
     }
     states = tuple(
         RawEigenstate(

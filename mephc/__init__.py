@@ -166,6 +166,9 @@ __all__ = [
     "MPBHEnvelopeSnapshot",
     "adapt_mpb_h_envelopes",
     "adapt_mpb_h_envelopes_to_raw_eigenstates",
+    "MPB_LIVE_H_PROVIDER_REPRESENTATION",
+    "MPBLiveSpectralProvider",
+    "solve_mpb_h_spectrum",
 
 ]
 
@@ -350,6 +353,13 @@ def __getattr__(name):
     }:
         from . import mpb_spectral
         return getattr(mpb_spectral, name)
+
+    if name in {
+        "MPB_LIVE_H_PROVIDER_REPRESENTATION", "MPBLiveSpectralProvider",
+        "solve_mpb_h_spectrum",
+    }:
+        from . import mpb_spectral_provider
+        return getattr(mpb_spectral_provider, name)
 
     if name in {"EigenmodeCertificateBinding", "bind_eigenmode_certificate", "EigenmodeCertificateScopeBinding", "bind_eigenmode_certificate_for_resolution"}:
         from . import convergence_binding
