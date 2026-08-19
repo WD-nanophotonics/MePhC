@@ -368,4 +368,309 @@ def qualify_plaquette_interior(
 qualify_plaquette_interior_boundary = qualify_plaquette_interior
 
 
+PLAQUETTE_REFINEMENT_SINGLE_BAND_QUALIFIED = "PLAQUETTE_REFINEMENT_SINGLE_BAND_QUALIFIED"
+PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED = "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED"
+PLAQUETTE_REFINEMENT_INCOMPLETE = "PLAQUETTE_REFINEMENT_INCOMPLETE"
+PLAQUETTE_REFINEMENT_UNQUALIFIED = "PLAQUETTE_REFINEMENT_UNQUALIFIED"
+PLAQUETTE_REFINEMENT_RANK_UNSTABLE = "PLAQUETTE_REFINEMENT_RANK_UNSTABLE"
+PLAQUETTE_REFINEMENT_SUBSPACE_REQUIRED = "PLAQUETTE_REFINEMENT_SUBSPACE_REQUIRED"
+IDENTITY_REFINEMENT_AUTHORIZATION_SCOPE = "identity_refinement_only"
+
+
+def _finite_nonnegative(value: Any, name: str) -> float:
+    if isinstance(value, bool) or not isinstance(value, Real):
+        raise TypeError(f"{name} must be a finite real scalar")
+    result = float(value)
+    if not math.isfinite(result) or result < 0.0:
+        raise ValueError(f"{name} must be finite and non-negative")
+    return result
+
+
+@dataclass(frozen=True)
+class PlaquetteRefinementThresholds:
+    """Caller-visible final quality and final-pair convergence thresholds."""
+
+    min_singular_value: float
+    max_principal_angle: float
+    max_projector_distance: float
+    max_metric_delta: float
+    geometry_tolerance: float = 1e-10
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "min_singular_value", _finite_nonnegative(self.min_singular_value, "min_singular_value"))
+        object.__setattr__(self, "max_principal_angle", _finite_nonnegative(self.max_principal_angle, "max_principal_angle"))
+        object.__setattr__(self, "max_projector_distance", _finite_nonnegative(self.max_projector_distance, "max_projector_distance"))
+        object.__setattr__(self, "max_metric_delta", _finite_nonnegative(self.max_metric_delta, "max_metric_delta"))
+        object.__setattr__(self, "geometry_tolerance", _finite_nonnegative(self.geometry_tolerance, "geometry_tolerance"))
+
+    def to_dict(self) -> dict[str, float]:
+        return {
+            "min_singular_value": self.min_singular_value,
+            "max_principal_angle": self.max_principal_angle,
+            "max_projector_distance": self.max_projector_distance,
+            "max_metric_delta": self.max_metric_delta,
+            "geometry_tolerance": self.geometry_tolerance,
+        }
+
+
+@dataclass(frozen=True)
+class PlaquetteRefinementLevel:
+    """One explicit E4A/E4B evidence level and its positive step value."""
+
+    boundary: Any
+    interior: Any
+    step: float
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        from .plaquette_domain import PlaquetteBoundaryQualificationResult, PlaquetteInteriorQualificationResult
+
+        if not isinstance(self.boundary, PlaquetteBoundaryQualificationResult):
+            raise TypeError("boundary must be a PlaquetteBoundaryQualificationResult")
+        if not isinstance(self.interior, PlaquetteInteriorQualificationResult):
+            raise TypeError("interior must be a PlaquetteInteriorQualificationResult")
+        if isinstance(self.step, bool) or not isinstance(self.step, Real):
+            raise TypeError("step must be a positive finite real scalar")
+        step = float(self.step)
+        if not math.isfinite(step) or step <= 0.0:
+            raise ValueError("step must be a positive finite real scalar")
+        object.__setattr__(self, "step", step)
+        object.__setattr__(self, "provenance", _freeze_mapping(self.provenance))
+
+
+@dataclass(frozen=True)
+class PlaquetteRefinementMetrics:
+    """Worst-case E3 evidence over one boundary plus sampled-interior level."""
+
+    step: float
+    rank: int
+    minimum_singular_value: float | None
+    maximum_principal_angle: float | None
+    maximum_projector_distance: float | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        for name in ("minimum_singular_value", "maximum_principal_angle", "maximum_projector_distance"):
+            value = getattr(self, name)
+            if value is not None:
+                object.__setattr__(self, name, _finite_nonnegative(value, name))
+        object.__setattr__(self, "provenance", _freeze_mapping(self.provenance))
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "step": self.step,
+            "rank": self.rank,
+            "minimum_singular_value": self.minimum_singular_value,
+            "maximum_principal_angle": self.maximum_principal_angle,
+            "maximum_projector_distance": self.maximum_projector_distance,
+            "provenance": dict(self.provenance),
+        }
+
+
+@dataclass(frozen=True)
+class PlaquetteRefinementQualificationResult:
+    """Immutable refinement evidence with identity-refinement scope only."""
+
+    status: str
+    rank: int | None
+    levels: tuple[PlaquetteRefinementLevel, ...]
+    metrics: tuple[PlaquetteRefinementMetrics, ...]
+    thresholds: PlaquetteRefinementThresholds
+    authorization_scope: str = IDENTITY_REFINEMENT_AUTHORIZATION_SCOPE
+    evidence: tuple[str, ...] = ()
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        allowed = {
+            PLAQUETTE_REFINEMENT_SINGLE_BAND_QUALIFIED,
+            PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED,
+            PLAQUETTE_REFINEMENT_INCOMPLETE,
+            PLAQUETTE_REFINEMENT_UNQUALIFIED,
+            PLAQUETTE_REFINEMENT_RANK_UNSTABLE,
+            PLAQUETTE_REFINEMENT_SUBSPACE_REQUIRED,
+        }
+        if self.status not in allowed:
+            raise ValueError(f"invalid refinement status: {self.status}")
+        levels = tuple(self.levels)
+        metrics = tuple(self.metrics)
+        if len(levels) < 2 or len(metrics) != len(levels):
+            raise ValueError("refinement results must preserve all levels and metrics")
+        if self.rank is not None and self.rank < 1:
+            raise ValueError("rank must be positive or None")
+        if self.authorization_scope != IDENTITY_REFINEMENT_AUTHORIZATION_SCOPE:
+            raise ValueError("E4C authorization scope must be identity_refinement_only")
+        object.__setattr__(self, "levels", levels)
+        object.__setattr__(self, "metrics", metrics)
+        object.__setattr__(self, "evidence", tuple(str(item) for item in self.evidence))
+        object.__setattr__(self, "provenance", _freeze_mapping(self.provenance))
+
+    @property
+    def is_qualified(self) -> bool:
+        return self.status in {
+            PLAQUETTE_REFINEMENT_SINGLE_BAND_QUALIFIED,
+            PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED,
+        }
+
+    @property
+    def authorization_granted(self) -> bool:
+        return self.is_qualified
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "status": self.status,
+            "rank": self.rank,
+            "levels": [
+                {
+                    "step": level.step,
+                    "boundary_status": level.boundary.status,
+                    "interior_status": level.interior.status,
+                    "provenance": dict(level.provenance),
+                }
+                for level in self.levels
+            ],
+            "metrics": [metric.to_dict() for metric in self.metrics],
+            "thresholds": self.thresholds.to_dict(),
+            "authorization_scope": self.authorization_scope,
+            "authorization_granted": self.authorization_granted,
+            "evidence": list(self.evidence),
+            "provenance": dict(self.provenance),
+        }
+
+
+PlaquetteRefinementResult = PlaquetteRefinementQualificationResult
+
+
+def _refinement_metrics(level: PlaquetteRefinementLevel) -> PlaquetteRefinementMetrics:
+    evidence = tuple(level.boundary.edge_results) + tuple(level.interior.spoke_results)
+    if not evidence or any(
+        item.overlap is None or item.projector_distance is None or not item.is_qualified
+        for item in evidence
+    ):
+        return PlaquetteRefinementMetrics(level.step, level.boundary.rank, None, None, None, level.provenance)
+    return PlaquetteRefinementMetrics(
+        step=level.step,
+        rank=level.boundary.rank,
+        minimum_singular_value=min(item.overlap.min_singular_value for item in evidence),
+        maximum_principal_angle=max(item.overlap.max_principal_angle for item in evidence),
+        maximum_projector_distance=max(float(item.projector_distance) for item in evidence),
+        provenance=level.provenance,
+    )
+
+
+def _validate_refinement_geometry(levels: Sequence[PlaquetteRefinementLevel], tolerance: float) -> None:
+    reference = np.asarray(levels[0].interior.center.k_point, dtype=float)
+    if reference.size != 2:
+        raise ValueError("E4C requires a common two-dimensional center")
+    base_points = np.asarray([vertex.k_point for vertex in levels[0].boundary.vertices], dtype=float)
+    base_vectors = base_points - reference
+    base_norms = np.linalg.norm(base_vectors, axis=1)
+    if np.any(base_norms <= tolerance):
+        raise ValueError("refinement corners must not coincide with the center")
+    base_directions = base_vectors / base_norms[:, None]
+    base_step = levels[0].step
+    for level in levels:
+        center = np.asarray(level.interior.center.k_point, dtype=float)
+        points = np.asarray([vertex.k_point for vertex in level.boundary.vertices], dtype=float)
+        if center.size != 2 or np.linalg.norm(center - reference) > tolerance:
+            raise ValueError("refinement levels must share one center")
+        vectors = points - reference
+        norms = np.linalg.norm(vectors, axis=1)
+        if np.any(norms <= tolerance):
+            raise ValueError("refinement corners must not coincide with the center")
+        directions = vectors / norms[:, None]
+        if float(np.max(np.linalg.norm(directions - base_directions, axis=1))) > tolerance:
+            raise ValueError("refinement geometry is not homothetic about the common center")
+        expected = level.step / base_step
+        actual = norms / base_norms
+        if float(np.max(np.abs(actual - expected))) > tolerance:
+            raise ValueError("corner displacement does not match declared refinement step")
+
+
+def qualify_plaquette_refinement(
+    levels: Sequence[PlaquetteRefinementLevel],
+    *,
+    thresholds: PlaquetteRefinementThresholds,
+    provenance: Mapping[str, Any] | None = None,
+) -> PlaquetteRefinementQualificationResult:
+    """Qualify identity refinement from explicit E4A/E4B evidence levels."""
+    if not isinstance(thresholds, PlaquetteRefinementThresholds):
+        raise TypeError("thresholds must be PlaquetteRefinementThresholds")
+    if isinstance(levels, (str, bytes)) or not isinstance(levels, Sequence) or len(levels) < 2:
+        raise ValueError("E4C requires at least two ordered refinement levels")
+    normalized = tuple(levels)
+    if any(not isinstance(level, PlaquetteRefinementLevel) for level in normalized):
+        raise TypeError("levels must contain PlaquetteRefinementLevel values")
+    if any(left.step <= right.step for left, right in zip(normalized, normalized[1:])):
+        raise ValueError("refinement step values must be strictly decreasing")
+    first_boundary = normalized[0].boundary
+    base_e3_thresholds = first_boundary.thresholds.to_dict()
+    for level in normalized:
+        if level.boundary.thresholds.to_dict() != base_e3_thresholds or level.interior.thresholds.to_dict() != base_e3_thresholds:
+            raise ValueError("E4A and E4B thresholds must remain compatible across levels")
+    _validate_refinement_geometry(normalized, thresholds.geometry_tolerance)
+    ranks = tuple(level.boundary.rank for level in normalized)
+    ambient = tuple(level.boundary.vertices[0].ambient_dimension for level in normalized)
+    if any(level.interior.center.dimension != ranks[0] or level.interior.center.ambient_dimension != ambient[0] for level in normalized):
+        return PlaquetteRefinementQualificationResult(
+            PLAQUETTE_REFINEMENT_RANK_UNSTABLE, None, normalized,
+            tuple(_refinement_metrics(level) for level in normalized), thresholds,
+            evidence=("boundary and sampled-interior rank or ambient dimension is inconsistent",),
+            provenance=provenance or {},
+        )
+    if any(rank != ranks[0] or dimension != ambient[0] for rank, dimension in zip(ranks, ambient)):
+        return PlaquetteRefinementQualificationResult(
+            PLAQUETTE_REFINEMENT_RANK_UNSTABLE, None, normalized,
+            tuple(_refinement_metrics(level) for level in normalized), thresholds,
+            evidence=("refinement rank or ambient dimension changes across levels",),
+            provenance=provenance or {},
+        )
+    metrics = tuple(_refinement_metrics(level) for level in normalized)
+    if any(level.boundary.status == PLAQUETTE_BOUNDARY_INCOMPLETE or level.interior.status == PLAQUETTE_INTERIOR_INCOMPLETE for level in normalized):
+        status, reason = PLAQUETTE_REFINEMENT_INCOMPLETE, "a required refinement level is incomplete"
+    elif any(not level.boundary.is_qualified or not level.interior.is_qualified for level in normalized):
+        status = (
+            PLAQUETTE_REFINEMENT_SUBSPACE_REQUIRED
+            if any(level.interior.status == PLAQUETTE_SUBSPACE_REQUIRED for level in normalized)
+            else PLAQUETTE_REFINEMENT_UNQUALIFIED
+        )
+        reason = "a required boundary or sampled-interior level is not qualified"
+    elif any(metric.minimum_singular_value is None for metric in metrics):
+        status, reason = PLAQUETTE_REFINEMENT_INCOMPLETE, "a level lacks required E3 metric evidence"
+    else:
+        final = metrics[-1]
+        previous = metrics[-2]
+        quality_ok = (
+            final.minimum_singular_value >= thresholds.min_singular_value
+            and final.maximum_principal_angle <= thresholds.max_principal_angle
+            and final.maximum_projector_distance <= thresholds.max_projector_distance
+        )
+        deltas = (
+            abs(final.minimum_singular_value - previous.minimum_singular_value),
+            abs(final.maximum_principal_angle - previous.maximum_principal_angle),
+            abs(final.maximum_projector_distance - previous.maximum_projector_distance),
+        )
+        stable = all(delta <= thresholds.max_metric_delta for delta in deltas)
+        if not quality_ok or not stable:
+            status, reason = PLAQUETTE_REFINEMENT_UNQUALIFIED, "final identity quality or final-pair stability thresholds failed"
+        else:
+            status = (
+                PLAQUETTE_REFINEMENT_SINGLE_BAND_QUALIFIED
+                if ranks[0] == 1
+                else PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED
+            )
+            reason = "final identity quality and final-pair stability thresholds passed"
+    return PlaquetteRefinementQualificationResult(
+        status=status,
+        rank=ranks[0] if all(rank == ranks[0] for rank in ranks) else None,
+        levels=normalized,
+        metrics=metrics,
+        thresholds=thresholds,
+        evidence=(reason, "authorization is limited to identity refinement evidence"),
+        provenance=provenance or {},
+    )
+
+
+qualify_plaquette_identity_refinement = qualify_plaquette_refinement
+
+
 qualify_plaquette = qualify_plaquette_boundary
