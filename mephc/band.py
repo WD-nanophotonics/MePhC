@@ -18,6 +18,9 @@ from .geometry_identity import (
     SupercellGeometryIdentity,
     build_supercell_geometry_identity,
 )
+from .convergence import EigenmodeConvergenceProvenance
+from .convergence_binding import bind_eigenmode_certificate_for_resolution
+from .qualified_berry import EigenmodeQualifiedSupercellBerryCalculator
 from .kspace import (
     HighSymmetryPath,
     TriangularKSpace,
@@ -261,6 +264,7 @@ class Band:
         polarization=None,
         eigensolver_tolerance=1e-7,
         deterministic=False,
+        mesh_size=3,
         overlap_formulation="energy_eh",
     ):
         """Configure BerryCurvatureCalculator with the verified R6 geometry."""
@@ -280,7 +284,56 @@ class Band:
             overlap_tol=overlap_tol,
             eigensolver_tolerance=eigensolver_tolerance,
             deterministic=deterministic,
+            mesh_size=mesh_size,
             overlap_formulation=overlap_formulation,
+        )
+
+
+    def build_eigenmode_qualified_supercell_berry_calculator(
+        self, pattern, field, *, certificate, target_band, num_bands,
+        resolution=None, overlap_tol=1e-14, run_band_func=mpb.fix_efield_phase,
+        polarization=None, eigensolver_tolerance=1e-7, deterministic=True,
+        mesh_size=3,
+    ) -> EigenmodeQualifiedSupercellBerryCalculator:
+        """Build an executor gated only by canonical eigenmode qualification."""
+        actual_resolution = self.resolution if resolution is None else resolution
+        if isinstance(actual_resolution, bool) or not isinstance(actual_resolution, int) or actual_resolution < 1:
+            raise ValueError("resolution must be a positive integer")
+        if isinstance(num_bands, bool) or not isinstance(num_bands, int) or num_bands < 1:
+            raise ValueError("num_bands must be a positive integer")
+        if isinstance(target_band, bool) or not isinstance(target_band, int) or target_band < 0:
+            raise ValueError("target_band must be a non-negative integer")
+        if target_band >= num_bands:
+            raise ValueError("target_band must be less than num_bands")
+        actual_tolerance = BerryCurvatureCalculator._validate_eigensolver_tolerance(eigensolver_tolerance)
+        actual_deterministic = BerryCurvatureCalculator._validate_deterministic(deterministic)
+        actual_mesh_size = BerryCurvatureCalculator._validate_mesh_size(mesh_size)
+        normalized = self._normalize_polarization(self.polarization if polarization is None else polarization)
+        context = self._prepare_supercell_geometry(pattern, field)
+        expected_provenance = EigenmodeConvergenceProvenance(
+            backend="mpb", geometry_digest=context.identity.digest,
+            target_band=target_band, num_bands=num_bands, polarization=normalized,
+            deterministic=actual_deterministic, eigensolver_tolerance=actual_tolerance,
+            mesh_size=actual_mesh_size, field_representation="periodic_h_bloch_envelope",
+        )
+        scope_binding = bind_eigenmode_certificate_for_resolution(
+            certificate, expected_provenance=expected_provenance,
+            expected_resolution=actual_resolution,
+        )
+        scope_binding.require_passed()
+        calculator = BerryCurvatureCalculator(
+            geometry=context.geometry, geometry_lattice=context.geometry_lattice,
+            resolution=actual_resolution, num_bands=num_bands,
+            polarization=mp.TE if normalized == "TE" else mp.TM,
+            run_band_func=run_band_func, default_material=mp.air, verbose=False,
+            overlap_tol=overlap_tol, eigensolver_tolerance=actual_tolerance,
+            deterministic=actual_deterministic, mesh_size=actual_mesh_size,
+            overlap_formulation="mpb_h",
+        )
+        return EigenmodeQualifiedSupercellBerryCalculator(
+            target_band=target_band, resolution=actual_resolution,
+            expected_provenance=expected_provenance, scope_binding=scope_binding,
+            geometry_identity=context.identity, _calculator=calculator,
         )
 
     def run_supercell(self, pattern, field, *, q_points, num_bands, resolution=None, polarization=None):

@@ -40,6 +40,7 @@ class BerryCurvatureCalculator:
         overlap_tol: float = 1e-14,
         eigensolver_tolerance: float = 1e-7,
         deterministic: bool = False,
+        mesh_size: int = 3,
         overlap_formulation: str = "energy_eh",
     ):
         """Configure an Abelian, single-band plaquette calculation.
@@ -60,6 +61,7 @@ class BerryCurvatureCalculator:
         self.overlap_tol = overlap_tol
         self.eigensolver_tolerance = self._validate_eigensolver_tolerance(eigensolver_tolerance)
         self.deterministic = self._validate_deterministic(deterministic)
+        self.mesh_size = self._validate_mesh_size(mesh_size)
         self.overlap_formulation = self._validate_overlap_formulation(overlap_formulation)
         self.eps = None
 
@@ -81,6 +83,7 @@ class BerryCurvatureCalculator:
             verbose=self.verbose,
             tolerance=self.eigensolver_tolerance,
             deterministic=self.deterministic,
+            mesh_size=self.mesh_size,
         )
 
     def _run_solver(self, ms: mpb.ModeSolver) -> None:
@@ -102,6 +105,12 @@ class BerryCurvatureCalculator:
     def _validate_deterministic(value):
         if type(value) is not bool:
             raise ValueError("deterministic must be a bool.")
+        return value
+
+    @staticmethod
+    def _validate_mesh_size(value):
+        if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+            raise ValueError("mesh_size must be a positive integer.")
         return value
 
     @staticmethod

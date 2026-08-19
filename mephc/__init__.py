@@ -63,6 +63,7 @@ __all__ = [
     "SupercellGeometryIdentity",
     "build_supercell_geometry_identity",
     "identity_from_geometry",
+    "EigenmodeQualifiedSupercellBerryCalculator",
 ]
 
 
@@ -200,4 +201,7 @@ def __getattr__(name):
     if name in {"GeometryIdentityError", "SupercellGeometryIdentity", "build_supercell_geometry_identity", "identity_from_geometry"}:
         from . import geometry_identity
         return getattr(geometry_identity, name)
+    if name == "EigenmodeQualifiedSupercellBerryCalculator":
+        from .qualified_berry import EigenmodeQualifiedSupercellBerryCalculator
+        return EigenmodeQualifiedSupercellBerryCalculator
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
