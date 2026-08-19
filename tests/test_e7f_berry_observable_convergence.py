@@ -480,3 +480,22 @@ def test_e7f_step_tail_and_provenance_input_guards():
         replace(resolution[0], provenance={"bad": float("nan")})
     with pytest.raises(ValueError):
         replace(resolution[0], provenance={"bad": object()})
+
+
+def test_e7f_same_numerical_key_semantic_overlap_matrix():
+    resolution, step = _static_ladders()
+    final = step[-1]
+    altered = [
+        replace(final, plus_result=_relocate(final.plus_result, (.21, .3))),
+        replace(final, plus_result=_transform(final.plus_result, (.2, .3), lambda point: point * np.asarray((1.5, 1.0)))),
+        replace(final, plus_result=replace(final.plus_result, coordinate_convention="wrong")),
+        replace(final, provenance={"fixture": "altered"}),
+        replace(final, eigenmode_plus=_eigenmode_certificate(4)),
+    ]
+    for candidate in altered:
+        result = certify_e7e_berry_observable_convergence(
+            resolution, (step[0], step[1], candidate),
+            thresholds=_thresholds(), require_live=False,
+        )
+        assert result.status == "FAIL"
+        assert any(check.name == "ladder.overlap.semantic" and check.status == "FAIL" for check in result.checks)

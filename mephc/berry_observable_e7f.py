@@ -312,13 +312,7 @@ def certify_e7e_berry_observable_convergence(
     _ladder_checks(resolutions, steps, checks, thresholds)
     def sample_key(sample: E7FBerryObservableSample) -> tuple[Any, ...]:
         return (sample.resolution, sample.step, sample.omega_plus, sample.omega_tr, sample.selected_level)
-    seen_keys: set[tuple[Any, ...]] = set()
-    all_samples = []
-    for candidate in resolutions + steps:
-        key = sample_key(candidate)
-        if key not in seen_keys:
-            seen_keys.add(key)
-            all_samples.append(candidate)
+    all_samples = list(resolutions + steps)
     anchor_center: tuple[float, float] | None = None
     anchor_provenance: dict[str, Any] | None = None
     expected_eigenmode = None
@@ -367,6 +361,50 @@ def certify_e7e_berry_observable_convergence(
             binding = bind_eigenmode_certificate_for_resolution(certificate, expected_provenance=expected_eigenmode, expected_resolution=sample.resolution)
             binding_status = binding.status if certificate.status == "PASS" else "INCOMPLETE"
             checks.append(_check(f"sample.{index}.eigenmode.{label}.binding", binding_status, binding.to_dict(), "PASS", "eigenmode evidence must bind to the exact resolution; non-PASS supplied evidence remains INCOMPLETE"))
+    def certificate_scope(certificate: EigenmodeConvergenceCertificate | None) -> Any:
+        if certificate is None:
+            return None
+        certified_resolution = None
+        if certificate.status == "PASS" and certificate.evidence:
+            certified_resolution = certificate.evidence[-1].upper_resolution
+        return (certificate.status, certificate.provenance.to_dict(), certified_resolution)
+
+    if resolutions and steps:
+        final = resolutions[-1]
+        overlap = [sample for sample in steps
+                   if sample.resolution == final.resolution
+                   and sample.step == final.step]
+        if len(overlap) == 1:
+            candidate = overlap[0]
+            center_match = (
+                max(abs(candidate.center_plus[i] - final.center_plus[i]) for i in (0, 1)) <= tolerance
+                and max(abs(candidate.center_tr[i] - final.center_tr[i]) for i in (0, 1)) <= tolerance
+            )
+            area_match = (
+                abs(candidate.area_plus - final.area_plus) <= tolerance
+                and abs(candidate.area_tr - final.area_tr) <= tolerance
+            )
+            convention_match = (
+                candidate.plus_result.coordinate_convention == final.plus_result.coordinate_convention
+                and candidate.tr_result.coordinate_convention == final.tr_result.coordinate_convention
+                and candidate.plus_result.sign_convention == final.plus_result.sign_convention
+                and candidate.tr_result.sign_convention == final.tr_result.sign_convention
+            )
+            evidence_match = (
+                candidate.selected_level == final.selected_level
+                and dict(candidate.provenance) == dict(final.provenance)
+                and certificate_scope(candidate.eigenmode_plus) == certificate_scope(final.eigenmode_plus)
+                and certificate_scope(candidate.eigenmode_tr) == certificate_scope(final.eigenmode_tr)
+            )
+            semantic_match = center_match and area_match and convention_match and evidence_match
+            checks.append(_check(
+                "ladder.overlap.semantic", "PASS" if semantic_match else "FAIL",
+                {"center": center_match, "area": area_match,
+                 "convention": convention_match, "evidence": evidence_match},
+                {"exact_semantic_identity": True},
+                "separately supplied overlap must preserve all E7F semantic evidence",
+            ))
+
     def tail(items: tuple[E7FBerryObservableSample, ...], required: int) -> tuple[E7FBerryObservableSample, ...]:
         if len(items) < required + 1:
             checks.append(_check("tail.completeness", "INCOMPLETE", {"count": len(items)}, {"minimum": required + 1}, "required convergence tail is missing"))
