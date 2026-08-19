@@ -14,6 +14,10 @@ from .bravais import BravaisLattice2D
 from .bz import first_brillouin_zone
 from .efs import EFSResult, plot_efs
 from .geometry import to_meep_geometry
+from .geometry_identity import (
+    SupercellGeometryIdentity,
+    build_supercell_geometry_identity,
+)
 from .kspace import (
     HighSymmetryPath,
     TriangularKSpace,
@@ -37,6 +41,7 @@ class SupercellGeometryContext:
     geometry_lattice: object
     feature_geometry: list
     geometry: list
+    identity: SupercellGeometryIdentity
 
 
 class Band:
@@ -198,13 +203,28 @@ class Band:
             shape="auto",
         )
         geometry = self.create_material_block() + feature_geometry
+        identity = build_supercell_geometry_identity(
+            geometry_lattice=geometry_lattice,
+            geometry=geometry,
+            replication=replication,
+            default_material=mp.air,
+            periodicity_semantics={
+                "ensure_periodicity": True,
+                "authority": "Band._prepare_supercell_geometry",
+            },
+        )
         return SupercellGeometryContext(
             field=field,
             replication=replication,
             geometry_lattice=geometry_lattice,
             feature_geometry=feature_geometry,
             geometry=geometry,
+            identity=identity,
         )
+
+    def build_supercell_geometry_identity(self, pattern, field) -> SupercellGeometryIdentity:
+        """Return the identity from the sole verified supercell geometry authority."""
+        return self._prepare_supercell_geometry(pattern, field).identity
 
     def build_supercell_solver(self, pattern, field, *, q_points, num_bands, resolution=None):
         """Build a periodic-supercell MPB solver from explicit R6 inputs."""
