@@ -1,3 +1,4 @@
+from dataclasses import replace
 import inspect
 from unittest.mock import patch
 
@@ -8,8 +9,14 @@ import pytest
 from mephc.band import Band
 from mephc.berry import BerryCurvatureCalculator, BerryCurvatureResult
 from mephc.bravais import BravaisLattice2D
-from mephc.convergence import EigenmodeConvergenceProvenance, EigenmodePairEvidence, certify_eigenmode_convergence, NumericalConvergenceError
+from mephc.convergence import (
+    EigenmodeConvergenceProvenance,
+    EigenmodePairEvidence,
+    NumericalConvergenceError,
+    certify_eigenmode_convergence,
+)
 from mephc.deformation import PeriodicSupercellField
+from mephc.geometry_identity import build_supercell_geometry_identity
 from mephc.qualified_berry import EigenmodeQualifiedSupercellBerryCalculator
 from mephc.response import R6_AMPLITUDES, benchmark_field
 
@@ -45,6 +52,15 @@ def make_pass_request(band=None, *, resolution=4, target_band=0, num_bands=2, **
     return band, certificate
 
 
+def make_qualified(*, target_band=0, num_bands=2):
+    band, certificate = make_pass_request(target_band=target_band, num_bands=num_bands)
+    qualified = band.build_eigenmode_qualified_supercell_berry_calculator(
+        pattern(), field(), certificate=certificate, target_band=target_band,
+        num_bands=num_bands, resolution=4,
+    )
+    return band, qualified
+
+
 def test_exact_live_pass_is_lazy_and_fixed_configuration():
     band, certificate = make_pass_request()
     with patch.object(band, "_prepare_supercell_geometry", wraps=band._prepare_supercell_geometry) as prepare:
@@ -58,10 +74,12 @@ def test_exact_live_pass_is_lazy_and_fixed_configuration():
     assert isinstance(qualified, EigenmodeQualifiedSupercellBerryCalculator)
     assert qualified.scope_binding.status == "PASS"
     assert qualified.scope_binding.certified_resolution == 4
-    assert qualified.calculator.overlap_formulation == "mpb_h"
-    assert qualified.calculator.mesh_size == 3
+    assert not hasattr(qualified, "calculator")
+    assert qualified._calculator.overlap_formulation == "mpb_h"
+    assert qualified._calculator.mesh_size == 3
     assert qualified.expected_provenance.field_representation == "periodic_h_bloch_envelope"
     assert "Berry observable convergence" not in str(qualified.qualification_dict())
+    assert "calculator" not in qualified.qualification_dict()
     assert "band_index" not in inspect.signature(qualified.calculate).parameters
 
 
@@ -112,18 +130,73 @@ def test_solver_provenance_mismatch_fails_before_solver(kwargs):
 
 
 def test_fixed_band_and_grid_delegation():
-    band, certificate = make_pass_request(target_band=1, num_bands=2)
-    qualified = band.build_eigenmode_qualified_supercell_berry_calculator(
-        pattern(), field(), certificate=certificate, target_band=1,
-        num_bands=2, resolution=4,
-    )
-    with patch.object(qualified.calculator, "calculate", return_value=0.25) as calculate:
+    band, qualified = make_qualified(target_band=1, num_bands=2)
+    with patch.object(qualified._calculator, "calculate", return_value=0.25) as calculate:
         assert qualified.calculate((0.1, 0.2), 0.01) == 0.25
     calculate.assert_called_once_with((0.1, 0.2), step=0.01, band_index=1)
     result = BerryCurvatureResult(np.zeros((1, 2)), np.array([0.1]), 1, 0.01)
-    with patch.object(qualified.calculator, "calculate_grid", return_value=result) as grid:
+    with patch.object(qualified._calculator, "calculate_grid", return_value=result) as grid:
         assert qualified.calculate_grid([(0.1, 0.2)], 0.01) is result
     grid.assert_called_once_with([(0.1, 0.2)], step=0.01, band_index=1)
+
+
+def test_post_bind_geometry_mutation_is_blocked_before_delegate():
+    _, qualified = make_qualified()
+    calculator = qualified._calculator
+    calculator.geometry = list(calculator.geometry)
+    calculator.geometry[0] = mp.Block(center=mp.Vector3(0.123, 0, 0), size=mp.Vector3(1, 1, 1), material=mp.air)
+    with patch.object(calculator, "calculate", return_value=0.25) as calculate:
+        with pytest.raises(NumericalConvergenceError):
+            qualified.calculate((0.1, 0.2), 0.01)
+    calculate.assert_not_called()
+
+
+def test_post_bind_resolution_mutation_is_blocked_before_grid_delegate():
+    _, qualified = make_qualified()
+    qualified._calculator.resolution = 5
+    with patch.object(qualified._calculator, "calculate_grid", return_value=None) as calculate_grid:
+        with pytest.raises(NumericalConvergenceError):
+            qualified.calculate_grid([(0.1, 0.2)], 0.01)
+    calculate_grid.assert_not_called()
+
+
+@pytest.mark.parametrize("attribute,value", [
+    ("num_bands", 3),
+    ("polarization", mp.TM),
+    ("deterministic", False),
+    ("eigensolver_tolerance", 1e-6),
+    ("mesh_size", 5),
+    ("overlap_formulation", "energy_eh"),
+])
+def test_post_bind_solver_provenance_mutation_is_blocked(attribute, value):
+    _, qualified = make_qualified()
+    setattr(qualified._calculator, attribute, value)
+    with patch.object(qualified._calculator, "calculate", return_value=0.25) as calculate:
+        with pytest.raises(NumericalConvergenceError):
+            qualified.calculate((0.1, 0.2), 0.01)
+    calculate.assert_not_called()
+
+
+def test_manual_wrapper_semantic_mismatch_matrix_is_blocked():
+    _, qualified = make_qualified()
+    with pytest.raises(NumericalConvergenceError):
+        replace(qualified, resolution=5)
+    with pytest.raises(NumericalConvergenceError):
+        replace(qualified, target_band=1)
+    alternate_identity = build_supercell_geometry_identity(
+        geometry_lattice=qualified._calculator.geometry_lattice,
+        geometry=qualified._calculator.geometry,
+        replication=(1, 1),
+        default_material=qualified._calculator.default_material,
+        periodicity_semantics=qualified.geometry_identity.payload["periodicity_semantics"],
+    )
+    with pytest.raises(NumericalConvergenceError):
+        replace(qualified, geometry_identity=alternate_identity)
+    with pytest.raises(NumericalConvergenceError):
+        replace(qualified, expected_provenance=replace(qualified.expected_provenance, num_bands=3))
+    qualified._calculator.resolution = 5
+    with pytest.raises(NumericalConvergenceError):
+        replace(qualified)
 
 
 def test_mesh_state_is_explicit_and_legacy_default_remains_three():
@@ -139,10 +212,8 @@ def test_mesh_state_is_explicit_and_legacy_default_remains_three():
     with patch("mephc.berry.mpb.ModeSolver", return_value=object()) as mode_solver:
         explicit.build_solver(mp.Vector3())
     assert mode_solver.call_args.kwargs["mesh_size"] == 5
-    band, certificate = make_pass_request()
+    band, _ = make_pass_request()
     legacy = band.build_supercell_berry_calculator(
-        pattern(), field(), num_bands=2, resolution=4, certificate=None
-    ) if False else band.build_supercell_berry_calculator(
         pattern(), field(), num_bands=2, resolution=4
     )
     assert legacy.overlap_formulation == "energy_eh"
