@@ -180,6 +180,9 @@ __all__ = [
     "E7C_MPB_PLAQUETTE_AUTHORIZATION_SCOPE",
     "MPBQualifiedPlaquetteResult",
     "qualify_mpb_plaquette",
+    "E7D_MPB_PLAQUETTE_HOLONOMY_SCOPE",
+    "MPBQualifiedPlaquetteHolonomyResult",
+    "compose_mpb_plaquette_holonomy",
 
 ]
 
@@ -386,6 +389,14 @@ def __getattr__(name):
     }:
         from . import mpb_wilson
         return getattr(mpb_wilson, name)
+
+    if name in {
+        "E7D_MPB_PLAQUETTE_HOLONOMY_SCOPE",
+        "MPBQualifiedPlaquetteHolonomyResult",
+        "compose_mpb_plaquette_holonomy",
+    }:
+        from . import mpb_plaquette_holonomy
+        return getattr(mpb_plaquette_holonomy, name)
 
     if name in {
         "E7C_MPB_PLAQUETTE_AUTHORIZATION_SCOPE", "MPBQualifiedPlaquetteResult",
