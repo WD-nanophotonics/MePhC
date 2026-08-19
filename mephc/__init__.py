@@ -72,6 +72,12 @@ __all__ = [
     "RawEigenstate",
     "EigenSubspace",
     "solve_hermitian",
+    "DEFAULT_VALIDATION_TOLERANCE",
+    "SubspaceTransportError",
+    "SubspaceOverlap",
+    "subspace_overlap",
+    "SubspaceTransportLink",
+    "parallel_transport_link",
 ]
 
 
@@ -225,4 +231,7 @@ def __getattr__(name):
     if name == "solve_hermitian":
         from .toy_eigensolver import solve_hermitian
         return solve_hermitian
+    if name in {"DEFAULT_VALIDATION_TOLERANCE", "SubspaceTransportError", "SubspaceOverlap", "subspace_overlap", "SubspaceTransportLink", "parallel_transport_link"}:
+        from . import subspace_transport
+        return getattr(subspace_transport, name)
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
