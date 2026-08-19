@@ -177,6 +177,9 @@ __all__ = [
     "MPB_WILSON_AUTHORIZATION_SCOPE",
     "MPBQualifiedWilsonResult",
     "compose_mpb_wilson_transport",
+    "E7C_MPB_PLAQUETTE_AUTHORIZATION_SCOPE",
+    "MPBQualifiedPlaquetteResult",
+    "qualify_mpb_plaquette",
 
 ]
 
@@ -383,6 +386,13 @@ def __getattr__(name):
     }:
         from . import mpb_wilson
         return getattr(mpb_wilson, name)
+
+    if name in {
+        "E7C_MPB_PLAQUETTE_AUTHORIZATION_SCOPE", "MPBQualifiedPlaquetteResult",
+        "qualify_mpb_plaquette",
+    }:
+        from . import mpb_qualified_plaquette
+        return getattr(mpb_qualified_plaquette, name)
 
     if name in {"EigenmodeCertificateBinding", "bind_eigenmode_certificate", "EigenmodeCertificateScopeBinding", "bind_eigenmode_certificate_for_resolution"}:
         from . import convergence_binding
