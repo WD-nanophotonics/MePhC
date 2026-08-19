@@ -183,6 +183,10 @@ __all__ = [
     "E7D_MPB_PLAQUETTE_HOLONOMY_SCOPE",
     "MPBQualifiedPlaquetteHolonomyResult",
     "compose_mpb_plaquette_holonomy",
+    "E7E_MPB_BERRY_ESTIMATOR_SCOPE",
+    "MPBQualifiedBerryEstimateLevel",
+    "MPBQualifiedBerryEstimatorResult",
+    "estimate_mpb_rank1_berry_curvature",
 
 ]
 
@@ -397,6 +401,15 @@ def __getattr__(name):
     }:
         from . import mpb_plaquette_holonomy
         return getattr(mpb_plaquette_holonomy, name)
+
+    if name in {
+        "E7E_MPB_BERRY_ESTIMATOR_SCOPE",
+        "MPBQualifiedBerryEstimateLevel",
+        "MPBQualifiedBerryEstimatorResult",
+        "estimate_mpb_rank1_berry_curvature",
+    }:
+        from . import mpb_berry_estimator
+        return getattr(mpb_berry_estimator, name)
 
     if name in {
         "E7C_MPB_PLAQUETTE_AUTHORIZATION_SCOPE", "MPBQualifiedPlaquetteResult",
