@@ -53,6 +53,8 @@ __all__ = [
     "EigenmodePairEvidence",
     "NumericalConvergenceError",
     "certify_eigenmode_convergence",
+    "EigenmodeCertificateBinding",
+    "bind_eigenmode_certificate",
 ]
 
 
@@ -178,7 +180,12 @@ def __getattr__(name):
         "EigenmodeConvergenceProvenance", "EigenmodeConvergenceThresholds",
         "EigenmodePairEvidence", "NumericalConvergenceError",
         "certify_eigenmode_convergence",
+    "EigenmodeCertificateBinding",
+    "bind_eigenmode_certificate",
     }:
         from . import convergence
         return getattr(convergence, name)
+    if name in {"EigenmodeCertificateBinding", "bind_eigenmode_certificate"}:
+        from . import convergence_binding
+        return getattr(convergence_binding, name)
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
