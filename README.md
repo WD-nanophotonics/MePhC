@@ -17,6 +17,18 @@ The working Python environment used for development is:
 
 That environment provides Meep/MPB and the scientific Python libraries used by this package.
 
+## Canonical development environment
+
+All normal MePhC development, tests, compilation checks, and scientific scripts run in the WSL environment below:
+
+```bash
+/home/icy/miniconda3/envs/mp/bin/python
+```
+
+It includes pytest, NumPy, SciPy, Shapely, and Meep/MPB. Do not use the base Miniconda interpreter or recreate the environment under Windows. Windows Python is reserved for the separate Gmail Courier transport.
+
+The active `main` branch is the authoritative working baseline. The tagged-release install example below is historical release guidance, not the source of truth for current development.
+
 ## Use From Another Directory
 
 Recommended for local development:

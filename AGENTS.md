@@ -52,16 +52,19 @@ The active source repository is the WSL MePhC worktree. The Windows MePhC-Window
 
 ### Test environment facts
 
-- WSL `/usr/bin/python3` and `/home/icy/miniconda3/bin/python` do not provide the project test stack used here (`pytest`, NumPy, and other project packages). Do not spend time retrying `pytest` there.
-- Windows Python 3.12 has pytest and NumPy, but the Windows process cannot reliably import a package directly from the WSL UNC path in this setup.
-- For pure-data tests, copy `/home/icy/MePhC` to an explicitly named temporary directory under the Courier staging root, then run Windows Python with that copy on `PYTHONPATH`:
+- The single canonical project environment is `/home/icy/miniconda3/envs/mp/bin/python`. It provides pytest, NumPy, SciPy, Shapely, and Meep/MPB.
+- Run normal MePhC work only from WSL using that environment:
 
 ```bash
-cp -a /home/icy/MePhC /mnt/c/Users/icywo/PycharmProjects/MePhC-Windows/.test_copy
-wsl.exe -d Ubuntu -- cmd.exe /c "set PYTHONPATH=C:\Users\icywo\PycharmProjects\MePhC-Windows\.test_copy && C:\Users\icywo\AppData\Local\Programs\Python\Python312\python.exe -m pytest -q C:\Users\icywo\PycharmProjects\MePhC-Windows\.test_copy\tests\<test-file>.py"
+cd /home/icy/MePhC
+/home/icy/miniconda3/envs/mp/bin/python -m pytest -q
+/home/icy/miniconda3/envs/mp/bin/python -m compileall -q mephc tests
+git diff --check
 ```
 
-Use a unique temporary directory if an old copy is locked. Remove only the exact temporary directory after verification. The full legacy test collection also imports pre-existing `meep` and `shapely`, which are absent from the available Windows Python; report that as an environment limitation instead of treating it as an E2 or pure-data failure. Always still run focused tests, `python3 -m compileall -q mephc tests`, and `git diff --check`.
+- WSL `/usr/bin/python3` and `/home/icy/miniconda3/bin/python` are base interpreters, not the project environment. They may lack pytest and scientific packages; do not switch to Windows or create a second environment when the `mp` environment is available.
+- Windows Python 3.12 is reserved for the Gmail Courier transport. It is not the normal MePhC test or development environment. Do not copy the source tree to Windows for ordinary work.
+- The full current MePhC suite was verified in the `mp` environment: 187 passed and 27 subtests passed.
 
 ### Sandbox and editing facts
 
