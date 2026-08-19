@@ -72,17 +72,89 @@ git diff --check
 - Prefer `wsl.exe -d Ubuntu -- bash -lc "..." ` for WSL reads and commands. If the patch helper cannot reach a WSL path, create the patch in a writable staging file with `apply_patch`, then apply the resulting diff with `git -C /home/icy/MePhC apply`. Do not create a second source worktree.
 - Clean only exact temporary files/directories created for the current run. Never use broad recursive deletion against a workspace or home directory.
 
-### Courier closed-loop procedure
+## Courier transport contract for Codex Agents
 
-- Do not use direct Chrome or Gmail tools for the Chat relay. Use the Python Courier project.
-- Outbound requests use `.courier_outbox/<PROJECT>/<TASK>/request.json`, `message.txt`, and `READY` (create `READY` last). Every request needs a unique ASCII `task_id`, `request_id`, `keyword`, and correlation ID; use `workflow_window_seconds: 360`.
-- Invoke Courier with Windows Python and `PYTHONPATH=C:\Users\icywo\PycharmProjects\GmailCourier`:
+This is the authoritative MePhC-side procedure for the Chat relay. It exists to prevent an Agent from changing the command, choosing `chat-test`, using direct browser/Gmail tools, or misdiagnosing a Codex audit block as a Courier failure.
+
+### Scope and authorization
+
+- Use this procedure only when the user has explicitly authorized the current message to be sent to the configured ChatGPT conversation.
+- The Courier is an external side-effect transport. The Agent must state the target conversation, task ID, correlation ID, and message purpose before creating `READY`.
+- Do not infer authorization from a Python filename, a previous task, or a stale request directory.
+- Do not ask the user to run the command manually merely because a different Agent previously received a sandbox denial. First report the exact denied path, command, and policy error.
+
+### Canonical paths
+
+- MePhC source and tests: `/home/icy/MePhC`.
+- Courier source: `C:\Users\icywo\PycharmProjects\GmailCourier`.
+- Windows Courier staging: `C:\Users\icywo\PycharmProjects\MePhC-Windows`.
+- Outbox root: `C:\Users\icywo\PycharmProjects\MePhC-Windows\.courier_outbox`.
+- The Windows staging directory is not a second MePhC source tree. Do not copy MePhC there for ordinary development or testing.
+
+### Required file protocol
+
+Create exactly one new directory per request:
 
 ```text
-wsl.exe -d Ubuntu -- cmd.exe /c "set PYTHONPATH=C:\Users\icywo\PycharmProjects\GmailCourier && C:\Users\icywo\AppData\Local\Programs\Python\Python312\python.exe -m gmail_courier.cli chat-send-request --request C:\Users\icywo\PycharmProjects\MePhC-Windows\.courier_outbox\<PROJECT>\<TASK>"
+C:\Users\icywo\PycharmProjects\MePhC-Windows\.courier_outbox\<PROJECT>\<TASK_ID>\
 ```
 
-- Wait for the same process to emit `chat_submitted`; never duplicate a still-running send. Then run `sync_until_received` with `max_seconds=360`, `interval_seconds=10`, the exact project/task/keyword/correlation ID, and expected `result.json`.
-- `chat_submitted` confirms submission only. `gmail_candidate` is not a timeout: inspect its `candidate_path`, `body.txt`, and attachment `result.json`. Chat subjects may be natural-language or non-ASCII, so Courier can deliberately classify a valid same-correlation message as a candidate.
-- If Chat says `Do not start E3 automatically`, stop after accepting the current result. Do not infer a stop from a candidate event or from the absence of an exact formal subject.
+Write these files in this order:
+
+1. `request.json`
+2. `message.txt`
+3. `READY` last
+
+The first two files must be complete before `READY` is created. Do not reuse a task directory, request ID, correlation ID, or READY file.
+
+The manifest must contain:
+
+```json
+{
+  "version": 1,
+  "operation": "chat-send",
+  "request_id": "<UNIQUE_REQUEST_ID>",
+  "project_id": "TRILATT",
+  "correlation_id": "<UNIQUE_CORRELATION_ID>",
+  "task_id": "<UNIQUE_ASCII_TASK_ID>",
+  "keyword": "<UNIQUE_ASCII_KEYWORD>",
+  "chat_url": "https://chatgpt.com/c/<conversation-id>",
+  "workflow_window_seconds": 360,
+  "message_file": "message.txt"
+}
+```
+
+Use ASCII for task ID, keyword, request ID, correlation ID, and message text. The Chat URL may be the user-provided project/GPT URL or a standalone `https://chatgpt.com/c/<id>` URL.
+
+### Only supported send command
+
+Use the Windows Courier Python exactly as follows:
+
+```text
+wsl.exe -d Ubuntu -- cmd.exe /c "set PYTHONPATH=C:\Users\icywo\PycharmProjects\GmailCourier && C:\Users\icywo\AppData\Local\Programs\Python\Python312\python.exe -m gmail_courier.cli chat-send-request --request C:\Users\icywo\PycharmProjects\MePhC-Windows\.courier_outbox\<PROJECT>\<TASK_ID>"
+```
+
+Do not substitute `chat-test`. Do not pipe a prompt through a different CLI. Do not use direct Chrome, Gmail, Browser, or Gmail connector tools for this relay.
+
+### Submission and receive states
+
+- Keep the same process alive until it emits `"event": "chat_submitted"`.
+- `chat_submitted` confirms Chat submission only. It does not confirm a Gmail response.
+- Never start a second send while the first process is alive or while its `receipt.json` is being written.
+- For a closed loop, run `sync_until_received` separately with `max_seconds=360`, `interval_seconds=10`, `lookback_seconds=1200`, the exact project/task/keyword/correlation ID, and expected attachment `result.json`.
+- `gmail_received` means the validated delivery is in the project inbox.
+- `gmail_candidate` is not a timeout. Inspect its `candidate_path/body.txt` and attachment `result.json`; a natural-language or non-ASCII subject can be a valid same-correlation response.
+- If the Chat response says `Do not start E3 automatically`, accept the current result and stop. Do not invent a next task.
+
+### Codex audit and failure reporting
+
+A local `READY` file is only the Courier outbox trigger; no network action occurs unless the Courier command is actually started. Nevertheless, Codex may classify a populated outbox as a possible external data egress. If the safety layer blocks an operation:
+
+1. Do not claim that Python, WSL, Gmail, or Courier failed.
+2. Record the exact path, exact command, exact tool, and complete error text.
+3. State whether Python started, whether `receipt.json` exists, and whether `chat_submitted` appeared.
+4. Do not retry with `chat-test`, direct browser control, or a second task ID.
+5. A dry-run may validate a synthetic request in an isolated directory, but it must not invoke Courier or contain private project status.
+
+Courier-side improvements should expose separate operations for `validate-only`, `create-ready`, `submit`, and `poll`; emit machine-readable permission/configuration/submission errors; and provide a dry-run that cannot send. The Agent must never guess which stage failed.
 
