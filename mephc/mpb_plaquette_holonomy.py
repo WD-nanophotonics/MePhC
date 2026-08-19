@@ -16,7 +16,6 @@ from .path_domain import (
     PATH_INCOMPLETE,
     PATH_SINGLE_BAND_QUALIFIED,
     PATH_SUBSPACE_QUALIFIED,
-    PATH_SUBSPACE_REQUIRED,
     PATH_UNQUALIFIED,
     PathQualificationResult,
 )
@@ -191,17 +190,17 @@ def compose_mpb_plaquette_holonomy(
         raise ValueError("live E7C-qualified plaquette result is required")
 
     paths = tuple(_path_adapter(source_result, index) for index in range(len(source_result.boundary_results)))
-    wilsons = []
-    for path in paths:
-        delegated = compose_wilson_transport(path)
-        if source_result.is_qualified:
-            wilsons.append(delegated)
-        else:
-            wilsons.append(_blocked_wilson(path, "E7C refinement is not qualified"))
+    if not source_result.is_qualified:
+        wilsons = tuple(
+            _blocked_wilson(path, "E7C refinement is not qualified")
+            for path in paths
+        )
+    else:
+        wilsons = tuple(compose_wilson_transport(path) for path in paths)
     return MPBQualifiedPlaquetteHolonomyResult(
         source_result=source_result,
         path_results=paths,
-        wilson_results=tuple(wilsons),
+        wilson_results=wilsons,
         require_live=require_live,
         evidence=(
             "the exact sealed E7C MPBQualifiedPlaquetteResult was preserved",
