@@ -1,1 +1,0 @@
-R14 projects the quadratic eigenfrequency response onto the translation-covariant Hessian of the fixed q2 TE 3x1 band-3 channel. It uses only h=0.005/0.010/0.020, four origin phases, resolutions 96/112, the cyclic pair covariance proof, Hessian components, uniform null control, and frozen numerical floors. R6-R13 are immutable; R15 is not included.

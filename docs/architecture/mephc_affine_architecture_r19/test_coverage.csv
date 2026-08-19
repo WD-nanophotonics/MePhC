@@ -1,8 +1,0 @@
-area,check,result
-contract,byte-exact SHA,PASS
-refs,MePhC/SqrLatt/TriLatt refs,PASS
-method,independent NumPy/SciPy/Shapely FDFD,PASS
-solver,Stage A six plus Stage B ninety-six,PASS
-operator,Hermiticity and eigenpair gates,PASS
-regression,MePhC/SqrLatt/TriLatt tests,PASS
-validators,R17/R18/R19 positive and negative,PASS

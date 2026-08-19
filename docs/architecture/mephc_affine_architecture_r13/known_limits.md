@@ -1,1 +1,0 @@
-The result is scoped to the inherited q2 band-3 nondegenerate 3x1 rigid-center benchmark. Period-3 symmetry allows an odd cubic sector return but this bundle does not claim c3 nonzero and does not address Berry/BCD, topology, transport, far field, local deformation, or arbitrary zero-mean fields.

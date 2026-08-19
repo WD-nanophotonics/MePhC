@@ -1,5 +1,0 @@
-{
-  "status": "PASS",
-  "checks": ["analytic gradient", "Jacobian conditioning", "sampled bilinear determinism", "sign reversal", "rigid motif centers"],
-  "motif_policy": "rigid_local_cartesian"
-}

@@ -1,8 +1,0 @@
-area,check,result
-contract,byte-exact SHA,PASS
-protected,R6-R17 digests and R17 validator,PASS
-logic,all R17 transferability conditions reconstructed,PASS
-branches,estimator-matched and raw-stress branches,PASS
-solver,fresh MPB and TriLatt calls,0
-regression,MePhC/SqrLatt/TriLatt full tests,PASS
-validators,R16/R17/R18 positive and negative,PASS

@@ -1,1 +1,0 @@
-R7.4 is diagnostic only. The inherited R7.3 differential baseline remains unqualified at 1/5 resolved. R8, Berry/BCD, topology, transport, unfolding, gauge, metric, and far-field claims are outside this task.

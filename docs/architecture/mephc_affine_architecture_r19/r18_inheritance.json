@@ -1,8 +1,0 @@
-{
-  "R20_authorized": false,
-  "classification": "QUADRATIC_SIGNAL_REPRODUCED_BUT_NOT_5SIGMA_CERTIFIED",
-  "immutable": true,
-  "recommendation": "RECOMMEND_INDEPENDENT_DISCRETIZATION_CROSSCHECK",
-  "source": "docs/architecture/mephc_affine_architecture_r18",
-  "terminal": "CLOSED_R17_LOGIC_CORRECTIVE_QUADRATIC_EVIDENCE_SYNTHESIZED"
-}

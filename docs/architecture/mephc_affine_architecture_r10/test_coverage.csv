@@ -1,8 +1,0 @@
-area,check,result
-contract,byte-exact SHA,PASS
-inheritance,R9 immutable counts,PASS
-sector,actual fields T3 gauge repeatability,PASS
-response,q2 bands 1-6 fixed ladder,PASS
-controls,repeats translation representation,PASS
-scope,TriLatt hold and no production changes,PASS
-validator,positive and negative fixtures,PENDING

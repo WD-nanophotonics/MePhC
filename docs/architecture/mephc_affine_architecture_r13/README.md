@@ -1,1 +1,0 @@
-R13 audits the fixed q2 TE 3x1 band-3 quadratic even response using four origin phases and four signed amplitudes at resolutions 96 and 112. It records period-3 sector-return structure, exact controls, band identity, and conservative c2 uncertainty. R6-R12 remain immutable; no production, TriLatt, cubic, Berry, topology, transport, or R14 work is included.

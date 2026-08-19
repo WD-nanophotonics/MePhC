@@ -1,9 +1,0 @@
-{
-  "call_plan_sha256": "864fc18b6af5d25af249b140b2d34b75593a998cd85f8f1414b17c2e9117716c",
-  "call_plan_total": 258,
-  "contract_sha256": "f2a874d2114e38b4e25a45a7b43232f56b66e654abb96eca29b6bdabe341b5eb",
-  "freeze_before_fresh_solver": true,
-  "fresh_solver_calls": 0,
-  "schema": "mephc.affine_architecture.r17.prevalidation_freeze.v1",
-  "status": "IMMUTABLE_PREVALIDATION_FREEZE"
-}

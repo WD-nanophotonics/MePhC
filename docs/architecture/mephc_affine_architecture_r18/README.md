@@ -1,1 +1,0 @@
-R18 is a zero-solver corrective adjudication. It reconstructs the R17 transferability gate from immutable R16/R17 evidence, confirms the serialized top-level flag is logically inverted, recomputes matched and literal-raw uncertainty branches, and synthesizes the A/B evidence. R17 remains immutable; R19 and the recommended independent-discretization cross-check are not executed.

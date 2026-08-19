@@ -1,6 +1,0 @@
-{
-  "contract_digest_mismatch": "REJECTED",
-  "fresh_resolution_8": "REJECTED",
-  "trilatt_solver_call": "REJECTED",
-  "wrong_target_denominator": "REJECTED"
-}

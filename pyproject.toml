@@ -5,8 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mephc"
 version = "0.1.0"
-description = "Reusable Meep/MPB photonic crystal geometry, band, Berry curvature, and EFS helpers."
-readme = "README.md"
+description = "Internal utility package."
 requires-python = ">=3.10"
 authors = [{ name = "MePhC contributors" }]
 dependencies = [

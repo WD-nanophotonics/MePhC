@@ -1,8 +1,0 @@
-area,coverage,status
-contract_digest,byte_locked_authoritative_json,PASS
-geometry,full_typed_polygon_six_controls,PASS
-solver,4x6x3x6_TE_calls,PASS
-epsilon,compact_hash_and_roll_control,PASS
-inherited,R7.3_1_of_5_immutable,PASS
-negative_fixtures,isolated_mutation_rejection,PASS
-protected,R6_through_R7.3,PASS

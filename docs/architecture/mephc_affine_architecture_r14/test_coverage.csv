@@ -1,8 +1,0 @@
-area,check,result
-contract,byte-exact SHA,PASS
-inheritance,R6-R13 protected digests,PASS
-primary,56 relative-pair calls,PASS
-hessian,32 component cross-check calls,PASS
-uniform,16 translation-null calls,PASS
-controls,12 repeats and 4 representation calls,PASS
-validator,positive and negative fixtures,PASS

@@ -1,1 +1,0 @@
-R14 derives the real symmetric circulant Hessian H=[[a,b,b],[b,a,b],[b,b,a]] from cyclic primitive translation. Uniform translation tests a+2b=0; the zero-mean sector has lambda=a-b, and the inherited d direction gives c2=0.75 lambda. The sign is not imposed by symmetry.

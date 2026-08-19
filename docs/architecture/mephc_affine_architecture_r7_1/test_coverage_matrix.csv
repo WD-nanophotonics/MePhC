@@ -1,7 +1,0 @@
-test_id,scope,status,evidence
-R71-01,polygon order and vertex orientation equivalence, PASS,tests/test_geometry_equivalence.py
-R71-02,absolute versus centered-shape geometry contract, PASS,geometry_equivalence.json
-R71-03,real ModeSolver runtime and five-amplitude provenance, PASS,real_mpb_response.json
-R71-04,SqrLatt real differential MPB closure, PASS,real_mpb_response.json
-R71-05,TriLatt raw audit without nonconverged response claim, PASS,completion_probe.json
-R71-06,strict R7.1 evidence validator, PASS,validate_r7_1.py

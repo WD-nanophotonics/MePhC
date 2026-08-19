@@ -1,1 +1,0 @@
-R12 records fixed canonical-anchor typed-geometry and epsilon-grid equivalence, canonical tangent spectra, protected R11 localization, four-origin phase spectra and c1 fit, exact two-repeat controls, representation and uniform-translation floors, band identity, and the contract terminal adjudication. No arrays are stored; epsilon evidence is shape/hash only.

@@ -1,1 +1,0 @@
-R13 evidence contains the fixed 72-call primary ensemble, 20 control calls, per-phase even spectra, K(A) phase statistics, c2+c4 A^2 fits, band identity, repeated-input/representation/uniform-translation floors, protected R6-R12 digests, and the contract terminal adjudication.

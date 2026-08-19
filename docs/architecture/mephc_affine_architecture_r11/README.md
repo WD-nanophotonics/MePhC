@@ -1,1 +1,0 @@
-R11 closes the fixed q2 band-3 nondegenerate first-order question using the scoped tangent-basis selection rule. It uses fixed h=0.0005,0.001, full A=0, ±0.0005, ±0.001, ±0.002, TE bands 1-6, A=0 bands 1-12, fixed MPB tolerance 1e-10, mandatory resolutions 80 and 96, and optional 112 only under the contract trigger. R6-R10 remain immutable and no production code is changed.

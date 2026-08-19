@@ -1,1 +1,0 @@
-R15 baseline-free secant adjudication stopped before any fresh MPB call at the mandatory compatibility freeze. Protected pair/full diagnostics reproduce the contract values, but the protected uniform controls do not cover the required 0.020 four-phase endpoint and the contract forbids adding another fresh magnitude.

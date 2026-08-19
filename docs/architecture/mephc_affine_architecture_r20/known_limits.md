@@ -1,1 +1,0 @@
-Evidence is limited to the fixed q2, primary band 3, 3x1 square supercell, four-origin ensemble, fixed h values, and exact-face scalar TE method. It does not establish a general theorem or authorize R21.\n

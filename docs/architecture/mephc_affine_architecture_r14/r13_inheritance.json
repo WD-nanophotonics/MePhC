@@ -1,9 +1,0 @@
-{
-  "c2_112": -0.3436627735984702,
-  "c2_96": -0.45640248675509176,
-  "immutable": true,
-  "medium_amplitude_positive_K_diagnostic_only": true,
-  "semantic_scope": "nonzero c2 not resolved under broad four-origin full-pattern uncertainty; not a precise physical c2=0 measurement",
-  "terminal_state": "CLOSED_QUADRATIC_EVEN_ZERO_SUPPORTED",
-  "uncertainty": 3.298360946693002
-}

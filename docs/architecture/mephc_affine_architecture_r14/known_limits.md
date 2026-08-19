@@ -1,1 +1,0 @@
-R14 is scoped to the inherited nondegenerate q2 band-3 3x1 rigid-center periodic benchmark. It does not measure cubic response or infer Berry/BCD, topology, transport, far field, local deformation, elastic, or arbitrary zero-mean physics.

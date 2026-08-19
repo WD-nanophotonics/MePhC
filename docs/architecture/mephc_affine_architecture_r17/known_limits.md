@@ -1,1 +1,0 @@
-The result is limited to the audited q2 TE band-3 3x1 zero-mean rigid-center periodic deformation and the two preregistered origin ensembles. It does not make universal claims about raw global-translation errors, cubic response, Berry/BCD/topology, transport/far field, local deformation, arbitrary zero-mean fields, or elastic/gauge physics.

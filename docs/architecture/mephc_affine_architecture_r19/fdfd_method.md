@@ -1,1 +1,0 @@
-R19 uses an evidence-only conservative scalar-TE finite-volume/FDFD operator: -div[(1/epsilon) grad Hz]. Cell air fractions are exact Shapely polygon-cell intersections with periodic images; a_cell=f_air+(1-f_air)/7.29; all faces use harmonic means. No MPB/Meep grids or production integration are used.

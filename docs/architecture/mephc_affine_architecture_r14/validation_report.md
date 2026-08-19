@@ -1,1 +1,0 @@
-R14 records the derivation of the cyclic Hessian, canonical relative-pair geometry and epsilon covariance, 56 primary pair calls, 32 Hessian cross-check calls, 16 uniform controls, 12 exact repeat calls, 4 representation controls, band identity, and all nine lambda uncertainty components.

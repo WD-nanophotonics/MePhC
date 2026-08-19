@@ -1,1 +1,0 @@
-The result is limited to q2, the prescribed 3x1 supercell, TE bands 1-6 response and first 12 A=0 sector bands. The zero-mean rule applies only to rigid primitive-periodic translations of identical motifs and is not a blanket cancellation claim for degenerate folded eigenvalues. No q search, adaptive amplitude, band relabeling, or tolerance tuning is allowed.

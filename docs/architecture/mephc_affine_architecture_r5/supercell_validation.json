@@ -1,7 +1,0 @@
-{
-  "status": "PASS",
-  "pass_fixture": "u_x=0.1*sin(2*pi*x/2), square reference, replication=(2,1)",
-  "fail_fixture": "u_x=0.01*x, square reference, replication=(2,1)",
-  "boundary_tolerance": 1e-9,
-  "primitive_unfolding": false
-}

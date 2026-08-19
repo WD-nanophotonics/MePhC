@@ -1,8 +1,0 @@
-{
-  "above_112_ran": false,
-  "expected_if_compatible": 112,
-  "fresh_solver_call_count": 0,
-  "no_retry_hunting": true,
-  "stopped_before_response_matrix": true,
-  "triLatt_fresh_mpb_calls": 0
-}

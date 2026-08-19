@@ -1,1 +1,0 @@
-Result is limited to the audited square 3x1 q2 TE band-3 benchmark, fixed two-origin FDFD ensemble, and preregistered thresholds. It makes no cubic, Berry/BCD/topology, transport/far-field, local/general-zero-mean, elastic/gauge, or R20 claims.

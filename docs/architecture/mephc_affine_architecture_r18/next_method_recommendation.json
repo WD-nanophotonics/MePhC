@@ -1,6 +1,0 @@
-{
-  "exclusive": true,
-  "executed": false,
-  "reason": "A/B quadratic signals reproduce positively while dominant uncertainty is representation/null-model related; independent discretization is the next discriminating method.",
-  "recommendation": "RECOMMEND_INDEPENDENT_DISCRETIZATION_CROSSCHECK"
-}

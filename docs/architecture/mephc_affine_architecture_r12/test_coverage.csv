@@ -1,9 +1,0 @@
-area,check,result
-contract,byte-exact SHA,PASS
-inheritance,R6-R11 protected digests and validators,PASS
-canonical,typed geometry and epsilon-grid equivalence,PASS
-tangent,all sites both h levels both resolutions,PASS
-origin_phase,four phases three amplitudes both signs,PASS
-controls,two repeats representation uniform translation,PASS
-band_identity,ordinal bands 1-6,PASS
-validator,positive and negative fixtures,PASS

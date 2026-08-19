@@ -1,8 +1,0 @@
-{
-  "meep": "/home/icy/miniconda3/envs/mp/lib/python3.13/site-packages/meep/__init__.py",
-  "mode_solver": true,
-  "mpb": "/home/icy/miniconda3/envs/mp/lib/python3.13/site-packages/meep/mpb/__init__.py",
-  "python": "/home/icy/miniconda3/envs/mp/bin/python",
-  "runtime_lock": "/home/icy/miniconda3/envs/mp/bin/python",
-  "solver": "meep.mpb.ModeSolver"
-}

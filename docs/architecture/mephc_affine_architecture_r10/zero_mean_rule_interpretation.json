@@ -1,6 +1,0 @@
-{
-  "blanket_total_first_order_cancellation_claimed": false,
-  "interpretation": "ZERO_MEAN_DIAGONAL_RULE_COMPATIBLE_WITH_NONDEGENERATE_C1_ZERO",
-  "selection_rule_scope": "rigid translations of identical primitive motifs about primitive-periodic A=0",
-  "zero_mean_verified": true
-}

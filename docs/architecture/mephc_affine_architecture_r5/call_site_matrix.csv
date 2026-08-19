@@ -1,6 +1,0 @@
-repository,entry_point,field_authority,local_policy,reciprocal_policy
-MePhC,mephc.deformation.DeformationField,shared,preview-only,typed primitive guard
-MePhC,mephc.band.Band,shared,not a primitive solve,global affine only
-MePhC-SqrLatt,square_hole.r5_deformation,shared,finite rigid patch,supercell label only
-MePhC-TriLatt,r5_deformation,shared,finite rigid patch,supercell label only
-MePhC,mephc.r5.record_identity,shared,stable provenance required,legacy collapse for affine
