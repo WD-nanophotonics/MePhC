@@ -174,6 +174,9 @@ __all__ = [
     "MPBQualifiedPathResult",
     "qualify_mpb_spectral_path",
     "qualify_mpb_path",
+    "MPB_WILSON_AUTHORIZATION_SCOPE",
+    "MPBQualifiedWilsonResult",
+    "compose_mpb_wilson_transport",
 
 ]
 
@@ -373,6 +376,13 @@ def __getattr__(name):
     }:
         from . import mpb_qualified_path
         return getattr(mpb_qualified_path, name)
+
+    if name in {
+        "MPB_WILSON_AUTHORIZATION_SCOPE", "MPBQualifiedWilsonResult",
+        "compose_mpb_wilson_transport",
+    }:
+        from . import mpb_wilson
+        return getattr(mpb_wilson, name)
 
     if name in {"EigenmodeCertificateBinding", "bind_eigenmode_certificate", "EigenmodeCertificateScopeBinding", "bind_eigenmode_certificate_for_resolution"}:
         from . import convergence_binding
