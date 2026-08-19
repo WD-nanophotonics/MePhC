@@ -187,6 +187,10 @@ __all__ = [
     "MPBQualifiedBerryEstimateLevel",
     "MPBQualifiedBerryEstimatorResult",
     "estimate_mpb_rank1_berry_curvature",
+    "E7F_BERRY_OBSERVABLE_SCOPE",
+    "E7FBerryObservableSample",
+    "E7FBerryObservableCertificate",
+    "certify_e7e_berry_observable_convergence",
 
 ]
 
@@ -410,6 +414,15 @@ def __getattr__(name):
     }:
         from . import mpb_berry_estimator
         return getattr(mpb_berry_estimator, name)
+
+    if name in {
+        "E7F_BERRY_OBSERVABLE_SCOPE",
+        "E7FBerryObservableSample",
+        "E7FBerryObservableCertificate",
+        "certify_e7e_berry_observable_convergence",
+    }:
+        from . import berry_observable_e7f
+        return getattr(berry_observable_e7f, name)
 
     if name in {
         "E7C_MPB_PLAQUETTE_AUTHORIZATION_SCOPE", "MPBQualifiedPlaquetteResult",
