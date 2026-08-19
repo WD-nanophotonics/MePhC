@@ -53,8 +53,12 @@ __all__ = [
     "EigenmodePairEvidence",
     "NumericalConvergenceError",
     "certify_eigenmode_convergence",
+    "check_eigenmode_certificate_integrity",
+    "revalidate_eigenmode_certificate",
     "EigenmodeCertificateBinding",
     "bind_eigenmode_certificate",
+    "EigenmodeCertificateScopeBinding",
+    "bind_eigenmode_certificate_for_resolution",
     "GeometryIdentityError",
     "SupercellGeometryIdentity",
     "build_supercell_geometry_identity",
@@ -184,11 +188,13 @@ def __getattr__(name):
         "EigenmodeConvergenceProvenance", "EigenmodeConvergenceThresholds",
         "EigenmodePairEvidence", "NumericalConvergenceError",
         "certify_eigenmode_convergence",
+        "check_eigenmode_certificate_integrity",
+        "revalidate_eigenmode_certificate",
     }:
         from . import convergence
 
         return getattr(convergence, name)
-    if name in {"EigenmodeCertificateBinding", "bind_eigenmode_certificate"}:
+    if name in {"EigenmodeCertificateBinding", "bind_eigenmode_certificate", "EigenmodeCertificateScopeBinding", "bind_eigenmode_certificate_for_resolution"}:
         from . import convergence_binding
         return getattr(convergence_binding, name)
     if name in {"GeometryIdentityError", "SupercellGeometryIdentity", "build_supercell_geometry_identity", "identity_from_geometry"}:

@@ -397,4 +397,59 @@ __all__ = [
     "EigenmodePairEvidence",
     "NumericalConvergenceError",
     "certify_eigenmode_convergence",
+    "check_eigenmode_certificate_integrity",
+    "revalidate_eigenmode_certificate",
 ]
+
+
+def revalidate_eigenmode_certificate(
+    certificate: EigenmodeConvergenceCertificate,
+) -> EigenmodeConvergenceCertificate:
+    """Recompute the canonical certificate without trusting stored status/checks."""
+    if not isinstance(certificate, EigenmodeConvergenceCertificate):
+        raise TypeError("certificate must be EigenmodeConvergenceCertificate")
+    return certify_eigenmode_convergence(
+        certificate.evidence,
+        provenance=certificate.provenance,
+        thresholds=certificate.thresholds,
+    )
+
+
+def check_eigenmode_certificate_integrity(
+    certificate: EigenmodeConvergenceCertificate,
+) -> ConvergenceCheck:
+    """Compare a certificate with its fresh canonical deterministic serialization."""
+    if not isinstance(certificate, EigenmodeConvergenceCertificate):
+        raise TypeError("certificate must be EigenmodeConvergenceCertificate")
+    canonical = revalidate_eigenmode_certificate(certificate)
+    supplied_status = certificate.status
+    canonical_status = canonical.status
+    serialization_error = None
+    try:
+        supplied = certificate.to_dict()
+        expected = canonical.to_dict()
+        serialized_match = supplied == expected
+    except (TypeError, ValueError, AttributeError) as exc:
+        serialized_match = False
+        serialization_error = type(exc).__name__
+    observed = {
+        "supplied_status": supplied_status,
+        "canonical_status": canonical_status,
+        "serialized_match": serialized_match,
+    }
+    if serialization_error is not None:
+        observed["serialization_error"] = serialization_error
+    return ConvergenceCheck(
+        name="certificate.integrity",
+        status="PASS" if serialized_match else "FAIL",
+        observed=observed,
+        criterion={
+            "canonical_status": canonical_status,
+            "serialized_match": True,
+        },
+        message=(
+            "stored certificate exactly matches canonical revalidation"
+            if serialized_match else
+            "stored certificate differs from canonical revalidation"
+        ),
+    )

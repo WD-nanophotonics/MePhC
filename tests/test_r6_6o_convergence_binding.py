@@ -59,8 +59,8 @@ class CertificateProvenanceBindingR66OTests(unittest.TestCase):
             certificate(), expected_provenance=provenance(geometry_digest="other-geometry")
         )
         self.assertEqual(binding.status, "FAIL")
-        self.assertEqual(binding.checks[2].name, "provenance.geometry_digest")
-        self.assertEqual(binding.checks[2].status, "FAIL")
+        geometry_check = next(check for check in binding.checks if check.name == "provenance.geometry_digest")
+        self.assertEqual(geometry_check.status, "FAIL")
         with self.assertRaises(NumericalConvergenceError):
             binding.require_passed()
 
@@ -97,17 +97,18 @@ class CertificateProvenanceBindingR66OTests(unittest.TestCase):
             certificate(status="FAIL"), expected_provenance=provenance()
         )
         self.assertEqual(binding.status, "FAIL")
-        self.assertEqual(binding.checks[0].name, "certificate.status")
-        self.assertEqual(binding.checks[0].status, "FAIL")
-        self.assertTrue(all(check.status == "PASS" for check in binding.checks[1:]))
+        status_check = next(check for check in binding.checks if check.name == "certificate.status")
+        self.assertEqual(status_check.status, "FAIL")
+        self.assertTrue(all(check.status == "PASS" for check in binding.checks if check.name.startswith("provenance.")))
 
     def test_incomplete_certificate_exact_provenance(self):
         binding = bind_eigenmode_certificate(
             certificate(status="INCOMPLETE"), expected_provenance=provenance()
         )
         self.assertEqual(binding.status, "INCOMPLETE")
-        self.assertEqual(binding.checks[0].status, "INCOMPLETE")
-        self.assertTrue(all(check.status == "PASS" for check in binding.checks[1:]))
+        status_check = next(check for check in binding.checks if check.name == "certificate.status")
+        self.assertEqual(status_check.status, "INCOMPLETE")
+        self.assertTrue(all(check.status == "PASS" for check in binding.checks if check.name.startswith("provenance.")))
         with self.assertRaises(NumericalConvergenceError):
             binding.require_passed()
 
