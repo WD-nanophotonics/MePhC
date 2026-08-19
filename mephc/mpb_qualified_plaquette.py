@@ -41,6 +41,8 @@ class MPBQualifiedPlaquetteResult:
     steps: tuple[float,...]
     boundary_results: tuple[PlaquetteBoundaryQualificationResult,...]
     interior_results: tuple[PlaquetteInteriorQualificationResult,...]
+    boundary_contexts: tuple[tuple[ExternalIsolationContext,...],...]
+    spoke_contexts: tuple[tuple[ExternalIsolationContext,...],...]
     refinement_result: PlaquetteRefinementQualificationResult
     require_live: bool=True
     authorization_scope: str=E7C_MPB_PLAQUETTE_AUTHORIZATION_SCOPE
@@ -48,19 +50,26 @@ class MPBQualifiedPlaquetteResult:
     def __post_init__(self):
         if self.authorization_scope != E7C_MPB_PLAQUETTE_AUTHORIZATION_SCOPE: raise ValueError("invalid E7C scope")
         if len(self.snapshots)!=len(self.steps) or len(self.boundary_results)!=len(self.steps) or len(self.interior_results)!=len(self.steps): raise ValueError("level evidence count mismatch")
+        if len(self.boundary_contexts)!=len(self.steps) or len(self.spoke_contexts)!=len(self.steps): raise ValueError("context evidence count mismatch")
         if type(self.require_live) is not bool: raise TypeError("require_live must be bool")
         object.__setattr__(self,"snapshots",tuple(tuple(x) for x in self.snapshots))
         object.__setattr__(self,"selections",tuple(tuple(tuple(y) for y in x) for x in self.selections))
         object.__setattr__(self,"steps",tuple(float(x) for x in self.steps))
+        boundary_contexts=tuple(tuple(x) for x in self.boundary_contexts)
+        spoke_contexts=tuple(tuple(x) for x in self.spoke_contexts)
+        if any(len(x)!=4 for x in boundary_contexts) or any(len(x)!=4 for x in spoke_contexts): raise ValueError("each level must preserve four boundary and four spoke contexts")
+        if any(not isinstance(context,ExternalIsolationContext) for level in boundary_contexts+spoke_contexts for context in level): raise TypeError("context evidence must contain ExternalIsolationContext values")
+        object.__setattr__(self,"boundary_contexts",boundary_contexts)
+        object.__setattr__(self,"spoke_contexts",spoke_contexts)
         object.__setattr__(self,"provenance",_freeze(_safe(dict(self.provenance))))
     @property
     def status(self): return self.refinement_result.status
     @property
     def is_qualified(self): return self.refinement_result.is_qualified
     @property
-    def is_live_qualified(self): return self.is_qualified and all(s.provenance.get("live_mpb_extraction_validated") is True for level in self.snapshots for s in level)
+    def is_live_qualified(self): return self.require_live is True and self.is_qualified and all(s.provenance.get("live_mpb_extraction_validated") is True for level in self.snapshots for s in level)
     def to_dict(self):
-        return {"status":self.status,"is_qualified":self.is_qualified,"is_live_qualified":self.is_live_qualified,"require_live":self.require_live,"authorization_scope":self.authorization_scope,"steps":list(self.steps),"selections":[[list(x) for x in l] for l in self.selections],"boundary_results":[x.to_dict() for x in self.boundary_results],"interior_results":[x.to_dict() for x in self.interior_results],"refinement_result":self.refinement_result.to_dict(),"provenance":_thaw(self.provenance)}
+        return {"status":self.status,"is_qualified":self.is_qualified,"is_live_qualified":self.is_live_qualified,"require_live":self.require_live,"authorization_scope":self.authorization_scope,"steps":list(self.steps),"selections":[[list(x) for x in l] for l in self.selections],"boundary_contexts":[[x.to_dict() for x in level] for level in self.boundary_contexts],"spoke_contexts":[[x.to_dict() for x in level] for level in self.spoke_contexts],"boundary_results":[x.to_dict() for x in self.boundary_results],"interior_results":[x.to_dict() for x in self.interior_results],"refinement_result":self.refinement_result.to_dict(),"provenance":_thaw(self.provenance)}
 
 def _sel(s):
     if isinstance(s,(str,bytes)) or not isinstance(s,Sequence) or not s: raise ValueError("selection must be non-empty")
@@ -71,18 +80,27 @@ def _vertex(s,i,sel):
     if any(j>=s.bands for j in sel): raise ValueError("selection out of range")
     states=[s[j] for j in sel]
     return EigenSubspace(k_point=s.k_point,frame=np.column_stack([x.vector for x in states]),eigenvalues=tuple(x.eigenvalue for x in states),solver_indices=tuple(x.solver_index for x in states),metadata={"source":"E7C MPB plaquette bridge","solver_index_semantics":"ordering metadata only","level":i})
+def _layout(s):
+    representation=s.provenance.get("representation")
+    if not isinstance(representation,str) or not representation: raise ValueError("snapshot representation identifier is required")
+    return representation,tuple(int(x) for x in s.spatial_shape),int(s.component_count),int(np.prod(s.h_fields.shape[1:]))
 def _ctx(a,sa,b,sb):
     return ExternalIsolationContext(tuple(float(a.frequencies[i]) for i in range(a.bands) if i not in sa),tuple(float(b.frequencies[i]) for i in range(b.bands) if i not in sb),{"source":"E7C excluded snapshot context"})
 def qualify_mpb_plaquette(levels, selections, steps, *, thresholds, refinement_thresholds, require_live=True):
     if not isinstance(thresholds,SubspaceQualificationThresholds) or not isinstance(refinement_thresholds,PlaquetteRefinementThresholds): raise TypeError("invalid thresholds")
     if len(levels)<2 or len(levels)!=len(selections) or len(levels)!=len(steps): raise ValueError("E7C requires two or more aligned levels")
     if type(require_live) is not bool: raise TypeError("require_live must be bool")
-    normalized=[]; normalized_sel=[]; boundaries=[]; interiors=[]; refinement_levels=[]
+    normalized=[]; normalized_sel=[]; boundaries=[]; interiors=[]; boundary_contexts=[]; spoke_contexts=[]; refinement_levels=[]; expected_layout=None
     for li,(raw,rawsel,step) in enumerate(zip(levels,selections,steps)):
         if len(raw)!=5 or len(rawsel)!=5: raise ValueError("each level requires four corners and one center")
         sels=tuple(_sel(x) for x in rawsel)
         snaps=tuple(raw)
         if any(not isinstance(x,MPBHEnvelopeSnapshot) for x in snaps): raise TypeError("snapshots required")
+        layouts=tuple(_layout(x) for x in snaps)
+        if expected_layout is None: expected_layout=layouts[0]
+        if any(layout!=expected_layout for layout in layouts): raise ValueError("cross-snapshot representation or spatial layout mismatch")
+        if len({len(sel) for sel in sels})!=1: raise ValueError("selection rank mismatch within level")
+        if li and len(sels[0])!=len(normalized_sel[0][0]): raise ValueError("selection rank mismatch across levels")
         if require_live and any(x.provenance.get("live_mpb_extraction_validated") is not True for x in snaps): raise ValueError("live MPB provenance required")
         if not all(x.is_orthogonality_qualified for x in snaps): raise ValueError("non-qualified snapshot")
         if any(j>=x.bands for x,sel in zip(snaps,sels) for j in sel): raise ValueError("selection out of range")
@@ -92,7 +110,7 @@ def qualify_mpb_plaquette(levels, selections, steps, *, thresholds, refinement_t
         sctx=tuple(_ctx(snaps[i],sels[i],snaps[4],sels[4]) for i in range(4))
         b=qualify_plaquette_boundary(corners,bctx,thresholds=thresholds,provenance={"source":"E7C MPB bridge"})
         interior=qualify_plaquette_interior(b,center,sctx,provenance={"source":"E7C MPB bridge"})
-        normalized.append(snaps); normalized_sel.append(sels); boundaries.append(b); interiors.append(interior); refinement_levels.append(PlaquetteRefinementLevel(b,interior,float(step),{"level":li}))
+        normalized.append(snaps); normalized_sel.append(sels); boundaries.append(b); interiors.append(interior); boundary_contexts.append(bctx); spoke_contexts.append(sctx); refinement_levels.append(PlaquetteRefinementLevel(b,interior,float(step),{"level":li}))
     refinement=qualify_plaquette_refinement(tuple(refinement_levels),thresholds=refinement_thresholds,provenance={"source":"E7C MPB plaquette bridge","authorization_scope":E7C_MPB_PLAQUETTE_AUTHORIZATION_SCOPE})
-    return MPBQualifiedPlaquetteResult(tuple(normalized),tuple(normalized_sel),tuple(float(x) for x in steps),tuple(boundaries),tuple(interiors),refinement,require_live,provenance={"live_required":require_live})
+    return MPBQualifiedPlaquetteResult(tuple(normalized),tuple(normalized_sel),tuple(float(x) for x in steps),tuple(boundaries),tuple(interiors),tuple(boundary_contexts),tuple(spoke_contexts),refinement,require_live,provenance={"live_required":require_live})
 __all__=["E7C_MPB_PLAQUETTE_AUTHORIZATION_SCOPE","MPBQualifiedPlaquetteResult","qualify_mpb_plaquette"]
