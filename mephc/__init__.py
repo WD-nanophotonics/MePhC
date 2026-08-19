@@ -158,6 +158,14 @@ __all__ = [
     "WilsonTransportResult",
     "compose_wilson_transport",
     "compose_wilson_line_or_loop",
+    "MPB_H_ENVELOPE_REPRESENTATION",
+    "MPB_H_ENVELOPE_QUALIFIED",
+    "MPB_H_ENVELOPE_UNQUALIFIED",
+    "MPB_H_ORTHOGONAL_QUALIFIED",
+    "MPB_H_ORTHOGONAL_UNQUALIFIED",
+    "MPBHEnvelopeSnapshot",
+    "adapt_mpb_h_envelopes",
+    "adapt_mpb_h_envelopes_to_raw_eigenstates",
 
 ]
 
@@ -333,6 +341,15 @@ def __getattr__(name):
     }:
         from . import wilson_geometry
         return getattr(wilson_geometry, name)
+
+    if name in {
+        "MPB_H_ENVELOPE_REPRESENTATION", "MPB_H_ENVELOPE_QUALIFIED",
+        "MPB_H_ENVELOPE_UNQUALIFIED", "MPB_H_ORTHOGONAL_QUALIFIED",
+        "MPB_H_ORTHOGONAL_UNQUALIFIED", "MPBHEnvelopeSnapshot",
+        "adapt_mpb_h_envelopes", "adapt_mpb_h_envelopes_to_raw_eigenstates",
+    }:
+        from . import mpb_spectral
+        return getattr(mpb_spectral, name)
 
     if name in {"EigenmodeCertificateBinding", "bind_eigenmode_certificate", "EigenmodeCertificateScopeBinding", "bind_eigenmode_certificate_for_resolution"}:
         from . import convergence_binding
