@@ -18,7 +18,7 @@ from dataclasses import dataclass, field
 import math
 from numbers import Real
 from types import MappingProxyType
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Callable, Iterable, Mapping, Sequence
 
 import numpy as np
 from scipy.optimize import linear_sum_assignment
@@ -43,6 +43,9 @@ SUBSPACE_QUALIFIED = "SUBSPACE_QUALIFIED"
 SUBSPACE_NOT_ISOLATED = "SUBSPACE_NOT_ISOLATED"
 SUBSPACE_CONTINUITY_UNQUALIFIED = "SUBSPACE_CONTINUITY_UNQUALIFIED"
 NUMERICALLY_INCOMPLETE = "NUMERICALLY_INCOMPLETE"
+SUBSPACE_REQUIRES_ENLARGEMENT = "SUBSPACE_REQUIRES_ENLARGEMENT"
+DISENTANGLEMENT_REQUIRED = "DISENTANGLEMENT_REQUIRED"
+RANK_QUALIFIED = SUBSPACE_QUALIFIED
 
 
 def _finite(value: Any, *, name: str) -> float:
@@ -629,6 +632,307 @@ def qualify_local_subspace(
 qualify_subspace_pair = qualify_local_subspace
 
 
+@dataclass(frozen=True)
+class RankAdaptiveCandidate:
+    """One explicit left/right subspace pair at a stated rank."""
+
+    rank: int
+    left: EigenSubspace
+    right: EigenSubspace
+    external_context: ExternalIsolationContext | Mapping[str, Any] | None = None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if isinstance(self.rank, bool) or not isinstance(self.rank, int) or self.rank < 1:
+            raise ValueError("rank must be a positive integer")
+        if not isinstance(self.left, EigenSubspace) or not isinstance(self.right, EigenSubspace):
+            raise TypeError("left and right must be EigenSubspace values")
+        if self.left.dimension != self.rank or self.right.dimension != self.rank:
+            raise ValueError("candidate rank must equal both subspace dimensions")
+        if self.left.ambient_dimension != self.right.ambient_dimension:
+            raise ValueError("candidate endpoints must have equal ambient dimensions")
+        context = self.external_context
+        if isinstance(context, Mapping):
+            context = ExternalIsolationContext.from_mapping(context)
+        elif context is not None and not isinstance(context, ExternalIsolationContext):
+            raise TypeError("external_context must be an ExternalIsolationContext, mapping, or None")
+        object.__setattr__(self, "external_context", context)
+        object.__setattr__(self, "provenance", _validate_threshold_mapping(self.provenance))
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "rank": self.rank,
+            "left_k_point": list(self.left.k_point),
+            "right_k_point": list(self.right.k_point),
+            "ambient_dimension": self.left.ambient_dimension,
+            "left_solver_indices": list(self.left.solver_indices),
+            "right_solver_indices": list(self.right.solver_indices),
+            "left_eigenvalues": list(self.left.eigenvalues),
+            "right_eigenvalues": list(self.right.eigenvalues),
+            "external_context": None if self.external_context is None else self.external_context.to_dict(),
+            "provenance": dict(self.provenance),
+        }
+
+
+@dataclass(frozen=True)
+class RankAdaptiveAttempt:
+    """Immutable E3A evidence for every candidate evaluated at one rank."""
+
+    rank: int
+    results: tuple[SubspaceQualificationResult, ...]
+    candidate_provenance: tuple[Mapping[str, Any], ...] = ()
+    selected_index: int | None = None
+    evidence: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        results = tuple(self.results)
+        if not results:
+            raise ValueError("an attempt must preserve at least one result")
+        if self.selected_index is not None and not 0 <= self.selected_index < len(results):
+            raise ValueError("selected_index must identify one result")
+        provenance = tuple(_validate_threshold_mapping(item) for item in self.candidate_provenance)
+        if provenance and len(provenance) != len(results):
+            raise ValueError("candidate_provenance must align with results")
+        object.__setattr__(self, "results", results)
+        object.__setattr__(self, "candidate_provenance", provenance)
+        object.__setattr__(self, "evidence", tuple(str(item) for item in self.evidence))
+
+    @property
+    def selected_result(self) -> SubspaceQualificationResult | None:
+        return None if self.selected_index is None else self.results[self.selected_index]
+
+    def to_dict(self, *, include_matrices: bool = False) -> dict[str, Any]:
+        return {
+            "rank": self.rank,
+            "results": [item.to_dict(include_matrices=include_matrices) for item in self.results],
+            "candidate_provenance": [dict(item) for item in self.candidate_provenance],
+            "selected_index": self.selected_index,
+            "evidence": list(self.evidence),
+        }
+
+
+@dataclass(frozen=True)
+class RankAdaptiveSubspaceResult:
+    """Rank-level E3B decision retaining every attempted E3A result."""
+
+    status: str
+    initial_rank: int
+    attempted_ranks: tuple[int, ...]
+    attempts: tuple[RankAdaptiveAttempt, ...]
+    recommended_rank: int | None
+    candidate_family_complete: bool
+    thresholds: SubspaceQualificationThresholds
+    evidence: tuple[str, ...] = ()
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+    transport_link: SubspaceTransportLink | None = None
+
+    def __post_init__(self) -> None:
+        allowed = {SUBSPACE_QUALIFIED, SUBSPACE_REQUIRES_ENLARGEMENT, DISENTANGLEMENT_REQUIRED,
+                   NUMERICALLY_INCOMPLETE, SUBSPACE_NOT_ISOLATED, SUBSPACE_CONTINUITY_UNQUALIFIED}
+        if self.status not in allowed:
+            raise ValueError(f"invalid rank-adaptive status: {self.status}")
+        attempts = tuple(self.attempts)
+        ranks = tuple(item.rank for item in attempts)
+        if not ranks or ranks[0] != self.initial_rank or tuple(self.attempted_ranks) != ranks:
+            raise ValueError("attempted_ranks must match ordered attempts")
+        if any(a >= b for a, b in zip(ranks, ranks[1:])):
+            raise ValueError("attempt ranks must be strictly increasing")
+        if not isinstance(self.candidate_family_complete, bool):
+            raise TypeError("candidate_family_complete must be bool")
+        if self.recommended_rank is not None and self.recommended_rank not in ranks:
+            raise ValueError("recommended_rank must be one of the attempted ranks")
+        if self.status == DISENTANGLEMENT_REQUIRED and self.transport_link is not None:
+            raise ValueError("disentanglement-required results cannot expose transport")
+        object.__setattr__(self, "attempts", attempts)
+        object.__setattr__(self, "attempted_ranks", ranks)
+        object.__setattr__(self, "evidence", tuple(str(item) for item in self.evidence))
+        object.__setattr__(self, "provenance", _validate_threshold_mapping(self.provenance))
+
+    @property
+    def rank_evidence(self) -> tuple[RankAdaptiveAttempt, ...]:
+        return self.attempts
+
+    @property
+    def per_rank_evidence(self) -> tuple[RankAdaptiveAttempt, ...]:
+        return self.attempts
+
+    @property
+    def rank_results(self) -> Mapping[int, tuple[SubspaceQualificationResult, ...]]:
+        return MappingProxyType({item.rank: item.results for item in self.attempts})
+
+    @property
+    def selected_result(self) -> SubspaceQualificationResult | None:
+        if self.recommended_rank is None:
+            return None
+        for attempt in self.attempts:
+            if attempt.rank == self.recommended_rank:
+                return attempt.selected_result
+        return None
+
+    def to_dict(self, *, include_matrices: bool = False) -> dict[str, Any]:
+        return {
+            "status": self.status,
+            "initial_rank": self.initial_rank,
+            "attempted_ranks": list(self.attempted_ranks),
+            "attempts": [item.to_dict(include_matrices=include_matrices) for item in self.attempts],
+            "recommended_rank": self.recommended_rank,
+            "candidate_family_complete": self.candidate_family_complete,
+            "thresholds": self.thresholds.to_dict(),
+            "evidence": list(self.evidence),
+            "provenance": dict(self.provenance),
+            "transport_link": None if self.transport_link is None else self.transport_link.to_dict(include_matrices=include_matrices),
+        }
+
+
+RankAdaptiveSubspaceCandidate = RankAdaptiveCandidate
+RankAdaptiveResult = RankAdaptiveSubspaceResult
+
+
+def _rank_candidate(value: Any) -> RankAdaptiveCandidate:
+    if isinstance(value, RankAdaptiveCandidate):
+        return value
+    if isinstance(value, Mapping):
+        return RankAdaptiveCandidate(value["rank"], value["left"], value["right"],
+                                     value.get("external_context"), value.get("provenance", {}))
+    if isinstance(value, (tuple, list)) and len(value) == 3 and isinstance(value[0], int):
+        return RankAdaptiveCandidate(value[0], value[1], value[2])
+    raise TypeError("candidate must be RankAdaptiveCandidate, mapping, or (rank, left, right)")
+
+
+def _rank_groups(candidates: Iterable[Any]) -> tuple[tuple[RankAdaptiveCandidate, ...], ...]:
+    values = tuple(candidates)
+    if not values:
+        raise ValueError("at least one candidate is required")
+    groups: list[list[RankAdaptiveCandidate]] = []
+    for value in values:
+        is_one = isinstance(value, (RankAdaptiveCandidate, Mapping)) or (
+            isinstance(value, (tuple, list)) and len(value) == 3 and isinstance(value[0], int)
+        )
+        group = [_rank_candidate(value)] if is_one else [_rank_candidate(item) for item in value]
+        if not group:
+            raise ValueError("candidate groups cannot be empty")
+        rank = group[0].rank
+        if any(item.rank != rank for item in group):
+            raise ValueError("a candidate group must contain one rank")
+        if groups and groups[-1][0].rank == rank:
+            groups[-1].extend(group)
+        else:
+            if groups and rank <= groups[-1][0].rank:
+                raise ValueError("candidate ranks must be strictly increasing")
+            groups.append(group)
+    return tuple(tuple(group) for group in groups)
+
+
+def _rank_nested(smaller: EigenSubspace, larger: EigenSubspace, tolerance: float) -> bool:
+    if smaller.ambient_dimension != larger.ambient_dimension or smaller.dimension >= larger.dimension:
+        return False
+    identity = np.eye(larger.ambient_dimension, dtype=np.complex128)
+    residual = np.linalg.norm((identity - larger.projector_matrix()) @ smaller.frame, ord="fro")
+    return bool(math.isfinite(float(residual)) and residual <= tolerance)
+
+
+def _validate_rank_ladder(groups: Sequence[Sequence[RankAdaptiveCandidate]], tolerance: float) -> None:
+    first = groups[0][0]
+    for group in groups:
+        for candidate in group:
+            if candidate.left.k_point != first.left.k_point or candidate.right.k_point != first.right.k_point:
+                raise ValueError("all candidates must share identical endpoints")
+            if candidate.left.ambient_dimension != first.left.ambient_dimension:
+                raise ValueError("all candidates must share one ambient dimension")
+    for previous, current in zip(groups, groups[1:]):
+        for low in previous:
+            for high in current:
+                if not _rank_nested(low.left, high.left, tolerance) or not _rank_nested(low.right, high.right, tolerance):
+                    raise ValueError("candidate rank ladder is not nested at both endpoints")
+
+
+def _select_rank_candidate(group, results, policy):
+    qualified = [i for i, result in enumerate(results) if result.is_qualified]
+    if not qualified:
+        return None, False
+    if policy is not None:
+        choice = policy(tuple(group), tuple(results))
+        if isinstance(choice, int) and not isinstance(choice, bool):
+            if choice not in qualified:
+                raise ValueError("selection_policy chose a non-qualified candidate")
+            return choice, False
+        if isinstance(choice, RankAdaptiveCandidate):
+            for i in qualified:
+                if group[i] is choice:
+                    return i, False
+        raise ValueError("selection_policy must return a qualified index or candidate")
+    return (qualified[0], False) if len(qualified) == 1 else (None, True)
+
+
+def qualify_rank_adaptive_subspace(
+    candidates: Iterable[Any],
+    *,
+    thresholds: SubspaceQualificationThresholds,
+    candidate_family_complete: bool,
+    external_context: ExternalIsolationContext | Mapping[str, Any] | None = None,
+    selection_policy: Callable | None = None,
+    provenance: Mapping[str, Any] | None = None,
+) -> RankAdaptiveSubspaceResult:
+    """Evaluate an explicit nested rank ladder using E3A evidence only."""
+    if not isinstance(thresholds, SubspaceQualificationThresholds):
+        raise TypeError("thresholds must be SubspaceQualificationThresholds")
+    if not isinstance(candidate_family_complete, bool):
+        raise TypeError("candidate_family_complete must be bool")
+    context = external_context
+    if isinstance(context, Mapping):
+        context = ExternalIsolationContext.from_mapping(context)
+    elif context is not None and not isinstance(context, ExternalIsolationContext):
+        raise TypeError("external_context must be an ExternalIsolationContext, mapping, or None")
+    groups = _rank_groups(candidates)
+    _validate_rank_ladder(groups, thresholds.validation_tolerance)
+    attempts: list[RankAdaptiveAttempt] = []
+    initial_rank = groups[0][0].rank
+    for group in groups:
+        results = tuple(qualify_local_subspace(
+            item.left, item.right, thresholds=thresholds,
+            external_context=item.external_context if item.external_context is not None else context,
+        ) for item in group)
+        selected, ambiguous = _select_rank_candidate(group, results, selection_policy)
+        reason = "qualified candidate selected" if selected is not None else (
+            "multiple qualified same-rank candidates require a caller selection policy" if ambiguous else
+            "no qualified candidate at this rank")
+        attempts.append(RankAdaptiveAttempt(group[0].rank, results,
+                                            tuple(item.provenance for item in group),
+                                            selected, (reason,)))
+        if ambiguous:
+            return RankAdaptiveSubspaceResult(
+                DISENTANGLEMENT_REQUIRED, initial_rank, tuple(x.rank for x in attempts),
+                tuple(attempts), None, candidate_family_complete, thresholds,
+                ("multiple equally admissible same-rank candidate manifolds remain unresolved",),
+                provenance or {}, None)
+        if selected is not None:
+            status = SUBSPACE_QUALIFIED if group[0].rank == initial_rank else SUBSPACE_REQUIRES_ENLARGEMENT
+            return RankAdaptiveSubspaceResult(
+                status, initial_rank, tuple(x.rank for x in attempts), tuple(attempts),
+                group[0].rank, candidate_family_complete, thresholds,
+                ("initial rank is qualified" if status == SUBSPACE_QUALIFIED else
+                 "smallest larger qualified rank selected",), provenance or {},
+                results[selected].transport_link)
+    statuses = [result.status for attempt in attempts for result in attempt.results]
+    if NUMERICALLY_INCOMPLETE in statuses:
+        status, reason = NUMERICALLY_INCOMPLETE, "required evidence is numerically incomplete"
+    elif SUBSPACE_CONTINUITY_UNQUALIFIED in statuses:
+        status, reason = SUBSPACE_CONTINUITY_UNQUALIFIED, "continuity failed closed"
+    elif candidate_family_complete and statuses and all(x == SUBSPACE_NOT_ISOLATED for x in statuses):
+        status, reason = DISENTANGLEMENT_REQUIRED, "complete supplied family remains externally entangled"
+    elif SUBSPACE_NOT_ISOLATED in statuses:
+        status, reason = SUBSPACE_NOT_ISOLATED, "no supplied rank establishes external isolation"
+    else:
+        status, reason = NUMERICALLY_INCOMPLETE, "no supplied rank produced complete qualification evidence"
+    return RankAdaptiveSubspaceResult(
+        status, initial_rank, tuple(x.rank for x in attempts), tuple(attempts),
+        None, candidate_family_complete, thresholds, (reason,), provenance or {}, None)
+
+
+evaluate_rank_adaptive_subspace = qualify_rank_adaptive_subspace
+rank_adaptive_subspace_qualification = qualify_rank_adaptive_subspace
+
+
 __all__ = [
     "CLEAR",
     "AMBIGUOUS",
@@ -638,6 +942,17 @@ __all__ = [
     "SUBSPACE_NOT_ISOLATED",
     "SUBSPACE_CONTINUITY_UNQUALIFIED",
     "NUMERICALLY_INCOMPLETE",
+    "SUBSPACE_REQUIRES_ENLARGEMENT",
+    "DISENTANGLEMENT_REQUIRED",
+    "RANK_QUALIFIED",
+    "RankAdaptiveCandidate",
+    "RankAdaptiveSubspaceCandidate",
+    "RankAdaptiveAttempt",
+    "RankAdaptiveSubspaceResult",
+    "RankAdaptiveResult",
+    "qualify_rank_adaptive_subspace",
+    "evaluate_rank_adaptive_subspace",
+    "rank_adaptive_subspace_qualification",
     "RawAssociationThresholds",
     "RawStateAssociation",
     "associate_raw_states",
