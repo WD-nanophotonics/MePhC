@@ -166,9 +166,14 @@ __all__ = [
     "MPBHEnvelopeSnapshot",
     "adapt_mpb_h_envelopes",
     "adapt_mpb_h_envelopes_to_raw_eigenstates",
+    "MPB_ENERGY_EH_REPRESENTATION",
+    "adapt_mpb_energy_eh_envelopes",
     "MPB_LIVE_H_PROVIDER_REPRESENTATION",
     "MPBLiveSpectralProvider",
     "solve_mpb_h_spectrum",
+    "MPB_LIVE_ENERGY_PROVIDER_REPRESENTATION",
+    "MPBLiveEnergySpectralProvider",
+    "solve_mpb_energy_eh_spectrum",
     "MPB_PATH_AUTHORIZATION_SCOPE",
     "MPBQualifiedPathInput",
     "MPBQualifiedPathResult",
@@ -368,6 +373,12 @@ def __getattr__(name):
         return getattr(wilson_geometry, name)
 
     if name in {
+        "MPB_ENERGY_EH_REPRESENTATION", "adapt_mpb_energy_eh_envelopes",
+    }:
+        from . import mpb_energy_spectral
+        return getattr(mpb_energy_spectral, name)
+
+    if name in {
         "MPB_H_ENVELOPE_REPRESENTATION", "MPB_H_ENVELOPE_QUALIFIED",
         "MPB_H_ENVELOPE_UNQUALIFIED", "MPB_H_ORTHOGONAL_QUALIFIED",
         "MPB_H_ORTHOGONAL_UNQUALIFIED", "MPBHEnvelopeSnapshot",
@@ -382,6 +393,13 @@ def __getattr__(name):
     }:
         from . import mpb_spectral_provider
         return getattr(mpb_spectral_provider, name)
+
+    if name in {
+        "MPB_LIVE_ENERGY_PROVIDER_REPRESENTATION", "MPBLiveEnergySpectralProvider",
+        "solve_mpb_energy_eh_spectrum",
+    }:
+        from . import mpb_energy_spectral_provider
+        return getattr(mpb_energy_spectral_provider, name)
 
     if name in {
         "MPB_PATH_AUTHORIZATION_SCOPE", "MPBQualifiedPathInput",

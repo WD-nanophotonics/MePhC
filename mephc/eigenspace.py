@@ -259,7 +259,9 @@ class EigenSubspace:
             raise ValueError("projector distance requires equal ambient dimensions")
         if self.k_point != other.k_point:
             raise ValueError("projector distance requires exactly compatible k_point values")
-        return float(np.linalg.norm(self.projector_matrix() - other.projector_matrix(), ord="fro"))
+        singular_values = np.linalg.svd(self.frame.conj().T @ other.frame, compute_uv=False)
+        squared = 2.0 * (self.dimension - float(np.sum(np.square(singular_values))))
+        return float(np.sqrt(max(0.0, squared)))
 
     def to_dict(self, *, include_frame: bool = False) -> dict[str, Any]:
         result = {

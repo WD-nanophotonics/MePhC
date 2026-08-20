@@ -149,10 +149,14 @@ class MPBHEnvelopeSnapshot:
     orthogonality_tolerance: float
     raw_eigenstates: tuple[RawEigenstate, ...]
     provenance: Mapping[str, Any] = field(default_factory=dict)
+    e_fields: np.ndarray | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "k_point", _k_point(self.k_point, name="k_point"))
         fields = _readonly(self.h_fields, dtype=np.complex128, name="h_fields", ndim=4)
+        electric = None if self.e_fields is None else _readonly(self.e_fields, dtype=np.complex128, name="e_fields", ndim=4)
+        if electric is not None and electric.shape != fields.shape:
+            raise ValueError("e_fields must have the same shape as h_fields")
         if fields.shape[0] < 1 or fields.shape[1] < 1 or fields.shape[2] < 1 or fields.shape[3] != 3:
             raise ValueError("h_fields must have shape (bands, nx, ny, 3) with positive dimensions")
         frequencies = _readonly(self.frequencies, dtype=float, name="frequencies", ndim=1)
@@ -164,7 +168,7 @@ class MPBHEnvelopeSnapshot:
         vectors = tuple(_readonly(vector, dtype=np.complex128, name="normalized_vector", ndim=1) for vector in self.normalized_vectors)
         if len(vectors) != fields.shape[0]:
             raise ValueError("normalized_vectors length must match h_fields band count")
-        flat_size = int(np.prod(fields.shape[1:]))
+        flat_size = int(np.prod(fields.shape[1:])) * (2 if electric is not None else 1)
         if any(vector.size != flat_size for vector in vectors):
             raise ValueError("normalized_vectors have inconsistent flattened size")
         gram = _readonly(self.gram_matrix, dtype=np.complex128, name="gram_matrix", ndim=2)
@@ -187,6 +191,7 @@ class MPBHEnvelopeSnapshot:
             raise ValueError("raw_eigenstates have inconsistent vector size")
         object.__setattr__(self, "frequencies", frequencies)
         object.__setattr__(self, "h_fields", fields)
+        object.__setattr__(self, "e_fields", electric)
         object.__setattr__(self, "raw_norms", raw_norms)
         object.__setattr__(self, "normalized_vectors", vectors)
         object.__setattr__(self, "gram_matrix", gram)
@@ -260,6 +265,8 @@ class MPBHEnvelopeSnapshot:
         }
         if include_h_fields:
             result["h_fields"] = _complex_pairs(self.h_fields)
+            if self.e_fields is not None:
+                result["e_fields"] = _complex_pairs(self.e_fields)
         return result
 
 
