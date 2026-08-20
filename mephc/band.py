@@ -9,7 +9,7 @@ from meep import mpb
 import numpy as np
 
 from . import lattice as ml
-from .berry import BerryCurvatureCalculator
+from .berry_semantics import CanonicalBerryCurvatureCalculator as BerryCurvatureCalculator
 from .bravais import BravaisLattice2D
 from .bz import first_brillouin_zone
 from .efs import EFSResult, plot_efs

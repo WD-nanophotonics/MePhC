@@ -23,6 +23,7 @@ _BERRY_UNSUPPORTED_RANK = "BERRY_UNSUPPORTED_RANK"
 _BERRY_ZERO_AREA = "BERRY_ZERO_AREA"
 _BERRY_MIXED_ORIENTATION = "BERRY_MIXED_ORIENTATION"
 _BERRY_PHASE_BRANCH_AMBIGUOUS = "BERRY_PHASE_BRANCH_AMBIGUOUS"
+_BERRY_DEGENERATE_POINT_UNQUALIFIED = "BERRY_DEGENERATE_POINT_UNQUALIFIED"
 
 def _safe(value: Any) -> Any:
     if value is None or type(value) in {bool, str, int}:
@@ -90,6 +91,7 @@ class MPBQualifiedBerryEstimateLevel:
             _BERRY_INPUT_UNQUALIFIED, _BERRY_UNSUPPORTED_RANK,
             _BERRY_ZERO_AREA, _BERRY_MIXED_ORIENTATION,
             _BERRY_PHASE_BRANCH_AMBIGUOUS,
+            _BERRY_DEGENERATE_POINT_UNQUALIFIED,
         }
         if self.status not in allowed:
             raise ValueError("invalid E7E level status")
@@ -203,6 +205,21 @@ def _input_status(path: PathQualificationResult, wilson: WilsonTransportResult) 
         return _BERRY_INPUT_INCOMPLETE
     return _BERRY_INPUT_UNQUALIFIED
 
+def _center_rank_one_is_degenerate(source, level: int, selection: tuple[int, ...]) -> bool:
+    """Fail closed when the sampled center has an exact or unresolved rank-one gap."""
+    if len(selection) != 1:
+        return False
+    snapshot = source.snapshots[level][4]
+    excluded = [index for index in range(snapshot.bands) if index not in selection]
+    if not excluded:
+        return False
+    selected = selection[0]
+    center_frequency = float(snapshot.frequencies[selected])
+    gap = min(abs(center_frequency - float(snapshot.frequencies[index])) for index in excluded)
+    tolerance = float(source.interior_results[level].thresholds.validation_tolerance)
+    return gap <= max(tolerance, 1e-12)
+
+
 def estimate_mpb_rank1_berry_curvature(
     source_result: MPBQualifiedPlaquetteHolonomyResult,
     *,
@@ -243,6 +260,12 @@ def estimate_mpb_rank1_berry_curvature(
         elif path.vertices is not boundary.vertices:
             status = _BERRY_INPUT_UNQUALIFIED
             evidence.append("exact E7C boundary vertices were not preserved through E7D")
+        elif _center_rank_one_is_degenerate(source, index, source.selections[index][4]):
+            status = _BERRY_DEGENERATE_POINT_UNQUALIFIED
+            area = _signed_area(vertices)
+            phase = float(wilson.determinant_phase)
+            area_signs.append(math.copysign(1.0, area))
+            evidence.append("rank-one curvature is withheld at an exact or unresolved center degeneracy")
         else:
             try:
                 area = _signed_area(vertices)

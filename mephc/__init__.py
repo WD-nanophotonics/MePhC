@@ -196,6 +196,19 @@ __all__ = [
     "E7FBerryObservableSample",
     "E7FBerryObservableCertificate",
     "certify_e7e_berry_observable_convergence",
+    "CanonicalBerryCurvatureCalculator",
+    "CanonicalBerryCurvatureResult",
+    "CanonicalBerryPlaquetteResult",
+    "CENTERED_CCW",
+    "LEGACY_FORWARD_CCW",
+    "LocalPlaquetteGeometry",
+    "build_local_plaquette",
+    "LocalBerryConvergenceSample",
+    "LocalBerryConvergenceGrid",
+    "annotate_neighbor_changes",
+    "ScaleAwareIsolationMetrics",
+    "ScaleAwareIsolationProfile",
+    "ScaleAwareIsolationEvaluation",
 
 ]
 
@@ -209,6 +222,18 @@ def __getattr__(name):
         from .berry import BerryCurvatureCalculator
 
         return BerryCurvatureCalculator
+    if name in {"CanonicalBerryCurvatureCalculator", "CanonicalBerryCurvatureResult", "CanonicalBerryPlaquetteResult"}:
+        from .berry_semantics import CanonicalBerryCurvatureCalculator, CanonicalBerryCurvatureResult, CanonicalBerryPlaquetteResult
+        return {"CanonicalBerryCurvatureCalculator": CanonicalBerryCurvatureCalculator, "CanonicalBerryCurvatureResult": CanonicalBerryCurvatureResult, "CanonicalBerryPlaquetteResult": CanonicalBerryPlaquetteResult}[name]
+    if name in {"CENTERED_CCW", "LEGACY_FORWARD_CCW", "LocalPlaquetteGeometry", "build_local_plaquette"}:
+        from .plaquette_semantics import CENTERED_CCW, LEGACY_FORWARD_CCW, LocalPlaquetteGeometry, build_local_plaquette
+        return {"CENTERED_CCW": CENTERED_CCW, "LEGACY_FORWARD_CCW": LEGACY_FORWARD_CCW, "LocalPlaquetteGeometry": LocalPlaquetteGeometry, "build_local_plaquette": build_local_plaquette}[name]
+    if name in {"LocalBerryConvergenceSample", "LocalBerryConvergenceGrid", "annotate_neighbor_changes"}:
+        from .berry_scale_convergence import LocalBerryConvergenceSample, LocalBerryConvergenceGrid, annotate_neighbor_changes
+        return {"LocalBerryConvergenceSample": LocalBerryConvergenceSample, "LocalBerryConvergenceGrid": LocalBerryConvergenceGrid, "annotate_neighbor_changes": annotate_neighbor_changes}[name]
+    if name in {"ScaleAwareIsolationMetrics", "ScaleAwareIsolationProfile", "ScaleAwareIsolationEvaluation"}:
+        from .isolation_profile import ScaleAwareIsolationMetrics, ScaleAwareIsolationProfile, ScaleAwareIsolationEvaluation
+        return {"ScaleAwareIsolationMetrics": ScaleAwareIsolationMetrics, "ScaleAwareIsolationProfile": ScaleAwareIsolationProfile, "ScaleAwareIsolationEvaluation": ScaleAwareIsolationEvaluation}[name]
     if name == "EFSInterpolator":
         from .efs import EFSInterpolator
 
