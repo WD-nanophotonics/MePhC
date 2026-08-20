@@ -4,6 +4,7 @@ import meep as mp
 from meep import mpb
 import numpy as np
 
+from mephc.berry_units import OMEGA_PHYS_OVER_A2, OMEGA_Q, convert_curvature
 from mephc.mpb_energy_spectral_provider import (
     MPB_LIVE_ENERGY_PROVIDER_REPRESENTATION,
     MPBLiveEnergySpectralProvider,
@@ -43,7 +44,7 @@ def _anti_and_gap(center):
             links.append(z/abs(z))
         phases.append(float(np.angle(np.prod(links))))
     omega_q=[-phase/(h*h) for phase in phases]
-    omega_phys=[x/(2*math.pi)**2 for x in omega_q]
+    omega_phys=[convert_curvature(x, OMEGA_Q, OMEGA_PHYS_OVER_A2) for x in omega_q]
     anti_q=(omega_q[0]-omega_q[1])/2
     anti_phys=(omega_phys[0]-omega_phys[1])/2
     assert all(s.frequencies[2]-s.frequencies[1]>.05 for s in snapshots)

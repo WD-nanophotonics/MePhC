@@ -23,6 +23,7 @@ from .convergence import (
     NumericalConvergenceError,
 )
 from .convergence_binding import bind_eigenmode_certificate_for_resolution
+from .berry_units import OMEGA_PHYS_OVER_A2, validate_unit_space
 
 
 _SCHEMA = "mephc-berry-observable-convergence/v1"
@@ -136,6 +137,7 @@ class BerryObservableProvenance:
     plaquette_semantics: str
     trs_partner_semantics: str
     estimator_schema: str
+    curvature_unit_space: str = OMEGA_PHYS_OVER_A2
 
     def __post_init__(self) -> None:
         for name, expected in _SEMANTIC_VALUES.items():
@@ -144,6 +146,7 @@ class BerryObservableProvenance:
             if value != expected:
                 raise ValueError(f"{name} must be exactly {expected!r}")
         _string(self.geometry_digest, name="geometry_digest")
+        validate_unit_space(self.curvature_unit_space)
         _nonnegative_int(self.target_band, name="target_band")
         _positive_int(self.num_bands, name="num_bands")
         if self.target_band >= self.num_bands:
@@ -208,6 +211,7 @@ class BerryObservableProvenance:
             "plaquette_semantics": self.plaquette_semantics,
             "trs_partner_semantics": self.trs_partner_semantics,
             "estimator_schema": self.estimator_schema,
+            "curvature_unit_space": self.curvature_unit_space,
         }
 
 
@@ -220,9 +224,11 @@ class QualifiedBerrySample:
     omega_plus: float
     omega_tr: float
     eigenmode_certificate: EigenmodeConvergenceCertificate
+    curvature_unit_space: str = OMEGA_PHYS_OVER_A2
 
     def __post_init__(self) -> None:
         _positive_int(self.resolution, name="resolution")
+        validate_unit_space(self.curvature_unit_space)
         step = _finite_real(self.step, name="step")
         if step <= 0.0:
             raise ValueError("step must be positive")
@@ -238,6 +244,7 @@ class QualifiedBerrySample:
             "step": self.step,
             "omega_plus": self.omega_plus,
             "omega_tr": self.omega_tr,
+            "curvature_unit_space": self.curvature_unit_space,
             "eigenmode_certificate": self.eigenmode_certificate.to_dict(),
         }
 

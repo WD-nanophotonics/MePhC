@@ -9,6 +9,8 @@ import meep as mp
 from meep import mpb
 import numpy as np
 
+from .berry_units import OMEGA_PHYS_OVER_A2, Q_COORDINATE_SPACE, curvature_unit_provenance
+
 
 @dataclass
 class BerryCurvatureResult:
@@ -18,6 +20,25 @@ class BerryCurvatureResult:
     values: np.ndarray
     band_index: int | None
     step: float
+    curvature_unit_space: str = OMEGA_PHYS_OVER_A2
+    coordinate_space: str = Q_COORDINATE_SPACE
+    two_pi_squared_conversion_applied: bool = True
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            'k_points': self.k_points.tolist(),
+            'values': self.values.tolist(),
+            'band_index': self.band_index,
+            'step': self.step,
+            'provenance': curvature_unit_provenance(
+                unit_space=self.curvature_unit_space,
+                requested_k_space=self.coordinate_space,
+                plaquette_vertex_space=self.coordinate_space,
+                signed_area_space=self.coordinate_space,
+                conversion_applied=self.two_pi_squared_conversion_applied,
+                representation='legacy_BerryCurvatureCalculator',
+            ),
+        }
 
 
 class BerryCurvatureCalculator:

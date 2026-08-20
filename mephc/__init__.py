@@ -3,6 +3,12 @@
 __all__ = [
     "Band",
     "BerryCurvatureCalculator",
+    "OMEGA_Q",
+    "OMEGA_PHYS_OVER_A2",
+    "Q_COORDINATE_SPACE",
+    "convert_curvature",
+    "omega_q_to_phys_over_a2",
+    "omega_phys_over_a2_to_q",
     "EFSInterpolator",
     "EFSResult",
     "HighSymmetryPath",
@@ -225,6 +231,9 @@ def __getattr__(name):
         from .berry import BerryCurvatureCalculator
 
         return BerryCurvatureCalculator
+    if name in {"OMEGA_Q", "OMEGA_PHYS_OVER_A2", "Q_COORDINATE_SPACE", "convert_curvature", "omega_q_to_phys_over_a2", "omega_phys_over_a2_to_q"}:
+        from .berry_units import OMEGA_Q, OMEGA_PHYS_OVER_A2, Q_COORDINATE_SPACE, convert_curvature, omega_q_to_phys_over_a2, omega_phys_over_a2_to_q
+        return {"OMEGA_Q": OMEGA_Q, "OMEGA_PHYS_OVER_A2": OMEGA_PHYS_OVER_A2, "Q_COORDINATE_SPACE": Q_COORDINATE_SPACE, "convert_curvature": convert_curvature, "omega_q_to_phys_over_a2": omega_q_to_phys_over_a2, "omega_phys_over_a2_to_q": omega_phys_over_a2_to_q}[name]
     if name in {"CANONICAL_SIGN_CONVENTION", "LEGACY_GEOMETRY_CANONICAL_SIGN_NOTE"}:
         from .berry_semantics import CANONICAL_SIGN_CONVENTION, LEGACY_GEOMETRY_CANONICAL_SIGN_NOTE
         return {"CANONICAL_SIGN_CONVENTION": CANONICAL_SIGN_CONVENTION, "LEGACY_GEOMETRY_CANONICAL_SIGN_NOTE": LEGACY_GEOMETRY_CANONICAL_SIGN_NOTE}[name]

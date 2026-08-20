@@ -13,6 +13,7 @@ from typing import Any
 import numpy as np
 
 from .berry import BerryCurvatureCalculator
+from .berry_units import OMEGA_PHYS_OVER_A2, Q_COORDINATE_SPACE, curvature_unit_provenance
 from .plaquette_semantics import (
     CENTERED_CCW,
     LEGACY_FORWARD_CCW,
@@ -42,6 +43,7 @@ class CanonicalBerryCurvatureResult:
             "step": self.step,
             "convention": self.convention,
             "geometries": [geometry.to_dict() for geometry in self.geometries],
+            "curvature_unit_space": self.provenance.get("curvature_unit_space"),
             "provenance": dict(self.provenance),
         }
 
@@ -68,6 +70,7 @@ class CanonicalBerryPlaquetteResult:
             "overlap_formulation": self.overlap_formulation,
                 "sign_convention": CANONICAL_SIGN_CONVENTION,
             "qualification": self.qualification,
+            "curvature_unit_space": self.provenance.get("curvature_unit_space"),
             "provenance": dict(self.provenance),
         }
 
@@ -128,6 +131,17 @@ class CanonicalBerryCurvatureCalculator(BerryCurvatureCalculator):
             values = tuple(value for value, _ in computed)
             phases = [phase for _, phase in computed]
         provenance = {
+            **curvature_unit_provenance(
+                unit_space=OMEGA_PHYS_OVER_A2,
+                requested_k_space=Q_COORDINATE_SPACE,
+                plaquette_vertex_space=Q_COORDINATE_SPACE,
+                signed_area_space=Q_COORDINATE_SPACE,
+                conversion_applied=True,
+                plaquette_convention=geometry.convention,
+                orientation=geometry.orientation,
+                representation="canonical_berry_plaquette",
+                wilson_phase=phases,
+            ),
             "requested_k": list(geometry.requested_k),
             "geometric_center": list(geometry.geometric_center),
             "convention": geometry.convention,
@@ -185,6 +199,15 @@ class CanonicalBerryCurvatureCalculator(BerryCurvatureCalculator):
             convention=convention,
             geometries=tuple(result.geometry for result in results),
             provenance={
+                **curvature_unit_provenance(
+                    unit_space=OMEGA_PHYS_OVER_A2,
+                    requested_k_space=Q_COORDINATE_SPACE,
+                    plaquette_vertex_space=Q_COORDINATE_SPACE,
+                    signed_area_space=Q_COORDINATE_SPACE,
+                    conversion_applied=True,
+                    plaquette_convention=convention,
+                    representation="canonical_berry_grid",
+                ),
                 "coordinate_system": "cartesian_reciprocal",
                 "convention": convention,
                 "resolution": self.resolution,

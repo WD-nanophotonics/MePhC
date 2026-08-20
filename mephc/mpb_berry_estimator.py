@@ -10,6 +10,7 @@ from typing import Any
 import numpy as np
 
 from .eigenspace import EigenSubspace
+from .berry_units import OMEGA_Q, Q_COORDINATE_SPACE, curvature_unit_provenance, validate_unit_space
 from .mpb_plaquette_holonomy import MPBQualifiedPlaquetteHolonomyResult
 from .path_domain import PATH_INCOMPLETE, PATH_SINGLE_BAND_QUALIFIED, PathQualificationResult
 from .plaquette_domain import PlaquetteBoundaryQualificationResult
@@ -84,6 +85,7 @@ class MPBQualifiedBerryEstimateLevel:
     boundary_vertices: tuple[EigenSubspace, ...]
     evidence: tuple[str, ...] = ()
     provenance: Mapping[str, Any] = field(default_factory=dict)
+    curvature_unit_space: str = OMEGA_Q
 
     def __post_init__(self) -> None:
         allowed = {
@@ -122,11 +124,13 @@ class MPBQualifiedBerryEstimateLevel:
         object.__setattr__(self, "curvature_estimate", estimate)
         object.__setattr__(self, "boundary_vertices", vertices)
         object.__setattr__(self, "evidence", tuple(str(x) for x in self.evidence))
+        validate_unit_space(self.curvature_unit_space)
         object.__setattr__(self, "provenance", _freeze(self.provenance))
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "status": self.status, "step": self.step,
+            "curvature_unit_space": self.curvature_unit_space,
             "signed_area": self.signed_area, "wilson_phase": self.wilson_phase,
             "curvature_estimate": self.curvature_estimate,
             "source_e7d_path": self.path_result.to_dict(),
@@ -147,6 +151,7 @@ class MPBQualifiedBerryEstimatorResult:
     sign_convention: str = "Omega_est = -phi_W / A_signed; A=i<u|grad_k u>"
     evidence: tuple[str, ...] = ()
     provenance: Mapping[str, Any] = field(default_factory=dict)
+    curvature_unit_space: str = OMEGA_Q
 
     def __post_init__(self) -> None:
         if not isinstance(self.source_result, MPBQualifiedPlaquetteHolonomyResult):
@@ -166,6 +171,7 @@ class MPBQualifiedBerryEstimatorResult:
         object.__setattr__(self, "levels", levels)
         object.__setattr__(self, "branch_safety_margin", margin)
         object.__setattr__(self, "evidence", tuple(str(x) for x in self.evidence))
+        validate_unit_space(self.curvature_unit_space)
         object.__setattr__(self, "provenance", _freeze(self.provenance))
 
     @property
@@ -191,6 +197,7 @@ class MPBQualifiedBerryEstimatorResult:
     def to_dict(self) -> dict[str, Any]:
         return {
             "status": list(self.status), "is_qualified": self.is_qualified,
+            "curvature_unit_space": self.curvature_unit_space,
             "is_live_qualified": self.is_live_qualified, "require_live": self.require_live,
             "branch_safety_margin": self.branch_safety_margin,
             "authorization_scope": self.authorization_scope,
@@ -293,7 +300,9 @@ def estimate_mpb_rank1_berry_curvature(
             status=status, step=step, signed_area=area, wilson_phase=phase,
             curvature_estimate=estimate, path_result=path, wilson_result=wilson,
             boundary_result=boundary, boundary_vertices=tuple(boundary.vertices),
+            curvature_unit_space=OMEGA_Q,
             evidence=tuple(evidence), provenance={
+                **curvature_unit_provenance(unit_space=OMEGA_Q, requested_k_space=Q_COORDINATE_SPACE, plaquette_vertex_space=Q_COORDINATE_SPACE, signed_area_space=Q_COORDINATE_SPACE, conversion_applied=False, representation="E7E_local_rank1_estimator", wilson_phase=phase),
                 "source": "E7E local rank-one MPB plaquette estimator",
                 "level": index,
                 "coordinate_convention": "exact ordered two-dimensional Cartesian reciprocal k coordinates",
@@ -309,11 +318,13 @@ def estimate_mpb_rank1_berry_curvature(
         ]
     return MPBQualifiedBerryEstimatorResult(
         source_result=source_result, levels=tuple(levels), require_live=require_live,
+        curvature_unit_space=OMEGA_Q,
         branch_safety_margin=margin, evidence=(
             "E7E is limited to local rank-one plaquette curvature estimates",
             "no global topological claim is exposed",
             "exact E7D Wilson and E7C boundary evidence is preserved per level",
         ), provenance={
+            **curvature_unit_provenance(unit_space=OMEGA_Q, requested_k_space=Q_COORDINATE_SPACE, plaquette_vertex_space=Q_COORDINATE_SPACE, signed_area_space=Q_COORDINATE_SPACE, conversion_applied=False, representation="E7E_result"),
             "source": "E7E qualified rank-one Berry estimator",
             "live_required": require_live,
             "coordinate_convention": "exact ordered two-dimensional Cartesian reciprocal k coordinates",
