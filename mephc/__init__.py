@@ -199,11 +199,14 @@ __all__ = [
     "CanonicalBerryCurvatureCalculator",
     "CanonicalBerryCurvatureResult",
     "CanonicalBerryPlaquetteResult",
+    "CANONICAL_SIGN_CONVENTION",
+    "LEGACY_GEOMETRY_CANONICAL_SIGN_NOTE",
     "CENTERED_CCW",
     "LEGACY_FORWARD_CCW",
     "LocalPlaquetteGeometry",
     "build_local_plaquette",
     "LocalBerryConvergenceSample",
+    "LocalBerryNeighborDelta",
     "LocalBerryConvergenceGrid",
     "annotate_neighbor_changes",
     "ScaleAwareIsolationMetrics",
@@ -222,15 +225,18 @@ def __getattr__(name):
         from .berry import BerryCurvatureCalculator
 
         return BerryCurvatureCalculator
+    if name in {"CANONICAL_SIGN_CONVENTION", "LEGACY_GEOMETRY_CANONICAL_SIGN_NOTE"}:
+        from .berry_semantics import CANONICAL_SIGN_CONVENTION, LEGACY_GEOMETRY_CANONICAL_SIGN_NOTE
+        return {"CANONICAL_SIGN_CONVENTION": CANONICAL_SIGN_CONVENTION, "LEGACY_GEOMETRY_CANONICAL_SIGN_NOTE": LEGACY_GEOMETRY_CANONICAL_SIGN_NOTE}[name]
     if name in {"CanonicalBerryCurvatureCalculator", "CanonicalBerryCurvatureResult", "CanonicalBerryPlaquetteResult"}:
         from .berry_semantics import CanonicalBerryCurvatureCalculator, CanonicalBerryCurvatureResult, CanonicalBerryPlaquetteResult
         return {"CanonicalBerryCurvatureCalculator": CanonicalBerryCurvatureCalculator, "CanonicalBerryCurvatureResult": CanonicalBerryCurvatureResult, "CanonicalBerryPlaquetteResult": CanonicalBerryPlaquetteResult}[name]
     if name in {"CENTERED_CCW", "LEGACY_FORWARD_CCW", "LocalPlaquetteGeometry", "build_local_plaquette"}:
         from .plaquette_semantics import CENTERED_CCW, LEGACY_FORWARD_CCW, LocalPlaquetteGeometry, build_local_plaquette
         return {"CENTERED_CCW": CENTERED_CCW, "LEGACY_FORWARD_CCW": LEGACY_FORWARD_CCW, "LocalPlaquetteGeometry": LocalPlaquetteGeometry, "build_local_plaquette": build_local_plaquette}[name]
-    if name in {"LocalBerryConvergenceSample", "LocalBerryConvergenceGrid", "annotate_neighbor_changes"}:
-        from .berry_scale_convergence import LocalBerryConvergenceSample, LocalBerryConvergenceGrid, annotate_neighbor_changes
-        return {"LocalBerryConvergenceSample": LocalBerryConvergenceSample, "LocalBerryConvergenceGrid": LocalBerryConvergenceGrid, "annotate_neighbor_changes": annotate_neighbor_changes}[name]
+    if name in {"LocalBerryNeighborDelta", "LocalBerryConvergenceSample", "LocalBerryConvergenceGrid", "annotate_neighbor_changes"}:
+        from .berry_scale_convergence import LocalBerryNeighborDelta, LocalBerryConvergenceSample, LocalBerryConvergenceGrid, annotate_neighbor_changes
+        return {"LocalBerryNeighborDelta": LocalBerryNeighborDelta, "LocalBerryConvergenceSample": LocalBerryConvergenceSample, "LocalBerryConvergenceGrid": LocalBerryConvergenceGrid, "annotate_neighbor_changes": annotate_neighbor_changes}[name]
     if name in {"ScaleAwareIsolationMetrics", "ScaleAwareIsolationProfile", "ScaleAwareIsolationEvaluation"}:
         from .isolation_profile import ScaleAwareIsolationMetrics, ScaleAwareIsolationProfile, ScaleAwareIsolationEvaluation
         return {"ScaleAwareIsolationMetrics": ScaleAwareIsolationMetrics, "ScaleAwareIsolationProfile": ScaleAwareIsolationProfile, "ScaleAwareIsolationEvaluation": ScaleAwareIsolationEvaluation}[name]

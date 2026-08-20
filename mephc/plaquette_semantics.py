@@ -81,6 +81,8 @@ class LocalPlaquetteGeometry:
         orientation = "CCW" if area > 0.0 else "CW"
         if self.orientation != orientation:
             raise ValueError("orientation does not match signed_area")
+        if self.convention in PLAQUETTE_CONVENTIONS and orientation != "CCW":
+            raise ValueError("CCW plaquette conventions require positive signed area")
         object.__setattr__(self, "requested_k", requested)
         object.__setattr__(self, "geometric_center", center)
         object.__setattr__(self, "dx", dx)
@@ -141,6 +143,8 @@ def build_local_plaquette(
     cross = float(dx_array[0] * dy_array[1] - dx_array[1] * dy_array[0])
     if not math.isfinite(cross) or cross == 0.0:
         raise ValueError("dx and dy must span a nondegenerate parallelogram")
+    if convention in PLAQUETTE_CONVENTIONS and cross < 0.0:
+        raise ValueError("CCW plaquette conventions require dx and dy with positive determinant")
     if convention == CENTERED_CCW:
         half_x, half_y = dx_array / 2.0, dy_array / 2.0
         vertices = (k - half_x - half_y, k + half_x - half_y,

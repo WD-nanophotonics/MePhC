@@ -21,6 +21,9 @@ from .plaquette_semantics import (
 )
 
 
+CANONICAL_SIGN_CONVENTION = "OMEGA = -WILSON_PHASE / SIGNED_AREA / (2*pi)^2"
+LEGACY_GEOMETRY_CANONICAL_SIGN_NOTE = "LEGACY_FORWARD_CCW geometry with canonical sign; historical numerical reproduction is mephc.berry.BerryCurvatureCalculator"
+
 @dataclass(frozen=True)
 class CanonicalBerryCurvatureResult:
     k_points: np.ndarray
@@ -43,6 +46,7 @@ class CanonicalBerryCurvatureResult:
         }
 
 
+
 @dataclass(frozen=True)
 class CanonicalBerryPlaquetteResult:
     values: Any
@@ -62,6 +66,7 @@ class CanonicalBerryPlaquetteResult:
             "resolution": self.resolution,
             "field_representation": self.field_representation,
             "overlap_formulation": self.overlap_formulation,
+                "sign_convention": CANONICAL_SIGN_CONVENTION,
             "qualification": self.qualification,
             "provenance": dict(self.provenance),
         }
@@ -135,6 +140,8 @@ class CanonicalBerryCurvatureCalculator(BerryCurvatureCalculator):
             "resolution": self.resolution,
             "field_representation": "periodic_e_h_bloch_envelope" if self.overlap_formulation == "energy_eh" else "periodic_h_bloch_envelope",
             "overlap_formulation": self.overlap_formulation,
+                "sign_convention": CANONICAL_SIGN_CONVENTION,
+            "legacy_geometry_only": geometry.convention == LEGACY_FORWARD_CCW,
               "rank": 1,
               "band_index": band_index,
               "wilson_phase": phases,
@@ -156,8 +163,16 @@ class CanonicalBerryCurvatureCalculator(BerryCurvatureCalculator):
     def calculate(self, k_point, step: float, band_index: int | None = None, *, convention: str = CENTERED_CCW, dx=None, dy=None):
         return self.calculate_result(k_point, step, band_index, convention=convention, dx=dx, dy=dy).values
 
+    def calculate_legacy_result(self, k_point, step: float, band_index: int | None = None) -> CanonicalBerryPlaquetteResult:
+        """Use legacy forward geometry with the canonical -phase/signed-area sign.
+
+        Historical numerical reproduction remains available only through
+        mephc.berry.BerryCurvatureCalculator.
+        """
+        return self.calculate_result(k_point, step, band_index, convention=LEGACY_FORWARD_CCW)
+
     def calculate_legacy(self, k_point, step: float, band_index: int | None = None):
-        return self.calculate(k_point, step, band_index, convention=LEGACY_FORWARD_CCW)
+        return self.calculate_legacy_result(k_point, step, band_index).values
 
     def calculate_grid(self, k_points: Iterable[Any], step: float, band_index: int | None = None, *, convention: str = CENTERED_CCW, dx=None, dy=None) -> CanonicalBerryCurvatureResult:
         points = np.asarray(list(k_points), dtype=float)
@@ -175,12 +190,15 @@ class CanonicalBerryCurvatureCalculator(BerryCurvatureCalculator):
                 "resolution": self.resolution,
                 "field_representation": results[0].field_representation if results else None,
                 "overlap_formulation": self.overlap_formulation,
+                "sign_convention": CANONICAL_SIGN_CONVENTION,
             },
         )
 
 
 __all__ = [
     "CanonicalBerryCurvatureCalculator",
+    "CANONICAL_SIGN_CONVENTION",
+    "LEGACY_GEOMETRY_CANONICAL_SIGN_NOTE",
     "CanonicalBerryCurvatureResult",
     "CanonicalBerryPlaquetteResult",
 ]

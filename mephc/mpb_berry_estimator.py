@@ -217,7 +217,7 @@ def _center_rank_one_is_degenerate(source, level: int, selection: tuple[int, ...
     center_frequency = float(snapshot.frequencies[selected])
     gap = min(abs(center_frequency - float(snapshot.frequencies[index])) for index in excluded)
     tolerance = float(source.interior_results[level].thresholds.validation_tolerance)
-    return gap <= max(tolerance, 1e-12)
+    return gap <= tolerance * (1.0 + 1e-6) + 1e-15
 
 
 def estimate_mpb_rank1_berry_curvature(
