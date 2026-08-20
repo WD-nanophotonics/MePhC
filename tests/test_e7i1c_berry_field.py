@@ -90,6 +90,9 @@ def test_orientation_is_signed_and_reversing_both_axes_restores_sign():
     assert integrate_qualified_field(reverse_x).value == pytest.approx(-base)
     assert integrate_qualified_field(reverse_y).value == pytest.approx(-base)
     assert integrate_qualified_field(reverse_both).value == pytest.approx(base)
+    assert integrate_qualified_field(reverse_x, subdomain=(-1.0, 1.0, -1.0, 1.0)).value == pytest.approx(-base)
+    assert integrate_qualified_field(reverse_y, subdomain=(-1.0, 1.0, -1.0, 1.0)).value == pytest.approx(-base)
+    assert integrate_qualified_field(reverse_both, subdomain=(-1.0, 1.0, -1.0, 1.0)).value == pytest.approx(base)
 
 
 def test_masked_points_fail_closed_and_explicit_subdomain_is_still_explicit():

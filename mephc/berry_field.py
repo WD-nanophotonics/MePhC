@@ -458,7 +458,11 @@ def _selected_axis(axis: tuple[float, ...], bounds: tuple[float, float] | None, 
     if low > high or not math.isfinite(low) or not math.isfinite(high):
         raise BerryFieldModelError(f"{name} bounds must be finite and ordered")
     selected = tuple(value for value in axis if low <= value <= high)
-    if len(selected) < 2 or selected[0] != low or selected[-1] != high:
+    if len(selected) < 2:
+        raise BerryFieldModelError(f"{name} must select an explicit stored subdomain")
+    increasing = selected[0] < selected[-1]
+    endpoints_ok = (selected[0] == low and selected[-1] == high) if increasing else (selected[0] == high and selected[-1] == low)
+    if not endpoints_ok:
         raise BerryFieldModelError(f"{name} must select an explicit stored subdomain")
     return selected
 
