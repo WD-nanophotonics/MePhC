@@ -17,6 +17,18 @@ evidence required to audit classification logic should accompany the scripts
 when reasonably small. Do not interpret supervisor silence as authorization to
 move `main`.
 
+For the C4 exact-domain audit, `geometry_generator.py`,
+`trace_generator.py`, and `reducer_c4.py` are the current authoritative audit
+surface. Full generated meshes, raw manifests, and solver logs remain local
+execution artefacts. If a work order changes no auditable code or
+conclusion-producing logic, report `CODE_CHANGE=NONE`; otherwise completion is
+incomplete without an inspectable sandbox commit. Corrective commits remain on
+`sandbox` until supervisor seal/promotion authorization. Conclusion-producing
+temporary scripts must be published before the completion report, compact
+control evidence should travel with the logic when reasonably small, agent
+confidence never waives sandbox publication, and supervisor silence never
+authorizes main promotion.
+
 Completion reports involving auditable code must include:
 
 ```text

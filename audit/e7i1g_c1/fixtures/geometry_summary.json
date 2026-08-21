@@ -1,0 +1,19 @@
+{
+  "specification": "six analytic Voronoi seed triangles around K, midpoint subdivision, public q translated by -K",
+  "expected_area": 0.5773502691896258,
+  "levels": {
+    "coarse": {
+      "max_edge_limit": 0.06,
+      "triangle_count": 1536
+    },
+    "fine": {
+      "max_edge_limit": 0.03,
+      "triangle_count": 6144
+    },
+    "refined": {
+      "max_edge_limit": 0.015,
+      "triangle_count": 24576
+    }
+  },
+  "full_mesh_policy": "generated locally and left untracked"
+}
