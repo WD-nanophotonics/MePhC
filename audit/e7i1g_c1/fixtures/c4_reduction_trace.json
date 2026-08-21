@@ -1,0 +1,2248 @@
+{
+  "MANIFEST_LINEAGE_SHA256": "5564d233c45acbfd7dce18d2179a589b60d9df5a56d871c78c7c71dd0aef2301",
+  "SOURCE_C4_EVIDENCE_SHA256": "196fcdae172b9b718185c61261de375b54a759e93d4d215c2bd5846ee841c67d",
+  "SOURCE_QUALIFIED_COUNT": 50688,
+  "SOURCE_RECORD_COUNT": 50688,
+  "TRACE_GENERATOR_BLOB_OR_FILE_SHA256": "3f68e865b9adec89334b11fc5ce1ea0756a47119acfdc824e48078e659529fde",
+  "TRACE_GENERATOR_VERSION": "c5-trace-generator-v1",
+  "TRACE_VERSION": "c5-structured-v1",
+  "rules": {
+    "coarse_centroid": {
+      "chunks": [
+        {
+          "chunk_index": 0,
+          "first_sample_key": [
+            -0.5713362039,
+            0.6840277778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.1683938285,
+            0.1944444444
+          ],
+          "ordered_input_records_sha256": "960d0607661f2bde98c8b828090741330d317ed118cfc5073f7ea2ddf517659e",
+          "qualified_count": 512,
+          "rule": "coarse_centroid",
+          "signed_weight_sum": 0.18399281039604284,
+          "weighted_curvature_sum": {
+            "anti": -0.22181220653977543,
+            "band1": -0.30391993730159755,
+            "band2": 0.13970447577795347,
+            "common": -0.08210773076182191
+          }
+        },
+        {
+          "chunk_index": 1,
+          "first_sample_key": [
+            -0.1683938285,
+            0.2361111111
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.1683938285,
+            0.2361111111
+          ],
+          "ordered_input_records_sha256": "c634f13c557bc69b8d4b60efc91a666d9802b44032e56639cca502b1c13dd95f",
+          "qualified_count": 512,
+          "rule": "coarse_centroid",
+          "signed_weight_sum": 0.20936464839754007,
+          "weighted_curvature_sum": {
+            "anti": -0.1897920121331146,
+            "band1": -0.26192047189837975,
+            "band2": 0.11766355236784967,
+            "common": -0.07212845976526495
+          }
+        },
+        {
+          "chunk_index": 2,
+          "first_sample_key": [
+            0.1683938285,
+            0.2777777778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.5713362039,
+            0.9965277778
+          ],
+          "ordered_input_records_sha256": "760b28996f729d816ec680bb6e22e76044c9122e6a2f2a1f994d831733bf1722",
+          "qualified_count": 512,
+          "rule": "coarse_centroid",
+          "signed_weight_sum": 0.18399281039604287,
+          "weighted_curvature_sum": {
+            "anti": -0.21962096839185602,
+            "band1": -0.30131033404131347,
+            "band2": 0.13793160274239816,
+            "common": -0.08168936564945792
+          }
+        }
+      ],
+      "exact_domain": true,
+      "qualified_count": 1536,
+      "resulting_flux": {
+        "anti": -0.6312251870647461,
+        "band1": -0.8671507432412908,
+        "band2": 0.3952996308882013,
+        "common": -0.2359255561765448
+      },
+      "sum_signed_weights": 0.5773502691896257,
+      "total_record_count": 1536
+    },
+    "fine_centroid": {
+      "chunks": [
+        {
+          "chunk_index": 0,
+          "first_sample_key": [
+            -0.5743432365,
+            0.6753472222
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.4991674202,
+            0.8402777778
+          ],
+          "ordered_input_records_sha256": "7665511a0ce2d4526e5ab5585038880e175b0dca2a4da5f46246dece7cfa6e61",
+          "qualified_count": 512,
+          "rule": "fine_centroid",
+          "signed_weight_sum": 0.027439172949767346,
+          "weighted_curvature_sum": {
+            "anti": -0.12430258179355445,
+            "band1": -0.15617374241006815,
+            "band2": 0.09243142117704065,
+            "common": -0.03187116061651373
+          }
+        },
+        {
+          "chunk_index": 1,
+          "first_sample_key": [
+            -0.4991674202,
+            0.8506944444
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.4089564407,
+            1.0694444444
+          ],
+          "ordered_input_records_sha256": "6cde4394d864fd52c2a2d11ffd52043f35234d68d52cf85ea5018f1a4936c28c",
+          "qualified_count": 512,
+          "rule": "fine_centroid",
+          "signed_weight_sum": 0.03674218021698304,
+          "weighted_curvature_sum": {
+            "anti": -0.06399536369398136,
+            "band1": -0.09462455050668112,
+            "band2": 0.03336617688128173,
+            "common": -0.03062918681269966
+          }
+        },
+        {
+          "chunk_index": 2,
+          "first_sample_key": [
+            -0.4089564407,
+            1.0798611111
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.2886751346,
+            0.90625
+          ],
+          "ordered_input_records_sha256": "7c147e9be8d4bd628cf1f3d84c16faa0135b7846666d410819d6c4429b44222a",
+          "qualified_count": 512,
+          "rule": "fine_centroid",
+          "signed_weight_sum": 0.05609995291442165,
+          "weighted_curvature_sum": {
+            "anti": -0.019575272400639426,
+            "band1": -0.035827457341986044,
+            "band2": 0.0033230874592929285,
+            "common": -0.016252184941346504
+          }
+        },
+        {
+          "chunk_index": 3,
+          "first_sample_key": [
+            -0.2886751346,
+            0.9270833333
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.1683938285,
+            0.1319444444
+          ],
+          "ordered_input_records_sha256": "411b20682c5633e73e137499342594330dcd769e9c88651d9a3dcb6f0fd9c68a",
+          "qualified_count": 512,
+          "rule": "fine_centroid",
+          "signed_weight_sum": 0.06413436828156244,
+          "weighted_curvature_sum": {
+            "anti": -0.012590439088192951,
+            "band1": -0.015527122613344406,
+            "band2": 0.0096537555630415,
+            "common": -0.0029366835251514547
+          }
+        },
+        {
+          "chunk_index": 4,
+          "first_sample_key": [
+            -0.1683938285,
+            0.1527777778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.078182849,
+            0.4340277778
+          ],
+          "ordered_input_records_sha256": "31577ec5b43b72b3a9c39dd62f9704ac99aa548c2719eddcd3273e39ba308758",
+          "qualified_count": 512,
+          "rule": "fine_centroid",
+          "signed_weight_sum": 0.05445548193284312,
+          "weighted_curvature_sum": {
+            "anti": -0.03459177455660378,
+            "band1": -0.04602381917956424,
+            "band2": 0.023159729933643382,
+            "common": -0.01143204462296043
+          }
+        },
+        {
+          "chunk_index": 5,
+          "first_sample_key": [
+            -0.078182849,
+            0.4548611111
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.0030070327,
+            0.6545138889
+          ],
+          "ordered_input_records_sha256": "098b13977c439a27461d9fd1432bae50c324686e06a215aa742865a93b2b7c98",
+          "qualified_count": 512,
+          "rule": "fine_centroid",
+          "signed_weight_sum": 0.049803978299235295,
+          "weighted_curvature_sum": {
+            "anti": -0.060598571506512044,
+            "band1": -0.0854348152932327,
+            "band2": 0.035762327719791355,
+            "common": -0.02483624378672064
+          }
+        },
+        {
+          "chunk_index": 6,
+          "first_sample_key": [
+            0.0030070327,
+            0.0086805556
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.078182849,
+            0.1215277778
+          ],
+          "ordered_input_records_sha256": "ff3f642e118fb58f3dbffc3deed346363efc6130b58c812a59a5c2667c19bd69",
+          "qualified_count": 512,
+          "rule": "fine_centroid",
+          "signed_weight_sum": 0.049803978299235295,
+          "weighted_curvature_sum": {
+            "anti": -0.06259927031786684,
+            "band1": -0.08801156730927572,
+            "band2": 0.03718697332645796,
+            "common": -0.025412296991408834
+          }
+        },
+        {
+          "chunk_index": 7,
+          "first_sample_key": [
+            0.078182849,
+            0.1423611111
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.1683938285,
+            0.3194444444
+          ],
+          "ordered_input_records_sha256": "5e1943fa34c68b7a00b98ea7fe6387933eb276e73a49112dd79f2c8a5c35804f",
+          "qualified_count": 512,
+          "rule": "fine_centroid",
+          "signed_weight_sum": 0.05445548193284312,
+          "weighted_curvature_sum": {
+            "anti": -0.033158554344307346,
+            "band1": -0.04411746103283723,
+            "band2": 0.022199647655777466,
+            "common": -0.0109589066885299
+          }
+        },
+        {
+          "chunk_index": 8,
+          "first_sample_key": [
+            0.1683938285,
+            0.3402777778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.2886751346,
+            0.90625
+          ],
+          "ordered_input_records_sha256": "45bb1bbac9e16087444efe3622acdac24d52a92118384a8c41ff8663d75026b8",
+          "qualified_count": 512,
+          "rule": "fine_centroid",
+          "signed_weight_sum": 0.06413436828156244,
+          "weighted_curvature_sum": {
+            "anti": -0.011611493710023625,
+            "band1": -0.014256536742922767,
+            "band2": 0.008966450677124461,
+            "common": -0.0026450430328991436
+          }
+        },
+        {
+          "chunk_index": 9,
+          "first_sample_key": [
+            0.2886751346,
+            0.9270833333
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.4089564407,
+            0.9756944444
+          ],
+          "ordered_input_records_sha256": "40d9e225b6a7841e2ea38d86f252ca8341d33ef185e8d590069d6af68a5de2b9",
+          "qualified_count": 512,
+          "rule": "fine_centroid",
+          "signed_weight_sum": 0.05609995291442165,
+          "weighted_curvature_sum": {
+            "anti": -0.019718470555087374,
+            "band1": -0.03619945793362116,
+            "band2": 0.0032374831765535593,
+            "common": -0.016480987378533825
+          }
+        },
+        {
+          "chunk_index": 10,
+          "first_sample_key": [
+            0.4089564407,
+            0.9861111111
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.4991674202,
+            0.9965277778
+          ],
+          "ordered_input_records_sha256": "d04299c4343e203ddeb9f794aff2d83b26cf518f4c137e8005a164d5fb6ac2ae",
+          "qualified_count": 512,
+          "rule": "fine_centroid",
+          "signed_weight_sum": 0.03674218021698304,
+          "weighted_curvature_sum": {
+            "anti": -0.06300996577013554,
+            "band1": -0.09335363177446554,
+            "band2": 0.03266629976580559,
+            "common": -0.0303436660043299
+          }
+        },
+        {
+          "chunk_index": 11,
+          "first_sample_key": [
+            0.4991674202,
+            1.0069444444
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.5743432365,
+            0.9982638889
+          ],
+          "ordered_input_records_sha256": "e72cbc2a57cd70a5fffe5022464996dc38f79520f0376c77ffcd5ec4267b59f6",
+          "qualified_count": 512,
+          "rule": "fine_centroid",
+          "signed_weight_sum": 0.02743917294976735,
+          "weighted_curvature_sum": {
+            "anti": -0.1255550811759825,
+            "band1": -0.1576809338352999,
+            "band2": 0.09342922851666481,
+            "common": -0.03212585265931767
+          }
+        }
+      ],
+      "exact_domain": true,
+      "qualified_count": 6144,
+      "resulting_flux": {
+        "anti": -0.6313068389128872,
+        "band1": -0.867231095973299,
+        "band2": 0.3953825818524754,
+        "common": -0.2359242570604117
+      },
+      "sum_signed_weights": 0.5773502691896258,
+      "total_record_count": 6144
+    },
+    "fine_three_point": {
+      "chunks": [
+        {
+          "chunk_index": 0,
+          "first_sample_key": [
+            -0.5750949947,
+            0.6731770833
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.5525422498,
+            0.7565104167
+          ],
+          "ordered_input_records_sha256": "c8c5f1053d08ecded909ab7c2ec192d9291f840c097553afaf1fbd4c2c42d62b",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.008394632820248455,
+          "weighted_curvature_sum": {
+            "anti": -0.044203621607954595,
+            "band1": -0.05386488877230819,
+            "band2": 0.03454235444360102,
+            "common": -0.00966126716435358
+          }
+        },
+        {
+          "chunk_index": 1,
+          "first_sample_key": [
+            -0.5525422498,
+            0.7591145833
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.5277342304,
+            0.9583333333
+          ],
+          "ordered_input_records_sha256": "efa00fb14dc19cfc053aa0583145a521d467014a1eda915c4064aa2f2744cadc",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.009052421212879845,
+          "weighted_curvature_sum": {
+            "anti": -0.04322417196666508,
+            "band1": -0.05406569813634803,
+            "band2": 0.03238264579698212,
+            "common": -0.010841526169682968
+          }
+        },
+        {
+          "chunk_index": 2,
+          "first_sample_key": [
+            -0.5277342304,
+            0.9635416667
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.5006709366,
+            0.984375
+          ],
+          "ordered_input_records_sha256": "efa6a43ba29e7d19ab342fc9b61709f06bd19e38d6d98e0608af3d9d21203e05",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.009992118916639045,
+          "weighted_curvature_sum": {
+            "anti": -0.036794313968027285,
+            "band1": -0.048233086814012574,
+            "band2": 0.02535554112204208,
+            "common": -0.01143877284598522
+          }
+        },
+        {
+          "chunk_index": 3,
+          "first_sample_key": [
+            -0.5006709366,
+            0.9895833333
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.4713523682,
+            0.87890625
+          ],
+          "ordered_input_records_sha256": "5b7b78c76ca21dff0866f9b3ac24ad18bc008836978a70bd4f2c67562b56f9e6",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.01121372593152594,
+          "weighted_curvature_sum": {
+            "anti": -0.028276785099793932,
+            "band1": -0.03943758132258517,
+            "band2": 0.017115988877002764,
+            "common": -0.011160796222791203
+          }
+        },
+        {
+          "chunk_index": 4,
+          "first_sample_key": [
+            -0.4713523682,
+            0.88671875
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.4397785254,
+            0.8190104167
+          ],
+          "ordered_input_records_sha256": "578df91ae42482fa097e68fdb61318cd48ef1f5778433e46908017f8f74579c7",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.012560625973580732,
+          "weighted_curvature_sum": {
+            "anti": -0.020365221648658675,
+            "band1": -0.03071918110204538,
+            "band2": 0.010011262195271974,
+            "common": -0.010353959453386699
+          }
+        },
+        {
+          "chunk_index": 5,
+          "first_sample_key": [
+            -0.4397785254,
+            0.8268229167
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.4082046825,
+            0.96484375
+          ],
+          "ordered_input_records_sha256": "c5021f01e8142547d4737e2e461f148919e2e28825324ebb77f643b3e163155d",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.013562970190923833,
+          "weighted_curvature_sum": {
+            "anti": -0.014826229467714397,
+            "band1": -0.023996888380445173,
+            "band2": 0.0056555705549835925,
+            "common": -0.009170658912730804
+          }
+        },
+        {
+          "chunk_index": 6,
+          "first_sample_key": [
+            -0.4082046825,
+            0.9674479167
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.3721202907,
+            0.8815104167
+          ],
+          "ordered_input_records_sha256": "a1ff7b017c695a377d95a19ada9c5a229ee4669fea399b219b29fb2da1fcf4be",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.015567658625610034,
+          "weighted_curvature_sum": {
+            "anti": -0.010174707910681667,
+            "band1": -0.017415883238211072,
+            "band2": 0.0029335325831522587,
+            "common": -0.007241175327529401
+          }
+        },
+        {
+          "chunk_index": 7,
+          "first_sample_key": [
+            -0.3721202907,
+            0.8893229167
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.3337806244,
+            0.9557291667
+          ],
+          "ordered_input_records_sha256": "5f1cf2d1d1b2d2ab41eff932d595a4a25fe7a0b63d81fbb8a60e65e5d928a8c2",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.018230135452927645,
+          "weighted_curvature_sum": {
+            "anti": -0.006569091498321069,
+            "band1": -0.01211917980775969,
+            "band2": 0.001019003188882447,
+            "common": -0.005550088309438611
+          }
+        },
+        {
+          "chunk_index": 8,
+          "first_sample_key": [
+            -0.3337806244,
+            0.9713541667
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.2886751346,
+            0.9088541667
+          ],
+          "ordered_input_records_sha256": "d289d9ebc9194e17b335242f604fd9ad49fa9e8f3a74efb6096c81eec9d6f240",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.0217070169568365,
+          "weighted_curvature_sum": {
+            "anti": -0.003589388035035691,
+            "band1": -0.006994794218977387,
+            "band2": 0.00018398185109399424,
+            "common": -0.003405406183941696
+          }
+        },
+        {
+          "chunk_index": 9,
+          "first_sample_key": [
+            -0.2886751346,
+            0.9244791667
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.2435696448,
+            0.7838541667
+          ],
+          "ordered_input_records_sha256": "43cb0d4321d0f8b809efd4a31c63b0e62bc3e077ce5e3946b1b91eeda550eea4",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.02288163908653544,
+          "weighted_curvature_sum": {
+            "anti": -0.0015967750617317158,
+            "band1": -0.0028592134431771406,
+            "band2": 0.00033433668028628885,
+            "common": -0.0012624383814454274
+          }
+        },
+        {
+          "chunk_index": 10,
+          "first_sample_key": [
+            -0.2435696448,
+            0.7994791667
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.2052299785,
+            0.7955729167
+          ],
+          "ordered_input_records_sha256": "1c83af1d7934a468d54d156373dda1b6be221485d4f8f77230d48a528c158350",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.021143198334581028,
+          "weighted_curvature_sum": {
+            "anti": -0.00397697659864854,
+            "band1": -0.004551274525062565,
+            "band2": 0.003402678672234512,
+            "common": -0.0005742979264140245
+          }
+        },
+        {
+          "chunk_index": 11,
+          "first_sample_key": [
+            -0.2052299785,
+            0.8190104167
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.1691455867,
+            0.3580729167
+          ],
+          "ordered_input_records_sha256": "1d49b1f1c5e605bf965864960c60dc6fad765a7162fded812c197a9fa88a09ef",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.019811959920922228,
+          "weighted_curvature_sum": {
+            "anti": -0.006897461899145834,
+            "band1": -0.00804405950405328,
+            "band2": 0.005750864294238389,
+            "common": -0.0011465976049074458
+          }
+        },
+        {
+          "chunk_index": 12,
+          "first_sample_key": [
+            -0.1691455867,
+            0.36328125
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.1375717438,
+            0.7330729167
+          ],
+          "ordered_input_records_sha256": "6441adc3175b00f72d1c4b44d76414cc45fcdf0a923b285deb55844cc34af84d",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.0188096157035791,
+          "weighted_curvature_sum": {
+            "anti": -0.009335446772274276,
+            "band1": -0.011640406049269027,
+            "band2": 0.007030487495279522,
+            "common": -0.002304959276994762
+          }
+        },
+        {
+          "chunk_index": 13,
+          "first_sample_key": [
+            -0.1375717438,
+            0.7565104167
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.105997901,
+            0.41015625
+          ],
+          "ordered_input_records_sha256": "9d9f51edc4176f077cc44102cfc5b660367ba2c6e8db25f5b7b265d0df3616e1",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.018308443594907575,
+          "weighted_curvature_sum": {
+            "anti": -0.01133165873715339,
+            "band1": -0.01499193934922334,
+            "band2": 0.007671378125083442,
+            "common": -0.003660280612069952
+          }
+        },
+        {
+          "chunk_index": 14,
+          "first_sample_key": [
+            -0.105997901,
+            0.42578125
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.0766793326,
+            0.1536458333
+          ],
+          "ordered_input_records_sha256": "77792eed5e1335f6a3be7dd57afbf1352222553ad2d76d5972a3020c1a86c8e9",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.017634993573880178,
+          "weighted_curvature_sum": {
+            "anti": -0.014725143107235867,
+            "band1": -0.02022699933190092,
+            "band2": 0.00922328688257083,
+            "common": -0.005501856224665047
+          }
+        },
+        {
+          "chunk_index": 15,
+          "first_sample_key": [
+            -0.0766793326,
+            0.1640625
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.0496160388,
+            0.1588541667
+          ],
+          "ordered_input_records_sha256": "6e00746ded6721a856b9b68ae4adc28df3b9ec14e17d4eb84636c88646dca46f",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.017024190066436715,
+          "weighted_curvature_sum": {
+            "anti": -0.017198882903318564,
+            "band1": -0.024339804572614712,
+            "band2": 0.010057961234022429,
+            "common": -0.007140921669296147
+          }
+        },
+        {
+          "chunk_index": 16,
+          "first_sample_key": [
+            -0.0496160388,
+            0.1692708333
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.0248080194,
+            0.5247395833
+          ],
+          "ordered_input_records_sha256": "8e9a4c9a1f44af6ce6099ae46e68b746d32eb3f3c7c8af5e261b2e8dae0ba626",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.01655434121455714,
+          "weighted_curvature_sum": {
+            "anti": -0.019167206652950786,
+            "band1": -0.027362767173372198,
+            "band2": 0.010971646132529388,
+            "common": -0.008195560520421407
+          }
+        },
+        {
+          "chunk_index": 17,
+          "first_sample_key": [
+            -0.0248080194,
+            0.5299479167
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.0022552745,
+            0.6575520833
+          ],
+          "ordered_input_records_sha256": "b9715f504a2206fca11810bfc2d48044dcc680b0b2b92eb35d753c7114ab0d73",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.016225447018241437,
+          "weighted_curvature_sum": {
+            "anti": -0.023404405191191607,
+            "band1": -0.03275628004251791,
+            "band2": 0.01405253033986527,
+            "common": -0.009351874851326342
+          }
+        },
+        {
+          "chunk_index": 18,
+          "first_sample_key": [
+            0.0022552745,
+            0.0065104167
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.0248080194,
+            0.1341145833
+          ],
+          "ordered_input_records_sha256": "23145987b8438b9b6cb6c98683a19cedcc83f752627f364b7f9103a618322d8c",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.01617846213305348,
+          "weighted_curvature_sum": {
+            "anti": -0.02583892085224954,
+            "band1": -0.03598060589902409,
+            "band2": 0.01569723580547502,
+            "common": -0.010141685046774523
+          }
+        },
+        {
+          "chunk_index": 19,
+          "first_sample_key": [
+            0.0248080194,
+            0.1497395833
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.0496160388,
+            0.4401041667
+          ],
+          "ordered_input_records_sha256": "cc9ef1a3e55cd29cf4fc90c74243fa3ca3375bc98cbf8bce7be30ee87984a074",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.0166013260997451,
+          "weighted_curvature_sum": {
+            "anti": -0.01879496240797463,
+            "band1": -0.026914912358202675,
+            "band2": 0.010675012457746514,
+            "common": -0.008119949950228092
+          }
+        },
+        {
+          "chunk_index": 20,
+          "first_sample_key": [
+            0.0496160388,
+            0.4505208333
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.0766793326,
+            0.4140625
+          ],
+          "ordered_input_records_sha256": "713db16ccd55953412b717f2b9e712248bdda8c898313706b77840d221349114",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.017024190066436715,
+          "weighted_curvature_sum": {
+            "anti": -0.016711421119425234,
+            "band1": -0.02363206051727429,
+            "band2": 0.00979078172157616,
+            "common": -0.006920639397849074
+          }
+        },
+        {
+          "chunk_index": 21,
+          "first_sample_key": [
+            0.0766793326,
+            0.4244791667
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.105997901,
+            0.2434895833
+          ],
+          "ordered_input_records_sha256": "ee47820bf01444f888dba129027890f2da853e15aa0d08c7dfdcfbe875861153",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.017447054033128347,
+          "weighted_curvature_sum": {
+            "anti": -0.014350427633781892,
+            "band1": -0.019807320904088578,
+            "band2": 0.008893534363475192,
+            "common": -0.005456893270306695
+          }
+        },
+        {
+          "chunk_index": 22,
+          "first_sample_key": [
+            0.105997901,
+            0.2591145833
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.1375717438,
+            0.1731770833
+          ],
+          "ordered_input_records_sha256": "eb611bdc7f28f5cc3c103a3a1063b4bcc3edd8512ab685db3c60883374b1c7f2",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.018339766851699545,
+          "weighted_curvature_sum": {
+            "anti": -0.011023298035330453,
+            "band1": -0.014469971920300402,
+            "band2": 0.007576624150360519,
+            "common": -0.0034466738849699427
+          }
+        },
+        {
+          "chunk_index": 23,
+          "first_sample_key": [
+            0.1375717438,
+            0.1888020833
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.1691455867,
+            0.30078125
+          ],
+          "ordered_input_records_sha256": "acb26532ce6fef5965d66196bd4e0e6dd6593b3d7fdf95563c6f55fd611dbb6d",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.018668661048015223,
+          "weighted_curvature_sum": {
+            "anti": -0.009042502334209935,
+            "band1": -0.01132271914432351,
+            "band2": 0.006762285524096364,
+            "common": -0.002280216810113569
+          }
+        },
+        {
+          "chunk_index": 24,
+          "first_sample_key": [
+            0.1691455867,
+            0.31640625
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.2052299785,
+            0.2591145833
+          ],
+          "ordered_input_records_sha256": "6eb4d7c79fa921b85c68b0e98424997f6010c21f3c82a7eeb10b4d9406524084",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.01989026806290216,
+          "weighted_curvature_sum": {
+            "anti": -0.006672546429771156,
+            "band1": -0.007687026059086773,
+            "band2": 0.005658066800455542,
+            "common": -0.0010144796293156137
+          }
+        },
+        {
+          "chunk_index": 25,
+          "first_sample_key": [
+            0.2052299785,
+            0.2747395833
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.2435696448,
+            0.9557291667
+          ],
+          "ordered_input_records_sha256": "dc61a0b64555b3e653b69047666959b28bc207c8d94e1d00792458108a20ac96",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.02136246113212483,
+          "weighted_curvature_sum": {
+            "anti": -0.003617535647428459,
+            "band1": -0.004076072175385548,
+            "band2": 0.0031589991194713664,
+            "common": -0.000458536527957091
+          }
+        },
+        {
+          "chunk_index": 26,
+          "first_sample_key": [
+            0.2435696448,
+            0.9713541667
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.2886751346,
+            0.9088541667
+          ],
+          "ordered_input_records_sha256": "20930978a3d55bd5f71b073c2dcafb193141bea8871acf17af77b1f824243615",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.02288163908653544,
+          "weighted_curvature_sum": {
+            "anti": -0.0014471091962233707,
+            "band1": -0.0026805964547108253,
+            "band2": 0.0002136219377359199,
+            "common": -0.0012334872584874523
+          }
+        },
+        {
+          "chunk_index": 27,
+          "first_sample_key": [
+            0.2886751346,
+            0.9244791667
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.3337806244,
+            0.7838541667
+          ],
+          "ordered_input_records_sha256": "f054d51779bd671c91be629f67e6376520800348ed376f033beadfb969c1f7f0",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.0217070169568365,
+          "weighted_curvature_sum": {
+            "anti": -0.0035043184298498694,
+            "band1": -0.006864786593097527,
+            "band2": 0.0001438502666022142,
+            "common": -0.003360468163247659
+          }
+        },
+        {
+          "chunk_index": 28,
+          "first_sample_key": [
+            0.3337806244,
+            0.7994791667
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.3721202907,
+            1.0403645833
+          ],
+          "ordered_input_records_sha256": "73b9181d2162afa91e08e12c0d29cb0a98791b34bca316f88fcd74f9f264b470",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.01866866104801525,
+          "weighted_curvature_sum": {
+            "anti": -0.006242325120892693,
+            "band1": -0.011941620359090337,
+            "band2": 0.0005430298826950705,
+            "common": -0.0056992952381976205
+          }
+        },
+        {
+          "chunk_index": 29,
+          "first_sample_key": [
+            0.3721202907,
+            1.0481770833
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.4082046825,
+            0.98828125
+          ],
+          "ordered_input_records_sha256": "2b2081be32ffc713cfebd60ccad0e299803055104f742a909aab341438ccb9ea",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.015724274909569895,
+          "weighted_curvature_sum": {
+            "anti": -0.009864718771218485,
+            "band1": -0.017228456930221705,
+            "band2": 0.0025009806122152692,
+            "common": -0.007363738159003215
+          }
+        },
+        {
+          "chunk_index": 30,
+          "first_sample_key": [
+            0.4082046825,
+            0.99609375
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.4397785254,
+            1.0247395833
+          ],
+          "ordered_input_records_sha256": "60042e2b2dcd21ab7d8cba4758983a72001ed269f3c91763605294bcb45e9f7a",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.013281060879796086,
+          "weighted_curvature_sum": {
+            "anti": -0.014956488088702438,
+            "band1": -0.023897623604176146,
+            "band2": 0.006015352573228734,
+            "common": -0.00894113551547371
+          }
+        },
+        {
+          "chunk_index": 31,
+          "first_sample_key": [
+            0.4397785254,
+            1.0325520833
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.4713523682,
+            0.9622395833
+          ],
+          "ordered_input_records_sha256": "b3661e07fc7860bd9d044c7dd016dfa63d2a29542245039fe913ae14d4467c18",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.012623272487164676,
+          "weighted_curvature_sum": {
+            "anti": -0.01982800906622777,
+            "band1": -0.03005944203090513,
+            "band2": 0.009596576101550342,
+            "common": -0.010231432964677416
+          }
+        },
+        {
+          "chunk_index": 32,
+          "first_sample_key": [
+            0.4713523682,
+            0.9700520833
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.5006709366,
+            0.8541666667
+          ],
+          "ordered_input_records_sha256": "18ea363e2b46a3d3b0ce4b88b89570ad54de53d181df96cd7fed32887279692f",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.010837846850022278,
+          "weighted_curvature_sum": {
+            "anti": -0.028429659381999574,
+            "band1": -0.0395465255826863,
+            "band2": 0.017312793181312843,
+            "common": -0.011116866200686738
+          }
+        },
+        {
+          "chunk_index": 33,
+          "first_sample_key": [
+            0.5006709366,
+            0.859375
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.5277342304,
+            0.8177083333
+          ],
+          "ordered_input_records_sha256": "d19e9c2680c92ccd166b6177ae138c72933c474ef1ecfb1988870f730021ff65",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.009992118916639045,
+          "weighted_curvature_sum": {
+            "anti": -0.03633692255309171,
+            "band1": -0.047601161983113795,
+            "band2": 0.025072683123069674,
+            "common": -0.011264239430022055
+          }
+        },
+        {
+          "chunk_index": 34,
+          "first_sample_key": [
+            0.5277342304,
+            0.8229166667
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.5525422498,
+            0.9466145833
+          ],
+          "ordered_input_records_sha256": "bf5c469ebef48e4f9f5406929d69c91fe161cfe5aa6f16eeeb527950daf17897",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.00914639098325576,
+          "weighted_curvature_sum": {
+            "anti": -0.04299390814070996,
+            "band1": -0.05378225257763433,
+            "band2": 0.03220556370378545,
+            "common": -0.010788344436924493
+          }
+        },
+        {
+          "chunk_index": 35,
+          "first_sample_key": [
+            0.5525422498,
+            0.9544270833
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.5750949947,
+            0.9986979167
+          ],
+          "ordered_input_records_sha256": "ea672cf49bfa563d87f1c7b2d6614cf0637d8aae2eb849e0e916d96b00a4412a",
+          "qualified_count": 512,
+          "rule": "fine_three_point",
+          "signed_weight_sum": 0.00830066304987254,
+          "weighted_curvature_sum": {
+            "anti": -0.04600306110451206,
+            "band1": -0.056126652136744885,
+            "band2": 0.0358794700722793,
+            "common": -0.010123591032232787
+          }
+        }
+      ],
+      "exact_domain": true,
+      "qualified_count": 18432,
+      "resulting_flux": {
+        "anti": -0.6313156224401022,
+        "band1": -0.8672397330139506,
+        "band2": 0.3953915118662538,
+        "common": -0.2359241105738485
+      },
+      "sum_signed_weights": 0.5773502691896257,
+      "total_record_count": 18432
+    },
+    "refined_centroid": {
+      "chunks": [
+        {
+          "chunk_index": 0,
+          "first_sample_key": [
+            -0.5758467529,
+            0.6710069444
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.557804557,
+            0.7282986111
+          ],
+          "ordered_input_records_sha256": "a892ead3134e18b9b6fcd9827752ee4fe530693e59693044df98a29f155bc5e8",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.006248989729998393,
+          "weighted_curvature_sum": {
+            "anti": -0.03307951542145646,
+            "band1": -0.040235754096809274,
+            "band2": 0.025923276746103664,
+            "common": -0.007156238675352795
+          }
+        },
+        {
+          "chunk_index": 1,
+          "first_sample_key": [
+            -0.557804557,
+            0.7335069444
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.539762361,
+            0.8741319444
+          ],
+          "ordered_input_records_sha256": "8b36f605ef6dffe2fb7b6c7275c5d74d294c3b051be9e5f0a7abeff292fa0b8e",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.0066248688115020165,
+          "weighted_curvature_sum": {
+            "anti": -0.03304443620016283,
+            "band1": -0.04075695742249363,
+            "band2": 0.02533191497783213,
+            "common": -0.007712521222330712
+          }
+        },
+        {
+          "chunk_index": 2,
+          "first_sample_key": [
+            -0.539762361,
+            0.8793402778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.5202166488,
+            0.8368055556
+          ],
+          "ordered_input_records_sha256": "17c7374a6aad0a429a1fbcc2c2bf5947f9974d8d1a711af72e455725353fa493",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.007000747893005742,
+          "weighted_curvature_sum": {
+            "anti": -0.0315163383865498,
+            "band1": -0.03999331085675324,
+            "band2": 0.023039365916346397,
+            "common": -0.008476972470203412
+          }
+        },
+        {
+          "chunk_index": 3,
+          "first_sample_key": [
+            -0.5202166488,
+            0.8420138889
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.4991674202,
+            0.8402777778
+          ],
+          "ordered_input_records_sha256": "9130fcb06381f9f089b0f18ee1ca52661d9f3b9a428873fdf7d13788cf8e0bb4",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.007775998498606998,
+          "weighted_curvature_sum": {
+            "anti": -0.026635301135470985,
+            "band1": -0.03514482433330843,
+            "band2": 0.018125777937633595,
+            "common": -0.008509523197837406
+          }
+        },
+        {
+          "chunk_index": 4,
+          "first_sample_key": [
+            -0.4991674202,
+            0.8454861111
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.479621708,
+            1.0373263889
+          ],
+          "ordered_input_records_sha256": "336050490aba481628aadbe3f247e7f431e30fca37df72bf9c23926ab7eee42f",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.007846475826388968,
+          "weighted_curvature_sum": {
+            "anti": -0.02243561075211415,
+            "band1": -0.031071082088835335,
+            "band2": 0.013800139415392959,
+            "common": -0.008635471336721193
+          }
+        },
+        {
+          "chunk_index": 5,
+          "first_sample_key": [
+            -0.479621708,
+            1.0425347222
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.4570689631,
+            1.0347222222
+          ],
+          "ordered_input_records_sha256": "b009eb6821bd4f43b8ca275195e5b232cfd4361a5ee4fb7a17b0a877825c552e",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.008833158415336087,
+          "weighted_curvature_sum": {
+            "anti": -0.017285756257976907,
+            "band1": -0.025321093400865972,
+            "band2": 0.009250419115087843,
+            "common": -0.008035337142889065
+          }
+        },
+        {
+          "chunk_index": 6,
+          "first_sample_key": [
+            -0.4570689631,
+            1.0399305556
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.4330127019,
+            0.7864583333
+          ],
+          "ordered_input_records_sha256": "c87b7f6f30ef2bba5e1983fe6fa9cd45d17df169a19d4e5bc5d56bfe7ffd69f5",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.009796348561689205,
+          "weighted_curvature_sum": {
+            "anti": -0.013437042504486659,
+            "band1": -0.02070005848044174,
+            "band2": 0.00617402652853157,
+            "common": -0.007263015975955087
+          }
+        },
+        {
+          "chunk_index": 7,
+          "first_sample_key": [
+            -0.4330127019,
+            0.796875
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.4089564407,
+            1.0902777778
+          ],
+          "ordered_input_records_sha256": "1198d8b6947478cd818068374b6944763410c906e61dc003f228c3c8efc68753",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.010501121839508574,
+          "weighted_curvature_sum": {
+            "anti": -0.010440042492156607,
+            "band1": -0.017242991496033564,
+            "band2": 0.0036370934882796295,
+            "common": -0.006802949003876985
+          }
+        },
+        {
+          "chunk_index": 8,
+          "first_sample_key": [
+            -0.4089564407,
+            1.0954861111
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.3818931468,
+            1.0381944444
+          ],
+          "ordered_input_records_sha256": "48ba77c0ca8d34e1be536a77a8ed01d128b538942dc2ea7562104c65e459cf65",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.011722728854395499,
+          "weighted_curvature_sum": {
+            "anti": -0.007711984098707101,
+            "band1": -0.013469497228300705,
+            "band2": 0.0019544709691134833,
+            "common": -0.005757513129593619
+          }
+        },
+        {
+          "chunk_index": 9,
+          "first_sample_key": [
+            -0.3818931468,
+            1.0434027778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.3533263366,
+            1.0998263889
+          ],
+          "ordered_input_records_sha256": "dc3e7bd140ce922df8d01f76c5afa06ff9632528b04a65f36735b71cd1739457",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.012568456787778712,
+          "weighted_curvature_sum": {
+            "anti": -0.0062111949870783546,
+            "band1": -0.010779982911931201,
+            "band2": 0.0016424070622255067,
+            "common": -0.004568787924852844
+          }
+        },
+        {
+          "chunk_index": 10,
+          "first_sample_key": [
+            -0.3533263366,
+            1.1050347222
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.3232560101,
+            1.1241319444
+          ],
+          "ordered_input_records_sha256": "7756c3ebcc65f027b92049294b0aad91638174584ca76e40481db4f1bcf0ca0c",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.014729761506424787,
+          "weighted_curvature_sum": {
+            "anti": -0.003979937911680064,
+            "band1": -0.007582957293718341,
+            "band2": 0.000376918529641783,
+            "common": -0.003603019382038278
+          }
+        },
+        {
+          "chunk_index": 11,
+          "first_sample_key": [
+            -0.3232560101,
+            1.1293402778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.2886751346,
+            0.9114583333
+          ],
+          "ordered_input_records_sha256": "0d8692d6941bb0406425db383af3fd73cad66b472efa6163a8b2c66981adbf05",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.01663264935653706,
+          "weighted_curvature_sum": {
+            "anti": -0.002219731263028642,
+            "band1": -0.004505530331106285,
+            "band2": -6.606780504899858e-05,
+            "common": -0.0022857990680776423
+          }
+        },
+        {
+          "chunk_index": 12,
+          "first_sample_key": [
+            -0.2886751346,
+            0.921875
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.2540942591,
+            0.1814236111
+          ],
+          "ordered_input_records_sha256": "d9435b130ae6d84180d8089df8efff0103e42da0fe5e26ea3bc99b0a24883a95",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.017337422634356423,
+          "weighted_curvature_sum": {
+            "anti": -0.00113214925057221,
+            "band1": -0.0022559041516012875,
+            "band2": 8.394349543136031e-06,
+            "common": -0.0011237549010290743
+          }
+        },
+        {
+          "chunk_index": 13,
+          "first_sample_key": [
+            -0.2540942591,
+            0.1918402778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.2240239326,
+            0.1779513889
+          ],
+          "ordered_input_records_sha256": "b38e0af9ce004ef068f769fb95de94da878fb06468521152c3796497c9619317",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.01638597870930029,
+          "weighted_curvature_sum": {
+            "anti": -0.002068553730076619,
+            "band1": -0.0025076889036151962,
+            "band2": 0.0016294185565380412,
+            "common": -0.00043913517353857593
+          }
+        },
+        {
+          "chunk_index": 14,
+          "first_sample_key": [
+            -0.2240239326,
+            0.1883680556
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.1954571224,
+            0.2517361111
+          ],
+          "ordered_input_records_sha256": "ac8a053a896bda2598d529fad52642bcdc27401a98954bf66ee43f36ab915e8b",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.015305326349977269,
+          "weighted_curvature_sum": {
+            "anti": -0.004065350719292522,
+            "band1": -0.004612974609188642,
+            "band2": 0.0035177268293963937,
+            "common": -0.0005476238898961246
+          }
+        },
+        {
+          "chunk_index": 15,
+          "first_sample_key": [
+            -0.1954571224,
+            0.2621527778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.1683938285,
+            0.1006944444
+          ],
+          "ordered_input_records_sha256": "423abf71700544ce127f5cd7fbf331e46b7002942eaae8c9f8e6c0b2540015cf",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.01488246238328565,
+          "weighted_curvature_sum": {
+            "anti": -0.0051744244437030495,
+            "band1": -0.006022099023374378,
+            "band2": 0.004326749864031713,
+            "common": -0.0008476745796713366
+          }
+        },
+        {
+          "chunk_index": 16,
+          "first_sample_key": [
+            -0.1683938285,
+            0.1111111111
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.1443375673,
+            0.7864583333
+          ],
+          "ordered_input_records_sha256": "cabbf313eb8b1ff5197f0e39a35e8238f7cfde1595b4cafe01e7cc4355c3714b",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.014271658875842183,
+          "weighted_curvature_sum": {
+            "anti": -0.006595071667695999,
+            "band1": -0.008112583144005044,
+            "band2": 0.0050775601913869576,
+            "common": -0.0015175114763090387
+          }
+        },
+        {
+          "chunk_index": 17,
+          "first_sample_key": [
+            -0.1443375673,
+            0.796875
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.1202813061,
+            0.1284722222
+          ],
+          "ordered_input_records_sha256": "b953b59a2416486a75a3533dff7f492b9b290258ddc8dc734824f6ac638ac08b",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.0139192722369325,
+          "weighted_curvature_sum": {
+            "anti": -0.008199494545469758,
+            "band1": -0.010547311645306782,
+            "band2": 0.005851677445632741,
+            "common": -0.002347817099837017
+          }
+        },
+        {
+          "chunk_index": 18,
+          "first_sample_key": [
+            -0.1202813061,
+            0.1388888889
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.0977285612,
+            0.0842013889
+          ],
+          "ordered_input_records_sha256": "b6d20a5a9ef63f7aaea8ad812be1dcc56d1c9d97d817f712aff94aafd641daaf",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.013437677163755947,
+          "weighted_curvature_sum": {
+            "anti": -0.009095397179476026,
+            "band1": -0.012287711897486737,
+            "band2": 0.005903082461465295,
+            "common": -0.003192314718010716
+          }
+        },
+        {
+          "chunk_index": 19,
+          "first_sample_key": [
+            -0.0977285612,
+            0.0946180556
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.078182849,
+            0.4444444444
+          ],
+          "ordered_input_records_sha256": "cc267cc203648c419821e88a80529f005d02799630d78cfb613157bfee48a9a2",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.012944335869282389,
+          "weighted_curvature_sum": {
+            "anti": -0.010844232508471106,
+            "band1": -0.01517118124533251,
+            "band2": 0.00651728377160973,
+            "common": -0.004326948736861392
+          }
+        },
+        {
+          "chunk_index": 20,
+          "first_sample_key": [
+            -0.078182849,
+            0.4548611111
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.0571336204,
+            0.4149305556
+          ],
+          "ordered_input_records_sha256": "07985999a1eb5eb4ed799fcdef87c4b1064692aa9f5faa87e123d0d41252019d",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.012909097205391405,
+          "weighted_curvature_sum": {
+            "anti": -0.012279484887348549,
+            "band1": -0.017368469713179287,
+            "band2": 0.007190500061517793,
+            "common": -0.00508898482583075
+          }
+        },
+        {
+          "chunk_index": 21,
+          "first_sample_key": [
+            -0.0571336204,
+            0.4253472222
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.0375879082,
+            0.3064236111
+          ],
+          "ordered_input_records_sha256": "af00afc04deb465498354959279df5544a3aa21e7b7fcb104afb61ad4a3528ab",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.012521471902590765,
+          "weighted_curvature_sum": {
+            "anti": -0.014792298745728452,
+            "band1": -0.021008890343054823,
+            "band2": 0.008575707148402088,
+            "common": -0.00621659159732636
+          }
+        },
+        {
+          "chunk_index": 22,
+          "first_sample_key": [
+            -0.0375879082,
+            0.3168402778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.0195457122,
+            0.5668402778
+          ],
+          "ordered_input_records_sha256": "8b5f292fb4431805ed1a628108eb3a5885fa778e6a40d95f1b58d5d2b732d06d",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.01233353236183893,
+          "weighted_curvature_sum": {
+            "anti": -0.015527522059793505,
+            "band1": -0.021914801853200237,
+            "band2": 0.009140242266386751,
+            "common": -0.006387279793406746
+          }
+        },
+        {
+          "chunk_index": 23,
+          "first_sample_key": [
+            -0.0195457122,
+            0.5772569444
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            -0.0015035163,
+            0.6605902778
+          ],
+          "ordered_input_records_sha256": "08820acc42c0130167b9b4a886e83892e8e945649f9cf902935585f6da512455",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.0121455928210871,
+          "weighted_curvature_sum": {
+            "anti": -0.01789243351046028,
+            "band1": -0.025012966734558866,
+            "band2": 0.010771900286361661,
+            "common": -0.0071205332240985904
+          }
+        },
+        {
+          "chunk_index": 24,
+          "first_sample_key": [
+            0.0015035163,
+            0.0043402778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.0195457122,
+            0.0668402778
+          ],
+          "ordered_input_records_sha256": "71f460d6c82489725a60d4502819540a759e5821f63bbbac7dc118c166702114",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.0121455928210871,
+          "weighted_curvature_sum": {
+            "anti": -0.01930747147362223,
+            "band1": -0.026788009465538734,
+            "band2": 0.01182693348170569,
+            "common": -0.00748053799191651
+          }
+        },
+        {
+          "chunk_index": 25,
+          "first_sample_key": [
+            0.0195457122,
+            0.0772569444
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.0375879082,
+            0.3064236111
+          ],
+          "ordered_input_records_sha256": "ead6f4e6a855e6c19b9dc924c2e9e5f5ceb991e588087a996feb427a061da26a",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.01233353236183893,
+          "weighted_curvature_sum": {
+            "anti": -0.015876562191441578,
+            "band1": -0.022691457780210072,
+            "band2": 0.009061666602673032,
+            "common": -0.006814895588768527
+          }
+        },
+        {
+          "chunk_index": 26,
+          "first_sample_key": [
+            0.0375879082,
+            0.3168402778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.0571336204,
+            0.1753472222
+          ],
+          "ordered_input_records_sha256": "3c2d01794d188d86dfdff5cb389739c4fa1e8a62de91b16c56be6cfc7c2573cf",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.012521471902590765,
+          "weighted_curvature_sum": {
+            "anti": -0.014451427319355524,
+            "band1": -0.02039764619330389,
+            "band2": 0.008505208445407178,
+            "common": -0.005946218873948356
+          }
+        },
+        {
+          "chunk_index": 27,
+          "first_sample_key": [
+            0.0571336204,
+            0.1857638889
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.078182849,
+            0.1215277778
+          ],
+          "ordered_input_records_sha256": "3aee48f4431e9b9d7cf96394f3cb220cab94fc5aae91bac5a4ca845bd9ff8f3e",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.012909097205391403,
+          "weighted_curvature_sum": {
+            "anti": -0.011921037648339593,
+            "band1": -0.01678951420683587,
+            "band2": 0.007052561089843329,
+            "common": -0.004868476558496269
+          }
+        },
+        {
+          "chunk_index": 28,
+          "first_sample_key": [
+            0.078182849,
+            0.1319444444
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.0977285612,
+            0.4592013889
+          ],
+          "ordered_input_records_sha256": "4429bf077bceb137f55420f526927f22126f82f7876d4dc493d54df3608a295d",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.01294433586928239,
+          "weighted_curvature_sum": {
+            "anti": -0.010219779837877262,
+            "band1": -0.014353204282124358,
+            "band2": 0.006086355393630148,
+            "common": -0.00413342444424711
+          }
+        },
+        {
+          "chunk_index": 29,
+          "first_sample_key": [
+            0.0977285612,
+            0.4696180556
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.1202813061,
+            0.3888888889
+          ],
+          "ordered_input_records_sha256": "4f7f546c113bfcfdadb947435e8183663f918b98812b962f9224a81cf05967c0",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.013437677163755947,
+          "weighted_curvature_sum": {
+            "anti": -0.009260975824499576,
+            "band1": -0.012489224451116714,
+            "band2": 0.006032727197882456,
+            "common": -0.0032282486266171297
+          }
+        },
+        {
+          "chunk_index": 30,
+          "first_sample_key": [
+            0.1202813061,
+            0.3993055556
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.1443375673,
+            0.7864583333
+          ],
+          "ordered_input_records_sha256": "ceb2a4ec49e28cecacf6e0ece961e45291cd0ae7ec99677d834fccfdede10b24",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.0139192722369325,
+          "weighted_curvature_sum": {
+            "anti": -0.0076091925483091445,
+            "band1": -0.009804244935276414,
+            "band2": 0.005414140161341861,
+            "common": -0.0021950523869672827
+          }
+        },
+        {
+          "chunk_index": 31,
+          "first_sample_key": [
+            0.1443375673,
+            0.796875
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.1683938285,
+            0.3611111111
+          ],
+          "ordered_input_records_sha256": "b8fb7c5781e836b300700a180bcc6700e8eb6a2baad75b1aaa19efe897b9163a",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.014271658875842183,
+          "weighted_curvature_sum": {
+            "anti": -0.006666313869182168,
+            "band1": -0.00821297312676483,
+            "band2": 0.0051196546115994945,
+            "common": -0.0015466592575826687
+          }
+        },
+        {
+          "chunk_index": 32,
+          "first_sample_key": [
+            0.1683938285,
+            0.3715277778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.1954571224,
+            0.1788194444
+          ],
+          "ordered_input_records_sha256": "615084a758d6bc5d243378e92985390b5fa4e93aee90283afc3665e0077adbd9",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.01488246238328565,
+          "weighted_curvature_sum": {
+            "anti": -0.005391376296555588,
+            "band1": -0.006270309874076693,
+            "band2": 0.004512442719034467,
+            "common": -0.0008789335775211148
+          }
+        },
+        {
+          "chunk_index": 33,
+          "first_sample_key": [
+            0.1954571224,
+            0.1892361111
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.2240239326,
+            0.2196180556
+          ],
+          "ordered_input_records_sha256": "ec9eb8294cb6bf5aa9814e0d1a091d0fbf38d64bbd3a5b7dd2ac8d696767964b",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.015305326349977269,
+          "weighted_curvature_sum": {
+            "anti": -0.003907385586979836,
+            "band1": -0.004428064816408009,
+            "band2": 0.0033867063575516608,
+            "common": -0.0005206792294281713
+          }
+        },
+        {
+          "chunk_index": 34,
+          "first_sample_key": [
+            0.2240239326,
+            0.2300347222
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.2540942591,
+            0.1814236111
+          ],
+          "ordered_input_records_sha256": "7b53d60cef665deeb8623327fa64996f4d10479d27b3e128d995fd925cd1e51e",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.01638597870930029,
+          "weighted_curvature_sum": {
+            "anti": -0.0019737693972290875,
+            "band1": -0.0024008357270995503,
+            "band2": 0.0015467030673586278,
+            "common": -0.0004270663298704609
+          }
+        },
+        {
+          "chunk_index": 35,
+          "first_sample_key": [
+            0.2540942591,
+            0.1918402778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.2886751346,
+            0.9114583333
+          ],
+          "ordered_input_records_sha256": "fabcf036e22cd1f4e800e3724a8938a339dbdd51363e540612d51cea6c5705db",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.017337422634356423,
+          "weighted_curvature_sum": {
+            "anti": -0.0008762052005075095,
+            "band1": -0.001895710298435119,
+            "band2": -0.00014329989742009733,
+            "common": -0.0010195050979276074
+          }
+        },
+        {
+          "chunk_index": 36,
+          "first_sample_key": [
+            0.2886751346,
+            0.921875
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.3232560101,
+            1.1241319444
+          ],
+          "ordered_input_records_sha256": "6cb911bf62f5d4e48414ee6a4b5c99fa57c70eb608c1df4a54a6f6831eb510d0",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.01663264935653706,
+          "weighted_curvature_sum": {
+            "anti": -0.0024295612151900865,
+            "band1": -0.004815216004927052,
+            "band2": 4.390642545311806e-05,
+            "common": -0.002385654789736968
+          }
+        },
+        {
+          "chunk_index": 37,
+          "first_sample_key": [
+            0.3232560101,
+            1.1293402778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.3533263366,
+            1.0789930556
+          ],
+          "ordered_input_records_sha256": "b40e87c2695b2965d3c298ed4ee310f9cf13f323541771fbaf8050e932a6ecd4",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.014729761506424787,
+          "weighted_curvature_sum": {
+            "anti": -0.00395329892323529,
+            "band1": -0.00756078628976195,
+            "band2": 0.0003458115567086378,
+            "common": -0.0036074873665266527
+          }
+        },
+        {
+          "chunk_index": 38,
+          "first_sample_key": [
+            0.3533263366,
+            1.0842013889
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.3818931468,
+            1.0746527778
+          ],
+          "ordered_input_records_sha256": "8a52efc7e286ab4f65e14b914f907eff129f53b36437ad39a2dc68f76fe2aafa",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.012568456787778714,
+          "weighted_curvature_sum": {
+            "anti": -0.006120585236160708,
+            "band1": -0.010699971075870156,
+            "band2": 0.0015411993964512423,
+            "common": -0.0045793858397094635
+          }
+        },
+        {
+          "chunk_index": 39,
+          "first_sample_key": [
+            0.3818931468,
+            1.0798611111
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.4089564407,
+            0.9600694444
+          ],
+          "ordered_input_records_sha256": "9e4f42f976040347dade77d3b78823b109613c205e2f5828f4c220b7f5d245f2",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.011722728854395499,
+          "weighted_curvature_sum": {
+            "anti": -0.007789658269098878,
+            "band1": -0.013535240019646339,
+            "band2": 0.002044076518551424,
+            "common": -0.005745581750547456
+          }
+        },
+        {
+          "chunk_index": 40,
+          "first_sample_key": [
+            0.4089564407,
+            0.9652777778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.4330127019,
+            0.7864583333
+          ],
+          "ordered_input_records_sha256": "7250d499e68b9817eaaa3fe59ce3d7b366871a94d96b00224943d24e92829cd1",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.010501121839508574,
+          "weighted_curvature_sum": {
+            "anti": -0.010385908065495005,
+            "band1": -0.01687333158119608,
+            "band2": 0.0038984845497939268,
+            "common": -0.006487423515701083
+          }
+        },
+        {
+          "chunk_index": 41,
+          "first_sample_key": [
+            0.4330127019,
+            0.796875
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.4570689631,
+            0.9045138889
+          ],
+          "ordered_input_records_sha256": "814e92d5f3c15410ade881a4dae775df66604fc690785d265e86cdc4663c6856",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.009796348561689205,
+          "weighted_curvature_sum": {
+            "anti": -0.013175431080274006,
+            "band1": -0.020736442865346854,
+            "band2": 0.005614419295201124,
+            "common": -0.007561011785072869
+          }
+        },
+        {
+          "chunk_index": 42,
+          "first_sample_key": [
+            0.4570689631,
+            0.9097222222
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.479621708,
+            0.8498263889
+          ],
+          "ordered_input_records_sha256": "741ad358f329efe78e4c5856ee8b9a164f57bf2a58be23f3f35e9a073b1421bc",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.008833158415336087,
+          "weighted_curvature_sum": {
+            "anti": -0.01742366280587242,
+            "band1": -0.02544338171718996,
+            "band2": 0.009403943894554914,
+            "common": -0.00801971891131752
+          }
+        },
+        {
+          "chunk_index": 43,
+          "first_sample_key": [
+            0.479621708,
+            0.8550347222
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.4991674202,
+            1.0017361111
+          ],
+          "ordered_input_records_sha256": "8ffd822571e4ae199069f53661060836dc93dc5b8ab07531731a05e838cf0759",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.007846475826388968,
+          "weighted_curvature_sum": {
+            "anti": -0.022016364952778984,
+            "band1": -0.030552150466618192,
+            "band2": 0.013480579438939839,
+            "common": -0.008535785513839166
+          }
+        },
+        {
+          "chunk_index": 44,
+          "first_sample_key": [
+            0.4991674202,
+            1.0069444444
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.5202166488,
+            0.9565972222
+          ],
+          "ordered_input_records_sha256": "51b410c287ce3e51e1b0200dd2083f30b81a85c201abcec817e88068bf9f23ee",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.007775998498606999,
+          "weighted_curvature_sum": {
+            "anti": -0.026108806062709416,
+            "band1": -0.034448362304712155,
+            "band2": 0.017769249820706667,
+            "common": -0.008339556242002751
+          }
+        },
+        {
+          "chunk_index": 45,
+          "first_sample_key": [
+            0.5202166488,
+            0.9618055556
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.539762361,
+            0.8741319444
+          ],
+          "ordered_input_records_sha256": "aaf4681ae1e651bff15e1890183a2cf89009fe119616fa493b1af23460ac7ca0",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.007000747893005742,
+          "weighted_curvature_sum": {
+            "anti": -0.03081926041352917,
+            "band1": -0.03907505212285046,
+            "band2": 0.022563468704207848,
+            "common": -0.008255791709321295
+          }
+        },
+        {
+          "chunk_index": 46,
+          "first_sample_key": [
+            0.539762361,
+            0.8793402778
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.557804557,
+            0.9782986111
+          ],
+          "ordered_input_records_sha256": "6ac35d919805d497f5131140393e45e0027548d0ae4b52ad42720cd3a33ec005",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.0066248688115020165,
+          "weighted_curvature_sum": {
+            "anti": -0.03414942335258391,
+            "band1": -0.04219596522667359,
+            "band2": 0.026102881478494225,
+            "common": -0.008046541874089685
+          }
+        },
+        {
+          "chunk_index": 47,
+          "first_sample_key": [
+            0.557804557,
+            0.9835069444
+          ],
+          "input_record_count": 512,
+          "last_sample_key": [
+            0.5758467529,
+            0.9991319444
+          ],
+          "ordered_input_records_sha256": "162bc52fd059c240435841b331c1cec532a5842fd2d54f7edfe24edb66be3674",
+          "qualified_count": 512,
+          "rule": "refined_centroid",
+          "signed_weight_sum": 0.006248989729998393,
+          "weighted_curvature_sum": {
+            "anti": -0.03383074570744219,
+            "band1": -0.0411719185897531,
+            "band2": 0.02648957282513136,
+            "common": -0.007341172882310869
+          }
+        }
+      ],
+      "exact_domain": true,
+      "qualified_count": 24576,
+      "resulting_flux": {
+        "anti": -0.6313275079372258,
+        "band1": -0.8672556366262376,
+        "band2": 0.39539937924821406,
+        "common": -0.23592812868901175
+      },
+      "sum_signed_weights": 0.5773502691896258,
+      "total_record_count": 24576
+    }
+  },
+  "source_raw_manifest_sha256": "196fcdae172b9b718185c61261de375b54a759e93d4d215c2bd5846ee841c67d",
+  "trace_generator_version": "c4-trace-generator-v1",
+  "trace_version": "c4-structured-v1"
+}

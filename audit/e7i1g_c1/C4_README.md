@@ -1,16 +1,14 @@
 # E7I.1G C4 audit surface
 
-The current audit entry points are deliberately small and solver-neutral:
+The compact solver-neutral C4 surface consists of `geometry_generator.py`,
+`trace_generator.py`, `reducer_c4.py`, and the inspectable
+`mpb_batch_worker.py`. Large manifests, meshes, and solver logs remain
+external.
 
-- `geometry_generator.py` defines the exact K-point Voronoi pieces and emits
-  coarse, fine, and refined in-memory meshes with a common domain.
-- `trace_generator.py` converts external execution evidence into ordered,
-  chunked, count/weight/flux-closed trace records.
-- `reducer_c4.py` validates the trace and recomputes periodicity and inversion
-  controls from raw pair records.
-- `c4_execution.py`, `c4_batch_execution.py`, and `mpb_batch_worker.py` are
-  inspectable execution helpers. Their large manifests and generated meshes
-  belong outside the repository.
+The superseded q-only C4 cache and batch executors are absent from the current
+tip; their historical implementations remain available through Git history.
+The current identity-safe planning and C5 corrective surface are documented in
+`C5_README.md`.
 
 The older C1/C3 execution scripts remain available in Git history as
-provenance. They are not the current C4 conclusion-producing entry point.
+provenance. They are not current conclusion-producing entry points.

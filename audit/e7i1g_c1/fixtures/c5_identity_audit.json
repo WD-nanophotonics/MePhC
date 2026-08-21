@@ -1,0 +1,16 @@
+{
+  "sample_identity_contract": "COMPLETE_AND_EXPLICIT",
+  "c4_cache_reuse_identity_audit": "ALL_REUSED_SAMPLES_EXACT",
+  "counts": {
+    "EXACT_IDENTITY_REUSE": 32092,
+    "FRESH_C4": 18596
+  },
+  "ambiguous_reuse_count": 0,
+  "incorrect_reuse_count": 0,
+  "changed_physical_records": 0,
+  "c4_cache_effect": "NO_PHYSICAL_CONTAMINATION",
+  "cache_collision_policy": "EXPLICIT_AND_FAIL_CLOSED",
+  "requested_record_count": 50688,
+  "source_identity_count": 41736,
+  "detail_digest": "06b6fb514327b850a3c32acdebbdf079dc8b4176854b322d123d128b07798fb4"
+}

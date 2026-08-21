@@ -1,0 +1,10 @@
+{
+  "cache_collision_policy": "EXPLICIT_AND_FAIL_CLOSED",
+  "counts": {
+    "EXACT_IDENTITY_REUSE": 32092,
+    "FRESH_C4": 18596
+  },
+  "changed_physical_records": 0,
+  "source_identity_count": 41736,
+  "all_results_present": true
+}
