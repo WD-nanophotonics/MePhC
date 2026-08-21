@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse,hashlib,json
 from pathlib import Path
 from sample_identity import exact_q
+from coordinate_semantics import coordinate_mapping
 COMPONENTS=("band1","band2","anti","common")
 CHUNK_SIZE=512
 def _canonical(value): return json.dumps(value,separators=(",",":"),sort_keys=True).encode()
@@ -21,7 +22,8 @@ def _chunk(rule,index,records):
         if result is None or result.get("production_decision")!="QUALIFIED_VALUE": continue
         weight=float(row["triangle_area"])*float(row.get("sample_weight",row.get("weight",1.0))); values=_curvature(result); physical_q=_record_key(row)
         for component in COMPONENTS: flux[component]+=weight*values[component]
-        canonical_records.append({"q_exact":list(exact_q(physical_q)),"display_sample_key":[round(physical_q[0],10),round(physical_q[1],10)],"triangle_index":row.get("triangle_index"),"sample_index":row.get("sample_index"),"triangle_area":float(row["triangle_area"]),"sample_weight":float(row.get("sample_weight",row.get("weight",1.0))),"result_digest":hashlib.sha256(_canonical(result)).hexdigest()})
+        evaluated_q=tuple(float(value) for value in result.get("target_q",result.get("q",physical_q)))
+        canonical_records.append({"nominal_q_exact":list(exact_q(physical_q)),"evaluated_q_exact":list(exact_q(evaluated_q)),"coordinate_mapping_class":coordinate_mapping(physical_q,evaluated_q),"display_sample_key":[round(physical_q[0],10),round(physical_q[1],10)],"triangle_index":row.get("triangle_index"),"sample_index":row.get("sample_index"),"triangle_area":float(row["triangle_area"]),"sample_weight":float(row.get("sample_weight",row.get("weight",1.0))),"result_digest":hashlib.sha256(_canonical(result)).hexdigest()})
     return {"rule":rule,"chunk_index":index,"first_sample_key":list(first),"last_sample_key":list(last),"input_record_count":len(ordered),"qualified_count":qualified,"signed_weight_sum":signed_weight,"weighted_curvature_sum":flux,"ordered_input_records_sha256":hashlib.sha256(_canonical(canonical_records)).hexdigest()}
 def generate(evidence,raw_manifest):
     rules={}

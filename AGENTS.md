@@ -41,3 +41,5 @@ BASE_MAIN_SHA=<sha>
 SANDBOX_HEAD_SHA=<sha>
 AUDIT_DIFF_RANGE=<base>..<sandbox-head>
 ```
+
+Scientific sampling invariant: distinguish NOMINAL_Q (requested quadrature coordinate) from EVALUATED_Q (actual solved target_q) and MANIFEST_Q. Physical cache identity uses EVALUATED_Q plus complete provenance. Any serialization or quantization must be explicit and versioned; never describe a quantized evaluated coordinate as exact nominal sampling.

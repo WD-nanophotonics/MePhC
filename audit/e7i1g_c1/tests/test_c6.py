@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 from identity_cache import build_cache, lookup
-from reducer_c6 import validate_trace
+from reducer_c7 import validate_trace
 from sample_identity import QProvenanceMismatch, display_q, exact_q, identity_from_result
 from trace_generator import _chunk
 
@@ -33,7 +33,7 @@ class C6Tests(unittest.TestCase):
         trace=json.loads(Path(__file__).parents[1].joinpath("fixtures/c4_reduction_trace.json").read_text())
         report=validate_trace(trace)
         self.assertEqual(report["TRACE_BINDING_VALIDATION"],"FULLY_SELF_CONSISTENT_AND_REPOSITORY_VERIFIED")
-        self.assertEqual(report["TRACE_SAMPLE_IDENTITY"],"EXACT_AND_AUDITABLE")
+        self.assertEqual(report["TRACE_COORDINATE_PROVENANCE"],"NOMINAL_AND_EVALUATED_EXPLICIT")
     def test_trace_source_count_closes(self):
         trace=json.loads(Path(__file__).parents[1].joinpath("fixtures/c4_reduction_trace.json").read_text())
         trace["SOURCE_RECORD_COUNT"]-=1
