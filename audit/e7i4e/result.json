@@ -9,9 +9,10 @@
   "cache_hit_fraction": 0.09292035398230089,
   "cache_hits": 21,
   "calculation_logic_committed_before_execution": true,
-  "calculation_logic_git_sha": "76283b3b1947932eb44d3463bf8c9a17d339d649",
+  "calculation_logic_git_sha": "3bede7ebb5101b066f4e38341aca8a10b5a50b93",
   "code_change": "SANDBOX_AUDIT_ONLY",
   "composite_chern_isolation_profile": "CONVERGED_FINITE_GAP_RANK3_COMPOSITE_V1",
+  "corrected_stage1_status": "SEALED_FOR_INTEGRATION_GRID_REFINEMENT",
   "count_delta_1over144": 5,
   "count_delta_1over288": 0,
   "count_delta_1over36": 310,
@@ -26,7 +27,7 @@
   "e7i4e_overall": "FIRST_FR00_COMPOSITE_VALLEY_CHERN_OBTAINED",
   "final_qualified_element_count": 331,
   "final_stage1_qualified_area_fraction": 1.0,
-  "fr00_composite_reference_pattern": "CONSISTENT_WITH_STRONG_THREE_BAND_CANCELLATION",
+  "fr00_composite_reference_metrics": "REPORTED",
   "full_bz_chern": "NOT_AUTHORIZED",
   "historical_failed_count": 21,
   "legacy_absolute_005_profile": "PRESERVED_UNCHANGED",
@@ -52,7 +53,7 @@
   "recovered19_full_local_qualification": "ALL_PASSED",
   "recovered_center_isolated_count": 19,
   "remote_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
-  "remote_sandbox_sha_at_execution": "76283b3b1947932eb44d3463bf8c9a17d339d649",
+  "remote_sandbox_sha_at_execution": "3bede7ebb5101b066f4e38341aca8a10b5a50b93",
   "rows": [
     {
       "attempts": [
@@ -215,8 +216,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.05473630668383456,
+              "R48_frequencies": [
+                0.07889062916905923,
+                0.6593544483515774,
+                0.6763801589213243,
+                0.7311164656051589
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.12222222222222223,
+                -0.018170699678687112
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06267255726325127,
+              "R48_frequencies": [
+                0.08766544174588511,
+                0.6526141294356639,
+                0.6694001971855851,
+                0.7320727544488363
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.13611111111111113,
+                -0.018170699678687115
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07067375213694238,
+              "R48_frequencies": [
+                0.08692002939756856,
+                0.655174107738076,
+                0.6667858319453809,
+                0.7374595840823233
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.13611111111111113,
+                -0.004281810789798222
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06265951032296513,
+              "R48_frequencies": [
+                0.07806168781974389,
+                0.6618004330675878,
+                0.673894764159957,
+                0.7365542744829221
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.12222222222222223,
+                -0.004281810789798221
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06344065487081774,
+              "R48_frequencies": [
+                0.08276318127586511,
+                0.6575263549331432,
+                0.6713280579537719,
+                0.7347687128245897
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.12916666666666668,
+                -0.011226255234242668
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.059202009826973656,
+              "R48_frequencies": [
+                0.08078873852820939,
+                0.6584864407873403,
+                0.6738109552785427,
+                0.7330129651055164
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.12569444444444447,
+                -0.014698477456464895
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06318708281875562,
+              "R48_frequencies": [
+                0.0851913539986877,
+                0.6551315715246614,
+                0.6703021753777993,
+                0.733489258196555
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.1326388888888889,
+                -0.014698477456464895
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06732407146400743,
+              "R48_frequencies": [
+                0.08480861826536748,
+                0.6564376047349453,
+                0.6689703543707038,
+                0.7362944258347113
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.1326388888888889,
+                -0.007754033012020459
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.0633189013551475,
+              "R48_frequencies": [
+                0.08038509628413348,
+                0.6597620154740506,
+                0.6725132822496996,
+                0.7358321836048471
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.12569444444444447,
+                -0.007754033012020452
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06344065487081774,
+              "R48_frequencies": [
+                0.08276318127586511,
+                0.6575263549331432,
+                0.6713280579537719,
+                0.7347687128245897
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.12916666666666668,
+                -0.011226255234242668
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": -0.642743603414151,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -666,7 +850,7 @@
             0.18286146394145053,
             -0.04115265160062121
           ],
-          "determinant_phase": 7.371021965938692e-05,
+          "determinant_phase": 7.370921517628003e-05,
           "edges": [
             {
               "angle": 0.016940021640000323,
@@ -683,31 +867,31 @@
               "status": "SUBSPACE_QUALIFIED"
             },
             {
-              "angle": 0.049887859089139515,
+              "angle": 0.04988785907793424,
               "evidence": [
                 "continuity and external isolation thresholds passed"
               ],
               "external_gaps": {
                 "left": 0.06774832488866178,
                 "minimum": 0.06774832488866178,
-                "right": 0.08063916346626432
+                "right": 0.08063916347062228
               },
-              "min_sv": 0.9987558588245867,
-              "projector_distance": 0.07850278969121187,
+              "min_sv": 0.9987558588251455,
+              "projector_distance": 0.07850280483990707,
               "status": "SUBSPACE_QUALIFIED"
             },
             {
-              "angle": 0.014306083692396545,
+              "angle": 0.014306174692922481,
               "evidence": [
                 "continuity and external isolation thresholds passed"
               ],
               "external_gaps": {
-                "left": 0.08063916346626432,
+                "left": 0.08063916347062228,
                 "minimum": 0.07240143678926303,
                 "right": 0.07240143678926303
               },
-              "min_sv": 0.9998976697299881,
-              "projector_distance": 0.029470045227435997,
+              "min_sv": 0.9998976684281672,
+              "projector_distance": 0.029470062655788363,
               "status": "SUBSPACE_QUALIFIED"
             },
             {
@@ -765,12 +949,12 @@
               "stability_ratio": null
             },
             {
-              "R48_G34": 0.08063916346626432,
+              "R48_G34": 0.08063916347062228,
               "R48_frequencies": [
-                0.12313234822790813,
-                0.6212379469463845,
-                0.6475352323224244,
-                0.7281743957886887
+                0.123132348227501,
+                0.6212379469502554,
+                0.6475352323143253,
+                0.7281743957849476
               ],
               "R64_G34": null,
               "profile": "LEGACY_STRICT_PASS",
@@ -819,8 +1003,191 @@
               "stability_ratio": null
             }
           ],
-          "omega_trace_q": -0.38211377871426183,
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.059657954478770425,
+              "R48_frequencies": [
+                0.11648572852718661,
+                0.6236569217347604,
+                0.6592308491691968,
+                0.7188888036479673
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.17591701949700608,
+                -0.04809709604506567
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06774832488866178,
+              "R48_frequencies": [
+                0.12504832813556085,
+                0.6166078410419552,
+                0.6524802073799759,
+                0.7202285322686377
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.18980590838589498,
+                -0.04809709604506567
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.08063916347062228,
+              "R48_frequencies": [
+                0.123132348227501,
+                0.6212379469502554,
+                0.6475352323143253,
+                0.7281743957849476
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.18980590838589498,
+                -0.03420820715617679
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07240143678926303,
+              "R48_frequencies": [
+                0.1144262140775078,
+                0.6281976792657679,
+                0.6544071713578641,
+                0.7268086081471271
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.17591701949700608,
+                -0.03420820715617679
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07014033256852181,
+              "R48_frequencies": [
+                0.11968960545512689,
+                0.6224348541482311,
+                0.6533939677380113,
+                0.7235343003065331
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.18286146394145053,
+                -0.04115265160062121
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06489259469403375,
+              "R48_frequencies": [
+                0.11805655576651554,
+                0.6230422230053106,
+                0.6563168906069579,
+                0.7212094853009916
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.17938924171922832,
+                -0.044624873822843455
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06895758805385988,
+              "R48_frequencies": [
+                0.12235783526553648,
+                0.6195278590563639,
+                0.6529260558036859,
+                0.7218836438575458
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.18633368616367274,
+                -0.04462487382284345
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07539228957331467,
+              "R48_frequencies": [
+                0.12138235945530425,
+                0.621833892620696,
+                0.650465609560572,
+                0.7258578991338867
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.18633368616367274,
+                -0.037680429378399015
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07129080246159436,
+              "R48_frequencies": [
+                0.11704517667712455,
+                0.6253260270503678,
+                0.653886524041047,
+                0.7251773265026413
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.17938924171922832,
+                -0.037680429378398994
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07014033256852181,
+              "R48_frequencies": [
+                0.11968960545512689,
+                0.6224348541482311,
+                0.6533939677380113,
+                0.7235343003065331
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.18286146394145053,
+                -0.04115265160062121
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
+          "omega_trace_q": -0.3821085714738357,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -1032,64 +1399,64 @@
                 0.18980590838589498,
                 -0.03420820715617679
               ],
-              "band4_minus_band3_external_gap": 0.08063916346626432,
+              "band4_minus_band3_external_gap": 0.08063916347062228,
               "frequencies_bands_1_to_4": [
-                0.12313234822790813,
-                0.6212379469463845,
-                0.6475352323224244,
-                0.7281743957886887
+                0.123132348227501,
+                0.6212379469502554,
+                0.6475352323143253,
+                0.7281743957849476
               ],
-              "lowdin_q_dagger_q_residual": 1.6974250343225173e-15,
+              "lowdin_q_dagger_q_residual": 9.251351547040694e-16,
               "raw_selected_gram": [
                 [
                   [
+                    0.9999999999999994,
+                    -2.936551223975041e-20
+                  ],
+                  [
+                    0.0001694287238812736,
+                    9.579304500158215e-05
+                  ],
+                  [
+                    0.00016682196566082056,
+                    9.091988950561659e-05
+                  ]
+                ],
+                [
+                  [
+                    0.0001694287238812736,
+                    -9.579304500157966e-05
+                  ],
+                  [
                     0.9999999999999996,
-                    -5.395799367670053e-21
+                    1.7236367222809767e-19
                   ],
                   [
-                    0.00016942876486714456,
-                    9.579302677886314e-05
-                  ],
-                  [
-                    0.0001668219674932506,
-                    9.091988053587996e-05
+                    0.00016828063194149505,
+                    -4.581171082002739e-05
                   ]
                 ],
                 [
                   [
-                    0.00016942876486714456,
-                    -9.579302677885891e-05
+                    0.00016682196566082056,
+                    -9.091988950563415e-05
                   ],
                   [
-                    1.0000000000000007,
-                    -2.1342607963210928e-19
+                    0.00016828063194149505,
+                    4.5811710820023704e-05
                   ],
                   [
-                    0.00016828068328102967,
-                    -4.581169102434445e-05
-                  ]
-                ],
-                [
-                  [
-                    0.0001668219674932506,
-                    -9.091988053585914e-05
-                  ],
-                  [
-                    0.00016828068328102967,
-                    4.581169102434781e-05
-                  ],
-                  [
-                    0.9999999999999993,
-                    2.2399625252509765e-19
+                    1.0,
+                    2.3670411191783116e-19
                   ]
                 ]
               ],
-              "raw_span_lowdin_span_projector_residual": 4.987637250116468e-16,
-              "selected_gram_condition_number": 1.0005869396863458,
+              "raw_span_lowdin_span_projector_residual": 7.335160110125253e-16,
+              "selected_gram_condition_number": 1.0005869396269407,
               "selected_gram_eigenvalues": [
-                0.999784712974836,
-                0.9998437607244808,
-                1.0003715263006827
+                0.9997847129887,
+                0.999843760756136,
+                1.0003715262551625
               ],
               "selected_span_condition": "WELL_CONDITIONED"
             },
@@ -1423,8 +1790,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.07213024767287157,
+              "R48_frequencies": [
+                0.11441203201054305,
+                0.6280692319950528,
+                0.6545873880815435,
+                0.7267176357544151
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.17591701949700603,
+                0.0342082071561768
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.08038969055074574,
+              "R48_frequencies": [
+                0.12311820224419433,
+                0.6211011392208776,
+                0.6477194594539828,
+                0.7281091500047285
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.18980590838589492,
+                0.0342082071561768
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06746454340964614,
+              "R48_frequencies": [
+                0.12502873483573593,
+                0.6164723201692182,
+                0.6526876362474233,
+                0.7201521796570695
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.18980590838589492,
+                0.04809709604506569
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.059345050123584486,
+              "R48_frequencies": [
+                0.11646613203250594,
+                0.6235295216853738,
+                0.6594380619380917,
+                0.7187831120616762
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.17591701949700603,
+                0.048097096045065686
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06986250659460225,
+              "R48_frequencies": [
+                0.11967269076724933,
+                0.6223022096509409,
+                0.6535883850137486,
+                0.7234508916083509
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.18286146394145048,
+                0.041152651600621246
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07101612059518847,
+              "R48_frequencies": [
+                0.11702962106451066,
+                0.6251952626464007,
+                0.6540740435245999,
+                0.7250901641197883
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.17938924171922827,
+                0.03768042937839901
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07512923810494065,
+              "R48_frequencies": [
+                0.12136681955902666,
+                0.6216989954449789,
+                0.650654735367329,
+                0.7257839734722696
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.18633368616367268,
+                0.03768042937839903
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06867677389507576,
+              "R48_frequencies": [
+                0.12233957434378402,
+                0.61939365236682,
+                0.653127078089833,
+                0.7218038519849087
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.18633368616367268,
+                0.04462487382284346
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.0645983363270426,
+              "R48_frequencies": [
+                0.11803828733500256,
+                0.6229120914168309,
+                0.6565172385550043,
+                0.7211155748820469
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.17938924171922827,
+                0.04462487382284346
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06986250659460225,
+              "R48_frequencies": [
+                0.11967269076724933,
+                0.6223022096509409,
+                0.6535883850137486,
+                0.7234508916083509
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.18286146394145048,
+                0.041152651600621246
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": -0.03706013105782877,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -2027,8 +2577,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.05600137979047615,
+              "R48_frequencies": [
+                0.16518796116223713,
+                0.5750026939751585,
+                0.6446222310334165,
+                0.7006236108238927
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.24163994737990716,
+                -0.09191238130033308
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06409097322318491,
+              "R48_frequencies": [
+                0.17348070463932347,
+                0.5677722383472167,
+                0.6383389760524102,
+                0.7024299492755951
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.255528836268796,
+                -0.09191238130033309
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.0777777164242921,
+              "R48_frequencies": [
+                0.17063397721806442,
+                0.57262617555468,
+                0.6327788319075961,
+                0.7105565483318882
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.255528836268796,
+                -0.07802349241144421
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06951255869208195,
+              "R48_frequencies": [
+                0.16219465047014106,
+                0.5797871784470964,
+                0.6391944101519716,
+                0.7087069688440536
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.24163994737990716,
+                -0.0780234924114442
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.0668117596235488,
+              "R48_frequencies": [
+                0.16781503155070107,
+                0.5737839036729654,
+                0.6387390496031378,
+                0.7055508092266866
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.2485843918243516,
+                -0.08496793685588862
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.061382284269129506,
+              "R48_frequencies": [
+                0.16647692571196684,
+                0.5743857110265123,
+                0.6416926434798518,
+                0.7030749277489813
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.2451121696021294,
+                -0.08844015907811086
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06545347770178056,
+              "R48_frequencies": [
+                0.17064249976410428,
+                0.570779002180441,
+                0.6385322348402792,
+                0.7039857125420598
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.2520566140465738,
+                -0.08844015907811086
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07227945699559268,
+              "R48_frequencies": [
+                0.16920110700170146,
+                0.5731973639325264,
+                0.635766536726647,
+                0.7080459937222396
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.2520566140465738,
+                -0.08149571463366642
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06816506094409092,
+              "R48_frequencies": [
+                0.16499887755523582,
+                0.5767867162627522,
+                0.6389596842688886,
+                0.7071247452129795
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.2451121696021294,
+                -0.08149571463366642
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.0668117596235488,
+              "R48_frequencies": [
+                0.16781503155070107,
+                0.5737839036729654,
+                0.6387390496031378,
+                0.7055508092266866
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.2485843918243516,
+                -0.08496793685588862
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": -0.33842970074293344,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -2478,20 +3211,20 @@
             0.2485843918243516,
             0.08496793685588863
           ],
-          "determinant_phase": -7.015370237660162e-06,
+          "determinant_phase": -7.0155425815528374e-06,
           "edges": [
             {
-              "angle": 0.01458570447560951,
+              "angle": 0.014585708838999534,
               "evidence": [
                 "continuity and external isolation thresholds passed"
               ],
               "external_gaps": {
-                "left": 0.06924749199489466,
-                "minimum": 0.06924749199489466,
+                "left": 0.06924749199218616,
+                "minimum": 0.06924749199218616,
                 "right": 0.07753980750829526
               },
-              "min_sv": 0.9998936304982737,
-              "projector_distance": 0.028351548435221523,
+              "min_sv": 0.9998936304346329,
+              "projector_distance": 0.028351551646414022,
               "status": "SUBSPACE_QUALIFIED"
             },
             {
@@ -2523,17 +3256,17 @@
               "status": "SUBSPACE_QUALIFIED"
             },
             {
-              "angle": 0.0366250023531753,
+              "angle": 0.03662500209922683,
               "evidence": [
                 "continuity and external isolation thresholds passed"
               ],
               "external_gaps": {
                 "left": 0.05568368337553431,
                 "minimum": 0.05568368337553431,
-                "right": 0.06924749199489466
+                "right": 0.06924749199218616
               },
-              "min_sv": 0.9993293795700158,
-              "projector_distance": 0.07249214945748264,
+              "min_sv": 0.9993293795793146,
+              "projector_distance": 0.07249214610542824,
               "status": "SUBSPACE_QUALIFIED"
             }
           ],
@@ -2541,12 +3274,12 @@
           "local_delta_k": 0.013888888888888888,
           "low_gap_profile": [
             {
-              "R48_G34": 0.06924749199489466,
+              "R48_G34": 0.06924749199218616,
               "R48_frequencies": [
-                0.16216417093362465,
-                0.5796374650015287,
-                0.6394463644931097,
-                0.7086938564880043
+                0.16216417093356406,
+                0.5796374650014338,
+                0.6394463644931022,
+                0.7086938564852884
               ],
               "R64_G34": null,
               "profile": "LEGACY_STRICT_PASS",
@@ -2631,8 +3364,191 @@
               "stability_ratio": null
             }
           ],
-          "omega_trace_q": 0.036367679312030284,
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.06924749199218616,
+              "R48_frequencies": [
+                0.16216417093356406,
+                0.5796374650014338,
+                0.6394463644931022,
+                0.7086938564852884
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.24163994737990716,
+                0.07802349241144417
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07753980750829526,
+              "R48_frequencies": [
+                0.1706035895638512,
+                0.5724720721657652,
+                0.6330272116899831,
+                0.7105670191982784
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.255528836268796,
+                0.07802349241144418
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06381047816539287,
+              "R48_frequencies": [
+                0.17344546796583626,
+                0.5676221818413828,
+                0.6386114718610305,
+                0.7024219500264234
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.255528836268796,
+                0.09191238130033307
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05568368337553431,
+              "R48_frequencies": [
+                0.1651526778313334,
+                0.5748570022100778,
+                0.6449034224445265,
+                0.7005871058200608
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.24163994737990716,
+                0.09191238130033308
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06653957764343932,
+              "R48_frequencies": [
+                0.16778214781813944,
+                0.5736339624424048,
+                0.6390011370230755,
+                0.7055407146665148
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.2485843918243516,
+                0.08496793685588863
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06789657899065793,
+              "R48_frequencies": [
+                0.1649671894343223,
+                0.5766368732411778,
+                0.6392166755474304,
+                0.7071132545380884
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.2451121696021294,
+                0.08149571463366641
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07202552081124713,
+              "R48_frequencies": [
+                0.16916946023875754,
+                0.5730453306632619,
+                0.6360212420104987,
+                0.7080467628217458
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.2520566140465738,
+                0.08149571463366641
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06517729097427616,
+              "R48_frequencies": [
+                0.1706084328896896,
+                0.5706289894519168,
+                0.638799485936293,
+                0.7039767769105691
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.2520566140465738,
+                0.08844015907811086
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.061089092091685115,
+              "R48_frequencies": [
+                0.16644282921099293,
+                0.5742378839606083,
+                0.6419634404552427,
+                0.7030525325469278
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.2451121696021294,
+                0.08844015907811086
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06653957764343932,
+              "R48_frequencies": [
+                0.16778214781813944,
+                0.5736339624424048,
+                0.6390011370230755,
+                0.7055407146665148
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.2485843918243516,
+                0.08496793685588863
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
+          "omega_trace_q": 0.03636857274276991,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -2661,9 +3577,9 @@
             ],
             "metrics": [
               {
-                "maximum_principal_angle": 0.0366250023531753,
-                "maximum_projector_distance": 0.07249214945748264,
-                "minimum_singular_value": 0.9993293795700158,
+                "maximum_principal_angle": 0.03662500209922683,
+                "maximum_projector_distance": 0.07249214610542824,
+                "minimum_singular_value": 0.9993293795793146,
                 "provenance": {
                   "local_delta_k": 0.013888888888888888
                 },
@@ -2704,64 +3620,64 @@
                 0.24163994737990716,
                 0.07802349241144417
               ],
-              "band4_minus_band3_external_gap": 0.06924749199489466,
+              "band4_minus_band3_external_gap": 0.06924749199218616,
               "frequencies_bands_1_to_4": [
-                0.16216417093362465,
-                0.5796374650015287,
-                0.6394463644931097,
-                0.7086938564880043
+                0.16216417093356406,
+                0.5796374650014338,
+                0.6394463644931022,
+                0.7086938564852884
               ],
-              "lowdin_q_dagger_q_residual": 2.2836389720385605e-15,
+              "lowdin_q_dagger_q_residual": 1.3231361185845279e-15,
               "raw_selected_gram": [
                 [
                   [
+                    0.9999999999999998,
+                    -6.05602339016531e-20
+                  ],
+                  [
+                    6.565982834701514e-05,
+                    0.00014331632512811637
+                  ],
+                  [
+                    -8.462453202321384e-05,
+                    -0.00011124595908966559
+                  ]
+                ],
+                [
+                  [
+                    6.565982834701514e-05,
+                    -0.0001433163251281166
+                  ],
+                  [
+                    1.0000000000000013,
+                    -1.397379239150567e-19
+                  ],
+                  [
+                    -0.00014945407329126437,
+                    2.2809715927465902e-05
+                  ]
+                ],
+                [
+                  [
+                    -8.462453202321384e-05,
+                    0.00011124595908966624
+                  ],
+                  [
+                    -0.00014945407329126437,
+                    -2.2809715927468287e-05
+                  ],
+                  [
                     1.0000000000000002,
-                    -3.3495783627580973e-20
-                  ],
-                  [
-                    6.565982315807298e-05,
-                    0.00014331631778395268
-                  ],
-                  [
-                    -8.462452464849451e-05,
-                    -0.00011124595999708936
-                  ]
-                ],
-                [
-                  [
-                    6.565982315807298e-05,
-                    -0.00014331631778395268
-                  ],
-                  [
-                    1.0000000000000016,
-                    1.8729295050156892e-19
-                  ],
-                  [
-                    -0.00014945407397314904,
-                    2.2809712111075773e-05
-                  ]
-                ],
-                [
-                  [
-                    -8.462452464849451e-05,
-                    0.00011124595999708795
-                  ],
-                  [
-                    -0.00014945407397314904,
-                    -2.280971211107252e-05
-                  ],
-                  [
-                    0.9999999999999988,
-                    -1.84193796269212e-19
+                    2.6661813014704393e-19
                   ]
                 ]
               ],
-              "raw_span_lowdin_span_projector_residual": 1.0022795298483039e-15,
-              "selected_gram_condition_number": 1.0004607907447214,
+              "raw_span_lowdin_span_projector_residual": 7.746060132325312e-16,
+              "selected_gram_condition_number": 1.0004607907596321,
               "selected_gram_eigenvalues": [
-                0.9998383918536173,
-                0.999862500015582,
-                1.0002991081308006
+                0.9998383918470608,
+                0.9998625000137904,
+                1.0002991081391495
               ],
               "selected_span_condition": "WELL_CONDITIONED"
             },
@@ -3235,8 +4151,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.05963661579299706,
+              "R48_frequencies": [
+                0.24306672718587224,
+                0.49802588082724303,
+                0.6236055795061066,
+                0.6832421952991037
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3490295419294749,
+                -0.15176517403309014
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06780259356575868,
+              "R48_frequencies": [
+                0.2511679116343058,
+                0.4907608710633811,
+                0.6181029041310112,
+                0.6859054976967699
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3629184308183637,
+                -0.15176517403309014
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.08199045674730787,
+              "R48_frequencies": [
+                0.24784571142688291,
+                0.4957402365148741,
+                0.6118188792645731,
+                0.693809336011881
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3629184308183637,
+                -0.13787628514420128
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07362564728525678,
+              "R48_frequencies": [
+                0.23962753513260857,
+                0.5029329288442436,
+                0.617471064241031,
+                0.6910967115262878
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3490295419294749,
+                -0.13787628514420125
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07071568606703116,
+              "R48_frequencies": [
+                0.24538722113063535,
+                0.4968457014173012,
+                0.6177598443292172,
+                0.6884755303962483
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3559739863739193,
+                -0.14482072958864564
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.0651457149553819,
+              "R48_frequencies": [
+                0.24420947121037093,
+                0.4974264829431353,
+                0.6206975979855079,
+                0.6858433129408898
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3525017641516971,
+                -0.14829295181086788
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06925932852188843,
+              "R48_frequencies": [
+                0.24827507785667416,
+                0.4938029374586337,
+                0.6179246673466086,
+                0.687183995868497
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3594462085961415,
+                -0.14829295181086793
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07633373955290368,
+              "R48_frequencies": [
+                0.24659947143563046,
+                0.4962835993060179,
+                0.6147987049452613,
+                0.691132444498165
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3594462085961415,
+                -0.14134850736642346
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07217125623347254,
+              "R48_frequencies": [
+                0.24250461437183377,
+                0.4998890637186942,
+                0.6176085940537581,
+                0.6897798502872307
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3525017641516971,
+                -0.14134850736642346
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07071568606703116,
+              "R48_frequencies": [
+                0.24538722113063535,
+                0.4968457014173012,
+                0.6177598443292172,
+                0.6884755303962483
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3559739863739193,
+                -0.14482072958864564
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": -0.173436465231679,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -3839,8 +4938,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.07339530440852571,
+              "R48_frequencies": [
+                0.23957937939588106,
+                0.50277501066741,
+                0.6177749811449967,
+                0.6911702855535224
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3490295419294749,
+                0.13787628514420114
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.08178760157090414,
+              "R48_frequencies": [
+                0.2477982075743288,
+                0.4955800476742987,
+                0.6121143950800709,
+                0.6939019966509751
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3629184308183637,
+                0.13787628514420117
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06755284488642799,
+              "R48_frequencies": [
+                0.251116353904552,
+                0.4906040928211961,
+                0.6184231035473984,
+                0.6859759484338264
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3629184308183637,
+                0.15176517403309006
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05934922418279487,
+              "R48_frequencies": [
+                0.24301448636689546,
+                0.4978714396472309,
+                0.6239393726011894,
+                0.6832885967839842
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3490295419294749,
+                0.15176517403309006
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07047615239304539,
+              "R48_frequencies": [
+                0.2453373165375549,
+                0.49668836815647405,
+                0.6180717378923292,
+                0.6885478902853746
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3559739863739193,
+                0.1448207295886456
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07193644063213123,
+              "R48_frequencies": [
+                0.24245557279095278,
+                0.4997314410641247,
+                0.6179164611197668,
+                0.6898529017518981
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3525017641516971,
+                0.1413485073664234
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07611366467328273,
+              "R48_frequencies": [
+                0.24655075973025306,
+                0.4961248334412637,
+                0.6151018579837402,
+                0.6912155226570229
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3594462085961415,
+                0.14134850736642343
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06901482094573352,
+              "R48_frequencies": [
+                0.24822433415161316,
+                0.49364588614415283,
+                0.618240669603804,
+                0.6872554905495375
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3594462085961415,
+                0.14829295181086782
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06488396609804992,
+              "R48_frequencies": [
+                0.24415838985574578,
+                0.49727059140951796,
+                0.6210195933067415,
+                0.6859035594047914
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3525017641516971,
+                0.14829295181086782
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07047615239304539,
+              "R48_frequencies": [
+                0.2453373165375549,
+                0.49668836815647405,
+                0.6180717378923292,
+                0.6885478902853746
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.3559739863739193,
+                0.1448207295886456
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": 0.03963461248948002,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -4443,8 +5725,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.055893827824038955,
+              "R48_frequencies": [
+                0.28996593832390066,
+                0.451207748521799,
+                0.6180943987694868,
+                0.6739882265935258
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6295316589115113,
+                -0.3152860447538715
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06365149151555594,
+              "R48_frequencies": [
+                0.28289425281801234,
+                0.4589893117374558,
+                0.6151825135931631,
+                0.678834005108719
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6434205478004001,
+                -0.3152860447538715
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07806672279151317,
+              "R48_frequencies": [
+                0.2882687620085736,
+                0.4551566687737975,
+                0.6073867481878285,
+                0.6854534709793416
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6434205478004001,
+                -0.30139715586498267
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07007921477271839,
+              "R48_frequencies": [
+                0.29519861198445146,
+                0.4473149143991339,
+                0.610465939461665,
+                0.6805451542343834
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6295316589115113,
+                -0.30139715586498267
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.0668580055584217,
+              "R48_frequencies": [
+                0.28905050686450234,
+                0.4531435661817643,
+                0.6128006729593941,
+                0.6796586785178158
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6364761033559557,
+                -0.30834160030942703
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.0613365788159731,
+              "R48_frequencies": [
+                0.2894915848645207,
+                0.45216593328291915,
+                0.6154669378672887,
+                0.6768035166832618
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6330038811337335,
+                -0.31181382253164935
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06525273792487041,
+              "R48_frequencies": [
+                0.28597324845755306,
+                0.45606447052371163,
+                0.6139858054276041,
+                0.6792385433524745
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6399483255781779,
+                -0.31181382253164935
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07243927467972577,
+              "R48_frequencies": [
+                0.2886428539395225,
+                0.45414052140331623,
+                0.6101050075943152,
+                0.682544282274041
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6399483255781779,
+                -0.30486937808720493
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06846694178169055,
+              "R48_frequencies": [
+                0.2921257379898137,
+                0.4502269249321675,
+                0.6116273200630014,
+                0.6800942618446919
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6330038811337335,
+                -0.3048693780872048
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.0668580055584217,
+              "R48_frequencies": [
+                0.28905050686450234,
+                0.4531435661817643,
+                0.6128006729593941,
+                0.6796586785178158
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6364761033559557,
+                -0.30834160030942703
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": 0.13807738922535392,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -5047,8 +6512,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.06986889756092973,
+              "R48_frequencies": [
+                0.2951216013875113,
+                0.4471806426613108,
+                0.6107780035032891,
+                0.6806469010642189
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6295316589115114,
+                0.3013971558649825
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07788574926868941,
+              "R48_frequencies": [
+                0.28819034495340357,
+                0.45502561794340496,
+                0.60767986371779,
+                0.6855656129864794
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6434205478004003,
+                0.3013971558649825
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06341701492869634,
+              "R48_frequencies": [
+                0.2828180721043686,
+                0.45885573034664057,
+                0.615501449147048,
+                0.6789184640757443
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6434205478004003,
+                0.31528604475387134
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.0556166374908571,
+              "R48_frequencies": [
+                0.2898910285450767,
+                0.4510711102782384,
+                0.6184390070474777,
+                0.6740556445383348
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6295316589115114,
+                0.31528604475387134
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06663610526250674,
+              "R48_frequencies": [
+                0.2889737825211883,
+                0.4530097360795899,
+                0.6131160051401363,
+                0.679752110402643
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6364761033559558,
+                0.3083416003094269
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06825094932488152,
+              "R48_frequencies": [
+                0.2920488348751838,
+                0.4500929017375783,
+                0.6119409800960366,
+                0.6801919294209181
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6330038811337336,
+                0.3048693780872047
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07223927976790978,
+              "R48_frequencies": [
+                0.2885652676274376,
+                0.45400808500617107,
+                0.6104085266221989,
+                0.6826478063901087
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.639948325578178,
+                0.30486937808720466
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06502468182479992,
+              "R48_frequencies": [
+                0.2858967669914611,
+                0.4559307855179616,
+                0.6143028933996424,
+                0.6793275752244423
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.639948325578178,
+                0.3118138225316491
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06108923113775433,
+              "R48_frequencies": [
+                0.28941575232719885,
+                0.45203070160979447,
+                0.6157958215277919,
+                0.6768850526655462
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6330038811337336,
+                0.3118138225316491
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06663610526250674,
+              "R48_frequencies": [
+                0.2889737825211883,
+                0.4530097360795899,
+                0.6131160051401363,
+                0.679752110402643
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.6364761033559558,
+                0.3083416003094269
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": -0.03642144875853825,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -5651,8 +7299,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.05444268887915038,
+              "R48_frequencies": [
+                0.21245624991378656,
+                0.5284662437430121,
+                0.632809872488636,
+                0.6872525613677863
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.736921253461079,
+                -0.3751388374866285
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06186736012207139,
+              "R48_frequencies": [
+                0.20554772558946183,
+                0.53619811778673,
+                0.6309206234057747,
+                0.6927879835278461
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7508101423499678,
+                -0.3751388374866285
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07609888141783905,
+              "R48_frequencies": [
+                0.21132404628353108,
+                0.5322907878619311,
+                0.6227093742163556,
+                0.6988082556341947
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7508101423499678,
+                -0.36124994859773973
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06850592942736711,
+              "R48_frequencies": [
+                0.21804724397739492,
+                0.5244983827349747,
+                0.6247341302228829,
+                0.69324005965025
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.736921253461079,
+                -0.36124994859773973
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06518014527845395,
+              "R48_frequencies": [
+                0.21179746383275477,
+                0.530347078928506,
+                0.6278054118282606,
+                0.6929855571067145
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7438656979055234,
+                -0.36819439304218404
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05978111695838528,
+              "R48_frequencies": [
+                0.21210378044738393,
+                0.5293987203251194,
+                0.630322826042064,
+                0.6901039430004493
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7403934756833012,
+                -0.3716666152644064
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.063522029935837,
+              "R48_frequencies": [
+                0.2086725682620967,
+                0.5332723603703112,
+                0.629357599614261,
+                0.692879629550098
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7473379201277456,
+                -0.37166661526440625
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07062340901593245,
+              "R48_frequencies": [
+                0.2115374967932497,
+                0.5313111588598914,
+                0.6252656533503235,
+                0.6958890623662559
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7473379201277456,
+                -0.3647221708199619
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06684150789664611,
+              "R48_frequencies": [
+                0.21492236992619537,
+                0.527422383280771,
+                0.6262642080294187,
+                0.6931057159260648
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7403934756833012,
+                -0.364722170819962
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06518014527845395,
+              "R48_frequencies": [
+                0.21179746383275477,
+                0.530347078928506,
+                0.6278054118282606,
+                0.6929855571067145
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7438656979055234,
+                -0.36819439304218404
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": 0.2753939080632614,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -6255,8 +8086,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.06830984173831134,
+              "R48_frequencies": [
+                0.2179798920807406,
+                0.5243747397131974,
+                0.6249847539553305,
+                0.6932945956936418
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7369212534610792,
+                0.3612499485977395
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07592820165325198,
+              "R48_frequencies": [
+                0.21125756694279005,
+                0.5321708046926544,
+                0.6229371630488976,
+                0.6988653647021495
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.750810142349968,
+                0.3612499485977395
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.061649502405496936,
+              "R48_frequencies": [
+                0.2054838809733709,
+                0.5360752747240978,
+                0.6311712979210399,
+                0.6928208003265368
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.750810142349968,
+                0.37513883748662835
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.054185257546500054,
+              "R48_frequencies": [
+                0.2123916709316484,
+                0.5283396515291028,
+                0.6330902001594128,
+                0.6872754577059128
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7369212534610792,
+                0.37513883748662835
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06497361874847307,
+              "R48_frequencies": [
+                0.21173184675696136,
+                0.5302237822570399,
+                0.6280559523977187,
+                0.6930295711461918
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7438656979055236,
+                0.36819439304218393
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06664030431916823,
+              "R48_frequencies": [
+                0.21485588049436968,
+                0.5272989008500235,
+                0.6265147665246699,
+                0.6931550708438381
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7403934756833015,
+                0.3647221708199617
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07043633231297408,
+              "R48_frequencies": [
+                0.21147142622213694,
+                0.5311895165599556,
+                0.6255041237856993,
+                0.6959404560986734
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7473379201277457,
+                0.36472217081996167
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06330995776097437,
+              "R48_frequencies": [
+                0.20860783294265003,
+                0.5331492762692283,
+                0.6296081763515602,
+                0.6929181341125346
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7473379201277458,
+                0.3716666152644062
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05955143160280385,
+              "R48_frequencies": [
+                0.21203866083772932,
+                0.5292737737437168,
+                0.630587168350656,
+                0.6901385999534598
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7403934756833014,
+                0.37166661526440614
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06497361874847307,
+              "R48_frequencies": [
+                0.21173184675696136,
+                0.5302237822570399,
+                0.6280559523977187,
+                0.6930295711461918
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7438656979055236,
+                0.36819439304218393
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": -0.06268442791793018,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -6859,8 +8873,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.05653533546783773,
+              "R48_frequencies": [
+                0.179429084835076,
+                0.5616278257104524,
+                0.640430129531559,
+                0.6969654649993967
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7847222222222221,
+                -0.39825962689519123
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06372856013177486,
+              "R48_frequencies": [
+                0.17274873485244635,
+                0.5692712394735195,
+                0.638989909405131,
+                0.7027184695369059
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7986111111111109,
+                -0.39825962689519123
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07783955454043623,
+              "R48_frequencies": [
+                0.1788487262301478,
+                0.5653708714322956,
+                0.630620644937656,
+                0.7084601994780922
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7986111111111109,
+                -0.3843707380063024
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07055768505017745,
+              "R48_frequencies": [
+                0.1853078687110219,
+                0.557673814816531,
+                0.6321605381428639,
+                0.7027182231930413
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7847222222222221,
+                -0.3843707380063024
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06713991912587192,
+              "R48_frequencies": [
+                0.17902852518795237,
+                0.5634742549083462,
+                0.6355528313189132,
+                0.7026927504447851
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7916666666666665,
+                -0.3913151824507467
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.061819522887447964,
+              "R48_frequencies": [
+                0.17920128164509055,
+                0.562544537110422,
+                0.6380012098265613,
+                0.6998207327140092
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7881944444444443,
+                -0.39478740467296897
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06543341426549776,
+              "R48_frequencies": [
+                0.17588867570999372,
+                0.566373257102545,
+                0.6372658147367364,
+                0.7026992290022341
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7951388888888887,
+                -0.3947874046729691
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07248339536827597,
+              "R48_frequencies": [
+                0.17891097163707645,
+                0.5644165384795023,
+                0.6330910995796414,
+                0.7055744949479174
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7951388888888887,
+                -0.38784296022852455
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06884802590571315,
+              "R48_frequencies": [
+                0.18216826294117192,
+                0.5605743900899575,
+                0.6338510445577059,
+                0.7026990704634191
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7881944444444443,
+                -0.38784296022852455
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06713991912587192,
+              "R48_frequencies": [
+                0.17902852518795237,
+                0.5634742549083462,
+                0.6355528313189132,
+                0.7026927504447851
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7916666666666665,
+                -0.3913151824507467
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": 0.2957554680673224,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -7463,8 +9660,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.07037722910809807,
+              "R48_frequencies": [
+                0.18524837783424322,
+                0.5575605551744898,
+                0.6323624833889331,
+                0.7027397124970312
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7847222222222221,
+                0.3843707380063018
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07767819421474398,
+              "R48_frequencies": [
+                0.17879067107342392,
+                0.5652638299409856,
+                0.6307975969004014,
+                0.7084757911151454
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7986111111111109,
+                0.38437073800630184
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06353025938832979,
+              "R48_frequencies": [
+                0.172693058855098,
+                0.5691612339681631,
+                0.6391860233395781,
+                0.7027162827279079
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7986111111111109,
+                0.3982596268951907
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05630444847409277,
+              "R48_frequencies": [
+                0.17937217136464226,
+                0.5615116074884519,
+                0.6406571362248503,
+                0.6969615846989431
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7847222222222221,
+                0.3982596268951906
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06695085682045399,
+              "R48_frequencies": [
+                0.17897093164079447,
+                0.563362503487454,
+                0.6357518646843792,
+                0.7027027215048331
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7916666666666665,
+                0.39131518245074626
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06866333999259167,
+              "R48_frequencies": [
+                0.18210971807721474,
+                0.5604618561501871,
+                0.6340515365386837,
+                0.7027148765312754
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7881944444444443,
+                0.38784296022852405
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.07230966465922206,
+              "R48_frequencies": [
+                0.178853119623991,
+                0.5643071065665929,
+                0.6332785198212982,
+                0.7055881844805203
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7951388888888887,
+                0.38784296022852405
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06523981781030908,
+              "R48_frequencies": [
+                0.17583203852385976,
+                0.5662623475637101,
+                0.6374633874170704,
+                0.7027032052273795
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7951388888888887,
+                0.39478740467296847
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.061611648804926866,
+              "R48_frequencies": [
+                0.1791440011980659,
+                0.5624305264411346,
+                0.6382133059259368,
+                0.6998249547308637
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7881944444444443,
+                0.39478740467296847
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06695085682045399,
+              "R48_frequencies": [
+                0.17897093164079447,
+                0.563362503487454,
+                0.6357518646843792,
+                0.7027027215048331
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.7916666666666665,
+                0.39131518245074626
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": -0.05628663056125152,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -8067,8 +10447,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.050055093026327824,
+              "R48_frequencies": [
+                0.13527697571543715,
+                0.6045849847124776,
+                0.6573820709882409,
+                0.7074371640145687
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8443108480106467,
+                -0.43499163021938553
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05647212043343075,
+              "R48_frequencies": [
+                0.12891043539458819,
+                0.6118789333204032,
+                0.6567223964308107,
+                0.7131945168642414
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8581997368995355,
+                -0.43499163021938564
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.0699962633604323,
+              "R48_frequencies": [
+                0.13542952367349542,
+                0.6078598080181287,
+                0.6483470352173543,
+                0.7183432985777866
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8581997368995355,
+                -0.42110274133049685
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06364470514798226,
+              "R48_frequencies": [
+                0.14150231858662485,
+                0.6005568560167179,
+                0.6490481278718638,
+                0.7126928330198461
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8443108480106467,
+                -0.4211027413304967
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06006371852855108,
+              "R48_frequencies": [
+                0.13520671846114127,
+                0.6062278987675329,
+                0.6528608202203564,
+                0.7129245387489075
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8512552924550911,
+                -0.4280471857749411
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05505840726252598,
+              "R48_frequencies": [
+                0.13520519670241754,
+                0.6054062040708053,
+                0.6551247577929294,
+                0.7101831650554554
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8477830702328689,
+                -0.4315194079971634
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05826936257576287,
+              "R48_frequencies": [
+                0.13205865934038724,
+                0.609056097154678,
+                0.6547854950971784,
+                0.7130548576729413
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8547275146773133,
+                -0.43151940799716354
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06504994328161584,
+              "R48_frequencies": [
+                0.13528153577515567,
+                0.6070470628371682,
+                0.6505989472433842,
+                0.715648890525
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8547275146773133,
+                -0.42457496355271895
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06185542473002503,
+              "R48_frequencies": [
+                0.13835460689288176,
+                0.6033947024886064,
+                0.6509483668501477,
+                0.7128037915801727
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8477830702328689,
+                -0.42457496355271895
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06006371852855108,
+              "R48_frequencies": [
+                0.13520671846114127,
+                0.6062278987675329,
+                0.6528608202203564,
+                0.7129245387489075
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8512552924550911,
+                -0.4280471857749411
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": 0.47954649994963966,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -8653,12 +11216,194 @@
               "stability_ratio": null
             },
             {
-              "R48_G34": 0.059870113768284106,
+              "R48_G34": 0.05987011376851381,
               "R48_frequencies": [
-                0.13516220564256076,
-                0.6061492865081047,
-                0.6529796892849118,
-                0.7128498030531959
+                0.13516220564251574,
+                0.6061492865080388,
+                0.6529796892848283,
+                0.7128498030533421
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8512552924550914,
+                0.42804718577494083
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.06166544912791072,
+              "R48_frequencies": [
+                0.13830908578396636,
+                0.6033135041849654,
+                0.6510711389286412,
+                0.7127365880565519
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8477830702328691,
+                0.4245749635527186
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06486933230463332,
+              "R48_frequencies": [
+                0.13523701364690946,
+                0.6069737894269681,
+                0.6507027358193876,
+                0.715572068124021
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8547275146773136,
+                0.4245749635527186
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.058072036107334024,
+              "R48_frequencies": [
+                0.1320151572369574,
+                0.6089802154899282,
+                0.6549003644522629,
+                0.7129724005595969
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8547275146773136,
+                0.43151940799716304
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05484726470248935,
+              "R48_frequencies": [
+                0.13516076847752706,
+                0.6053227075059623,
+                0.6552600494582151,
+                0.7101073141607045
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8477830702328691,
+                0.43151940799716304
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05987011376851381,
+              "R48_frequencies": [
+                0.13516220564251574,
+                0.6061492865080388,
+                0.6529796892848283,
+                0.7128498030533421
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8512552924550914,
+                0.42804718577494083
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.06076810988644277,
+              "R48_frequencies": [
+                0.1367356671784509,
+                0.6047319802996356,
+                0.6520238988231931,
+                0.7127920087096359
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8495191813439802,
+                0.42631107466382967
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.0623739151273085,
+              "R48_frequencies": [
+                0.13519044334780017,
+                0.6065620107427686,
+                0.6518403175633841,
+                0.7142142326906926
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8529914035662025,
+                0.4263110746638297
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05897143281010164,
+              "R48_frequencies": [
+                0.13358870211926321,
+                0.6075653797315288,
+                0.6539385108248189,
+                0.7129099436349206
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8529914035662025,
+                0.4297832968860519
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05736040325248126,
+              "R48_frequencies": [
+                0.1351523123246937,
+                0.6057360558290102,
+                0.6541199222875129,
+                0.7114803255399942
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8495191813439802,
+                0.4297832968860519
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05987011376851381,
+              "R48_frequencies": [
+                0.13516220564251574,
+                0.6061492865080388,
+                0.6529796892848283,
+                0.7128498030533421
               ],
               "R64_G34": null,
               "profile": "LEGACY_STRICT_PASS",
@@ -8673,6 +11418,7 @@
           ],
           "omega_trace_q": -0.06481787058657026,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -9024,64 +11770,64 @@
                 0.8512552924550914,
                 0.42804718577494083
               ],
-              "band4_minus_band3_external_gap": 0.059870113768284106,
+              "band4_minus_band3_external_gap": 0.05987011376851381,
               "frequencies_bands_1_to_4": [
-                0.13516220564256076,
-                0.6061492865081047,
-                0.6529796892849118,
-                0.7128498030531959
+                0.13516220564251574,
+                0.6061492865080388,
+                0.6529796892848283,
+                0.7128498030533421
               ],
-              "lowdin_q_dagger_q_residual": 1.0930448191231251e-15,
+              "lowdin_q_dagger_q_residual": 1.1815358022285254e-15,
               "raw_selected_gram": [
                 [
                   [
-                    0.999999999999999,
-                    4.2009041470035314e-20
-                  ],
-                  [
-                    7.617344385999446e-06,
-                    0.00012288860441346658
-                  ],
-                  [
-                    -6.897405273030479e-05,
-                    2.861413659079699e-05
-                  ]
-                ],
-                [
-                  [
-                    7.617344385999446e-06,
-                    -0.00012288860441345313
-                  ],
-                  [
                     1.0000000000000004,
-                    -3.3123459372033695e-19
+                    -7.572196119945119e-20
                   ],
                   [
-                    4.150904589595773e-05,
-                    6.663554029633523e-05
+                    7.617344108208635e-06,
+                    0.00012288860465163674
+                  ],
+                  [
+                    -6.89740525166337e-05,
+                    2.861413706676391e-05
                   ]
                 ],
                 [
                   [
-                    -6.897405273030479e-05,
-                    -2.8614136590783112e-05
+                    7.617344108208635e-06,
+                    -0.00012288860465161982
                   ],
                   [
-                    4.150904589595773e-05,
-                    -6.66355402963361e-05
+                    1.0000000000000002,
+                    2.30371230736537e-19
                   ],
                   [
-                    0.9999999999999998,
-                    -2.8222833901128997e-19
+                    4.15090463473035e-05,
+                    6.663553969010316e-05
+                  ]
+                ],
+                [
+                  [
+                    -6.89740525166337e-05,
+                    -2.8614137066766514e-05
+                  ],
+                  [
+                    4.15090463473035e-05,
+                    -6.663553969011053e-05
+                  ],
+                  [
+                    1.0000000000000013,
+                    -3.779479066488731e-20
                   ]
                 ]
               ],
-              "raw_span_lowdin_span_projector_residual": 6.382156790257265e-16,
-              "selected_gram_condition_number": 1.0003108320378662,
+              "raw_span_lowdin_span_projector_residual": 4.1833717984280297e-16,
+              "selected_gram_condition_number": 1.000310832038037,
               "selected_gram_eigenvalues": [
-                0.9998748855584249,
-                0.9999394357348598,
-                1.0001856787067143
+                0.9998748855582426,
+                0.9999394357350572,
+                1.0001856787067025
               ],
               "selected_span_condition": "WELL_CONDITIONED"
             }
@@ -9275,8 +12021,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.05030451935598712,
+              "R48_frequencies": [
+                0.0998160352124302,
+                0.6393964634406085,
+                0.6706268316173624,
+                0.7209313509733495
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8993055555555555,
+                -0.4589374345829275
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05234200013978052,
+              "R48_frequencies": [
+                0.0970215749491299,
+                0.6425090367982785,
+                0.670946241566941,
+                0.7232882417067216
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9062499999999999,
+                -0.4589374345829274
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.058302875395550124,
+              "R48_frequencies": [
+                0.1005831619773122,
+                0.6402716251372975,
+                0.6669774412583268,
+                0.7252803166538769
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9062499999999999,
+                -0.451992990138483
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05650676893945339,
+              "R48_frequencies": [
+                0.10328121777165045,
+                0.6372250819176133,
+                0.6665904350254429,
+                0.7230972039648963
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8993055555555555,
+                -0.45199299013848315
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05443316993576419,
+              "R48_frequencies": [
+                0.10015083360467633,
+                0.6398745863741524,
+                0.6687600405432026,
+                0.7231932104789668
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9027777777777777,
+                -0.4554652123607052
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.052395989641116025,
+              "R48_frequencies": [
+                0.09997117496444952,
+                0.6396443060108072,
+                0.669684463209629,
+                0.7220804528507451
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9010416666666665,
+                -0.45720132347181636
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05338982368827205,
+              "R48_frequencies": [
+                0.09858605595194869,
+                0.6411937361072478,
+                0.6698510761830665,
+                0.7232408998713385
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9045138888888888,
+                -0.45720132347181636
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05640593754121548,
+              "R48_frequencies": [
+                0.10035487873620327,
+                0.6400846799364313,
+                0.6678565966846582,
+                0.7242625342258737
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9045138888888888,
+                -0.45372910124959415
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.0554721226242908,
+              "R48_frequencies": [
+                0.1017158924103954,
+                0.6385516730898914,
+                0.6676731551425928,
+                0.7231452777668836
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9010416666666665,
+                -0.45372910124959415
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05443316993576419,
+              "R48_frequencies": [
+                0.10015083360467633,
+                0.6398745863741524,
+                0.6687600405432026,
+                0.7231932104789668
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9027777777777777,
+                -0.4554652123607052
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": 0.5689304864091542,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -9879,8 +12808,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.056330244760107395,
+              "R48_frequencies": [
+                0.10324781056398914,
+                0.637218665595545,
+                0.6665835720098947,
+                0.7229138167700021
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8993055555555555,
+                0.4519929901384825
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.058134254961370924,
+              "R48_frequencies": [
+                0.1005511928709605,
+                0.6402847766426165,
+                0.6669399911778358,
+                0.7250742461392067
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9062499999999999,
+                0.4519929901384825
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05216534723783228,
+              "R48_frequencies": [
+                0.09699028260256659,
+                0.6425146504705316,
+                0.6709221328565369,
+                0.7230874800943692
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9062499999999999,
+                0.4589374345829269
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.050115980751939126,
+              "R48_frequencies": [
+                0.09978340169780636,
+                0.6393837296274304,
+                0.6706338779462755,
+                0.7207498586982146
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.8993055555555555,
+                0.4589374345829269
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.054256464098909385,
+              "R48_frequencies": [
+                0.1001184833185375,
+                0.6398741260784029,
+                0.6687446388000338,
+                0.7230011028989431
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9027777777777777,
+                0.4554652123607047
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.055295479493363886,
+              "R48_frequencies": [
+                0.10168301336993021,
+                0.6385482178468518,
+                0.6676620440506134,
+                0.7229575235439772
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9010416666666665,
+                0.4537291012495936
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.056233645387464115,
+              "R48_frequencies": [
+                0.10032270650768889,
+                0.640090854345999,
+                0.6678301462374687,
+                0.7240637916249328
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9045138888888888,
+                0.4537291012495936
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05321311415318242,
+              "R48_frequencies": [
+                0.09855423501311188,
+                0.641196301717126,
+                0.6698313436077385,
+                0.723044457760921
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9045138888888888,
+                0.4572013234718158
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05221394086171183,
+              "R48_frequencies": [
+                0.09993866972395853,
+                0.6396375410411044,
+                0.6696802013759625,
+                0.7218941422376743
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9010416666666665,
+                0.4572013234718158
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.054256464098909385,
+              "R48_frequencies": [
+                0.1001184833185375,
+                0.6398741260784029,
+                0.6687446388000338,
+                0.7230011028989431
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9027777777777777,
+                0.4554652123607047
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": -0.08191029132457064,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -10330,34 +13442,34 @@
             0.9419782203379918,
             -0.48148497551670216
           ],
-          "determinant_phase": -0.000113279084211065,
+          "determinant_phase": -0.00011327908852864443,
           "edges": [
             {
-              "angle": 0.07713460784333832,
+              "angle": 0.07713460784358325,
               "evidence": [
                 "continuity and external isolation thresholds passed"
               ],
               "external_gaps": {
                 "left": 0.033741177285464774,
-                "minimum": 0.03334894115789189,
-                "right": 0.03334894115789189
+                "minimum": 0.033348941156057466,
+                "right": 0.033348941156057466
               },
-              "min_sv": 0.9970266008230172,
-              "projector_distance": 0.12247764487639792,
+              "min_sv": 0.9970266008229983,
+              "projector_distance": 0.12247764494539842,
               "status": "SUBSPACE_QUALIFIED"
             },
             {
-              "angle": 0.04242490106940974,
+              "angle": 0.042424901129156097,
               "evidence": [
                 "continuity and external isolation thresholds passed"
               ],
               "external_gaps": {
-                "left": 0.03334894115789189,
-                "minimum": 0.03334894115789189,
+                "left": 0.033348941156057466,
+                "minimum": 0.033348941156057466,
                 "right": 0.04048292237858042
               },
-              "min_sv": 0.9991001988573627,
-              "projector_distance": 0.07544473116751725,
+              "min_sv": 0.9991001988548287,
+              "projector_distance": 0.0754447330343114,
               "status": "SUBSPACE_QUALIFIED"
             },
             {
@@ -10417,12 +13529,12 @@
               "stability_ratio": 288.26709865112105
             },
             {
-              "R48_G34": 0.03334894115789189,
+              "R48_G34": 0.033348941156057466,
               "R48_frequencies": [
-                0.06597246182112738,
-                0.6683163227826666,
-                0.6924470742566255,
-                0.7257960154145174
+                0.06597246182124626,
+                0.6683163227828159,
+                0.6924470742575487,
+                0.7257960154136062
               ],
               "R64_G34": 0.03324956810877311,
               "R64_frequencies": [
@@ -10436,9 +13548,9 @@
                 0.9489226647824363,
                 -0.4884294199611467
               ],
-              "relative_R48": 0.04816099655514256,
+              "relative_R48": 0.04816099655242916,
               "relative_R64": 0.04799837897254634,
-              "stability_ratio": 334.59341746705053
+              "stability_ratio": 334.59342364362834
             },
             {
               "R48_G34": 0.04048292237858042,
@@ -10513,8 +13625,251 @@
               "stability_ratio": 360.4813287383672
             }
           ],
-          "omega_trace_q": 0.587238772550161,
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.033741177285464774,
+              "R48_frequencies": [
+                0.07077577094033899,
+                0.663931339958143,
+                0.6900259173109362,
+                0.723767094596401
+              ],
+              "R64_G34": 0.033624533611010254,
+              "R64_frequencies": [
+                0.07079729451458477,
+                0.6640112899297356,
+                0.6903119693950857,
+                0.7239365030060959
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9350337758935474,
+                -0.4884294199611466
+              ],
+              "relative_R48": 0.048898420246236175,
+              "relative_R64": 0.04870918526948785,
+              "stability_ratio": 288.26709865112105
+            },
+            {
+              "R48_G34": 0.033348941156057466,
+              "R48_frequencies": [
+                0.06597246182124626,
+                0.6683163227828159,
+                0.6924470742575487,
+                0.7257960154136062
+              ],
+              "R64_G34": 0.03324956810877311,
+              "R64_frequencies": [
+                0.06599500077000552,
+                0.6684008094929447,
+                0.6927227298194983,
+                0.7259722979282714
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9489226647824363,
+                -0.4884294199611467
+              ],
+              "relative_R48": 0.04816099655242916,
+              "relative_R64": 0.04799837897254634,
+              "stability_ratio": 334.59342364362834
+            },
+            {
+              "R48_G34": 0.04048292237858042,
+              "R48_frequencies": [
+                0.07389025179873718,
+                0.6626094396816852,
+                0.6858922068654354,
+                0.7263751292440158
+              ],
+              "R64_G34": 0.04040904675994528,
+              "R64_frequencies": [
+                0.07391705160512659,
+                0.6627077474330239,
+                0.6861590447044924,
+                0.7265680914644377
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9489226647824363,
+                -0.47454053107225774
+              ],
+              "relative_R48": 0.059022280721907565,
+              "relative_R64": 0.05889166232203236,
+              "stability_ratio": 546.9875922057169
+            },
+            {
+              "R48_G34": 0.0436529542310391,
+              "R48_frequencies": [
+                0.07820877126709357,
+                0.6588760396025602,
+                0.6827662980935861,
+                0.7264192523246252
+              ],
+              "R64_G34": 0.04354204870289313,
+              "R64_frequencies": [
+                0.07823431224594178,
+                0.6589625924591923,
+                0.6830499067164829,
+                0.726591955419376
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9350337758935474,
+                -0.47454053107225774
+              ],
+              "relative_R48": 0.06393542615229615,
+              "relative_R64": 0.06374651145507931,
+              "stability_ratio": 392.6048541564693
+            },
+            {
+              "R48_G34": 0.03855054741726782,
+              "R48_frequencies": [
+                0.0720750294346448,
+                0.663640918721926,
+                0.6875894360789068,
+                0.7261399834961746
+              ],
+              "R64_G34": 0.03844390139062015,
+              "R64_frequencies": [
+                0.07209906324070262,
+                0.6637266403591073,
+                0.6878694254106227,
+                0.7263133268012428
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9419782203379918,
+                -0.48148497551670216
+              ],
+              "relative_R48": 0.05606622992509707,
+              "relative_R64": 0.05588837062742121,
+              "stability_ratio": 360.4813287383672
+            },
+            {
+              "R48_G34": 0.03645180062670983,
+              "R48_frequencies": [
+                0.07135887839022048,
+                0.6638691100028333,
+                0.6887258745342834,
+                0.7251776751609932
+              ],
+              "R64_G34": 0.03633750341435771,
+              "R64_frequencies": [
+                0.0713816214824897,
+                0.6639511554315083,
+                0.6890097561404769,
+                0.7253472595548346
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9385059981157696,
+                -0.48495719773892454
+              ],
+              "relative_R48": 0.05292642831425282,
+              "relative_R64": 0.05273873568627544,
+              "stability_ratio": 317.9211694368441
+            },
+            {
+              "R48_G34": 0.03596073522003207,
+              "R48_frequencies": [
+                0.06901932412304633,
+                0.665990046564016,
+                0.6900152284633857,
+                0.7259759636834178
+              ],
+              "R64_G34": 0.03585731630945721,
+              "R64_frequencies": [
+                0.0690426087083869,
+                0.6660752137659932,
+                0.6902931545301123,
+                0.7261504708395695
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.945450442560214,
+                -0.48495719773892443
+              ],
+              "relative_R48": 0.052115857355951464,
+              "relative_R64": 0.05194505562475924,
+              "stability_ratio": 346.7191455618939
+            },
+            {
+              "R48_G34": 0.03991413630207208,
+              "R48_frequencies": [
+                0.0729202995782617,
+                0.6632257172771118,
+                0.6866399109028423,
+                0.7265540472049143
+              ],
+              "R64_G34": 0.039821248608886584,
+              "R64_frequencies": [
+                0.07294568782315637,
+                0.6633168754073578,
+                0.6869141724965248,
+                0.7267354211054113
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.945450442560214,
+                -0.47801275329448
+              ],
+              "relative_R48": 0.05812964796874416,
+              "relative_R64": 0.0579712141680816,
+              "stability_ratio": 428.70317092883676
+            },
+            {
+              "R48_G34": 0.04111537456350989,
+              "R48_frequencies": [
+                0.07513848633962712,
+                0.6612694455527873,
+                0.6851723659595197,
+                0.7262877405230296
+              ],
+              "R64_G34": 0.04100625299083871,
+              "R64_frequencies": [
+                0.075163272425579,
+                0.6613556214451023,
+                0.6854542453141552,
+                0.7264604983049939
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9385059981157696,
+                -0.4780127532944801
+              ],
+              "relative_R48": 0.06000734502176202,
+              "relative_R64": 0.0598234722027943,
+              "stability_ratio": 375.78502570160964
+            },
+            {
+              "R48_G34": 0.03855054741726782,
+              "R48_frequencies": [
+                0.0720750294346448,
+                0.663640918721926,
+                0.6875894360789068,
+                0.7261399834961746
+              ],
+              "R64_G34": 0.03844390139062015,
+              "R64_frequencies": [
+                0.07209906324070262,
+                0.6637266403591073,
+                0.6878694254106227,
+                0.7263133268012428
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9419782203379918,
+                -0.48148497551670216
+              ],
+              "relative_R48": 0.05606622992509707,
+              "relative_R64": 0.05588837062742121,
+              "stability_ratio": 360.4813287383672
+            }
+          ],
+          "omega_trace_q": 0.5872387949324928,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -10543,9 +13898,9 @@
             ],
             "metrics": [
               {
-                "maximum_principal_angle": 0.07713460784333832,
-                "maximum_projector_distance": 0.12247764487639792,
-                "minimum_singular_value": 0.9970266008230172,
+                "maximum_principal_angle": 0.07713460784358325,
+                "maximum_projector_distance": 0.12247764494539842,
+                "minimum_singular_value": 0.9970266008229983,
                 "provenance": {
                   "local_delta_k": 0.013888888888888888
                 },
@@ -10553,9 +13908,9 @@
                 "step": 0.013888888888888888
               },
               {
-                "maximum_principal_angle": 0.03794131495929478,
-                "maximum_projector_distance": 0.05982552053859409,
-                "minimum_singular_value": 0.999280314650651,
+                "maximum_principal_angle": 0.037941328270473466,
+                "maximum_projector_distance": 0.05983002880942388,
+                "minimum_singular_value": 0.9992803141457285,
                 "provenance": {
                   "local_delta_k": 0.006944444444444444
                 },
@@ -10656,64 +14011,64 @@
                 0.9489226647824363,
                 -0.4884294199611467
               ],
-              "band4_minus_band3_external_gap": 0.03334894115789189,
+              "band4_minus_band3_external_gap": 0.033348941156057466,
               "frequencies_bands_1_to_4": [
-                0.06597246182112738,
-                0.6683163227826666,
-                0.6924470742566255,
-                0.7257960154145174
+                0.06597246182124626,
+                0.6683163227828159,
+                0.6924470742575487,
+                0.7257960154136062
               ],
-              "lowdin_q_dagger_q_residual": 2.0180983330878348e-15,
+              "lowdin_q_dagger_q_residual": 1.0147011726204128e-15,
               "raw_selected_gram": [
                 [
                   [
-                    1.0,
-                    -2.897947539733365e-19
+                    0.999999999999999,
+                    2.6003978404827827e-19
                   ],
                   [
-                    -7.016860260957228e-05,
-                    9.123794780047881e-05
+                    -7.016860039492281e-05,
+                    9.12379480443418e-05
                   ],
                   [
-                    0.00012079485781887378,
-                    -0.0001248410209745023
+                    0.0001207948588907949,
+                    -0.00012484101837658703
                   ]
                 ],
                 [
                   [
-                    -7.016860260957228e-05,
-                    -9.123794780048218e-05
+                    -7.016860039492281e-05,
+                    -9.12379480443406e-05
                   ],
                   [
-                    1.0000000000000009,
-                    -3.091070299965975e-19
+                    0.9999999999999992,
+                    -3.723484110579264e-21
                   ],
                   [
-                    -0.00012143380746772268,
-                    3.314311831496028e-05
+                    -0.00012143380512311618,
+                    3.314311908473753e-05
                   ]
                 ],
                 [
                   [
-                    0.00012079485781887378,
-                    0.00012484102097449926
+                    0.0001207948588907949,
+                    0.00012484101837658584
                   ],
                   [
-                    -0.00012143380746772268,
-                    -3.314311831496787e-05
+                    -0.00012143380512311618,
+                    -3.314311908475119e-05
                   ],
                   [
-                    0.9999999999999987,
-                    3.6136812484521346e-19
+                    1.0000000000000016,
+                    -1.9060362038177627e-19
                   ]
                 ]
               ],
-              "raw_span_lowdin_span_projector_residual": 8.471871173933116e-16,
-              "selected_gram_condition_number": 1.0004601614602104,
+              "raw_span_lowdin_span_projector_residual": 7.396134210907346e-16,
+              "selected_gram_condition_number": 1.0004601614573079,
               "selected_gram_eigenvalues": [
-                0.9998159748309834,
-                0.9999079735591119,
-                1.0002760516099034
+                0.9998159748306006,
+                0.9999079735627817,
+                1.0002760516066183
               ],
               "selected_span_condition": "WELL_CONDITIONED"
             },
@@ -11117,8 +14472,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.05673215516565455,
+              "R48_frequencies": [
+                0.09224196458353617,
+                0.6488946914901368,
+                0.6708147618439084,
+                0.727546917009563
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9385059981157696,
+                -0.4479166666666668
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.0524036166039914,
+              "R48_frequencies": [
+                0.09044428874418596,
+                0.6500101054454437,
+                0.6731756564105226,
+                0.725579273014514
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.945450442560214,
+                -0.4479166666666667
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05438877123603614,
+              "R48_frequencies": [
+                0.09459159460576953,
+                0.6466502973718316,
+                0.6703834350720749,
+                0.724772206308111
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.945450442560214,
+                -0.44097222222222227
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05926822763981843,
+              "R48_frequencies": [
+                0.09631186664231262,
+                0.6457273845338575,
+                0.6678199623217876,
+                0.7270881899616061
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9385059981157696,
+                -0.4409722222222224
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.055841668395774424,
+              "R48_frequencies": [
+                0.09337108466075048,
+                0.6478745863131475,
+                0.6704945318893833,
+                0.7263362002851578
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9419782203379918,
+                -0.4444444444444444
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.0563653953262252,
+              "R48_frequencies": [
+                0.09279488565046871,
+                0.6484116554291965,
+                0.6706269394384553,
+                0.7269923347646805
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9402421092268807,
+                -0.44618055555555564
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05412380682150686,
+              "R48_frequencies": [
+                0.09190585394918435,
+                0.6489437887676966,
+                0.6718344001078872,
+                0.7259582069293941
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.943714331449103,
+                -0.44618055555555564
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05517742999249886,
+              "R48_frequencies": [
+                0.09397013261881997,
+                0.647286350615934,
+                0.6704145361104035,
+                0.7255919661029023
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.943714331449103,
+                -0.4427083333333334
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.057556655306730264,
+              "R48_frequencies": [
+                0.09483980938006303,
+                0.646802466144739,
+                0.6691563030652085,
+                0.7267129583719387
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9402421092268807,
+                -0.4427083333333334
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.055841668395774424,
+              "R48_frequencies": [
+                0.09337108466075048,
+                0.6478745863131475,
+                0.6704945318893833,
+                0.7263362002851578
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9419782203379918,
+                -0.4444444444444444
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": -0.16155432238125225,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -11721,8 +15259,191 @@
               "stability_ratio": null
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.05928756542183722,
+              "R48_frequencies": [
+                0.0962879969114477,
+                0.6458271594587219,
+                0.6676551058370572,
+                0.7269426712588944
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9385059981157703,
+                0.4409722222222222
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.054459476513546656,
+              "R48_frequencies": [
+                0.09457005414955538,
+                0.6467473246941784,
+                0.670215327856706,
+                0.7246748043702527
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9454504425602147,
+                0.4409722222222222
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.052454298249651865,
+              "R48_frequencies": [
+                0.09042290815843793,
+                0.650108268669081,
+                0.6730050736164539,
+                0.7254593718661058
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9454504425602147,
+                0.4479166666666666
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.056725295684512456,
+              "R48_frequencies": [
+                0.09221831555991855,
+                0.6489926369190286,
+                0.6706510175806508,
+                0.7273763132651633
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9385059981157703,
+                0.44791666666666663
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.055876759648559315,
+              "R48_frequencies": [
+                0.09334845432021471,
+                0.6479738312504549,
+                0.6703265662093374,
+                0.7262033258578967
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9419782203379925,
+                0.4444444444444444
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05758388669953873,
+              "R48_frequencies": [
+                0.09481655806131752,
+                0.6469020458565214,
+                0.6689898297669863,
+                0.726573716466525
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9402421092268813,
+                0.4427083333333333
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.055231252014283694,
+              "R48_frequencies": [
+                0.09394803936240129,
+                0.6473848763100727,
+                0.6702460462481359,
+                0.7254772982624196
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9437143314491037,
+                0.4427083333333333
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.05416671689699171,
+              "R48_frequencies": [
+                0.09188384724163459,
+                0.649042560998093,
+                0.671665065016312,
+                0.7258317819133037
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9437143314491037,
+                0.4461805555555555
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.056380117457329626,
+              "R48_frequencies": [
+                0.09277173770340409,
+                0.6485107394974032,
+                0.67046053413823,
+                0.7268406515955597
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9402421092268813,
+                0.4461805555555555
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            },
+            {
+              "R48_G34": 0.055876759648559315,
+              "R48_frequencies": [
+                0.09334845432021471,
+                0.6479738312504549,
+                0.6703265662093374,
+                0.7262033258578967
+              ],
+              "R64_G34": null,
+              "profile": "LEGACY_STRICT_PASS",
+              "q": [
+                0.9419782203379925,
+                0.4444444444444444
+              ],
+              "relative_R48": null,
+              "relative_R64": null,
+              "stability_ratio": null
+            }
+          ],
           "omega_trace_q": 0.04879750135940811,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -12355,8 +16076,251 @@
               "stability_ratio": 122.07307885444185
             }
           ],
+          "low_gap_profile_flat": [
+            {
+              "R48_G34": 0.043527071033516496,
+              "R48_frequencies": [
+                0.07818537906984786,
+                0.6589466264925785,
+                0.682639611947548,
+                0.7261666829810645
+              ],
+              "R64_G34": 0.04321635598299722,
+              "R64_frequencies": [
+                0.07822742103877155,
+                0.6590190686730579,
+                0.683066790317155,
+                0.7262831463001522
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9350337758935481,
+                0.4745405310722575
+              ],
+              "relative_R48": 0.06376288494207832,
+              "relative_R64": 0.06326812633202591,
+              "stability_ratio": 139.0867803499486
+            },
+            {
+              "R48_G34": 0.040459488632193175,
+              "R48_frequencies": [
+                0.07387079801270997,
+                0.6627030366618,
+                0.6857207820200169,
+                0.72618027065221
+              ],
+              "R64_G34": 0.04016080610538819,
+              "R64_frequencies": [
+                0.0739113197974047,
+                0.6627704826955284,
+                0.6861496541377261,
+                0.7263104602431143
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9489226647824369,
+                0.4745405310722575
+              ],
+              "relative_R48": 0.05900286194186269,
+              "relative_R64": 0.0585306803890438,
+              "stability_ratio": 134.45984448768957
+            },
+            {
+              "R48_G34": 0.033266010508147925,
+              "R48_frequencies": [
+                0.0659536132101855,
+                0.668402110465772,
+                0.6922882216018711,
+                0.725554232110019
+              ],
+              "R64_G34": 0.03295474111973706,
+              "R64_frequencies": [
+                0.06598946584603757,
+                0.6684668058296286,
+                0.6927195831318959,
+                0.7256743242516329
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9489226647824369,
+                0.4884294199611464
+              ],
+              "relative_R48": 0.04805225550591401,
+              "relative_R64": 0.04757298901633965,
+              "stability_ratio": 105.87209133536206
+            },
+            {
+              "R48_G34": 0.03357605757458926,
+              "R48_frequencies": [
+                0.07075342069883812,
+                0.6639869443111323,
+                0.689928939848221,
+                0.7235049974228103
+              ],
+              "R64_G34": 0.033264697285027456,
+              "R64_frequencies": [
+                0.07079073512887189,
+                0.6640669570815771,
+                0.6903492239375584,
+                0.7236139212225858
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9350337758935481,
+                0.48842941996114647
+              ],
+              "relative_R48": 0.04866596490643765,
+              "relative_R64": 0.04818531857730635,
+              "stability_ratio": 106.83667249874125
+            },
+            {
+              "R48_G34": 0.03844355807732258,
+              "R48_frequencies": [
+                0.07205389419932942,
+                0.663720231042699,
+                0.6874459470360751,
+                0.7258895051133977
+              ],
+              "R64_G34": 0.038131194411481495,
+              "R64_frequencies": [
+                0.07209284670532505,
+                0.6637884537654578,
+                0.6878761753332657,
+                0.7260073697447472
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9419782203379925,
+                0.481484975516702
+              ],
+              "relative_R48": 0.05592229940851652,
+              "relative_R64": 0.055433224436080376,
+              "stability_ratio": 122.07307885444185
+            },
+            {
+              "R48_G34": 0.04099833725319657,
+              "R48_frequencies": [
+                0.07511621926679064,
+                0.6613446473887901,
+                0.6850371150345564,
+                0.726035452287753
+              ],
+              "R64_G34": 0.040686481259978535,
+              "R64_frequencies": [
+                0.07515671778922084,
+                0.6614148885621568,
+                0.6854660411578214,
+                0.7261525224177999
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9385059981157703,
+                0.47801275329447984
+              ],
+              "relative_R48": 0.05984834449609117,
+              "relative_R64": 0.05935594007145118,
+              "stability_ratio": 130.46560638497147
+            },
+            {
+              "R48_G34": 0.03984506709443192,
+              "R48_frequencies": [
+                0.07289995078398095,
+                0.663313767478493,
+                0.6864799754137153,
+                0.7263250425081472
+              ],
+              "R64_G34": 0.03953773991051557,
+              "R64_frequencies": [
+                0.0729396971887723,
+                0.6633799321438566,
+                0.6869112310593011,
+                0.7264489709698166
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9454504425602147,
+                0.4780127532944798
+              ],
+              "relative_R48": 0.05804257738241937,
+              "relative_R64": 0.05755873266119632,
+              "stability_ratio": 128.65031790118866
+            },
+            {
+              "R48_G34": 0.03586508724319393,
+              "R48_frequencies": [
+                0.06899932808722369,
+                0.6660729068599377,
+                0.6898638611679181,
+                0.725728948411112
+              ],
+              "R64_G34": 0.03555289871461087,
+              "R64_frequencies": [
+                0.06903673200561233,
+                0.6661392853994949,
+                0.6902949143975656,
+                0.7258478131121765
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9454504425602147,
+                0.4849571977389242
+              ],
+              "relative_R48": 0.05198864480663685,
+              "relative_R64": 0.05150392676098245,
+              "stability_ratio": 113.88278382929782
+            },
+            {
+              "R48_G34": 0.03631445286656754,
+              "R48_frequencies": [
+                0.07133707314730899,
+                0.6639372934439378,
+                0.6886034400371592,
+                0.7249178929037268
+              ],
+              "R64_G34": 0.03600088427836046,
+              "R64_frequencies": [
+                0.07137521458929631,
+                0.6640103938857319,
+                0.6890297528254035,
+                0.7250306371037639
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9385059981157703,
+                0.48495719773892426
+              ],
+              "relative_R48": 0.052736380266424306,
+              "relative_R64": 0.05224866434393711,
+              "stability_ratio": 114.8102381179377
+            },
+            {
+              "R48_G34": 0.03844355807732258,
+              "R48_frequencies": [
+                0.07205389419932942,
+                0.663720231042699,
+                0.6874459470360751,
+                0.7258895051133977
+              ],
+              "R64_G34": 0.038131194411481495,
+              "R64_frequencies": [
+                0.07209284670532505,
+                0.6637884537654578,
+                0.6878761753332657,
+                0.7260073697447472
+              ],
+              "profile": "LOW_GAP_PASS",
+              "q": [
+                0.9419782203379925,
+                0.481484975516702
+              ],
+              "relative_R48": 0.05592229940851652,
+              "relative_R64": 0.055433224436080376,
+              "stability_ratio": 122.07307885444185
+            }
+          ],
           "omega_trace_q": -0.23973334776593197,
           "path_status": "PATH_SUBSPACE_QUALIFIED",
+          "profile_passed": true,
           "qualified": true,
           "refinement": {
             "authorization_granted": true,
@@ -12803,13 +16767,13 @@
   "schema": "e7i4e_complete_stage1_chern_v1",
   "solver_failures": 0,
   "source_binding": "VERIFIED",
-  "stage1_composite_valley_chern": 0.00039167981515804336,
-  "stage1_curvature_integral": 0.0024609968597198344,
+  "stage1_composite_valley_chern": 0.00039168033110070674,
+  "stage1_curvature_integral": 0.002461000101483196,
   "stage1_observable_class": "FR00_RANK3_COMPOSITE_VALLEY_CHERN_MIXED_LOCAL_DELTA_STAGE1_PILOT",
   "stage1_status": "FULLY_QUALIFIED",
   "stage2_full_grid": "NOT_AUTHORIZED",
   "total_raw_solve_requests": 226,
   "total_unique_mpb_solves": 205,
-  "total_wall_time_seconds": 164.78775608199976,
+  "total_wall_time_seconds": 165.6658651000016,
   "work_order": "TRILATT-E7I4E-20260823-134"
 }
