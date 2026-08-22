@@ -5,10 +5,10 @@
     "audit/e7i2f/run_rank3.py"
   ],
   "closure_classification": "E7I2_CLOSED_RANK3_QUALIFIED_TARGET_RANK2_PHYSICALLY_BLOCKED",
-  "e7i2e_binding_verified": false,
+  "e7i2e_binding_verified": true,
   "e7i2e_commit": "7b0f1989030c06d2664a3543f8de871428c1fad1",
   "e7i2e_to_e7i2f_ancestry_verified": true,
-  "e7i2f_binding_verified": false,
+  "e7i2f_binding_verified": true,
   "e7i2f_commit": "bc3c6e0cbdea9cecef8bd63da0a8adff3db6ba3b",
   "evidence": {
     "e7i2e": {
@@ -20,7 +20,7 @@
       "sha256": "25c814046ad95f29c60d4952159ddeaa0fc933eccb21140d753b2fdbf3f81bbc"
     }
   },
-  "final_sandbox_sha": "0409480b81e8e29722524edcd050d5c5fb81f93c",
+  "final_sandbox_sha": "a70e4d6e332fb721ba88ca1c5800df3e2729877e",
   "fixed_configuration": {
     "e3_thresholds": {
       "max_principal_angle": 0.45,
@@ -159,5 +159,5 @@
   "state_repair_used": false,
   "threshold_modification_used": false,
   "work_order": "E7I.2G",
-  "worktree_clean_after_commit": true
+  "worktree_clean_after_commit": false
 }
