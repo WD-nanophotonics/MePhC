@@ -6,12 +6,15 @@
     "common": "DIAGNOSTIC_LINEAR_COMBINATION"
   },
   "BLOCH_K_MAPPING": "k_paper=-k_MPB",
-  "C9_HARDENED_ARTIFACT_REPLAY": "FAILED",
+  "C9_CURRENT_RAW_REPLAY_AVAILABILITY": "UNAVAILABLE_CURRENT_WORKSPACE",
+  "C9_HARDENED_ARTIFACT_REPLAY": "RAW_SOURCE_CURRENTLY_UNAVAILABLE",
+  "C9_HARDENING_CURRENT_REPLAY_STATUS": "RAW_SOURCE_CURRENTLY_UNAVAILABLE",
+  "C9_HARDENING_IMPLEMENTATION_STATUS": "PRESENT_ON_SANDBOX",
   "CONTROL_STATUS_INHERITED": {
-    "AUDIT_CODE_FINGERPRINTS": null,
     "BERRY_TORUS_PERIODICITY": "CONFIRMED",
-    "C9_AUDIT_HARDENING": null,
-    "C9_SOURCE_ARTIFACT_PRESENT": false
+    "C9_CURRENT_RAW_REPLAY_AVAILABILITY": "UNAVAILABLE_CURRENT_WORKSPACE",
+    "C9_HARDENING_CURRENT_REPLAY_STATUS": "RAW_SOURCE_CURRENTLY_UNAVAILABLE",
+    "C9_HARDENING_IMPLEMENTATION_STATUS": "PRESENT_ON_SANDBOX"
   },
   "COORDINATE_INVARIANCE_CHECK": {
     "equal": true,
@@ -29,10 +32,38 @@
     "orientation": "POSITIVE_PUBLIC_CARTESIAN_QX_QY"
   },
   "DOMAIN_INVERSION_EVIDENCE": {
-    "evidence_level": "UNRESOLVED",
-    "status": "UNRESOLVED"
+    "evidence_level": "LOCAL_MATCHED_CONTROLS",
+    "inversion_hybrid_p90_band1": 0.0013434853664173309,
+    "inversion_hybrid_p90_band2": 0.011362665340286696,
+    "inversion_sign_indeterminate_band1_count": 6,
+    "inversion_sign_indeterminate_band2_count": 3,
+    "inversion_sign_resolved_band1_count": 2,
+    "inversion_sign_resolved_band2_count": 5,
+    "matched_control_count": 8,
+    "provenance_mode": "RECOMPUTED_FROM_COMPACT_EVIDENCE",
+    "reducer_code_digest": "46a97ff7b2860cf6622219aecd35cc114be71161ffaf7a3f689879a1a3501007",
+    "sign_reversal_gate": true,
+    "source_digest": "021a0b9ac2dea9ee4e3f24f5bf9d7999429122c94a7b2a0ba093e803d466db6d",
+    "spectral_compatibility": true,
+    "status": "SIGN_REVERSAL_SUPPORTED"
   },
-  "DOMAIN_INVERSION_EVIDENCE_LEVEL": "UNRESOLVED",
+  "DOMAIN_INVERSION_EVIDENCE_LEVEL": "LOCAL_MATCHED_CONTROLS",
+  "E7I1G_UPSTREAM_SEAL": {
+    "raw_artifact_currently_available": false,
+    "seal": {
+      "domain_id": "PERIODIC_RECIPROCAL_METRIC_VORONOI_BASIN_K",
+      "normalization_input": "SEALED_REFINED_FLUX",
+      "orientation": "POSITIVE_PUBLIC_CARTESIAN_QX_QY",
+      "raw_artifact_currently_available": false,
+      "seal_id": "E7I1G_LEVEL2_VORONOI_VALLEY_ASSIGNED_BERRY_FLUX",
+      "seal_status": "PHYSICALLY_VALIDATED_WITH_EXPLICIT_PERTURBED_NODE_UNCERTAINTY",
+      "sealed_sandbox_sha": "e35bcb6a1fc567b670c64a8c7070d083777c2e87",
+      "source_evidence_sha256": "196fcdae172b9b718185c61261de375b54a759e93d4d215c2bd5846ee841c67d"
+    },
+    "status": "SUPERVISOR_SEALED"
+  },
+  "E7I1G_UPSTREAM_SEAL_STATUS": "SUPERVISOR_SEALED",
+  "E7I1H_C2_OVERALL": "VALLEY_CHERN_SEMANTICS_READY_FOR_SUPERVISOR_SEAL_AUDIT",
   "E7I1H_SCOPE": "VALLEY_CHERN_ONLY_NO_NEW_MPB",
   "FULL_BZ_CHERN_SEMANTICS": "closed_BZ_torus_integral_divided_by_2pi_quantized_under_isolated_smooth_band_conditions",
   "NONQUANTIZED_VALLEY_CHERN_INTERPRETATION": "MATHEMATICALLY_CLOSED",
@@ -41,14 +72,19 @@
     "MPB_BLOCH_FACTOR": "exp(+i k dot r)",
     "PAPER_BLOCH_FACTOR": "exp(-i k dot r)",
     "VALLEY_LABEL_MAPPING": "paper_K <-> MPB_Kp; paper_Kp <-> MPB_K",
+    "coordinate_jacobian_sign": 1,
+    "curvature_sign_hack": "NONE",
+    "mapping_orientation": "ORIENTATION_PRESERVING_VALLEY_LABEL_SWAP",
     "mapping_validated": true,
     "no_sign_hack": true,
-    "provenance_mode": "INHERITED_FROM_SEALED_CONVENTION_AUDIT",
-    "reducer_code_digest": "9a1f50e3dcf9f493a67e524623017d2943134e4b894b9a82e458c22493c91671",
-    "source_digest": "904c50a300723943f628535b14d1b63156fe691334d7e0128a7646d361f4324b",
+    "prior_result": "REF6.1 paper-vs-MPB Bloch convention sign closure",
+    "provenance_classification": "SUPERVISOR_SEALED_INHERITANCE",
+    "provenance_mode": "INHERITED_FROM_SUPERVISOR_SEALED_REF6_1_CONVENTION",
     "status": "CONSISTENT_AFTER_BLOCH_K_MAPPING"
   },
+  "PAPER_CONVENTION_PROVENANCE": "SUPERVISOR_SEALED_INHERITANCE",
   "PAPER_GEOMETRY_EQUIVALENCE": "UNRESOLVED",
+  "PAPER_MAPPING_ORIENTATION": "ORIENTATION_PRESERVING_VALLEY_LABEL_SWAP",
   "PAPER_VALLEY_CHERN_CONVENTION": "CONSISTENT_AFTER_BLOCH_K_MAPPING",
   "PROVENANCE": {
     "band_interpretation": {
@@ -65,8 +101,10 @@
     "domain_id": "PERIODIC_RECIPROCAL_METRIC_VORONOI_BASIN_K",
     "normalization": "PHI_OVER_2PI",
     "orientation": "POSITIVE_PUBLIC_CARTESIAN_QX_QY",
-    "perturbed_node_uncertainty": "must_be_bound by C9 regenerated report"
+    "raw_artifact_currently_available": false
   },
+  "REMOTE_AUDITABILITY": "PARTIAL",
+  "SEALED_INPUT_DEPENDENCY": "EXPLICIT_AND_FAIL_CLOSED",
   "SEALED_REFINED_FLUX": {
     "anti": -0.6313275079372239,
     "band1": -0.8672556366262322,
@@ -80,10 +118,11 @@
     "common": 2.7398011654008195e-11
   },
   "SIGN_HACK": "NONE",
+  "TR_CONTROL_RECOVERY": "NO_EXISTING_CONTROLS_FOUND",
   "TR_KP_CONTROL_EVIDENCE": {
     "evidence_level": "UNRESOLVED",
     "matched_control_count": 0,
-    "reason": "dedicated K/Kp controls were not supplied",
+    "recovery": "NO_EXISTING_CONTROLS_FOUND",
     "status": "UNRESOLVED"
   },
   "TR_THEORY": {
@@ -103,7 +142,7 @@
     "common": -0.037549127895277055
   },
   "VALLEY_CHERN_DOMAIN_DEPENDENCE": "restricted_integral_can_change_with_valley_partition_boundary",
-  "VALLEY_CHERN_DOMAIN_INVERSION": "UNRESOLVED",
+  "VALLEY_CHERN_DOMAIN_INVERSION": "SIGN_REVERSAL_SUPPORTED",
   "VALLEY_CHERN_DOMAIN_SEMANTICS": "EXPLICIT_AND_BOUNDARY_AWARE",
   "VALLEY_CHERN_ERROR_BOUND": {
     "anti": 2.7175369477732265e-11,
@@ -113,6 +152,7 @@
   },
   "VALLEY_CHERN_MULTIBAND_INTERPRETATION": "INDIVIDUAL_BANDS_PRIMARY_DIAGNOSTIC_COMBINATIONS_SEPARATE",
   "VALLEY_CHERN_NORMALIZATION": "PHI_OVER_2PI_CONFIRMED",
+  "VALLEY_CHERN_SEAL": "CANDIDATE_FOR_SUPERVISOR_SEAL",
   "VALLEY_FLUX_COORDINATE_INVARIANCE": "DERIVED_AND_VALIDATED",
-  "detail_digest": "9567a74b57bc34fd049fc52100e6b02061ae7a8031388a11d36a33fbb7122238"
+  "detail_digest": "8ba1e1581dd28a773d844648f026ae4c2f3b6182d7477a9ce200a4313d1a14db"
 }
