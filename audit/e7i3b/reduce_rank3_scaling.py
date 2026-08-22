@@ -292,7 +292,7 @@ def stable_window_analysis(endpoint: str, all_levels: list[dict], overlap: dict,
         fine_rows[1]["DETERMINANT_HOLONOMY_DENSITY_PROXY"],
         fine_rows[2]["DETERMINANT_HOLONOMY_DENSITY_PROXY"],
     )
-    fine_envelope = resolution_by_step[step_id(FINEST_STEP_ID / 2)]["DELTA_DENSITY_PROXY_RESOLUTION_RELATIVE"]
+    fine_envelope = resolution_by_step[step_id(FINEST_STEP_ID * 2)]["DELTA_DENSITY_PROXY_RESOLUTION_RELATIVE"]
     finest_status = (
         "NUMERICAL_FLOOR_SUSPECTED" if fine_drift is not None and fine_drift > fine_envelope
         else ("NUMERICALLY_UNRESOLVED" if not stable_window_supported else "CONSISTENT_WITH_WINDOW")
