@@ -66,6 +66,18 @@ def _worker_main(endpoint,res,point,out_path):
         pickle.dump(_worker_payload(raw),handle,protocol=pickle.HIGHEST_PROTOCOL)
 
 
+def solve_case_isolated(res,endpoint):
+    with tempfile.NamedTemporaryFile(prefix="e7i3c-case-",suffix=".json",delete=False) as handle:
+        out_path=handle.name
+    command=[sys.executable,str(Path(__file__).resolve()),"--case",str(float(endpoint)),str(int(res)),out_path]
+    try:
+        completed=subprocess.run(command,cwd=Path(__file__).resolve().parents[2],stdout=subprocess.DEVNULL,stderr=subprocess.PIPE,text=True,timeout=900,check=False)
+        if completed.returncode!=0:
+            raise RuntimeError(f"isolated case failed with exit {completed.returncode}: {completed.stderr[-1000:]}")
+        return json.loads(Path(out_path).read_text(encoding="utf-8"))
+    finally:
+        Path(out_path).unlink(missing_ok=True)
+
 def solve_isolated(adapter,res,endpoint,point):
     del adapter
     with tempfile.NamedTemporaryFile(prefix="e7i3c-",suffix=".pkl",delete=False) as handle:
@@ -318,12 +330,15 @@ def self_checks():
 def main():
     if "--worker" in sys.argv:
         _worker_main(float(sys.argv[2]),int(sys.argv[3]),tuple(float(x) for x in sys.argv[4:6]),sys.argv[6]); return
+    if "--case" in sys.argv:
+        endpoint=float(sys.argv[2]); resolution=int(sys.argv[3]); out_path=sys.argv[4]
+        adapter=build_reference_mpb_adapter(build_triangular_reference_geometry(endpoint),build_triangular_coordinate_preflight())
+        Path(out_path).write_text(json.dumps(live_case(adapter,resolution,endpoint),sort_keys=True),encoding="utf-8"); return
     root=Path(__file__).resolve().parents[2]; self_checks()
     if "--self-check" in sys.argv: print(json.dumps({"self_check":"PASSED"})); return
     base=baseline(root); cases={}
     for ep,fr in (("FR00",0.0),("FR050",0.5)):
-        adapter=build_reference_mpb_adapter(build_triangular_reference_geometry(fr),build_triangular_coordinate_preflight())
-        cases[ep]={str(r):live_case(adapter,r,fr) for r in (48,64)}; gc.collect()
+        cases[ep]={str(r):solve_case_isolated(r,fr) for r in (48,64)}; gc.collect()
     comp=comparison(cases,base)
     eh_summary={ep:scaling_summary(cases[ep],ep) for ep in ("FR00","FR050")}
     bridge_results={ep:bridge_summary(ep,comp,eh_summary[ep],base) for ep in ("FR00","FR050")}
