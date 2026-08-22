@@ -1,0 +1,593 @@
+{
+  "CODE_CHANGE": "SANDBOX_AUDIT_ONLY",
+  "E7I3B_OVERALL": "RANK3_DETERMINANT_SMALL_LOOP_SCALING_READY_FOR_SUPERVISOR_AUDIT",
+  "FR00_SMALL_LOOP_SCALING": "SUPPORTED_WITH_VISIBLE_FINITE_STEP_SENSITIVITY",
+  "FR050_SMALL_LOOP_SCALING": "SYMMETRY_SUPPRESSED_OR_NEAR_ZERO",
+  "MAX_ABS_DETERMINANT_PHASE": 3.7854250801555696e-06,
+  "PHASE_BRANCH_STATUS": "SAFE",
+  "PHYSICAL_MAXWELL_BERRY_INTERPRETATION": "NOT_YET_AUTHORIZED",
+  "WILSON_REPRESENTATION": "MPB_H_PERIODIC_L2",
+  "area_normalized_physical_berry_curvature_authorized": false,
+  "chern_number_authorized": false,
+  "endpoint_max_abs_phase": {
+    "FR00": 3.7854250801555696e-06,
+    "FR050": 2.9592505503871138e-08
+  },
+  "endpoint_results": {
+    "FR00": {
+      "R48_dk_0.01388889": {
+        "nominal_delta_k": 0.013888888888888888,
+        "resolution": 48,
+        "scaling": {
+          "adjacent_refinement": [
+            {
+              "AREA_RATIO": 4.0,
+              "DENSITY_PROXY_ABS_DIFFERENCE": 2.7233460843798657e-05,
+              "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.005784294262710633,
+              "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.005784294262710681,
+              "PHASE_AREA_LAW_RESIDUAL": 5.253368218325401e-09,
+              "coarse_level": 0,
+              "fine_level": 1
+            },
+            {
+              "AREA_RATIO": 4.0,
+              "DENSITY_PROXY_ABS_DIFFERENCE": 0.000563940345700867,
+              "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.1069666483741901,
+              "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.10696664837419012,
+              "PHASE_AREA_LAW_RESIDUAL": 2.719619722708657e-08,
+              "coarse_level": 1,
+              "fine_level": 2
+            }
+          ],
+          "levels": [
+            {
+              "A_q": 0.00019290123456790122,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004680940018393498,
+              "PHI": -9.029591084864001e-07,
+              "case": "R48_dk_0.01388889",
+              "det_W": [
+                0.9999999999995922,
+                -9.029591084862772e-07
+              ],
+              "h": 0.013888888888888888,
+              "level": 0,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 1.840561744571015e-15
+            },
+            {
+              "A_q": 4.8225308641975306e-05,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004708173479237297,
+              "PHI": -2.2705311917618137e-07,
+              "case": "R48_dk_0.01388889",
+              "det_W": [
+                0.9999999999999719,
+                -2.2705311917617888e-07
+              ],
+              "h": 0.006944444444444444,
+              "level": 1,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 2.7579182797043215e-15
+            },
+            {
+              "A_q": 1.2056327160493826e-05,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.005272113824938164,
+              "PHI": -6.356232910081698e-08,
+              "case": "R48_dk_0.01388889",
+              "det_W": [
+                0.9999999999999983,
+                -6.356232910081696e-08
+              ],
+              "h": 0.003472222222222222,
+              "level": 2,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 1.0679424262396437e-15
+            }
+          ],
+          "max_density_proxy_relative_drift": 0.1069666483741901
+        }
+      },
+      "R48_dk_0.02777778": {
+        "nominal_delta_k": 0.027777777777777776,
+        "resolution": 48,
+        "scaling": {
+          "adjacent_refinement": [
+            {
+              "AREA_RATIO": 4.0,
+              "DENSITY_PROXY_ABS_DIFFERENCE": 3.166977062742625e-05,
+              "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.006720189202233659,
+              "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.006720189202233754,
+              "PHASE_AREA_LAW_RESIDUAL": -2.4436551410051464e-08,
+              "coarse_level": 0,
+              "fine_level": 1
+            },
+            {
+              "AREA_RATIO": 4.0,
+              "DENSITY_PROXY_ABS_DIFFERENCE": 2.721244820517478e-05,
+              "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.005779831249884844,
+              "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.005779831249884939,
+              "PHASE_AREA_LAW_RESIDUAL": 5.2493148543933695e-09,
+              "coarse_level": 1,
+              "fine_level": 2
+            }
+          ],
+          "levels": [
+            {
+              "A_q": 0.0007716049382716049,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004712630801659548,
+              "PHI": -3.63628919881138e-06,
+              "case": "R48_dk_0.02777778",
+              "det_W": [
+                0.9999999999933903,
+                -3.636289198803372e-06
+              ],
+              "h": 0.027777777777777776,
+              "level": 0,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 2.303654697643336e-15
+            },
+            {
+              "A_q": 0.00019290123456790122,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004680961031032122,
+              "PHI": -9.029631618503321e-07,
+              "case": "R48_dk_0.02777778",
+              "det_W": [
+                0.9999999999995915,
+                -9.029631618502086e-07
+              ],
+              "h": 0.013888888888888888,
+              "level": 1,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 1.7559530255392863e-15
+            },
+            {
+              "A_q": 4.8225308641975306e-05,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004708173479237297,
+              "PHI": -2.2705311917618137e-07,
+              "case": "R48_dk_0.02777778",
+              "det_W": [
+                0.9999999999999719,
+                -2.2705311917617888e-07
+              ],
+              "h": 0.006944444444444444,
+              "level": 2,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 2.7579182797043215e-15
+            }
+          ],
+          "max_density_proxy_relative_drift": 0.006720189202233659
+        }
+      },
+      "R64_dk_0.02777778": {
+        "nominal_delta_k": 0.027777777777777776,
+        "resolution": 64,
+        "scaling": {
+          "adjacent_refinement": [
+            {
+              "AREA_RATIO": 4.0,
+              "DENSITY_PROXY_ABS_DIFFERENCE": 2.088889267160606e-05,
+              "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.004257902982925863,
+              "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.0042579029829259065,
+              "PHASE_AREA_LAW_RESIDUAL": -1.6117972740436938e-08,
+              "coarse_level": 0,
+              "fine_level": 1
+            },
+            {
+              "AREA_RATIO": 4.0,
+              "DENSITY_PROXY_ABS_DIFFERENCE": 1.6771867800934905e-05,
+              "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.0034215775315952343,
+              "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.0034215775315952607,
+              "PHASE_AREA_LAW_RESIDUAL": 3.2353140048099987e-09,
+              "coarse_level": 1,
+              "fine_level": 2
+            }
+          ],
+          "levels": [
+            {
+              "A_q": 0.0007716049382716049,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004905910903881618,
+              "PHI": -3.7854250801555696e-06,
+              "case": "R64_dk_0.02777778",
+              "det_W": [
+                0.9999999999928371,
+                -3.785425080146536e-06
+              ],
+              "h": 0.027777777777777776,
+              "level": 0,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 2.6036881853433945e-15
+            },
+            {
+              "A_q": 0.00019290123456790122,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004885022011210012,
+              "PHI": -9.423267768537832e-07,
+              "case": "R64_dk_0.02777778",
+              "det_W": [
+                0.9999999999995578,
+                -9.423267768536454e-07
+              ],
+              "h": 0.013888888888888888,
+              "level": 1,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 2.7074796224334872e-15
+            },
+            {
+              "A_q": 4.8225308641975306e-05,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004901793879010947,
+              "PHI": -2.363905227146483e-07,
+              "case": "R64_dk_0.02777778",
+              "det_W": [
+                0.9999999999999712,
+                -2.363905227146459e-07
+              ],
+              "h": 0.006944444444444444,
+              "level": 2,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 1.4067018342113194e-15
+            }
+          ],
+          "max_density_proxy_relative_drift": 0.004257902982925863
+        }
+      }
+    },
+    "FR050": {
+      "R48_dk_0.01388889": {
+        "nominal_delta_k": 0.013888888888888888,
+        "resolution": 48,
+        "scaling": {
+          "adjacent_refinement": [
+            {
+              "AREA_RATIO": 4.0,
+              "DENSITY_PROXY_ABS_DIFFERENCE": 7.471686996445268e-05,
+              "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.487048197298023,
+              "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.487048197298023,
+              "PHASE_AREA_LAW_RESIDUAL": -1.4412976459192261e-08,
+              "coarse_level": 0,
+              "fine_level": 1
+            },
+            {
+              "AREA_RATIO": 4.0,
+              "DENSITY_PROXY_ABS_DIFFERENCE": 7.302924524249617e-05,
+              "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.928054587555062,
+              "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.9280545875550619,
+              "PHASE_AREA_LAW_RESIDUAL": -3.5218578917098845e-09,
+              "coarse_level": 1,
+              "fine_level": 2
+            }
+          ],
+          "levels": [
+            {
+              "A_q": 0.00019290123456790122,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.00015340754853206798,
+              "PHI": -2.9592505503871138e-08,
+              "case": "R48_dk_0.01388889",
+              "det_W": [
+                0.9999999999999996,
+                -2.9592505503871134e-08
+              ],
+              "h": 0.013888888888888888,
+              "level": 0,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 2.0310050971669476e-15
+            },
+            {
+              "A_q": 4.8225308641975306e-05,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -7.86906785676153e-05,
+              "PHI": -3.794882261169719e-09,
+              "case": "R48_dk_0.01388889",
+              "det_W": [
+                0.9999999999999997,
+                -3.7948822611697175e-09
+              ],
+              "h": 0.006944444444444444,
+              "level": 1,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 1.3567297219782077e-15
+            },
+            {
+              "A_q": 1.2056327160493826e-05,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -5.661433325119129e-06,
+              "PHI": -6.825609236495862e-11,
+              "case": "R48_dk_0.01388889",
+              "det_W": [
+                1.0000000000000002,
+                -6.825609236495864e-11
+              ],
+              "h": 0.003472222222222222,
+              "level": 2,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 1.2541347022832982e-15
+            }
+          ],
+          "max_density_proxy_relative_drift": 0.928054587555062
+        }
+      },
+      "R48_dk_0.02777778": {
+        "nominal_delta_k": 0.027777777777777776,
+        "resolution": 48,
+        "scaling": {
+          "adjacent_refinement": [
+            {
+              "AREA_RATIO": 4.0,
+              "DENSITY_PROXY_ABS_DIFFERENCE": 0.0001322999952586901,
+              "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.8624086397615199,
+              "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.86240863976152,
+              "PHASE_AREA_LAW_RESIDUAL": 1.0208332967491521e-07,
+              "coarse_level": 0,
+              "fine_level": 1
+            },
+            {
+              "AREA_RATIO": 4.0,
+              "DENSITY_PROXY_ABS_DIFFERENCE": 7.471686996445268e-05,
+              "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.487048197298023,
+              "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.487048197298023,
+              "PHASE_AREA_LAW_RESIDUAL": -1.4412976459192261e-08,
+              "coarse_level": 1,
+              "fine_level": 2
+            }
+          ],
+          "levels": [
+            {
+              "A_q": 0.0007716049382716049,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -2.110755327337787e-05,
+              "PHI": -1.6286692340569343e-08,
+              "case": "R48_dk_0.02777778",
+              "det_W": [
+                1.0000000000000013,
+                -1.6286692340569366e-08
+              ],
+              "h": 0.027777777777777776,
+              "level": 0,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 3.063716940448351e-15
+            },
+            {
+              "A_q": 0.00019290123456790122,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.00015340754853206798,
+              "PHI": -2.9592505503871138e-08,
+              "case": "R48_dk_0.02777778",
+              "det_W": [
+                0.9999999999999996,
+                -2.9592505503871134e-08
+              ],
+              "h": 0.013888888888888888,
+              "level": 1,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 2.0310050971669476e-15
+            },
+            {
+              "A_q": 4.8225308641975306e-05,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -7.86906785676153e-05,
+              "PHI": -3.794882261169719e-09,
+              "case": "R48_dk_0.02777778",
+              "det_W": [
+                0.9999999999999997,
+                -3.7948822611697175e-09
+              ],
+              "h": 0.006944444444444444,
+              "level": 2,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 1.3567297219782077e-15
+            }
+          ],
+          "max_density_proxy_relative_drift": 0.8624086397615199
+        }
+      },
+      "R64_dk_0.02777778": {
+        "nominal_delta_k": 0.027777777777777776,
+        "resolution": 64,
+        "scaling": {
+          "adjacent_refinement": [
+            {
+              "AREA_RATIO": 4.0,
+              "DENSITY_PROXY_ABS_DIFFERENCE": 6.392239995287448e-06,
+              "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.8227919601000497,
+              "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.8227919601000498,
+              "PHASE_AREA_LAW_RESIDUAL": 4.932283946981056e-09,
+              "coarse_level": 0,
+              "fine_level": 1
+            },
+            {
+              "AREA_RATIO": 4.0,
+              "DENSITY_PROXY_ABS_DIFFERENCE": 1.2628884094412528e-05,
+              "DENSITY_PROXY_RELATIVE_DIFFERENCE": 1.625556034438404,
+              "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 1.6255560344384037,
+              "PHASE_AREA_LAW_RESIDUAL": -2.436127333027108e-09,
+              "coarse_level": 1,
+              "fine_level": 2
+            }
+          ],
+          "levels": [
+            {
+              "A_q": 0.0007716049382716049,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -1.3767226407963626e-06,
+              "PHI": -1.0622859882687982e-09,
+              "case": "R64_dk_0.02777778",
+              "det_W": [
+                1.0000000000000002,
+                -1.0622859882687984e-09
+              ],
+              "h": 0.027777777777777776,
+              "level": 0,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 1.7673840739905205e-15
+            },
+            {
+              "A_q": 0.00019290123456790122,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": -7.76896263608381e-06,
+              "PHI": -1.4986424838124634e-09,
+              "case": "R64_dk_0.02777778",
+              "det_W": [
+                0.9999999999999993,
+                -1.4986424838124624e-09
+              ],
+              "h": 0.013888888888888888,
+              "level": 1,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 2.9791044251915577e-15
+            },
+            {
+              "A_q": 4.8225308641975306e-05,
+              "DETERMINANT_HOLONOMY_DENSITY_PROXY": 4.859921458328717e-06,
+              "PHI": 2.343712123036611e-10,
+              "case": "R64_dk_0.02777778",
+              "det_W": [
+                0.9999999999999999,
+                2.3437121230366104e-10
+              ],
+              "h": 0.006944444444444444,
+              "level": 2,
+              "qualification_passed": true,
+              "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "unitarity_residual": 2.9443991851179556e-15
+            }
+          ],
+          "max_density_proxy_relative_drift": 1.625556034438404
+        }
+      }
+    }
+  },
+  "new_field_solve_authorized": false,
+  "new_mpb_solve_performed": false,
+  "overlapping_step_reproducibility": {
+    "FR00": [
+      {
+        "REPLAY_DENSITY_PROXY_ABS_DIFFERENCE": 2.101263862387681e-08,
+        "REPLAY_PHASE_ABS_DIFFERENCE": 4.053363932031866e-12,
+        "h": 0.013888888888888888,
+        "h_label": "1/72",
+        "sources": [
+          "R48_dk_0.01388889:level0",
+          "R48_dk_0.02777778:level1"
+        ]
+      },
+      {
+        "REPLAY_DENSITY_PROXY_ABS_DIFFERENCE": 0.0,
+        "REPLAY_PHASE_ABS_DIFFERENCE": 0.0,
+        "h": 0.006944444444444444,
+        "h_label": "1/144",
+        "sources": [
+          "R48_dk_0.01388889:level1",
+          "R48_dk_0.02777778:level2"
+        ]
+      }
+    ],
+    "FR050": [
+      {
+        "REPLAY_DENSITY_PROXY_ABS_DIFFERENCE": 0.0,
+        "REPLAY_PHASE_ABS_DIFFERENCE": 0.0,
+        "h": 0.013888888888888888,
+        "h_label": "1/72",
+        "sources": [
+          "R48_dk_0.01388889:level0",
+          "R48_dk_0.02777778:level1"
+        ]
+      },
+      {
+        "REPLAY_DENSITY_PROXY_ABS_DIFFERENCE": 0.0,
+        "REPLAY_PHASE_ABS_DIFFERENCE": 0.0,
+        "h": 0.006944444444444444,
+        "h_label": "1/144",
+        "sources": [
+          "R48_dk_0.01388889:level1",
+          "R48_dk_0.02777778:level2"
+        ]
+      }
+    ]
+  },
+  "phase_branch_safe_limit": 1.5707963267948966,
+  "physical_hall_response_authorized": false,
+  "rank2_doublet_observable_authorized": false,
+  "resolution_sensitivity": {
+    "FR00": [
+      {
+        "DELTA_DENSITY_PROXY_RESOLUTION_ABS": 0.00019328010222206989,
+        "DELTA_DENSITY_PROXY_RESOLUTION_RELATIVE": 0.039397393472666666,
+        "DELTA_PHASE_RESOLUTION_ABS": 1.4913588134418973e-07,
+        "DELTA_PHASE_RESOLUTION_RELATIVE": 0.039397393472666666,
+        "h": 0.027777777777777776,
+        "h_label": "1/36"
+      },
+      {
+        "DELTA_DENSITY_PROXY_RESOLUTION_ABS": 0.00020406098017789007,
+        "DELTA_DENSITY_PROXY_RESOLUTION_RELATIVE": 0.04177278622483514,
+        "DELTA_PHASE_RESOLUTION_ABS": 3.9363615003451064e-08,
+        "DELTA_PHASE_RESOLUTION_RELATIVE": 0.0417727862248352,
+        "h": 0.013888888888888888,
+        "h_label": "1/72"
+      },
+      {
+        "DELTA_DENSITY_PROXY_RESOLUTION_ABS": 0.0001936203997736502,
+        "DELTA_DENSITY_PROXY_RESOLUTION_RELATIVE": 0.039499906473569976,
+        "DELTA_PHASE_RESOLUTION_ABS": 9.337403538466923e-09,
+        "DELTA_PHASE_RESOLUTION_RELATIVE": 0.03949990647356996,
+        "h": 0.006944444444444444,
+        "h_label": "1/144"
+      }
+    ],
+    "FR050": [
+      {
+        "DELTA_DENSITY_PROXY_RESOLUTION_ABS": 1.9730830632581508e-05,
+        "DELTA_DENSITY_PROXY_RESOLUTION_RELATIVE": 0.9347758301037776,
+        "DELTA_PHASE_RESOLUTION_ABS": 1.5224406352300546e-08,
+        "DELTA_PHASE_RESOLUTION_RELATIVE": 0.9347758301037777,
+        "h": 0.027777777777777776,
+        "h_label": "1/36"
+      },
+      {
+        "DELTA_DENSITY_PROXY_RESOLUTION_ABS": 0.00014563858589598417,
+        "DELTA_DENSITY_PROXY_RESOLUTION_RELATIVE": 0.9493573640252794,
+        "DELTA_PHASE_RESOLUTION_ABS": 2.8093863020058673e-08,
+        "DELTA_PHASE_RESOLUTION_RELATIVE": 0.9493573640252793,
+        "h": 0.013888888888888888,
+        "h_label": "1/72"
+      },
+      {
+        "DELTA_DENSITY_PROXY_RESOLUTION_ABS": 8.355060002594402e-05,
+        "DELTA_DENSITY_PROXY_RESOLUTION_RELATIVE": 1.0617598112863242,
+        "DELTA_PHASE_RESOLUTION_ABS": 4.0292534734733805e-09,
+        "DELTA_PHASE_RESOLUTION_RELATIVE": 1.0617598112863242,
+        "h": 0.006944444444444444,
+        "h_label": "1/144"
+      }
+    ]
+  },
+  "schema": "e7i3b_rank3_determinant_small_loop_scaling_v1",
+  "source_binding": {
+    "classification": "E7I3A_RANK3_WILSON_ALGEBRA_QUALIFIED",
+    "endpoints": [
+      "FR00",
+      "FR050"
+    ],
+    "plaquettes": [
+      "R48_dk_1over36",
+      "R48_dk_1over72",
+      "R64_dk_1over36"
+    ],
+    "rank_selection_zero_based": [
+      0,
+      1,
+      2
+    ],
+    "source_evidence_sha256": "3e9521f172958a818474f76479ea8f3a7f7b058e647ea689ac3116f0c29e386a",
+    "source_git_commit": "0425209b55de7e41e1bbdd349d097dd7bab0c034",
+    "source_path": "audit/e7i3a/result.json"
+  },
+  "work_order": "E7I.3B"
+}
