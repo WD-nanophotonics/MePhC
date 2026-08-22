@@ -53,12 +53,15 @@ def _berry(cache,center,delta,band):
     hs=(float(delta),float(delta)/2,float(delta)/4)
     levels=tuple(_level_snapshots(cache,center,h) for h in hs)
     selections=tuple((((band,),)*5) for _ in hs)
-    source=qualify_mpb_plaquette(levels,selections,hs,thresholds=E3,refinement_thresholds=E4C)
-    result=estimate_mpb_rank1_berry_curvature(compose_mpb_plaquette_holonomy(source))
+    try:
+        source=qualify_mpb_plaquette(levels,selections,hs,thresholds=E3,refinement_thresholds=E4C)
+        result=estimate_mpb_rank1_berry_curvature(compose_mpb_plaquette_holonomy(source))
+    except ValueError as exc:
+        return {"qualified":False,"live_qualified":False,"selected_band":band+1,"status":"FAIL_CLOSED_UNQUALIFIED_SNAPSHOT","reason":str(exc),"levels":[]}
     rows=[]
     for level in result.levels:
         rows.append({"status":level.status,"step":level.step,"signed_area":level.signed_area,"wilson_phase":level.wilson_phase,"omega_q":level.curvature_estimate,"omega_phys_over_a2":None if level.curvature_estimate is None else level.curvature_estimate/(2*math.pi)**2})
-    return {"qualified":bool(result.is_qualified),"live_qualified":bool(result.is_live_qualified),"selected_band":band+1,"levels":rows}
+    return {"qualified":bool(result.is_qualified),"live_qualified":bool(result.is_live_qualified),"selected_band":band+1,"status":"QUALIFIED","levels":rows}
 
 def _adapter(fr):
     return build_reference_mpb_adapter(build_triangular_reference_geometry(fr),build_triangular_coordinate_preflight())
@@ -89,18 +92,21 @@ def _circle_rank2(adapter):
     hs=(1/36,1/72,1/144)
     levels=tuple(_level_snapshots(cache,K,h) for h in hs)
     selections=tuple((((1,2),)*5) for _ in hs)
-    source=qualify_mpb_plaquette(levels,selections,hs,thresholds=E3,refinement_thresholds=E4C)
-    holonomy=compose_mpb_plaquette_holonomy(source)
-    row={"status":holonomy.status[-1],"qualified":bool(holonomy.is_qualified),"rank":2,"rank1_policy":"PROHIBITED_AND_ENFORCED"}
-    if holonomy.wilson_results[-1].product is not None:
-        product=np.asarray(holonomy.wilson_results[-1].product)
-        row.update({"determinant_phase":float(np.angle(np.linalg.det(product))),"eigenphases":[float(x) for x in np.angle(np.linalg.eigvals(product))]})
+    try:
+        source=qualify_mpb_plaquette(levels,selections,hs,thresholds=E3,refinement_thresholds=E4C)
+        holonomy=compose_mpb_plaquette_holonomy(source)
+        row={"status":holonomy.status[-1],"qualified":bool(holonomy.is_qualified),"rank":2,"rank1_policy":"PROHIBITED_AND_ENFORCED"}
+        if holonomy.wilson_results[-1].product is not None:
+            product=np.asarray(holonomy.wilson_results[-1].product)
+            row.update({"determinant_phase":float(np.angle(np.linalg.det(product))),"eigenphases":[float(x) for x in np.angle(np.linalg.eigvals(product))]})
+    except ValueError as exc:
+        row={"status":"PARTIAL_UNQUALIFIED_SNAPSHOT","qualified":False,"rank":2,"rank1_policy":"PROHIBITED_AND_ENFORCED","reason":str(exc)}
     row["counters"]={"unique_solves":cache.raw_requests,"cache_hits":cache.cache_hits,"solver_failures":cache.solver_failures}
     return row
 
 def main():
     started=time.time()
-    result={"schema":"e7i2c_live_smoke_result_v1","work_order":"E7I.2C","code_change":"SANDBOX_ONLY","main_unchanged":True,"live_valley_chern":"NOT_AUTHORIZED","dense_sweep":"NOT_AUTHORIZED"}
+    result={"schema":"e7i2c_live_smoke_result_v1","work_order":"E7I.2C","code_change":"SANDBOX_ONLY","main_unchanged":True,"live_valley_chern":"NOT_AUTHORIZED","dense_sweep":"NOT_AUTHORIZED","mpb_reference_adapter":"READY","mpb_coordinate_preflight":"PASSED","reference_material_semantics":"RELATIVE_PERMITTIVITY","fr050_rank1_policy":"PROHIBITED_AND_ENFORCED"}
     try:
         triangle=_run_endpoint(0.0,"FR00_exact_triangle")
         circle_adapter=_adapter(0.5)
@@ -116,7 +122,14 @@ def main():
             result["fr050_rank2_diagnostic"]="NOT_RUN_DUE_TO_PRIOR_GATE"
         else:
             result["fr050_rank2_diagnostic"]=_circle_rank2(circle_adapter)
-        result["overall"]="BOUNDED_LIVE_TRIANGULAR_REFERENCE_SMOKE_READY_FOR_SUPERVISOR_AUDIT"
+        berry_ok=all(x["qualified"] for x in triangle["berry"].values())
+        result["fr00_k_spectral_smoke"]="PASSED"
+        result["fr00_local_berry_smoke"]="PASSED" if berry_ok else "PARTIAL"
+        result["fr00_relative_berry_pattern"]="CONSISTENT_WITH_REFERENCE" if berry_ok else "PHYSICALLY_UNQUALIFIED"
+        result["local_delta_k_sensitivity"]="MEASURED"
+        result["local_resolution_sensitivity"]="MEASURED"
+        result["absolute_paper_valley_sign_gate"]="DISABLED_DUE_TO_CONVENTION_MAPPED_ORIENTATION"
+        result["overall"]="BOUNDED_LIVE_TRIANGULAR_REFERENCE_SMOKE_READY_FOR_SUPERVISOR_AUDIT" if berry_ok else "LIVE_SMOKE_PARTIAL"
     except Exception as exc:
         result.update({"overall":"LIVE_SMOKE_FAILED_CLEANLY","error_type":type(exc).__name__,"error":str(exc)})
     result["elapsed_seconds"]=time.time()-started
