@@ -514,6 +514,26 @@ def _qualification_incomplete(left: EigenSubspace, right: EigenSubspace, thresho
     )
 
 
+def cross_k_projector_distance(left: EigenSubspace, right: EigenSubspace) -> float:
+    """Return the basis-invariant Frobenius distance between equal-rank spans.
+
+    Cross-k qualification permits distinct k-point labels. The singular-value
+    identity avoids materializing ambient projectors.
+    """
+    if not isinstance(left, EigenSubspace) or not isinstance(right, EigenSubspace):
+        raise TypeError("left and right must be EigenSubspace values")
+    if left.ambient_dimension != right.ambient_dimension:
+        raise ValueError("cross-k projector distance requires equal ambient dimensions")
+    if left.dimension != right.dimension:
+        raise ValueError("cross-k projector distance requires equal ranks")
+    singular_values = np.minimum(np.linalg.svd(left.frame.conj().T @ right.frame, compute_uv=False), 1.0)
+    distance_squared = 2.0 * (left.dimension - float(np.sum(np.square(singular_values))))
+    if not math.isfinite(distance_squared):
+        raise ValueError("cross-k projector distance is not finite")
+    if distance_squared <= 64.0 * np.finfo(float).eps:
+        return 0.0
+    return float(math.sqrt(distance_squared))
+
 def qualify_local_subspace(
     left: EigenSubspace,
     right: EigenSubspace,
@@ -532,7 +552,7 @@ def qualify_local_subspace(
         overlap = subspace_overlap(left, right, validation_tolerance=thresholds.validation_tolerance)
     except (ValueError, SubspaceTransportError) as exc:
         return _qualification_incomplete(left, right, thresholds, evidence=(f"overlap validation failed: {exc}",))
-    singular_values = np.linalg.svd(left.frame.conj().T @ right.frame, compute_uv=False); distance = float(np.sqrt(max(0.0, 2.0 * (left.dimension - float(np.sum(np.square(singular_values)))))))
+    distance = cross_k_projector_distance(left, right)
     if not math.isfinite(distance):
         return _qualification_incomplete(left, right, thresholds, evidence=("cross-k projector distance is not finite",), overlap=overlap)
     if external_context is None and (left_excluded_eigenvalues is not None or right_excluded_eigenvalues is not None):
