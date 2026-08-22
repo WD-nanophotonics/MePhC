@@ -1,6 +1,6 @@
 """E7I.3C bounded H-to-E+H representation bridge."""
 from __future__ import annotations
-import hashlib, json, math, pickle, subprocess, sys, tempfile
+import gc, hashlib, json, math, pickle, subprocess, sys, tempfile
 from fractions import Fraction
 from pathlib import Path
 import meep as mp
@@ -186,9 +186,9 @@ def live_case(adapter,res,endpoint):
         for point in pts(float(sf)):
             key=tuple(float(x) for x in point)
             if key not in cache:
-                raw=solve_isolated(adapter,res,endpoint,key); frame,met=lowdin_snapshot(raw); cache[key]=(raw,frame,met)
+                raw=solve_isolated(adapter,res,endpoint,key); frame,met=lowdin_snapshot(raw); cache[key]=(frame,met)
                 records.append({"point":list(key),"frequencies":[float(x) for x in raw.frequencies],"external_gap_band4_minus_band3":float(raw.frequencies[3]-raw.frequencies[2]),"raw":met})
-            lev.append(cache[key][1])
+            lev.append(cache[key][0])
         levels.append(tuple(lev))
     orders={"forward":(0,1,2,3,4),"reverse_same_basepoint":(0,3,2,1,4),"reverse_shifted_basepoint":(3,2,1,0,4),"cyclic":(1,2,3,0,4)}
     results={}
@@ -323,7 +323,7 @@ def main():
     base=baseline(root); cases={}
     for ep,fr in (("FR00",0.0),("FR050",0.5)):
         adapter=build_reference_mpb_adapter(build_triangular_reference_geometry(fr),build_triangular_coordinate_preflight())
-        cases[ep]={str(r):live_case(adapter,r,fr) for r in (48,64)}
+        cases[ep]={str(r):live_case(adapter,r,fr) for r in (48,64)}; gc.collect()
     comp=comparison(cases,base)
     eh_summary={ep:scaling_summary(cases[ep],ep) for ep in ("FR00","FR050")}
     bridge_results={ep:bridge_summary(ep,comp,eh_summary[ep],base) for ep in ("FR00","FR050")}
