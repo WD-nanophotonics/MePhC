@@ -13,7 +13,7 @@ import math
 from typing import Any, Iterable, Mapping
 
 import numpy as np
-from shapely.geometry import Point, Polygon
+from shapely.geometry import Point, Polygon, box
 from shapely.ops import unary_union
 
 from .valley_reference_geometry import build_triangular_reference_geometry
@@ -59,14 +59,14 @@ def _regular_polygon(center: Iterable[float], radius: float, sides: int, rotatio
     points = c + float(radius) * np.column_stack((np.cos(angles), np.sin(angles)))
     if _signed_area(points) < 0.0:
         points = points[::-1]
-    return tuple(tuple(float(f"{x:.15g}") for x in point) for point in points)
+    return tuple(tuple(float(x) for x in point) for point in points)
 
 
 def _periodic_canonical(point: np.ndarray, period_basis: np.ndarray) -> tuple[float, float]:
     fractional = np.linalg.solve(period_basis, point)
     reduced = fractional - np.floor(fractional)
     canonical = period_basis @ reduced
-    return tuple(float(f"{x:.15g}") for x in canonical)
+    return tuple(float(x) for x in canonical)
 
 
 def periodic_equivalent(left: Iterable[float], right: Iterable[float], period_basis: Iterable[Iterable[float]], tolerance: float = 1e-10) -> bool:
@@ -75,6 +75,12 @@ def periodic_equivalent(left: Iterable[float], right: Iterable[float], period_ba
     basis = _matrix(period_basis, "period_basis")
     coefficients = np.linalg.solve(basis, a - b)
     return bool(np.allclose(coefficients, np.rint(coefficients), rtol=0.0, atol=tolerance))
+
+def fractional_periodic_equivalent(left: Iterable[float], right: Iterable[float], tolerance: float = 1e-10) -> bool:
+    a = _finite_vector(left, "left_fractional")
+    b = _finite_vector(right, "right_fractional")
+    difference = a - b
+    return bool(np.allclose(difference, np.rint(difference), rtol=0.0, atol=tolerance))
 
 
 @dataclass(frozen=True, slots=True)
@@ -124,7 +130,7 @@ class ReferenceCoordinatePreflight:
 
     @property
     def k_label_mapping_bound(self) -> bool:
-        return periodic_equivalent(self.public_q_to_mpb(self.public_k), self.mpb_k, self.mpb_reciprocal_basis, self.tolerance) and periodic_equivalent(self.public_q_to_mpb(self.public_kp), self.mpb_kp, self.mpb_reciprocal_basis, self.tolerance)
+        return fractional_periodic_equivalent(self.public_q_to_mpb(self.public_k), self.mpb_k, self.tolerance) and fractional_periodic_equivalent(self.public_q_to_mpb(self.public_kp), self.mpb_kp, self.tolerance)
 
     @property
     def kp_time_reversal_bound(self) -> bool:
@@ -138,17 +144,23 @@ class ReferenceCoordinatePreflight:
     def ready(self) -> bool:
         return self.round_trip_residual <= self.tolerance and self.k_label_mapping_bound and self.kp_time_reversal_bound and self.positive_orientation
 
-    def delta_k_to_public_q(self, delta_k: float) -> tuple[float, float]:
+    def delta_k_vectors_to_public_q(self, delta_k: float) -> tuple[tuple[float, float], tuple[float, float]]:
         if not math.isfinite(float(delta_k)) or float(delta_k) <= 0.0:
-            raise ValueError("delta_k must be positive")
-        axis = np.asarray((float(delta_k), 0.0), dtype=float)
-        q_axis = np.linalg.solve(_matrix(self.public_to_physical, "public_to_physical"), axis)
-        return tuple(float(x) for x in q_axis)
+            raise ValueError("delta_k must be positive and finite")
+        inverse = np.linalg.inv(_matrix(self.public_to_physical, "public_to_physical"))
+        vectors = (
+            inverse @ np.asarray((float(delta_k), 0.0)),
+            inverse @ np.asarray((0.0, float(delta_k))),
+        )
+        return tuple(tuple(float(x) for x in vector) for vector in vectors)
+
+    def delta_k_to_public_q(self, delta_k: float) -> tuple[float, float]:
+        return self.delta_k_vectors_to_public_q(delta_k)[0]
 
     @property
     def mapping_digest(self) -> str:
         return _json_digest({
-            "schema": "reference_coordinate_preflight_v1",
+            "schema": "reference_coordinate_preflight_v2",
             "real_space_basis": self.real_space_basis,
             "public_to_physical": self.public_to_physical,
             "public_period_basis": self.public_period_basis,
@@ -160,6 +172,21 @@ class ReferenceCoordinatePreflight:
             "orientation": "positive" if self.positive_orientation else "negative",
             "ready": self.ready,
         })
+
+
+def build_triangular_coordinate_preflight() -> ReferenceCoordinatePreflight:
+    identity = ((1.0, 0.0), (0.0, 1.0))
+    reciprocal = ((1.0, 1.0), (1.0, -1.0))
+    return ReferenceCoordinatePreflight(
+        real_space_basis=((0.5, math.sqrt(3.0) / 2.0), (0.5, -math.sqrt(3.0) / 2.0)),
+        public_to_physical=identity,
+        public_period_basis=identity,
+        mpb_reciprocal_basis=reciprocal,
+        public_k=K_POINT,
+        public_kp=(-K_POINT[0], -K_POINT[1]),
+        mpb_k=(1.0 / 3.0, 1.0 / 3.0),
+        mpb_kp=(-1.0 / 3.0, -1.0 / 3.0),
+    )
 
 
 def build_identity_coordinate_preflight() -> ReferenceCoordinatePreflight:
@@ -216,7 +243,7 @@ class ValleyDomain:
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "schema": "valley_domain_v1",
+            "schema": "valley_domain_v2",
             "domain_id": self.domain_id,
             "vertices": [list(point) for point in self.vertices],
             "exclusions": [[list(point) for point in hole] for hole in self.exclusions],
@@ -261,19 +288,73 @@ def paper_style_truncated_k_hbz(*, fr: float, delta_k: float, delta_gamma: float
     )
 
 
-def mephc_periodic_voronoi_k_basin() -> ValleyDomain:
-    radius = math.sqrt(VORONOI_AREA_Q / (3.0 * math.sqrt(3.0) / 2.0))
+def _clip_half_plane(vertices: list[np.ndarray], normal: np.ndarray, bound: float) -> list[np.ndarray]:
+    if not vertices:
+        return []
+    result = []
+    for left, right in zip(vertices, vertices[1:] + vertices[:1]):
+        left_value = float(np.dot(normal, left) - bound)
+        right_value = float(np.dot(normal, right) - bound)
+        left_inside = left_value <= 1e-12
+        right_inside = right_value <= 1e-12
+        if left_inside:
+            result.append(left)
+        if left_inside != right_inside:
+            fraction = left_value / (left_value - right_value)
+            result.append(left + fraction * (right - left))
+    return result
+
+
+def _periodic_voronoi_cell(center: Iterable[float], competitor: Iterable[float], period_basis: Iterable[Iterable[float]], image_radius: int = 3) -> tuple[tuple[float, float], ...]:
+    c = _finite_vector(center, "center")
+    other = _finite_vector(competitor, "competitor")
+    basis = _matrix(period_basis, "period_basis")
+    translations = [np.asarray((i, j), dtype=float) @ basis for i in range(-image_radius, image_radius + 1) for j in range(-image_radius, image_radius + 1)]
+    extent = 4.0 * max(float(np.linalg.norm(row)) for row in basis) + float(np.linalg.norm(other - c))
+    vertices = [c + np.asarray((extent, extent)), c + np.asarray((-extent, extent)), c + np.asarray((-extent, -extent)), c + np.asarray((extent, -extent))]
+    points = [c + t for t in translations if np.linalg.norm(t) > 1e-14]
+    points.extend(other + t for t in translations)
+    for point in points:
+        normal = point - c
+        bound = 0.5 * (float(np.dot(point, point)) - float(np.dot(c, c)))
+        vertices = _clip_half_plane(vertices, normal, bound)
+    if len(vertices) < 3:
+        raise ValueError("periodic Voronoi construction produced no bounded cell")
+    cleaned = []
+    for point in vertices:
+        if not cleaned or float(np.linalg.norm(point - cleaned[-1])) > 1e-10:
+            cleaned.append(point)
+    if len(cleaned) > 1 and float(np.linalg.norm(cleaned[0] - cleaned[-1])) <= 1e-10:
+        cleaned.pop()
+    array = np.asarray(cleaned, dtype=float)
+    if _signed_area(array) < 0.0:
+        array = array[::-1]
+    return tuple(tuple(float(x) for x in point) for point in array)
+
+
+def mephc_periodic_voronoi_k_basin(
+    *,
+    period_basis: Iterable[Iterable[float]] = ((1.0 / math.sqrt(3.0), 1.0), (1.0 / math.sqrt(3.0), -1.0)),
+    k: Iterable[float] = (0.0, -2.0 / 3.0),
+    kp: Iterable[float] = (0.0, 2.0 / 3.0),
+) -> ValleyDomain:
+    basis = _matrix(period_basis, "period_basis")
+    center = _finite_vector(k, "k")
+    competitor = _finite_vector(kp, "kp")
+    vertices = _periodic_voronoi_cell(center, competitor, basis)
     return ValleyDomain(
         domain_id="PERIODIC_RECIPROCAL_METRIC_VORONOI_BASIN_K",
-        vertices=_regular_polygon(K_POINT, radius, 6, rotation=0.0),
+        vertices=vertices,
         metadata=(
-            ("definition", "periodic reciprocal-metric Voronoi basin of K"),
-            ("area_q_target", VORONOI_AREA_Q),
+            ("definition", "periodic reciprocal-metric Voronoi basin d_K<d_Kp with periodic images"),
+            ("period_basis", tuple(tuple(float(x) for x in row) for row in basis)),
+            ("K", tuple(float(x) for x in center)),
+            ("Kp", tuple(float(x) for x in competitor)),
             ("boundary_convention", "zero_measure_boundary"),
+            ("algorithm", "periodic_image_half_plane_intersection_v1"),
             ("source_role", "stable_project_internal_observable"),
         ),
     )
-
 
 @dataclass(frozen=True, slots=True)
 class DomainSample:
@@ -319,32 +400,36 @@ def integrate_sampled_field(
         raise ValueError("values must be finite and match the sample center count")
     return float(orientation_sign * np.dot(numbers, weights))
 def sample_domain(domain: ValleyDomain, spacing_q: float) -> DomainSample:
-    """Return deterministic interior centers with equal diagnostic weights."""
+    """Tile the plane by clipped spacing cells and use clipped-cell centroids."""
     if spacing_q <= 0.0 or not math.isfinite(float(spacing_q)):
         raise ValueError("spacing_q must be positive and finite")
+    spacing = float(spacing_q)
     polygon = domain.polygon
     min_x, min_y, max_x, max_y = polygon.bounds
-    xs = np.arange(math.ceil(min_x / spacing_q) * spacing_q, max_x + 0.5 * spacing_q, spacing_q)
-    ys = np.arange(math.ceil(min_y / spacing_q) * spacing_q, max_y + 0.5 * spacing_q, spacing_q)
+    i_min, i_max = math.floor(min_x / spacing) - 1, math.ceil(max_x / spacing) + 1
+    j_min, j_max = math.floor(min_y / spacing) - 1, math.ceil(max_y / spacing) + 1
     centers = []
-    for x in xs:
-        for y in ys:
-            point = Point(float(x), float(y))
-            if polygon.contains(point):
-                centers.append((float(f"{x:.15g}"), float(f"{y:.15g}")))
-    centers = tuple(sorted(set(centers)))
+    weights = []
+    for i in range(i_min, i_max + 1):
+        for j in range(j_min, j_max + 1):
+            x, y = i * spacing, j * spacing
+            cell = box(x - spacing / 2.0, y - spacing / 2.0, x + spacing / 2.0, y + spacing / 2.0)
+            clipped = polygon.intersection(cell)
+            if clipped.is_empty or clipped.area <= 1e-15:
+                continue
+            centroid = clipped.centroid
+            centers.append((float(centroid.x), float(centroid.y)))
+            weights.append(float(clipped.area))
     if not centers:
-        raise ValueError("spacing produced no retained domain centers")
-    weight = polygon.area / len(centers)
+        raise ValueError("spacing produced no retained domain cells")
     return DomainSample(
-        spacing_q=float(spacing_q),
-        centers=centers,
-        weights=tuple(float(weight) for _ in centers),
+        spacing_q=spacing,
+        centers=tuple(centers),
+        weights=tuple(weights),
         declared_exclusion_count=len(domain.exclusions),
         retained_area_q=float(polygon.area),
         domain_digest=domain.digest,
     )
-
 
 @dataclass(frozen=True, slots=True)
 class PlaquetteRequest:
@@ -353,32 +438,44 @@ class PlaquetteRequest:
     canonical_periodic_vertex_q: tuple[float, float]
     delta_k_q: tuple[float, float]
     vertex_index: int
+    delta_k_vectors_q: tuple[tuple[float, float], tuple[float, float]] = ((1.0, 0.0), (0.0, 1.0))
 
 
 def centered_ccw_plaquette_requests(
     centers: Iterable[Iterable[float]],
-    delta_k_q: float,
+    delta_k_q: float | Iterable[Iterable[float]],
     *,
     period_basis: Iterable[Iterable[float]] = ((1.0, 0.0), (0.0, 1.0)),
 ) -> tuple[PlaquetteRequest, ...]:
-    if delta_k_q <= 0.0 or not math.isfinite(float(delta_k_q)):
-        raise ValueError("delta_k_q must be positive and finite")
     basis = _matrix(period_basis, "period_basis")
+    if np.isscalar(delta_k_q):
+        h = float(delta_k_q)
+        if h <= 0.0 or not math.isfinite(h):
+            raise ValueError("delta_k_q must be positive and finite")
+        vectors = (np.asarray((h, 0.0)), np.asarray((0.0, h)))
+    else:
+        raw = tuple(tuple(vector) for vector in delta_k_q)
+        if len(raw) != 2:
+            raise ValueError("delta_k_q must contain two independent vectors")
+        vectors = (_finite_vector(raw[0], "delta_k_x_q"), _finite_vector(raw[1], "delta_k_y_q"))
+        if abs(float(vectors[0][0] * vectors[1][1] - vectors[0][1] * vectors[1][0])) <= 1e-14:
+            raise ValueError("delta-k vectors must span a nonzero area")
     offsets = ((-0.5, -0.5), (0.5, -0.5), (0.5, 0.5), (-0.5, 0.5))
-    requests = []
+    result = []
+    delta_pair = (float(np.linalg.norm(vectors[0])), float(np.linalg.norm(vectors[1])))
     for center in centers:
         c = _finite_vector(center, "center")
         for index, (ox, oy) in enumerate(offsets):
-            nominal = c + float(delta_k_q) * np.asarray((ox, oy))
-            requests.append(PlaquetteRequest(
+            nominal = c + ox * vectors[0] + oy * vectors[1]
+            result.append(PlaquetteRequest(
                 nominal_center_q=tuple(float(x) for x in c),
                 nominal_vertex_q=tuple(float(x) for x in nominal),
                 canonical_periodic_vertex_q=_periodic_canonical(nominal, basis),
-                delta_k_q=(float(delta_k_q), float(delta_k_q)),
+                delta_k_q=delta_pair,
                 vertex_index=index,
+                delta_k_vectors_q=tuple(tuple(float(x) for x in vector) for vector in vectors),
             ))
-    return tuple(requests)
-
+    return tuple(result)
 
 @dataclass(frozen=True, slots=True)
 class PhysicalSolveIdentity:
@@ -481,7 +578,7 @@ def reduce_trend(
     envelope = float(sum(values))
     if identity_or_qualification_status != "QUALIFIED":
         status = "PHYSICALLY_UNQUALIFIED"
-    elif not direction_stable or abs(observed) <= envelope:
+    elif not direction_stable or math.isclose(observed, 0.0, abs_tol=1e-15):
         status = "NUMERICALLY_UNRESOLVED"
     elif abs(observed) > envelope:
         status = "TREND_CONFIRMED"
@@ -543,7 +640,7 @@ class PerformanceDiagnostics:
 
 __all__ = [
     "PAPER_STYLE_TRUNCATED_K_HBZ", "MEPHC_PERIODIC_VORONOI_K_BASIN", "DOMAIN_SYSTEMATIC",
-    "DELTA_K_VALUES", "INTEGRATION_SPACING_Q", "ReferenceCoordinatePreflight",
+    "DELTA_K_VALUES", "INTEGRATION_SPACING_Q", "ReferenceCoordinatePreflight", "build_triangular_coordinate_preflight", "fractional_periodic_equivalent",
     "build_identity_coordinate_preflight", "periodic_equivalent", "ValleyDomain",
     "paper_style_truncated_k_hbz", "mephc_periodic_voronoi_k_basin", "DomainSample",
     "sample_domain", "integrate_sampled_field", "PlaquetteRequest", "centered_ccw_plaquette_requests",

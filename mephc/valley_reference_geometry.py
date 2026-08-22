@@ -18,7 +18,8 @@ import numpy as np
 
 TRIANGULAR_CELL_AREA = math.sqrt(3.0) / 2.0
 REFERENCE_AIR_FILL_FRACTION = 0.107
-REFERENCE_EFFECTIVE_PERMITTIVITY = 2.65
+REFERENCE_MATERIAL_VALUE = 2.65
+REFERENCE_EFFECTIVE_PERMITTIVITY = REFERENCE_MATERIAL_VALUE
 
 
 def _signed_area(vertices: np.ndarray) -> float:
@@ -35,7 +36,7 @@ def _canonical_vertices(vertices: np.ndarray) -> tuple[tuple[float, float], ...]
         raise ValueError("vertices must have shape (N, 2), N >= 3")
     if not np.all(np.isfinite(values)) or _signed_area(values) <= 0.0:
         raise ValueError("vertices must be finite and counter-clockwise")
-    return tuple(tuple(float(f"{value:.15g}") for value in point) for point in values)
+    return tuple(tuple(float(value) for value in point) for point in values)
 
 
 def _triangle_radius_for_area(area: float) -> float:
@@ -86,7 +87,12 @@ class TriangularReferenceGeometry:
     lattice_constant: float = 1.0
     polarization: str = "TE"
     effective_permittivity: float = REFERENCE_EFFECTIVE_PERMITTIVITY
+    reference_material_semantics: str = "UNRESOLVED"
+    primitive_kind: str = "rounded_triangle_close_analogue"
+    analytic_radius: float | None = None
     geometry_equivalence: str = "CLOSE_ANALOGUE"
+    paper_parameter_equivalence: str = "UNRESOLVED"
+    polygonization_version: str = "INTERNAL_CLOSE_ANALOGUE_RADIAL_MORPH_V1"
     construction_status: str = "EXACT_INTERNAL_REFERENCE_CONTRACT"
 
     @property
@@ -109,9 +115,21 @@ class TriangularReferenceGeometry:
             return "circle"
         return "rounded_triangle"
 
+    @property
+    def mpb_epsilon_value(self) -> float | None:
+        if self.reference_material_semantics == "REFRACTIVE_INDEX":
+            return self.effective_permittivity ** 2
+        if self.reference_material_semantics == "RELATIVE_PERMITTIVITY":
+            return self.effective_permittivity
+        return None
+
+    @property
+    def live_reference_solve_ready(self) -> bool:
+        return self.mpb_epsilon_value is not None and self.paper_parameter_equivalence in {"BOUND", "PAPER_PARAMETER_BOUND"}
+
     def to_dict(self) -> dict[str, Any]:
         return {
-            "schema": "triangular_reference_geometry_v1",
+            "schema": "triangular_reference_geometry_v2",
             "fr": self.fr,
             "shape_kind": self.shape_kind,
             "vertices": [list(point) for point in self.vertices],
@@ -121,7 +139,13 @@ class TriangularReferenceGeometry:
             "lattice_constant": self.lattice_constant,
             "polarization": self.polarization,
             "effective_permittivity": self.effective_permittivity,
+            "reference_material_semantics": self.reference_material_semantics,
+            "mpb_epsilon_value": self.mpb_epsilon_value,
+            "primitive_kind": self.primitive_kind,
+            "analytic_radius": self.analytic_radius,
             "geometry_equivalence": self.geometry_equivalence,
+            "paper_parameter_equivalence": self.paper_parameter_equivalence,
+            "polygonization_version": self.polygonization_version,
             "construction_status": self.construction_status,
         }
 
@@ -136,6 +160,7 @@ def build_triangular_reference_geometry(
     *,
     air_fill_fraction: float = REFERENCE_AIR_FILL_FRACTION,
     effective_permittivity: float = REFERENCE_EFFECTIVE_PERMITTIVITY,
+    material_semantics: str = "UNRESOLVED",
 ) -> TriangularReferenceGeometry:
     """Build the internal triangular reference contract without MPB."""
     if isinstance(fr, bool) or not math.isfinite(float(fr)) or not 0.0 <= float(fr) <= 0.5:
@@ -144,6 +169,8 @@ def build_triangular_reference_geometry(
         raise ValueError("air_fill_fraction must lie in (0, 1)")
     if not math.isfinite(float(effective_permittivity)) or float(effective_permittivity) <= 0.0:
         raise ValueError("effective_permittivity must be positive")
+    if material_semantics not in {"REFRACTIVE_INDEX", "RELATIVE_PERMITTIVITY", "UNRESOLVED"}:
+        raise ValueError("material_semantics is invalid")
     fr = float(fr)
     target_area = float(air_fill_fraction) * TRIANGULAR_CELL_AREA
     vertices = _canonical_vertices(_make_boundary(fr, target_area))
@@ -152,7 +179,12 @@ def build_triangular_reference_geometry(
         vertices=vertices,
         air_fill_fraction=float(air_fill_fraction),
         effective_permittivity=float(effective_permittivity),
-        geometry_equivalence="CLOSE_ANALOGUE",
+        reference_material_semantics=material_semantics,
+        primitive_kind="triangle" if fr == 0.0 else "circle" if fr == 0.5 else "rounded_triangle_close_analogue",
+        analytic_radius=_triangle_radius_for_area(target_area) if fr == 0.0 else _circle_radius_for_area(target_area) if fr == 0.5 else None,
+        geometry_equivalence="PAPER_PARAMETER_BOUND" if fr in {0.0, 0.5} else "CLOSE_ANALOGUE",
+        paper_parameter_equivalence="PAPER_PARAMETER_BOUND" if fr in {0.0, 0.5} else "UNRESOLVED",
+        polygonization_version="ANALYTIC_TRIANGLE_V1" if fr == 0.0 else "ANALYTIC_CIRCLE_WITH_DISPLAY_POLYGON_V1" if fr == 0.5 else "INTERNAL_CLOSE_ANALOGUE_RADIAL_MORPH_V1",
     )
     if abs(result.fill_fraction_error) > 5e-13:
         raise RuntimeError("reference geometry failed its fixed-fill construction")
@@ -161,7 +193,7 @@ def build_triangular_reference_geometry(
 
 __all__ = [
     "REFERENCE_AIR_FILL_FRACTION",
-    "REFERENCE_EFFECTIVE_PERMITTIVITY",
+    "REFERENCE_EFFECTIVE_PERMITTIVITY", "REFERENCE_MATERIAL_VALUE",
     "TRIANGULAR_CELL_AREA",
     "TriangularReferenceGeometry",
     "build_triangular_reference_geometry",

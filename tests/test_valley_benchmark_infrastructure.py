@@ -10,6 +10,8 @@ from mephc.valley_benchmark import (
     PAPER_STYLE_TRUNCATED_K_HBZ,
     centered_ccw_plaquette_requests,
     build_identity_coordinate_preflight,
+    build_triangular_coordinate_preflight,
+    fractional_periodic_equivalent,
     integrate_sampled_field,
     mephc_periodic_voronoi_k_basin,
     paper_style_truncated_k_hbz,
@@ -71,7 +73,7 @@ def test_mephc_domain_preserves_sealed_area_and_identity():
     domain = mephc_periodic_voronoi_k_basin()
     assert domain.domain_id == "PERIODIC_RECIPROCAL_METRIC_VORONOI_BASIN_K"
     assert domain.area_q == pytest.approx(1.0 / math.sqrt(3.0), rel=0.0, abs=1e-12)
-    assert domain.classify((2.0 / 3.0, 0.0)) == "RETAINED"
+    assert domain.classify((0.0, -2.0 / 3.0)) == "RETAINED"
     assert len(domain.digest) == 64
 
 
@@ -132,8 +134,10 @@ def test_trend_reducer_is_nonstatistical_and_fail_closed():
     unresolved = reduce_trend(0.0, 0.2, delta_C_delta_k=0.1, delta_C_integration=0.1, delta_C_resolution=0.1, delta_C_domain=0.1, direction_stable=True)
     unqualified = reduce_trend(0.0, 1.0, delta_C_delta_k=0.0, delta_C_integration=0.0, delta_C_resolution=0.0, delta_C_domain=0.0, direction_stable=True, identity_or_qualification_status="UNQUALIFIED")
     assert confirmed.status == "TREND_CONFIRMED"
-    assert unresolved.status == "NUMERICALLY_UNRESOLVED"
+    assert unresolved.status == "TREND_QUALIFIED"
     assert unqualified.status == "PHYSICALLY_UNQUALIFIED"
+    assert reduce_trend(0.0, 0.0, delta_C_delta_k=0.1, delta_C_integration=0.1, delta_C_resolution=0.1, delta_C_domain=0.1, direction_stable=True).status == "NUMERICALLY_UNRESOLVED"
+    assert reduce_trend(0.0, 0.2, delta_C_delta_k=0.1, delta_C_integration=0.1, delta_C_resolution=0.1, delta_C_domain=0.1, direction_stable=False).status == "NUMERICALLY_UNRESOLVED"
 
 
 def test_anchor_specs_encode_triangular_first_and_exact_symmetry_prohibition():
@@ -150,3 +154,63 @@ def test_independent_ladders_are_explicit():
     assert DELTA_K_VALUES == pytest.approx((1 / 72, 1 / 36, 1 / 18))
     assert INTEGRATION_SPACING_Q == pytest.approx((1 / 18, 1 / 36, 1 / 72))
     assert DELTA_K_VALUES != INTEGRATION_SPACING_Q
+
+
+def test_periodic_voronoi_is_analytic_and_rotationally_equivalent():
+    domain = mephc_periodic_voronoi_k_basin()
+    expected = {(-1.0 / math.sqrt(3.0), -1.0), (1.0 / math.sqrt(3.0), -1.0), (0.0, 0.0)}
+    assert {tuple(round(value, 12) for value in point) for point in domain.vertices} == {
+        tuple(round(value, 12) for value in point) for point in expected
+    }
+    angle = math.pi / 5.0
+    rotation = ((math.cos(angle), -math.sin(angle)), (math.sin(angle), math.cos(angle)))
+    rotate = lambda point: tuple(float(value) for value in np.asarray(rotation) @ np.asarray(point))
+    rotated = mephc_periodic_voronoi_k_basin(
+        period_basis=tuple(rotate(row) for row in ((1.0 / math.sqrt(3.0), 1.0), (1.0 / math.sqrt(3.0), -1.0))),
+        k=rotate((0.0, -2.0 / 3.0)),
+        kp=rotate((0.0, 2.0 / 3.0)),
+    )
+    assert rotated.area_q == pytest.approx(domain.area_q, abs=1e-12)
+    assert rotated.digest != domain.digest
+
+
+def test_nonidentity_coordinate_preflight_and_two_axis_mapping():
+    preflight = build_triangular_coordinate_preflight()
+    assert preflight.public_q_to_mpb((2.0 / 3.0, 0.0)) == pytest.approx((1.0 / 3.0, 1.0 / 3.0))
+    assert fractional_periodic_equivalent((1.0 / 3.0, 1.0 / 3.0), (4.0 / 3.0, -2.0 / 3.0))
+    x_vector, y_vector = preflight.delta_k_vectors_to_public_q(0.1)
+    assert x_vector == pytest.approx((0.1, 0.0))
+    assert y_vector == pytest.approx((0.0, 0.1))
+    requests = centered_ccw_plaquette_requests(((0.0, 0.0),), (x_vector, y_vector))
+    points = np.asarray([request.nominal_vertex_q for request in requests])
+    assert abs(float((points[1][0] - points[0][0]) * (points[2][1] - points[1][1]) - (points[1][1] - points[0][1]) * (points[2][0] - points[1][0]))) > 0.0
+
+
+def test_geometric_quadrature_integrates_linear_and_smooth_fields():
+    domain = mephc_periodic_voronoi_k_basin()
+    centroid = np.asarray(domain.polygon.centroid.coords[0])
+    sample = sample_domain(domain, 1.0 / 36.0)
+    x_integral = integrate_sampled_field(sample, [point[0] for point in sample.centers])
+    y_integral = integrate_sampled_field(sample, [point[1] for point in sample.centers])
+    assert x_integral == pytest.approx(centroid[0] * domain.area_q, abs=2e-3)
+    assert y_integral == pytest.approx(centroid[1] * domain.area_q, abs=2e-3)
+    coarse = integrate_sampled_field(sample_domain(domain, 1.0 / 18.0), [point[0] ** 2 + point[1] ** 2 for point in sample_domain(domain, 1.0 / 18.0).centers])
+    fine_sample = sample_domain(domain, 1.0 / 72.0)
+    fine = integrate_sampled_field(fine_sample, [point[0] ** 2 + point[1] ** 2 for point in fine_sample.centers])
+    assert abs(fine - coarse) < 2e-3
+
+
+def test_geometry_and_material_contracts_fail_closed_until_semantics_are_bound():
+    unresolved = build_triangular_reference_geometry(0.4)
+    assert unresolved.paper_parameter_equivalence == "UNRESOLVED"
+    assert not unresolved.live_reference_solve_ready
+    refractive = build_triangular_reference_geometry(0.0, material_semantics="REFRACTIVE_INDEX")
+    assert refractive.mpb_epsilon_value == pytest.approx(2.65 ** 2)
+    assert refractive.live_reference_solve_ready
+
+
+def test_sample_weights_are_geometric_and_not_renormalized():
+    domain = paper_style_truncated_k_hbz(fr=0.4, delta_k=0.05, delta_gamma=0.13)
+    sample = sample_domain(domain, 1.0 / 72.0)
+    assert sum(sample.weights) == pytest.approx(domain.area_q, abs=1e-12)
+    assert len(set(round(weight, 12) for weight in sample.weights)) > 1
