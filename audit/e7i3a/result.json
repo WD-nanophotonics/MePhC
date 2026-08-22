@@ -4,11 +4,18 @@
     "reverse": 1e-08,
     "unitarity": 1e-10
   },
-  "all_algebraic_checks_pass": false,
+  "all_algebraic_checks_pass": true,
   "all_rank3_qualification_gates_pass": true,
   "area_normalized_berry_curvature_authorized": false,
+  "basepoint_invariant_checks": [
+    "shifted_reverse_det_phase",
+    "shifted_reverse_det",
+    "shifted_reverse_trace",
+    "shifted_reverse_eigenvalue_multiset",
+    "cyclic_trace_det_phase_eigenvalue_multiset"
+  ],
   "chern_authorized": false,
-  "classification": "E7I3A_RANK3_OBSERVABLE_PIPELINE_UNQUALIFIED",
+  "classification": "E7I3A_RANK3_WILSON_ALGEBRA_QUALIFIED",
   "closure_binding": {
     "classification": "E7I2_CLOSED_RANK3_QUALIFIED_TARGET_RANK2_PHYSICALLY_BLOCKED",
     "e7i2e_binding_verified": true,
@@ -19,21 +26,73 @@
     "production_semantics_changed": false,
     "sha256": "e1b2484bf7d88f206f30fda410f3aa2beb4fa2dd982226bdb53477319119bd7c"
   },
-  "elapsed_seconds": 319.2585816383362,
+  "cyclic_basepoint": 1,
+  "cyclic_order": [
+    1,
+    2,
+    3,
+    0,
+    4
+  ],
+  "elapsed_seconds": 408.7169237136841,
   "endpoint_results": {
     "FR00": {
       "cases": {
         "R48_dk_0.01388889": {
+          "basepoint_invariant_checks": [
+            "shifted_reverse_det_phase",
+            "shifted_reverse_det",
+            "shifted_reverse_trace",
+            "shifted_reverse_eigenvalue_multiset",
+            "cyclic_trace_det_phase_eigenvalue_multiset"
+          ],
+          "cyclic_basepoint": 1,
+          "cyclic_order": [
+            1,
+            2,
+            3,
+            0,
+            4
+          ],
           "delta_k": 0.013888888888888888,
+          "forward_basepoint": 0,
+          "forward_order": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "matrix_covariant_checks": [
+            "same_basepoint_reverse_matrix"
+          ],
           "qualification": {
             "cyclic_qualified": true,
             "cyclic_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
             "forward_qualified": true,
             "forward_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
-            "reverse_qualified": true,
-            "reverse_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED"
+            "reverse_same_basepoint_qualified": true,
+            "reverse_same_basepoint_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+            "reverse_shifted_basepoint_qualified": true,
+            "reverse_shifted_basepoint_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED"
           },
           "resolution": 48,
+          "reverse_same_basepoint": 0,
+          "reverse_same_basepoint_order": [
+            0,
+            3,
+            2,
+            1,
+            4
+          ],
+          "reverse_shifted_basepoint": 3,
+          "reverse_shifted_basepoint_order": [
+            3,
+            2,
+            1,
+            0,
+            4
+          ],
           "selection_zero_based": [
             0,
             1,
@@ -43,7 +102,7 @@
             "all_orthogonality_qualified": true,
             "max_off_diagonal": [
               2.7712852613030406e-15,
-              1.824842574930948e-15,
+              2.1214164979629425e-15,
               3.6927376186302856e-15,
               2.20602357866726e-15,
               3.4229109554175e-15
@@ -72,250 +131,332 @@
             ]
           },
           "wilson": {
-            "algebraic_checks_pass": false,
+            "algebraic_checks_pass": true,
             "levels": [
               {
                 "cyclic": {
-                  "Arg_det_W": -9.029631617692666e-07,
+                  "Arg_det_W": -9.029591084386945e-07,
                   "closed": true,
                   "det_W": [
-                    0.9999999999995917,
-                    -9.029631617691433e-07
+                    0.9999999999995918,
+                    -9.029591084385713e-07
                   ],
                   "edge_link_count": 4,
                   "eigenphases_sorted": [
-                    -1.9322062739273394e-06,
-                    -8.508202605038768e-07,
-                    1.88006337276225e-06
+                    -1.9322045355856923e-06,
+                    -8.508179077730185e-07,
+                    1.8800633354587572e-06
                   ],
                   "eigenvalues_sorted": [
                     [
-                      0.9999999999981337,
-                      -1.932206273926138e-06
+                      0.9999999999981329,
+                      -1.9322045355844895e-06
                     ],
                     [
-                      0.9999999999996373,
-                      -8.508202605037735e-07
+                      0.9999999999996384,
+                      -8.508179077729161e-07
                     ],
                     [
-                      0.9999999999982329,
-                      1.8800633727611427e-06
+                      0.9999999999982324,
+                      1.880063335457649e-06
                     ]
                   ],
                   "product_W": [
                     [
                       [
-                        0.9999999999995177,
-                        -7.922383568975109e-07
+                        0.9999999999995185,
+                        -7.922367323410487e-07
                       ],
                       [
-                        -1.48410006801614e-07,
-                        4.7207575950921705e-09
+                        -1.4840997720785907e-07,
+                        4.722195203564697e-09
                       ],
                       [
-                        4.932367118049777e-07,
-                        -2.65568353357081e-07
+                        4.932349234860682e-07,
+                        -2.6556934142497857e-07
                       ]
                     ],
                     [
                       [
-                        1.4841071493773854e-07,
-                        4.720619925691144e-09
+                        1.4841068592529568e-07,
+                        4.722057727513178e-09
                       ],
                       [
-                        0.9999999999982442,
-                        -1.353739732683795e-06
+                        0.9999999999982436,
+                        -1.3537365087807502e-06
                       ],
                       [
-                        -1.2504452705488672e-06,
-                        3.063289900984489e-07
+                        -1.2504465503676178e-06,
+                        3.063277559031486e-07
                       ]
                     ],
                     [
                       [
-                        -4.932364078592354e-07,
-                        -2.6556852405535456e-07
+                        -4.932346191940167e-07,
+                        -2.6556951230980547e-07
                       ],
                       [
-                        1.2504453786575908e-06,
-                        3.0632888811410736e-07
+                        1.2504466578487046e-06,
+                        3.0632765423874463e-07
                       ],
                       [
                         0.9999999999982414,
-                        1.2430149278122377e-06
+                        1.2430141326833015e-06
                       ]
                     ]
                   ],
                   "rank": 3,
                   "status": "WILSON_LOOP_QUALIFIED",
                   "trace": [
-                    2.999999999996003,
-                    -9.029631617690682e-07
+                    2.9999999999960036,
+                    -9.029591084384973e-07
                   ],
-                  "unitarity_residual": 1.9202938285317788e-15
+                  "unitarity_residual": 1.9309915169571532e-15
                 },
-                "cyclic_basepoint_residual": 5.869558036407977e-16,
+                "cyclic_basepoint_residual": 7.850462293418876e-16,
                 "forward": {
-                  "Arg_det_W": -9.029631618503321e-07,
+                  "Arg_det_W": -9.029591084864001e-07,
                   "closed": true,
                   "det_W": [
-                    0.9999999999995915,
-                    -9.029631618502086e-07
+                    0.9999999999995922,
+                    -9.029591084862772e-07
                   ],
                   "edge_link_count": 4,
                   "eigenphases_sorted": [
-                    -1.932206274118045e-06,
-                    -8.508202604119364e-07,
-                    1.8800633726512274e-06
+                    -1.9322045356336234e-06,
+                    -8.508179082379243e-07,
+                    1.8800633353477363e-06
                   ],
                   "eigenvalues_sorted": [
                     [
-                      0.9999999999981332,
-                      -1.9322062741168427e-06
+                      0.9999999999981328,
+                      -1.93220453563242e-06
                     ],
                     [
-                      0.9999999999996374,
-                      -8.508202604118331e-07
+                      0.9999999999996385,
+                      -8.50817908237822e-07
                     ],
                     [
-                      0.999999999998233,
-                      1.8800633726501204e-06
+                      0.9999999999982316,
+                      1.8800633353466267e-06
                     ]
                   ],
                   "product_W": [
                     [
                       [
-                        0.9999999999996184,
-                        -8.175723446484277e-07
+                        0.9999999999996195,
+                        -8.175705133536412e-07
                       ],
                       [
-                        1.6331943474279942e-07,
-                        2.5588295455424968e-09
+                        1.6331875650533665e-07,
+                        2.5593584818319643e-09
                       ],
                       [
-                        1.2852090848772679e-07,
-                        2.2426471276773096e-07
+                        1.2851890440075512e-07,
+                        2.2426251702122654e-07
                       ]
                     ],
                     [
                       [
-                        -1.6331952475970073e-07,
-                        2.558610766663595e-09
+                        -1.6331884662549572e-07,
+                        2.5591397273459726e-09
                       ],
                       [
-                        0.9999999999981775,
-                        -6.26586592175198e-07
+                        0.999999999998177,
+                        -6.265856401396174e-07
                       ],
                       [
-                        -1.3455760924380996e-06,
-                        1.189515051489918e-06
+                        -1.34557681653307e-06,
+                        1.1895132629583848e-06
                       ]
                     ],
                     [
                       [
-                        -1.285210692384436e-07,
-                        2.242645576011828e-07
+                        -1.2851906530920076e-07,
+                        2.2426236167093738e-07
                       ],
                       [
-                        1.3455761718682223e-06,
-                        1.1895149723043744e-06
+                        1.3455768960244178e-06,
+                        1.1895131841369995e-06
                       ],
                       [
-                        0.9999999999982074,
-                        5.411957749734917e-07
+                        0.9999999999982073,
+                        5.411970450070552e-07
                       ]
                     ]
                   ],
                   "rank": 3,
                   "status": "WILSON_LOOP_QUALIFIED",
                   "trace": [
-                    2.999999999996003,
-                    -9.029631618501341e-07
+                    2.9999999999960036,
+                    -9.029591084862033e-07
                   ],
-                  "unitarity_residual": 1.7559530255392863e-15
+                  "unitarity_residual": 1.840561744571015e-15
                 },
                 "level": 0,
-                "reverse": {
-                  "Arg_det_W": 9.029631619745874e-07,
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 9.029591083450333e-07,
                   "closed": true,
                   "det_W": [
-                    0.9999999999995931,
-                    9.029631619744654e-07
+                    0.999999999999591,
+                    9.029591083449095e-07
                   ],
                   "edge_link_count": 4,
                   "eigenphases_sorted": [
-                    -1.8800633724291813e-06,
-                    8.508202605645919e-07,
-                    1.9322062739563338e-06
+                    -1.8800633359028468e-06,
+                    8.508179080991476e-07,
+                    1.9322045361644644e-06
                   ],
                   "eigenvalues_sorted": [
                     [
-                      0.9999999999982337,
-                      -1.8800633724280758e-06
+                      0.9999999999982322,
+                      -1.8800633359017382e-06
                     ],
                     [
-                      0.9999999999996375,
-                      8.508202605644888e-07
+                      0.9999999999996372,
+                      8.508179080990441e-07
                     ],
                     [
-                      0.9999999999981345,
-                      1.932206273955134e-06
+                      0.9999999999981339,
+                      1.9322045361632633e-06
                     ]
                   ],
                   "product_W": [
                     [
                       [
-                        0.9999999999995833,
-                        8.712298584272135e-07
+                        0.9999999999996182,
+                        8.175705134217737e-07
                       ],
                       [
-                        2.423513252603655e-07,
-                        -9.268299379484105e-08
+                        -1.6331884656556962e-07,
+                        -2.5591397730275033e-09
                       ],
                       [
-                        -4.7251223982101204e-08,
-                        -5.8771198565437996e-08
+                        -1.2851906523585544e-07,
+                        -2.242623615502032e-07
                       ]
                     ],
                     [
                       [
-                        -2.423513132625873e-07,
-                        -9.26833243104902e-08
+                        1.6331875668124578e-07,
+                        -2.5593586552717553e-09
                       ],
                       [
-                        0.9999999999981852,
-                        6.445182331324702e-07
+                        0.9999999999981773,
+                        6.26585640215917e-07
                       ],
                       [
-                        -1.4480774011493129e-06,
-                        -1.025213503031834e-06
+                        1.3455768968022494e-06,
+                        -1.189513184673637e-06
                       ]
                     ],
                     [
                       [
-                        4.72507934005767e-08,
-                        -5.8771072301314336e-08
+                        1.2851890472182007e-07,
+                        -2.2426251659287422e-07
                       ],
                       [
-                        1.4480774392707964e-06,
-                        -1.0252134758468583e-06
+                        -1.3455768166699885e-06,
+                        -1.1895132632498755e-06
                       ],
                       [
-                        0.9999999999982362,
-                        -6.127849295852939e-07
+                        0.9999999999982071,
+                        -5.411970452928555e-07
                       ]
                     ]
                   ],
                   "rank": 3,
                   "status": "WILSON_LOOP_QUALIFIED",
                   "trace": [
-                    2.9999999999960045,
-                    9.029631619743897e-07
+                    2.9999999999960028,
+                    9.029591083448351e-07
                   ],
-                  "unitarity_residual": 2.4678258856302514e-15
+                  "unitarity_residual": 1.974385532991781e-15
                 },
-                "reverse_det_phase_sign_residual": 1.2425528643923277e-16,
-                "reverse_matrix_residual": 2.7984808841295944e-06
+                "reverse_shifted_basepoint": {
+                  "Arg_det_W": 9.029591084201315e-07,
+                  "closed": true,
+                  "det_W": [
+                    0.9999999999995904,
+                    9.029591084200071e-07
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -1.8800633357918245e-06,
+                    8.508179083211922e-07,
+                    1.932204535978872e-06
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999982322,
+                      -1.880063335790716e-06
+                    ],
+                    [
+                      0.9999999999996372,
+                      8.508179083210887e-07
+                    ],
+                    [
+                      0.9999999999981328,
+                      1.9322045359776687e-06
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.999999999999583,
+                        8.712268977279352e-07
+                      ],
+                      [
+                        2.423515843660678e-07,
+                        -9.268219196663866e-08
+                      ],
+                      [
+                        -4.724882787902551e-08,
+                        -5.877266063304335e-08
+                      ]
+                    ],
+                    [
+                      [
+                        -2.423515722553105e-07,
+                        -9.268252267900444e-08
+                      ],
+                      [
+                        0.9999999999981842,
+                        6.445187589314991e-07
+                      ],
+                      [
+                        -1.44807605782673e-06,
+                        -1.0252133997087954e-06
+                      ]
+                    ],
+                    [
+                      [
+                        4.724839705777396e-08,
+                        -5.8772534156481346e-08
+                      ],
+                      [
+                        1.4480760964963919e-06,
+                        -1.0252133722489916e-06
+                      ],
+                      [
+                        0.999999999998235,
+                        -6.127865482395015e-07
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.9999999999960023,
+                    9.029591084199329e-07
+                  ],
+                  "unitarity_residual": 2.4149214418532732e-15
+                },
+                "same_basepoint_reverse_matrix_residual": 1.3340086470580143e-15,
+                "shifted_basepoint_reverse_det_conjugation_residual": 1.7775925729717953e-15,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 6.626857554050585e-17,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.3348671786163112e-15,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 1.3339148449011194e-15
               },
               {
                 "cyclic": {
@@ -478,7 +619,86 @@
                   "unitarity_residual": 2.7579182797043215e-15
                 },
                 "level": 1,
-                "reverse": {
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 2.2705311970960926e-07,
+                  "closed": true,
+                  "det_W": [
+                    0.9999999999999749,
+                    2.2705311970960746e-07
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -4.7009282866385465e-07,
+                    2.131877357980386e-07,
+                    4.839582121674471e-07
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999998894,
+                      -4.700928286638373e-07
+                    ],
+                    [
+                      0.9999999999999781,
+                      2.1318773579803718e-07
+                    ],
+                    [
+                      0.9999999999998832,
+                      4.839582121674283e-07
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.999999999999977,
+                        2.1122257160732055e-07
+                      ],
+                      [
+                        -1.0599894999509763e-08,
+                        -1.704132299793789e-09
+                      ],
+                      [
+                        -4.6047034428382036e-08,
+                        -1.1768978879860975e-08
+                      ]
+                    ],
+                    [
+                      [
+                        1.0599900751226058e-08,
+                        -1.7041474225332283e-09
+                      ],
+                      [
+                        0.9999999999998859,
+                        2.166533658817503e-07
+                      ],
+                      [
+                        2.024512563299194e-07,
+                        -3.7553105526306105e-07
+                      ]
+                    ],
+                    [
+                      [
+                        4.604703170429161e-08,
+                        -1.1768982153607648e-08
+                      ],
+                      [
+                        -2.0245125075425213e-07,
+                        -3.755310583402873e-07
+                      ],
+                      [
+                        0.9999999999998875,
+                        -2.0082281777946457e-07
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.9999999999997504,
+                    2.2705311970960624e-07
+                  ],
+                  "unitarity_residual": 1.4994302212768035e-15
+                },
+                "reverse_shifted_basepoint": {
                   "Arg_det_W": 2.2705311977612107e-07,
                   "closed": true,
                   "det_W": [
@@ -557,8 +777,11 @@
                   ],
                   "unitarity_residual": 1.2144774846442324e-15
                 },
-                "reverse_det_phase_sign_residual": 5.9993969872460765e-16,
-                "reverse_matrix_residual": 4.672825340591593e-07
+                "same_basepoint_reverse_matrix_residual": 1.4583649912020576e-15,
+                "shifted_basepoint_reverse_det_conjugation_residual": 2.9482658881988117e-15,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 5.9993969872460765e-16,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.2894560903540739e-15,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 3.165987057564934e-15
               },
               {
                 "cyclic": {
@@ -721,7 +944,86 @@
                   "unitarity_residual": 1.0679424262396437e-15
                 },
                 "level": 2,
-                "reverse": {
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 6.356232874201217e-08,
+                  "closed": true,
+                  "det_W": [
+                    0.9999999999999986,
+                    6.356232874201217e-08
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -1.1764335972053195e-07,
+                    6.110323713670597e-08,
+                    1.2010245151536123e-07
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999999937,
+                      -1.1764335972053175e-07
+                    ],
+                    [
+                      0.9999999999999986,
+                      6.110323713670596e-08
+                    ],
+                    [
+                      0.9999999999999933,
+                      1.2010245151536102e-07
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.9999999999999981,
+                        6.110685740300743e-08
+                      ],
+                      [
+                        -4.1222154919601945e-09,
+                        -2.4769837655932845e-09
+                      ],
+                      [
+                        -7.635097174857309e-09,
+                        4.093392921256262e-09
+                      ]
+                    ],
+                    [
+                      [
+                        4.1222161482298995e-09,
+                        -2.476983952449567e-09
+                      ],
+                      [
+                        0.9999999999999934,
+                        6.123558278766135e-08
+                      ],
+                      [
+                        2.1457363680850646e-08,
+                        -9.985495536479673e-08
+                      ]
+                    ],
+                    [
+                      [
+                        7.635096732968246e-09,
+                        4.093392562751367e-09
+                      ],
+                      [
+                        -2.1457363204795958e-08,
+                        -9.985495520363234e-08
+                      ],
+                      [
+                        0.9999999999999931,
+                        -5.878011144865666e-08
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.999999999999985,
+                    6.356232874201213e-08
+                  ],
+                  "unitarity_residual": 1.284448437711157e-15
+                },
+                "reverse_shifted_basepoint": {
                   "Arg_det_W": 6.356232884304065e-08,
                   "closed": true,
                   "det_W": [
@@ -800,27 +1102,77 @@
                   ],
                   "unitarity_residual": 1.532175422160491e-15
                 },
-                "reverse_det_phase_sign_residual": 2.5777633246292934e-16,
-                "reverse_matrix_residual": 5.836379050949704e-08
+                "same_basepoint_reverse_matrix_residual": 3.9799736939473803e-16,
+                "shifted_basepoint_reverse_det_conjugation_residual": 6.1204363260322375e-16,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 2.5777633246292934e-16,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 7.850462293418876e-16,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 5.134820836569927e-16
               }
             ],
-            "max_cyclic_basepoint_residual": 5.869558036407977e-16,
-            "max_reverse_det_phase_sign_residual": 5.9993969872460765e-16,
-            "max_reverse_matrix_residual": 2.7984808841295944e-06,
+            "max_cyclic_basepoint_residual": 7.850462293418876e-16,
+            "max_same_basepoint_reverse_matrix_residual": 1.4583649912020576e-15,
+            "max_shifted_basepoint_reverse_det_conjugation_residual": 2.9482658881988117e-15,
+            "max_shifted_basepoint_reverse_det_phase_sign_residual": 5.9993969872460765e-16,
+            "max_shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.3348671786163112e-15,
+            "max_shifted_basepoint_reverse_trace_conjugation_residual": 3.165987057564934e-15,
             "max_unitarity_residual": 2.7579182797043215e-15
           }
         },
         "R48_dk_0.02777778": {
+          "basepoint_invariant_checks": [
+            "shifted_reverse_det_phase",
+            "shifted_reverse_det",
+            "shifted_reverse_trace",
+            "shifted_reverse_eigenvalue_multiset",
+            "cyclic_trace_det_phase_eigenvalue_multiset"
+          ],
+          "cyclic_basepoint": 1,
+          "cyclic_order": [
+            1,
+            2,
+            3,
+            0,
+            4
+          ],
           "delta_k": 0.027777777777777776,
+          "forward_basepoint": 0,
+          "forward_order": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "matrix_covariant_checks": [
+            "same_basepoint_reverse_matrix"
+          ],
           "qualification": {
             "cyclic_qualified": true,
             "cyclic_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
             "forward_qualified": true,
             "forward_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
-            "reverse_qualified": true,
-            "reverse_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED"
+            "reverse_same_basepoint_qualified": true,
+            "reverse_same_basepoint_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+            "reverse_shifted_basepoint_qualified": true,
+            "reverse_shifted_basepoint_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED"
           },
           "resolution": 48,
+          "reverse_same_basepoint": 0,
+          "reverse_same_basepoint_order": [
+            0,
+            3,
+            2,
+            1,
+            4
+          ],
+          "reverse_shifted_basepoint": 3,
+          "reverse_shifted_basepoint_order": [
+            3,
+            2,
+            1,
+            0,
+            4
+          ],
           "selection_zero_based": [
             0,
             1,
@@ -859,7 +1211,7 @@
             ]
           },
           "wilson": {
-            "algebraic_checks_pass": false,
+            "algebraic_checks_pass": true,
             "levels": [
               {
                 "cyclic": {
@@ -1022,7 +1374,86 @@
                   "unitarity_residual": 2.303654697643336e-15
                 },
                 "level": 0,
-                "reverse": {
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 3.636289199114559e-06,
+                  "closed": true,
+                  "det_W": [
+                    0.999999999993389,
+                    3.6362891991065463e-06
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -7.528207880152016e-06,
+                    3.37900769712061e-06,
+                    7.78548938213165e-06
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999716629,
+                      -7.528207880080906e-06
+                    ],
+                    [
+                      0.9999999999942919,
+                      3.379007697114182e-06
+                    ],
+                    [
+                      0.9999999999696932,
+                      7.785489382053e-06
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.999999999993117,
+                        3.018851010952654e-06
+                      ],
+                      [
+                        -1.5187418955707956e-06,
+                        -9.769935834122112e-09
+                      ],
+                      [
+                        1.2773402044399314e-07,
+                        -1.526416717034765e-06
+                      ]
+                    ],
+                    [
+                      [
+                        1.5187370149649516e-06,
+                        -9.773063855662801e-09
+                      ],
+                      [
+                        0.9999999999708922,
+                        1.5484971739589797e-06
+                      ],
+                      [
+                        6.815915993845661e-06,
+                        -2.655936408962183e-06
+                      ]
+                    ],
+                    [
+                      [
+                        -1.2774121136981207e-07,
+                        -1.5264209509326907e-06
+                      ],
+                      [
+                        -6.815914174472288e-06,
+                        -2.655938297403441e-06
+                      ],
+                      [
+                        0.9999999999716386,
+                        -9.310589858110457e-07
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.999999999935648,
+                    3.6362891991005874e-06
+                  ],
+                  "unitarity_residual": 1.7357252447661905e-15
+                },
+                "reverse_shifted_basepoint": {
                   "Arg_det_W": 3.6362891989244943e-06,
                   "closed": true,
                   "det_W": [
@@ -1101,8 +1532,11 @@
                   ],
                   "unitarity_residual": 1.9294108156159116e-15
                 },
-                "reverse_det_phase_sign_residual": 1.1311447384223378e-16,
-                "reverse_matrix_residual": 1.3274083930947989e-05
+                "same_basepoint_reverse_matrix_residual": 6.479990463894734e-16,
+                "shifted_basepoint_reverse_det_conjugation_residual": 7.853444721195806e-16,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 1.1311447384223378e-16,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.6165091241761062e-15,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 8.953524339821202e-16
               },
               {
                 "cyclic": {
@@ -1265,7 +1699,86 @@
                   "unitarity_residual": 1.7559530255392863e-15
                 },
                 "level": 1,
-                "reverse": {
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 9.029631617925098e-07,
+                  "closed": true,
+                  "det_W": [
+                    0.9999999999995934,
+                    9.029631617923882e-07
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -1.8800633726512264e-06,
+                    8.508202604674472e-07,
+                    1.9322062738786024e-06
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999982335,
+                      -1.8800633726501204e-06
+                    ],
+                    [
+                      0.9999999999996377,
+                      8.508202604673443e-07
+                    ],
+                    [
+                      0.9999999999981345,
+                      1.9322062738774026e-06
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.9999999999996187,
+                        8.175723446464896e-07
+                      ],
+                      [
+                        -1.6331952469567793e-07,
+                        -2.5586107742543376e-09
+                      ],
+                      [
+                        -1.2852106915910866e-07,
+                        -2.2426455759381746e-07
+                      ]
+                    ],
+                    [
+                      [
+                        1.63319434811463e-07,
+                        -2.5588296630511265e-09
+                      ],
+                      [
+                        0.9999999999981782,
+                        6.265865919575521e-07
+                      ],
+                      [
+                        1.34557617207443e-06,
+                        -1.1895149724778806e-06
+                      ]
+                    ],
+                    [
+                      [
+                        1.2852090850113116e-07,
+                        -2.2426471248092317e-07
+                      ],
+                      [
+                        -1.3455760925390367e-06,
+                        -1.1895150508836777e-06
+                      ],
+                      [
+                        0.9999999999982083,
+                        -5.411957748117287e-07
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.999999999996005,
+                    9.029631617923131e-07
+                  ],
+                  "unitarity_residual": 2.5725011853855263e-15
+                },
+                "reverse_shifted_basepoint": {
                   "Arg_det_W": 9.029631619745874e-07,
                   "closed": true,
                   "det_W": [
@@ -1344,8 +1857,11 @@
                   ],
                   "unitarity_residual": 2.4678258856302514e-15
                 },
-                "reverse_det_phase_sign_residual": 1.2425528643923277e-16,
-                "reverse_matrix_residual": 2.7984808841295944e-06
+                "same_basepoint_reverse_matrix_residual": 9.02789101499736e-16,
+                "shifted_basepoint_reverse_det_conjugation_residual": 1.559271069063608e-15,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 1.2425528643923277e-16,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.3420457361342e-15,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 1.3380495102542785e-15
               },
               {
                 "cyclic": {
@@ -1508,7 +2024,86 @@
                   "unitarity_residual": 2.7579182797043215e-15
                 },
                 "level": 2,
-                "reverse": {
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 2.2705311970960926e-07,
+                  "closed": true,
+                  "det_W": [
+                    0.9999999999999749,
+                    2.2705311970960746e-07
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -4.7009282866385465e-07,
+                    2.131877357980386e-07,
+                    4.839582121674471e-07
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999998894,
+                      -4.700928286638373e-07
+                    ],
+                    [
+                      0.9999999999999781,
+                      2.1318773579803718e-07
+                    ],
+                    [
+                      0.9999999999998832,
+                      4.839582121674283e-07
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.999999999999977,
+                        2.1122257160732055e-07
+                      ],
+                      [
+                        -1.0599894999509763e-08,
+                        -1.704132299793789e-09
+                      ],
+                      [
+                        -4.6047034428382036e-08,
+                        -1.1768978879860975e-08
+                      ]
+                    ],
+                    [
+                      [
+                        1.0599900751226058e-08,
+                        -1.7041474225332283e-09
+                      ],
+                      [
+                        0.9999999999998859,
+                        2.166533658817503e-07
+                      ],
+                      [
+                        2.024512563299194e-07,
+                        -3.7553105526306105e-07
+                      ]
+                    ],
+                    [
+                      [
+                        4.604703170429161e-08,
+                        -1.1768982153607648e-08
+                      ],
+                      [
+                        -2.0245125075425213e-07,
+                        -3.755310583402873e-07
+                      ],
+                      [
+                        0.9999999999998875,
+                        -2.0082281777946457e-07
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.9999999999997504,
+                    2.2705311970960624e-07
+                  ],
+                  "unitarity_residual": 1.4994302212768035e-15
+                },
+                "reverse_shifted_basepoint": {
                   "Arg_det_W": 2.2705311977612107e-07,
                   "closed": true,
                   "det_W": [
@@ -1587,27 +2182,77 @@
                   ],
                   "unitarity_residual": 1.2144774846442324e-15
                 },
-                "reverse_det_phase_sign_residual": 5.9993969872460765e-16,
-                "reverse_matrix_residual": 4.672825340591593e-07
+                "same_basepoint_reverse_matrix_residual": 1.4583649912020576e-15,
+                "shifted_basepoint_reverse_det_conjugation_residual": 2.9482658881988117e-15,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 5.9993969872460765e-16,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.2894560903540739e-15,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 3.165987057564934e-15
               }
             ],
             "max_cyclic_basepoint_residual": 7.021666937153402e-16,
-            "max_reverse_det_phase_sign_residual": 5.9993969872460765e-16,
-            "max_reverse_matrix_residual": 1.3274083930947989e-05,
+            "max_same_basepoint_reverse_matrix_residual": 1.4583649912020576e-15,
+            "max_shifted_basepoint_reverse_det_conjugation_residual": 2.9482658881988117e-15,
+            "max_shifted_basepoint_reverse_det_phase_sign_residual": 5.9993969872460765e-16,
+            "max_shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.6165091241761062e-15,
+            "max_shifted_basepoint_reverse_trace_conjugation_residual": 3.165987057564934e-15,
             "max_unitarity_residual": 2.7579182797043215e-15
           }
         },
         "R64_dk_0.02777778": {
+          "basepoint_invariant_checks": [
+            "shifted_reverse_det_phase",
+            "shifted_reverse_det",
+            "shifted_reverse_trace",
+            "shifted_reverse_eigenvalue_multiset",
+            "cyclic_trace_det_phase_eigenvalue_multiset"
+          ],
+          "cyclic_basepoint": 1,
+          "cyclic_order": [
+            1,
+            2,
+            3,
+            0,
+            4
+          ],
           "delta_k": 0.027777777777777776,
+          "forward_basepoint": 0,
+          "forward_order": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "matrix_covariant_checks": [
+            "same_basepoint_reverse_matrix"
+          ],
           "qualification": {
             "cyclic_qualified": true,
             "cyclic_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
             "forward_qualified": true,
             "forward_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
-            "reverse_qualified": true,
-            "reverse_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED"
+            "reverse_same_basepoint_qualified": true,
+            "reverse_same_basepoint_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+            "reverse_shifted_basepoint_qualified": true,
+            "reverse_shifted_basepoint_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED"
           },
           "resolution": 64,
+          "reverse_same_basepoint": 0,
+          "reverse_same_basepoint_order": [
+            0,
+            3,
+            2,
+            1,
+            4
+          ],
+          "reverse_shifted_basepoint": 3,
+          "reverse_shifted_basepoint_order": [
+            3,
+            2,
+            1,
+            0,
+            4
+          ],
           "selection_zero_based": [
             0,
             1,
@@ -1646,7 +2291,7 @@
             ]
           },
           "wilson": {
-            "algebraic_checks_pass": false,
+            "algebraic_checks_pass": true,
             "levels": [
               {
                 "cyclic": {
@@ -1809,7 +2454,86 @@
                   "unitarity_residual": 2.6036881853433945e-15
                 },
                 "level": 0,
-                "reverse": {
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 3.785425080944224e-06,
+                  "closed": true,
+                  "det_W": [
+                    0.9999999999928346,
+                    3.7854250809351813e-06
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -7.634628307403364e-06,
+                    3.5198868464451403e-06,
+                    7.900166541914539e-06
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999708559,
+                      -7.634628307329194e-06
+                    ],
+                    [
+                      0.999999999993805,
+                      3.519886846437871e-06
+                    ],
+                    [
+                      0.9999999999687936,
+                      7.90016654183236e-06
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.9999999999927178,
+                        3.1795245274608875e-06
+                      ],
+                      [
+                        -1.4030975174236875e-06,
+                        6.019941503819363e-09
+                      ],
+                      [
+                        1.0074444829152222e-07,
+                        -1.5734877155293065e-06
+                      ]
+                    ],
+                    [
+                      [
+                        1.403092353506149e-06,
+                        6.0160344802524345e-09
+                      ],
+                      [
+                        0.9999999999701187,
+                        1.554643313580312e-06
+                      ],
+                      [
+                        6.885316751183799e-06,
+                        -2.823008722392483e-06
+                      ]
+                    ],
+                    [
+                      [
+                        -1.007505821151164e-07,
+                        -1.573491942993462e-06
+                      ],
+                      [
+                        -6.885314889428416e-06,
+                        -2.823010687014532e-06
+                      ],
+                      [
+                        0.9999999999706181,
+                        -9.487427601122549e-07
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.9999999999334546,
+                    3.785425080928945e-06
+                  ],
+                  "unitarity_residual": 1.3137203466474714e-15
+                },
+                "reverse_shifted_basepoint": {
                   "Arg_det_W": 3.7854250811250556e-06,
                   "closed": true,
                   "det_W": [
@@ -1888,8 +2612,11 @@
                   ],
                   "unitarity_residual": 1.749654672910382e-15
                 },
-                "reverse_det_phase_sign_residual": 9.694859593400128e-16,
-                "reverse_matrix_residual": 1.3411986837087545e-05
+                "same_basepoint_reverse_matrix_residual": 1.0931159615840428e-15,
+                "shifted_basepoint_reverse_det_conjugation_residual": 2.9400003866249296e-15,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 9.694859593400128e-16,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.5836809272526507e-15,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 3.2562921304637255e-15
               },
               {
                 "cyclic": {
@@ -2052,7 +2779,86 @@
                   "unitarity_residual": 2.7074796224334872e-15
                 },
                 "level": 1,
-                "reverse": {
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 9.423267760318208e-07,
+                  "closed": true,
+                  "det_W": [
+                    0.9999999999995547,
+                    9.423267760316801e-07
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -1.8887663911793097e-06,
+                    8.722796479289087e-07,
+                    1.958813519225452e-06
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999982165,
+                      -1.8887663911781871e-06
+                    ],
+                    [
+                      0.999999999999619,
+                      8.722796479287975e-07
+                    ],
+                    [
+                      0.9999999999980809,
+                      1.958813519224198e-06
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.9999999999995991,
+                        8.39695036962487e-07
+                      ],
+                      [
+                        -1.54974617353785e-07,
+                        8.449486499455281e-09
+                      ],
+                      [
+                        -1.1477031617899861e-07,
+                        -2.4200034429273146e-07
+                      ]
+                    ],
+                    [
+                      [
+                        1.549745190722811e-07,
+                        8.449241801263632e-09
+                      ],
+                      [
+                        0.9999999999981389,
+                        6.559854701678239e-07
+                      ],
+                      [
+                        1.470674647183195e-06,
+                        -1.050294716936926e-06
+                      ]
+                    ],
+                    [
+                      [
+                        1.1477016646454526e-07,
+                        -2.420004865633656e-07
+                      ],
+                      [
+                        -1.4706745556058446e-06,
+                        -1.050294829830017e-06
+                      ],
+                      [
+                        0.999999999998178,
+                        -5.533537310987313e-07
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.999999999995916,
+                    9.423267760315797e-07
+                  ],
+                  "unitarity_residual": 2.128645630188049e-15
+                },
+                "reverse_shifted_basepoint": {
                   "Arg_det_W": 9.423267761815921e-07,
                   "closed": true,
                   "det_W": [
@@ -2131,8 +2937,11 @@
                   ],
                   "unitarity_residual": 2.0087610011741947e-15
                 },
-                "reverse_det_phase_sign_residual": 6.721910532600278e-16,
-                "reverse_matrix_residual": 2.829278963734986e-06
+                "same_basepoint_reverse_matrix_residual": 1.6660116049200177e-15,
+                "shifted_basepoint_reverse_det_conjugation_residual": 3.0720454755517336e-15,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 6.721910532600278e-16,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.3902930955850717e-15,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 3.1804701185378197e-15
               },
               {
                 "cyclic": {
@@ -2295,7 +3104,86 @@
                   "unitarity_residual": 1.4067018342113194e-15
                 },
                 "level": 2,
-                "reverse": {
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 2.363905231410728e-07,
+                  "closed": true,
+                  "det_W": [
+                    0.9999999999999708,
+                    2.363905231410703e-07
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -4.763982172917471e-07,
+                    2.2328201776389453e-07,
+                    4.895067227080096e-07
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999998866,
+                      -4.7639821729172915e-07
+                    ],
+                    [
+                      0.9999999999999756,
+                      2.2328201776389278e-07
+                    ],
+                    [
+                      0.9999999999998797,
+                      4.895067227079898e-07
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.9999999999999745,
+                        2.2143288093459218e-07
+                      ],
+                      [
+                        -1.1331084297191488e-08,
+                        -3.799063594166799e-09
+                      ],
+                      [
+                        -4.8754164225614194e-08,
+                        -1.1393481764442117e-08
+                      ]
+                    ],
+                    [
+                      [
+                        1.1331092740849122e-08,
+                        -3.799078919165531e-09
+                      ],
+                      [
+                        0.9999999999998817,
+                        2.2049610044192e-07
+                      ],
+                      [
+                        2.288162138260379e-07,
+                        -3.6504582655310177e-07
+                      ]
+                    ],
+                    [
+                      [
+                        4.875416018899551e-08,
+                        -1.1393484306755065e-08
+                      ],
+                      [
+                        -2.2881620925221806e-07,
+                        -3.650458302641689e-07
+                      ],
+                      [
+                        0.9999999999998844,
+                        -2.0553845823544283e-07
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.9999999999997407,
+                    2.3639052314106935e-07
+                  ],
+                  "unitarity_residual": 2.6451453632124826e-15
+                },
+                "reverse_shifted_basepoint": {
                   "Arg_det_W": 2.3639052317737135e-07,
                   "closed": true,
                   "det_W": [
@@ -2374,13 +3262,19 @@
                   ],
                   "unitarity_residual": 2.5319429257847542e-15
                 },
-                "reverse_det_phase_sign_residual": 4.627230611869304e-16,
-                "reverse_matrix_residual": 4.703013607853252e-07
+                "same_basepoint_reverse_matrix_residual": 7.231886824934008e-16,
+                "shifted_basepoint_reverse_det_conjugation_residual": 4.758556067778626e-16,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 4.627230611869304e-16,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 9.114589462361993e-16,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 6.413484491000992e-16
               }
             ],
             "max_cyclic_basepoint_residual": 7.773541609963514e-16,
-            "max_reverse_det_phase_sign_residual": 9.694859593400128e-16,
-            "max_reverse_matrix_residual": 1.3411986837087545e-05,
+            "max_same_basepoint_reverse_matrix_residual": 1.6660116049200177e-15,
+            "max_shifted_basepoint_reverse_det_conjugation_residual": 3.0720454755517336e-15,
+            "max_shifted_basepoint_reverse_det_phase_sign_residual": 9.694859593400128e-16,
+            "max_shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.5836809272526507e-15,
+            "max_shifted_basepoint_reverse_trace_conjugation_residual": 3.2562921304637255e-15,
             "max_unitarity_residual": 2.9012184275485245e-15
           }
         }
@@ -2463,16 +3357,60 @@
     "FR050": {
       "cases": {
         "R48_dk_0.01388889": {
+          "basepoint_invariant_checks": [
+            "shifted_reverse_det_phase",
+            "shifted_reverse_det",
+            "shifted_reverse_trace",
+            "shifted_reverse_eigenvalue_multiset",
+            "cyclic_trace_det_phase_eigenvalue_multiset"
+          ],
+          "cyclic_basepoint": 1,
+          "cyclic_order": [
+            1,
+            2,
+            3,
+            0,
+            4
+          ],
           "delta_k": 0.013888888888888888,
+          "forward_basepoint": 0,
+          "forward_order": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "matrix_covariant_checks": [
+            "same_basepoint_reverse_matrix"
+          ],
           "qualification": {
             "cyclic_qualified": true,
             "cyclic_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
             "forward_qualified": true,
             "forward_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
-            "reverse_qualified": true,
-            "reverse_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED"
+            "reverse_same_basepoint_qualified": true,
+            "reverse_same_basepoint_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+            "reverse_shifted_basepoint_qualified": true,
+            "reverse_shifted_basepoint_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED"
           },
           "resolution": 48,
+          "reverse_same_basepoint": 0,
+          "reverse_same_basepoint_order": [
+            0,
+            3,
+            2,
+            1,
+            4
+          ],
+          "reverse_shifted_basepoint": 3,
+          "reverse_shifted_basepoint_order": [
+            3,
+            2,
+            1,
+            0,
+            4
+          ],
           "selection_zero_based": [
             0,
             1,
@@ -2511,7 +3449,7 @@
             ]
           },
           "wilson": {
-            "algebraic_checks_pass": false,
+            "algebraic_checks_pass": true,
             "levels": [
               {
                 "cyclic": {
@@ -2674,7 +3612,86 @@
                   "unitarity_residual": 2.0310050971669476e-15
                 },
                 "level": 0,
-                "reverse": {
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 2.9592505527673157e-08,
+                  "closed": true,
+                  "det_W": [
+                    1.0,
+                    2.9592505527673167e-08
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -2.799046963295795e-06,
+                    2.4132765230611145e-08,
+                    2.8045067034303523e-06
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999960827,
+                      -2.79904696329214e-06
+                    ],
+                    [
+                      0.9999999999999997,
+                      2.4132765230611142e-08
+                    ],
+                    [
+                      0.9999999999960676,
+                      2.8045067034266766e-06
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.9999999999999084,
+                        2.2015290817341235e-08
+                      ],
+                      [
+                        -3.7643497344371273e-07,
+                        -7.899881786562507e-09
+                      ],
+                      [
+                        2.0236149692267214e-07,
+                        -5.2807323277145286e-09
+                      ]
+                    ],
+                    [
+                      [
+                        3.764344140835502e-07,
+                        -7.899886575159028e-09
+                      ],
+                      [
+                        0.9999999999960959,
+                        4.764128421652091e-09
+                      ],
+                      [
+                        2.7689798389495193e-06,
+                        1.2387205357340048e-09
+                      ]
+                    ],
+                    [
+                      [
+                        -2.0236253873812223e-07,
+                        -5.2807150113936275e-09
+                      ],
+                      [
+                        -2.768979762021048e-06,
+                        1.2387031274893674e-09
+                      ],
+                      [
+                        0.9999999999961461,
+                        2.8130862886583557e-09
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.9999999999921503,
+                    2.959250552765168e-08
+                  ],
+                  "unitarity_residual": 1.92912324091017e-15
+                },
+                "reverse_shifted_basepoint": {
                   "Arg_det_W": 2.959250552767345e-08,
                   "closed": true,
                   "det_W": [
@@ -2753,158 +3770,161 @@
                   ],
                   "unitarity_residual": 1.9160395481933803e-15
                 },
-                "reverse_det_phase_sign_residual": 2.3802310723393033e-17,
-                "reverse_matrix_residual": 5.531493652097154e-06
+                "same_basepoint_reverse_matrix_residual": 5.803796932839221e-16,
+                "shifted_basepoint_reverse_det_conjugation_residual": 6.665589322240423e-16,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 2.3802310723393033e-17,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 8.920730087951354e-16,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 4.44726629915461e-16
               },
               {
                 "cyclic": {
-                  "Arg_det_W": -3.2685024507375676e-09,
+                  "Arg_det_W": -3.794882261170421e-09,
                   "closed": true,
                   "det_W": [
-                    1.0,
-                    -3.2685024507375676e-09
+                    0.9999999999999994,
+                    -3.794882261170418e-09
                   ],
                   "edge_link_count": 4,
                   "eigenphases_sorted": [
-                    -7.059547228122513e-07,
-                    1.3458071324023994e-09,
-                    7.013404134219876e-07
+                    -7.0625219809199e-07,
+                    9.671059508775676e-10,
+                    7.014902103954241e-07
                   ],
                   "eigenvalues_sorted": [
                     [
-                      0.9999999999997509,
-                      -7.059547228121928e-07
+                      0.9999999999997505,
+                      -7.062521980919313e-07
                     ],
                     [
-                      0.9999999999999997,
-                      1.345807132402399e-09
+                      0.9999999999999993,
+                      9.67105950877567e-10
                     ],
                     [
-                      0.9999999999997544,
-                      7.013404134219303e-07
+                      0.9999999999997543,
+                      7.014902103953669e-07
                     ]
                   ],
                   "product_W": [
                     [
                       [
-                        0.9999999999999983,
-                        2.1379747598402354e-09
+                        0.9999999999999982,
+                        1.7773389699149153e-09
                       ],
                       [
-                        -2.8362473586246288e-08,
-                        -5.8141987591294366e-09
+                        -2.852182713565065e-08,
+                        -6.031248831235007e-09
                       ],
                       [
-                        4.571617553718285e-08,
-                        -4.179601623295349e-11
+                        4.55523425801864e-08,
+                        2.8390078765828272e-11
                       ]
                     ],
                     [
                       [
-                        2.8362505654156817e-08,
-                        -5.814198647141253e-09
+                        2.8521858806056835e-08,
+                        -6.031248782198209e-09
                       ],
                       [
                         0.9999999999997535,
-                        -1.967361034982251e-09
+                        -2.1098800683410705e-09
                       ],
                       [
-                        -7.015589767757472e-07,
-                        -1.6705114213100241e-09
+                        -7.017857547999584e-07,
+                        -1.6959196273013965e-09
                       ]
                     ],
                     [
                       [
-                        -4.571615542280133e-08,
-                        -4.180008374978543e-11
+                        -4.555232278436137e-08,
+                        2.8385877193589867e-11
                       ],
                       [
-                        7.015589772283164e-07,
-                        -1.6705149286587284e-09
+                        7.017857556399692e-07,
+                        -1.6959232848886608e-09
                       ],
                       [
-                        0.9999999999997531,
-                        -3.4391161755944228e-09
+                        0.9999999999997523,
+                        -3.462341162743068e-09
                       ]
                     ]
                   ],
                   "rank": 3,
                   "status": "WILSON_LOOP_QUALIFIED",
                   "trace": [
-                    2.999999999999505,
-                    -3.2685024507364385e-09
+                    2.999999999999504,
+                    -3.794882261169223e-09
                   ],
-                  "unitarity_residual": 1.3930309964120534e-15
+                  "unitarity_residual": 1.3834323200027187e-15
                 },
-                "cyclic_basepoint_residual": 4.685808902658081e-16,
+                "cyclic_basepoint_residual": 4.965068306494546e-16,
                 "forward": {
-                  "Arg_det_W": -3.2685024507372235e-09,
+                  "Arg_det_W": -3.794882261169719e-09,
                   "closed": true,
                   "det_W": [
-                    0.9999999999999998,
-                    -3.2685024507372226e-09
+                    0.9999999999999997,
+                    -3.7948822611697175e-09
                   ],
                   "edge_link_count": 4,
                   "eigenphases_sorted": [
-                    -7.059547226240135e-07,
-                    1.3458067993354918e-09,
-                    7.013404130923898e-07
+                    -7.062521981801713e-07,
+                    9.671055067883576e-10,
+                    7.014902101490936e-07
                   ],
                   "eigenvalues_sorted": [
                     [
-                      0.9999999999997512,
-                      -7.059547226239551e-07
+                      0.9999999999997505,
+                      -7.062521981801125e-07
                     ],
                     [
-                      0.9999999999999999,
-                      1.3458067993354916e-09
+                      0.9999999999999996,
+                      9.671055067883572e-10
                     ],
                     [
-                      0.9999999999997548,
-                      7.013404130923329e-07
+                      0.999999999999754,
+                      7.014902101490361e-07
                     ]
                   ],
                   "product_W": [
                     [
                       [
-                        0.9999999999999983,
-                        1.424201829082313e-09
+                        0.9999999999999984,
+                        1.0609628226949246e-09
                       ],
                       [
-                        4.139262124781909e-08,
-                        -4.8105756222584794e-09
+                        4.117354089311875e-08,
+                        -4.880244333031913e-09
                       ],
                       [
-                        -2.93720578616632e-08,
-                        3.884371191530424e-09
+                        -2.9400667090140703e-08,
+                        4.1060035788470065e-09
                       ]
                     ],
                     [
                       [
-                        -4.139264170266602e-08,
-                        -4.810578298332756e-09
+                        -4.117356193608941e-08,
+                        -4.880247142572374e-09
                       ],
                       [
-                        0.9999999999997526,
-                        -3.3410743925604973e-09
+                        0.9999999999997524,
+                        -3.428494183962231e-09
                       ],
                       [
-                        -7.017858152656304e-07,
-                        -9.955738368964978e-10
+                        -7.020200128150119e-07,
+                        -9.568492942763211e-10
                       ]
                     ],
                     [
                       [
-                        2.9372029073975006e-08,
-                        3.884367859579571e-09
+                        2.9400638217455453e-08,
+                        4.10600018004656e-09
                       ],
                       [
-                        7.017858165610651e-07,
-                        -9.95577092004145e-10
+                        7.020200134395508e-07,
+                        -9.568526984605527e-10
                       ],
                       [
-                        0.9999999999997536,
-                        -1.3516298872579099e-09
+                        0.9999999999997533,
+                        -1.4273508999012151e-09
                       ]
                     ]
                   ],
@@ -2912,92 +3932,174 @@
                   "status": "WILSON_LOOP_QUALIFIED",
                   "trace": [
                     2.9999999999995044,
-                    -3.268502450736094e-09
+                    -3.7948822611685214e-09
                   ],
-                  "unitarity_residual": 1.2038665720104045e-15
+                  "unitarity_residual": 1.3567297219782077e-15
                 },
                 "level": 1,
-                "reverse": {
-                  "Arg_det_W": 3.2685024773888058e-09,
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 3.794882295772286e-09,
                   "closed": true,
                   "det_W": [
-                    0.9999999999999998,
-                    3.268502477388805e-09
+                    1.0000000000000016,
+                    3.794882295772291e-09
                   ],
                   "edge_link_count": 4,
                   "eigenphases_sorted": [
-                    -7.013404135034977e-07,
-                    -1.3458071324023984e-09,
-                    7.059547230751115e-07
+                    -7.014902103954234e-07,
+                    -9.671055067883574e-10,
+                    7.06252198431322e-07
                   ],
                   "eigenvalues_sorted": [
                     [
-                      0.9999999999997542,
-                      -7.013404135034403e-07
+                      0.9999999999997553,
+                      -7.014902103953669e-07
                     ],
                     [
-                      1.0000000000000004,
-                      -1.345807132402399e-09
+                      0.9999999999999999,
+                      -9.671055067883572e-10
                     ],
                     [
-                      0.999999999999751,
-                      7.059547230750529e-07
+                      0.9999999999997515,
+                      7.06252198431264e-07
                     ]
                   ],
                   "product_W": [
                     [
                       [
-                        0.9999999999999977,
-                        -1.5445632996407758e-10
+                        0.9999999999999986,
+                        -1.0609628154875012e-09
                       ],
                       [
-                        6.692298934354759e-08,
-                        2.7097675403380956e-10
+                        -4.117356167780341e-08,
+                        4.880247162757428e-09
                       ],
                       [
-                        -1.800083069369286e-08,
-                        6.284150341953524e-09
+                        2.940063835478599e-08,
+                        -4.106000256545901e-09
                       ]
                     ],
                     [
                       [
-                        -6.692300233439544e-08,
-                        2.7097217132918804e-10
+                        4.117354109820323e-08,
+                        4.880244347888276e-09
                       ],
                       [
-                        0.9999999999997525,
-                        3.2602676805389925e-09
+                        0.9999999999997536,
+                        3.428494215846237e-09
                       ],
                       [
-                        -7.00197597115208e-07,
-                        1.3536851582613698e-09
+                        7.020200138097241e-07,
+                        9.568527063601898e-10
                       ]
                     ],
                     [
                       [
-                        1.8000783494072515e-08,
-                        6.284150437117393e-09
+                        -2.9400667120922082e-08,
+                        -4.106003652861745e-09
                       ],
                       [
-                        7.001975987913776e-07,
-                        1.3536879722884518e-09
+                        -7.020200128482722e-07,
+                        9.568493341188147e-10
                       ],
                       [
-                        0.9999999999997545,
-                        1.6269112681275202e-10
+                        0.9999999999997541,
+                        1.4273508954123826e-09
                       ]
                     ]
                   ],
                   "rank": 3,
                   "status": "WILSON_LOOP_QUALIFIED",
                   "trace": [
-                    2.999999999999505,
-                    3.268502477387667e-09
+                    2.999999999999506,
+                    3.7948822957711185e-09
                   ],
-                  "unitarity_residual": 1.0643920121605736e-15
+                  "unitarity_residual": 2.5712499059956168e-15
                 },
-                "reverse_det_phase_sign_residual": 2.6651582319807465e-17,
-                "reverse_matrix_residual": 1.4019834597942578e-06
+                "reverse_shifted_basepoint": {
+                  "Arg_det_W": 3.794882295771837e-09,
+                  "closed": true,
+                  "det_W": [
+                    1.0000000000000018,
+                    3.794882295771844e-09
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -7.014902104838101e-07,
+                    -9.671055067883572e-10,
+                    7.062521986748202e-07
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999997543,
+                      -7.014902104837528e-07
+                    ],
+                    [
+                      1.0,
+                      -9.671055067883572e-10
+                    ],
+                    [
+                      0.9999999999997509,
+                      7.062521986747616e-07
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.9999999999999976,
+                        2.5744609973547e-10
+                      ],
+                      [
+                        6.71137973220852e-08,
+                        1.7030623304553078e-10
+                      ],
+                      [
+                        -1.784687897856601e-08,
+                        6.453843851458189e-09
+                      ]
+                    ],
+                    [
+                      [
+                        -6.711380977550632e-08,
+                        1.7030149983703506e-10
+                      ],
+                      [
+                        0.9999999999997532,
+                        3.292594262983429e-09
+                      ],
+                      [
+                        -7.004062952928902e-07,
+                        1.375559941467461e-09
+                      ]
+                    ],
+                    [
+                      [
+                        1.7846832138822966e-08,
+                        6.4538438858912015e-09
+                      ],
+                      [
+                        7.004062965052419e-07,
+                        1.375562844151104e-09
+                      ],
+                      [
+                        0.9999999999997556,
+                        2.4484193305177013e-10
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.9999999999995066,
+                    3.794882295770669e-09
+                  ],
+                  "unitarity_residual": 2.7224831430373668e-15
+                },
+                "same_basepoint_reverse_matrix_residual": 1.221661466514983e-15,
+                "shifted_basepoint_reverse_det_conjugation_residual": 2.1097075272801703e-15,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 3.4602118112867047e-17,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 5.963315624809202e-16,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 2.22071564282103e-15
               },
               {
                 "cyclic": {
@@ -3160,7 +4262,86 @@
                   "unitarity_residual": 1.2541347022832982e-15
                 },
                 "level": 2,
-                "reverse": {
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 6.82563451910345e-11,
+                  "closed": true,
+                  "det_W": [
+                    1.0000000000000007,
+                    6.825634519103455e-11
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -1.7520687370288986e-07,
+                    -9.212324236784761e-10,
+                    1.7619636237097758e-07
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.999999999999986,
+                      -1.752068737028892e-07
+                    ],
+                    [
+                      0.9999999999999991,
+                      -9.212324236784752e-10
+                    ],
+                    [
+                      0.9999999999999861,
+                      1.7619636237097697e-07
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.9999999999999989,
+                        -9.026674178458914e-10
+                      ],
+                      [
+                        -4.655532399292456e-09,
+                        2.223787174370454e-09
+                      ],
+                      [
+                        3.3688189751419666e-09,
+                        -1.2217078114049262e-09
+                      ]
+                    ],
+                    [
+                      [
+                        4.655531806879391e-09,
+                        2.2237869585271573e-09
+                      ],
+                      [
+                        0.9999999999999858,
+                        6.227712552100388e-10
+                      ],
+                      [
+                        1.755891893751835e-07,
+                        2.037851882236622e-10
+                      ]
+                    ],
+                    [
+                      [
+                        -3.368819920458146e-09,
+                        -1.2217081987180793e-09
+                      ],
+                      [
+                        -1.7558918988070266e-07,
+                        2.0378496118185566e-10
+                      ],
+                      [
+                        0.9999999999999852,
+                        3.481525078268643e-10
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.99999999999997,
+                    6.82563451910116e-11
+                  ],
+                  "unitarity_residual": 3.641121880489446e-15
+                },
+                "reverse_shifted_basepoint": {
                   "Arg_det_W": 6.825634519148069e-11,
                   "closed": true,
                   "det_W": [
@@ -3239,27 +4420,77 @@
                   ],
                   "unitarity_residual": 3.784588886855381e-15
                 },
-                "reverse_det_phase_sign_residual": 2.5282652206376233e-16,
-                "reverse_matrix_residual": 3.5104303195067726e-07
+                "same_basepoint_reverse_matrix_residual": 1.2220197967054468e-15,
+                "shifted_basepoint_reverse_det_conjugation_residual": 5.110151432039145e-16,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 2.5282652206376233e-16,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.6800722979961108e-15,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 5.110151410425604e-16
               }
             ],
-            "max_cyclic_basepoint_residual": 4.685808902658081e-16,
-            "max_reverse_det_phase_sign_residual": 2.5282652206376233e-16,
-            "max_reverse_matrix_residual": 5.531493652097154e-06,
+            "max_cyclic_basepoint_residual": 4.965068306494546e-16,
+            "max_same_basepoint_reverse_matrix_residual": 1.2220197967054468e-15,
+            "max_shifted_basepoint_reverse_det_conjugation_residual": 2.1097075272801703e-15,
+            "max_shifted_basepoint_reverse_det_phase_sign_residual": 2.5282652206376233e-16,
+            "max_shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.6800722979961108e-15,
+            "max_shifted_basepoint_reverse_trace_conjugation_residual": 2.22071564282103e-15,
             "max_unitarity_residual": 3.784588886855381e-15
           }
         },
         "R48_dk_0.02777778": {
+          "basepoint_invariant_checks": [
+            "shifted_reverse_det_phase",
+            "shifted_reverse_det",
+            "shifted_reverse_trace",
+            "shifted_reverse_eigenvalue_multiset",
+            "cyclic_trace_det_phase_eigenvalue_multiset"
+          ],
+          "cyclic_basepoint": 1,
+          "cyclic_order": [
+            1,
+            2,
+            3,
+            0,
+            4
+          ],
           "delta_k": 0.027777777777777776,
+          "forward_basepoint": 0,
+          "forward_order": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "matrix_covariant_checks": [
+            "same_basepoint_reverse_matrix"
+          ],
           "qualification": {
             "cyclic_qualified": true,
             "cyclic_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
             "forward_qualified": true,
             "forward_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
-            "reverse_qualified": true,
-            "reverse_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED"
+            "reverse_same_basepoint_qualified": true,
+            "reverse_same_basepoint_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+            "reverse_shifted_basepoint_qualified": true,
+            "reverse_shifted_basepoint_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED"
           },
           "resolution": 48,
+          "reverse_same_basepoint": 0,
+          "reverse_same_basepoint_order": [
+            0,
+            3,
+            2,
+            1,
+            4
+          ],
+          "reverse_shifted_basepoint": 3,
+          "reverse_shifted_basepoint_order": [
+            3,
+            2,
+            1,
+            0,
+            4
+          ],
           "selection_zero_based": [
             0,
             1,
@@ -3298,7 +4529,7 @@
             ]
           },
           "wilson": {
-            "algebraic_checks_pass": false,
+            "algebraic_checks_pass": true,
             "levels": [
               {
                 "cyclic": {
@@ -3461,7 +4692,86 @@
                   "unitarity_residual": 3.063716940448351e-15
                 },
                 "level": 0,
-                "reverse": {
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 1.62866922938317e-08,
+                  "closed": true,
+                  "det_W": [
+                    1.0000000000000002,
+                    1.6286692293831706e-08
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -1.1171789228724771e-05,
+                    2.4394232606139693e-08,
+                    1.1163681688593455e-05
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999375954,
+                      -1.117178922849238e-05
+                    ],
+                    [
+                      1.0000000000000004,
+                      2.439423260613971e-08
+                    ],
+                    [
+                      0.9999999999376862,
+                      1.1163681688361571e-05
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.9999999999952434,
+                        2.3175960440954353e-08
+                      ],
+                      [
+                        -2.7522165754489226e-06,
+                        -6.1786559767417225e-09
+                      ],
+                      [
+                        1.3927092103965721e-06,
+                        -4.4266804750380065e-09
+                      ]
+                    ],
+                    [
+                      [
+                        2.7522016263861795e-06,
+                        -6.178650137052926e-09
+                      ],
+                      [
+                        0.99999999993861,
+                        -8.308838844333274e-09
+                      ],
+                      [
+                        1.0733307681326743e-05,
+                        -8.92838598409223e-09
+                      ]
+                    ],
+                    [
+                      [
+                        -1.392738750898351e-06,
+                        -4.426672985664163e-09
+                      ],
+                      [
+                        -1.0733303848924659e-05,
+                        -8.928291253579182e-09
+                      ],
+                      [
+                        0.9999999999414285,
+                        1.41957069771621e-09
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.999999999875282,
+                    1.628669229433729e-08
+                  ],
+                  "unitarity_residual": 2.413317165891674e-15
+                },
+                "reverse_shifted_basepoint": {
                   "Arg_det_W": 1.6286692293832196e-08,
                   "closed": true,
                   "det_W": [
@@ -3540,8 +4850,11 @@
                   ],
                   "unitarity_residual": 2.2229743056447348e-15
                 },
-                "reverse_det_phase_sign_residual": 4.6737147212234356e-17,
-                "reverse_matrix_residual": 2.1466739539330562e-05
+                "same_basepoint_reverse_matrix_residual": 1.99894027560674e-15,
+                "shifted_basepoint_reverse_det_conjugation_residual": 1.4440464642606678e-15,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 4.6737147212234356e-17,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.4752290795525882e-15,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 1.3330871672594602e-15
               },
               {
                 "cyclic": {
@@ -3704,7 +5017,86 @@
                   "unitarity_residual": 2.0310050971669476e-15
                 },
                 "level": 1,
-                "reverse": {
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 2.9592505527673157e-08,
+                  "closed": true,
+                  "det_W": [
+                    1.0,
+                    2.9592505527673167e-08
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -2.799046963295795e-06,
+                    2.4132765230611145e-08,
+                    2.8045067034303523e-06
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999960827,
+                      -2.79904696329214e-06
+                    ],
+                    [
+                      0.9999999999999997,
+                      2.4132765230611142e-08
+                    ],
+                    [
+                      0.9999999999960676,
+                      2.8045067034266766e-06
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.9999999999999084,
+                        2.2015290817341235e-08
+                      ],
+                      [
+                        -3.7643497344371273e-07,
+                        -7.899881786562507e-09
+                      ],
+                      [
+                        2.0236149692267214e-07,
+                        -5.2807323277145286e-09
+                      ]
+                    ],
+                    [
+                      [
+                        3.764344140835502e-07,
+                        -7.899886575159028e-09
+                      ],
+                      [
+                        0.9999999999960959,
+                        4.764128421652091e-09
+                      ],
+                      [
+                        2.7689798389495193e-06,
+                        1.2387205357340048e-09
+                      ]
+                    ],
+                    [
+                      [
+                        -2.0236253873812223e-07,
+                        -5.2807150113936275e-09
+                      ],
+                      [
+                        -2.768979762021048e-06,
+                        1.2387031274893674e-09
+                      ],
+                      [
+                        0.9999999999961461,
+                        2.8130862886583557e-09
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.9999999999921503,
+                    2.959250552765168e-08
+                  ],
+                  "unitarity_residual": 1.92912324091017e-15
+                },
+                "reverse_shifted_basepoint": {
                   "Arg_det_W": 2.959250552767345e-08,
                   "closed": true,
                   "det_W": [
@@ -3783,8 +5175,11 @@
                   ],
                   "unitarity_residual": 1.9160395481933803e-15
                 },
-                "reverse_det_phase_sign_residual": 2.3802310723393033e-17,
-                "reverse_matrix_residual": 5.531493652097154e-06
+                "same_basepoint_reverse_matrix_residual": 5.803796932839221e-16,
+                "shifted_basepoint_reverse_det_conjugation_residual": 6.665589322240423e-16,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 2.3802310723393033e-17,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 8.920730087951354e-16,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 4.44726629915461e-16
               },
               {
                 "cyclic": {
@@ -3947,7 +5342,86 @@
                   "unitarity_residual": 1.3567297219782077e-15
                 },
                 "level": 2,
-                "reverse": {
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 3.794882295772286e-09,
+                  "closed": true,
+                  "det_W": [
+                    1.0000000000000016,
+                    3.794882295772291e-09
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -7.014902103954234e-07,
+                    -9.671055067883574e-10,
+                    7.06252198431322e-07
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999997553,
+                      -7.014902103953669e-07
+                    ],
+                    [
+                      0.9999999999999999,
+                      -9.671055067883572e-10
+                    ],
+                    [
+                      0.9999999999997515,
+                      7.06252198431264e-07
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.9999999999999986,
+                        -1.0609628154875012e-09
+                      ],
+                      [
+                        -4.117356167780341e-08,
+                        4.880247162757428e-09
+                      ],
+                      [
+                        2.940063835478599e-08,
+                        -4.106000256545901e-09
+                      ]
+                    ],
+                    [
+                      [
+                        4.117354109820323e-08,
+                        4.880244347888276e-09
+                      ],
+                      [
+                        0.9999999999997536,
+                        3.428494215846237e-09
+                      ],
+                      [
+                        7.020200138097241e-07,
+                        9.568527063601898e-10
+                      ]
+                    ],
+                    [
+                      [
+                        -2.9400667120922082e-08,
+                        -4.106003652861745e-09
+                      ],
+                      [
+                        -7.020200128482722e-07,
+                        9.568493341188147e-10
+                      ],
+                      [
+                        0.9999999999997541,
+                        1.4273508954123826e-09
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.999999999999506,
+                    3.7948822957711185e-09
+                  ],
+                  "unitarity_residual": 2.5712499059956168e-15
+                },
+                "reverse_shifted_basepoint": {
                   "Arg_det_W": 3.794882295771837e-09,
                   "closed": true,
                   "det_W": [
@@ -4026,27 +5500,77 @@
                   ],
                   "unitarity_residual": 2.7224831430373668e-15
                 },
-                "reverse_det_phase_sign_residual": 3.4602118112867047e-17,
-                "reverse_matrix_residual": 1.4024263718265802e-06
+                "same_basepoint_reverse_matrix_residual": 1.221661466514983e-15,
+                "shifted_basepoint_reverse_det_conjugation_residual": 2.1097075272801703e-15,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 3.4602118112867047e-17,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 5.963315624809202e-16,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 2.22071564282103e-15
               }
             ],
             "max_cyclic_basepoint_residual": 8.881784197001252e-16,
-            "max_reverse_det_phase_sign_residual": 4.6737147212234356e-17,
-            "max_reverse_matrix_residual": 2.1466739539330562e-05,
+            "max_same_basepoint_reverse_matrix_residual": 1.99894027560674e-15,
+            "max_shifted_basepoint_reverse_det_conjugation_residual": 2.1097075272801703e-15,
+            "max_shifted_basepoint_reverse_det_phase_sign_residual": 4.6737147212234356e-17,
+            "max_shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.4752290795525882e-15,
+            "max_shifted_basepoint_reverse_trace_conjugation_residual": 2.22071564282103e-15,
             "max_unitarity_residual": 3.2178132638323075e-15
           }
         },
         "R64_dk_0.02777778": {
+          "basepoint_invariant_checks": [
+            "shifted_reverse_det_phase",
+            "shifted_reverse_det",
+            "shifted_reverse_trace",
+            "shifted_reverse_eigenvalue_multiset",
+            "cyclic_trace_det_phase_eigenvalue_multiset"
+          ],
+          "cyclic_basepoint": 1,
+          "cyclic_order": [
+            1,
+            2,
+            3,
+            0,
+            4
+          ],
           "delta_k": 0.027777777777777776,
+          "forward_basepoint": 0,
+          "forward_order": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "matrix_covariant_checks": [
+            "same_basepoint_reverse_matrix"
+          ],
           "qualification": {
             "cyclic_qualified": true,
             "cyclic_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
             "forward_qualified": true,
             "forward_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
-            "reverse_qualified": true,
-            "reverse_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED"
+            "reverse_same_basepoint_qualified": true,
+            "reverse_same_basepoint_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+            "reverse_shifted_basepoint_qualified": true,
+            "reverse_shifted_basepoint_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED"
           },
           "resolution": 64,
+          "reverse_same_basepoint": 0,
+          "reverse_same_basepoint_order": [
+            0,
+            3,
+            2,
+            1,
+            4
+          ],
+          "reverse_shifted_basepoint": 3,
+          "reverse_shifted_basepoint_order": [
+            3,
+            2,
+            1,
+            0,
+            4
+          ],
           "selection_zero_based": [
             0,
             1,
@@ -4085,7 +5609,7 @@
             ]
           },
           "wilson": {
-            "algebraic_checks_pass": false,
+            "algebraic_checks_pass": true,
             "levels": [
               {
                 "cyclic": {
@@ -4248,7 +5772,86 @@
                   "unitarity_residual": 1.7673840739905205e-15
                 },
                 "level": 0,
-                "reverse": {
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 1.062285948959574e-09,
+                  "closed": true,
+                  "det_W": [
+                    0.9999999999999992,
+                    1.0622859489595733e-09
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -1.1194525407665749e-05,
+                    1.6249452283734204e-08,
+                    1.1179338241108722e-05
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999373408,
+                      -1.1194525407431932e-05
+                    ],
+                    [
+                      0.9999999999999997,
+                      1.62494522837342e-08
+                    ],
+                    [
+                      0.999999999937511,
+                      1.1179338240875859e-05
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.9999999999952257,
+                        -8.047061596618094e-09
+                      ],
+                      [
+                        -2.782691218488519e-06,
+                        -4.64630084759986e-08
+                      ],
+                      [
+                        1.3426757008161578e-06,
+                        -2.338859753964864e-08
+                      ]
+                    ],
+                    [
+                      [
+                        2.7826767816770313e-06,
+                        -4.6463335634389344e-08
+                      ],
+                      [
+                        0.9999999999383271,
+                        -1.5126111747503312e-08
+                      ],
+                      [
+                        1.0751665405329028e-05,
+                        8.350512194191248e-09
+                      ]
+                    ],
+                    [
+                      [
+                        -1.3427056185537841e-06,
+                        -2.3388096483036607e-08
+                      ],
+                      [
+                        -1.0751661671320796e-05,
+                        8.350541717406748e-09
+                      ],
+                      [
+                        0.9999999999412987,
+                        2.4235459294031228e-08
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.999999999874851,
+                    1.0622859499098216e-09
+                  ],
+                  "unitarity_residual": 2.3353385978285093e-15
+                },
+                "reverse_shifted_basepoint": {
                   "Arg_det_W": 1.0622859489583555e-09,
                   "closed": true,
                   "det_W": [
@@ -4327,8 +5930,11 @@
                   ],
                   "unitarity_residual": 2.2011574946896216e-15
                 },
-                "reverse_det_phase_sign_residual": 3.931044277402322e-17,
-                "reverse_matrix_residual": 2.151906224135979e-05
+                "same_basepoint_reverse_matrix_residual": 9.079241184955859e-16,
+                "shifted_basepoint_reverse_det_conjugation_residual": 8.890479268279833e-16,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 3.931044277402322e-17,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 6.773937299780277e-16,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 8.890479259776173e-16
               },
               {
                 "cyclic": {
@@ -4491,7 +6097,86 @@
                   "unitarity_residual": 2.9791044251915577e-15
                 },
                 "level": 1,
-                "reverse": {
+                "reverse_same_basepoint": {
+                  "Arg_det_W": 1.4986425634641149e-09,
+                  "closed": true,
+                  "det_W": [
+                    0.9999999999999978,
+                    1.4986425634641116e-09
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -2.7867773551851206e-06,
+                    4.684155174849987e-09,
+                    2.7835918427790333e-06
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999961157,
+                      -2.78677735518151e-06
+                    ],
+                    [
+                      1.0000000000000009,
+                      4.684155174849991e-09
+                    ],
+                    [
+                      0.9999999999961244,
+                      2.7835918427754347e-06
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.9999999999999064,
+                        5.345359566051385e-09
+                      ],
+                      [
+                        -3.953944548262615e-07,
+                        8.536906633203326e-10
+                      ],
+                      [
+                        1.7817594566541697e-07,
+                        9.638590960130376e-10
+                      ]
+                    ],
+                    [
+                      [
+                        3.953939647708305e-07,
+                        8.53696544486579e-10
+                      ],
+                      [
+                        0.9999999999961359,
+                        1.562901099564255e-09
+                      ],
+                      [
+                        2.7512077180768516e-06,
+                        -2.7939238545540038e-09
+                      ]
+                    ],
+                    [
+                      [
+                        -1.7817703347106041e-07,
+                        9.6385565347166e-10
+                      ],
+                      [
+                        -2.7512076467078494e-06,
+                        -2.7939138079803378e-09
+                      ],
+                      [
+                        0.9999999999961984,
+                        -5.409618102139175e-09
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.999999999992241,
+                    1.4986425634764647e-09
+                  ],
+                  "unitarity_residual": 3.962885885249408e-15
+                },
+                "reverse_shifted_basepoint": {
                   "Arg_det_W": 1.4986425634644623e-09,
                   "closed": true,
                   "det_W": [
@@ -4570,257 +6255,345 @@
                   ],
                   "unitarity_residual": 3.591348856262085e-15
                 },
-                "reverse_det_phase_sign_residual": 7.965199885522799e-17,
-                "reverse_matrix_residual": 5.5019841525764475e-06
+                "same_basepoint_reverse_matrix_residual": 8.88219423213565e-16,
+                "shifted_basepoint_reverse_det_conjugation_residual": 1.4454861702698629e-15,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 7.965199885522799e-17,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.6800722979961108e-15,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 1.3346465734252864e-15
               },
               {
                 "cyclic": {
-                  "Arg_det_W": 2.7630840551322807e-10,
+                  "Arg_det_W": 2.3437121230364414e-10,
                   "closed": true,
                   "det_W": [
-                    1.0000000000000013,
-                    2.7630840551322843e-10
+                    0.9999999999999994,
+                    2.34371212303644e-10
                   ],
                   "edge_link_count": 4,
                   "eigenphases_sorted": [
-                    -6.9548237226913e-07,
-                    -3.6634917321975975e-10,
-                    6.961250300470734e-07
+                    -6.955125530228597e-07,
+                    -3.664670789049752e-10,
+                    6.961133914151525e-07
                   ],
                   "eigenvalues_sorted": [
                     [
-                      0.9999999999997583,
-                      -6.954823722690739e-07
+                      0.9999999999997579,
+                      -6.955125530228035e-07
                     ],
                     [
-                      1.0000000000000004,
-                      -3.663491732197599e-10
+                      0.9999999999999998,
+                      -3.664670789049751e-10
                     ],
                     [
-                      0.9999999999997582,
-                      6.961250300470175e-07
+                      0.999999999999758,
+                      6.961133914150965e-07
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.9999999999999978,
+                        -3.8672930521751885e-10
+                      ],
+                      [
+                        -2.435153243519487e-08,
+                        2.692653567485389e-10
+                      ],
+                      [
+                        5.836621718310879e-08,
+                        -3.3997398898200775e-10
+                      ]
+                    ],
+                    [
+                      [
+                        2.435157273436808e-08,
+                        2.6926563538459823e-10
+                      ],
+                      [
+                        0.9999999999997602,
+                        3.917328003602964e-11
+                      ],
+                      [
+                        -6.929321871505063e-07,
+                        -8.872449741734531e-10
+                      ]
+                    ],
+                    [
+                      [
+                        -5.836620021801142e-08,
+                        -3.3997383514515044e-10
+                      ],
+                      [
+                        6.929321884461798e-07,
+                        -8.872445518235118e-10
+                      ],
+                      [
+                        0.9999999999997573,
+                        5.81927237484988e-10
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.999999999999515,
+                    2.343712123034988e-10
+                  ],
+                  "unitarity_residual": 2.16226053557987e-15
+                },
+                "cyclic_basepoint_residual": 7.463182812841589e-16,
+                "forward": {
+                  "Arg_det_W": 2.343712123036611e-10,
+                  "closed": true,
+                  "det_W": [
+                    0.9999999999999999,
+                    2.3437121230366104e-10
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -6.955125526863229e-07,
+                    -3.664670789049752e-10,
+                    6.961133912612408e-07
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999997585,
+                      -6.955125526862671e-07
+                    ],
+                    [
+                      0.9999999999999998,
+                      -3.664670789049751e-10
+                    ],
+                    [
+                      0.9999999999997579,
+                      6.961133912611847e-07
                     ]
                   ],
                   "product_W": [
                     [
                       [
                         0.9999999999999982,
-                        -3.905359798548999e-10
+                        -4.3086395899137847e-10
                       ],
                       [
-                        -2.4360817055240303e-08,
-                        2.9908779744230633e-10
+                        5.2751159484633555e-08,
+                        -5.853587433624682e-11
                       ],
                       [
-                        5.838548856047383e-08,
-                        -3.5705380681456555e-10
+                        -2.2401570124247517e-08,
+                        -3.2849345254404504e-10
                       ]
                     ],
                     [
                       [
-                        2.4360857260900623e-08,
-                        2.990880896329549e-10
+                        -5.2751175157414105e-08,
+                        -5.853558680007196e-11
                       ],
                       [
-                        0.9999999999997606,
-                        6.784710158321472e-11
+                        0.999999999999758,
+                        -5.61038712855871e-10
                       ],
                       [
-                        -6.929208784753446e-07,
-                        -9.090323509556915e-10
+                        -6.934479882570792e-07,
+                        3.3033894089341436e-10
                       ]
                     ],
                     [
                       [
-                        -5.838547175199638e-08,
-                        -3.5705363355661815e-10
+                        2.2401533461921306e-08,
+                        -3.284934924485634e-10
                       ],
                       [
-                        6.929208800163618e-07,
-                        -9.09031898040966e-10
+                        6.934479873987315e-07,
+                        3.3033938292370265e-10
                       ],
                       [
-                        0.9999999999997585,
-                        5.989972837847579e-10
+                        0.9999999999997594,
+                        1.2262738841507655e-09
                       ]
                     ]
                   ],
                   "rank": 3,
                   "status": "WILSON_LOOP_QUALIFIED",
                   "trace": [
-                    2.9999999999995173,
-                    2.7630840551307276e-10
+                    2.9999999999995155,
+                    2.343712123035159e-10
                   ],
-                  "unitarity_residual": 2.1905247054818054e-15
+                  "unitarity_residual": 2.9443991851179556e-15
                 },
-                "cyclic_basepoint_residual": 5.07832705342619e-16,
-                "forward": {
-                  "Arg_det_W": 2.763084055127065e-10,
+                "level": 2,
+                "reverse_same_basepoint": {
+                  "Arg_det_W": -2.343711349167274e-10,
                   "closed": true,
                   "det_W": [
-                    1.0000000000000016,
-                    2.763084055127069e-10
+                    0.9999999999999983,
+                    -2.34371134916727e-10
                   ],
                   "edge_link_count": 4,
                   "eigenphases_sorted": [
-                    -6.954823720227989e-07,
-                    -3.663492842420622e-10,
-                    6.961250299503816e-07
+                    -6.96113391903891e-07,
+                    3.664671899272779e-10,
+                    6.955125534079686e-07
                   ],
                   "eigenvalues_sorted": [
                     [
-                      0.9999999999997587,
-                      -6.954823720227432e-07
+                      0.9999999999997571,
+                      -6.961133919038343e-07
                     ],
                     [
-                      1.0000000000000004,
-                      -3.6634928424206237e-10
+                      0.999999999999999,
+                      3.6646718992727756e-10
                     ],
                     [
-                      0.9999999999997582,
-                      6.961250299503257e-07
+                      0.9999999999997575,
+                      6.955125534079121e-07
                     ]
                   ],
                   "product_W": [
                     [
                       [
-                        0.9999999999999988,
-                        -4.3523471927680777e-10
+                        0.9999999999999979,
+                        4.308639696904489e-10
                       ],
                       [
-                        5.275792551667414e-08,
-                        -4.940906048156051e-11
+                        -5.275117548804155e-08,
+                        5.8535602908195e-11
                       ],
                       [
-                        -2.238022838924763e-08,
-                        -3.6010875881284814e-10
+                        2.240153340195852e-08,
+                        3.2849350884319835e-10
                       ]
                     ],
                     [
                       [
-                        -5.27579412044501e-08,
-                        -4.94087508572033e-11
+                        5.275115956960949e-08,
+                        5.853589065413897e-11
+                      ],
+                      [
+                        0.999999999999757,
+                        5.61038790653614e-10
+                      ],
+                      [
+                        6.934479888766269e-07,
+                        -3.303393902275936e-10
+                      ]
+                    ],
+                    [
+                      [
+                        -2.2401570070929956e-08,
+                        3.284934689202174e-10
+                      ],
+                      [
+                        -6.934479881479883e-07,
+                        -3.3033894811766526e-10
+                      ],
+                      [
+                        0.9999999999997592,
+                        -1.226273895260646e-09
+                      ]
+                    ]
+                  ],
+                  "rank": 3,
+                  "status": "WILSON_LOOP_QUALIFIED",
+                  "trace": [
+                    2.999999999999514,
+                    -2.3437113491658326e-10
+                  ],
+                  "unitarity_residual": 2.7431874762894937e-15
+                },
+                "reverse_shifted_basepoint": {
+                  "Arg_det_W": -2.343711349174878e-10,
+                  "closed": true,
+                  "det_W": [
+                    0.9999999999999981,
+                    -2.343711349174873e-10
+                  ],
+                  "edge_link_count": 4,
+                  "eigenphases_sorted": [
+                    -6.961133917072212e-07,
+                    3.6646707890497546e-10,
+                    6.955125533521255e-07
+                  ],
+                  "eigenvalues_sorted": [
+                    [
+                      0.9999999999997575,
+                      -6.961133917071649e-07
+                    ],
+                    [
+                      0.999999999999999,
+                      3.664670789049751e-10
+                    ],
+                    [
+                      0.9999999999997579,
+                      6.955125533520693e-07
+                    ]
+                  ],
+                  "product_W": [
+                    [
+                      [
+                        0.9999999999999977,
+                        3.542377465695564e-10
+                      ],
+                      [
+                        5.322830322958436e-08,
+                        4.212832829131171e-10
+                      ],
+                      [
+                        -2.218985101477309e-08,
+                        -2.4577175641264393e-10
+                      ]
+                    ],
+                    [
+                      [
+                        -5.3228319000808994e-08,
+                        4.2128349084783826e-10
+                      ],
+                      [
+                        0.9999999999997575,
+                        -7.157825314335549e-10
+                      ],
+                      [
+                        -6.934183353449287e-07,
+                        8.097916370945146e-10
+                      ]
+                    ],
+                    [
+                      [
+                        2.2189813898096906e-08,
+                        -2.45771496750478e-10
+                      ],
+                      [
+                        6.934183353896657e-07,
+                        8.097912257979977e-10
                       ],
                       [
                         0.9999999999997587,
-                        -5.621100860513487e-10
-                      ],
-                      [
-                        -6.934388102126753e-07,
-                        3.282131756675594e-10
-                      ]
-                    ],
-                    [
-                      [
-                        2.2380191875074824e-08,
-                        -3.601087911362076e-10
-                      ],
-                      [
-                        6.934388105988147e-07,
-                        3.28213648519303e-10
-                      ],
-                      [
-                        0.9999999999997599,
-                        1.2736532108407078e-09
+                        1.271736499466549e-10
                       ]
                     ]
                   ],
                   "rank": 3,
                   "status": "WILSON_LOOP_QUALIFIED",
                   "trace": [
-                    2.9999999999995173,
-                    2.7630840551255117e-10
+                    2.999999999999514,
+                    -2.3437113491734354e-10
                   ],
-                  "unitarity_residual": 2.1407003759038305e-15
+                  "unitarity_residual": 2.7793777541674688e-15
                 },
-                "level": 2,
-                "reverse": {
-                  "Arg_det_W": -2.763084161924335e-10,
-                  "closed": true,
-                  "det_W": [
-                    1.0000000000000002,
-                    -2.7630841619243356e-10
-                  ],
-                  "edge_link_count": 4,
-                  "eigenphases_sorted": [
-                    -6.961250298768156e-07,
-                    3.663491732197596e-10,
-                    6.954823719892337e-07
-                  ],
-                  "eigenvalues_sorted": [
-                    [
-                      0.9999999999997581,
-                      -6.961250298767596e-07
-                    ],
-                    [
-                      1.0000000000000009,
-                      3.663491732197599e-10
-                    ],
-                    [
-                      0.9999999999997586,
-                      6.95482371989178e-07
-                    ]
-                  ],
-                  "product_W": [
-                    [
-                      [
-                        0.9999999999999988,
-                        3.5068922683362033e-10
-                      ],
-                      [
-                        5.320707822187228e-08,
-                        4.420105457420082e-10
-                      ],
-                      [
-                        -2.2180925703218146e-08,
-                        -2.7691032219243354e-10
-                      ]
-                    ],
-                    [
-                      [
-                        -5.320709402541509e-08,
-                        4.42010777092266e-10
-                      ],
-                      [
-                        0.9999999999997579,
-                        -7.374650515987436e-10
-                      ],
-                      [
-                        -6.93410897163364e-07,
-                        8.307613676812204e-10
-                      ]
-                    ],
-                    [
-                      [
-                        2.2180888630710397e-08,
-                        -2.769100497152042e-10
-                      ],
-                      [
-                        6.9341089698193e-07,
-                        8.307609282310726e-10
-                      ],
-                      [
-                        0.9999999999997597,
-                        1.1046740857284435e-10
-                      ]
-                    ]
-                  ],
-                  "rank": 3,
-                  "status": "WILSON_LOOP_QUALIFIED",
-                  "trace": [
-                    2.9999999999995164,
-                    -2.763084161922789e-10
-                  ],
-                  "unitarity_residual": 2.453425629206078e-15
-                },
-                "reverse_det_phase_sign_residual": 1.0679727027515762e-17,
-                "reverse_matrix_residual": 1.386850192033418e-06
+                "same_basepoint_reverse_matrix_residual": 1.4779135112023218e-15,
+                "shifted_basepoint_reverse_det_conjugation_residual": 1.7780416870164165e-15,
+                "shifted_basepoint_reverse_det_phase_sign_residual": 7.738617331361355e-17,
+                "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 9.418210183173189e-16,
+                "shifted_basepoint_reverse_trace_conjugation_residual": 1.3345132657352543e-15
               }
             ],
             "max_cyclic_basepoint_residual": 9.155133597044475e-16,
-            "max_reverse_det_phase_sign_residual": 7.965199885522799e-17,
-            "max_reverse_matrix_residual": 2.151906224135979e-05,
-            "max_unitarity_residual": 3.591348856262085e-15
+            "max_same_basepoint_reverse_matrix_residual": 1.4779135112023218e-15,
+            "max_shifted_basepoint_reverse_det_conjugation_residual": 1.7780416870164165e-15,
+            "max_shifted_basepoint_reverse_det_phase_sign_residual": 7.965199885522799e-17,
+            "max_shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": 1.6800722979961108e-15,
+            "max_shifted_basepoint_reverse_trace_conjugation_residual": 1.3346465734252864e-15,
+            "max_unitarity_residual": 3.962885885249408e-15
           }
         }
       },
@@ -4906,6 +6679,17 @@
   ],
   "expected_base_sandbox_sha": "4e2f3f7bfbbb499afcd1da73a9d9539f4cb150a4",
   "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "forward_basepoint": 0,
+  "forward_order": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "matrix_covariant_checks": [
+    "same_basepoint_reverse_matrix"
+  ],
   "overall": "E7I3A_REPORT_READY",
   "physical_hall_response_authorized": false,
   "plaquettes": [
@@ -4914,6 +6698,22 @@
     "R64_dk_1over36"
   ],
   "rank2_observable_produced": false,
+  "reverse_same_basepoint": 0,
+  "reverse_same_basepoint_order": [
+    0,
+    3,
+    2,
+    1,
+    4
+  ],
+  "reverse_shifted_basepoint": 3,
+  "reverse_shifted_basepoint_order": [
+    3,
+    2,
+    1,
+    0,
+    4
+  ],
   "schema": "e7i3a_rank3_wilson_diagnostic_v1",
   "selection_zero_based": [
     0,

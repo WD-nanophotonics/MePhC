@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import itertools
 import json
 import subprocess
 import time
@@ -27,7 +28,8 @@ E4C = PlaquetteRefinementThresholds(0.9, 0.45, 0.3, 0.1)
 UNITARITY_TOL = 1e-10
 REVERSE_TOL = 1e-8
 CYCLIC_TOL = 1e-8
-REVERSE_ORDER = (3, 2, 1, 0, 4)
+REVERSE_SAME_BASEPOINT_ORDER = (0, 3, 2, 1, 4)
+REVERSE_SHIFTED_BASEPOINT_ORDER = (3, 2, 1, 0, 4)
 CYCLIC_ORDER = (1, 2, 3, 0, 4)
 
 
@@ -119,19 +121,30 @@ def wilson_record(wilson):
     }
 
 
-def loop_diagnostics(forward, reverse, cyclic):
+def loop_diagnostics(forward, reverse_same, reverse_shifted, cyclic):
     fwd = forward.wilson_results
-    rev = reverse.wilson_results
+    same = reverse_same.wilson_results
+    shifted = reverse_shifted.wilson_results
     cyc = cyclic.wilson_results
     records = []
     max_unitarity = 0.0
-    max_reverse_matrix = 0.0
-    max_reverse_phase = 0.0
+    max_same_matrix = 0.0
+    max_shifted_det = 0.0
+    max_shifted_phase = 0.0
+    max_shifted_trace = 0.0
+    max_shifted_eigenvalues = 0.0
     max_cyclic = 0.0
-    for level, (fwd_w, rev_w, cyc_w) in enumerate(zip(fwd, rev, cyc)):
-        matrix_residual = float(np.max(np.abs(rev_w.product - fwd_w.product.conj().T)))
-        phase_residual = float(abs(np.angle(np.exp(1j * (rev_w.determinant_phase + fwd_w.determinant_phase)))))
+    for level, (fwd_w, same_w, shifted_w, cyc_w) in enumerate(zip(fwd, same, shifted, cyc)):
+        same_matrix_residual = float(np.max(np.abs(same_w.product - fwd_w.product.conj().T)))
+        shifted_det_residual = float(abs(shifted_w.determinant - fwd_w.determinant.conjugate()))
+        shifted_phase_residual = float(abs(np.angle(np.exp(1j * (shifted_w.determinant_phase + fwd_w.determinant_phase)))))
+        shifted_trace_residual = float(abs(shifted_w.trace - fwd_w.trace.conjugate()))
         fwd_values = stable_eigenvalues(fwd_w)
+        shifted_values = stable_eigenvalues(shifted_w)
+        shifted_eigenvalue_residual = float(min(
+            np.max(np.abs(shifted_values - np.conjugate(fwd_values[list(permutation)])))
+            for permutation in itertools.permutations(range(len(fwd_values)))
+        ))
         cyc_values = stable_eigenvalues(cyc_w)
         cyclic_residual = float(max(
             np.max(np.abs(cyc_values - fwd_values)),
@@ -139,33 +152,45 @@ def loop_diagnostics(forward, reverse, cyclic):
             abs(cyc_w.determinant - fwd_w.determinant),
             abs(np.angle(np.exp(1j * (cyc_w.determinant_phase - fwd_w.determinant_phase)))),
         ))
-        max_unitarity = max(max_unitarity, float(fwd_w.unitarity_residual), float(rev_w.unitarity_residual), float(cyc_w.unitarity_residual))
-        max_reverse_matrix = max(max_reverse_matrix, matrix_residual)
-        max_reverse_phase = max(max_reverse_phase, phase_residual)
+        max_unitarity = max(max_unitarity, float(fwd_w.unitarity_residual), float(same_w.unitarity_residual), float(shifted_w.unitarity_residual), float(cyc_w.unitarity_residual))
+        max_same_matrix = max(max_same_matrix, same_matrix_residual)
+        max_shifted_det = max(max_shifted_det, shifted_det_residual)
+        max_shifted_phase = max(max_shifted_phase, shifted_phase_residual)
+        max_shifted_trace = max(max_shifted_trace, shifted_trace_residual)
+        max_shifted_eigenvalues = max(max_shifted_eigenvalues, shifted_eigenvalue_residual)
         max_cyclic = max(max_cyclic, cyclic_residual)
         records.append({
             "level": level,
             "forward": wilson_record(fwd_w),
-            "reverse": wilson_record(rev_w),
+            "reverse_same_basepoint": wilson_record(same_w),
+            "reverse_shifted_basepoint": wilson_record(shifted_w),
             "cyclic": wilson_record(cyc_w),
-            "reverse_matrix_residual": matrix_residual,
-            "reverse_det_phase_sign_residual": phase_residual,
+            "same_basepoint_reverse_matrix_residual": same_matrix_residual,
+            "shifted_basepoint_reverse_det_conjugation_residual": shifted_det_residual,
+            "shifted_basepoint_reverse_det_phase_sign_residual": shifted_phase_residual,
+            "shifted_basepoint_reverse_trace_conjugation_residual": shifted_trace_residual,
+            "shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": shifted_eigenvalue_residual,
             "cyclic_basepoint_residual": cyclic_residual,
         })
     return {
         "levels": records,
         "max_unitarity_residual": max_unitarity,
-        "max_reverse_matrix_residual": max_reverse_matrix,
-        "max_reverse_det_phase_sign_residual": max_reverse_phase,
+        "max_same_basepoint_reverse_matrix_residual": max_same_matrix,
+        "max_shifted_basepoint_reverse_det_conjugation_residual": max_shifted_det,
+        "max_shifted_basepoint_reverse_det_phase_sign_residual": max_shifted_phase,
+        "max_shifted_basepoint_reverse_trace_conjugation_residual": max_shifted_trace,
+        "max_shifted_basepoint_reverse_eigenvalue_multiset_conjugation_residual": max_shifted_eigenvalues,
         "max_cyclic_basepoint_residual": max_cyclic,
         "algebraic_checks_pass": (
             max_unitarity <= UNITARITY_TOL
-            and max_reverse_matrix <= REVERSE_TOL
-            and max_reverse_phase <= REVERSE_TOL
+            and max_same_matrix <= REVERSE_TOL
+            and max_shifted_det <= REVERSE_TOL
+            and max_shifted_phase <= REVERSE_TOL
+            and max_shifted_trace <= REVERSE_TOL
+            and max_shifted_eigenvalues <= REVERSE_TOL
             and max_cyclic <= CYCLIC_TOL
         ),
     }
-
 
 def endpoint(fr, label):
     adapter = build_reference_mpb_adapter(
@@ -188,24 +213,37 @@ def endpoint(fr, label):
             levels.append(tuple(cache.solve(point) for point in points(step)))
         levels = tuple(levels)
         forward_source, forward = qualify(levels, steps, tuple(range(5)))
-        reverse_source, reverse = qualify(levels, steps, REVERSE_ORDER)
+        reverse_same_source, reverse_same = qualify(levels, steps, REVERSE_SAME_BASEPOINT_ORDER)
+        reverse_shifted_source, reverse_shifted = qualify(levels, steps, REVERSE_SHIFTED_BASEPOINT_ORDER)
         cyclic_source, cyclic = qualify(levels, steps, CYCLIC_ORDER)
         case = {
             "resolution": resolution,
             "delta_k": delta,
             "selection_zero_based": list(SELECTION),
+        "forward_order": [0, 1, 2, 3, 4],
+        "forward_basepoint": 0,
+        "reverse_same_basepoint_order": list(REVERSE_SAME_BASEPOINT_ORDER),
+        "reverse_same_basepoint": 0,
+        "reverse_shifted_basepoint_order": list(REVERSE_SHIFTED_BASEPOINT_ORDER),
+        "reverse_shifted_basepoint": 3,
+        "cyclic_order": list(CYCLIC_ORDER),
+        "cyclic_basepoint": 1,
+        "matrix_covariant_checks": ["same_basepoint_reverse_matrix"],
+        "basepoint_invariant_checks": ["shifted_reverse_det_phase", "shifted_reverse_det", "shifted_reverse_trace", "shifted_reverse_eigenvalue_multiset", "cyclic_trace_det_phase_eigenvalue_multiset"],
             "snapshot": snapshot_status(levels[0]),
             "qualification": {
                 "forward_status": forward_source.status,
-                "reverse_status": reverse_source.status,
+                "reverse_same_basepoint_status": reverse_same_source.status,
+                "reverse_shifted_basepoint_status": reverse_shifted_source.status,
                 "cyclic_status": cyclic_source.status,
                 "forward_qualified": bool(forward_source.is_qualified),
-                "reverse_qualified": bool(reverse_source.is_qualified),
+                "reverse_same_basepoint_qualified": bool(reverse_same_source.is_qualified),
+                "reverse_shifted_basepoint_qualified": bool(reverse_shifted_source.is_qualified),
                 "cyclic_qualified": bool(cyclic_source.is_qualified),
             },
         }
-        if forward_source.is_qualified and reverse_source.is_qualified and cyclic_source.is_qualified and forward.is_qualified and reverse.is_qualified and cyclic.is_qualified:
-            case["wilson"] = loop_diagnostics(forward, reverse, cyclic)
+        if (forward_source.is_qualified and reverse_same_source.is_qualified and reverse_shifted_source.is_qualified and cyclic_source.is_qualified and forward.is_qualified and reverse_same.is_qualified and reverse_shifted.is_qualified and cyclic.is_qualified):
+            case["wilson"] = loop_diagnostics(forward, reverse_same, reverse_shifted, cyclic)
         else:
             case["wilson"] = {"observable_produced": False, "reason": "rank3 qualification failed; fail-closed"}
         result["cases"][f"R{resolution}_dk_{delta:.8f}"] = case
@@ -238,6 +276,16 @@ def main():
         "expected_base_sandbox_sha": "4e2f3f7bfbbb499afcd1da73a9d9539f4cb150a4",
         "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
         "selection_zero_based": list(SELECTION),
+        "forward_order": [0, 1, 2, 3, 4],
+        "forward_basepoint": 0,
+        "reverse_same_basepoint_order": list(REVERSE_SAME_BASEPOINT_ORDER),
+        "reverse_same_basepoint": 0,
+        "reverse_shifted_basepoint_order": list(REVERSE_SHIFTED_BASEPOINT_ORDER),
+        "reverse_shifted_basepoint": 3,
+        "cyclic_order": list(CYCLIC_ORDER),
+        "cyclic_basepoint": 1,
+        "matrix_covariant_checks": ["same_basepoint_reverse_matrix"],
+        "basepoint_invariant_checks": ["shifted_reverse_det_phase", "shifted_reverse_det", "shifted_reverse_trace", "shifted_reverse_eigenvalue_multiset", "cyclic_trace_det_phase_eigenvalue_multiset"],
         "endpoints": ["FR00", "FR050"],
         "plaquettes": ["R48_dk_1over36", "R48_dk_1over72", "R64_dk_1over36"],
         "thresholds": {"E3": E3.to_dict(), "E4C": E4C.to_dict()},
@@ -256,9 +304,9 @@ def main():
         endpoints = {"FR00": endpoint(0.0, "FR00_exact_triangle"), "FR050": endpoint(0.5, "FR050_exact_circle")}
         result["endpoint_results"] = endpoints
         cases = [case for endpoint_result in endpoints.values() for case in endpoint_result["cases"].values()]
-        qualified = all(case["qualification"]["forward_qualified"] and case["qualification"]["reverse_qualified"] and case["qualification"]["cyclic_qualified"] for case in cases)
+        qualified = all(case["qualification"]["forward_qualified"] and case["qualification"]["reverse_same_basepoint_qualified"] and case["qualification"]["reverse_shifted_basepoint_qualified"] and case["qualification"]["cyclic_qualified"] for case in cases)
         checks = all(case["wilson"].get("algebraic_checks_pass", False) for case in cases)
-        result["classification"] = "E7I3A_RANK3_OBSERVABLE_PIPELINE_QUALIFIED" if qualified and checks else "E7I3A_RANK3_OBSERVABLE_PIPELINE_UNQUALIFIED"
+        result["classification"] = "E7I3A_RANK3_WILSON_ALGEBRA_QUALIFIED" if qualified and checks else "E7I3A_RANK3_WILSON_ALGEBRA_UNQUALIFIED"
         result["all_rank3_qualification_gates_pass"] = qualified
         result["all_algebraic_checks_pass"] = checks
         result["overall"] = "E7I3A_REPORT_READY"
