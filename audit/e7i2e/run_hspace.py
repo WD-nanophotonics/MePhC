@@ -31,7 +31,7 @@ def edge(e):
 def chain(cache,delta,band,rank=1):
  hs=(float(delta),float(delta)/2,float(delta)/4);levels=[];sels=[]
  for h in hs:
-  ss=tuple(cache.solve(q) for q in points(h));levels.append(ss);sels.append(tuple(((band,) if rank==1 else (1,2),) for _ in range(5)))
+  ss=tuple(cache.solve(q) for q in points(h));levels.append(ss);sels.append(tuple((band,) if rank==1 else (1,2) for _ in range(5)))
  snap=snap_status(levels[0])
  try:
   source=qualify_mpb_plaquette(tuple(levels),tuple(sels),hs,thresholds=E3,refinement_thresholds=E4C)
