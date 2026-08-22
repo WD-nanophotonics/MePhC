@@ -187,7 +187,7 @@ def build_triangular_coordinate_preflight() -> ReferenceCoordinatePreflight:
     return ReferenceCoordinatePreflight(
         real_space_basis=((0.5, 0.5), (math.sqrt(3.0) / 2.0, -math.sqrt(3.0) / 2.0)),
         public_to_physical=identity,
-        public_period_basis=identity,
+        public_period_basis=reciprocal,
         mpb_reciprocal_basis=reciprocal,
         public_k=K_POINT,
         public_kp=(-K_POINT[0], -K_POINT[1]),
@@ -481,6 +481,8 @@ class PlaquetteRequest:
     delta_k_q: tuple[float, float]
     vertex_index: int
     delta_k_vectors_q: tuple[tuple[float, float], tuple[float, float]] = ((1.0, 0.0), (0.0, 1.0))
+    coordinate_mapping_digest: str = "UNBOUND"
+    period_basis_digest: str = "UNBOUND"
 
 
 def centered_ccw_plaquette_requests(
@@ -488,8 +490,14 @@ def centered_ccw_plaquette_requests(
     delta_k_q: float | Iterable[Iterable[float]],
     *,
     period_basis: Iterable[Iterable[float]] = ((1.0, 0.0), (0.0, 1.0)),
+    coordinate_mapping_digest: str | None = None,
 ) -> tuple[PlaquetteRequest, ...]:
     basis = _matrix(period_basis, "period_basis")
+    identity_basis = np.eye(2)
+    if not np.allclose(basis, identity_basis, rtol=0.0, atol=1e-14) and coordinate_mapping_digest is None:
+        raise ValueError("nontrivial period basis requires coordinate mapping provenance")
+    period_basis_digest = _json_digest({"schema": "public_period_basis_v1", "basis": basis.tolist()})
+    mapping_digest = "IDENTITY_MAPPING" if coordinate_mapping_digest is None else str(coordinate_mapping_digest)
     if np.isscalar(delta_k_q):
         h = float(delta_k_q)
         if h <= 0.0 or not math.isfinite(h):
@@ -516,6 +524,8 @@ def centered_ccw_plaquette_requests(
                 delta_k_q=delta_pair,
                 vertex_index=index,
                 delta_k_vectors_q=tuple(tuple(float(x) for x in vector) for vector in vectors),
+                coordinate_mapping_digest=mapping_digest,
+                period_basis_digest=period_basis_digest,
             ))
     return tuple(result)
 
@@ -644,7 +654,7 @@ class BenchmarkAnchorSpec:
 def triangular_benchmark_anchors() -> tuple[BenchmarkAnchorSpec, ...]:
     return (
         BenchmarkAnchorSpec("TRI_TPC_FR00", "Tri-TPC", 0.0, (1, 2, 3), True, True, False, "paper-comparison-anchor"),
-        BenchmarkAnchorSpec("TRI_TPC_FR04", "Tri-TPC", 0.4, (1, 2, 3), True, True, False, "accidental-band3-band4-stress"),
+        BenchmarkAnchorSpec("TRI_TPC_FR04", "Tri-TPC", 0.4, (1, 2, 3), False, True, False, "accidental-band3-band4-stress"),
         BenchmarkAnchorSpec("TRI_TPC_NEAR_SYMMETRY_FR049", "Tri-TPC", 0.49, (1, 2, 3), False, True, False, "near-degeneracy-stress"),
         BenchmarkAnchorSpec("CIR_TPC_EXACT_SYMMETRY_FR050", "Cir-TPC", 0.5, (2, 3), False, False, True, "exact-degeneracy-negative-control"),
     )
@@ -673,13 +683,17 @@ def reduce_anchor_readiness(
         return AnchorReadiness(anchor.anchor_id, "COORDINATE_UNRESOLVED", ("coordinate_preflight_not_ready",))
     if not domain_available:
         return AnchorReadiness(anchor.anchor_id, "DOMAIN_UNAVAILABLE", ("requested_reference_domain_unavailable",))
-    if getattr(geometry, "paper_parameter_equivalence", "UNRESOLVED") not in {"BOUND", "PAPER_PARAMETER_BOUND"}:
-        return AnchorReadiness(anchor.anchor_id, "GEOMETRY_UNRESOLVED", ("paper_parameter_equivalence_unresolved",))
     if getattr(geometry, "material_contract_status", "UNRESOLVED") != "REFERENCE_BOUND":
         return AnchorReadiness(anchor.anchor_id, "MATERIAL_UNRESOLVED", ("source_material_contract_not_bound",))
-    if anchor.paper_domain_available:
-        return AnchorReadiness(anchor.anchor_id, "REFERENCE_READY", ())
-    return AnchorReadiness(anchor.anchor_id, "PROJECT_STRESS_ONLY", ("project_domain_or_stress_anchor_only",))
+    if not anchor.paper_domain_available:
+        if not getattr(geometry, "geometry_digest", "") or not getattr(geometry, "boundary_digest", ""):
+            return AnchorReadiness(anchor.anchor_id, "GEOMETRY_UNRESOLVED", ("internal_physical_boundary_not_bound",))
+        return AnchorReadiness(anchor.anchor_id, "PROJECT_STRESS_ONLY", ("project_domain_or_stress_anchor_only",))
+    if getattr(geometry, "paper_parameter_equivalence", "UNRESOLVED") not in {"BOUND", "PAPER_PARAMETER_BOUND"}:
+        return AnchorReadiness(anchor.anchor_id, "GEOMETRY_UNRESOLVED", ("paper_parameter_equivalence_unresolved",))
+    if anchor.anchor_id == "TRI_TPC_FR00" and getattr(geometry, "orientation_source_status", "UNRESOLVED") == "UNRESOLVED":
+        return AnchorReadiness(anchor.anchor_id, "GEOMETRY_UNRESOLVED", ("triangle_orientation_unresolved",))
+    return AnchorReadiness(anchor.anchor_id, "REFERENCE_READY", ())
 
 
 @dataclass(frozen=True, slots=True)

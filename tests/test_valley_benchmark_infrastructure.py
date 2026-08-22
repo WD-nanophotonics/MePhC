@@ -170,17 +170,33 @@ def test_periodic_voronoi_is_analytic_and_rotationally_equivalent():
     angle = math.pi / 5.0
     rotation = ((math.cos(angle), -math.sin(angle)), (math.sin(angle), math.cos(angle)))
     rotate = lambda point: tuple(float(value) for value in np.asarray(rotation) @ np.asarray(point))
+    basis = np.asarray(reciprocal_basis_from_real_space(((0.5, 0.5), (math.sqrt(3.0) / 2.0, -math.sqrt(3.0) / 2.0))))
+    rotation_matrix = np.asarray(rotation)
     rotated = mephc_periodic_voronoi_k_basin(
-        period_basis=tuple(rotate(row) for row in ((1.0 / math.sqrt(3.0), 1.0), (1.0 / math.sqrt(3.0), -1.0))),
-        k=rotate((2.0 / 3.0, 0.0)),
-        kp=rotate((-2.0 / 3.0, 0.0)),
+        period_basis=tuple(tuple(float(value) for value in row) for row in rotation_matrix @ basis),
+        k=tuple(float(value) for value in rotation_matrix @ np.asarray((2.0 / 3.0, 0.0))),
+        kp=tuple(float(value) for value in rotation_matrix @ np.asarray((-2.0 / 3.0, 0.0))),
     )
+    transformed_vertices = {tuple(round(float(value), 10) for value in rotation_matrix @ np.asarray(point)) for point in domain.vertices}
+    rotated_vertices = {tuple(round(value, 10) for value in point) for point in rotated.vertices}
     assert rotated.area_q == pytest.approx(domain.area_q, abs=1e-12)
+    assert rotated_vertices == transformed_vertices
     assert rotated.digest != domain.digest
+    original_sample = sample_domain(domain, 1.0 / 72.0)
+    rotated_sample = sample_domain(rotated, 1.0 / 72.0)
+    original_values = [1.2 + 0.3 * point[0] - 0.7 * point[1] for point in original_sample.centers]
+    rotated_values = [
+        1.2 + 0.3 * float((rotation_matrix.T @ np.asarray(point))[0]) - 0.7 * float((rotation_matrix.T @ np.asarray(point))[1])
+        for point in rotated_sample.centers
+    ]
+    original_flux = integrate_sampled_field(original_sample, original_values)
+    rotated_flux = integrate_sampled_field(rotated_sample, rotated_values)
+    assert rotated_flux == pytest.approx(original_flux, abs=2e-4)
 
 
 def test_nonidentity_coordinate_preflight_and_two_axis_mapping():
     preflight = build_triangular_coordinate_preflight()
+    assert np.asarray(preflight.public_period_basis) == pytest.approx(np.asarray(preflight.mpb_reciprocal_basis))
     assert preflight.public_q_to_mpb((2.0 / 3.0, 0.0)) == pytest.approx((1.0 / 3.0, 1.0 / 3.0))
     off_axis = (0.17, -0.23)
     assert preflight.mpb_to_public_q(preflight.public_q_to_mpb(off_axis)) == pytest.approx(off_axis)
@@ -191,7 +207,11 @@ def test_nonidentity_coordinate_preflight_and_two_axis_mapping():
     x_vector, y_vector = preflight.delta_k_vectors_to_public_q(0.1)
     assert x_vector == pytest.approx((0.1, 0.0))
     assert y_vector == pytest.approx((0.0, 0.1))
-    requests = centered_ccw_plaquette_requests(((0.0, 0.0),), (x_vector, y_vector))
+    with pytest.raises(ValueError, match="provenance"):
+        centered_ccw_plaquette_requests(((0.0, 0.0),), (x_vector, y_vector), period_basis=preflight.public_period_basis)
+    requests = centered_ccw_plaquette_requests(((0.0, 0.0),), (x_vector, y_vector), period_basis=preflight.public_period_basis, coordinate_mapping_digest=preflight.mapping_digest)
+    assert requests[0].coordinate_mapping_digest == preflight.mapping_digest
+    assert requests[0].period_basis_digest != "UNBOUND"
     points = np.asarray([request.nominal_vertex_q for request in requests])
     assert abs(float((points[1][0] - points[0][0]) * (points[2][1] - points[1][1]) - (points[1][1] - points[0][1]) * (points[2][0] - points[1][0]))) > 0.0
 
@@ -239,6 +259,10 @@ def test_circle_physical_identity_is_analytic_and_independent_of_display_polygon
     assert circle.polygonization_area_error != pytest.approx(0.0, abs=1e-12)
     perturbed_display = replace(circle, vertices=tuple((x * 0.99, y * 0.99) for x, y in circle.vertices))
     assert perturbed_display.geometry_digest == circle.geometry_digest
+    rounded = build_triangular_reference_geometry(0.4)
+    perturbed_intermediate = replace(rounded, vertices=tuple((x * 0.99, y * 0.99) for x, y in rounded.vertices))
+    assert perturbed_intermediate.boundary_digest != rounded.boundary_digest
+    assert perturbed_intermediate.geometry_digest != rounded.geometry_digest
 
 
 def test_quadrature_elements_have_domain_provenance_and_in_domain_evaluation_points():
@@ -268,7 +292,14 @@ def test_anchor_readiness_is_computed_from_runtime_contracts():
         coordinate_preflight_ready=True,
         domain_available=True,
     )
-    assert geometry_unresolved.status == "GEOMETRY_UNRESOLVED"
+    assert geometry_unresolved.status == "PROJECT_STRESS_ONLY"
+    stress = reduce_anchor_readiness(
+        anchors[2],
+        build_triangular_reference_geometry(0.49),
+        coordinate_preflight_ready=True,
+        domain_available=True,
+    )
+    assert stress.status == "PROJECT_STRESS_ONLY"
     coordinate_unresolved = reduce_anchor_readiness(
         anchors[0],
         build_triangular_reference_geometry(0.0),
@@ -283,3 +314,9 @@ def test_anchor_readiness_is_computed_from_runtime_contracts():
         domain_available=False,
     ).status == "RANK1_PROHIBITED"
     assert preflight.ready
+    assert reduce_anchor_readiness(
+        anchors[0],
+        replace(build_triangular_reference_geometry(0.0), orientation_source_status="UNRESOLVED"),
+        coordinate_preflight_ready=True,
+        domain_available=True,
+    ).status == "GEOMETRY_UNRESOLVED"

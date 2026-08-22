@@ -94,6 +94,10 @@ class TriangularReferenceGeometry:
     geometry_equivalence: str = "CLOSE_ANALOGUE"
     paper_parameter_equivalence: str = "UNRESOLVED"
     polygonization_version: str = "INTERNAL_CLOSE_ANALOGUE_RADIAL_MORPH_V1"
+    boundary_construction_version: str = "INTERNAL_CLOSE_ANALOGUE_RADIAL_MORPH_V1"
+    triangle_orientation_degrees: float = 90.0
+    orientation_convention: str = "PUBLIC_CARTESIAN_QX_QY_CCW"
+    orientation_source_status: str = "CONVENTION_MAPPED"
     reference_material_source_role: str = REFERENCE_MATERIAL_SOURCE_ROLE
     construction_status: str = "EXACT_INTERNAL_REFERENCE_CONTRACT"
 
@@ -142,6 +146,14 @@ class TriangularReferenceGeometry:
         return None
 
     @property
+    def boundary_digest(self) -> str:
+        payload = {
+            "construction_version": self.boundary_construction_version,
+            "vertices_float64": [list(point) for point in self.vertices],
+        }
+        return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")).hexdigest()
+
+    @property
     def material_contract_status(self) -> str:
         return "REFERENCE_BOUND" if self.reference_material_semantics == "RELATIVE_PERMITTIVITY" and self.reference_material_source_role == REFERENCE_MATERIAL_SOURCE_ROLE else "NON_REFERENCE_ANALOGUE" if self.reference_material_semantics in {"REFRACTIVE_INDEX", "RELATIVE_PERMITTIVITY"} else "UNRESOLVED"
 
@@ -185,6 +197,11 @@ class TriangularReferenceGeometry:
             "geometry_equivalence": self.geometry_equivalence,
             "paper_parameter_equivalence": self.paper_parameter_equivalence,
             "polygonization_version": self.polygonization_version,
+            "boundary_construction_version": self.boundary_construction_version,
+            "boundary_digest": self.boundary_digest,
+            "triangle_orientation_degrees": self.triangle_orientation_degrees,
+            "orientation_convention": self.orientation_convention,
+            "orientation_source_status": self.orientation_source_status,
             "construction_status": self.construction_status,
         }
 
@@ -202,7 +219,15 @@ class TriangularReferenceGeometry:
             "geometry_equivalence": self.geometry_equivalence,
             "paper_parameter_equivalence": self.paper_parameter_equivalence,
             "material_contract_digest": self.material_contract_digest,
+            "orientation": {
+                "degrees": self.triangle_orientation_degrees,
+                "convention": self.orientation_convention,
+                "source_status": self.orientation_source_status,
+            },
         }
+        if self.primitive_kind == "rounded_triangle_close_analogue":
+            identity["boundary_construction_version"] = self.boundary_construction_version
+            identity["boundary_digest"] = self.boundary_digest
         payload = json.dumps(identity, sort_keys=True, separators=(",", ":"), allow_nan=False)
         return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
@@ -238,6 +263,10 @@ def build_triangular_reference_geometry(
         geometry_equivalence="PAPER_PARAMETER_BOUND" if fr in {0.0, 0.5} else "CLOSE_ANALOGUE",
         paper_parameter_equivalence="PAPER_PARAMETER_BOUND" if fr in {0.0, 0.5} else "UNRESOLVED",
         polygonization_version="ANALYTIC_TRIANGLE_V1" if fr == 0.0 else "ANALYTIC_CIRCLE_WITH_DISPLAY_POLYGON_V1" if fr == 0.5 else "INTERNAL_CLOSE_ANALOGUE_RADIAL_MORPH_V1",
+        boundary_construction_version="ANALYTIC_TRIANGLE_V1" if fr == 0.0 else "ANALYTIC_CIRCLE_WITH_DISPLAY_POLYGON_V1" if fr == 0.5 else "INTERNAL_CLOSE_ANALOGUE_RADIAL_MORPH_V1",
+        triangle_orientation_degrees=90.0,
+        orientation_convention="PUBLIC_CARTESIAN_QX_QY_CCW",
+        orientation_source_status="CONVENTION_MAPPED",
     )
     if abs(result.fill_fraction_error) > 5e-13:
         raise RuntimeError("reference geometry failed its fixed-fill construction")
