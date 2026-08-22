@@ -186,7 +186,7 @@ def live_case(adapter,res,endpoint):
         for point in pts(float(sf)):
             key=tuple(float(x) for x in point)
             if key not in cache:
-                raw=solve_isolated(adapter,res,endpoint,key); frame,met=lowdin_snapshot(raw); cache[key]=(raw,frame,met); del raw
+                raw=solve_isolated(adapter,res,endpoint,key); frame,met=lowdin_snapshot(raw); cache[key]=(raw,frame,met)
                 records.append({"point":list(key),"frequencies":[float(x) for x in raw.frequencies],"external_gap_band4_minus_band3":float(raw.frequencies[3]-raw.frequencies[2]),"raw":met})
             lev.append(cache[key][1])
         levels.append(tuple(lev))
