@@ -153,7 +153,7 @@ def baseline(root):
         for case in er["cases"].values():
             if case["resolution"] in (48,64) and case["nominal_step_id"]=="1/36":
                 for lev in case["scaling"]["levels"]: ph[(ep,case["resolution"],lev["STEP_ID"])] = (lev["PHI"],lev["DETERMINANT_HOLONOMY_DENSITY_PROXY"])
-    return {"h_commit":H_COMMIT,"h_sha":H_SHA,"scaling_commit":SCALE_COMMIT,"scaling_sha":SCALE_SHA,"phase_map":ph}
+    return {"h_commit":H_COMMIT,"h_sha":H_SHA,"scaling_commit":SCALE_COMMIT,"scaling_sha":SCALE_SHA,"phase_map":ph,"scaling_result":scaling}
 
 
 def comparison(cases,base):
@@ -166,6 +166,92 @@ def comparison(cases,base):
                 out.append({"endpoint":ep,"resolution":int(rs),"STEP_ID":lev["STEP_ID"],"PHI_H":hp,"PHI_EH":epv,"D_H":hd,"D_EH":ed,"REPRESENTATION_PHASE_ABS_DIFFERENCE":abs(hp-epv),"REPRESENTATION_DENSITY_ABS_DIFFERENCE":abs(hd-ed),"REPRESENTATION_DENSITY_RELATIVE_DIFFERENCE":abs(hd-ed)/max(abs(hd),abs(ed)) if max(abs(hd),abs(ed))>1e-15 else None})
     return out
 
+
+def scaling_summary(case_by_resolution, endpoint):
+    levels48 = case_by_resolution["48"]["levels"]
+    levels64 = case_by_resolution["64"]["levels"]
+    densities48 = [float(x["wilson"]["forward"]["Arg_det_W"] / x["A_q"]) for x in levels48]
+    densities64 = [float(x["wilson"]["forward"]["Arg_det_W"] / x["A_q"]) for x in levels64]
+    phases48 = [float(x["wilson"]["forward"]["Arg_det_W"]) for x in levels48]
+    all_densities = densities48 + densities64
+    common_sign = len({math.copysign(1.0, x) for x in all_densities}) == 1
+    resolution_relative = [
+        abs(a - b) / max(abs(a), abs(b))
+        for a, b in zip(densities48, densities64)
+    ]
+    refinement_relative = [
+        abs(densities48[i] - densities48[i + 1]) / max(abs(densities48[i]), abs(densities48[i + 1]))
+        for i in range(2)
+    ]
+    nonzero_overlap = all(
+        abs(a - b) < min(abs(a), abs(b))
+        for a, b in zip(densities48, densities64)
+    )
+    refinement_inside = all(
+        refinement_relative[i] <= resolution_relative[i]
+        for i in range(2)
+    )
+    stable = common_sign and nonzero_overlap and refinement_inside
+    phase_decreases = abs(phases48[-1]) < abs(phases48[0])
+    if stable:
+        classification = "SUPPORTED_WITH_VISIBLE_NUMERICAL_SENSITIVITY" if max(resolution_relative) > 100 * np.finfo(float).eps else "SUPPORTED"
+    elif endpoint == "FR050" and phase_decreases:
+        classification = "SYMMETRY_SUPPRESSED_OR_NEAR_ZERO"
+    else:
+        classification = "NUMERICALLY_UNRESOLVED"
+    return {
+        "classification": classification,
+        "common_sign": common_sign,
+        "nonzero_interval_overlap": nonzero_overlap,
+        "refinement_inside_resolution_envelope": refinement_inside,
+        "stable_window_supported": stable,
+        "phase_decreases_toward_zero": phase_decreases,
+        "resolution_relative_envelope": resolution_relative,
+        "refinement_relative_drift": refinement_relative,
+        "density_proxy_R48": densities48,
+        "density_proxy_R64": densities64,
+    }
+
+
+def bridge_summary(endpoint, comparisons, eh_summary, baseline):
+    h_class = baseline["scaling_result"][f"{endpoint}_SMALL_LOOP_SCALING"]
+    h_cases = baseline["scaling_result"]["endpoint_results"][endpoint]
+    h_by_step = {}
+    for case in h_cases.values():
+        if case["resolution"] not in (48, 64) or case["nominal_step_id"] != "1/36":
+            continue
+        for level in case["scaling"]["levels"]:
+            h_by_step[(case["resolution"], level["STEP_ID"])] = level["DETERMINANT_HOLONOMY_DENSITY_PROXY"]
+    h_env = {}
+    for step in ("1/36", "1/72", "1/144"):
+        a = h_by_step[(48, step)]
+        b = h_by_step[(64, step)]
+        h_env[step] = abs(a - b) / max(abs(a), abs(b))
+    rep = [x for x in comparisons if x["endpoint"] == endpoint]
+    eh_env = {step: value for step, value in zip(("1/36", "1/72", "1/144"), eh_summary["resolution_relative_envelope"])}
+    same_sign = all(np.sign(x["D_H"]) == np.sign(x["D_EH"]) for x in rep)
+    within_combined = all(
+        x["REPRESENTATION_DENSITY_RELATIVE_DIFFERENCE"] <= h_env[x["STEP_ID"]] + eh_env[x["STEP_ID"]]
+        for x in rep
+    )
+    if endpoint == "FR00":
+        if eh_summary["classification"] in {"NUMERICALLY_UNRESOLVED", "SYMMETRY_SUPPRESSED_OR_NEAR_ZERO"}:
+            classification = "NUMERICALLY_UNRESOLVED"
+        elif same_sign and within_combined:
+            classification = "SUPPORTED"
+        else:
+            classification = "SUPPORTED_WITH_REPRESENTATION_SENSITIVITY"
+    else:
+        h_symmetry = h_class == "SYMMETRY_SUPPRESSED_OR_NEAR_ZERO"
+        classification = "BOTH_SYMMETRY_SUPPRESSED" if h_symmetry and eh_summary["classification"] == "SYMMETRY_SUPPRESSED_OR_NEAR_ZERO" else "NUMERICALLY_UNRESOLVED"
+    return {
+        "classification": classification,
+        "same_sign": same_sign,
+        "within_combined_numerical_envelopes": within_combined,
+        "H_resolution_relative_envelope": h_env,
+        "EH_resolution_relative_envelope": eh_env,
+        "max_representation_density_relative_difference": max(x["REPRESENTATION_DENSITY_RELATIVE_DIFFERENCE"] for x in rep),
+    }
 
 def self_checks():
     rng=np.random.default_rng(17); raw=rng.normal(size=(12,3))+1j*rng.normal(size=(12,3)); q,m=lowdin_matrix(raw)
@@ -183,12 +269,14 @@ def main():
         adapter=build_reference_mpb_adapter(build_triangular_reference_geometry(fr),build_triangular_coordinate_preflight())
         cases[ep]={str(r):live_case(adapter,r,fr) for r in (48,64)}
     comp=comparison(cases,base)
+    eh_summary={ep:scaling_summary(cases[ep],ep) for ep in ("FR00","FR050")}
+    bridge_summary={ep:bridge_summary(ep,comp,eh_summary[ep],base) for ep in ("FR00","FR050")}
     raw=[row["raw"]["raw_provider_orthogonality_status"] for er in cases.values() for case in er.values() for row in case["raw_solves"]]
     all_alg=all(case["algebra"].get("algebraic_checks_pass",False) for er in cases.values() for case in er.values())
     all_qual=all(case["qualification"]["forward"] for er in cases.values() for case in er.values())
     cond=all(row["raw"]["selected_span_condition"]=="WELL_CONDITIONED" for er in cases.values() for case in er.values() for row in case["raw_solves"])
     proj=all(row["raw"]["SPAN_PROJECTOR_RESIDUAL"]<1e-10 for er in cases.values() for case in er.values() for row in case["raw_solves"])
-    result={"schema":"e7i3c_rank3_h_to_eh_representation_bridge_v1","work_order":"E7I.3C","calculation_code_git_commit":head(root),"source_baseline":base,"provider_representation":MPB_LIVE_ENERGY_PROVIDER_REPRESENTATION,"solver_settings":{"polarization":"TE","num_bands":BANDS,"eigensolver_tolerance":1e-7,"deterministic":True,"mesh_size":3,"orthogonality_tolerance":RAW_TOL},"cases":cases,"representation_comparison":comp,"EH_RAW_PROVIDER_ORTHOGONALITY":"UNQUALIFIED_AS_EXPECTED" if all(x!="MPB_H_ENVELOPE_QUALIFIED" for x in raw) else "QUALIFIED","EH_SELECTED_SPAN_CONDITION":"WELL_CONDITIONED" if cond else "ILL_CONDITIONED","EH_LOWDIN_FRAME":"VALIDATED","EH_SPAN_PROJECTOR_INVARIANCE":"PASSED" if proj else "FAILED","EH_RANK3_SPECTRAL_ISOLATION":"PASSED" if all(case["qualification"]["min_external_gap"]>=0.05 for er in cases.values() for case in er.values()) else "FAILED","EH_RANK3_WILSON_QUALIFICATION":"PASSED" if all_qual else "FAILED","EH_RANK3_WILSON_ALGEBRA":"QUALIFIED" if all_alg else "UNQUALIFIED","FR00_EH_SMALL_LOOP_SCALING":"SUPPORTED_WITH_VISIBLE_NUMERICAL_SENSITIVITY","FR00_REPRESENTATION_BRIDGE":"SUPPORTED_WITH_REPRESENTATION_SENSITIVITY","FR050_REPRESENTATION_BRIDGE":"BOTH_SYMMETRY_SUPPRESSED","PRODUCTION_EH_SUBSPACE_FRAME_ADAPTER_REQUIRED":False,"WILSON_REPRESENTATION":"MPB_ENERGY_EH_REPRESENTATION","PHYSICAL_MAXWELL_BERRY_INTERPRETATION":"NOT_YET_AUTHORIZED","area_normalized_physical_berry_curvature_authorized":False,"chern_number_authorized":False,"rank2_doublet_observable_authorized":False,"physical_hall_response_authorized":False,"CODE_CHANGE":"SANDBOX_AUDIT_ONLY","MAIN_UNCHANGED":True,"E7I3C_OVERALL":"RANK3_H_TO_EH_REPRESENTATION_BRIDGE_READY_FOR_SUPERVISOR_AUDIT" if all_alg and all_qual else "REPRESENTATION_BRIDGE_PARTIAL"}
+    result={"schema":"e7i3c_rank3_h_to_eh_representation_bridge_v1","work_order":"E7I.3C","calculation_code_git_commit":head(root),"source_baseline":base,"provider_representation":MPB_LIVE_ENERGY_PROVIDER_REPRESENTATION,"solver_settings":{"polarization":"TE","num_bands":BANDS,"eigensolver_tolerance":1e-7,"deterministic":True,"mesh_size":3,"orthogonality_tolerance":RAW_TOL},"cases":cases,"representation_comparison":comp,"eh_scaling_summary":eh_summary,"representation_bridge_summary":bridge_summary,"EH_RAW_PROVIDER_ORTHOGONALITY":"UNQUALIFIED_AS_EXPECTED" if all(x!="MPB_H_ENVELOPE_QUALIFIED" for x in raw) else "QUALIFIED","EH_SELECTED_SPAN_CONDITION":"WELL_CONDITIONED" if cond else "ILL_CONDITIONED","EH_LOWDIN_FRAME":"VALIDATED","EH_SPAN_PROJECTOR_INVARIANCE":"PASSED" if proj else "FAILED","EH_RANK3_SPECTRAL_ISOLATION":"PASSED" if all(case["qualification"]["min_external_gap"]>=0.05 for er in cases.values() for case in er.values()) else "FAILED","EH_RANK3_WILSON_QUALIFICATION":"PASSED" if all_qual else "FAILED","EH_RANK3_WILSON_ALGEBRA":"QUALIFIED" if all_alg else "UNQUALIFIED","FR00_EH_SMALL_LOOP_SCALING":eh_summary["FR00"]["classification"],"FR00_REPRESENTATION_BRIDGE":bridge_summary["FR00"]["classification"],"FR050_REPRESENTATION_BRIDGE":bridge_summary["FR050"]["classification"],"PRODUCTION_EH_SUBSPACE_FRAME_ADAPTER_REQUIRED":False,"WILSON_REPRESENTATION":"MPB_ENERGY_EH_REPRESENTATION","PHYSICAL_MAXWELL_BERRY_INTERPRETATION":"NOT_YET_AUTHORIZED","area_normalized_physical_berry_curvature_authorized":False,"chern_number_authorized":False,"rank2_doublet_observable_authorized":False,"physical_hall_response_authorized":False,"CODE_CHANGE":"SANDBOX_AUDIT_ONLY","MAIN_UNCHANGED":True,"E7I3C_OVERALL":"RANK3_H_TO_EH_REPRESENTATION_BRIDGE_READY_FOR_SUPERVISOR_AUDIT" if all_alg and all_qual else "REPRESENTATION_BRIDGE_PARTIAL"}
     (root/"audit"/"e7i3c"/"result.json").write_text(json.dumps(result,sort_keys=True,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"overall":result["E7I3C_OVERALL"],"raw":result["EH_RAW_PROVIDER_ORTHOGONALITY"],"algebra":result["EH_RANK3_WILSON_ALGEBRA"]}))
 
