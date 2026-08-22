@@ -241,7 +241,7 @@ def baseline(root):
     for ep,er in scaling["endpoint_results"].items():
         for case in er.values():
             if case["resolution"] in (48,64) and case["nominal_step_id"]=="1/36":
-                for lev in case["scaling"]["levels"]: ph[(ep,case["resolution"],lev["STEP_ID"])] = (lev["PHI"],lev["DETERMINANT_HOLONOMY_DENSITY_PROXY"])
+                for lev in case["scaling"]["levels"]: ph[f"{ep}|{case['resolution']}|{lev['STEP_ID']}"] = (lev["PHI"],lev["DETERMINANT_HOLONOMY_DENSITY_PROXY"])
     return {"h_commit":H_COMMIT,"h_sha":H_SHA,"scaling_commit":SCALE_COMMIT,"scaling_sha":SCALE_SHA,"phase_map":ph,"scaling_result":scaling}
 
 
@@ -250,7 +250,7 @@ def comparison(cases,base):
     for ep,eres in cases.items():
         for rs,case in eres.items():
             for lev in case["levels"]:
-                hp,hd=base["phase_map"][(ep,int(rs),lev["STEP_ID"])]
+                hp,hd=base["phase_map"][f"{ep}|{int(rs)}|{lev['STEP_ID']}"]
                 epv=lev["wilson"]["forward"]["Arg_det_W"]; ed=epv/lev["A_q"]
                 out.append({"endpoint":ep,"resolution":int(rs),"STEP_ID":lev["STEP_ID"],"PHI_H":hp,"PHI_EH":epv,"D_H":hd,"D_EH":ed,"REPRESENTATION_PHASE_ABS_DIFFERENCE":abs(hp-epv),"REPRESENTATION_DENSITY_ABS_DIFFERENCE":abs(hd-ed),"REPRESENTATION_DENSITY_RELATIVE_DIFFERENCE":abs(hd-ed)/max(abs(hd),abs(ed)) if max(abs(hd),abs(ed))>1e-15 else None})
     return out
