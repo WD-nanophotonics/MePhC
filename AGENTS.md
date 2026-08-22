@@ -43,3 +43,10 @@ AUDIT_DIFF_RANGE=<base>..<sandbox-head>
 ```
 
 Scientific sampling invariant: distinguish NOMINAL_Q (requested quadrature coordinate) from EVALUATED_Q (actual solved target_q) and MANIFEST_Q. Physical cache identity uses EVALUATED_Q plus complete provenance. Any serialization or quantization must be explicit and versioned; never describe a quantized evaluated coordinate as exact nominal sampling.
+
+
+Historical numerical evidence sampled at explicitly known coordinates slightly
+different from nominal coordinates may only be accepted through an explicit
+perturbed-node error analysis; it must never be silently relabeled as exact
+nominal sampling. New computations should avoid such quantization unless
+explicitly authorized and versioned.
