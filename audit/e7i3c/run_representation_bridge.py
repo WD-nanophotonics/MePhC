@@ -150,7 +150,7 @@ def baseline(root):
     scaling=git_json(root,SCALE_COMMIT,"audit/e7i3b/result.json",SCALE_SHA); h=git_json(root,H_COMMIT,"audit/e7i3a/result.json",H_SHA)
     ph={}
     for ep,er in scaling["endpoint_results"].items():
-        for case in er["cases"].values():
+        for case in er.values():
             if case["resolution"] in (48,64) and case["nominal_step_id"]=="1/36":
                 for lev in case["scaling"]["levels"]: ph[(ep,case["resolution"],lev["STEP_ID"])] = (lev["PHI"],lev["DETERMINANT_HOLONOMY_DENSITY_PROXY"])
     return {"h_commit":H_COMMIT,"h_sha":H_SHA,"scaling_commit":SCALE_COMMIT,"scaling_sha":SCALE_SHA,"phase_map":ph,"scaling_result":scaling}
