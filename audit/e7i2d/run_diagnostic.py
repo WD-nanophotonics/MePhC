@@ -38,11 +38,20 @@ def _solver(adapter,resolution,tolerance,q):
     e=np.stack(e); h=np.stack(h)
     native_names=[name for name in dir(solver) if "eigen" in name.lower()]
     native={"status":"UNAVAILABLE","public_attributes":native_names}
-    candidate=getattr(solver,"eigenvectors",None)
-    if candidate is not None:
-        arr=np.asarray(candidate)
-        if arr.ndim>=2 and arr.shape[0]>=BANDS:
-            native={"status":"AVAILABLE_UNINTERPRETED","shape":list(arr.shape),"reason":"public array found but cross-band metric not justified"}
+    getter=getattr(solver,"get_eigenvectors",None)
+    if callable(getter):
+        try:
+            raw=np.asarray(getter(1,BANDS))
+            if raw.ndim>=2 and raw.shape[-1]>=BANDS:
+                coeff=raw.reshape(-1,raw.shape[-1])[:,:BANDS]
+                coeff=coeff/np.linalg.norm(coeff,axis=0)
+                gram=coeff.conj().T@coeff
+                off=np.array(gram,copy=True); np.fill_diagonal(off,0)
+                native={"status":"AVAILABLE","public_method":"ModeSolver.get_eigenvectors(1,4)","representation":"native_MP B_plane_wave_coefficients","max_off_diagonal":float(np.max(np.abs(off))),"band_2_3_overlap":float(abs(gram[1,2])),"shape":list(raw.shape),"metric":"Euclidean Gram in the returned native coefficient basis"}
+            else:
+                native={"status":"UNAVAILABLE","public_attributes":native_names,"reason":"getter returned no multi-band coefficient array"}
+        except Exception as exc:
+            native={"status":"UNAVAILABLE","public_attributes":native_names,"reason":type(exc).__name__+":"+str(exc)}
     return {"frequencies":[float(x) for x in np.asarray(solver.all_freqs)[0]],"h_only":_gram(h),"e_only":_gram(e,epsilon), "eh_combined":_gram(np.concatenate((np.sqrt(epsilon)[None,:,:,None]*e,h),axis=1)),"native":native}
 
 def _point(adapter,res,tol,q):
@@ -74,7 +83,7 @@ def main():
     try:
         endpoints={"FR00":_endpoint(0.0,"FR00_exact_triangle"),"FR050":_endpoint(0.5,"FR050_exact_circle")}
         result["endpoints"]=endpoints
-        result["native_eigenvector_gram"]="UNAVAILABLE_OR_UNINTERPRETED"
+        result["native_eigenvector_gram"]={name:endpoints[name]["K"]["R48"]["native"] for name in endpoints}
         result["classification"]=_classify(endpoints)
         result["recommended_next_action"]="Keep the fixed qualification gate; if further progress is authorized, separately audit MPB field/quadrature representation rather than changing thresholds."
         result["overall"]="E7I2D_REPORT_READY"
