@@ -1,6 +1,6 @@
 """E7I.3C bounded H-to-E+H representation bridge."""
 from __future__ import annotations
-import gc, hashlib, json, math, pickle, subprocess, sys, tempfile
+import gc, hashlib, json, math, pickle, resource, subprocess, sys, tempfile
 from fractions import Fraction
 from pathlib import Path
 import meep as mp
@@ -218,7 +218,7 @@ def live_case(adapter,res,endpoint):
         for point in pts(float(sf)):
             key=tuple(float(x) for x in point)
             if key not in cache:
-                print(f"E7I3C_SOLVE endpoint={endpoint} resolution={res} point={key}",flush=True); raw=solve_isolated(adapter,res,endpoint,key); frame,met=lowdin_snapshot(raw); cache[key]=(frame,met)
+                print(f"E7I3C_SOLVE endpoint={endpoint} resolution={res} point={key} rss_kb={resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}",flush=True); raw=solve_isolated(adapter,res,endpoint,key); print(f"E7I3C_AFTER_WORKER rss_kb={resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}",flush=True); frame,met=lowdin_snapshot(raw); print(f"E7I3C_AFTER_FRAME rss_kb={resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}",flush=True); cache[key]=(frame,met)
                 records.append({"point":list(key),"frequencies":[float(x) for x in raw.frequencies],"external_gap_band4_minus_band3":float(raw.frequencies[3]-raw.frequencies[2]),"raw":met})
             lev.append(cache[key][0])
         levels.append(tuple(lev))
