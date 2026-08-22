@@ -14,7 +14,7 @@ from typing import Any, Iterable, Mapping
 
 import numpy as np
 from shapely.geometry import Point, Polygon, box
-from shapely.ops import unary_union
+from shapely.ops import triangulate, unary_union
 
 from .valley_reference_geometry import build_triangular_reference_geometry
 
@@ -40,6 +40,13 @@ def _matrix(value: Iterable[Iterable[float]], name: str) -> np.ndarray:
     if result.shape != (2, 2) or not np.all(np.isfinite(result)) or abs(float(np.linalg.det(result))) <= 1e-14:
         raise ValueError(f"{name} must be a finite nonsingular 2x2 matrix")
     return result
+
+
+def reciprocal_basis_from_real_space(real_space_basis: Iterable[Iterable[float]]) -> tuple[tuple[float, float], tuple[float, float]]:
+    """Return Cartesian reciprocal vectors as matrix columns in q=ka/(2pi) units."""
+    real = _matrix(real_space_basis, "real_space_basis")
+    reciprocal = np.linalg.inv(real).T
+    return tuple(tuple(float(x) for x in row) for row in reciprocal)
 
 
 def _json_digest(value: Any) -> str:
@@ -176,9 +183,9 @@ class ReferenceCoordinatePreflight:
 
 def build_triangular_coordinate_preflight() -> ReferenceCoordinatePreflight:
     identity = ((1.0, 0.0), (0.0, 1.0))
-    reciprocal = ((1.0, 1.0), (1.0, -1.0))
+    reciprocal = reciprocal_basis_from_real_space(((0.5, 0.5), (math.sqrt(3.0) / 2.0, -math.sqrt(3.0) / 2.0)))
     return ReferenceCoordinatePreflight(
-        real_space_basis=((0.5, math.sqrt(3.0) / 2.0), (0.5, -math.sqrt(3.0) / 2.0)),
+        real_space_basis=((0.5, 0.5), (math.sqrt(3.0) / 2.0, -math.sqrt(3.0) / 2.0)),
         public_to_physical=identity,
         public_period_basis=identity,
         mpb_reciprocal_basis=reciprocal,
@@ -309,7 +316,7 @@ def _periodic_voronoi_cell(center: Iterable[float], competitor: Iterable[float],
     c = _finite_vector(center, "center")
     other = _finite_vector(competitor, "competitor")
     basis = _matrix(period_basis, "period_basis")
-    translations = [np.asarray((i, j), dtype=float) @ basis for i in range(-image_radius, image_radius + 1) for j in range(-image_radius, image_radius + 1)]
+    translations = [basis @ np.asarray((i, j), dtype=float) for i in range(-image_radius, image_radius + 1) for j in range(-image_radius, image_radius + 1)]
     extent = 4.0 * max(float(np.linalg.norm(row)) for row in basis) + float(np.linalg.norm(other - c))
     vertices = [c + np.asarray((extent, extent)), c + np.asarray((-extent, extent)), c + np.asarray((-extent, -extent)), c + np.asarray((extent, -extent))]
     points = [c + t for t in translations if np.linalg.norm(t) > 1e-14]
@@ -334,9 +341,9 @@ def _periodic_voronoi_cell(center: Iterable[float], competitor: Iterable[float],
 
 def mephc_periodic_voronoi_k_basin(
     *,
-    period_basis: Iterable[Iterable[float]] = ((1.0 / math.sqrt(3.0), 1.0), (1.0 / math.sqrt(3.0), -1.0)),
-    k: Iterable[float] = (0.0, -2.0 / 3.0),
-    kp: Iterable[float] = (0.0, 2.0 / 3.0),
+    period_basis: Iterable[Iterable[float]] = ((1.0, 1.0), (1.0 / math.sqrt(3.0), -1.0 / math.sqrt(3.0))),
+    k: Iterable[float] = K_POINT,
+    kp: Iterable[float] = (-K_POINT[0], -K_POINT[1]),
 ) -> ValleyDomain:
     basis = _matrix(period_basis, "period_basis")
     center = _finite_vector(k, "k")
@@ -364,6 +371,10 @@ class DomainSample:
     declared_exclusion_count: int
     retained_area_q: float
     domain_digest: str
+    quadrature_scheme: str = "CLIPPED_SQUARE_CELL_TRIANGULATED_ELEMENTS_V2"
+    element_ids: tuple[str, ...] = ()
+    element_vertices: tuple[tuple[tuple[float, float], ...], ...] = ()
+    spacing_provenance: tuple[str, ...] = ()
 
     @property
     def center_count(self) -> int:
@@ -371,13 +382,17 @@ class DomainSample:
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "schema": "valley_domain_sample_v1",
+            "schema": "valley_domain_sample_v2",
             "spacing_q": self.spacing_q,
             "centers": [list(point) for point in self.centers],
             "weights": list(self.weights),
             "declared_exclusion_count": self.declared_exclusion_count,
             "retained_area_q": self.retained_area_q,
             "domain_digest": self.domain_digest,
+            "quadrature_scheme": self.quadrature_scheme,
+            "element_ids": list(self.element_ids),
+            "element_vertices": [[list(point) for point in vertices] for vertices in self.element_vertices],
+            "spacing_provenance": list(self.spacing_provenance),
         }
 
 
@@ -399,8 +414,21 @@ def integrate_sampled_field(
     if numbers.shape != weights.shape or not np.all(np.isfinite(numbers)):
         raise ValueError("values must be finite and match the sample center count")
     return float(orientation_sign * np.dot(numbers, weights))
+def _connected_quadrature_elements(geometry: Any) -> list[Polygon]:
+    components = list(geometry.geoms) if hasattr(geometry, "geoms") else [geometry]
+    elements: list[Polygon] = []
+    for component in components:
+        if not isinstance(component, Polygon) or component.area <= 1e-15:
+            continue
+        for candidate in triangulate(component):
+            if candidate.area <= 1e-15 or not component.covers(candidate):
+                continue
+            elements.append(candidate)
+    return elements
+
+
 def sample_domain(domain: ValleyDomain, spacing_q: float) -> DomainSample:
-    """Tile the plane by clipped spacing cells and use clipped-cell centroids."""
+    """Build connected, area-faithful elements with in-domain evaluation points."""
     if spacing_q <= 0.0 or not math.isfinite(float(spacing_q)):
         raise ValueError("spacing_q must be positive and finite")
     spacing = float(spacing_q)
@@ -408,20 +436,31 @@ def sample_domain(domain: ValleyDomain, spacing_q: float) -> DomainSample:
     min_x, min_y, max_x, max_y = polygon.bounds
     i_min, i_max = math.floor(min_x / spacing) - 1, math.ceil(max_x / spacing) + 1
     j_min, j_max = math.floor(min_y / spacing) - 1, math.ceil(max_y / spacing) + 1
-    centers = []
-    weights = []
+    centers: list[tuple[float, float]] = []
+    weights: list[float] = []
+    element_ids: list[str] = []
+    element_vertices: list[tuple[tuple[float, float], ...]] = []
+    provenance: list[str] = []
     for i in range(i_min, i_max + 1):
         for j in range(j_min, j_max + 1):
             x, y = i * spacing, j * spacing
             cell = box(x - spacing / 2.0, y - spacing / 2.0, x + spacing / 2.0, y + spacing / 2.0)
             clipped = polygon.intersection(cell)
-            if clipped.is_empty or clipped.area <= 1e-15:
-                continue
-            centroid = clipped.centroid
-            centers.append((float(centroid.x), float(centroid.y)))
-            weights.append(float(clipped.area))
+            for local_index, element in enumerate(_connected_quadrature_elements(clipped)):
+                evaluation = element.representative_point()
+                if not domain.polygon.covers(evaluation):
+                    raise ValueError("quadrature evaluation point lies outside retained domain")
+                vertices = tuple((float(px), float(py)) for px, py in element.exterior.coords[:-1])
+                centers.append((float(evaluation.x), float(evaluation.y)))
+                weights.append(float(element.area))
+                element_ids.append(f"cell:{i}:{j}:element:{local_index}")
+                element_vertices.append(vertices)
+                provenance.append(f"spacing_q={spacing!r};cell_index=({i},{j});element_index={local_index}")
     if not centers:
-        raise ValueError("spacing produced no retained domain cells")
+        raise ValueError("spacing produced no retained domain elements")
+    area_error = abs(float(sum(weights)) - float(polygon.area))
+    if area_error > 1e-10:
+        raise ValueError(f"quadrature element area mismatch: {area_error}")
     return DomainSample(
         spacing_q=spacing,
         centers=tuple(centers),
@@ -429,6 +468,9 @@ def sample_domain(domain: ValleyDomain, spacing_q: float) -> DomainSample:
         declared_exclusion_count=len(domain.exclusions),
         retained_area_q=float(polygon.area),
         domain_digest=domain.digest,
+        element_ids=tuple(element_ids),
+        element_vertices=tuple(element_vertices),
+        spacing_provenance=tuple(provenance),
     )
 
 @dataclass(frozen=True, slots=True)
@@ -609,6 +651,38 @@ def triangular_benchmark_anchors() -> tuple[BenchmarkAnchorSpec, ...]:
 
 
 @dataclass(frozen=True, slots=True)
+class AnchorReadiness:
+    anchor_id: str
+    status: str
+    reasons: tuple[str, ...]
+
+
+def reduce_anchor_readiness(
+    anchor: BenchmarkAnchorSpec,
+    geometry: Any,
+    *,
+    coordinate_preflight_ready: bool,
+    domain_available: bool,
+    rank_qualified: bool = True,
+) -> AnchorReadiness:
+    if anchor.rank1_prohibited_at_target:
+        return AnchorReadiness(anchor.anchor_id, "RANK1_PROHIBITED", ("exact_symmetry_rank1_target_forbidden",))
+    if not rank_qualified:
+        return AnchorReadiness(anchor.anchor_id, "RANK_UNQUALIFIED", ("target_band_or_rank_policy_unqualified",))
+    if not coordinate_preflight_ready:
+        return AnchorReadiness(anchor.anchor_id, "COORDINATE_UNRESOLVED", ("coordinate_preflight_not_ready",))
+    if not domain_available:
+        return AnchorReadiness(anchor.anchor_id, "DOMAIN_UNAVAILABLE", ("requested_reference_domain_unavailable",))
+    if getattr(geometry, "paper_parameter_equivalence", "UNRESOLVED") not in {"BOUND", "PAPER_PARAMETER_BOUND"}:
+        return AnchorReadiness(anchor.anchor_id, "GEOMETRY_UNRESOLVED", ("paper_parameter_equivalence_unresolved",))
+    if getattr(geometry, "material_contract_status", "UNRESOLVED") != "REFERENCE_BOUND":
+        return AnchorReadiness(anchor.anchor_id, "MATERIAL_UNRESOLVED", ("source_material_contract_not_bound",))
+    if anchor.paper_domain_available:
+        return AnchorReadiness(anchor.anchor_id, "REFERENCE_READY", ())
+    return AnchorReadiness(anchor.anchor_id, "PROJECT_STRESS_ONLY", ("project_domain_or_stress_anchor_only",))
+
+
+@dataclass(frozen=True, slots=True)
 class PerformanceDiagnostics:
     unique_mpb_solves: int = 0
     cache_hit_count: int = 0
@@ -640,11 +714,11 @@ class PerformanceDiagnostics:
 
 __all__ = [
     "PAPER_STYLE_TRUNCATED_K_HBZ", "MEPHC_PERIODIC_VORONOI_K_BASIN", "DOMAIN_SYSTEMATIC",
-    "DELTA_K_VALUES", "INTEGRATION_SPACING_Q", "ReferenceCoordinatePreflight", "build_triangular_coordinate_preflight", "fractional_periodic_equivalent",
+    "DELTA_K_VALUES", "INTEGRATION_SPACING_Q", "ReferenceCoordinatePreflight", "build_triangular_coordinate_preflight", "reciprocal_basis_from_real_space", "fractional_periodic_equivalent",
     "build_identity_coordinate_preflight", "periodic_equivalent", "ValleyDomain",
     "paper_style_truncated_k_hbz", "mephc_periodic_voronoi_k_basin", "DomainSample",
     "sample_domain", "integrate_sampled_field", "PlaquetteRequest", "centered_ccw_plaquette_requests",
     "PhysicalSolveIdentity", "PhysicalSolveCache", "CachePlan", "plan_cache_requests", "TrendReduction",
-    "reduce_trend", "BenchmarkAnchorSpec", "triangular_benchmark_anchors",
+    "reduce_trend", "BenchmarkAnchorSpec", "triangular_benchmark_anchors", "AnchorReadiness", "reduce_anchor_readiness",
     "PerformanceDiagnostics", "build_triangular_reference_geometry",
 ]

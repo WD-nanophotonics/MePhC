@@ -1,7 +1,9 @@
 import math
+from dataclasses import replace
 
 import numpy as np
 import pytest
+from shapely.geometry import Point, Polygon
 
 from mephc.valley_benchmark import (
     DELTA_K_VALUES,
@@ -12,6 +14,9 @@ from mephc.valley_benchmark import (
     build_identity_coordinate_preflight,
     build_triangular_coordinate_preflight,
     fractional_periodic_equivalent,
+    reduce_anchor_readiness,
+    periodic_equivalent,
+    reciprocal_basis_from_real_space,
     integrate_sampled_field,
     mephc_periodic_voronoi_k_basin,
     paper_style_truncated_k_hbz,
@@ -73,7 +78,7 @@ def test_mephc_domain_preserves_sealed_area_and_identity():
     domain = mephc_periodic_voronoi_k_basin()
     assert domain.domain_id == "PERIODIC_RECIPROCAL_METRIC_VORONOI_BASIN_K"
     assert domain.area_q == pytest.approx(1.0 / math.sqrt(3.0), rel=0.0, abs=1e-12)
-    assert domain.classify((0.0, -2.0 / 3.0)) == "RETAINED"
+    assert domain.classify((2.0 / 3.0, 0.0)) == "RETAINED"
     assert len(domain.digest) == 64
 
 
@@ -158,7 +163,7 @@ def test_independent_ladders_are_explicit():
 
 def test_periodic_voronoi_is_analytic_and_rotationally_equivalent():
     domain = mephc_periodic_voronoi_k_basin()
-    expected = {(-1.0 / math.sqrt(3.0), -1.0), (1.0 / math.sqrt(3.0), -1.0), (0.0, 0.0)}
+    expected = {(0.0, 0.0), (1.0, -1.0 / math.sqrt(3.0)), (1.0, 1.0 / math.sqrt(3.0))}
     assert {tuple(round(value, 12) for value in point) for point in domain.vertices} == {
         tuple(round(value, 12) for value in point) for point in expected
     }
@@ -167,8 +172,8 @@ def test_periodic_voronoi_is_analytic_and_rotationally_equivalent():
     rotate = lambda point: tuple(float(value) for value in np.asarray(rotation) @ np.asarray(point))
     rotated = mephc_periodic_voronoi_k_basin(
         period_basis=tuple(rotate(row) for row in ((1.0 / math.sqrt(3.0), 1.0), (1.0 / math.sqrt(3.0), -1.0))),
-        k=rotate((0.0, -2.0 / 3.0)),
-        kp=rotate((0.0, 2.0 / 3.0)),
+        k=rotate((2.0 / 3.0, 0.0)),
+        kp=rotate((-2.0 / 3.0, 0.0)),
     )
     assert rotated.area_q == pytest.approx(domain.area_q, abs=1e-12)
     assert rotated.digest != domain.digest
@@ -177,6 +182,11 @@ def test_periodic_voronoi_is_analytic_and_rotationally_equivalent():
 def test_nonidentity_coordinate_preflight_and_two_axis_mapping():
     preflight = build_triangular_coordinate_preflight()
     assert preflight.public_q_to_mpb((2.0 / 3.0, 0.0)) == pytest.approx((1.0 / 3.0, 1.0 / 3.0))
+    off_axis = (0.17, -0.23)
+    assert preflight.mpb_to_public_q(preflight.public_q_to_mpb(off_axis)) == pytest.approx(off_axis)
+    reciprocal = reciprocal_basis_from_real_space(((0.5, 0.5), (math.sqrt(3.0) / 2.0, -math.sqrt(3.0) / 2.0)))
+    translated = np.asarray(off_axis) + np.asarray(reciprocal) @ np.asarray((1.0, -2.0))
+    assert periodic_equivalent(off_axis, translated, reciprocal)
     assert fractional_periodic_equivalent((1.0 / 3.0, 1.0 / 3.0), (4.0 / 3.0, -2.0 / 3.0))
     x_vector, y_vector = preflight.delta_k_vectors_to_public_q(0.1)
     assert x_vector == pytest.approx((0.1, 0.0))
@@ -204,9 +214,15 @@ def test_geometry_and_material_contracts_fail_closed_until_semantics_are_bound()
     unresolved = build_triangular_reference_geometry(0.4)
     assert unresolved.paper_parameter_equivalence == "UNRESOLVED"
     assert not unresolved.live_reference_solve_ready
-    refractive = build_triangular_reference_geometry(0.0, material_semantics="REFRACTIVE_INDEX")
-    assert refractive.mpb_epsilon_value == pytest.approx(2.65 ** 2)
-    assert refractive.live_reference_solve_ready
+    reference = build_triangular_reference_geometry(0.0)
+    assert reference.reference_material_semantics == "RELATIVE_PERMITTIVITY"
+    assert reference.mpb_epsilon_value == pytest.approx(2.65)
+    assert reference.material_contract_status == "REFERENCE_BOUND"
+    assert reference.live_reference_solve_ready
+    alternate = build_triangular_reference_geometry(0.0, material_semantics="REFRACTIVE_INDEX")
+    assert alternate.mpb_epsilon_value == pytest.approx(2.65 ** 2)
+    assert alternate.material_contract_status == "NON_REFERENCE_ANALOGUE"
+    assert not alternate.live_reference_solve_ready
 
 
 def test_sample_weights_are_geometric_and_not_renormalized():
@@ -214,3 +230,56 @@ def test_sample_weights_are_geometric_and_not_renormalized():
     sample = sample_domain(domain, 1.0 / 72.0)
     assert sum(sample.weights) == pytest.approx(domain.area_q, abs=1e-12)
     assert len(set(round(weight, 12) for weight in sample.weights)) > 1
+
+
+def test_circle_physical_identity_is_analytic_and_independent_of_display_polygon():
+    circle = build_triangular_reference_geometry(0.5)
+    assert circle.primitive_kind == "circle"
+    assert circle.air_area == pytest.approx(math.pi * circle.analytic_radius ** 2)
+    assert circle.polygonization_area_error != pytest.approx(0.0, abs=1e-12)
+    perturbed_display = replace(circle, vertices=tuple((x * 0.99, y * 0.99) for x, y in circle.vertices))
+    assert perturbed_display.geometry_digest == circle.geometry_digest
+
+
+def test_quadrature_elements_have_domain_provenance_and_in_domain_evaluation_points():
+    domain = paper_style_truncated_k_hbz(fr=0.4, delta_k=0.05, delta_gamma=0.13)
+    sample = sample_domain(domain, 1.0 / 36.0)
+    assert len(sample.element_ids) == sample.center_count
+    assert len(sample.element_vertices) == sample.center_count
+    assert len(sample.spacing_provenance) == sample.center_count
+    assert all(domain.polygon.covers(Point(point)) for point in sample.centers)
+    assert all(Polygon(vertices).covers(Point(center)) for vertices, center in zip(sample.element_vertices, sample.centers))
+    assert sum(sample.weights) == pytest.approx(domain.area_q, abs=1e-10)
+
+
+def test_anchor_readiness_is_computed_from_runtime_contracts():
+    anchors = triangular_benchmark_anchors()
+    preflight = build_triangular_coordinate_preflight()
+    ready = reduce_anchor_readiness(
+        anchors[0],
+        build_triangular_reference_geometry(0.0),
+        coordinate_preflight_ready=True,
+        domain_available=True,
+    )
+    assert ready.status == "REFERENCE_READY"
+    geometry_unresolved = reduce_anchor_readiness(
+        anchors[1],
+        build_triangular_reference_geometry(0.4),
+        coordinate_preflight_ready=True,
+        domain_available=True,
+    )
+    assert geometry_unresolved.status == "GEOMETRY_UNRESOLVED"
+    coordinate_unresolved = reduce_anchor_readiness(
+        anchors[0],
+        build_triangular_reference_geometry(0.0),
+        coordinate_preflight_ready=False,
+        domain_available=True,
+    )
+    assert coordinate_unresolved.status == "COORDINATE_UNRESOLVED"
+    assert reduce_anchor_readiness(
+        anchors[-1],
+        build_triangular_reference_geometry(0.5),
+        coordinate_preflight_ready=True,
+        domain_available=False,
+    ).status == "RANK1_PROHIBITED"
+    assert preflight.ready

@@ -20,6 +20,7 @@ TRIANGULAR_CELL_AREA = math.sqrt(3.0) / 2.0
 REFERENCE_AIR_FILL_FRACTION = 0.107
 REFERENCE_MATERIAL_VALUE = 2.65
 REFERENCE_EFFECTIVE_PERMITTIVITY = REFERENCE_MATERIAL_VALUE
+REFERENCE_MATERIAL_SOURCE_ROLE = "Dai II.1 Structural model effective-permittivity statement"
 
 
 def _signed_area(vertices: np.ndarray) -> float:
@@ -65,7 +66,7 @@ def _make_boundary(fr: float, target_area: float) -> np.ndarray:
         radius = _circle_radius_for_area(target_area)
         angles = np.linspace(0.0, 2.0 * math.pi, 96, endpoint=False)
         raw = radius * np.column_stack((np.cos(angles), np.sin(angles)))
-        return raw * math.sqrt(target_area / _positive_area(raw))
+        return raw
 
     # The interpolation is an internal, deterministic close analogue.  It
     # preserves the endpoint shapes and is rescaled to the reference fill.
@@ -87,12 +88,13 @@ class TriangularReferenceGeometry:
     lattice_constant: float = 1.0
     polarization: str = "TE"
     effective_permittivity: float = REFERENCE_EFFECTIVE_PERMITTIVITY
-    reference_material_semantics: str = "UNRESOLVED"
+    reference_material_semantics: str = "RELATIVE_PERMITTIVITY"
     primitive_kind: str = "rounded_triangle_close_analogue"
     analytic_radius: float | None = None
     geometry_equivalence: str = "CLOSE_ANALOGUE"
     paper_parameter_equivalence: str = "UNRESOLVED"
     polygonization_version: str = "INTERNAL_CLOSE_ANALOGUE_RADIAL_MORPH_V1"
+    reference_material_source_role: str = REFERENCE_MATERIAL_SOURCE_ROLE
     construction_status: str = "EXACT_INTERNAL_REFERENCE_CONTRACT"
 
     @property
@@ -100,8 +102,24 @@ class TriangularReferenceGeometry:
         return TRIANGULAR_CELL_AREA * self.lattice_constant**2
 
     @property
-    def air_area(self) -> float:
+    def polygonization_area(self) -> float:
         return _positive_area(np.asarray(self.vertices, dtype=float))
+
+    @property
+    def analytic_area(self) -> float | None:
+        if self.primitive_kind == "circle" and self.analytic_radius is not None:
+            return math.pi * self.analytic_radius ** 2
+        if self.primitive_kind == "triangle" and self.analytic_radius is not None:
+            return 3.0 * math.sqrt(3.0) * self.analytic_radius ** 2 / 4.0
+        return None
+
+    @property
+    def air_area(self) -> float:
+        return self.analytic_area if self.analytic_area is not None else self.polygonization_area
+
+    @property
+    def polygonization_area_error(self) -> float:
+        return self.polygonization_area - self.air_area
 
     @property
     def fill_fraction_error(self) -> float:
@@ -124,8 +142,23 @@ class TriangularReferenceGeometry:
         return None
 
     @property
+    def material_contract_status(self) -> str:
+        return "REFERENCE_BOUND" if self.reference_material_semantics == "RELATIVE_PERMITTIVITY" and self.reference_material_source_role == REFERENCE_MATERIAL_SOURCE_ROLE else "NON_REFERENCE_ANALOGUE" if self.reference_material_semantics in {"REFRACTIVE_INDEX", "RELATIVE_PERMITTIVITY"} else "UNRESOLVED"
+
+    @property
+    def material_contract_digest(self) -> str:
+        payload = {
+            "value": self.effective_permittivity,
+            "semantics": self.reference_material_semantics,
+            "source_role": self.reference_material_source_role,
+            "epsilon": self.mpb_epsilon_value,
+            "status": self.material_contract_status,
+        }
+        return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")).hexdigest()
+
+    @property
     def live_reference_solve_ready(self) -> bool:
-        return self.mpb_epsilon_value is not None and self.paper_parameter_equivalence in {"BOUND", "PAPER_PARAMETER_BOUND"}
+        return self.mpb_epsilon_value is not None and self.material_contract_status == "REFERENCE_BOUND" and self.paper_parameter_equivalence in {"BOUND", "PAPER_PARAMETER_BOUND"}
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -136,11 +169,17 @@ class TriangularReferenceGeometry:
             "air_fill_fraction": self.air_fill_fraction,
             "cell_area": self.cell_area,
             "air_area": self.air_area,
+            "polygonization_area": self.polygonization_area,
+            "polygonization_area_error": self.polygonization_area_error,
+            "analytic_area": self.analytic_area,
             "lattice_constant": self.lattice_constant,
             "polarization": self.polarization,
             "effective_permittivity": self.effective_permittivity,
             "reference_material_semantics": self.reference_material_semantics,
             "mpb_epsilon_value": self.mpb_epsilon_value,
+            "material_contract_status": self.material_contract_status,
+            "material_contract_digest": self.material_contract_digest,
+            "reference_material_source_role": self.reference_material_source_role,
             "primitive_kind": self.primitive_kind,
             "analytic_radius": self.analytic_radius,
             "geometry_equivalence": self.geometry_equivalence,
@@ -151,7 +190,20 @@ class TriangularReferenceGeometry:
 
     @property
     def geometry_digest(self) -> str:
-        payload = json.dumps(self.to_dict(), sort_keys=True, separators=(",", ":"), allow_nan=False)
+        identity = {
+            "schema": "triangular_reference_geometry_identity_v3",
+            "fr": self.fr,
+            "primitive_kind": self.primitive_kind,
+            "analytic_radius": self.analytic_radius,
+            "analytic_area": self.analytic_area,
+            "air_fill_fraction": self.air_fill_fraction,
+            "lattice_constant": self.lattice_constant,
+            "polarization": self.polarization,
+            "geometry_equivalence": self.geometry_equivalence,
+            "paper_parameter_equivalence": self.paper_parameter_equivalence,
+            "material_contract_digest": self.material_contract_digest,
+        }
+        payload = json.dumps(identity, sort_keys=True, separators=(",", ":"), allow_nan=False)
         return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
@@ -160,7 +212,7 @@ def build_triangular_reference_geometry(
     *,
     air_fill_fraction: float = REFERENCE_AIR_FILL_FRACTION,
     effective_permittivity: float = REFERENCE_EFFECTIVE_PERMITTIVITY,
-    material_semantics: str = "UNRESOLVED",
+    material_semantics: str = "RELATIVE_PERMITTIVITY",
 ) -> TriangularReferenceGeometry:
     """Build the internal triangular reference contract without MPB."""
     if isinstance(fr, bool) or not math.isfinite(float(fr)) or not 0.0 <= float(fr) <= 0.5:
@@ -180,6 +232,7 @@ def build_triangular_reference_geometry(
         air_fill_fraction=float(air_fill_fraction),
         effective_permittivity=float(effective_permittivity),
         reference_material_semantics=material_semantics,
+        reference_material_source_role=REFERENCE_MATERIAL_SOURCE_ROLE,
         primitive_kind="triangle" if fr == 0.0 else "circle" if fr == 0.5 else "rounded_triangle_close_analogue",
         analytic_radius=_triangle_radius_for_area(target_area) if fr == 0.0 else _circle_radius_for_area(target_area) if fr == 0.5 else None,
         geometry_equivalence="PAPER_PARAMETER_BOUND" if fr in {0.0, 0.5} else "CLOSE_ANALOGUE",
@@ -193,7 +246,7 @@ def build_triangular_reference_geometry(
 
 __all__ = [
     "REFERENCE_AIR_FILL_FRACTION",
-    "REFERENCE_EFFECTIVE_PERMITTIVITY", "REFERENCE_MATERIAL_VALUE",
+    "REFERENCE_EFFECTIVE_PERMITTIVITY", "REFERENCE_MATERIAL_VALUE", "REFERENCE_MATERIAL_SOURCE_ROLE",
     "TRIANGULAR_CELL_AREA",
     "TriangularReferenceGeometry",
     "build_triangular_reference_geometry",
