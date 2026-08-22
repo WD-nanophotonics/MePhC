@@ -418,7 +418,7 @@ def main() -> None:
     }
     self_check(result)
     output = root / "audit" / "e7i3b" / "result.json"
-    output.write_text(json.dumps(result, sort_keys=True, indent=2) + "\\n", encoding="utf-8")
+    output.write_text(json.dumps(result, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({
         "overall": result["E7I3B_C1_OVERALL"],
         "FR00": classifications["FR00"],
