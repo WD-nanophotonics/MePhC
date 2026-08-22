@@ -78,7 +78,7 @@ def lowdin_snapshot(raw):
         "raw_provider_max_off_diagonal_gram":float(raw.max_off_diagonal_gram),
         "raw_provider_orthogonality_status":raw.orthogonality_status,
         "selected_span_condition":"WELL_CONDITIONED" if m["GRAM_CONDITION_NUMBER"]<1e8 else "ILL_CONDITIONED"})
-    vectors=list(raw.normalized_vectors); vectors[:3]=[q[i] for i in range(3)]
+    vectors=list(raw.normalized_vectors); vectors[:3]=[q[:,i] for i in range(3)]
     full=np.column_stack(vectors)
     states=[]
     for i,vec in enumerate(vectors):
