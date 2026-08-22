@@ -50,3 +50,10 @@ different from nominal coordinates may only be accepted through an explicit
 perturbed-node error analysis; it must never be silently relabeled as exact
 nominal sampling. New computations should avoid such quantization unless
 explicitly authorized and versioned.
+
+
+Large raw scientific evidence may remain external when repository size or
+privacy policy requires it, but any scientific conclusion based on that
+evidence must bind the exact external artifact by cryptographic digest and
+publish enough deterministic reduction logic and compact trace evidence on
+sandbox for supervisor audit.
