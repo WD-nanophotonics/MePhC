@@ -156,7 +156,7 @@ def _compact_snapshot(raw,vectors,full,states,prov):
 
 def lowdin_snapshot(raw):
     v=np.column_stack([raw.normalized_vectors[i] for i in SEL])
-    q,m=lowdin_matrix(v)
+    q,m=lowdin_matrix(v); print(f"E7I3C_LOWDIN_AFTER_MATRIX rss_kb={resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}",flush=True)
     selected_g=v.conj().T@v; off=np.array(selected_g,copy=True); np.fill_diagonal(off,0)
     m.update({"RAW_SELECTED_GRAM":cpairs(selected_g),
         "RAW_SELECTED_MAX_OFF_DIAGONAL_GRAM":float(np.max(np.abs(off))),
@@ -171,9 +171,9 @@ def lowdin_snapshot(raw):
         meta=dict(raw.raw_eigenstates[i].metadata)
         meta.update({"audit_adapter":"E7I.3C selected-rank3 symmetric Lowdin frame","selected_span_only":True})
         states.append(RawEigenstate(raw.k_point,i,float(raw.frequencies[i]),vec,meta))
-    prov=dict(raw.provenance)
+    print(f"E7I3C_LOWDIN_BEFORE_COMPACT rss_kb={resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}",flush=True); prov=dict(raw.provenance)
     prov.update({"audit_adapter":"E7I.3C selected-rank3 symmetric Lowdin frame","selected_span_only":True,"raw_provider_status":raw.orthogonality_status,"live_mpb_extraction_validated":True})
-    adapted=_compact_snapshot(raw,vectors,full,states,prov)
+    adapted=_compact_snapshot(raw,vectors,full,states,prov); print(f"E7I3C_LOWDIN_AFTER_COMPACT rss_kb={resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}",flush=True)
     return adapted,m
 
 
