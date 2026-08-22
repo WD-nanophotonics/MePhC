@@ -134,6 +134,26 @@ def lowdin_matrix(v):
         "GRAM_HERMITIAN_RESIDUAL":float(np.linalg.norm(g-g.conj().T))}
 
 
+class _CompactMPBHEnvelopeSnapshot(MPBHEnvelopeSnapshot):
+    pass
+
+
+def _compact_snapshot(raw,vectors,full,states,prov):
+    shape=raw.h_fields.shape
+    h_view=np.broadcast_to(np.zeros((shape[0],1,1,shape[3]),dtype=np.complex128),shape)
+    e_view=None if raw.e_fields is None else np.broadcast_to(np.zeros((shape[0],1,1,shape[3]),dtype=np.complex128),raw.e_fields.shape)
+    adapted=object.__new__(_CompactMPBHEnvelopeSnapshot)
+    for name,value in {
+        "k_point":raw.k_point,"frequencies":raw.frequencies,"h_fields":h_view,"e_fields":e_view,
+        "raw_norms":raw.raw_norms,"normalized_vectors":tuple(vectors),"gram_matrix":full.conj().T@full,
+        "max_normalization_error":float(max(abs(np.vdot(x,x).real-1) for x in vectors)),
+        "max_off_diagonal_gram":float(np.max(np.abs(full.conj().T@full-np.eye(BANDS)))),
+        "orthogonality_status":MPB_H_ENVELOPE_QUALIFIED,"normalization_tolerance":raw.normalization_tolerance,
+        "orthogonality_tolerance":raw.orthogonality_tolerance,"raw_eigenstates":tuple(states),"provenance":prov,
+    }.items():
+        object.__setattr__(adapted,name,value)
+    return adapted
+
 def lowdin_snapshot(raw):
     v=np.column_stack([raw.normalized_vectors[i] for i in SEL])
     q,m=lowdin_matrix(v)
@@ -153,7 +173,7 @@ def lowdin_snapshot(raw):
         states.append(RawEigenstate(raw.k_point,i,float(raw.frequencies[i]),vec,meta))
     prov=dict(raw.provenance)
     prov.update({"audit_adapter":"E7I.3C selected-rank3 symmetric Lowdin frame","selected_span_only":True,"raw_provider_status":raw.orthogonality_status,"live_mpb_extraction_validated":True})
-    adapted=MPBHEnvelopeSnapshot(k_point=raw.k_point,frequencies=raw.frequencies,h_fields=raw.h_fields,e_fields=raw.e_fields,raw_norms=raw.raw_norms,normalized_vectors=tuple(vectors),gram_matrix=full.conj().T@full,max_normalization_error=float(max(abs(np.vdot(x,x).real-1) for x in vectors)),max_off_diagonal_gram=float(np.max(np.abs(full.conj().T@full-np.eye(BANDS))),),orthogonality_status=MPB_H_ENVELOPE_QUALIFIED,normalization_tolerance=raw.normalization_tolerance,orthogonality_tolerance=raw.orthogonality_tolerance,raw_eigenstates=tuple(states),provenance=prov)
+    adapted=_compact_snapshot(raw,vectors,full,states,prov)
     return adapted,m
 
 
