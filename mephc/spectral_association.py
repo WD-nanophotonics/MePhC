@@ -532,7 +532,7 @@ def qualify_local_subspace(
         overlap = subspace_overlap(left, right, validation_tolerance=thresholds.validation_tolerance)
     except (ValueError, SubspaceTransportError) as exc:
         return _qualification_incomplete(left, right, thresholds, evidence=(f"overlap validation failed: {exc}",))
-    distance = float(np.linalg.norm(left.projector_matrix() - right.projector_matrix(), ord="fro"))
+    distance = left.projector_distance(right)
     if not math.isfinite(distance):
         return _qualification_incomplete(left, right, thresholds, evidence=("cross-k projector distance is not finite",), overlap=overlap)
     if external_context is None and (left_excluded_eigenvalues is not None or right_excluded_eigenvalues is not None):
