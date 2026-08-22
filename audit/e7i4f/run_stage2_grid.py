@@ -10,8 +10,13 @@ def main():
  root=Path(__file__).resolve().parents[2]; geometry=build_triangular_reference_geometry(FR); preflight=build_triangular_coordinate_preflight(); adapter=build_reference_mpb_adapter(geometry,preflight); domain=paper_style_truncated_k_hbz(fr=FR,delta_k=0.10,delta_gamma=0.10); sample=sample_domain(domain,SPACING); cache={}; identities=PhysicalSolveCache(); counters={"raw_requests":0,"unique_solves":0,"cache_hits":0,"solver_failures":0}; rows=[]; start=time.monotonic()
  for i,(center,weight,eid) in enumerate(zip(sample.centers,sample.weights,sample.element_ids)):
   row={"element_id":eid,"evaluation_q":list(center),"weight_q2":float(weight)}
-  ev=evaluate(row,PRIMARY,REF,adapter,preflight,geometry,cache,identities,counters,{})
-  rows.append({k:v for k,v in ev.items() if not k.startswith("_")} | {"element_id":eid,"weight_q2":float(weight),"evaluation_q":list(center)})
+  attempts=[]
+  for delta in (PRIMARY,REF,REF/2):
+   ref_delta=delta/2
+   ev=evaluate(row,delta,ref_delta,adapter,preflight,geometry,cache,identities,counters,{})
+   attempts.append({"delta":delta,"ref_delta":ref_delta,"qualified":bool(ev["qualified"]),"profile_passed":bool(ev["profile_passed"]),"refinement_status":None if ev["refinement"] is None else ev["refinement"]["status"]})
+   if ev["qualified"]: break
+  rows.append({k:v for k,v in ev.items() if not k.startswith("_")} | {"element_id":eid,"weight_q2":float(weight),"evaluation_q":list(center),"adaptive_attempts":attempts})
   if i%100==0: print(json.dumps({"progress":i,"total":sample.center_count}),flush=True)
  qualified=[r for r in rows if r["qualified"]]; integral=None; chern=None
  if len(qualified)==len(rows):
