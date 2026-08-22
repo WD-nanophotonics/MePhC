@@ -1,0 +1,18 @@
+{
+  "provenance": {
+    "provenance_mode": "RECOMPUTED_FROM_SEALED_LOCAL_MATCHED_CONTROLS",
+    "pair_count": 8,
+    "evidence_level": "LOCAL_MATCHED_CONTROLS",
+    "source_fixture_sha256": "b55592deb8011c6f6cbdddf81bdf0f23f22282ba93429b2b3b881fdacfc578f5"
+  },
+  "inversion_pairs": [
+    {"base": {"omega_band1": -3.819254538614312e-05, "omega_band2": 0.0003912775069462996}, "plus": {"omega_band1": 3.703446186729969e-05, "omega_band2": -0.00038026114207654314}, "spectral_compatible": true, "rank_compatible": true, "qualification_compatible": true},
+    {"base": {"omega_band1": -8.207870407687279e-06, "omega_band2": 0.0001694126124649788}, "plus": {"omega_band1": -3.0104503669018673e-06, "omega_band2": -0.0001314691699147268}, "spectral_compatible": true, "rank_compatible": true, "qualification_compatible": true},
+    {"base": {"omega_band1": -3.862399394366366, "omega_band2": 2.812049473493504}, "plus": {"omega_band1": 3.8623070160396855, "omega_band2": -2.812032479123183}, "spectral_compatible": true, "rank_compatible": true, "qualification_compatible": true},
+    {"base": {"omega_band1": -0.0010395652040437835, "omega_band2": 0.04501097698526153}, "plus": {"omega_band1": 0.0010393359386878527, "omega_band2": -0.04494831916502474}, "spectral_compatible": true, "rank_compatible": true, "qualification_compatible": true},
+    {"base": {"omega_band1": -1.0519153141798042e-05, "omega_band2": 0.10012027825527409}, "plus": {"omega_band1": 0.00011476208633706943, "omega_band2": -0.09805271738623732}, "spectral_compatible": true, "rank_compatible": true, "qualification_compatible": true},
+    {"base": {"omega_band1": -3.7691843551338784, "omega_band2": 2.7545286776553723}, "plus": {"omega_band1": 3.769166919679811, "omega_band2": -2.7545365939962414}, "spectral_compatible": true, "rank_compatible": true, "qualification_compatible": true},
+    {"base": {"omega_band1": 1.4739733311941557e-06, "omega_band2": 0.00470458770767988}, "plus": {"omega_band1": 7.951001574856002e-07, "omega_band2": -0.004751874122358205}, "spectral_compatible": true, "rank_compatible": true, "qualification_compatible": true},
+    {"base": {"omega_band1": -0.08328999432665121, "omega_band2": -0.1912942802495216}, "plus": {"omega_band1": 0.08315783296457561, "omega_band2": 0.18988213651322527}, "spectral_compatible": true, "rank_compatible": true, "qualification_compatible": true}
+  ]
+}

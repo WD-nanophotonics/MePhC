@@ -21,11 +21,11 @@ def _root():
 
 
 def _report():
-    return json.loads((_root() / "audit/e7i1g_c1/fixtures/c9_source_bound_report.json").read_text())
+    return json.loads((_root() / "tests/fixtures/e7i1h_c9_sealed_input.json").read_text())
 
 
 def _controls():
-    return json.loads((_root() / "audit/e7i1g_c1/fixtures/control_evidence.json").read_text())
+    return json.loads((_root() / "tests/fixtures/e7i1h_inversion_controls.json").read_text())
 
 
 def test_upstream_seal_is_required_and_mismatch_fails():
@@ -151,3 +151,21 @@ def test_wrong_sealed_flux_fails_closed():
 def test_unsupported_positive_tr_claim_without_evidence_fails():
     with pytest.raises(ValueError):
         audit_from_c9_report(_report(), existing_controls=_controls(), tr_evidence={"status": "SUPPORTED_BY_EXISTING_CONTROLS"}, paper_convention=inherited_paper_convention())
+
+
+def test_compact_provenance_and_all_normalized_uncertainty_bounds():
+    compact = _report()
+    provenance = compact["provenance"]
+    assert provenance["upstream_seal_id"] == "E7I1G_LEVEL2_VORONOI_VALLEY_ASSIGNED_BERRY_FLUX"
+    assert provenance["sealed_sandbox_sha"] == "e35bcb6a1fc567b670c64a8c7070d083777c2e87"
+    assert provenance["source_evidence_sha256"] == "196fcdae172b9b718185c61261de375b54a759e93d4d215c2bd5846ee841c67d"
+    result = audit_from_c9_report(compact, existing_controls=_controls(), paper_convention=inherited_paper_convention())
+    expected = {
+        "band1": 2.9476777143580646e-11,
+        "band2": 2.4975737705537495e-11,
+        "anti": 2.7175369477732265e-11,
+        "common": 4.360528985624759e-12,
+    }
+    for component, value in expected.items():
+        assert result["VALLEY_CHERN_ERROR_BOUND"][component] == pytest.approx(value, rel=0.0, abs=1e-25)
+    assert result["VALLEY_CHERN_UNCERTAINTY_PROVENANCE"] == "INHERITED_FROM_SEALED_E7I1G_PERTURBED_NODE_BOUND"

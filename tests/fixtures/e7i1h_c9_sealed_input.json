@@ -1,0 +1,29 @@
+{
+  "direct_flux": {
+    "refined_centroid": {
+      "anti": -0.6313275079372258,
+      "band1": -0.8672556366262376,
+      "band2": 0.39539937924821406,
+      "common": -0.23592812868901175
+    }
+  },
+  "audit": {
+    "bounds": {
+      "anti": {"refined_centroid": {"delta_phi_bound_weighted": 1.7074788221966395e-10}},
+      "band1": {"refined_centroid": {"delta_phi_bound_weighted": 1.8520805305155295e-10}},
+      "band2": {"refined_centroid": {"delta_phi_bound_weighted": 1.5692718818740439e-10}},
+      "common": {"refined_centroid": {"delta_phi_bound_weighted": 2.7398011654008195e-11}}
+    }
+  },
+  "provenance": {
+    "upstream_seal_id": "E7I1G_LEVEL2_VORONOI_VALLEY_ASSIGNED_BERRY_FLUX",
+    "seal_status": "PHYSICALLY_VALIDATED_WITH_EXPLICIT_PERTURBED_NODE_UNCERTAINTY",
+    "sealed_sandbox_sha": "e35bcb6a1fc567b670c64a8c7070d083777c2e87",
+    "source_evidence_sha256": "196fcdae172b9b718185c61261de375b54a759e93d4d215c2bd5846ee841c67d",
+    "source_role": "SEALED_E7I1G_REFINED_FLUX_AND_PERTURBED_NODE_BOUND",
+    "domain_id": "PERIODIC_RECIPROCAL_METRIC_VORONOI_BASIN_K",
+    "orientation": "POSITIVE_PUBLIC_CARTESIAN_QX_QY",
+    "normalization_input": "SEALED_REFINED_FLUX",
+    "raw_evidence_committed": false
+  }
+}
