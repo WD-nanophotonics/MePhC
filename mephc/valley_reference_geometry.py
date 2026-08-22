@@ -1,0 +1,168 @@
+"""Solver-neutral geometry contract for the triangular reference family.
+
+This module describes a deterministic one-hole triangular reference cell.  It
+does not construct Meep/MPB objects and deliberately labels the intermediate
+rounded-triangle family as a close analogue rather than claiming exact paper
+geometry.
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass
+import hashlib
+import json
+import math
+from typing import Any
+
+import numpy as np
+
+
+TRIANGULAR_CELL_AREA = math.sqrt(3.0) / 2.0
+REFERENCE_AIR_FILL_FRACTION = 0.107
+REFERENCE_EFFECTIVE_PERMITTIVITY = 2.65
+
+
+def _signed_area(vertices: np.ndarray) -> float:
+    return 0.5 * float(np.sum(vertices[:, 0] * np.roll(vertices[:, 1], -1) - vertices[:, 1] * np.roll(vertices[:, 0], -1)))
+
+
+def _positive_area(vertices: np.ndarray) -> float:
+    return abs(_signed_area(vertices))
+
+
+def _canonical_vertices(vertices: np.ndarray) -> tuple[tuple[float, float], ...]:
+    values = np.asarray(vertices, dtype=float)
+    if values.ndim != 2 or values.shape[1] != 2 or len(values) < 3:
+        raise ValueError("vertices must have shape (N, 2), N >= 3")
+    if not np.all(np.isfinite(values)) or _signed_area(values) <= 0.0:
+        raise ValueError("vertices must be finite and counter-clockwise")
+    return tuple(tuple(float(f"{value:.15g}") for value in point) for point in values)
+
+
+def _triangle_radius_for_area(area: float) -> float:
+    return math.sqrt(area / (3.0 * math.sqrt(3.0) / 4.0))
+
+
+def _circle_radius_for_area(area: float) -> float:
+    return math.sqrt(area / math.pi)
+
+
+def _triangle_radial(theta: np.ndarray) -> np.ndarray:
+    """Radial function of a unit-circumradius equilateral triangle."""
+    apothem = 0.5
+    normal0 = math.pi / 2.0 + math.pi / 3.0
+    nearest = normal0 + (np.round((theta - normal0) / (2.0 * math.pi / 3.0)) * (2.0 * math.pi / 3.0))
+    return apothem / np.cos(theta - nearest)
+
+
+def _make_boundary(fr: float, target_area: float) -> np.ndarray:
+    if fr == 0.0:
+        radius = _triangle_radius_for_area(target_area)
+        angles = math.pi / 2.0 + np.arange(3, dtype=float) * (2.0 * math.pi / 3.0)
+        raw = radius * np.column_stack((np.cos(angles), np.sin(angles)))
+        return raw * math.sqrt(target_area / _positive_area(raw))
+    if fr == 0.5:
+        radius = _circle_radius_for_area(target_area)
+        angles = np.linspace(0.0, 2.0 * math.pi, 96, endpoint=False)
+        raw = radius * np.column_stack((np.cos(angles), np.sin(angles)))
+        return raw * math.sqrt(target_area / _positive_area(raw))
+
+    # The interpolation is an internal, deterministic close analogue.  It
+    # preserves the endpoint shapes and is rescaled to the reference fill.
+    count = 96
+    angles = np.linspace(0.0, 2.0 * math.pi, count, endpoint=False)
+    t = fr / 0.5
+    radial = (1.0 - t) * _triangle_radial(angles) + t * _circle_radius_for_area(target_area)
+    raw = np.column_stack((radial * np.cos(angles), radial * np.sin(angles)))
+    return raw * math.sqrt(target_area / _positive_area(raw))
+
+
+@dataclass(frozen=True, slots=True)
+class TriangularReferenceGeometry:
+    """Canonical normalized triangular reference-cell description."""
+
+    fr: float
+    vertices: tuple[tuple[float, float], ...]
+    air_fill_fraction: float = REFERENCE_AIR_FILL_FRACTION
+    lattice_constant: float = 1.0
+    polarization: str = "TE"
+    effective_permittivity: float = REFERENCE_EFFECTIVE_PERMITTIVITY
+    geometry_equivalence: str = "CLOSE_ANALOGUE"
+    construction_status: str = "EXACT_INTERNAL_REFERENCE_CONTRACT"
+
+    @property
+    def cell_area(self) -> float:
+        return TRIANGULAR_CELL_AREA * self.lattice_constant**2
+
+    @property
+    def air_area(self) -> float:
+        return _positive_area(np.asarray(self.vertices, dtype=float))
+
+    @property
+    def fill_fraction_error(self) -> float:
+        return self.air_area / self.cell_area - self.air_fill_fraction
+
+    @property
+    def shape_kind(self) -> str:
+        if self.fr == 0.0:
+            return "triangle"
+        if self.fr == 0.5:
+            return "circle"
+        return "rounded_triangle"
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema": "triangular_reference_geometry_v1",
+            "fr": self.fr,
+            "shape_kind": self.shape_kind,
+            "vertices": [list(point) for point in self.vertices],
+            "air_fill_fraction": self.air_fill_fraction,
+            "cell_area": self.cell_area,
+            "air_area": self.air_area,
+            "lattice_constant": self.lattice_constant,
+            "polarization": self.polarization,
+            "effective_permittivity": self.effective_permittivity,
+            "geometry_equivalence": self.geometry_equivalence,
+            "construction_status": self.construction_status,
+        }
+
+    @property
+    def geometry_digest(self) -> str:
+        payload = json.dumps(self.to_dict(), sort_keys=True, separators=(",", ":"), allow_nan=False)
+        return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def build_triangular_reference_geometry(
+    fr: float,
+    *,
+    air_fill_fraction: float = REFERENCE_AIR_FILL_FRACTION,
+    effective_permittivity: float = REFERENCE_EFFECTIVE_PERMITTIVITY,
+) -> TriangularReferenceGeometry:
+    """Build the internal triangular reference contract without MPB."""
+    if isinstance(fr, bool) or not math.isfinite(float(fr)) or not 0.0 <= float(fr) <= 0.5:
+        raise ValueError("fr must lie in [0, 0.5]")
+    if not math.isfinite(float(air_fill_fraction)) or not 0.0 < float(air_fill_fraction) < 1.0:
+        raise ValueError("air_fill_fraction must lie in (0, 1)")
+    if not math.isfinite(float(effective_permittivity)) or float(effective_permittivity) <= 0.0:
+        raise ValueError("effective_permittivity must be positive")
+    fr = float(fr)
+    target_area = float(air_fill_fraction) * TRIANGULAR_CELL_AREA
+    vertices = _canonical_vertices(_make_boundary(fr, target_area))
+    result = TriangularReferenceGeometry(
+        fr=fr,
+        vertices=vertices,
+        air_fill_fraction=float(air_fill_fraction),
+        effective_permittivity=float(effective_permittivity),
+        geometry_equivalence="CLOSE_ANALOGUE",
+    )
+    if abs(result.fill_fraction_error) > 5e-13:
+        raise RuntimeError("reference geometry failed its fixed-fill construction")
+    return result
+
+
+__all__ = [
+    "REFERENCE_AIR_FILL_FRACTION",
+    "REFERENCE_EFFECTIVE_PERMITTIVITY",
+    "TRIANGULAR_CELL_AREA",
+    "TriangularReferenceGeometry",
+    "build_triangular_reference_geometry",
+]
