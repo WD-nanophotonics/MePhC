@@ -20,7 +20,7 @@
       "sha256": "25c814046ad95f29c60d4952159ddeaa0fc933eccb21140d753b2fdbf3f81bbc"
     }
   },
-  "final_sandbox_sha": "a70e4d6e332fb721ba88ca1c5800df3e2729877e",
+  "final_sandbox_sha": "73208ec44e7e71d816457fafe8587d022b34af9e",
   "fixed_configuration": {
     "e3_thresholds": {
       "max_principal_angle": 0.45,
@@ -159,5 +159,5 @@
   "state_repair_used": false,
   "threshold_modification_used": false,
   "work_order": "E7I.2G",
-  "worktree_clean_after_commit": false
+  "worktree_clean_after_commit": true
 }
