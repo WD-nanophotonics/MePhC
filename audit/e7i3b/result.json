@@ -1,7 +1,11 @@
 {
+  "CALCULATION_LOGIC_COMMITTED_BEFORE_EXECUTION": true,
   "CODE_CHANGE": "SANDBOX_AUDIT_ONLY",
-  "E7I3B_OVERALL": "RANK3_DETERMINANT_SMALL_LOOP_SCALING_READY_FOR_SUPERVISOR_AUDIT",
+  "E7I3B_C1_OVERALL": "CORRECTED_RANK3_DETERMINANT_SCALING_READY_FOR_SUPERVISOR_AUDIT",
+  "EXACT_STEP_IDENTITY": "VERIFIED",
+  "FR00_FINEST_STEP_STATUS": "NUMERICAL_FLOOR_SUSPECTED",
   "FR00_SMALL_LOOP_SCALING": "SUPPORTED_WITH_VISIBLE_FINITE_STEP_SENSITIVITY",
+  "FR00_STABLE_WINDOW": "SUPPORTED",
   "FR050_SMALL_LOOP_SCALING": "SYMMETRY_SUPPRESSED_OR_NEAR_ZERO",
   "MAX_ABS_DETERMINANT_PHASE": 3.7854250801555696e-06,
   "PHASE_BRANCH_STATUS": "SAFE",
@@ -17,6 +21,7 @@
     "FR00": {
       "R48_dk_0.01388889": {
         "nominal_delta_k": 0.013888888888888888,
+        "nominal_step_id": "1/72",
         "resolution": 48,
         "scaling": {
           "adjacent_refinement": [
@@ -26,8 +31,8 @@
               "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.005784294262710633,
               "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.005784294262710681,
               "PHASE_AREA_LAW_RESIDUAL": 5.253368218325401e-09,
-              "coarse_level": 0,
-              "fine_level": 1
+              "coarse_step_id": "1/72",
+              "fine_step_id": "1/144"
             },
             {
               "AREA_RATIO": 4.0,
@@ -35,8 +40,8 @@
               "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.1069666483741901,
               "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.10696664837419012,
               "PHASE_AREA_LAW_RESIDUAL": 2.719619722708657e-08,
-              "coarse_level": 1,
-              "fine_level": 2
+              "coarse_step_id": "1/144",
+              "fine_step_id": "1/288"
             }
           ],
           "levels": [
@@ -44,6 +49,7 @@
               "A_q": 0.00019290123456790122,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004680940018393498,
               "PHI": -9.029591084864001e-07,
+              "STEP_ID": "1/72",
               "case": "R48_dk_0.01388889",
               "det_W": [
                 0.9999999999995922,
@@ -51,14 +57,18 @@
               ],
               "h": 0.013888888888888888,
               "level": 0,
+              "nominal_step_id": "1/72",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 72,
+              "step_numerator": 1,
               "unitarity_residual": 1.840561744571015e-15
             },
             {
               "A_q": 4.8225308641975306e-05,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004708173479237297,
               "PHI": -2.2705311917618137e-07,
+              "STEP_ID": "1/144",
               "case": "R48_dk_0.01388889",
               "det_W": [
                 0.9999999999999719,
@@ -66,14 +76,18 @@
               ],
               "h": 0.006944444444444444,
               "level": 1,
+              "nominal_step_id": "1/72",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 144,
+              "step_numerator": 1,
               "unitarity_residual": 2.7579182797043215e-15
             },
             {
               "A_q": 1.2056327160493826e-05,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.005272113824938164,
               "PHI": -6.356232910081698e-08,
+              "STEP_ID": "1/288",
               "case": "R48_dk_0.01388889",
               "det_W": [
                 0.9999999999999983,
@@ -81,8 +95,11 @@
               ],
               "h": 0.003472222222222222,
               "level": 2,
+              "nominal_step_id": "1/72",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 288,
+              "step_numerator": 1,
               "unitarity_residual": 1.0679424262396437e-15
             }
           ],
@@ -91,6 +108,7 @@
       },
       "R48_dk_0.02777778": {
         "nominal_delta_k": 0.027777777777777776,
+        "nominal_step_id": "1/36",
         "resolution": 48,
         "scaling": {
           "adjacent_refinement": [
@@ -100,8 +118,8 @@
               "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.006720189202233659,
               "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.006720189202233754,
               "PHASE_AREA_LAW_RESIDUAL": -2.4436551410051464e-08,
-              "coarse_level": 0,
-              "fine_level": 1
+              "coarse_step_id": "1/36",
+              "fine_step_id": "1/72"
             },
             {
               "AREA_RATIO": 4.0,
@@ -109,8 +127,8 @@
               "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.005779831249884844,
               "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.005779831249884939,
               "PHASE_AREA_LAW_RESIDUAL": 5.2493148543933695e-09,
-              "coarse_level": 1,
-              "fine_level": 2
+              "coarse_step_id": "1/72",
+              "fine_step_id": "1/144"
             }
           ],
           "levels": [
@@ -118,6 +136,7 @@
               "A_q": 0.0007716049382716049,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004712630801659548,
               "PHI": -3.63628919881138e-06,
+              "STEP_ID": "1/36",
               "case": "R48_dk_0.02777778",
               "det_W": [
                 0.9999999999933903,
@@ -125,14 +144,18 @@
               ],
               "h": 0.027777777777777776,
               "level": 0,
+              "nominal_step_id": "1/36",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 36,
+              "step_numerator": 1,
               "unitarity_residual": 2.303654697643336e-15
             },
             {
               "A_q": 0.00019290123456790122,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004680961031032122,
               "PHI": -9.029631618503321e-07,
+              "STEP_ID": "1/72",
               "case": "R48_dk_0.02777778",
               "det_W": [
                 0.9999999999995915,
@@ -140,14 +163,18 @@
               ],
               "h": 0.013888888888888888,
               "level": 1,
+              "nominal_step_id": "1/36",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 72,
+              "step_numerator": 1,
               "unitarity_residual": 1.7559530255392863e-15
             },
             {
               "A_q": 4.8225308641975306e-05,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004708173479237297,
               "PHI": -2.2705311917618137e-07,
+              "STEP_ID": "1/144",
               "case": "R48_dk_0.02777778",
               "det_W": [
                 0.9999999999999719,
@@ -155,8 +182,11 @@
               ],
               "h": 0.006944444444444444,
               "level": 2,
+              "nominal_step_id": "1/36",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 144,
+              "step_numerator": 1,
               "unitarity_residual": 2.7579182797043215e-15
             }
           ],
@@ -165,6 +195,7 @@
       },
       "R64_dk_0.02777778": {
         "nominal_delta_k": 0.027777777777777776,
+        "nominal_step_id": "1/36",
         "resolution": 64,
         "scaling": {
           "adjacent_refinement": [
@@ -174,8 +205,8 @@
               "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.004257902982925863,
               "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.0042579029829259065,
               "PHASE_AREA_LAW_RESIDUAL": -1.6117972740436938e-08,
-              "coarse_level": 0,
-              "fine_level": 1
+              "coarse_step_id": "1/36",
+              "fine_step_id": "1/72"
             },
             {
               "AREA_RATIO": 4.0,
@@ -183,8 +214,8 @@
               "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.0034215775315952343,
               "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.0034215775315952607,
               "PHASE_AREA_LAW_RESIDUAL": 3.2353140048099987e-09,
-              "coarse_level": 1,
-              "fine_level": 2
+              "coarse_step_id": "1/72",
+              "fine_step_id": "1/144"
             }
           ],
           "levels": [
@@ -192,6 +223,7 @@
               "A_q": 0.0007716049382716049,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004905910903881618,
               "PHI": -3.7854250801555696e-06,
+              "STEP_ID": "1/36",
               "case": "R64_dk_0.02777778",
               "det_W": [
                 0.9999999999928371,
@@ -199,14 +231,18 @@
               ],
               "h": 0.027777777777777776,
               "level": 0,
+              "nominal_step_id": "1/36",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 36,
+              "step_numerator": 1,
               "unitarity_residual": 2.6036881853433945e-15
             },
             {
               "A_q": 0.00019290123456790122,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004885022011210012,
               "PHI": -9.423267768537832e-07,
+              "STEP_ID": "1/72",
               "case": "R64_dk_0.02777778",
               "det_W": [
                 0.9999999999995578,
@@ -214,14 +250,18 @@
               ],
               "h": 0.013888888888888888,
               "level": 1,
+              "nominal_step_id": "1/36",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 72,
+              "step_numerator": 1,
               "unitarity_residual": 2.7074796224334872e-15
             },
             {
               "A_q": 4.8225308641975306e-05,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.004901793879010947,
               "PHI": -2.363905227146483e-07,
+              "STEP_ID": "1/144",
               "case": "R64_dk_0.02777778",
               "det_W": [
                 0.9999999999999712,
@@ -229,8 +269,11 @@
               ],
               "h": 0.006944444444444444,
               "level": 2,
+              "nominal_step_id": "1/36",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 144,
+              "step_numerator": 1,
               "unitarity_residual": 1.4067018342113194e-15
             }
           ],
@@ -241,6 +284,7 @@
     "FR050": {
       "R48_dk_0.01388889": {
         "nominal_delta_k": 0.013888888888888888,
+        "nominal_step_id": "1/72",
         "resolution": 48,
         "scaling": {
           "adjacent_refinement": [
@@ -250,8 +294,8 @@
               "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.487048197298023,
               "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.487048197298023,
               "PHASE_AREA_LAW_RESIDUAL": -1.4412976459192261e-08,
-              "coarse_level": 0,
-              "fine_level": 1
+              "coarse_step_id": "1/72",
+              "fine_step_id": "1/144"
             },
             {
               "AREA_RATIO": 4.0,
@@ -259,8 +303,8 @@
               "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.928054587555062,
               "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.9280545875550619,
               "PHASE_AREA_LAW_RESIDUAL": -3.5218578917098845e-09,
-              "coarse_level": 1,
-              "fine_level": 2
+              "coarse_step_id": "1/144",
+              "fine_step_id": "1/288"
             }
           ],
           "levels": [
@@ -268,6 +312,7 @@
               "A_q": 0.00019290123456790122,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.00015340754853206798,
               "PHI": -2.9592505503871138e-08,
+              "STEP_ID": "1/72",
               "case": "R48_dk_0.01388889",
               "det_W": [
                 0.9999999999999996,
@@ -275,14 +320,18 @@
               ],
               "h": 0.013888888888888888,
               "level": 0,
+              "nominal_step_id": "1/72",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 72,
+              "step_numerator": 1,
               "unitarity_residual": 2.0310050971669476e-15
             },
             {
               "A_q": 4.8225308641975306e-05,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -7.86906785676153e-05,
               "PHI": -3.794882261169719e-09,
+              "STEP_ID": "1/144",
               "case": "R48_dk_0.01388889",
               "det_W": [
                 0.9999999999999997,
@@ -290,14 +339,18 @@
               ],
               "h": 0.006944444444444444,
               "level": 1,
+              "nominal_step_id": "1/72",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 144,
+              "step_numerator": 1,
               "unitarity_residual": 1.3567297219782077e-15
             },
             {
               "A_q": 1.2056327160493826e-05,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -5.661433325119129e-06,
               "PHI": -6.825609236495862e-11,
+              "STEP_ID": "1/288",
               "case": "R48_dk_0.01388889",
               "det_W": [
                 1.0000000000000002,
@@ -305,8 +358,11 @@
               ],
               "h": 0.003472222222222222,
               "level": 2,
+              "nominal_step_id": "1/72",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 288,
+              "step_numerator": 1,
               "unitarity_residual": 1.2541347022832982e-15
             }
           ],
@@ -315,6 +371,7 @@
       },
       "R48_dk_0.02777778": {
         "nominal_delta_k": 0.027777777777777776,
+        "nominal_step_id": "1/36",
         "resolution": 48,
         "scaling": {
           "adjacent_refinement": [
@@ -324,8 +381,8 @@
               "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.8624086397615199,
               "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.86240863976152,
               "PHASE_AREA_LAW_RESIDUAL": 1.0208332967491521e-07,
-              "coarse_level": 0,
-              "fine_level": 1
+              "coarse_step_id": "1/36",
+              "fine_step_id": "1/72"
             },
             {
               "AREA_RATIO": 4.0,
@@ -333,8 +390,8 @@
               "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.487048197298023,
               "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.487048197298023,
               "PHASE_AREA_LAW_RESIDUAL": -1.4412976459192261e-08,
-              "coarse_level": 1,
-              "fine_level": 2
+              "coarse_step_id": "1/72",
+              "fine_step_id": "1/144"
             }
           ],
           "levels": [
@@ -342,6 +399,7 @@
               "A_q": 0.0007716049382716049,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -2.110755327337787e-05,
               "PHI": -1.6286692340569343e-08,
+              "STEP_ID": "1/36",
               "case": "R48_dk_0.02777778",
               "det_W": [
                 1.0000000000000013,
@@ -349,14 +407,18 @@
               ],
               "h": 0.027777777777777776,
               "level": 0,
+              "nominal_step_id": "1/36",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 36,
+              "step_numerator": 1,
               "unitarity_residual": 3.063716940448351e-15
             },
             {
               "A_q": 0.00019290123456790122,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -0.00015340754853206798,
               "PHI": -2.9592505503871138e-08,
+              "STEP_ID": "1/72",
               "case": "R48_dk_0.02777778",
               "det_W": [
                 0.9999999999999996,
@@ -364,14 +426,18 @@
               ],
               "h": 0.013888888888888888,
               "level": 1,
+              "nominal_step_id": "1/36",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 72,
+              "step_numerator": 1,
               "unitarity_residual": 2.0310050971669476e-15
             },
             {
               "A_q": 4.8225308641975306e-05,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -7.86906785676153e-05,
               "PHI": -3.794882261169719e-09,
+              "STEP_ID": "1/144",
               "case": "R48_dk_0.02777778",
               "det_W": [
                 0.9999999999999997,
@@ -379,8 +445,11 @@
               ],
               "h": 0.006944444444444444,
               "level": 2,
+              "nominal_step_id": "1/36",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 144,
+              "step_numerator": 1,
               "unitarity_residual": 1.3567297219782077e-15
             }
           ],
@@ -389,6 +458,7 @@
       },
       "R64_dk_0.02777778": {
         "nominal_delta_k": 0.027777777777777776,
+        "nominal_step_id": "1/36",
         "resolution": 64,
         "scaling": {
           "adjacent_refinement": [
@@ -398,8 +468,8 @@
               "DENSITY_PROXY_RELATIVE_DIFFERENCE": 0.8227919601000497,
               "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 0.8227919601000498,
               "PHASE_AREA_LAW_RESIDUAL": 4.932283946981056e-09,
-              "coarse_level": 0,
-              "fine_level": 1
+              "coarse_step_id": "1/36",
+              "fine_step_id": "1/72"
             },
             {
               "AREA_RATIO": 4.0,
@@ -407,8 +477,8 @@
               "DENSITY_PROXY_RELATIVE_DIFFERENCE": 1.625556034438404,
               "PHASE_AREA_LAW_RELATIVE_RESIDUAL": 1.6255560344384037,
               "PHASE_AREA_LAW_RESIDUAL": -2.436127333027108e-09,
-              "coarse_level": 1,
-              "fine_level": 2
+              "coarse_step_id": "1/72",
+              "fine_step_id": "1/144"
             }
           ],
           "levels": [
@@ -416,6 +486,7 @@
               "A_q": 0.0007716049382716049,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -1.3767226407963626e-06,
               "PHI": -1.0622859882687982e-09,
+              "STEP_ID": "1/36",
               "case": "R64_dk_0.02777778",
               "det_W": [
                 1.0000000000000002,
@@ -423,14 +494,18 @@
               ],
               "h": 0.027777777777777776,
               "level": 0,
+              "nominal_step_id": "1/36",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 36,
+              "step_numerator": 1,
               "unitarity_residual": 1.7673840739905205e-15
             },
             {
               "A_q": 0.00019290123456790122,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": -7.76896263608381e-06,
               "PHI": -1.4986424838124634e-09,
+              "STEP_ID": "1/72",
               "case": "R64_dk_0.02777778",
               "det_W": [
                 0.9999999999999993,
@@ -438,14 +513,18 @@
               ],
               "h": 0.013888888888888888,
               "level": 1,
+              "nominal_step_id": "1/36",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 72,
+              "step_numerator": 1,
               "unitarity_residual": 2.9791044251915577e-15
             },
             {
               "A_q": 4.8225308641975306e-05,
               "DETERMINANT_HOLONOMY_DENSITY_PROXY": 4.859921458328717e-06,
               "PHI": 2.343712123036611e-10,
+              "STEP_ID": "1/144",
               "case": "R64_dk_0.02777778",
               "det_W": [
                 0.9999999999999999,
@@ -453,8 +532,11 @@
               ],
               "h": 0.006944444444444444,
               "level": 2,
+              "nominal_step_id": "1/36",
               "qualification_passed": true,
               "qualification_status": "PLAQUETTE_REFINEMENT_SUBSPACE_QUALIFIED",
+              "step_denominator": 144,
+              "step_numerator": 1,
               "unitarity_residual": 2.9443991851179556e-15
             }
           ],
@@ -470,8 +552,8 @@
       {
         "REPLAY_DENSITY_PROXY_ABS_DIFFERENCE": 2.101263862387681e-08,
         "REPLAY_PHASE_ABS_DIFFERENCE": 4.053363932031866e-12,
+        "STEP_ID": "1/72",
         "h": 0.013888888888888888,
-        "h_label": "1/72",
         "sources": [
           "R48_dk_0.01388889:level0",
           "R48_dk_0.02777778:level1"
@@ -480,8 +562,8 @@
       {
         "REPLAY_DENSITY_PROXY_ABS_DIFFERENCE": 0.0,
         "REPLAY_PHASE_ABS_DIFFERENCE": 0.0,
+        "STEP_ID": "1/144",
         "h": 0.006944444444444444,
-        "h_label": "1/144",
         "sources": [
           "R48_dk_0.01388889:level1",
           "R48_dk_0.02777778:level2"
@@ -492,8 +574,8 @@
       {
         "REPLAY_DENSITY_PROXY_ABS_DIFFERENCE": 0.0,
         "REPLAY_PHASE_ABS_DIFFERENCE": 0.0,
+        "STEP_ID": "1/72",
         "h": 0.013888888888888888,
-        "h_label": "1/72",
         "sources": [
           "R48_dk_0.01388889:level0",
           "R48_dk_0.02777778:level1"
@@ -502,8 +584,8 @@
       {
         "REPLAY_DENSITY_PROXY_ABS_DIFFERENCE": 0.0,
         "REPLAY_PHASE_ABS_DIFFERENCE": 0.0,
+        "STEP_ID": "1/144",
         "h": 0.006944444444444444,
-        "h_label": "1/144",
         "sources": [
           "R48_dk_0.01388889:level1",
           "R48_dk_0.02777778:level2"
@@ -511,7 +593,6 @@
       }
     ]
   },
-  "phase_branch_safe_limit": 1.5707963267948966,
   "physical_hall_response_authorized": false,
   "rank2_doublet_observable_authorized": false,
   "resolution_sensitivity": {
@@ -521,24 +602,27 @@
         "DELTA_DENSITY_PROXY_RESOLUTION_RELATIVE": 0.039397393472666666,
         "DELTA_PHASE_RESOLUTION_ABS": 1.4913588134418973e-07,
         "DELTA_PHASE_RESOLUTION_RELATIVE": 0.039397393472666666,
-        "h": 0.027777777777777776,
-        "h_label": "1/36"
+        "NONZERO_INTERVAL_OVERLAP": true,
+        "STEP_ID": "1/36",
+        "h": 0.027777777777777776
       },
       {
         "DELTA_DENSITY_PROXY_RESOLUTION_ABS": 0.00020406098017789007,
         "DELTA_DENSITY_PROXY_RESOLUTION_RELATIVE": 0.04177278622483514,
         "DELTA_PHASE_RESOLUTION_ABS": 3.9363615003451064e-08,
         "DELTA_PHASE_RESOLUTION_RELATIVE": 0.0417727862248352,
-        "h": 0.013888888888888888,
-        "h_label": "1/72"
+        "NONZERO_INTERVAL_OVERLAP": true,
+        "STEP_ID": "1/72",
+        "h": 0.013888888888888888
       },
       {
         "DELTA_DENSITY_PROXY_RESOLUTION_ABS": 0.0001936203997736502,
         "DELTA_DENSITY_PROXY_RESOLUTION_RELATIVE": 0.039499906473569976,
         "DELTA_PHASE_RESOLUTION_ABS": 9.337403538466923e-09,
         "DELTA_PHASE_RESOLUTION_RELATIVE": 0.03949990647356996,
-        "h": 0.006944444444444444,
-        "h_label": "1/144"
+        "NONZERO_INTERVAL_OVERLAP": true,
+        "STEP_ID": "1/144",
+        "h": 0.006944444444444444
       }
     ],
     "FR050": [
@@ -547,29 +631,33 @@
         "DELTA_DENSITY_PROXY_RESOLUTION_RELATIVE": 0.9347758301037776,
         "DELTA_PHASE_RESOLUTION_ABS": 1.5224406352300546e-08,
         "DELTA_PHASE_RESOLUTION_RELATIVE": 0.9347758301037777,
-        "h": 0.027777777777777776,
-        "h_label": "1/36"
+        "NONZERO_INTERVAL_OVERLAP": false,
+        "STEP_ID": "1/36",
+        "h": 0.027777777777777776
       },
       {
         "DELTA_DENSITY_PROXY_RESOLUTION_ABS": 0.00014563858589598417,
         "DELTA_DENSITY_PROXY_RESOLUTION_RELATIVE": 0.9493573640252794,
         "DELTA_PHASE_RESOLUTION_ABS": 2.8093863020058673e-08,
         "DELTA_PHASE_RESOLUTION_RELATIVE": 0.9493573640252793,
-        "h": 0.013888888888888888,
-        "h_label": "1/72"
+        "NONZERO_INTERVAL_OVERLAP": false,
+        "STEP_ID": "1/72",
+        "h": 0.013888888888888888
       },
       {
         "DELTA_DENSITY_PROXY_RESOLUTION_ABS": 8.355060002594402e-05,
         "DELTA_DENSITY_PROXY_RESOLUTION_RELATIVE": 1.0617598112863242,
         "DELTA_PHASE_RESOLUTION_ABS": 4.0292534734733805e-09,
         "DELTA_PHASE_RESOLUTION_RELATIVE": 1.0617598112863242,
-        "h": 0.006944444444444444,
-        "h_label": "1/144"
+        "NONZERO_INTERVAL_OVERLAP": false,
+        "STEP_ID": "1/144",
+        "h": 0.006944444444444444
       }
     ]
   },
-  "schema": "e7i3b_rank3_determinant_small_loop_scaling_v1",
+  "schema": "e7i3b_rank3_determinant_small_loop_scaling_c1_v1",
   "source_binding": {
+    "calculation_code_git_commit": "96a38859ec14b3b5a658b7075ebe587b7d2d995b",
     "classification": "E7I3A_RANK3_WILSON_ALGEBRA_QUALIFIED",
     "endpoints": [
       "FR00",
@@ -585,9 +673,62 @@
       1,
       2
     ],
+    "source_commit_is_ancestor": true,
     "source_evidence_sha256": "3e9521f172958a818474f76479ea8f3a7f7b058e647ea689ac3116f0c29e386a",
     "source_git_commit": "0425209b55de7e41e1bbdd349d097dd7bab0c034",
     "source_path": "audit/e7i3a/result.json"
   },
-  "work_order": "E7I.3B"
+  "stable_window_analysis": {
+    "FR00": {
+      "FINEST_STEP_STATUS": "NUMERICAL_FLOOR_SUSPECTED",
+      "STABLE_WINDOW_STEP_IDS": [
+        "1/36",
+        "1/72",
+        "1/144"
+      ],
+      "common_density_sign": true,
+      "fine_step_id": "1/288",
+      "fine_step_relative_density_drift": 0.1069666483741901,
+      "fine_step_resolution_envelope": 0.039499906473569976,
+      "nonzero_interval_overlap_all_steps": true,
+      "phase_decreases_toward_zero_on_nominal_chain": true,
+      "refinement_inside_resolution_envelope": true,
+      "refinement_relative_drifts": [
+        0.006720189202233659,
+        0.005779831249884844
+      ],
+      "refinement_resolution_envelope": [
+        0.039397393472666666,
+        0.04177278622483514
+      ],
+      "replay_within_resolution_envelope": true,
+      "stable_window_supported": true
+    },
+    "FR050": {
+      "FINEST_STEP_STATUS": "NUMERICALLY_UNRESOLVED",
+      "STABLE_WINDOW_STEP_IDS": [
+        "1/36",
+        "1/72",
+        "1/144"
+      ],
+      "common_density_sign": false,
+      "fine_step_id": "1/288",
+      "fine_step_relative_density_drift": 0.928054587555062,
+      "fine_step_resolution_envelope": 1.0617598112863242,
+      "nonzero_interval_overlap_all_steps": false,
+      "phase_decreases_toward_zero_on_nominal_chain": true,
+      "refinement_inside_resolution_envelope": true,
+      "refinement_relative_drifts": [
+        0.8624086397615199,
+        0.487048197298023
+      ],
+      "refinement_resolution_envelope": [
+        0.9347758301037776,
+        0.9493573640252794
+      ],
+      "replay_within_resolution_envelope": true,
+      "stable_window_supported": false
+    }
+  },
+  "work_order": "E7I.3B.C1"
 }
