@@ -1,9 +1,17 @@
 {
+  "BAND_INTERPRETATION": {
+    "anti": "DIAGNOSTIC_LINEAR_COMBINATION",
+    "band1": "PRIMARY_PHYSICAL_VALLEY_OBSERVABLE",
+    "band2": "PRIMARY_PHYSICAL_VALLEY_OBSERVABLE",
+    "common": "DIAGNOSTIC_LINEAR_COMBINATION"
+  },
   "BLOCH_K_MAPPING": "k_paper=-k_MPB",
+  "C9_HARDENED_ARTIFACT_REPLAY": "FAILED",
   "CONTROL_STATUS_INHERITED": {
+    "AUDIT_CODE_FINGERPRINTS": null,
     "BERRY_TORUS_PERIODICITY": "CONFIRMED",
-    "BOUNDARY_GAMMA_STATUS": "SYMMETRY_POINT_FRAME_OR_BRANCH_AMBIGUITY",
-    "VORONOI_DOMAIN_INVERSION": "CONFIRMED"
+    "C9_AUDIT_HARDENING": null,
+    "C9_SOURCE_ARTIFACT_PRESENT": false
   },
   "COORDINATE_INVARIANCE_CHECK": {
     "equal": true,
@@ -14,23 +22,50 @@
   },
   "DOMAIN": {
     "area_q": 0.5773502691896258,
+    "boundary_convention": "zero_measure_boundary_inherited_from_E7I1G",
     "coordinate_relation": "q=k_phys*a/(2*pi)",
     "definition": "periodic reciprocal-metric Voronoi basin of K",
     "id": "PERIODIC_RECIPROCAL_METRIC_VORONOI_BASIN_K",
     "orientation": "POSITIVE_PUBLIC_CARTESIAN_QX_QY"
   },
+  "DOMAIN_INVERSION_EVIDENCE": {
+    "evidence_level": "UNRESOLVED",
+    "status": "UNRESOLVED"
+  },
+  "DOMAIN_INVERSION_EVIDENCE_LEVEL": "UNRESOLVED",
   "E7I1H_SCOPE": "VALLEY_CHERN_ONLY_NO_NEW_MPB",
+  "FULL_BZ_CHERN_SEMANTICS": "closed_BZ_torus_integral_divided_by_2pi_quantized_under_isolated_smooth_band_conditions",
   "NONQUANTIZED_VALLEY_CHERN_INTERPRETATION": "MATHEMATICALLY_CLOSED",
+  "PAPER_CONVENTION_AUDIT": {
+    "K_MAPPING": "k_paper=-k_MPB",
+    "MPB_BLOCH_FACTOR": "exp(+i k dot r)",
+    "PAPER_BLOCH_FACTOR": "exp(-i k dot r)",
+    "VALLEY_LABEL_MAPPING": "paper_K <-> MPB_Kp; paper_Kp <-> MPB_K",
+    "mapping_validated": true,
+    "no_sign_hack": true,
+    "provenance_mode": "INHERITED_FROM_SEALED_CONVENTION_AUDIT",
+    "reducer_code_digest": "9a1f50e3dcf9f493a67e524623017d2943134e4b894b9a82e458c22493c91671",
+    "source_digest": "904c50a300723943f628535b14d1b63156fe691334d7e0128a7646d361f4324b",
+    "status": "CONSISTENT_AFTER_BLOCH_K_MAPPING"
+  },
   "PAPER_GEOMETRY_EQUIVALENCE": "UNRESOLVED",
   "PAPER_VALLEY_CHERN_CONVENTION": "CONSISTENT_AFTER_BLOCH_K_MAPPING",
   "PROVENANCE": {
+    "band_interpretation": {
+      "anti": "DIAGNOSTIC_LINEAR_COMBINATION",
+      "band1": "PRIMARY_PHYSICAL_VALLEY_OBSERVABLE",
+      "band2": "PRIMARY_PHYSICAL_VALLEY_OBSERVABLE",
+      "common": "DIAGNOSTIC_LINEAR_COMBINATION"
+    },
     "berry_sign_convention": "OMEGA=-WILSON_PHASE/SIGNED_AREA/(2*pi)^2",
+    "c9_provenance": {},
     "c9_source_digest": "526dc25d822ae32776820f3bc9b68ea29fa0b34e528a81df43946933398843fa",
     "coordinate_relation": "q=k_phys*a/(2*pi)",
     "domain_area_q": 0.5773502691896258,
     "domain_id": "PERIODIC_RECIPROCAL_METRIC_VORONOI_BASIN_K",
     "normalization": "PHI_OVER_2PI",
-    "orientation": "POSITIVE_PUBLIC_CARTESIAN_QX_QY"
+    "orientation": "POSITIVE_PUBLIC_CARTESIAN_QX_QY",
+    "perturbed_node_uncertainty": "must_be_bound by C9 regenerated report"
   },
   "SEALED_REFINED_FLUX": {
     "anti": -0.6313275079372239,
@@ -45,14 +80,31 @@
     "common": 2.7398011654008195e-11
   },
   "SIGN_HACK": "NONE",
-  "TIME_REVERSAL_VALLEY_RELATION": "SUPPORTED_BY_EXISTING_CONTROLS",
+  "TR_KP_CONTROL_EVIDENCE": {
+    "evidence_level": "UNRESOLVED",
+    "matched_control_count": 0,
+    "reason": "dedicated K/Kp controls were not supplied",
+    "status": "UNRESOLVED"
+  },
+  "TR_THEORY": {
+    "TR_AREA_JACOBIAN": "det(-I_2)=+1",
+    "TR_BERRY_RELATION": "Omega_n(k)=-Omega_n(-k)",
+    "TR_DOMAIN_RELATION": "V_Kp=-V_K on the reciprocal torus",
+    "TR_FLUX_RELATION": "Phi_n,Kp=-Phi_n,K",
+    "TR_NUMERICAL_SCOPE": "theory_only_until_dedicated_K_Kp_controls_are_supplied",
+    "TR_VALLEY_CHERN_RELATION": "C_n,Kp^v=-C_n,K^v"
+  },
+  "TR_VALLEY_RELATION_NUMERIC_STATUS": "UNRESOLVED",
+  "TR_VALLEY_RELATION_THEORY": "DERIVED",
   "VALLEY_CHERN": {
     "anti": -0.10047889359809697,
     "band1": -0.13802802149337345,
     "band2": 0.06292976570282019,
     "common": -0.037549127895277055
   },
-  "VALLEY_CHERN_DOMAIN_INVERSION": "SIGN_REVERSAL_SUPPORTED",
+  "VALLEY_CHERN_DOMAIN_DEPENDENCE": "restricted_integral_can_change_with_valley_partition_boundary",
+  "VALLEY_CHERN_DOMAIN_INVERSION": "UNRESOLVED",
+  "VALLEY_CHERN_DOMAIN_SEMANTICS": "EXPLICIT_AND_BOUNDARY_AWARE",
   "VALLEY_CHERN_ERROR_BOUND": {
     "anti": 2.7175369477732265e-11,
     "band1": 2.9476777143580646e-11,
@@ -62,5 +114,5 @@
   "VALLEY_CHERN_MULTIBAND_INTERPRETATION": "INDIVIDUAL_BANDS_PRIMARY_DIAGNOSTIC_COMBINATIONS_SEPARATE",
   "VALLEY_CHERN_NORMALIZATION": "PHI_OVER_2PI_CONFIRMED",
   "VALLEY_FLUX_COORDINATE_INVARIANCE": "DERIVED_AND_VALIDATED",
-  "detail_digest": "f68b520db1ab848439ce135fc7f7bed6507637f773c56674b0895598f3f10495"
+  "detail_digest": "9567a74b57bc34fd049fc52100e6b02061ae7a8031388a11d36a33fbb7122238"
 }
