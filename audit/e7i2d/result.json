@@ -1,0 +1,1325 @@
+{
+    "berry_values":  "NOT_EXPOSED",
+    "elapsed_seconds":  0.8078162670135498,
+    "endpoints":  {
+                      "FR00":  {
+                                   "K":  {
+                                             "R32":  {
+                                                         "e_only":  {
+                                                                        "band_2_3_overlap":  0.00039750948316695343,
+                                                                        "bands":  4,
+                                                                        "gram_diagonal":  [
+                                                                                              0.9999999999999999,
+                                                                                              0.9999999999999999,
+                                                                                              0.9999999999999993,
+                                                                                              0.9999999999999997
+                                                                                          ],
+                                                                        "max_off_diagonal":  0.0003975094831669535,
+                                                                        "normalization_error":  2.3314683517128287E-15
+                                                                    },
+                                                         "eh_combined":  {
+                                                                             "band_2_3_overlap":  0.00019881472231577277,
+                                                                             "bands":  4,
+                                                                             "gram_diagonal":  [
+                                                                                                   1.0000000000000009,
+                                                                                                   0.9999999999999997,
+                                                                                                   0.9999999999999998,
+                                                                                                   1.0000000000000007
+                                                                                               ],
+                                                                             "max_off_diagonal":  0.00019881472231577274,
+                                                                             "normalization_error":  2.6645352591003757E-15
+                                                                         },
+                                                         "frequencies":  [
+                                                                             0.41270576094286276,
+                                                                             0.43222886946673944,
+                                                                             0.4368651286128928,
+                                                                             0.8356842744932569
+                                                                         ],
+                                                         "h_only":  {
+                                                                        "band_2_3_overlap":  1.1315724629060264E-14,
+                                                                        "bands":  4,
+                                                                        "gram_diagonal":  [
+                                                                                              1.0,
+                                                                                              1.0000000000000002,
+                                                                                              1.0000000000000004,
+                                                                                              0.9999999999999992
+                                                                                          ],
+                                                                        "max_off_diagonal":  1.2572771345926087E-14,
+                                                                        "normalization_error":  2.1094237467877974E-15
+                                                                    },
+                                                         "native":  {
+                                                                        "band_2_3_overlap":  1.1337877247422423E-14,
+                                                                        "max_off_diagonal":  1.2554484490896183E-14,
+                                                                        "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                        "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                        "representation":  "native_MP B_plane_wave_coefficients",
+                                                                        "shape":  [
+                                                                                      1024,
+                                                                                      2,
+                                                                                      4
+                                                                                  ],
+                                                                        "status":  "AVAILABLE"
+                                                                    }
+                                                     },
+                                             "R48":  {
+                                                         "e_only":  {
+                                                                        "band_2_3_overlap":  0.0004156207698422934,
+                                                                        "bands":  4,
+                                                                        "gram_diagonal":  [
+                                                                                              1.0,
+                                                                                              0.9999999999999998,
+                                                                                              1.0000000000000016,
+                                                                                              1.000000000000001
+                                                                                          ],
+                                                                        "max_off_diagonal":  0.0004156207698422934,
+                                                                        "normalization_error":  5.3290705182007514E-15
+                                                                    },
+                                                         "eh_combined":  {
+                                                                             "band_2_3_overlap":  0.00020787586904354595,
+                                                                             "bands":  4,
+                                                                             "gram_diagonal":  [
+                                                                                                   0.9999999999999999,
+                                                                                                   1.0,
+                                                                                                   1.0000000000000027,
+                                                                                                   1.0000000000000013
+                                                                                               ],
+                                                                             "max_off_diagonal":  0.00020787586904354595,
+                                                                             "normalization_error":  6.4392935428259079E-15
+                                                                         },
+                                                         "frequencies":  [
+                                                                             0.4127885526847116,
+                                                                             0.4324603969585135,
+                                                                             0.4374999521076174,
+                                                                             0.8359496983403484
+                                                                         ],
+                                                         "h_only":  {
+                                                                        "band_2_3_overlap":  2.2548737892615382E-15,
+                                                                        "bands":  4,
+                                                                        "gram_diagonal":  [
+                                                                                              1.0000000000000004,
+                                                                                              0.9999999999999992,
+                                                                                              0.9999999999999989,
+                                                                                              0.9999999999999998
+                                                                                          ],
+                                                                        "max_off_diagonal":  3.4229109554175E-15,
+                                                                        "normalization_error":  3.1086244689504383E-15
+                                                                    },
+                                                         "native":  {
+                                                                        "band_2_3_overlap":  2.3770313057342276E-15,
+                                                                        "max_off_diagonal":  3.1287603019162014E-15,
+                                                                        "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                        "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                        "representation":  "native_MP B_plane_wave_coefficients",
+                                                                        "shape":  [
+                                                                                      2304,
+                                                                                      2,
+                                                                                      4
+                                                                                  ],
+                                                                        "status":  "AVAILABLE"
+                                                                    }
+                                                     },
+                                             "R64":  {
+                                                         "e_only":  {
+                                                                        "band_2_3_overlap":  0.00026765637175050637,
+                                                                        "bands":  4,
+                                                                        "gram_diagonal":  [
+                                                                                              0.9999999999999986,
+                                                                                              0.9999999999999994,
+                                                                                              0.9999999999999997,
+                                                                                              0.9999999999999991
+                                                                                          ],
+                                                                        "max_off_diagonal":  0.0002676563717505064,
+                                                                        "normalization_error":  9.1038288019262836E-15
+                                                                    },
+                                                         "eh_combined":  {
+                                                                             "band_2_3_overlap":  0.00013386695218130484,
+                                                                             "bands":  4,
+                                                                             "gram_diagonal":  [
+                                                                                                   1.0000000000000004,
+                                                                                                   0.9999999999999992,
+                                                                                                   0.9999999999999984,
+                                                                                                   1.0000000000000007
+                                                                                               ],
+                                                                             "max_off_diagonal":  0.00013386695218130584,
+                                                                             "normalization_error":  3.5527136788005009E-15
+                                                                         },
+                                                         "frequencies":  [
+                                                                             0.4128386288270905,
+                                                                             0.43259270691012874,
+                                                                             0.43779271088014937,
+                                                                             0.8361580223439125
+                                                                         ],
+                                                         "h_only":  {
+                                                                        "band_2_3_overlap":  1.1740372323041341E-15,
+                                                                        "bands":  4,
+                                                                        "gram_diagonal":  [
+                                                                                              1.0,
+                                                                                              1.0000000000000004,
+                                                                                              0.9999999999999998,
+                                                                                              0.9999999999999992
+                                                                                          ],
+                                                                        "max_off_diagonal":  2.8617517472346072E-15,
+                                                                        "normalization_error":  3.7747582837255322E-15
+                                                                    },
+                                                         "native":  {
+                                                                        "band_2_3_overlap":  1.1906300353632272E-15,
+                                                                        "max_off_diagonal":  2.8523020955322029E-15,
+                                                                        "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                        "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                        "representation":  "native_MP B_plane_wave_coefficients",
+                                                                        "shape":  [
+                                                                                      4096,
+                                                                                      2,
+                                                                                      4
+                                                                                  ],
+                                                                        "status":  "AVAILABLE"
+                                                                    }
+                                                     }
+                                         },
+                                   "adapter":  {
+                                                   "adapter_digest":  "90474fc82b588b8915004652840219aa757946cc2617909c1a5734b7dc6a6bce",
+                                                   "adapter_version":  "e7i2c_reference_mpb_adapter_v1",
+                                                   "background_relative_permittivity":  2.65,
+                                                   "coordinate_preflight":  {
+                                                                                "actual_fractional_K":  [
+                                                                                                            0.33333333333333337,
+                                                                                                            0.33333333333333337
+                                                                                                        ],
+                                                                                "actual_fractional_off_axis":  [
+                                                                                                                   0.28655186827420537,
+                                                                                                                   -0.11355186827420537
+                                                                                                               ],
+                                                                                "expected_fractional_K":  [
+                                                                                                              0.3333333333333333,
+                                                                                                              0.3333333333333333
+                                                                                                          ],
+                                                                                "expected_fractional_off_axis":  [
+                                                                                                                     0.2865518682742053,
+                                                                                                                     -0.11355186827420535
+                                                                                                                 ],
+                                                                                "off_axis_public_q":  [
+                                                                                                          0.173,
+                                                                                                          0.231
+                                                                                                      ],
+                                                                                "public_K":  [
+                                                                                                 0.6666666666666666,
+                                                                                                 0.0
+                                                                                             ],
+                                                                                "residuals":  {
+                                                                                                  "K":  7.8504622934188758E-17,
+                                                                                                  "off_axis":  5.7219584981527968E-17
+                                                                                              },
+                                                                                "status":  "PASSED"
+                                                                            },
+                                                   "geometry_digest":  "5191629552d0f4425803393a37a15aabb9c31f4465d3a26530cdf73dd8742593",
+                                                   "inclusion_epsilon":  1.0,
+                                                   "lattice_basis":  [
+                                                                         [
+                                                                             0.5,
+                                                                             0.8660254037844386
+                                                                         ],
+                                                                         [
+                                                                             0.5,
+                                                                             -0.8660254037844386
+                                                                         ]
+                                                                     ],
+                                                   "mapping_digest":  "b1fba20a9a77109f478ce5538aaa99d6a6c6d0f92a98a43b6a385cfe569d636f",
+                                                   "material_digest":  "35da462a6ff2fd0080f88b5e64e781596d117e7c644641996c43a308d22dcc65",
+                                                   "mpb_geometry_type":  "Prism",
+                                                   "polarization":  "TE",
+                                                   "primitive":  {
+                                                                     "analytic_radius":  0.26708300832013504,
+                                                                     "construction":  "mp.Prism",
+                                                                     "kind":  "triangle",
+                                                                     "vertex_count":  3
+                                                                 },
+                                                   "provider_representation":  "mpb_live_energy_eh_v1",
+                                                   "schema":  "e7i2c_mpb_reference_adapter_v1"
+                                               },
+                                   "label":  "FR00_exact_triangle",
+                                   "plaquette_R48":  {
+                                                         "center":  {
+                                                                        "e_only":  {
+                                                                                       "band_2_3_overlap":  0.0004156207698422934,
+                                                                                       "bands":  4,
+                                                                                       "gram_diagonal":  [
+                                                                                                             1.0,
+                                                                                                             0.9999999999999998,
+                                                                                                             1.0000000000000016,
+                                                                                                             1.000000000000001
+                                                                                                         ],
+                                                                                       "max_off_diagonal":  0.0004156207698422934,
+                                                                                       "normalization_error":  5.3290705182007514E-15
+                                                                                   },
+                                                                        "eh_combined":  {
+                                                                                            "band_2_3_overlap":  0.00020787586904354595,
+                                                                                            "bands":  4,
+                                                                                            "gram_diagonal":  [
+                                                                                                                  0.9999999999999999,
+                                                                                                                  1.0,
+                                                                                                                  1.0000000000000027,
+                                                                                                                  1.0000000000000013
+                                                                                                              ],
+                                                                                            "max_off_diagonal":  0.00020787586904354595,
+                                                                                            "normalization_error":  6.4392935428259079E-15
+                                                                                        },
+                                                                        "frequencies":  [
+                                                                                            0.4127885526847116,
+                                                                                            0.4324603969585135,
+                                                                                            0.4374999521076174,
+                                                                                            0.8359496983403484
+                                                                                        ],
+                                                                        "h_only":  {
+                                                                                       "band_2_3_overlap":  2.2548737892615382E-15,
+                                                                                       "bands":  4,
+                                                                                       "gram_diagonal":  [
+                                                                                                             1.0000000000000004,
+                                                                                                             0.9999999999999992,
+                                                                                                             0.9999999999999989,
+                                                                                                             0.9999999999999998
+                                                                                                         ],
+                                                                                       "max_off_diagonal":  3.4229109554175E-15,
+                                                                                       "normalization_error":  3.1086244689504383E-15
+                                                                                   },
+                                                                        "native":  {
+                                                                                       "band_2_3_overlap":  2.3770313057342276E-15,
+                                                                                       "max_off_diagonal":  3.1287603019162014E-15,
+                                                                                       "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                                       "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                                       "representation":  "native_MP B_plane_wave_coefficients",
+                                                                                       "shape":  [
+                                                                                                     2304,
+                                                                                                     2,
+                                                                                                     4
+                                                                                                 ],
+                                                                                       "status":  "AVAILABLE"
+                                                                                   }
+                                                                    },
+                                                         "corner_1":  {
+                                                                          "e_only":  {
+                                                                                         "band_2_3_overlap":  0.0003965675221627078,
+                                                                                         "bands":  4,
+                                                                                         "gram_diagonal":  [
+                                                                                                               1.0000000000000002,
+                                                                                                               1.0000000000000004,
+                                                                                                               1.0000000000000009,
+                                                                                                               1.0
+                                                                                                           ],
+                                                                                         "max_off_diagonal":  0.00039656752216270783,
+                                                                                         "normalization_error":  5.2180482157382357E-15
+                                                                                     },
+                                                                          "eh_combined":  {
+                                                                                              "band_2_3_overlap":  0.00019834589033943176,
+                                                                                              "bands":  4,
+                                                                                              "gram_diagonal":  [
+                                                                                                                    1.0000000000000013,
+                                                                                                                    1.0000000000000018,
+                                                                                                                    1.0000000000000009,
+                                                                                                                    1.0000000000000018
+                                                                                                                ],
+                                                                                              "max_off_diagonal":  0.00019834589033943176,
+                                                                                              "normalization_error":  5.3290705182007514E-15
+                                                                                          },
+                                                                          "frequencies":  [
+                                                                                              0.4093329117800313,
+                                                                                              0.4289642934598214,
+                                                                                              0.4446598039843748,
+                                                                                              0.8336725316592739
+                                                                                          ],
+                                                                          "h_only":  {
+                                                                                         "band_2_3_overlap":  6.7996070955607344E-16,
+                                                                                         "bands":  4,
+                                                                                         "gram_diagonal":  [
+                                                                                                               0.999999999999999,
+                                                                                                               1.0000000000000013,
+                                                                                                               0.9999999999999999,
+                                                                                                               1.0000000000000007
+                                                                                                           ],
+                                                                                         "max_off_diagonal":  1.3866344757161258E-15,
+                                                                                         "normalization_error":  2.4424906541753444E-15
+                                                                                     },
+                                                                          "native":  {
+                                                                                         "band_2_3_overlap":  5.3748286436083027E-16,
+                                                                                         "max_off_diagonal":  1.3787597200271309E-15,
+                                                                                         "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                                         "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                                         "representation":  "native_MP B_plane_wave_coefficients",
+                                                                                         "shape":  [
+                                                                                                       2304,
+                                                                                                       2,
+                                                                                                       4
+                                                                                                   ],
+                                                                                         "status":  "AVAILABLE"
+                                                                                     }
+                                                                      },
+                                                         "corner_2":  {
+                                                                          "e_only":  {
+                                                                                         "band_2_3_overlap":  0.00039957480241026175,
+                                                                                         "bands":  4,
+                                                                                         "gram_diagonal":  [
+                                                                                                               1.0000000000000018,
+                                                                                                               1.0000000000000018,
+                                                                                                               0.9999999999999997,
+                                                                                                               1.0000000000000004
+                                                                                                           ],
+                                                                                         "max_off_diagonal":  0.0003995748024102618,
+                                                                                         "normalization_error":  6.9944050551384862E-15
+                                                                                     },
+                                                                          "eh_combined":  {
+                                                                                              "band_2_3_overlap":  0.00019984541070134742,
+                                                                                              "bands":  4,
+                                                                                              "gram_diagonal":  [
+                                                                                                                    1.0000000000000009,
+                                                                                                                    1.0000000000000002,
+                                                                                                                    0.9999999999999983,
+                                                                                                                    0.9999999999999999
+                                                                                                                ],
+                                                                                              "max_off_diagonal":  0.0001998454107013489,
+                                                                                              "normalization_error":  2.6645352591003757E-15
+                                                                                          },
+                                                                          "frequencies":  [
+                                                                                              0.40936948387289285,
+                                                                                              0.4338394058428364,
+                                                                                              0.43987358167487384,
+                                                                                              0.8320263053893228
+                                                                                          ],
+                                                                          "h_only":  {
+                                                                                         "band_2_3_overlap":  1.035622650796512E-15,
+                                                                                         "bands":  4,
+                                                                                         "gram_diagonal":  [
+                                                                                                               0.999999999999999,
+                                                                                                               1.0000000000000009,
+                                                                                                               1.000000000000001,
+                                                                                                               1.0000000000000009
+                                                                                                           ],
+                                                                                         "max_off_diagonal":  2.155177253003702E-15,
+                                                                                         "normalization_error":  3.1086244689504383E-15
+                                                                                     },
+                                                                          "native":  {
+                                                                                         "band_2_3_overlap":  8.0047935545309406E-16,
+                                                                                         "max_off_diagonal":  2.347100150462107E-15,
+                                                                                         "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                                         "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                                         "representation":  "native_MP B_plane_wave_coefficients",
+                                                                                         "shape":  [
+                                                                                                       2304,
+                                                                                                       2,
+                                                                                                       4
+                                                                                                   ],
+                                                                                         "status":  "AVAILABLE"
+                                                                                     }
+                                                                      },
+                                                         "corner_3":  {
+                                                                          "e_only":  {
+                                                                                         "band_2_3_overlap":  0.00017240923286819561,
+                                                                                         "bands":  4,
+                                                                                         "gram_diagonal":  [
+                                                                                                               1.0000000000000002,
+                                                                                                               1.0000000000000007,
+                                                                                                               1.0000000000000002,
+                                                                                                               0.9999999999999999
+                                                                                                           ],
+                                                                                         "max_off_diagonal":  0.00018927276233044794,
+                                                                                         "normalization_error":  1.8873791418627661E-15
+                                                                                     },
+                                                                          "eh_combined":  {
+                                                                                              "band_2_3_overlap":  8.6231048064343692E-05,
+                                                                                              "bands":  4,
+                                                                                              "gram_diagonal":  [
+                                                                                                                    0.9999999999999999,
+                                                                                                                    1.0000000000000004,
+                                                                                                                    0.9999999999999996,
+                                                                                                                    0.9999999999999989
+                                                                                                                ],
+                                                                                              "max_off_diagonal":  9.4668411989286974E-05,
+                                                                                              "normalization_error":  3.7747582837255322E-15
+                                                                                          },
+                                                                          "frequencies":  [
+                                                                                              0.40935085668541643,
+                                                                                              0.4335885748711676,
+                                                                                              0.4401429475576312,
+                                                                                              0.8319149220258012
+                                                                                          ],
+                                                                          "h_only":  {
+                                                                                         "band_2_3_overlap":  1.8351267368514574E-15,
+                                                                                         "bands":  4,
+                                                                                         "gram_diagonal":  [
+                                                                                                               0.9999999999999999,
+                                                                                                               0.9999999999999994,
+                                                                                                               1.0000000000000002,
+                                                                                                               0.9999999999999998
+                                                                                                           ],
+                                                                                         "max_off_diagonal":  2.5778412564811978E-15,
+                                                                                         "normalization_error":  3.1086244689504383E-15
+                                                                                     },
+                                                                          "native":  {
+                                                                                         "band_2_3_overlap":  1.80626809872486E-15,
+                                                                                         "max_off_diagonal":  2.5507646124439108E-15,
+                                                                                         "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                                         "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                                         "representation":  "native_MP B_plane_wave_coefficients",
+                                                                                         "shape":  [
+                                                                                                       2304,
+                                                                                                       2,
+                                                                                                       4
+                                                                                                   ],
+                                                                                         "status":  "AVAILABLE"
+                                                                                     }
+                                                                      },
+                                                         "corner_4":  {
+                                                                          "e_only":  {
+                                                                                         "band_2_3_overlap":  0.0003656914582214763,
+                                                                                         "bands":  4,
+                                                                                         "gram_diagonal":  [
+                                                                                                               1.0000000000000007,
+                                                                                                               1.0000000000000004,
+                                                                                                               0.9999999999999987,
+                                                                                                               0.9999999999999984
+                                                                                                           ],
+                                                                                         "max_off_diagonal":  0.00036569145822147744,
+                                                                                         "normalization_error":  4.5519144009631418E-15
+                                                                                     },
+                                                                          "eh_combined":  {
+                                                                                              "band_2_3_overlap":  0.0001829006650825259,
+                                                                                              "bands":  4,
+                                                                                              "gram_diagonal":  [
+                                                                                                                    1.000000000000001,
+                                                                                                                    1.0000000000000004,
+                                                                                                                    1.0000000000000009,
+                                                                                                                    0.999999999999999
+                                                                                                                ],
+                                                                                              "max_off_diagonal":  0.0001829006650825259,
+                                                                                              "normalization_error":  7.3274719625260332E-15
+                                                                                          },
+                                                                          "frequencies":  [
+                                                                                              0.4093700375706598,
+                                                                                              0.4287339539633822,
+                                                                                              0.44485331471870454,
+                                                                                              0.8336739387209978
+                                                                                          ],
+                                                                          "h_only":  {
+                                                                                         "band_2_3_overlap":  1.5028946931574532E-15,
+                                                                                         "bands":  4,
+                                                                                         "gram_diagonal":  [
+                                                                                                               1.0000000000000002,
+                                                                                                               1.0000000000000004,
+                                                                                                               1.0000000000000007,
+                                                                                                               0.9999999999999993
+                                                                                                           ],
+                                                                                         "max_off_diagonal":  2.8809857199600555E-15,
+                                                                                         "normalization_error":  4.6629367034256575E-15
+                                                                                     },
+                                                                          "native":  {
+                                                                                         "band_2_3_overlap":  1.4878970011901347E-15,
+                                                                                         "max_off_diagonal":  2.9420719617996849E-15,
+                                                                                         "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                                         "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                                         "representation":  "native_MP B_plane_wave_coefficients",
+                                                                                         "shape":  [
+                                                                                                       2304,
+                                                                                                       2,
+                                                                                                       4
+                                                                                                   ],
+                                                                                         "status":  "AVAILABLE"
+                                                                                     }
+                                                                      }
+                                                     },
+                                   "tolerance_probe_R48_K":  {
+                                                                 "tol_1e-10":  {
+                                                                                   "e_only":  {
+                                                                                                  "band_2_3_overlap":  0.0004156160997946353,
+                                                                                                  "bands":  4,
+                                                                                                  "gram_diagonal":  [
+                                                                                                                        1.0,
+                                                                                                                        1.0000000000000007,
+                                                                                                                        0.9999999999999999,
+                                                                                                                        0.9999999999999988
+                                                                                                                    ],
+                                                                                                  "max_off_diagonal":  0.0004156160997946353,
+                                                                                                  "normalization_error":  2.55351295663786E-15
+                                                                                              },
+                                                                                   "eh_combined":  {
+                                                                                                       "band_2_3_overlap":  0.0002078735322431107,
+                                                                                                       "bands":  4,
+                                                                                                       "gram_diagonal":  [
+                                                                                                                             1.0000000000000007,
+                                                                                                                             0.9999999999999993,
+                                                                                                                             0.9999999999999989,
+                                                                                                                             0.999999999999999
+                                                                                                                         ],
+                                                                                                       "max_off_diagonal":  0.00020787353224311066,
+                                                                                                       "normalization_error":  4.6629367034256575E-15
+                                                                                                   },
+                                                                                   "frequencies":  [
+                                                                                                       0.4127885522088299,
+                                                                                                       0.43246039657352564,
+                                                                                                       0.437499951593571,
+                                                                                                       0.835949689922461
+                                                                                                   ],
+                                                                                   "h_only":  {
+                                                                                                  "band_2_3_overlap":  8.21618678839119E-16,
+                                                                                                  "bands":  4,
+                                                                                                  "gram_diagonal":  [
+                                                                                                                        1.0000000000000016,
+                                                                                                                        0.9999999999999991,
+                                                                                                                        1.0000000000000004,
+                                                                                                                        0.9999999999999997
+                                                                                                                    ],
+                                                                                                  "max_off_diagonal":  1.4320185800115144E-15,
+                                                                                                  "normalization_error":  3.5527136788005009E-15
+                                                                                              },
+                                                                                   "native":  {
+                                                                                                  "band_2_3_overlap":  7.9233969395074274E-16,
+                                                                                                  "max_off_diagonal":  1.2944728580631893E-15,
+                                                                                                  "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                                                  "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                                                  "representation":  "native_MP B_plane_wave_coefficients",
+                                                                                                  "shape":  [
+                                                                                                                2304,
+                                                                                                                2,
+                                                                                                                4
+                                                                                                            ],
+                                                                                                  "status":  "AVAILABLE"
+                                                                                              }
+                                                                               },
+                                                                 "tol_1e-7":  {
+                                                                                  "e_only":  {
+                                                                                                 "band_2_3_overlap":  0.0004156207698422934,
+                                                                                                 "bands":  4,
+                                                                                                 "gram_diagonal":  [
+                                                                                                                       1.0,
+                                                                                                                       0.9999999999999998,
+                                                                                                                       1.0000000000000016,
+                                                                                                                       1.000000000000001
+                                                                                                                   ],
+                                                                                                 "max_off_diagonal":  0.0004156207698422934,
+                                                                                                 "normalization_error":  5.3290705182007514E-15
+                                                                                             },
+                                                                                  "eh_combined":  {
+                                                                                                      "band_2_3_overlap":  0.00020787586904354595,
+                                                                                                      "bands":  4,
+                                                                                                      "gram_diagonal":  [
+                                                                                                                            0.9999999999999999,
+                                                                                                                            1.0,
+                                                                                                                            1.0000000000000027,
+                                                                                                                            1.0000000000000013
+                                                                                                                        ],
+                                                                                                      "max_off_diagonal":  0.00020787586904354595,
+                                                                                                      "normalization_error":  6.4392935428259079E-15
+                                                                                                  },
+                                                                                  "frequencies":  [
+                                                                                                      0.4127885526847116,
+                                                                                                      0.4324603969585135,
+                                                                                                      0.4374999521076174,
+                                                                                                      0.8359496983403484
+                                                                                                  ],
+                                                                                  "h_only":  {
+                                                                                                 "band_2_3_overlap":  2.2548737892615382E-15,
+                                                                                                 "bands":  4,
+                                                                                                 "gram_diagonal":  [
+                                                                                                                       1.0000000000000004,
+                                                                                                                       0.9999999999999992,
+                                                                                                                       0.9999999999999989,
+                                                                                                                       0.9999999999999998
+                                                                                                                   ],
+                                                                                                 "max_off_diagonal":  3.4229109554175E-15,
+                                                                                                 "normalization_error":  3.1086244689504383E-15
+                                                                                             },
+                                                                                  "native":  {
+                                                                                                 "band_2_3_overlap":  2.3770313057342276E-15,
+                                                                                                 "max_off_diagonal":  3.1287603019162014E-15,
+                                                                                                 "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                                                 "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                                                 "representation":  "native_MP B_plane_wave_coefficients",
+                                                                                                 "shape":  [
+                                                                                                               2304,
+                                                                                                               2,
+                                                                                                               4
+                                                                                                           ],
+                                                                                                 "status":  "AVAILABLE"
+                                                                                             }
+                                                                              }
+                                                             }
+                               },
+                      "FR050":  {
+                                    "K":  {
+                                              "R32":  {
+                                                          "e_only":  {
+                                                                         "band_2_3_overlap":  2.461175878986935E-07,
+                                                                         "bands":  4,
+                                                                         "gram_diagonal":  [
+                                                                                               0.9999999999999988,
+                                                                                               1.0000000000000007,
+                                                                                               1.0000000000000002,
+                                                                                               0.9999999999999999
+                                                                                           ],
+                                                                         "max_off_diagonal":  8.8422228113664583E-05,
+                                                                         "normalization_error":  2.4424906541753444E-15
+                                                                     },
+                                                          "eh_combined":  {
+                                                                              "band_2_3_overlap":  1.2325254616730557E-07,
+                                                                              "bands":  4,
+                                                                              "gram_diagonal":  [
+                                                                                                    0.9999999999999994,
+                                                                                                    1.0000000000000002,
+                                                                                                    0.9999999999999996,
+                                                                                                    0.9999999999999999
+                                                                                                ],
+                                                                              "max_off_diagonal":  4.4214950506221976E-05,
+                                                                              "normalization_error":  3.1086244689504383E-15
+                                                                          },
+                                                          "frequencies":  [
+                                                                              0.4119747369880938,
+                                                                              0.43858594327656636,
+                                                                              0.43861745792500034,
+                                                                              0.8338393205457865
+                                                                          ],
+                                                          "h_only":  {
+                                                                         "band_2_3_overlap":  3.6384665995630294E-15,
+                                                                         "bands":  4,
+                                                                         "gram_diagonal":  [
+                                                                                               1.0000000000000007,
+                                                                                               0.9999999999999996,
+                                                                                               0.9999999999999998,
+                                                                                               1.0000000000000002
+                                                                                           ],
+                                                                         "max_off_diagonal":  3.6384665995630294E-15,
+                                                                         "normalization_error":  1.7763568394002505E-15
+                                                                     },
+                                                          "native":  {
+                                                                         "band_2_3_overlap":  3.6076959250710391E-15,
+                                                                         "max_off_diagonal":  3.6312960844065916E-15,
+                                                                         "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                         "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                         "representation":  "native_MP B_plane_wave_coefficients",
+                                                                         "shape":  [
+                                                                                       1024,
+                                                                                       2,
+                                                                                       4
+                                                                                   ],
+                                                                         "status":  "AVAILABLE"
+                                                                     }
+                                                      },
+                                              "R48":  {
+                                                          "e_only":  {
+                                                                         "band_2_3_overlap":  1.1460081358373786E-06,
+                                                                         "bands":  4,
+                                                                         "gram_diagonal":  [
+                                                                                               1.0000000000000004,
+                                                                                               0.9999999999999994,
+                                                                                               1.0000000000000018,
+                                                                                               1.000000000000001
+                                                                                           ],
+                                                                         "max_off_diagonal":  0.0001332025770516633,
+                                                                         "normalization_error":  3.1086244689504383E-15
+                                                                     },
+                                                          "eh_combined":  {
+                                                                              "band_2_3_overlap":  5.7348540914168966E-07,
+                                                                              "bands":  4,
+                                                                              "gram_diagonal":  [
+                                                                                                    1.0000000000000004,
+                                                                                                    1.0000000000000004,
+                                                                                                    1.0000000000000009,
+                                                                                                    1.0000000000000002
+                                                                                                ],
+                                                                              "max_off_diagonal":  6.6636263448535939E-05,
+                                                                              "normalization_error":  5.88418203051333E-15
+                                                                          },
+                                                          "frequencies":  [
+                                                                              0.41195588115702014,
+                                                                              0.4385957725600724,
+                                                                              0.43860273290159557,
+                                                                              0.8337366907626713
+                                                                          ],
+                                                          "h_only":  {
+                                                                         "band_2_3_overlap":  1.518002980478561E-15,
+                                                                         "bands":  4,
+                                                                         "gram_diagonal":  [
+                                                                                               0.9999999999999991,
+                                                                                               0.9999999999999997,
+                                                                                               0.9999999999999994,
+                                                                                               0.9999999999999987
+                                                                                           ],
+                                                                         "max_off_diagonal":  3.2854095899746467E-15,
+                                                                         "normalization_error":  3.3306690738754696E-15
+                                                                     },
+                                                          "native":  {
+                                                                         "band_2_3_overlap":  1.5878249086229308E-15,
+                                                                         "max_off_diagonal":  3.3553782418847055E-15,
+                                                                         "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                         "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                         "representation":  "native_MP B_plane_wave_coefficients",
+                                                                         "shape":  [
+                                                                                       2304,
+                                                                                       2,
+                                                                                       4
+                                                                                   ],
+                                                                         "status":  "AVAILABLE"
+                                                                     }
+                                                      },
+                                              "R64":  {
+                                                          "e_only":  {
+                                                                         "band_2_3_overlap":  2.3037859095992399E-07,
+                                                                         "bands":  4,
+                                                                         "gram_diagonal":  [
+                                                                                               1.0,
+                                                                                               1.0,
+                                                                                               0.9999999999999994,
+                                                                                               1.0000000000000024
+                                                                                           ],
+                                                                         "max_off_diagonal":  8.2919834629372285E-05,
+                                                                         "normalization_error":  4.6629367034256575E-15
+                                                                     },
+                                                          "eh_combined":  {
+                                                                              "band_2_3_overlap":  1.1525974311822083E-07,
+                                                                              "bands":  4,
+                                                                              "gram_diagonal":  [
+                                                                                                    1.0000000000000004,
+                                                                                                    0.9999999999999981,
+                                                                                                    0.9999999999999994,
+                                                                                                    0.9999999999999993
+                                                                                                ],
+                                                                              "max_off_diagonal":  4.1475905741321671E-05,
+                                                                              "normalization_error":  5.773159728050814E-15
+                                                                          },
+                                                          "frequencies":  [
+                                                                              0.41195128547063536,
+                                                                              0.43859315101668866,
+                                                                              0.4385980560130228,
+                                                                              0.833714911570564
+                                                                          ],
+                                                          "h_only":  {
+                                                                         "band_2_3_overlap":  1.293041165676876E-15,
+                                                                         "bands":  4,
+                                                                         "gram_diagonal":  [
+                                                                                               0.9999999999999992,
+                                                                                               1.000000000000001,
+                                                                                               1.0000000000000002,
+                                                                                               1.0
+                                                                                           ],
+                                                                         "max_off_diagonal":  2.7738309175987683E-15,
+                                                                         "normalization_error":  8.8817841970012523E-16
+                                                                     },
+                                                          "native":  {
+                                                                         "band_2_3_overlap":  1.643461293903679E-15,
+                                                                         "max_off_diagonal":  2.7929429414467562E-15,
+                                                                         "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                         "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                         "representation":  "native_MP B_plane_wave_coefficients",
+                                                                         "shape":  [
+                                                                                       4096,
+                                                                                       2,
+                                                                                       4
+                                                                                   ],
+                                                                         "status":  "AVAILABLE"
+                                                                     }
+                                                      }
+                                          },
+                                    "adapter":  {
+                                                    "adapter_digest":  "33617bcd79e65088ee1d20292574e0a14555ff0c9a075a59f98c728d238b165d",
+                                                    "adapter_version":  "e7i2c_reference_mpb_adapter_v1",
+                                                    "background_relative_permittivity":  2.65,
+                                                    "coordinate_preflight":  {
+                                                                                 "actual_fractional_K":  [
+                                                                                                             0.33333333333333337,
+                                                                                                             0.33333333333333337
+                                                                                                         ],
+                                                                                 "actual_fractional_off_axis":  [
+                                                                                                                    0.28655186827420537,
+                                                                                                                    -0.11355186827420537
+                                                                                                                ],
+                                                                                 "expected_fractional_K":  [
+                                                                                                               0.3333333333333333,
+                                                                                                               0.3333333333333333
+                                                                                                           ],
+                                                                                 "expected_fractional_off_axis":  [
+                                                                                                                      0.2865518682742053,
+                                                                                                                      -0.11355186827420535
+                                                                                                                  ],
+                                                                                 "off_axis_public_q":  [
+                                                                                                           0.173,
+                                                                                                           0.231
+                                                                                                       ],
+                                                                                 "public_K":  [
+                                                                                                  0.6666666666666666,
+                                                                                                  0.0
+                                                                                              ],
+                                                                                 "residuals":  {
+                                                                                                   "K":  7.8504622934188758E-17,
+                                                                                                   "off_axis":  5.7219584981527968E-17
+                                                                                               },
+                                                                                 "status":  "PASSED"
+                                                                             },
+                                                    "geometry_digest":  "6ce5318bf1bdcbc71b82b28bec4e2c90374d01156e2a8a94c0fb57ed8b20ce71",
+                                                    "inclusion_epsilon":  1.0,
+                                                    "lattice_basis":  [
+                                                                          [
+                                                                              0.5,
+                                                                              0.8660254037844386
+                                                                          ],
+                                                                          [
+                                                                              0.5,
+                                                                              -0.8660254037844386
+                                                                          ]
+                                                                      ],
+                                                    "mapping_digest":  "b1fba20a9a77109f478ce5538aaa99d6a6c6d0f92a98a43b6a385cfe569d636f",
+                                                    "material_digest":  "35da462a6ff2fd0080f88b5e64e781596d117e7c644641996c43a308d22dcc65",
+                                                    "mpb_geometry_type":  "Cylinder",
+                                                    "polarization":  "TE",
+                                                    "primitive":  {
+                                                                      "analytic_radius":  0.1717442747373719,
+                                                                      "construction":  "mp.Cylinder",
+                                                                      "kind":  "circle",
+                                                                      "polygonization_forbidden":  true
+                                                                  },
+                                                    "provider_representation":  "mpb_live_energy_eh_v1",
+                                                    "schema":  "e7i2c_mpb_reference_adapter_v1"
+                                                },
+                                    "label":  "FR050_exact_circle",
+                                    "plaquette_R48":  {
+                                                          "center":  {
+                                                                         "e_only":  {
+                                                                                        "band_2_3_overlap":  1.1460081358373786E-06,
+                                                                                        "bands":  4,
+                                                                                        "gram_diagonal":  [
+                                                                                                              1.0000000000000004,
+                                                                                                              0.9999999999999994,
+                                                                                                              1.0000000000000018,
+                                                                                                              1.000000000000001
+                                                                                                          ],
+                                                                                        "max_off_diagonal":  0.0001332025770516633,
+                                                                                        "normalization_error":  3.1086244689504383E-15
+                                                                                    },
+                                                                         "eh_combined":  {
+                                                                                             "band_2_3_overlap":  5.7348540914168966E-07,
+                                                                                             "bands":  4,
+                                                                                             "gram_diagonal":  [
+                                                                                                                   1.0000000000000004,
+                                                                                                                   1.0000000000000004,
+                                                                                                                   1.0000000000000009,
+                                                                                                                   1.0000000000000002
+                                                                                                               ],
+                                                                                             "max_off_diagonal":  6.6636263448535939E-05,
+                                                                                             "normalization_error":  5.88418203051333E-15
+                                                                                         },
+                                                                         "frequencies":  [
+                                                                                             0.41195588115702014,
+                                                                                             0.4385957725600724,
+                                                                                             0.43860273290159557,
+                                                                                             0.8337366907626713
+                                                                                         ],
+                                                                         "h_only":  {
+                                                                                        "band_2_3_overlap":  1.518002980478561E-15,
+                                                                                        "bands":  4,
+                                                                                        "gram_diagonal":  [
+                                                                                                              0.9999999999999991,
+                                                                                                              0.9999999999999997,
+                                                                                                              0.9999999999999994,
+                                                                                                              0.9999999999999987
+                                                                                                          ],
+                                                                                        "max_off_diagonal":  3.2854095899746467E-15,
+                                                                                        "normalization_error":  3.3306690738754696E-15
+                                                                                    },
+                                                                         "native":  {
+                                                                                        "band_2_3_overlap":  1.5878249086229308E-15,
+                                                                                        "max_off_diagonal":  3.3553782418847055E-15,
+                                                                                        "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                                        "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                                        "representation":  "native_MP B_plane_wave_coefficients",
+                                                                                        "shape":  [
+                                                                                                      2304,
+                                                                                                      2,
+                                                                                                      4
+                                                                                                  ],
+                                                                                        "status":  "AVAILABLE"
+                                                                                    }
+                                                                     },
+                                                          "corner_1":  {
+                                                                           "e_only":  {
+                                                                                          "band_2_3_overlap":  0.0001570295776221887,
+                                                                                          "bands":  4,
+                                                                                          "gram_diagonal":  [
+                                                                                                                1.0,
+                                                                                                                1.0000000000000004,
+                                                                                                                0.9999999999999996,
+                                                                                                                0.9999999999999999
+                                                                                                            ],
+                                                                                          "max_off_diagonal":  0.00037371503682269804,
+                                                                                          "normalization_error":  8.8817841970012523E-16
+                                                                                      },
+                                                                           "eh_combined":  {
+                                                                                               "band_2_3_overlap":  7.8578340315919724E-05,
+                                                                                               "bands":  4,
+                                                                                               "gram_diagonal":  [
+                                                                                                                     0.9999999999999998,
+                                                                                                                     0.9999999999999994,
+                                                                                                                     1.0,
+                                                                                                                     1.0000000000000009
+                                                                                                                 ],
+                                                                                               "max_off_diagonal":  0.00018692978753637936,
+                                                                                               "normalization_error":  2.55351295663786E-15
+                                                                                           },
+                                                                           "frequencies":  [
+                                                                                               0.4094144561908647,
+                                                                                               0.43353506859093593,
+                                                                                               0.44647714502458674,
+                                                                                               0.8311815569146198
+                                                                                           ],
+                                                                           "h_only":  {
+                                                                                          "band_2_3_overlap":  1.49728293327361E-15,
+                                                                                          "bands":  4,
+                                                                                          "gram_diagonal":  [
+                                                                                                                0.9999999999999997,
+                                                                                                                0.9999999999999999,
+                                                                                                                1.000000000000001,
+                                                                                                                1.0000000000000002
+                                                                                                            ],
+                                                                                          "max_off_diagonal":  4.0076760483625129E-15,
+                                                                                          "normalization_error":  2.4424906541753444E-15
+                                                                                      },
+                                                                           "native":  {
+                                                                                          "band_2_3_overlap":  1.3808257133229748E-15,
+                                                                                          "max_off_diagonal":  3.9722609935357986E-15,
+                                                                                          "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                                          "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                                          "representation":  "native_MP B_plane_wave_coefficients",
+                                                                                          "shape":  [
+                                                                                                        2304,
+                                                                                                        2,
+                                                                                                        4
+                                                                                                    ],
+                                                                                          "status":  "AVAILABLE"
+                                                                                      }
+                                                                       },
+                                                          "corner_2":  {
+                                                                           "e_only":  {
+                                                                                          "band_2_3_overlap":  8.834994548658703E-05,
+                                                                                          "bands":  4,
+                                                                                          "gram_diagonal":  [
+                                                                                                                1.000000000000001,
+                                                                                                                1.0,
+                                                                                                                1.0000000000000004,
+                                                                                                                1.000000000000001
+                                                                                                            ],
+                                                                                          "max_off_diagonal":  0.0004419666393322025,
+                                                                                          "normalization_error":  1.2212453270876722E-15
+                                                                                      },
+                                                                           "eh_combined":  {
+                                                                                               "band_2_3_overlap":  4.421001307652E-05,
+                                                                                               "bands":  4,
+                                                                                               "gram_diagonal":  [
+                                                                                                                     1.0000000000000009,
+                                                                                                                     1.0000000000000009,
+                                                                                                                     0.9999999999999996,
+                                                                                                                     1.0
+                                                                                                                 ],
+                                                                                               "max_off_diagonal":  0.00022106720195713648,
+                                                                                               "normalization_error":  2.6645352591003757E-15
+                                                                                           },
+                                                                           "frequencies":  [
+                                                                                               0.40861853914945784,
+                                                                                               0.4359706558456892,
+                                                                                               0.4448317012067315,
+                                                                                               0.8317063435393351
+                                                                                           ],
+                                                                           "h_only":  {
+                                                                                          "band_2_3_overlap":  4.8082595168353972E-16,
+                                                                                          "bands":  4,
+                                                                                          "gram_diagonal":  [
+                                                                                                                1.0000000000000009,
+                                                                                                                1.0000000000000007,
+                                                                                                                0.9999999999999999,
+                                                                                                                0.9999999999999987
+                                                                                                            ],
+                                                                                          "max_off_diagonal":  1.565033679501833E-15,
+                                                                                          "normalization_error":  3.1086244689504383E-15
+                                                                                      },
+                                                                           "native":  {
+                                                                                          "band_2_3_overlap":  2.6300097499492428E-16,
+                                                                                          "max_off_diagonal":  1.6765506767967408E-15,
+                                                                                          "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                                          "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                                          "representation":  "native_MP B_plane_wave_coefficients",
+                                                                                          "shape":  [
+                                                                                                        2304,
+                                                                                                        2,
+                                                                                                        4
+                                                                                                    ],
+                                                                                          "status":  "AVAILABLE"
+                                                                                      }
+                                                                       },
+                                                          "corner_3":  {
+                                                                           "e_only":  {
+                                                                                          "band_2_3_overlap":  8.8116309497037138E-05,
+                                                                                          "bands":  4,
+                                                                                          "gram_diagonal":  [
+                                                                                                                0.9999999999999992,
+                                                                                                                0.9999999999999986,
+                                                                                                                1.0,
+                                                                                                                0.9999999999999999
+                                                                                                            ],
+                                                                                          "max_off_diagonal":  0.0004419030813599976,
+                                                                                          "normalization_error":  2.4424906541753444E-15
+                                                                                      },
+                                                                           "eh_combined":  {
+                                                                                               "band_2_3_overlap":  4.4093103399688137E-05,
+                                                                                               "bands":  4,
+                                                                                               "gram_diagonal":  [
+                                                                                                                     1.0000000000000004,
+                                                                                                                     0.9999999999999981,
+                                                                                                                     0.9999999999999997,
+                                                                                                                     1.000000000000002
+                                                                                                                 ],
+                                                                                               "max_off_diagonal":  0.00022103540345481482,
+                                                                                               "normalization_error":  5.10702591327572E-15
+                                                                                           },
+                                                                           "frequencies":  [
+                                                                                               0.40861852926737413,
+                                                                                               0.43597064844354066,
+                                                                                               0.44483171886249734,
+                                                                                               0.8317063903897414
+                                                                                           ],
+                                                                           "h_only":  {
+                                                                                          "band_2_3_overlap":  1.0096943797908125E-15,
+                                                                                          "bands":  4,
+                                                                                          "gram_diagonal":  [
+                                                                                                                1.0000000000000007,
+                                                                                                                1.0000000000000004,
+                                                                                                                0.9999999999999994,
+                                                                                                                0.9999999999999999
+                                                                                                            ],
+                                                                                          "max_off_diagonal":  2.4475054853061962E-15,
+                                                                                          "normalization_error":  1.5543122344752192E-15
+                                                                                      },
+                                                                           "native":  {
+                                                                                          "band_2_3_overlap":  1.0781352343172794E-15,
+                                                                                          "max_off_diagonal":  2.5684605068524886E-15,
+                                                                                          "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                                          "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                                          "representation":  "native_MP B_plane_wave_coefficients",
+                                                                                          "shape":  [
+                                                                                                        2304,
+                                                                                                        2,
+                                                                                                        4
+                                                                                                    ],
+                                                                                          "status":  "AVAILABLE"
+                                                                                      }
+                                                                       },
+                                                          "corner_4":  {
+                                                                           "e_only":  {
+                                                                                          "band_2_3_overlap":  0.00015717392008723606,
+                                                                                          "bands":  4,
+                                                                                          "gram_diagonal":  [
+                                                                                                                0.9999999999999999,
+                                                                                                                1.0000000000000009,
+                                                                                                                1.0000000000000004,
+                                                                                                                0.9999999999999993
+                                                                                                            ],
+                                                                                          "max_off_diagonal":  0.00037379978078096036,
+                                                                                          "normalization_error":  3.3306690738754696E-15
+                                                                                      },
+                                                                           "eh_combined":  {
+                                                                                               "band_2_3_overlap":  7.86505721402554E-05,
+                                                                                               "bands":  4,
+                                                                                               "gram_diagonal":  [
+                                                                                                                     1.0000000000000016,
+                                                                                                                     1.0000000000000007,
+                                                                                                                     0.9999999999999996,
+                                                                                                                     1.0
+                                                                                                                 ],
+                                                                                               "max_off_diagonal":  0.00018697219016360287,
+                                                                                               "normalization_error":  3.5527136788005009E-15
+                                                                                           },
+                                                                           "frequencies":  [
+                                                                                               0.4094144519049587,
+                                                                                               0.433535038882428,
+                                                                                               0.4464771751422507,
+                                                                                               0.8311815526440866
+                                                                                           ],
+                                                                           "h_only":  {
+                                                                                          "band_2_3_overlap":  7.6297777376649314E-16,
+                                                                                          "bands":  4,
+                                                                                          "gram_diagonal":  [
+                                                                                                                0.9999999999999996,
+                                                                                                                0.9999999999999997,
+                                                                                                                0.9999999999999997,
+                                                                                                                0.9999999999999997
+                                                                                                            ],
+                                                                                          "max_off_diagonal":  1.87891197018632E-15,
+                                                                                          "normalization_error":  2.6645352591003757E-15
+                                                                                      },
+                                                                           "native":  {
+                                                                                          "band_2_3_overlap":  7.8430376562955987E-16,
+                                                                                          "max_off_diagonal":  1.9356272178639796E-15,
+                                                                                          "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                                          "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                                          "representation":  "native_MP B_plane_wave_coefficients",
+                                                                                          "shape":  [
+                                                                                                        2304,
+                                                                                                        2,
+                                                                                                        4
+                                                                                                    ],
+                                                                                          "status":  "AVAILABLE"
+                                                                                      }
+                                                                       }
+                                                      },
+                                    "tolerance_probe_R48_K":  {
+                                                                  "tol_1e-10":  {
+                                                                                    "e_only":  {
+                                                                                                   "band_2_3_overlap":  1.1761514279971322E-06,
+                                                                                                   "bands":  4,
+                                                                                                   "gram_diagonal":  [
+                                                                                                                         1.0000000000000009,
+                                                                                                                         1.0000000000000002,
+                                                                                                                         1.0000000000000004,
+                                                                                                                         1.0000000000000013
+                                                                                                                     ],
+                                                                                                   "max_off_diagonal":  0.00013343848859239738,
+                                                                                                   "normalization_error":  3.219646771412954E-15
+                                                                                               },
+                                                                                    "eh_combined":  {
+                                                                                                        "band_2_3_overlap":  5.88569756275651E-07,
+                                                                                                        "bands":  4,
+                                                                                                        "gram_diagonal":  [
+                                                                                                                              1.000000000000001,
+                                                                                                                              1.0000000000000007,
+                                                                                                                              1.0000000000000009,
+                                                                                                                              1.000000000000001
+                                                                                                                          ],
+                                                                                                        "max_off_diagonal":  6.6754284309285646E-05,
+                                                                                                        "normalization_error":  2.886579864025407E-15
+                                                                                                    },
+                                                                                    "frequencies":  [
+                                                                                                        0.4119558798293793,
+                                                                                                        0.43859577139680855,
+                                                                                                        0.43860273132043126,
+                                                                                                        0.833736683458306
+                                                                                                    ],
+                                                                                    "h_only":  {
+                                                                                                   "band_2_3_overlap":  1.7061250115419504E-15,
+                                                                                                   "bands":  4,
+                                                                                                   "gram_diagonal":  [
+                                                                                                                         1.0000000000000004,
+                                                                                                                         1.0000000000000007,
+                                                                                                                         1.0000000000000007,
+                                                                                                                         0.9999999999999998
+                                                                                                                     ],
+                                                                                                   "max_off_diagonal":  3.3586430578849857E-15,
+                                                                                                   "normalization_error":  3.8857805861880479E-15
+                                                                                               },
+                                                                                    "native":  {
+                                                                                                   "band_2_3_overlap":  1.7757230045448498E-15,
+                                                                                                   "max_off_diagonal":  3.3120919948201182E-15,
+                                                                                                   "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                                                   "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                                                   "representation":  "native_MP B_plane_wave_coefficients",
+                                                                                                   "shape":  [
+                                                                                                                 2304,
+                                                                                                                 2,
+                                                                                                                 4
+                                                                                                             ],
+                                                                                                   "status":  "AVAILABLE"
+                                                                                               }
+                                                                                },
+                                                                  "tol_1e-7":  {
+                                                                                   "e_only":  {
+                                                                                                  "band_2_3_overlap":  1.1460081358373786E-06,
+                                                                                                  "bands":  4,
+                                                                                                  "gram_diagonal":  [
+                                                                                                                        1.0000000000000004,
+                                                                                                                        0.9999999999999994,
+                                                                                                                        1.0000000000000018,
+                                                                                                                        1.000000000000001
+                                                                                                                    ],
+                                                                                                  "max_off_diagonal":  0.0001332025770516633,
+                                                                                                  "normalization_error":  3.1086244689504383E-15
+                                                                                              },
+                                                                                   "eh_combined":  {
+                                                                                                       "band_2_3_overlap":  5.7348540914168966E-07,
+                                                                                                       "bands":  4,
+                                                                                                       "gram_diagonal":  [
+                                                                                                                             1.0000000000000004,
+                                                                                                                             1.0000000000000004,
+                                                                                                                             1.0000000000000009,
+                                                                                                                             1.0000000000000002
+                                                                                                                         ],
+                                                                                                       "max_off_diagonal":  6.6636263448535939E-05,
+                                                                                                       "normalization_error":  5.88418203051333E-15
+                                                                                                   },
+                                                                                   "frequencies":  [
+                                                                                                       0.41195588115702014,
+                                                                                                       0.4385957725600724,
+                                                                                                       0.43860273290159557,
+                                                                                                       0.8337366907626713
+                                                                                                   ],
+                                                                                   "h_only":  {
+                                                                                                  "band_2_3_overlap":  1.518002980478561E-15,
+                                                                                                  "bands":  4,
+                                                                                                  "gram_diagonal":  [
+                                                                                                                        0.9999999999999991,
+                                                                                                                        0.9999999999999997,
+                                                                                                                        0.9999999999999994,
+                                                                                                                        0.9999999999999987
+                                                                                                                    ],
+                                                                                                  "max_off_diagonal":  3.2854095899746467E-15,
+                                                                                                  "normalization_error":  3.3306690738754696E-15
+                                                                                              },
+                                                                                   "native":  {
+                                                                                                  "band_2_3_overlap":  1.5878249086229308E-15,
+                                                                                                  "max_off_diagonal":  3.3553782418847055E-15,
+                                                                                                  "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                                                                  "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                                                                  "representation":  "native_MP B_plane_wave_coefficients",
+                                                                                                  "shape":  [
+                                                                                                                2304,
+                                                                                                                2,
+                                                                                                                4
+                                                                                                            ],
+                                                                                                  "status":  "AVAILABLE"
+                                                                                              }
+                                                                               }
+                                                              }
+                                }
+                  },
+    "main_unchanged":  true,
+    "native_eigenvector_gram":  {
+                                    "FR00":  {
+                                                 "band_2_3_overlap":  2.3770313057342276E-15,
+                                                 "max_off_diagonal":  3.1287603019162014E-15,
+                                                 "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                 "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                 "representation":  "native_MP B_plane_wave_coefficients",
+                                                 "shape":  [
+                                                               2304,
+                                                               2,
+                                                               4
+                                                           ],
+                                                 "status":  "AVAILABLE"
+                                             },
+                                    "FR050":  {
+                                                  "band_2_3_overlap":  1.5878249086229308E-15,
+                                                  "max_off_diagonal":  3.3553782418847055E-15,
+                                                  "metric":  "Euclidean Gram in the returned native coefficient basis",
+                                                  "public_method":  "ModeSolver.get_eigenvectors(1,4)",
+                                                  "representation":  "native_MP B_plane_wave_coefficients",
+                                                  "shape":  [
+                                                                2304,
+                                                                2,
+                                                                4
+                                                            ],
+                                                  "status":  "AVAILABLE"
+                                              }
+                                },
+    "overall":  "E7I2D_REPORT_READY",
+    "recommended_next_action":  "Keep the fixed qualification gate; if further progress is authorized, separately audit MPB field/quadrature representation rather than changing thresholds.",
+    "schema":  "e7i2d_orthogonality_diagnostic_v1",
+    "threshold_change":  "FORBIDDEN",
+    "work_order":  "E7I.2D",
+    "calculation_code_sha":  "ba4a3b63dd65049bf51357ee6ce9ca25baa87b79",
+    "sandbox_remote_head_verified":  true,
+    "implementation_sha":  "ba4a3b63dd65049bf51357ee6ce9ca25baa87b79",
+    "evidence_sha":  "PENDING_EVIDENCE_COMMIT",
+    "final_sandbox_sha":  "PENDING_FINAL_SANDBOX_SHA",
+    "main_head":  "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+    "classification":  "E7I2D_REALSPACE_EH_QUADRATURE_LIMIT_SUPPORTED"
+}
