@@ -1,0 +1,295 @@
+{
+  "R48_blocker_interpretation": "RESOLUTION_UNRESOLVED",
+  "R96_repeat_solves": 2,
+  "R96_repeatability": "PASSED",
+  "bcd": "NOT_AUTHORIZED",
+  "blocker_1_R128_absolute_005_policy": "FAIL",
+  "blocker_1_R128_gap": 0.03818630451169602,
+  "blocker_1_finite_external_gap": "SUPPORTED",
+  "blocker_1_gap_trend": "NONMONOTONIC_UNRESOLVED",
+  "blocker_2_R128_absolute_005_policy": "FAIL",
+  "blocker_2_R128_gap": 0.038342595995086715,
+  "blocker_2_finite_external_gap": "SUPPORTED",
+  "blocker_2_gap_trend": "NONMONOTONIC_UNRESOLVED",
+  "blocker_count": 2,
+  "blocker_pair_symmetry_relation": "VERIFIED",
+  "blocker_reconstruction": "EXACT_2",
+  "blockers": [
+    {
+      "R128_absolute_005_policy": "FAIL",
+      "R128_finite_external_gap": "SUPPORTED",
+      "R128_gap": 0.03818630451169602,
+      "R48_center_gap": 0.03855054741726782,
+      "R96_repeat_frequency_max_abs_difference": 0.0,
+      "R96_repeat_gap_abs_difference": 0.0,
+      "R96_repeats": [
+        {
+          "G34": 0.038461698514519305,
+          "G34_over_f3": 0.05590972500941492,
+          "G34_over_f4": 0.05294934186624373,
+          "absolute_005_policy_status": "FAIL",
+          "evaluation_q": [
+            0.9419782203379918,
+            -0.48148497551670216
+          ],
+          "finite_external_gap_status": "SUPPORTED",
+          "frequencies_bands_1_to_4": [
+            0.0721044939995317,
+            0.6637649974622397,
+            0.6879250167666278,
+            0.7263867152811471
+          ],
+          "resolution": 96
+        }
+      ],
+      "delta_gap_48_64": -0.00010664602664767209,
+      "delta_gap_64_96": 1.7797123899154776e-05,
+      "delta_gap_96_128": -0.0002753940028232815,
+      "element_id": "cell:17:-9:element:0",
+      "element_weight": 0.00029721506396741354,
+      "evaluation_q": [
+        0.9419782203379918,
+        -0.48148497551670216
+      ],
+      "final_pair_abs_drift": 0.0002753940028232815,
+      "gamma_exclusion_distances": [
+        0.9722657971530504,
+        0.9699253090686165,
+        0.01225347083646915
+      ],
+      "gap_trend": "NONMONOTONIC_UNRESOLVED",
+      "ladder": [
+        {
+          "G34": 0.03855054741726782,
+          "G34_over_f3": null,
+          "G34_over_f4": null,
+          "absolute_005_policy_status": "FAIL",
+          "evaluation_q": [
+            0.9419782203379918,
+            -0.48148497551670216
+          ],
+          "finite_external_gap_status": "SUPPORTED",
+          "frequencies_bands_1_to_4": [
+            0.0720750294346448,
+            0.663640918721926,
+            0.6875894360789068,
+            0.7261399834961746
+          ],
+          "resolution": 48
+        },
+        {
+          "G34": 0.03844390139062015,
+          "G34_over_f3": 0.05588837062742121,
+          "G34_over_f4": 0.05293018862800022,
+          "absolute_005_policy_status": "FAIL",
+          "evaluation_q": [
+            0.9419782203379918,
+            -0.48148497551670216
+          ],
+          "finite_external_gap_status": "SUPPORTED",
+          "frequencies_bands_1_to_4": [
+            0.07209906324070262,
+            0.6637266403591073,
+            0.6878694254106227,
+            0.7263133268012428
+          ],
+          "resolution": 64
+        },
+        {
+          "G34": 0.038461698514519305,
+          "G34_over_f3": 0.05590972500941492,
+          "G34_over_f4": 0.05294934186624373,
+          "absolute_005_policy_status": "FAIL",
+          "evaluation_q": [
+            0.9419782203379918,
+            -0.48148497551670216
+          ],
+          "finite_external_gap_status": "SUPPORTED",
+          "frequencies_bands_1_to_4": [
+            0.0721044939995317,
+            0.6637649974622397,
+            0.6879250167666278,
+            0.7263867152811471
+          ],
+          "resolution": 96
+        },
+        {
+          "G34": 0.03818630451169602,
+          "G34_over_f3": 0.055503981873351184,
+          "G34_over_f4": 0.05258528894873563,
+          "absolute_005_policy_status": "FAIL",
+          "evaluation_q": [
+            0.9419782203379918,
+            -0.48148497551670216
+          ],
+          "finite_external_gap_status": "SUPPORTED",
+          "frequencies_bands_1_to_4": [
+            0.07211176225715833,
+            0.6636822956178173,
+            0.6879921624151113,
+            0.7261784669268073
+          ],
+          "resolution": 128
+        }
+      ],
+      "nearest_outer_edge": 1
+    },
+    {
+      "R128_absolute_005_policy": "FAIL",
+      "R128_finite_external_gap": "SUPPORTED",
+      "R128_gap": 0.038342595995086715,
+      "R48_center_gap": 0.03844355807732258,
+      "R96_repeat_frequency_max_abs_difference": 0.0,
+      "R96_repeat_gap_abs_difference": 0.0,
+      "R96_repeats": [
+        {
+          "G34": 0.03822424589363449,
+          "G34_over_f3": 0.05556834452563624,
+          "G34_over_f4": 0.052643056997515585,
+          "absolute_005_policy_status": "FAIL",
+          "evaluation_q": [
+            0.9419782203379925,
+            0.481484975516702
+          ],
+          "finite_external_gap_status": "SUPPORTED",
+          "frequencies_bands_1_to_4": [
+            0.07209378695430277,
+            0.66384000170332,
+            0.6878780755471289,
+            0.7261023214407634
+          ],
+          "resolution": 96
+        }
+      ],
+      "delta_gap_48_64": -0.00031236366584108666,
+      "delta_gap_64_96": 9.305148215299486e-05,
+      "delta_gap_96_128": 0.0001183501014522248,
+      "element_id": "cell:17:9:element:0",
+      "element_weight": 0.000297215063967405,
+      "evaluation_q": [
+        0.9419782203379925,
+        0.481484975516702
+      ],
+      "final_pair_abs_drift": 0.0001183501014522248,
+      "gamma_exclusion_distances": [
+        0.012253470836468933,
+        0.969925309068617,
+        0.9722657971530504
+      ],
+      "gap_trend": "NONMONOTONIC_UNRESOLVED",
+      "ladder": [
+        {
+          "G34": 0.03844355807732258,
+          "G34_over_f3": null,
+          "G34_over_f4": null,
+          "absolute_005_policy_status": "FAIL",
+          "evaluation_q": [
+            0.9419782203379925,
+            0.481484975516702
+          ],
+          "finite_external_gap_status": "SUPPORTED",
+          "frequencies_bands_1_to_4": [
+            0.07205389419932942,
+            0.663720231042699,
+            0.6874459470360751,
+            0.7258895051133977
+          ],
+          "resolution": 48
+        },
+        {
+          "G34": 0.038131194411481495,
+          "G34_over_f3": 0.055433224436080376,
+          "G34_over_f4": 0.05252177319479253,
+          "absolute_005_policy_status": "FAIL",
+          "evaluation_q": [
+            0.9419782203379925,
+            0.481484975516702
+          ],
+          "finite_external_gap_status": "SUPPORTED",
+          "frequencies_bands_1_to_4": [
+            0.07209284670532505,
+            0.6637884537654578,
+            0.6878761753332657,
+            0.7260073697447472
+          ],
+          "resolution": 64
+        },
+        {
+          "G34": 0.03822424589363449,
+          "G34_over_f3": 0.05556834452563624,
+          "G34_over_f4": 0.052643056997515585,
+          "absolute_005_policy_status": "FAIL",
+          "evaluation_q": [
+            0.9419782203379925,
+            0.481484975516702
+          ],
+          "finite_external_gap_status": "SUPPORTED",
+          "frequencies_bands_1_to_4": [
+            0.07209378695430277,
+            0.66384000170332,
+            0.6878780755471289,
+            0.7261023214407634
+          ],
+          "resolution": 96
+        },
+        {
+          "G34": 0.038342595995086715,
+          "G34_over_f3": 0.05575439140347873,
+          "G34_over_f4": 0.05281000188818634,
+          "absolute_005_policy_status": "FAIL",
+          "evaluation_q": [
+            0.9419782203379925,
+            0.481484975516702
+          ],
+          "finite_external_gap_status": "SUPPORTED",
+          "frequencies_bands_1_to_4": [
+            0.07207682565029419,
+            0.6637769915711454,
+            0.6877053991606188,
+            0.7260479951557055
+          ],
+          "resolution": 128
+        }
+      ],
+      "nearest_outer_edge": 0
+    }
+  ],
+  "calculation_logic_committed_before_execution": true,
+  "calculation_logic_git_sha": "13bc989eb25a9b1a7b1128441bb20b982d77c693",
+  "code_change": "SANDBOX_AUDIT_ONLY",
+  "current_005_policy_potentially_compatible_with_paper_domain": "UNRESOLVED",
+  "current_absolute_005_policy": "UNCHANGED_AUTHORITATIVE",
+  "deformation_physics": "NOT_AUTHORIZED",
+  "e7i4d_overall": "TWO_BLOCKER_RESOLUTION_DIAGNOSIS_READY_FOR_SUPERVISOR_DECISION",
+  "full_bz_chern": "NOT_AUTHORIZED",
+  "historical_absolute_005_policy": "UNCHANGED_AUTHORITATIVE",
+  "local_berry_calculation": "NOT_AUTHORIZED",
+  "main_expected_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "main_unchanged": true,
+  "new_R128_solves": 2,
+  "new_R64_solves": 2,
+  "new_R96_solves": 2,
+  "pair_gap_differences": {
+    "pair_gap_abs_difference_R128": 0.00015629148339069143,
+    "pair_gap_abs_difference_R48": 0.0001069893399452404,
+    "pair_gap_abs_difference_R64": 0.00031270697913865497,
+    "pair_gap_abs_difference_R96": 0.0002374526208848149
+  },
+  "per_band_chern": "NOT_AUTHORIZED",
+  "physical_rank3_degeneracy_confirmed": false,
+  "rank2_chern": "NOT_AUTHORIZED",
+  "remote_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "remote_sandbox_sha_at_execution": "13bc989eb25a9b1a7b1128441bb20b982d77c693",
+  "sandbox_remote_head_verified": true,
+  "scale_aware_isolation_diagnostic": "NOT_EVALUATED",
+  "schema": "e7i4d_two_blocker_gap_convergence_v1",
+  "solver_failures": 0,
+  "source_e7i4c_evidence_commit": "8f3d0f388e175de6882bd956d1aa8a7ec19e5f19",
+  "source_e7i4c_result_path": "audit/e7i4c/result.json",
+  "source_e7i4c_result_sha256": "64ea0b88cf4ba64e01940ecd35e485903ceede1736207f1f7a629840d175210b",
+  "stage1_chern": "NOT_AUTHORIZED",
+  "stage2_chern": "NOT_AUTHORIZED",
+  "total_new_mpb_solves": 8,
+  "total_wall_time_seconds": 11.000197583000045,
+  "work_order": "TRILATT-E7I4D-20260823-132"
+}
