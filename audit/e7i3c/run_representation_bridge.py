@@ -1,6 +1,6 @@
 """E7I.3C bounded H-to-E+H representation bridge."""
 from __future__ import annotations
-import hashlib, json, math, subprocess, sys
+import hashlib, json, math, pickle, subprocess, sys, tempfile
 from fractions import Fraction
 from pathlib import Path
 import meep as mp
@@ -25,6 +25,60 @@ E3=SubspaceQualificationThresholds(0.9,0.45,0.3,0.05)
 E4C=PlaquetteRefinementThresholds(0.9,0.45,0.3,0.1)
 UNIT_TOL=1e-10; ALG_TOL=1e-8; RAW_TOL=1e-10
 STEPS=(Fraction(1,36),Fraction(1,72),Fraction(1,144))
+
+def _plain(value):
+    if hasattr(value, "items"):
+        return {str(k): _plain(v) for k, v in value.items()}
+    if isinstance(value, (tuple, list)):
+        return [_plain(v) for v in value]
+    return value
+
+
+def _worker_payload(raw):
+    return {
+        "k_point": tuple(raw.k_point),
+        "frequencies": np.asarray(raw.frequencies),
+        "h_fields": np.asarray(raw.h_fields),
+        "e_fields": None if raw.e_fields is None else np.asarray(raw.e_fields),
+        "raw_norms": np.asarray(raw.raw_norms),
+        "normalized_vectors": tuple(np.asarray(v) for v in raw.normalized_vectors),
+        "gram_matrix": np.asarray(raw.gram_matrix),
+        "max_normalization_error": float(raw.max_normalization_error),
+        "max_off_diagonal_gram": float(raw.max_off_diagonal_gram),
+        "orthogonality_status": raw.orthogonality_status,
+        "normalization_tolerance": float(raw.normalization_tolerance),
+        "orthogonality_tolerance": float(raw.orthogonality_tolerance),
+        "states": tuple((int(state.solver_index), float(state.eigenvalue), _plain(state.metadata)) for state in raw.raw_eigenstates),
+        "provenance": _plain(raw.provenance),
+    }
+
+
+def _raw_from_payload(payload):
+    vectors=tuple(np.asarray(v) for v in payload["normalized_vectors"])
+    states=tuple(RawEigenstate(tuple(payload["k_point"]), item[0], item[1], vectors[item[0]], item[2]) for item in payload["states"])
+    return MPBHEnvelopeSnapshot(k_point=payload["k_point"],frequencies=payload["frequencies"],h_fields=payload["h_fields"],e_fields=payload["e_fields"],raw_norms=payload["raw_norms"],normalized_vectors=vectors,gram_matrix=payload["gram_matrix"],max_normalization_error=payload["max_normalization_error"],max_off_diagonal_gram=payload["max_off_diagonal_gram"],orthogonality_status=payload["orthogonality_status"],normalization_tolerance=payload["normalization_tolerance"],orthogonality_tolerance=payload["orthogonality_tolerance"],raw_eigenstates=states,provenance=payload["provenance"])
+
+
+def _worker_main(endpoint,res,point,out_path):
+    adapter=build_reference_mpb_adapter(build_triangular_reference_geometry(endpoint),build_triangular_coordinate_preflight())
+    raw=provider(adapter,res).solve(point)
+    with open(out_path,"wb") as handle:
+        pickle.dump(_worker_payload(raw),handle,protocol=pickle.HIGHEST_PROTOCOL)
+
+
+def solve_isolated(adapter,res,endpoint,point):
+    del adapter
+    with tempfile.NamedTemporaryFile(prefix="e7i3c-",suffix=".pkl",delete=False) as handle:
+        out_path=handle.name
+    command=[sys.executable,str(Path(__file__).resolve()),"--worker",str(float(endpoint)),str(int(res)),*(str(float(x)) for x in point),out_path]
+    try:
+        completed=subprocess.run(command,cwd=Path(__file__).resolve().parents[2],stdout=subprocess.DEVNULL,stderr=subprocess.PIPE,text=True,timeout=180,check=False)
+        if completed.returncode!=0:
+            raise RuntimeError(f"isolated MPB worker failed with exit {completed.returncode}: {completed.stderr[-1000:]}")
+        with open(out_path,"rb") as handle:
+            return _raw_from_payload(pickle.load(handle))
+    finally:
+        Path(out_path).unlink(missing_ok=True)
 
 
 def sid(x:Fraction)->str: return f"{x.numerator}/{x.denominator}"
@@ -126,13 +180,13 @@ def qtree(levels,steps):
 
 
 def live_case(adapter,res,endpoint):
-    p=provider(adapter,res); cache={}; records=[]; levels=[]
+    cache={}; records=[]; levels=[]
     for i in range(3):
         sf=STEPS[i]; lev=[]
         for point in pts(float(sf)):
             key=tuple(float(x) for x in point)
             if key not in cache:
-                raw=p.solve(key); frame,met=lowdin_snapshot(raw); cache[key]=(raw,frame,met)
+                raw=solve_isolated(adapter,res,endpoint,key); frame,met=lowdin_snapshot(raw); cache[key]=(raw,frame,met); del raw
                 records.append({"point":list(key),"frequencies":[float(x) for x in raw.frequencies],"external_gap_band4_minus_band3":float(raw.frequencies[3]-raw.frequencies[2]),"raw":met})
             lev.append(cache[key][1])
         levels.append(tuple(lev))
@@ -262,6 +316,8 @@ def self_checks():
 
 
 def main():
+    if "--worker" in sys.argv:
+        _worker_main(float(sys.argv[2]),int(sys.argv[3]),tuple(float(x) for x in sys.argv[4:7]),sys.argv[7]); return
     root=Path(__file__).resolve().parents[2]; self_checks()
     if "--self-check" in sys.argv: print(json.dumps({"self_check":"PASSED"})); return
     base=baseline(root); cases={}
