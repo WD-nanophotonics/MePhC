@@ -188,7 +188,7 @@ def wrecord(w):
 def diagnostics(fwd,same,shifted,cyc):
     maxima={x:0.0 for x in ("unitarity","same_matrix","shifted_det","shifted_phase","shifted_trace","shifted_eigen","cyclic")}
     rows=[]
-    for lev,(a,b,c,d) in enumerate(zip(fwd.wilson_results,same.wilson_results,shifted.wilson_results,cyc.wilson_results)):
+    for lev,(a,b,c,d) in enumerate(zip(fwd,same,shifted,cyc)):
         if any(x.product is None for x in (a,b,c,d)): return {"observable_produced":False,"algebraic_checks_pass":False}
         av=stable(a); cv=stable(c)
         same_m=float(np.max(np.abs(b.product-a.product.conj().T)))
@@ -223,13 +223,16 @@ def live_case(adapter,res,endpoint):
             lev.append(cache[key][0])
         levels.append(tuple(lev))
     orders={"forward":(0,1,2,3,4),"reverse_same_basepoint":(0,3,2,1,4),"reverse_shifted_basepoint":(3,2,1,0,4),"cyclic":(1,2,3,0,4)}
-    results={}
+    results={}; qualifications={}
     for name,order in orders.items():
         reordered=[tuple(level[i] for i in order) for level in levels]
-        results[name]=qtree(reordered,tuple(float(x) for x in STEPS))
-    alg=diagnostics(results["forward"][1],results["reverse_same_basepoint"][1],results["reverse_shifted_basepoint"][1],results["cyclic"][1])
-    fsrc,fw=results["forward"]
-    return {"endpoint":endpoint,"resolution":res,"raw_solves":records,"qualification":{"forward":bool(fsrc.is_qualified and fw.is_qualified),"forward_status":fsrc.status,"refinement_status":fsrc.refinement_result.status,"min_external_gap":float(min(x["external_gap_band4_minus_band3"] for x in records))},"levels":[{"STEP_ID":sid(STEPS[i]),"h":float(STEPS[i]),"A_q":float(STEPS[i])**2,"wilson":alg["levels"][i] if alg.get("observable_produced") else None} for i in range(3)],"algebra":alg}
+        src,hol=qtree(reordered,tuple(float(x) for x in STEPS))
+        results[name]=tuple(hol.wilson_results)
+        qualifications[name]=(bool(src.is_qualified and hol.is_qualified),src.status,src.refinement_result.status)
+        del src,hol,reordered
+    alg=diagnostics(results["forward"],results["reverse_same_basepoint"],results["reverse_shifted_basepoint"],results["cyclic"])
+    fqual,fstatus,fref=qualifications["forward"]
+    return {"endpoint":endpoint,"resolution":res,"raw_solves":records,"qualification":{"forward":fqual,"forward_status":fstatus,"refinement_status":fref,"min_external_gap":float(min(x["external_gap_band4_minus_band3"] for x in records))},"levels":[{"STEP_ID":sid(STEPS[i]),"h":float(STEPS[i]),"A_q":float(STEPS[i])**2,"wilson":alg["levels"][i] if alg.get("observable_produced") else None} for i in range(3)],"algebra":alg}
 
 
 def baseline(root):
