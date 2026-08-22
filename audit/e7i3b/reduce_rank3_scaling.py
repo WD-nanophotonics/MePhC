@@ -227,8 +227,7 @@ def resolution_sensitivity(all_levels: list[dict]) -> dict:
                 ),
                 "NONZERO_INTERVAL_OVERLAP": bool(
                     density_difference < min(
-                        abs(r48["DETERMINANT_HOLONOMY_DENSITY_PROXY"],
-                        r64["DETERMINANT_HOLONOMY_DENSITY_PROXY"])
+                        abs(r48["DETERMINANT_HOLONOMY_DENSITY_PROXY"]), abs(r64["DETERMINANT_HOLONOMY_DENSITY_PROXY"])
                     )
                 ),
             })
