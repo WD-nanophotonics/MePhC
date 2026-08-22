@@ -1,6 +1,6 @@
 """E7I.3C bounded H-to-E+H representation bridge."""
 from __future__ import annotations
-import gc, hashlib, json, math, pickle, resource, subprocess, sys, tempfile
+import gc, hashlib, json, math, pickle , resource, subprocess, sys, tempfile
 from fractions import Fraction
 from pathlib import Path
 import meep as mp
@@ -129,7 +129,7 @@ def lowdin_matrix(v):
     return q,{"GRAM_EIGENVALUES":[float(x) for x in ev],
         "GRAM_CONDITION_NUMBER":float(max(ev)/min(ev)),
         "Q_DAGGER_Q_RESIDUAL":float(np.linalg.norm(q.conj().T@q-np.eye(v.shape[1]))),
-        "SPAN_PROJECTOR_RESIDUAL":float(np.linalg.norm(v@np.linalg.inv(g)@v.conj().T-q@q.conj().T)),
+        "SPAN_PROJECTOR_RESIDUAL":float(np.linalg.norm(q-v@np.linalg.inv(g)@(v.conj().T@q))),
         "ORTHONORMALIZATION_CORRECTION_NORM":float(np.linalg.norm(q-v)),
         "GRAM_HERMITIAN_RESIDUAL":float(np.linalg.norm(g-g.conj().T))}
 
@@ -156,7 +156,7 @@ def _compact_snapshot(raw,vectors,full,states,prov):
 
 def lowdin_snapshot(raw):
     v=np.column_stack([raw.normalized_vectors[i] for i in SEL])
-    q,m=lowdin_matrix(v); print(f"E7I3C_LOWDIN_AFTER_MATRIX rss_kb={resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}",flush=True)
+    q,m=lowdin_matrix(v)
     selected_g=v.conj().T@v; off=np.array(selected_g,copy=True); np.fill_diagonal(off,0)
     m.update({"RAW_SELECTED_GRAM":cpairs(selected_g),
         "RAW_SELECTED_MAX_OFF_DIAGONAL_GRAM":float(np.max(np.abs(off))),
@@ -171,9 +171,9 @@ def lowdin_snapshot(raw):
         meta=dict(raw.raw_eigenstates[i].metadata)
         meta.update({"audit_adapter":"E7I.3C selected-rank3 symmetric Lowdin frame","selected_span_only":True})
         states.append(RawEigenstate(raw.k_point,i,float(raw.frequencies[i]),vec,meta))
-    print(f"E7I3C_LOWDIN_BEFORE_COMPACT rss_kb={resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}",flush=True); prov=dict(raw.provenance)
+    prov=dict(raw.provenance)
     prov.update({"audit_adapter":"E7I.3C selected-rank3 symmetric Lowdin frame","selected_span_only":True,"raw_provider_status":raw.orthogonality_status,"live_mpb_extraction_validated":True})
-    adapted=_compact_snapshot(raw,vectors,full,states,prov); print(f"E7I3C_LOWDIN_AFTER_COMPACT rss_kb={resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}",flush=True)
+    adapted=_compact_snapshot(raw,vectors,full,states,prov)
     return adapted,m
 
 
@@ -218,7 +218,7 @@ def live_case(adapter,res,endpoint):
         for point in pts(float(sf)):
             key=tuple(float(x) for x in point)
             if key not in cache:
-                print(f"E7I3C_SOLVE endpoint={endpoint} resolution={res} point={key} rss_kb={resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}",flush=True); raw=solve_isolated(adapter,res,endpoint,key); print(f"E7I3C_AFTER_WORKER rss_kb={resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}",flush=True); frame,met=lowdin_snapshot(raw); print(f"E7I3C_AFTER_FRAME rss_kb={resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}",flush=True); cache[key]=(frame,met)
+                raw=solve_isolated(adapter,res,endpoint,key); frame,met=lowdin_snapshot(raw); cache[key]=(frame,met)
                 records.append({"point":list(key),"frequencies":[float(x) for x in raw.frequencies],"external_gap_band4_minus_band3":float(raw.frequencies[3]-raw.frequencies[2]),"raw":met})
             lev.append(cache[key][0])
         levels.append(tuple(lev))
