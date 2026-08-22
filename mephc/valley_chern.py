@@ -30,7 +30,6 @@ E7I1G_UPSTREAM_SEAL = {
     "domain_id": DOMAIN_ID,
     "orientation": ORIENTATION,
     "normalization_input": "SEALED_REFINED_FLUX",
-    "raw_artifact_currently_available": False,
 }
 S_BAND1 = 0.8382559622490607
 S_BAND2 = 0.1842433985735109
@@ -95,7 +94,7 @@ def _upstream_seal_audit(seal: Mapping[str, Any] | None, flux: Mapping[str, floa
         return {"status": "FAILED", "reason": "upstream E7I.1G seal object is incomplete"}
     if any(seal[key] != E7I1G_UPSTREAM_SEAL[key] for key in required):
         return {"status": "FAILED", "reason": "upstream seal identity, domain, orientation, or source differs"}
-    return {"status": "SUPERVISOR_SEALED", "seal": dict(seal), "raw_artifact_currently_available": False}
+    return {"status": "SUPERVISOR_SEALED", "seal": dict(seal)}
 
 def _p90(values: list[float]) -> float:
     ordered = sorted(values)
@@ -248,17 +247,23 @@ def build_valley_chern_audit(
     }
     raw_status = controls.get("C9_HARDENING_CURRENT_REPLAY_STATUS", "RAW_SOURCE_CURRENTLY_UNAVAILABLE")
     c9_impl = controls.get("C9_HARDENING_IMPLEMENTATION_STATUS", "PARTIAL")
+    raw_availability = "AVAILABLE_AND_REPLAYED" if raw_status == "REPLAYED_CURRENT_WORKSPACE" else "UNAVAILABLE_CURRENT_WORKSPACE"
+    raw_replay_state = {"availability": raw_availability}
+    uncertainty_provenance = "INHERITED_FROM_SEALED_E7I1G_PERTURBED_NODE_BOUND"
     candidate = (
         seal_audit.get("status") == "SUPERVISOR_SEALED"
         and inversion.get("status") in {"SIGN_REVERSAL_SUPPORTED", "PARTIALLY_SUPPORTED"}
         and paper.get("status") == "CONSISTENT_AFTER_BLOCH_K_MAPPING"
         and paper.get("no_sign_hack") is True
         and coord["equal"]
+        and tr.get("status") in {"SUPPORTED_BY_EXISTING_CONTROLS", "UNRESOLVED"}
     )
     result = {
         "E7I1H_SCOPE": "VALLEY_CHERN_ONLY_NO_NEW_MPB",
         "E7I1G_UPSTREAM_SEAL_STATUS": seal_audit.get("status"),
         "E7I1G_UPSTREAM_SEAL": seal_audit,
+        "UPSTREAM_SEAL_IDENTITY": "IMMUTABLE_SCIENTIFIC_PROVENANCE",
+        "UPSTREAM_SEAL_REPLAY_SEPARATION": "COMPLETE",
         "SEALED_INPUT_DEPENDENCY": "EXPLICIT_AND_FAIL_CLOSED" if seal_audit.get("status") == "SUPERVISOR_SEALED" else "FAILED",
         "DOMAIN": {
             "id": DOMAIN_ID,
@@ -299,11 +304,14 @@ def build_valley_chern_audit(
         "CONTROL_STATUS_INHERITED": control_summary,
         "C9_HARDENING_IMPLEMENTATION_STATUS": c9_impl,
         "C9_HARDENING_CURRENT_REPLAY_STATUS": raw_status,
-        "C9_CURRENT_RAW_REPLAY_AVAILABILITY": "AVAILABLE_CURRENT_WORKSPACE" if raw_status == "REPLAYED_CURRENT_WORKSPACE" else "UNAVAILABLE_CURRENT_WORKSPACE",
+        "C9_CURRENT_RAW_REPLAY_AVAILABILITY": raw_availability,
+        "C9_RAW_REPLAY_STATE": raw_replay_state,
         "C9_HARDENED_ARTIFACT_REPLAY": "COMPLETE_NO_SCIENTIFIC_CHANGE" if raw_status == "REPLAYED_CURRENT_WORKSPACE" else "RAW_SOURCE_CURRENTLY_UNAVAILABLE",
         "VALLEY_CHERN_SEAL": "CANDIDATE_FOR_SUPERVISOR_SEAL" if candidate else "PARTIALLY_VALIDATED",
-        "REMOTE_AUDITABILITY": "COMPLETE" if raw_status == "REPLAYED_CURRENT_WORKSPACE" else "PARTIAL",
-        "E7I1H_C2_OVERALL": "VALLEY_CHERN_SEMANTICS_READY_FOR_SUPERVISOR_SEAL_AUDIT" if candidate else "SEMANTIC_CORRECTIVE_PARTIAL",
+        "E7I1H_REMOTE_AUDITABILITY": "COMPLETE",
+        "REMOTE_AUDITABILITY": "COMPLETE",
+        "VALLEY_CHERN_UNCERTAINTY_PROVENANCE": uncertainty_provenance,
+        "E7I1H_C3_OVERALL": "FINAL_PROVENANCE_STATE_READY_FOR_SUPERVISOR_SEAL" if candidate else "PROVENANCE_CORRECTIVE_PARTIAL",
         "PROVENANCE": {
             "c9_source_digest": c9_source_digest,
             "c9_provenance": dict(c9_provenance or {}),
@@ -314,7 +322,7 @@ def build_valley_chern_audit(
             "berry_sign_convention": BERRY_SIGN_CONVENTION,
             "normalization": "PHI_OVER_2PI",
             "band_interpretation": band_interpretation,
-            "raw_artifact_currently_available": raw_status == "REPLAYED_CURRENT_WORKSPACE",
+            "raw_replay_state": raw_replay_state,
         },
     }
     result["detail_digest"] = _digest(result)

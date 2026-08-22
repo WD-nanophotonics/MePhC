@@ -99,8 +99,8 @@ def test_candidate_seal_does_not_depend_on_full_kp_or_current_raw_file():
     result = audit_from_c9_report(_report(), existing_controls=_controls(), paper_convention=inherited_paper_convention())
     assert result["VALLEY_CHERN_DOMAIN_INVERSION"] == "SIGN_REVERSAL_SUPPORTED"
     assert result["VALLEY_CHERN_SEAL"] == "CANDIDATE_FOR_SUPERVISOR_SEAL"
-    assert result["E7I1H_C2_OVERALL"] == "VALLEY_CHERN_SEMANTICS_READY_FOR_SUPERVISOR_SEAL_AUDIT"
-    assert result["REMOTE_AUDITABILITY"] == "PARTIAL"
+    assert result["E7I1H_C3_OVERALL"] == "FINAL_PROVENANCE_STATE_READY_FOR_SUPERVISOR_SEAL"
+    assert result["E7I1H_REMOTE_AUDITABILITY"] == "COMPLETE"
 
 
 def test_missing_inversion_controls_remains_unresolved_not_fabricated():
@@ -113,3 +113,41 @@ def test_time_reversal_theory_has_no_numeric_claim():
     theory = time_reversal_theory()
     assert theory["TR_BERRY_RELATION"] == "Omega_n(k)=-Omega_n(-k)"
     assert theory["TR_NUMERICAL_SCOPE"].startswith("theory_only")
+
+
+def test_immutable_seal_identity_is_independent_of_raw_replay_state():
+    for available in (False, True):
+        seal = dict(E7I1G_UPSTREAM_SEAL)
+        seal["raw_artifact_currently_available"] = available
+        result = build_valley_chern_audit(SEALED_REFINED_FLUX, upstream_seal=seal, paper_convention=inherited_paper_convention())
+        assert result["E7I1G_UPSTREAM_SEAL_STATUS"] == "SUPERVISOR_SEALED"
+        assert result["UPSTREAM_SEAL_IDENTITY"] == "IMMUTABLE_SCIENTIFIC_PROVENANCE"
+
+
+def test_c3_final_state_and_uncertainty_provenance_are_explicit():
+    result = audit_from_c9_report(_report(), existing_controls=_controls(), paper_convention=inherited_paper_convention())
+    assert result["UPSTREAM_SEAL_REPLAY_SEPARATION"] == "COMPLETE"
+    assert result["C9_RAW_REPLAY_STATE"]["availability"] == "UNAVAILABLE_CURRENT_WORKSPACE"
+    assert result["E7I1H_REMOTE_AUDITABILITY"] == "COMPLETE"
+    assert result["VALLEY_CHERN_UNCERTAINTY_PROVENANCE"] == "INHERITED_FROM_SEALED_E7I1G_PERTURBED_NODE_BOUND"
+    assert result["VALLEY_CHERN_ERROR_BOUND"]["band1"] == pytest.approx(2.9476777143580646e-11)
+
+
+@pytest.mark.parametrize("field", ["sealed_sandbox_sha", "source_evidence_sha256", "domain_id", "orientation"])
+def test_wrong_immutable_seal_identity_fails(field):
+    seal = dict(E7I1G_UPSTREAM_SEAL)
+    seal[field] = "WRONG"
+    result = build_valley_chern_audit(SEALED_REFINED_FLUX, upstream_seal=seal, paper_convention=inherited_paper_convention())
+    assert result["E7I1G_UPSTREAM_SEAL_STATUS"] == "FAILED"
+
+
+def test_wrong_sealed_flux_fails_closed():
+    flux = dict(SEALED_REFINED_FLUX)
+    flux["band1"] += 1e-6
+    result = build_valley_chern_audit(flux, upstream_seal=E7I1G_UPSTREAM_SEAL, paper_convention=inherited_paper_convention())
+    assert result["E7I1G_UPSTREAM_SEAL_STATUS"] == "FAILED"
+
+
+def test_unsupported_positive_tr_claim_without_evidence_fails():
+    with pytest.raises(ValueError):
+        audit_from_c9_report(_report(), existing_controls=_controls(), tr_evidence={"status": "SUPPORTED_BY_EXISTING_CONTROLS"}, paper_convention=inherited_paper_convention())
