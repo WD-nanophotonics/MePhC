@@ -317,7 +317,7 @@ def self_checks():
 
 def main():
     if "--worker" in sys.argv:
-        _worker_main(float(sys.argv[2]),int(sys.argv[3]),tuple(float(x) for x in sys.argv[4:7]),sys.argv[7]); return
+        _worker_main(float(sys.argv[2]),int(sys.argv[3]),tuple(float(x) for x in sys.argv[4:6]),sys.argv[6]); return
     root=Path(__file__).resolve().parents[2]; self_checks()
     if "--self-check" in sys.argv: print(json.dumps({"self_check":"PASSED"})); return
     base=baseline(root); cases={}
