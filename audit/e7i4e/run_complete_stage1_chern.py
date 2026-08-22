@@ -34,7 +34,7 @@ def local_profile(records,source_d,cache,identities,counters,adapter,preflight,g
             r64=source_row
         else:
             r64=solve_point(adapter,preflight,geometry,q,64,cache,identities,counters)[2]
-        g64=float(r64["band4_minus_band3_external_gap"]); f3=float(rec["frequencies_bands_1_to_4"][2]); f364=float(r64["frequencies_bands_1_to_4"][2]); rel48=g/f3 if f3 else 0.0; rel64=g64/f364 if f364 else 0.0; ratio=min(g,g64)/max(abs(g64-g),1e-12)
+        g64=float(r64.get("band4_minus_band3_external_gap",r64["G34"])); f3=float(rec["frequencies_bands_1_to_4"][2]); f364=float(r64["frequencies_bands_1_to_4"][2]); rel48=g/f3 if f3 else 0.0; rel64=g64/f364 if f364 else 0.0; ratio=min(g,g64)/max(abs(g64-g),1e-12)
         ok=g>0 and g64>0 and rel48>=0.01 and rel64>=0.01 and ratio>=10
         row.update({"R64_frequencies":r64["frequencies_bands_1_to_4"],"R64_G34":g64,"relative_R48":rel48,"relative_R64":rel64,"stability_ratio":ratio,"profile":"LOW_GAP_PASS" if ok else "LOW_GAP_FAIL"}); evidence.append(row); passed=passed and ok
     return passed,evidence
