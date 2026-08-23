@@ -135,7 +135,7 @@ def reduce(raw_path, output_path):
         "TRIANGLE_PETAL_ISLAND_STRUCTURE":"REPRODUCED" if all(context_descriptors[f"band_{band}"]["reported_pixel_count"]>0 for band in (1,2,3)) and context_descriptors["band_2"]["positive_pixel_count"]>0 and context_descriptors["band_2"]["negative_pixel_count"]>0 and context_descriptors["band_3"]["positive_pixel_count"]>0 and context_descriptors["band_3"]["negative_pixel_count"]>0 else "INSUFFICIENT_SOURCE_SUPPORT",
         "BAND23_OPPOSITE_SIGN_STRUCTURE":"REPRODUCED" if band23_opposite else "NOT_REPRODUCED",
         "PEAK_REGION":"REPRODUCED" if core_descriptors["band_2"]["max_abs_location_offset"] != [0.0,0.0] or core_descriptors["band_3"]["max_abs_location_offset"] != [0.0,0.0] else "INSUFFICIENT_SOURCE_SUPPORT",
-        "SPATIAL_CONCENTRATION":"SOURCE_CONSISTENT" if context_descriptors["band_1"]["second_moment_radius_of_abs_omega"] is not None and context_descriptors["band_2"]["second_moment_radius_of_abs_omega"] is not None else "INSUFFICIENT_SOURCE_SUPPORT",
+        "SPATIAL_CONCENTRATION":"SOURCE_CONSISTENT" if context_descriptors["band_1"]["abs_omega_second_moment_radius"] is not None and context_descriptors["band_2"]["abs_omega_second_moment_radius"] is not None else "INSUFFICIENT_SOURCE_SUPPORT",
         "FR0_TO_FR04_REDISTRIBUTION":"REPRODUCED" if band1_suppressed and band2_reversal and band23_enhanced and band23_opposite else "NOT_REPRODUCED",
         "OVERALL_FR04_DISTRIBUTION_FIDELITY":"SUPPORTED" if source_bound and core_gate and replay_ok and trs_ok and tess_ok else "NOT_SUPPORTED",
         "PAPER_COMPARISON_POLICY":"TREND_FIDELITY_OVER_POINTWISE_NUMERICAL_COINCIDENCE",
@@ -156,3 +156,4 @@ if __name__=="__main__":
     out=Path(sys.argv[sys.argv.index("--output")+1]) if "--output" in sys.argv else ROOT/"audit/e9e/d_result.json"
     payload=reduce(raw,out)
     print(json.dumps({"schema":payload["schema"],"E9E_D_OVERALL":payload["E9E_D_OVERALL"],"raw_result_sha256":payload["raw_result_sha256"]},sort_keys=True))
+
