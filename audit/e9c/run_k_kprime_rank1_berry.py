@@ -215,7 +215,7 @@ def stencil_evidence(center, side, band, resolution, provider, preflight, cache,
         period_basis=preflight.public_period_basis,
         coordinate_mapping_digest=preflight.mapping_digest,
     )
-    vertices = [tuple(float(x) for x in req.canonical_periodic_vertex_q) for req in requests]
+    vertices = [tuple(float(x) for x in req.nominal_vertex_q) for req in requests]
     values = [solve_at(provider, preflight, q, resolution, cache, counters) for q in vertices]
     center_value = solve_at(provider, preflight, center, resolution, cache, counters)
     profile_rows = []
@@ -475,5 +475,6 @@ if __name__ == "__main__":
         output = sys.argv[sys.argv.index("--output") + 1] if "--output" in sys.argv else str(root() / "audit/e9c/result.json")
         payload = run(output)
         print(json.dumps({"schema": payload["schema"], "calculation_code_git_sha": payload["calculation_code_git_sha"], "telemetry": payload["telemetry"]}, sort_keys=True))
+
 
 
