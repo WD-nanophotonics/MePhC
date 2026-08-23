@@ -1,0 +1,56 @@
+﻿{
+  "schema": "trilatt_e9e_b_c1_exact_circle_convergence_contract_v1",
+  "work_order_id": "TRILATT-E9E-B-C1-20260824-191",
+  "base_sandbox_sha": "ec092cf325d1b1cf611c42a9a338c62dcab36390",
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "preserved_e9e_b_contract_sha256": "1f247863dbdb1ec5603737a1fc9f1fa454b5c59600553848ef588d26b04f8eeb",
+  "preserved_e9e_b_result_sha256": "1347b3340f976098ba30479dca5685a891bbdb3cf422e7a286a11a68ca253dda",
+  "model": {
+    "lattice_constant_nm": 400.0,
+    "effective_refractive_index": 2.65,
+    "background_epsilon": 7.0225,
+    "air_epsilon": 1.0,
+    "polarization": "TE",
+    "geometry": "EXACT_EQUAL_AREA_CIRCLE",
+    "f_r": 0.5,
+    "physical_area": 0.2078460969082653,
+    "public_k": [0.6666666666666666, 0.0],
+    "num_bands": 6,
+    "mesh_size": 3,
+    "eigensolver_tolerance": 1e-7
+  },
+  "new_live_solve": {
+    "count": 1,
+    "resolution": 128,
+    "representation": "IDENTICAL_EXACT_MP_CYLINDER_AS_E9E_B",
+    "polygon_solve": false,
+    "rerun_r64": false,
+    "rerun_r96": false
+  },
+  "convergence_gate": {
+    "absolute_gap_order": "g64 > g96 > g128 >= 0",
+    "relative_gap_definition": "gap32 / ((F2+F3)/2)",
+    "relative_gap_order": "r64 > r96 > r128 >= 0",
+    "absolute_upper_bound": "NONE",
+    "replacement_absolute_threshold": "FORBIDDEN",
+    "effective_exponents": "DESCRIPTIVE_ONLY_NO_REQUIRED_ORDER"
+  },
+  "carried_forward": {
+    "fr0_replay": "VALIDATED_FROM_E9E_B",
+    "fr0p4_gap21_trend": "VALIDATED_FROM_E9E_B",
+    "fr0p4_gap32_trend": "VALIDATED_FROM_E9E_B",
+    "original_e9e_b_absolute_1e6_gate": "HISTORICAL_FAILED_UNCHANGED"
+  },
+  "authorization": {
+    "live_mpb_bounded": true,
+    "new_berry_calculation": false,
+    "rank1_berry_at_exact_k": false,
+    "valley_chern": false,
+    "full_bz_chern": false,
+    "parameter_fitting": false,
+    "production_code_change": false,
+    "main_push": false,
+    "sandbox_audit_code": true
+  }
+}
+
