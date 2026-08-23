@@ -235,7 +235,7 @@ def cartesian_to_mpb(points: np.ndarray) -> np.ndarray:
 
 
 def _cross(a: np.ndarray, b: np.ndarray, c: np.ndarray) -> float:
-    return float(np.cross(b - a, c - a))
+    return float((b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]))
 
 
 def _segments_intersect(a: np.ndarray, b: np.ndarray, c: np.ndarray, d: np.ndarray) -> bool:
@@ -402,6 +402,7 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
 
 
 
