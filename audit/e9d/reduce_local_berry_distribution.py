@@ -13,7 +13,7 @@ BANDS = (0, 1, 2)
 
 
 def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 def finite_values(rows, band):
@@ -185,4 +185,5 @@ if __name__ == "__main__":
     output_path = sys.argv[sys.argv.index("--output") + 1] if "--output" in sys.argv else str(ROOT / "audit/e9d/result.json")
     payload = reduce(raw_path, output_path)
     print(json.dumps({"schema": payload["schema"], "E9D_OVERALL": payload["E9D_OVERALL"], "raw_result_sha256": payload["raw_result_sha256"]}, sort_keys=True))
+
 
