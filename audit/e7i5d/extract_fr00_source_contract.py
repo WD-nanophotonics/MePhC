@@ -57,7 +57,19 @@ def find_k_marker(im: Image.Image) -> int:
             candidates.append(x)
     if not candidates:
         raise RuntimeError("Figure 2(b) K marker was not found")
-    return round(sum(candidates) / len(candidates))
+    runs = []
+    run = [candidates[0]]
+    for value in candidates[1:]:
+        if value == run[-1] + 1:
+            run.append(value)
+        else:
+            runs.append(run)
+            run = [value]
+    runs.append(run)
+    longest = max(runs, key=lambda item: (len(item), item[0]))
+    if len(longest) < 3:
+        raise RuntimeError("Figure 2(b) K marker has no stable dashed run")
+    return round(sum(longest) / len(longest))
 
 
 def find_axis(im: Image.Image) -> tuple[int, int]:
