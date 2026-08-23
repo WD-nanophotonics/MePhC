@@ -49,7 +49,7 @@ def berry_center(center_name,center,provider,preflight,cache,counters,tag):
 def trs(k,kp):
     rows=[]; maximum=0.0
     for band in BANDS:
-        a=k[str(band)]["trend_value_1_288"]; b=kp[str(band)]["trend_value_1_288"]
+        a=k[str(band+1)]["trend_value_1_288"]; b=kp[str(band+1)]["trend_value_1_288"]
         residual=None if a is None or b is None else abs(a+b)
         relative=None if residual is None else residual/max(abs(a),abs(b),1e-15)
         if relative is not None: maximum=max(maximum,relative)
@@ -119,4 +119,5 @@ if __name__=="__main__":
         c=json.loads(contract_path.read_text(encoding="utf-8-sig")); s=json.loads((ROOT/"audit/e9e/e_source_trend_contract.json").read_text(encoding="utf-8-sig")); ep0,ep04=endpoint_series(); pf=build_triangular_coordinate_preflight(); checks,_=self_checks(c,s,pf,ep0,ep04); print(json.dumps(checks,sort_keys=True))
     else:
         out=Path(sys.argv[sys.argv.index("--output")+1]) if "--output" in sys.argv else ROOT/"audit/e9e/e_raw_result.json"; p=run(out,contract_path); print(json.dumps({"schema":p["schema"],"calculation_code_git_sha":p["calculation_code_git_sha"],"telemetry":p["telemetry"]},sort_keys=True))
+
 
