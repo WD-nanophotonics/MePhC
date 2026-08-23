@@ -1,0 +1,729 @@
+{
+  "FULL_QUADRATURE_AUTHORIZED": false,
+  "S_ZERO_GEOMETRY_REPLAY": "PASSED",
+  "S_ZERO_K_SPECTRAL_REPLAY": "PASSED",
+  "S_ZERO_LOCAL_BERRY_REPLAY": "FAILED",
+  "contract": {
+    "authorization": {
+      "dai_reference": false,
+      "fr00_reference": false,
+      "live_meep": false,
+      "live_mpb": "TRUE_BOUNDED",
+      "local_nonuniform_deformation": false,
+      "main_push": false,
+      "production_code_change": false,
+      "uniform_affine_deformation": true
+    },
+    "base_sandbox_sha": "f0bf6527bcc394e29f0adc5507dae812e3d5decf",
+    "deformation": {
+      "F": "diag(exp(s),exp(-s))",
+      "det_F": 1.0,
+      "geometry": "physical_affine_ellipse",
+      "strains": [
+        -0.02,
+        0.0,
+        0.02
+      ],
+      "transformation_optics": false
+    },
+    "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+    "quadrature": {
+      "family": "tensor_product_physicists_gauss_hermite",
+      "gh7_authorized": false,
+      "orders": [
+        3,
+        5
+      ]
+    },
+    "qualification": {
+      "max_concurrent_workers": 1,
+      "max_principal_angle": 0.45,
+      "max_projector_distance": 0.3,
+      "min_external_gap": 0.05,
+      "min_singular_value": 0.9,
+      "no_partial_renormalization": true,
+      "no_zero_fill": true,
+      "target_band_zero_based": 0
+    },
+    "schema": "trilatt_e8b_internal_maxwell_affine_contract_v1",
+    "source_binding": {
+      "background_epsilon": 1.0,
+      "center_to_radius_assignment": {
+        "minus": 0.25,
+        "plus": 0.15
+      },
+      "centers_fractional": [
+        [
+          0.16666666666666666,
+          0.16666666666666666
+        ],
+        [
+          -0.16666666666666666,
+          -0.16666666666666666
+        ]
+      ],
+      "centers_physical_cartesian": [
+        [
+          0.28867513459481287,
+          0.0
+        ],
+        [
+          -0.28867513459481287,
+          0.0
+        ]
+      ],
+      "deterministic": true,
+      "direct_basis": [
+        [
+          0.8660254037844386,
+          0.8660254037844386
+        ],
+        [
+          0.5,
+          -0.5
+        ]
+      ],
+      "historical_local_berry_units": "OMEGA_Q",
+      "historical_local_berry_value": -12.1426,
+      "historical_unit_source": "tests/test_e7i1a7_berry_units.py",
+      "inclusion_epsilon": 12.0,
+      "mesh_size": 3,
+      "mpb_k_fractional_zero": [
+        -0.3333333333333333,
+        0.3333333333333333
+      ],
+      "num_bands": 6,
+      "polarization": "TM",
+      "public_k_cartesian_zero": [
+        0.0,
+        -0.6666666666666666
+      ],
+      "representation": "mpb_energy_eh_v1",
+      "resolution_preflight": [
+        48,
+        64
+      ],
+      "solver_tolerance": 1e-07,
+      "source_binding_status": "VERIFIED_WITH_COORDINATE_CONVENTION",
+      "source_commit": "b2d40bcbdd04972bd8cfd7c2eecee45f236c5fc0",
+      "source_file": "tests/test_e7i1a_m1_d0500_regression.py"
+    },
+    "weight": {
+      "center_offset": 0.05,
+      "sigma": 0.025,
+      "type": "valley_tracking_gaussian_fixed_cartesian"
+    },
+    "work_order_id": "TRILATT-E8B-20260824-162"
+  },
+  "current_git_head": "44763882da21aafc18c3f532267a0362eb7865bd",
+  "gh3": null,
+  "gh5": null,
+  "preflight": "PASSED",
+  "preflight_rows": [
+    {
+      "frequencies": [
+        0.245660025558835,
+        0.3169758427715515,
+        0.43636560787977163,
+        0.5438254652060676,
+        0.6391597847235599,
+        0.6774546266634692
+      ],
+      "gap_status": "PASS",
+      "label": "K_CART",
+      "nearest_gap": 0.07131581721271649,
+      "normalization_status": "PASS",
+      "q": [
+        7.604777580030597e-18,
+        -0.6534657822045036
+      ],
+      "qualified": true,
+      "raw_eh_gram_diagnostic": 1.9091841751898355e-15,
+      "resolution": 48,
+      "strain": -0.02,
+      "target_frequency": 0.245660025558835,
+      "target_normalization_error": 3.4416913763379853e-15
+    },
+    {
+      "frequencies": [
+        0.24561919518193445,
+        0.3169408089374175,
+        0.43631853461129455,
+        0.5436535032532789,
+        0.6390061974022876,
+        0.677235051851073
+      ],
+      "gap_status": "PASS",
+      "label": "K_CART",
+      "nearest_gap": 0.07132161375548304,
+      "normalization_status": "PASS",
+      "q": [
+        7.604777580030597e-18,
+        -0.6534657822045036
+      ],
+      "qualified": true,
+      "raw_eh_gram_diagnostic": 1.116403461685127e-15,
+      "resolution": 64,
+      "strain": -0.02,
+      "target_frequency": 0.24561919518193445,
+      "target_normalization_error": 4.218847493575595e-15
+    },
+    {
+      "frequencies": [
+        0.24104993327390078,
+        0.32491558106257995,
+        0.43137314433998714,
+        0.5385970263639902,
+        0.6390648191273338,
+        0.681711622757673
+      ],
+      "gap_status": "PASS",
+      "label": "Q_CENTER",
+      "nearest_gap": 0.08386564778867917,
+      "normalization_status": "PASS",
+      "q": [
+        7.022897259199149e-18,
+        -0.6034657822045035
+      ],
+      "qualified": true,
+      "raw_eh_gram_diagnostic": 1.5332224695555844e-15,
+      "resolution": 48,
+      "strain": -0.02,
+      "target_frequency": 0.24104993327390078,
+      "target_normalization_error": 1.887379141862766e-15
+    },
+    {
+      "frequencies": [
+        0.24101188458006914,
+        0.3248760261150617,
+        0.43133033347157435,
+        0.5384333493285394,
+        0.6389135798085097,
+        0.6814746089027233
+      ],
+      "gap_status": "PASS",
+      "label": "Q_CENTER",
+      "nearest_gap": 0.08386414153499258,
+      "normalization_status": "PASS",
+      "q": [
+        7.022897259199149e-18,
+        -0.6034657822045035
+      ],
+      "qualified": true,
+      "raw_eh_gram_diagnostic": 1.3192316307453699e-15,
+      "resolution": 64,
+      "strain": -0.02,
+      "target_frequency": 0.24101188458006914,
+      "target_normalization_error": 4.6629367034256575e-15
+    },
+    {
+      "frequencies": [
+        0.2475922233183579,
+        0.31903407743915585,
+        0.4458345703207026,
+        0.5461460227290832,
+        0.6419291292469833,
+        0.6829406627421674
+      ],
+      "gap_status": "PASS",
+      "label": "K_CART",
+      "nearest_gap": 0.07144185412079795,
+      "normalization_status": "PASS",
+      "q": [
+        3.557616665725061e-17,
+        -0.6666666666666666
+      ],
+      "qualified": true,
+      "raw_eh_gram_diagnostic": 7.934053712409121e-16,
+      "resolution": 48,
+      "strain": 0.0,
+      "target_frequency": 0.2475922233183579,
+      "target_normalization_error": 4.440892098500626e-15
+    },
+    {
+      "frequencies": [
+        0.24755466216403849,
+        0.3189766779058339,
+        0.44578796781019225,
+        0.5459771821994813,
+        0.6417803932293006,
+        0.6826473157637383
+      ],
+      "gap_status": "PASS",
+      "label": "K_CART",
+      "nearest_gap": 0.07142201574179541,
+      "normalization_status": "PASS",
+      "q": [
+        3.557616665725061e-17,
+        -0.6666666666666666
+      ],
+      "qualified": true,
+      "raw_eh_gram_diagnostic": 1.1356392110909948e-15,
+      "resolution": 64,
+      "strain": 0.0,
+      "target_frequency": 0.24755466216403849,
+      "target_normalization_error": 5.995204332975845e-15
+    },
+    {
+      "frequencies": [
+        0.24370288858247668,
+        0.32719925780313197,
+        0.4404427466445412,
+        0.5408840856964928,
+        0.6424215685840748,
+        0.6860403577310166
+      ],
+      "gap_status": "PASS",
+      "label": "Q_CENTER",
+      "nearest_gap": 0.08349636922065529,
+      "normalization_status": "PASS",
+      "q": [
+        3.2907954157956816e-17,
+        -0.6166666666666666
+      ],
+      "qualified": true,
+      "raw_eh_gram_diagnostic": 8.946676559825736e-16,
+      "resolution": 48,
+      "strain": 0.0,
+      "target_frequency": 0.24370288858247668,
+      "target_normalization_error": 4.884981308350689e-15
+    },
+    {
+      "frequencies": [
+        0.24366669921312792,
+        0.32713663582138336,
+        0.4404036166274677,
+        0.5407225969584164,
+        0.6422741246554297,
+        0.6857319546876516
+      ],
+      "gap_status": "PASS",
+      "label": "Q_CENTER",
+      "nearest_gap": 0.08346993660825544,
+      "normalization_status": "PASS",
+      "q": [
+        3.2907954157956816e-17,
+        -0.6166666666666666
+      ],
+      "qualified": true,
+      "raw_eh_gram_diagnostic": 1.2120828719500952e-15,
+      "resolution": 64,
+      "strain": 0.0,
+      "target_frequency": 0.24366669921312792,
+      "target_normalization_error": 8.881784197001252e-15
+    },
+    {
+      "frequencies": [
+        0.2496470372836307,
+        0.32163701686568863,
+        0.4558960634136799,
+        0.5487326161702357,
+        0.6434246032603617,
+        0.6903245152622718
+      ],
+      "gap_status": "PASS",
+      "label": "K_CART",
+      "nearest_gap": 0.07198997958205794,
+      "normalization_status": "PASS",
+      "q": [
+        -8.448645427507468e-17,
+        -0.6801342266845039
+      ],
+      "qualified": true,
+      "raw_eh_gram_diagnostic": 9.90111493785077e-16,
+      "resolution": 48,
+      "strain": 0.02,
+      "target_frequency": 0.2496470372836307,
+      "target_normalization_error": 3.4416913763379853e-15
+    },
+    {
+      "frequencies": [
+        0.2495224065110478,
+        0.3214742156934265,
+        0.45584828608387085,
+        0.5484367180968095,
+        0.6430296557820614,
+        0.6897346556590431
+      ],
+      "gap_status": "PASS",
+      "label": "K_CART",
+      "nearest_gap": 0.0719518091823787,
+      "normalization_status": "PASS",
+      "q": [
+        -8.448645427507468e-17,
+        -0.6801342266845039
+      ],
+      "qualified": true,
+      "raw_eh_gram_diagnostic": 1.0043832001204977e-15,
+      "resolution": 64,
+      "strain": 0.02,
+      "target_frequency": 0.2495224065110478,
+      "target_normalization_error": 4.884981308350689e-15
+    },
+    {
+      "frequencies": [
+        0.2464321598882186,
+        0.32998780367886205,
+        0.450169762954999,
+        0.5434916508680036,
+        0.6447588962028358,
+        0.692027725851799
+      ],
+      "gap_status": "PASS",
+      "label": "Q_CENTER",
+      "nearest_gap": 0.08355564379064345,
+      "normalization_status": "PASS",
+      "q": [
+        -7.827544099561318e-17,
+        -0.6301342266845038
+      ],
+      "qualified": true,
+      "raw_eh_gram_diagnostic": 9.43038644906153e-16,
+      "resolution": 48,
+      "strain": 0.02,
+      "target_frequency": 0.2464321598882186,
+      "target_normalization_error": 3.3306690738754696e-15
+    },
+    {
+      "frequencies": [
+        0.24631052758918082,
+        0.3298125317777457,
+        0.4501323493196786,
+        0.5431967607730344,
+        0.644409874924397,
+        0.691381277868526
+      ],
+      "gap_status": "PASS",
+      "label": "Q_CENTER",
+      "nearest_gap": 0.0835020041885649,
+      "normalization_status": "PASS",
+      "q": [
+        -7.827544099561318e-17,
+        -0.6301342266845038
+      ],
+      "qualified": true,
+      "raw_eh_gram_diagnostic": 1.332440448355631e-15,
+      "resolution": 64,
+      "strain": 0.02,
+      "target_frequency": 0.24631052758918082,
+      "target_normalization_error": 3.3306690738754696e-15
+    }
+  ],
+  "schema": "trilatt_e8b_result_v1",
+  "source_binding": {
+    "binding_status": "VERIFIED_WITH_COORDINATE_CONVENTION",
+    "historical_local_berry_units": "OMEGA_Q",
+    "historical_local_berry_value": -12.1426,
+    "source_commit": "b2d40bcbdd04972bd8cfd7c2eecee45f236c5fc0",
+    "source_file": "tests/test_e7i1a_m1_d0500_regression.py",
+    "source_sha256": "37dad4ecba17601cb816224bdbb9ac86a48ce1d4cff8567443d420527594129b"
+  },
+  "source_binding_verified": true,
+  "states": {
+    "-0.02": {
+      "A": [
+        [
+          0.8488769518394538,
+          0.8488769518394538
+        ],
+        [
+          0.5101006700133779,
+          -0.5101006700133779
+        ]
+      ],
+      "F": [
+        [
+          0.9801986733067553,
+          0.0
+        ],
+        [
+          0.0,
+          1.0202013400267558
+        ]
+      ],
+      "G": [
+        [
+          0.5890135182920644,
+          0.5890135182920644
+        ],
+        [
+          0.9801986733067554,
+          -0.9801986733067554
+        ]
+      ],
+      "K_cart": [
+        7.604777580030597e-18,
+        -0.6534657822045036
+      ],
+      "K_fractional": [
+        -0.3333333333333333,
+        0.3333333333333333
+      ],
+      "Q_center": [
+        7.022897259199149e-18,
+        -0.6034657822045035
+      ],
+      "cell_area": 0.8660254037844386,
+      "centers0_cart": [
+        [
+          0.28867513459481287,
+          0.0
+        ],
+        [
+          -0.28867513459481287,
+          0.0
+        ]
+      ],
+      "centers_cart": [
+        [
+          0.28295898394648455,
+          0.0
+        ],
+        [
+          -0.28295898394648455,
+          0.0
+        ]
+      ],
+      "centers_fractional": [
+        [
+          0.16666666666666666,
+          0.16666666666666666
+        ],
+        [
+          -0.16666666666666666,
+          -0.16666666666666666
+        ]
+      ],
+      "det_F": 0.9999999999999999,
+      "ellipse_areas": [
+        0.07068583470577033,
+        0.19634954084936207
+      ],
+      "ellipse_axes": [
+        [
+          0.1470298009960133,
+          0.15303020100401335
+        ],
+        [
+          0.2450496683266888,
+          0.25505033500668894
+        ]
+      ],
+      "fill_fraction": 0.30834589191981704,
+      "geometry_digest": "463f20e9719bd23e59eb4f4c5facfd56388c6c51a6d0b8ed67af1164b8e5cf12",
+      "radii": [
+        0.15,
+        0.25
+      ],
+      "strain": -0.02
+    },
+    "0.0": {
+      "A": [
+        [
+          0.8660254037844386,
+          0.8660254037844386
+        ],
+        [
+          0.5,
+          -0.5
+        ]
+      ],
+      "F": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "G": [
+        [
+          0.5773502691896257,
+          0.5773502691896258
+        ],
+        [
+          1.0,
+          -1.0
+        ]
+      ],
+      "K_cart": [
+        3.557616665725061e-17,
+        -0.6666666666666666
+      ],
+      "K_fractional": [
+        -0.3333333333333333,
+        0.3333333333333333
+      ],
+      "Q_center": [
+        3.2907954157956816e-17,
+        -0.6166666666666666
+      ],
+      "cell_area": 0.8660254037844386,
+      "centers0_cart": [
+        [
+          0.28867513459481287,
+          0.0
+        ],
+        [
+          -0.28867513459481287,
+          0.0
+        ]
+      ],
+      "centers_cart": [
+        [
+          0.28867513459481287,
+          0.0
+        ],
+        [
+          -0.28867513459481287,
+          0.0
+        ]
+      ],
+      "centers_fractional": [
+        [
+          0.16666666666666666,
+          0.16666666666666666
+        ],
+        [
+          -0.16666666666666666,
+          -0.16666666666666666
+        ]
+      ],
+      "det_F": 1.0,
+      "ellipse_areas": [
+        0.07068583470577035,
+        0.19634954084936207
+      ],
+      "ellipse_axes": [
+        [
+          0.15,
+          0.15
+        ],
+        [
+          0.25,
+          0.25
+        ]
+      ],
+      "fill_fraction": 0.30834589191981704,
+      "geometry_digest": "490de1f8197dbd5117dfec5d3bf2e4de4dcfb28480b6e5a195658d7c9b42954a",
+      "radii": [
+        0.15,
+        0.25
+      ],
+      "strain": 0.0
+    },
+    "0.02": {
+      "A": [
+        [
+          0.8835202774380965,
+          0.8835202774380965
+        ],
+        [
+          0.4900993366533776,
+          -0.4900993366533776
+        ]
+      ],
+      "F": [
+        [
+          1.0202013400267558,
+          0.0
+        ],
+        [
+          0.0,
+          0.9801986733067553
+        ]
+      ],
+      "G": [
+        [
+          0.5659179678929694,
+          0.5659179678929692
+        ],
+        [
+          1.0202013400267558,
+          -1.0202013400267558
+        ]
+      ],
+      "K_cart": [
+        -8.448645427507468e-17,
+        -0.6801342266845039
+      ],
+      "K_fractional": [
+        -0.3333333333333333,
+        0.3333333333333333
+      ],
+      "Q_center": [
+        -7.827544099561318e-17,
+        -0.6301342266845038
+      ],
+      "cell_area": 0.8660254037844385,
+      "centers0_cart": [
+        [
+          0.28867513459481287,
+          0.0
+        ],
+        [
+          -0.28867513459481287,
+          0.0
+        ]
+      ],
+      "centers_cart": [
+        [
+          0.2945067591460322,
+          0.0
+        ],
+        [
+          -0.2945067591460322,
+          0.0
+        ]
+      ],
+      "centers_fractional": [
+        [
+          0.16666666666666666,
+          0.16666666666666666
+        ],
+        [
+          -0.16666666666666666,
+          -0.16666666666666666
+        ]
+      ],
+      "det_F": 0.9999999999999999,
+      "ellipse_areas": [
+        0.07068583470577033,
+        0.19634954084936204
+      ],
+      "ellipse_axes": [
+        [
+          0.15303020100401335,
+          0.1470298009960133
+        ],
+        [
+          0.25505033500668894,
+          0.2450496683266888
+        ]
+      ],
+      "fill_fraction": 0.308345891919817,
+      "geometry_digest": "5f81cab8c65ad7e66b1656c79b964a919947b68fade39a77458e125144cdd720",
+      "radii": [
+        0.15,
+        0.25
+      ],
+      "strain": 0.02
+    }
+  },
+  "stop_reason": "FAIL_CLOSED_BEFORE_GH",
+  "telemetry": {
+    "cache_hits": 0,
+    "raw_solver_requests": 16,
+    "solver_failures": 0,
+    "wall_time_seconds": 13.040387187000306
+  },
+  "work_order_id": "TRILATT-E8B-20260824-162",
+  "zero_local_replay": {
+    "anti_omega_q": -0.7064256791134604,
+    "reference": -12.1426,
+    "relative_error": 0.9418225356090574,
+    "status": "FAIL"
+  }
+}
