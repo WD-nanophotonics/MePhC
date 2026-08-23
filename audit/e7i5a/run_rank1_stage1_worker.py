@@ -21,7 +21,11 @@ from audit.e7i3c.run_representation_bridge import (
     solve_isolated,
 )
 from audit.e7i4a.run_composite_valley_chern import frame_to_subspace
-from mephc.path_domain import PATH_SUBSPACE_QUALIFIED, qualify_ordered_path
+from mephc.path_domain import (
+    PATH_SINGLE_BAND_QUALIFIED,
+    PATH_SUBSPACE_QUALIFIED,
+    qualify_ordered_path,
+)
 from mephc.plaquette_domain import (
     PlaquetteRefinementLevel,
     PlaquetteRefinementThresholds,
@@ -197,7 +201,8 @@ def evaluate_band(element, band, delta, reference_delta, adapter, geometry, pref
         refinement_summary = refinement.to_dict()
     area = abs(float(np.linalg.det(np.asarray(vectors, dtype=float))))
     phase = wilson.determinant_phase
-    qualified = bool(profile_passed and path.status == PATH_SUBSPACE_QUALIFIED and wilson.status == WILSON_LOOP_QUALIFIED and boundary.is_qualified and interior.is_qualified and (refinement is None or (refinement.is_qualified and reference["qualified"])))
+    path_qualified = path.status in (PATH_SINGLE_BAND_QUALIFIED, PATH_SUBSPACE_QUALIFIED)
+    qualified = bool(profile_passed and path_qualified and wilson.status == WILSON_LOOP_QUALIFIED and boundary.is_qualified and interior.is_qualified and (refinement is None or (refinement.is_qualified and reference["qualified"])))
     result = {
         "band": band,
         "local_delta_k": delta,
