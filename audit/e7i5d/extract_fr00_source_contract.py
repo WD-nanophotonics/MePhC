@@ -40,6 +40,8 @@ def inventory(source_root: Path, figshare_metadata: Path, archive: Path | None =
     for path in sorted(source_root.rglob("*")):
         if path.is_file():
             rel = path.relative_to(source_root).as_posix()
+            if path.resolve() in {figshare_metadata.resolve(), archive.resolve() if archive else Path("__missing__").resolve()}:
+                continue
             role = "ARXIV_SOURCE_TEXT" if rel == "arxiv/NewBC.tex" else "ARXIV_SOURCE_MANIFEST" if rel == "arxiv/00README.json" else "ARXIV_SOURCE_BIB" if rel.endswith(".bib") else "ARXIV_SOURCE_FIGURE_ASSET" if rel.startswith("arxiv/pic/") else "ARXIV_SOURCE_PACKAGE_EXTRACTED"
             files.append({"source_name": "arXiv_2603.27244v1", "source_role": role, "original_filename": rel, "byte_size": path.stat().st_size, "sha256": sha(path), "content_type": content_type(path)})
     if figshare_metadata.exists():
