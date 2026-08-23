@@ -1,0 +1,109 @@
+﻿{
+  "schema": "trilatt_e9e_c_fr04_k_kprime_berry_evolution_contract_v1",
+  "work_order_id": "TRILATT-E9E-C-20260824-193",
+  "base_sandbox_sha": "2f237ed5102a7e2e6bf9eb7ea7c409b3b46e61a9",
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "e9e_b_contract_sha256": "1f247863dbdb1ec5603737a1fc9f1fa454b5c59600553848ef588d26b04f8eeb",
+  "e9e_b_result_sha256": "1347b3340f976098ba30479dca5685a891bbdb3cf422e7a286a11a68ca253dda",
+  "model": {
+    "f_r": 0.4,
+    "lattice_constant_nm": 400.0,
+    "effective_refractive_index": 2.65,
+    "background_epsilon": 7.0225,
+    "air_epsilon": 1.0,
+    "polarization": "TE",
+    "constant_air_hole_area": 0.2078460969082653,
+    "geometry_source": "E9E_A_ANALYTIC_LINE_ARC_CONSTRUCTION",
+    "primary_tessellation": 96,
+    "public_geometry_first": true,
+    "real_space_conversion": "r_mpb = solve(A_real,r_cartesian)",
+    "conversion_count": "EXACTLY_ONCE",
+    "representation": "mpb_energy_eh_v1",
+    "num_bands": 6,
+    "rank": 1,
+    "composite_subspace_mixing": false,
+    "resolutions": [64, 96]
+  },
+  "spectral_replay": {
+    "resolution": 96,
+    "tessellation": 96,
+    "public_k": [0.6666666666666666, 0.0],
+    "expected_first_six": [
+      0.26167064411105895,
+      0.32154920625802114,
+      0.3320682958617442,
+      0.555515785833453,
+      0.5932437698358399,
+      0.6062865838068457
+    ],
+    "absolute_tolerance": 1e-7
+  },
+  "paper_comparison": {
+    "center": "PUBLIC_K_PRIME",
+    "paper_stencil_side_q": 0.027777777777777776,
+    "paper_stencil_label": "1/36",
+    "fine_stencil_labels": ["1/72", "1/144"],
+    "fr0_targets_over_a2": [-0.92, 0.72, 0.19],
+    "fr0p4_targets_over_a2": [-0.19, -7.53, 7.68],
+    "policy": "TREND_FIDELITY_OVER_POINTWISE_NUMERICAL_COINCIDENCE",
+    "no_posthoc_sign_flip": true
+  },
+  "qualification": {
+    "profile_name": "DAI_FR04_K_RANK1_LOCAL_BERRY_V1",
+    "min_external_gap": 0.005,
+    "min_singular_value": 0.9,
+    "max_principal_angle": 0.45,
+    "max_projector_distance": 0.3,
+    "max_e4c_metric_delta": 0.1,
+    "stencil_ladder": [0.027777777777777776, 0.013888888888888888, 0.006944444444444444],
+    "stencil_labels": ["1/36", "1/72", "1/144"],
+    "wilson_formula": "-arg(loop_product)/side_q^2",
+    "paper_literal_formula": "-Im(loop_product)/side_q^2",
+    "normalization": "omega_over_a2 = omega_q/(2*pi)^2"
+  },
+  "tessellation_control": {
+    "resolution": 64,
+    "center": "PUBLIC_K",
+    "side_q": 0.027777777777777776,
+    "arc_segments_per_corner": [48, 96],
+    "qualitative_stability_required": true,
+    "new_strict_amplitude_threshold": false
+  },
+  "trs_control": {
+    "resolution": 96,
+    "tessellation": 96,
+    "centers": ["PUBLIC_K", "PUBLIC_K_PRIME"],
+    "stencils": ["1/36", "1/144"],
+    "relative_residual_max": 0.01,
+    "posthoc_sign_flip": false
+  },
+  "forbidden_scope": [
+    "f_r_0p5_exact_k_berry",
+    "berry_field_map",
+    "valley_chern",
+    "full_bz_chern",
+    "parameter_fitting",
+    "rank2_or_rank3_substitution",
+    "posthoc_sign_flip",
+    "geometry_change",
+    "threshold_relaxation_after_execution",
+    "production_code",
+    "main_push",
+    "force_push",
+    "rebase",
+    "history_rewrite"
+  ],
+  "authorization": {
+    "live_mpb_bounded": true,
+    "new_berry_calculation": true,
+    "berry_scope": "FR0P4_K_AND_KPRIME_ONLY",
+    "f_r_0p5_berry": false,
+    "berry_field_map": false,
+    "valley_chern": false,
+    "full_bz_chern": false,
+    "production_code_change": false,
+    "main_push": false,
+    "sandbox_audit_code": true
+  }
+}
+
