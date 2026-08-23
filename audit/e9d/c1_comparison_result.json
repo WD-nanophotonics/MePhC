@@ -1,0 +1,215 @@
+{
+  "E9D_C1_OVERALL": "SOURCE_BOUND_FR0_DISTRIBUTION_COMPARISON_READY_FOR_SUPERVISOR_DECISION",
+  "band_comparisons": [
+    {
+      "band_one_based": 1,
+      "center_sign_match": true,
+      "center_sign_observed": "NEGATIVE",
+      "dominant_sign_structure_match": true,
+      "important_off_center_structure_observed": false,
+      "map_descriptor": {
+        "center_value": -0.8913231885543378,
+        "max_abs_location_offset": [
+          0.0,
+          0.0
+        ],
+        "max_abs_value": -0.8913231885543378,
+        "max_location_offset": [
+          0.16666666666666666,
+          -0.16666666666666666
+        ],
+        "max_value": 0.0010008281868245897,
+        "min_location_offset": [
+          0.0,
+          0.0
+        ],
+        "min_value": -0.8913231885543378,
+        "negative_pixel_count": 159,
+        "positive_pixel_count": 10,
+        "reported_pixel_count": 169,
+        "second_moment_radius_of_abs_omega": 0.0807942085009144,
+        "unreported_pixel_count": 0,
+        "weighted_centroid_of_abs_omega": [
+          0.000503992310506019,
+          2.4567030255920125e-05
+        ]
+      },
+      "peak_region_match": true,
+      "relative_band_strength_match": "UNDETERMINED",
+      "sign_reversal_observed": true,
+      "sign_reversal_structure_match": false,
+      "source_descriptor": {
+        "dominant_sign_near_k": "NEGATIVE",
+        "important_off_center_structure_visible": false,
+        "primary_abs_feature_centered_near_k": true,
+        "qualitative_relative_magnitude": "UNDETERMINED",
+        "qualitative_spatial_extent": "TIGHT",
+        "sign_at_k": "NEGATIVE",
+        "sign_reversal_visibly_present": false
+      },
+      "source_support_notes": "Source-bound qualitative comparison only; no image digitization or pixel fitting.",
+      "spatial_extent_observed_second_moment": 0.0807942085009144,
+      "spatial_extent_order_match": true
+    },
+    {
+      "band_one_based": 2,
+      "center_sign_match": true,
+      "center_sign_observed": "POSITIVE",
+      "dominant_sign_structure_match": true,
+      "important_off_center_structure_observed": false,
+      "map_descriptor": {
+        "center_value": 0.7099796418328996,
+        "max_abs_location_offset": [
+          0.0,
+          0.0
+        ],
+        "max_abs_value": 0.7099796418328996,
+        "max_location_offset": [
+          0.0,
+          0.0
+        ],
+        "max_value": 0.7099796418328996,
+        "min_location_offset": [
+          0.16666666666666666,
+          -0.16666666666666666
+        ],
+        "min_value": 0.0341935241818359,
+        "negative_pixel_count": 0,
+        "positive_pixel_count": 169,
+        "reported_pixel_count": 169,
+        "second_moment_radius_of_abs_omega": 0.13266735910519983,
+        "unreported_pixel_count": 0,
+        "weighted_centroid_of_abs_omega": [
+          -0.00867040627491002,
+          8.986518431915534e-06
+        ]
+      },
+      "peak_region_match": true,
+      "relative_band_strength_match": "UNDETERMINED",
+      "sign_reversal_observed": false,
+      "sign_reversal_structure_match": false,
+      "source_descriptor": {
+        "dominant_sign_near_k": "POSITIVE",
+        "important_off_center_structure_visible": true,
+        "primary_abs_feature_centered_near_k": true,
+        "qualitative_relative_magnitude": "UNDETERMINED",
+        "qualitative_spatial_extent": "BROAD",
+        "sign_at_k": "POSITIVE",
+        "sign_reversal_visibly_present": true
+      },
+      "source_support_notes": "Source-bound qualitative comparison only; no image digitization or pixel fitting.",
+      "spatial_extent_observed_second_moment": 0.13266735910519983,
+      "spatial_extent_order_match": true
+    },
+    {
+      "band_one_based": 3,
+      "center_sign_match": true,
+      "center_sign_observed": "POSITIVE",
+      "dominant_sign_structure_match": true,
+      "important_off_center_structure_observed": true,
+      "map_descriptor": {
+        "center_value": 0.14952259899305498,
+        "max_abs_location_offset": [
+          -0.08333333333333333,
+          -0.16666666666666666
+        ],
+        "max_abs_value": -0.5636155933052267,
+        "max_location_offset": [
+          0.0,
+          0.0
+        ],
+        "max_value": 0.14952259899305498,
+        "min_location_offset": [
+          -0.08333333333333333,
+          -0.16666666666666666
+        ],
+        "min_value": -0.5636155933052267,
+        "negative_pixel_count": 160,
+        "positive_pixel_count": 9,
+        "reported_pixel_count": 169,
+        "second_moment_radius_of_abs_omega": 0.15361756723777684,
+        "unreported_pixel_count": 0,
+        "weighted_centroid_of_abs_omega": [
+          -0.013940387904794642,
+          -4.0161871614578815e-06
+        ]
+      },
+      "peak_region_match": true,
+      "relative_band_strength_match": "UNDETERMINED",
+      "sign_reversal_observed": true,
+      "sign_reversal_structure_match": true,
+      "source_descriptor": {
+        "dominant_sign_near_k": "POSITIVE",
+        "important_off_center_structure_visible": true,
+        "primary_abs_feature_centered_near_k": false,
+        "qualitative_relative_magnitude": "UNDETERMINED",
+        "qualitative_spatial_extent": "BROAD",
+        "sign_at_k": "POSITIVE",
+        "sign_reversal_visibly_present": true
+      },
+      "source_support_notes": "Source-bound qualitative comparison only; no image digitization or pixel fitting.",
+      "spatial_extent_observed_second_moment": 0.15361756723777684,
+      "spatial_extent_order_match": true
+    }
+  ],
+  "base_sandbox_sha": "6f9ee239e665d9b4a3a0405737877ed17a416806",
+  "classifications": {
+    "external_classification_tautology_removed": true,
+    "fine_structure": "NOT_REPRODUCED",
+    "overall_distribution_fidelity": "INSUFFICIENT_SOURCE_SUPPORT",
+    "paper_comparison_policy": "TREND_FIDELITY_OVER_POINTWISE_NUMERICAL_COINCIDENCE",
+    "peak_region": "REPRODUCED",
+    "relative_band_strength": "INSUFFICIENT_SOURCE_SUPPORT",
+    "sign_structure": "REPRODUCED",
+    "spatial_concentration_trend": "REPRODUCED"
+  },
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "full_bz_chern": "NOT_AUTHORIZED",
+  "new_berry_calculation": "NONE",
+  "new_mpb_solver_requests": 0,
+  "original_e9d_numerical_evidence_unchanged": true,
+  "original_e9d_result_sha256": "abf4eb1785ff18a56be3002d9d4859bd0ed65c3b4212589b0f811e82c5850a83",
+  "schema": "trilatt_e9d_c1_source_bound_comparison_result_v1",
+  "source": {
+    "arxiv_url": "https://arxiv.org/abs/2603.27244",
+    "arxiv_version": "arXiv:2603.27244v1",
+    "authors": [
+      "Wei Dai",
+      "Taiki Yoda",
+      "Yuto Moritake",
+      "Masaya Notomi"
+    ],
+    "band_mapping": {
+      "panel_d": 1,
+      "panel_e": 2,
+      "panel_f": 3
+    },
+    "color_sign_convention": "signed normalized Omega/a^2 color map; no hue or pixel value was digitized",
+    "doi": "10.1103/1sq1-3168",
+    "figure": "Figure 3, panels d-f",
+    "journal_reference": "Physical Review B 113, 195412 (2026)",
+    "project_mapping": "paper K comparison is public K-prime because k_paper=-k_MPB",
+    "status": "BOUND",
+    "structural_parameter": "fr=0",
+    "structure_label": "Tri-TPC",
+    "textual_anchors": [
+      "The paper identifies Figure 3(d-f) as the fr=0 TPC distributions for bands 1, 2, and 3.",
+      "The fr=0 discussion describes band-2 triangle and petal structures paired with bands 1 and 3, and says bands 2 and 3 are less localized and spread through the HBZ.",
+      "The paper describes band 3 as having a weaker central contribution with a major petal contribution away from K.",
+      "The paper summarizes band 1 as localized near K while higher bands can have off-K extrema with opposite sign."
+    ],
+    "title": "Fine Structures of Berry Curvature and Unquantized Valley Chern Numbers in Valley Photonic Crystals",
+    "valley_label": "paper K-HBZ centered at K"
+  },
+  "source_bound_evidence": {
+    "arxiv_url": "https://arxiv.org/abs/2603.27244",
+    "doi": "10.1103/1sq1-3168",
+    "figure": "Figure 3, panels d-f",
+    "fr": "fr=0",
+    "no_colorbar_optimization": true,
+    "no_pixel_digitization": true
+  },
+  "source_contract_sha256": "c27571a82f328c2725d52531b0a150b35f5bf3476a12d1ac2f63e5a7bf4c9a84",
+  "valley_chern": "NOT_AUTHORIZED",
+  "work_order_id": "TRILATT-E9D-C1-20260824-181"
+}
