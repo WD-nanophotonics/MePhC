@@ -1,0 +1,65 @@
+﻿{
+  "schema": "trilatt_e9d_c1_source_bound_paper_map_comparison_contract_v1",
+  "work_order_id": "TRILATT-E9D-C1-20260824-181",
+  "phase": "E9D.C1",
+  "base_sandbox_sha": "6f9ee239e665d9b4a3a0405737877ed17a416806",
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "new_mpb_solver": false,
+  "new_berry_calculation": false,
+  "source": {
+    "status": "BOUND",
+    "title": "Fine Structures of Berry Curvature and Unquantized Valley Chern Numbers in Valley Photonic Crystals",
+    "authors": ["Wei Dai", "Taiki Yoda", "Yuto Moritake", "Masaya Notomi"],
+    "arxiv_version": "arXiv:2603.27244v1",
+    "arxiv_url": "https://arxiv.org/abs/2603.27244",
+    "journal_reference": "Physical Review B 113, 195412 (2026)",
+    "doi": "10.1103/1sq1-3168",
+    "figure": "Figure 3, panels d-f",
+    "structural_parameter": "fr=0",
+    "structure_label": "Tri-TPC",
+    "band_mapping": {"panel_d": 1, "panel_e": 2, "panel_f": 3},
+    "valley_label": "paper K-HBZ centered at K",
+    "project_mapping": "paper K comparison is public K-prime because k_paper=-k_MPB",
+    "color_sign_convention": "signed normalized Omega/a^2 color map; no hue or pixel value was digitized",
+    "textual_anchors": [
+      "The paper identifies Figure 3(d-f) as the fr=0 TPC distributions for bands 1, 2, and 3.",
+      "The fr=0 discussion describes band-2 triangle and petal structures paired with bands 1 and 3, and says bands 2 and 3 are less localized and spread through the HBZ.",
+      "The paper describes band 3 as having a weaker central contribution with a major petal contribution away from K.",
+      "The paper summarizes band 1 as localized near K while higher bands can have off-K extrema with opposite sign."
+    ]
+  },
+  "source_descriptors": {
+    "band_1": {
+      "sign_at_k": "NEGATIVE",
+      "dominant_sign_near_k": "NEGATIVE",
+      "sign_reversal_visibly_present": false,
+      "primary_abs_feature_centered_near_k": true,
+      "important_off_center_structure_visible": false,
+      "qualitative_spatial_extent": "TIGHT",
+      "qualitative_relative_magnitude": "UNDETERMINED"
+    },
+    "band_2": {
+      "sign_at_k": "POSITIVE",
+      "dominant_sign_near_k": "POSITIVE",
+      "sign_reversal_visibly_present": true,
+      "primary_abs_feature_centered_near_k": true,
+      "important_off_center_structure_visible": true,
+      "qualitative_spatial_extent": "BROAD",
+      "qualitative_relative_magnitude": "UNDETERMINED"
+    },
+    "band_3": {
+      "sign_at_k": "POSITIVE",
+      "dominant_sign_near_k": "POSITIVE",
+      "sign_reversal_visibly_present": true,
+      "primary_abs_feature_centered_near_k": false,
+      "important_off_center_structure_visible": true,
+      "qualitative_spatial_extent": "BROAD",
+      "qualitative_relative_magnitude": "UNDETERMINED"
+    }
+  },
+  "comparison_policy": "TREND_FIDELITY_OVER_POINTWISE_NUMERICAL_COINCIDENCE",
+  "existing_e9d_files_are_immutable": true,
+  "no_pixel_fitting": true,
+  "no_chern": true
+}
+
