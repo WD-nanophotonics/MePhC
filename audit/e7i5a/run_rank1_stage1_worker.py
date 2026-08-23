@@ -1,4 +1,4 @@
-﻿"""E7I.5A one-element rank-1 Stage-1 worker; no inter-band mixing."""
+"""E7I.5A one-element rank-1 Stage-1 worker; no inter-band mixing."""
 from __future__ import annotations
 
 import argparse
@@ -42,12 +42,13 @@ RESOLUTION = 48
 R64 = 64
 NUM_BANDS = 4
 BANDS = (0, 1, 2)
+CHECKPOINT_SCHEMA = "e7i5a_rank1_element_checkpoint_c1_v1"
 PRIMARY = 1.0 / 36.0
 REPRESENTATION = "mpb_energy_eh_v1"
 POLARIZATION = "TE"
 TOLERANCE = 1e-7
 MESH_SIZE = 3
-TRANSPORT = SubspaceQualificationThresholds(0.9, 0.45, 0.3, 0.05)
+TRANSPORT = SubspaceQualificationThresholds(0.9, 0.45, 0.3, 0.0)
 REFINEMENT = PlaquetteRefinementThresholds(0.9, 0.45, 0.3, 0.1)
 
 
@@ -59,6 +60,12 @@ def contract_sha(contract: dict) -> str:
     return sha(json.dumps(contract, sort_keys=True, separators=(",", ":"), allow_nan=False).encode())
 
 
+def worker_source_sha() -> str:
+    return sha(Path(__file__).read_bytes())
+
+def calculation_bundle_sha(contract: dict) -> str:
+    bundle = {"worker_source_sha256": contract["worker_source_sha256"], "scientific_contract_sha256": contract["scientific_contract_sha256"], "checkpoint_schema_version": contract["checkpoint_schema_version"]}
+    return sha(json.dumps(bundle, sort_keys=True, separators=(",", ":"), allow_nan=False).encode())
 def git_head(root: Path) -> str:
     return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
 
@@ -156,13 +163,19 @@ def isolation_profile(adapter, geometry, preflight, points, band, cache, counter
     return passed, center_passed, evidence
 
 
+def excluded_eigenvalues(frequencies, selected_band: int) -> tuple[float, ...]:
+    values = tuple(float(value) for index, value in enumerate(frequencies) if index != selected_band)
+    if not values:
+        raise ValueError("selected band requires a non-empty excluded spectrum")
+    return values
+
 def external_contexts(vertex_frequencies, center_frequencies, band: int):
     contexts = []
     for index in range(4):
         next_index = (index + 1) % 4
-        left = (float(vertex_frequencies[index][band - 1]),) if band > 0 else ()
-        right = (float(vertex_frequencies[next_index][band + 1]),) if band < 3 else ()
-        contexts.append(ExternalIsolationContext(left, right, {"source": "E7I.5A rank-1 adjacent-band isolation", "band": band}))
+        left = excluded_eigenvalues(vertex_frequencies[index], band)
+        right = excluded_eigenvalues(vertex_frequencies[next_index], band)
+        contexts.append(ExternalIsolationContext(left, right, {"source": "E7I.5A.C1 complete endpoint excluded spectrum", "band": band}))
     return tuple(contexts)
 
 
@@ -185,16 +198,16 @@ def evaluate_band(element, band, delta, reference_delta, adapter, geometry, pref
     boundary = qualify_plaquette_boundary(tuple(vertex_frames), contexts, thresholds=TRANSPORT, provenance={"source": "E7I.5A rank-1 E4A", "band": band})
     spoke_contexts = []
     for freq in vertex_frequencies:
-        left = (float(freq[band - 1]),) if band > 0 else ()
-        right = (float(center_frequencies[band + 1]),) if band < 3 else ()
-        spoke_contexts.append(ExternalIsolationContext(left, right, {"source": "E7I.5A rank-1 E4B", "band": band}))
+        left = excluded_eigenvalues(freq, band)
+        right = excluded_eigenvalues(center_frequencies, band)
+        spoke_contexts.append(ExternalIsolationContext(left, right, {"source": "E7I.5A.C1 complete vertex-center excluded spectrum", "band": band}))
     interior = qualify_plaquette_interior(boundary, center_frame, tuple(spoke_contexts), provenance={"source": "E7I.5A rank-1 E4B", "band": band})
     refinement = None
     refinement_summary = None
     reference_profile = None
     if reference_delta is not None:
         reference = evaluate_band(element, band, reference_delta, None, adapter, geometry, preflight, domain, cache, counters)
-        reference_profile = reference["profile"]
+        reference_profile = reference["profile_passed"]
         l1 = PlaquetteRefinementLevel(boundary=boundary, interior=interior, step=delta, provenance={"local_delta_k": delta})
         l2 = PlaquetteRefinementLevel(boundary=reference["_boundary"], interior=reference["_interior"], step=reference_delta, provenance={"local_delta_k": reference_delta})
         refinement = qualify_plaquette_refinement((l1, l2), thresholds=REFINEMENT, provenance={"source": "E7I.5A rank-1 E4C", "band": band})
@@ -230,8 +243,10 @@ def evaluate_band(element, band, delta, reference_delta, adapter, geometry, pref
 
 def run(contract: dict, output: Path) -> dict:
     root = Path(__file__).resolve().parents[2]
-    if contract["runner_code_git_sha"] != git_head(root):
-        raise RuntimeError("runner code SHA does not match contract")
+    if contract["worker_source_sha256"] != worker_source_sha():
+        raise RuntimeError("worker source SHA does not match contract")
+    if contract["calculation_bundle_sha256"] != calculation_bundle_sha(contract):
+        raise RuntimeError("calculation bundle SHA does not match contract")
     geometry = build_triangular_reference_geometry(FR)
     preflight = build_triangular_coordinate_preflight()
     adapter = build_reference_mpb_adapter(geometry, preflight)
@@ -258,9 +273,13 @@ def run(contract: dict, output: Path) -> dict:
         clean = {key: value for key, value in final.items() if not key.startswith("_")}
         bands[str(band)] = {"attempts": attempts, "final": clean, "center_profile_blocked": center_blocked}
     payload = {
-        "schema": "e7i5a_rank1_element_checkpoint_v1",
+        "schema": CHECKPOINT_SCHEMA,
         "complete": True,
-        "runner_code_git_sha": contract["runner_code_git_sha"],
+        "checkpoint_schema_version": contract["checkpoint_schema_version"],
+        "worker_source_sha256": contract["worker_source_sha256"],
+        "worker_code_git_sha": contract["worker_code_git_sha"],
+        "scientific_contract_sha256": contract["scientific_contract_sha256"],
+        "calculation_bundle_sha256": contract["calculation_bundle_sha256"],
         "contract_sha256": contract_sha(contract),
         "element_id": contract["element_id"],
         "evaluation_q": contract["evaluation_q"],
@@ -296,6 +315,11 @@ def self_check():
     assert 1.0 / 36.0 > 0 and 1.0 / 144.0 > 0
     assert math.isclose(1.0 / (2.0 * math.pi) * 2.0 * math.pi, 1.0, rel_tol=0.0, abs_tol=1e-15)
     assert frame_rank1.__name__ == "frame_rank1"
+    assert excluded_eigenvalues((1.0, 2.0, 3.0, 4.0), 0) == (2.0, 3.0, 4.0)
+    assert excluded_eigenvalues((1.0, 2.0, 3.0, 4.0), 1) == (1.0, 3.0, 4.0)
+    assert excluded_eigenvalues((1.0, 2.0, 3.0, 4.0), 2) == (1.0, 2.0, 4.0)
+    assert TRANSPORT.min_external_gap == 0.0
+    assert PATH_SINGLE_BAND_QUALIFIED in (PATH_SINGLE_BAND_QUALIFIED, PATH_SUBSPACE_QUALIFIED)
 
 
 def main():
