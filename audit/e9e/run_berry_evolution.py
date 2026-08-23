@@ -189,7 +189,7 @@ def stencil_evidence(
                 "q": list(q),
                 "frequencies": list(value["frequencies"]),
                 "external_gap": float(gap),
-                "E3_PROFILE": "PASS" if gap >= TRANSPORT.minimum_external_gap else "FAIL",
+                "E3_PROFILE": "PASS" if gap >= TRANSPORT.min_external_gap else "FAIL",
             }
         )
     profile_passed = all(row["E3_PROFILE"] == "PASS" for row in profile_rows)
@@ -557,5 +557,6 @@ if __name__ == "__main__":
     else:
         payload = run(output, contract_path)
         print(json.dumps({"schema": payload["schema"], "overall": payload["E9E_C_OVERALL"], "telemetry": payload["telemetry"]}, sort_keys=True))
+
 
 
