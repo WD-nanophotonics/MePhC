@@ -1,0 +1,17 @@
+{
+  "checkpoint_count": 1201,
+  "checkpoint_manifest_sha256": "2774c36937e30ef8b95530af2320a6221f76d217a9f4cb71df1682a2c087e51d",
+  "composite_valley_chern": 0.0003734072307648552,
+  "curvature_integral": 0.0023461868259363554,
+  "element_count": 1201,
+  "main_push_authorized": false,
+  "main_unchanged": true,
+  "qualified_area_fraction": 0.4171355694895036,
+  "qualified_element_count": 1201,
+  "runner_code_git_sha": "4e40f74326114651d0f21f8c21556112022eb6eb",
+  "schema": "e7i4f_stage2_result_v1",
+  "stage2_composite_valley_chern": 0.0003734072307648552,
+  "stage2_status": "FULLY_QUALIFIED",
+  "wall_time_seconds": 9592.434113786,
+  "work_order": "TRILATT-E7I4F-ENV1-20260823-138"
+}
