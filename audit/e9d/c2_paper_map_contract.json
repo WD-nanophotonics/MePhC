@@ -1,0 +1,46 @@
+﻿{
+  "schema": "trilatt_e9d_c2_corrected_source_bound_comparison_contract_v1",
+  "work_order_id": "TRILATT-E9D-C2-20260824-183",
+  "phase": "E9D.C2",
+  "base_sandbox_sha": "4de9b8dbace000e5de7a1ee202417d4e1a4040f1",
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "new_mpb_solver": false,
+  "new_berry_calculation": false,
+  "source_status": "BOUND",
+  "source": {
+    "title": "Fine Structures of Berry Curvature and Unquantized Valley Chern Numbers in Valley Photonic Crystals",
+    "arxiv_version": "arXiv:2603.27244v1",
+    "arxiv_url": "https://arxiv.org/abs/2603.27244",
+    "doi": "10.1103/1sq1-3168",
+    "figure": "Figure 3 panels d-f",
+    "fr": 0,
+    "structure": "Tri-TPC",
+    "band_mapping": {"panel_d": 1, "panel_e": 2, "panel_f": 3},
+    "valley_label": "paper K-HBZ",
+    "text_bound_semantics": {
+      "band1": {"sign_at_k": "NEGATIVE", "dominant_near_k": "NEGATIVE", "primary_feature": "K_CENTERED", "spatial_extent": "TIGHT", "material_sign_reversal": "NOT_DESCRIBED"},
+      "band2": {"sign_at_k": "POSITIVE", "dominant_near_k": "POSITIVE", "structure": "CENTRAL_TRIANGLE_PLUS_EXTENDED_PETAL", "spatial_extent": "BROAD", "material_sign_reversal": "NOT_REQUIRED_BY_SOURCE"},
+      "band3": {"sign_at_k": "POSITIVE", "central_structure": "POSITIVE_ISLAND", "off_center_structure": "NEGATIVE_PETAL", "primary_abs_feature": "MAY_BE_OFF_K", "spatial_extent": "BROAD", "material_sign_reversal": "PRESENT"}
+    }
+  },
+  "comparison_policy": "TREND_FIDELITY_OVER_POINTWISE_NUMERICAL_COINCIDENCE",
+  "rules": {
+    "any_pixel_sign_reversal_tautology_removed": true,
+    "spatial_extent_partial_order_used": true,
+    "off_center_separate_from_global_abs_max": true,
+    "at_k_relative_strength_source_bound": "|Omega1|>|Omega2|>|Omega3|",
+    "map_wide_relative_strength": "INSUFFICIENT_SOURCE_SUPPORT",
+    "band1_opposite_tail": "report ratio; do not call material mismatch when source does not describe it",
+    "band2_reversal": "not required; same-sign extended structure is compatible",
+    "band3_reversal": "supported when opposite-sign off-center maximum exceeds positive center-sign maximum",
+    "overall_policy": "core source-supported structure may be supported while optional map-wide relative magnitude remains insufficient"
+  },
+  "preserve": {
+    "audit/e9d/raw_result.json": true,
+    "audit/e9d/result.json": true,
+    "audit/e9d/plots": true,
+    "audit/e9d/c1_comparison_result.json": true
+  },
+  "prohibited_scope": ["new_mpb", "new_berry_solve", "parameter_fitting", "pixel_fitting", "valley_chern", "full_bz_chern", "production_code_change", "posthoc_sign_flip"]
+}
+
