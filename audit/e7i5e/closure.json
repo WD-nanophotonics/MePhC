@@ -1,0 +1,78 @@
+{
+  "component_wise_replay": [
+    {
+      "R48_component_error_change_from_baseline": {
+        "abs_error_f1": -0.1362518637909949,
+        "abs_error_f2": -0.07990299311670712,
+        "abs_error_f3": -0.009061162591155136,
+        "abs_error_gap21": -0.0001079657124915534,
+        "abs_error_gap32": -0.007005568362591974
+      },
+      "R48_mean_first3_frequency_ratio_to_paper": 0.8713724702016628,
+      "R64_mean_first3_frequency_ratio_to_paper": 0.872678690636242,
+      "candidate_id": "MATERIAL_N2P65_INTERPRETATION_DIAGNOSTIC",
+      "classification": "ABSOLUTE_FREQUENCY_SCALE_STRONGLY_IMPROVED_BUT_TWO_GAP_STRUCTURE_REMAINS_INCOMPATIBLE_WITH_PAPER"
+    },
+    {
+      "R48_component_error_change_from_baseline": {
+        "abs_error_f1": -0.0019341860131141808,
+        "abs_error_f2": -0.01922631846887718,
+        "abs_error_f3": 0.0044297860294367775,
+        "abs_error_gap21": 0.017292132455763,
+        "abs_error_gap32": -0.023656104498313957
+      },
+      "R48_mean_first3_frequency_ratio_to_paper": 1.3511286494023744,
+      "R64_mean_first3_frequency_ratio_to_paper": 1.350761121703277,
+      "candidate_id": "ALTERNATE_MPB_TM_CONVENTION_DIAGNOSTIC",
+      "classification": "ABSOLUTE_FREQUENCY_SCALE_NOT_RECOVERED_AND_GAP_RESPONSE_MIXED"
+    }
+  ],
+  "dai_fr00_reference_branch": "CLOSED",
+  "dai_reproduction": {
+    "composite_chern": "NOT_ESTABLISHED",
+    "individual_chern": "NOT_ESTABLISHED",
+    "local_berry": "NOT_ESTABLISHED"
+  },
+  "e7i5d_evidence_commit": "ebd99df0c6c41496d84b3084d9bbf8c28328e964",
+  "e7i5e_c1_overall": "DAI_FR00_PUBLIC_SOURCE_REFERENCE_LIMITATION_FORMALLY_CLOSED",
+  "e7i5e_calculation_code_sha": "91d7f6f2ef1ef9b9ab4df0a030e6ce3e27d3fbc8",
+  "e7i5e_candidate_commit": "cdec92535304cbe261093223c0d03f897cdccad0",
+  "e7i5e_evidence_sha": "06f0068bf52f3922f694c46dfa8d5ab6b49aef88",
+  "internal_results": {
+    "k_local_band0": {
+      "delta": 0.006944444444444444,
+      "qualified": true,
+      "source": "audit/e7i5b/result.json",
+      "status": "QUALIFIED_AT_1OVER144_UNDER_INTERNAL_CONTRACT"
+    },
+    "rank1_full_domain": {
+      "full_coverage_qualified": false,
+      "status": "PARTIAL_NOT_CHERN_QUALIFIED"
+    },
+    "stage1": {
+      "source": "audit/e7i5a/result.json",
+      "status": "VALID",
+      "value": 0.00039168033110070674
+    },
+    "stage2": {
+      "source": "audit/e7i4f/result.json",
+      "status": "VALID",
+      "value": 0.0003734072307648552
+    }
+  },
+  "main_push": false,
+  "material_semantics_status": "POSSIBLE_PARTIAL_FREQUENCY_SCALE_CONTRIBUTOR_NOT_SOURCE_BOUND",
+  "new_berry_calculation": false,
+  "new_chern_calculation": false,
+  "new_meep_solves": false,
+  "new_mpb_solves": false,
+  "new_source_parameter_candidate": false,
+  "no_further_dai_parameter_hunt": true,
+  "paper_reference_model_recovered": false,
+  "polarization_convention_status": "DISFAVORED_AS_PRIMARY_ROOT_CAUSE",
+  "production_code_changed": false,
+  "raw_e7i5e_result_sha256": "8e2e8c6a0320c0bd172586704fb13ad9d7df839b1585a1717bca97a525c11c08",
+  "remaining_source_ambiguity": "PUBLIC_ARTIFACTS_INSUFFICIENT_FOR_EXACT_COMSOL_CONTRACT",
+  "schema": "e7i5e_componentwise_closure_v1",
+  "work_order": "TRILATT-E7I5E-C1-20260824-158"
+}
