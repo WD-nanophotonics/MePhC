@@ -1,0 +1,106 @@
+﻿{
+  "schema": "trilatt_e9e_d_fr04_local_berry_distribution_contract_v1",
+  "work_order_id": "TRILATT-E9E-D-20260824-197",
+  "base_sandbox_sha": "2737bf48384c75cc7b283a5e2c2f422624a8b4d2",
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "source_contract": "audit/e9e/d_source_panel_contract.json",
+  "model": {
+    "f_r": 0.4,
+    "lattice_constant_nm": 400.0,
+    "effective_refractive_index": 2.65,
+    "background_epsilon": 7.0225,
+    "air_epsilon": 1.0,
+    "polarization": "TE",
+    "geometry_source": "E9E_A_ANALYTIC_LINE_ARC_CONSTRUCTION",
+    "constant_air_hole_area_a2": 0.2078460969082653,
+    "solver_polygon_tessellation": 96,
+    "representation": "mpb_energy_eh_v1",
+    "num_bands": 6,
+    "rank": 1,
+    "public_geometry_first": true,
+    "coordinate_conversion": "Cartesian_to_MPB_exactly_once"
+  },
+  "map": {
+    "center": "PUBLIC_K_PRIME=(-2/3,0)",
+    "resolution": 64,
+    "tessellation": 96,
+    "context_grid": [13,13],
+    "context_indices": [-6,6],
+    "context_step": "1/36",
+    "context_range": "[-1/6,+1/6] x [-1/6,+1/6]",
+    "core_grid": [9,9],
+    "core_indices": [-4,4],
+    "core_step": "1/144",
+    "core_range": "[-1/36,+1/36] x [-1/36,+1/36]",
+    "plaquette_side": "1/144",
+    "no_adaptive_extent": true,
+    "no_adaptive_refinement": true,
+    "no_interpolation": true,
+    "no_zero_fill": true
+  },
+  "qualification": {
+    "min_external_gap": 0.005,
+    "min_singular_value": 0.9,
+    "max_principal_angle": 0.45,
+    "max_projector_distance": 0.3,
+    "max_e4c_metric_delta": 0.1,
+    "e3_profile": "PASSED",
+    "e4a_boundary": "QUALIFIED",
+    "e4b_interior": "QUALIFIED",
+    "wilson": "QUALIFIED",
+    "finite_berry": true,
+    "core_3x3_all_bands_required": true
+  },
+  "rational_grid": {
+    "node_denominator": 288,
+    "context_offset_node_step": 8,
+    "core_offset_node_step": 2,
+    "one_over_72_node_step": 4,
+    "one_over_18_node_step": 16,
+    "identity_fields": ["f_r","geometry_digest","tessellation","resolution","public_rational_node","representation","num_bands","solver_tolerance","mesh_size"]
+  },
+  "r96_validation": {
+    "resolution": 96,
+    "tessellation": 96,
+    "side": "1/144",
+    "offsets_in_1_over_72_units": [[0,0],[1,0],[-1,0],[0,1],[0,-1]]
+  },
+  "trs_control": {
+    "resolution": 64,
+    "tessellation": 96,
+    "side": "1/144",
+    "offsets_in_1_over_72_units": [[0,0],[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]],
+    "relative_residual_max": 0.01,
+    "posthoc_sign_flip": false
+  },
+  "tessellation_control": {
+    "resolution": 64,
+    "side": "1/144",
+    "tessellations": [48,96],
+    "offsets_in_1_over_18_units": [[0,0],[1,0],[-1,0],[0,1],[0,-1]],
+    "qualitative_gate": "sign_and_dominant_band_pattern_stable"
+  },
+  "replay": {
+    "source_result": "audit/e9e/c1_optimized_fine_stencil_result.json",
+    "resolution": 64,
+    "tessellation": 96,
+    "side": "1/144",
+    "tolerance": 1.0e-7,
+    "expected_kprime_omega_wilson": [-0.18897993050559894,-9.463335640897164,9.655478906791302]
+  },
+  "authorization": {
+    "live_mpb_bounded": true,
+    "source_bound_fr04_map": true,
+    "sandbox_audit_code": true,
+    "production_code_change": false,
+    "main_push": false,
+    "fr0p5_work": false,
+    "valley_chern": false,
+    "full_bz_chern": false,
+    "hbz_integration": false,
+    "parameter_sweep": false,
+    "paper_retry": false,
+    "rank2_or_rank3_substitution": false
+  },
+  "forbidden_scope": ["fr0p5_berry","valley_chern","full_bz_chern","hbz_integration","parameter_sweep","adaptive_map","adaptive_grid","full_1_288_map","paper_pixel_fit","paper_retry","rank2_or_rank3_substitution","production_code","main_push","force_push","rebase","history_rewrite"]
+}

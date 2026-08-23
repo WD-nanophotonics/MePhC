@@ -1,0 +1,34 @@
+﻿{
+  "schema": "trilatt_e9e_d_source_panel_contract_v1",
+  "work_order_id": "TRILATT-E9E-D-20260824-197",
+  "source": {
+    "title": "Fine Structures of Berry Curvature and Unquantized Valley Chern Numbers in Valley Photonic Crystals",
+    "authors": ["Wei Dai", "Taiki Yoda", "Yuto Moritake", "Masaya Notomi"],
+    "version": "arXiv:2603.27244v1",
+    "doi": "10.1103/1sq1-3168",
+    "url": "https://arxiv.org/html/2603.27244v1",
+    "structural_parameter": "f_r=0.4",
+    "structure_label": "Tri-TPC",
+    "figure_number": "Figure 3",
+    "panel_identifier_band1": "Figure 3(g)",
+    "panel_identifier_band2": "Figure 3(h)",
+    "panel_identifier_band3": "Figure 3(i)",
+    "paper_valley_label": "K-HBZ centered at K; the panel dashed triangle is the half-Brillouin-zone guide",
+    "k_location_in_panel": "K is at the center of the dashed half-Brillouin-zone triangle",
+    "color_sign_convention": "Use only the paper colorbar labeled normalized Berry curvature Omega/a^2; no raster digitization, color-to-number conversion, or pixel fitting is permitted"
+  },
+  "source_supported_qualitative_descriptors": {
+    "band1": "Omega_1 is extremely small; the paper reports C_v^1=-0.03",
+    "band2": "The distribution contains petal and island regions with opposite Berry-curvature signs",
+    "band3": "The distribution contains petal and island regions with opposite Berry-curvature signs",
+    "band23": "Bands 2 and 3 dominate the chirality near f_r=0.4; the paper reports C_v^2=0.94 and C_v^3=-0.89, but these values are not recomputed or used as acceptance thresholds",
+    "fr0_to_fr04": "The source describes band-1 suppression, band-2 sign change, and enhanced band-2/band-3 contributions as f_r increases to 0.4"
+  },
+  "binding_policy": {
+    "source_panels_bound": true,
+    "raster_digitization": false,
+    "pixelwise_amplitude_fit": false,
+    "paper_color_scale_fit": false,
+    "qualitative_descriptors_only": true
+  }
+}
