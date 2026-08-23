@@ -1,0 +1,471 @@
+{
+  "calculation_code_git_sha": "7474027c878600b0441bc2c384c5a3faeac08cd8",
+  "classifications": {
+    "E7I5C_overall": "SOURCE_GEOMETRY_REMAINS_UNRESOLVED",
+    "K_mapping": "VERIFIED",
+    "best_source_justified_gap21": 0.01967184427380192,
+    "best_source_justified_gap32": 0.005039555149103869,
+    "code_change": "SANDBOX_AUDIT_ONLY",
+    "current_fr00_spectral_reference_status": "MISMATCH_CONFIRMED",
+    "full_domain_run": "FALSE",
+    "intended_vs_actual_mpb_geometry": "MATCH",
+    "main_push": "FALSE",
+    "new_berry_calculation": "NOT_AUTHORIZED",
+    "new_chern_calculation": "NOT_AUTHORIZED",
+    "paper_fill_factor_semantics": "UNRESOLVED",
+    "paper_gap21": 0.045,
+    "paper_gap32": 0.044,
+    "paper_reference_model_recovered": "UNRESOLVED",
+    "paper_triangle_orientation_source": "FIGURE_BOUND",
+    "parameter_fitting": "FALSE",
+    "production_code_changed": "FALSE",
+    "source_justified_candidate_count": 1,
+    "source_paper_binding": "PARTIAL",
+    "spectral_mismatch_root_cause": "SOURCE_GEOMETRY_UNRESOLVED",
+    "te_convention_match": "UNRESOLVED"
+  },
+  "complete": true,
+  "current_contract_reused": {
+    "R48_R64_drift_gap21": 8.223380923633172e-05,
+    "R48_R64_drift_gap32": 0.00016044882091675872,
+    "R48_frequencies": [
+      0.4127885526847116,
+      0.4324603969585135,
+      0.4374999521076174,
+      0.8359496983403484
+    ],
+    "R48_gap21": 0.01967184427380192,
+    "R48_gap32": 0.005039555149103869,
+    "R64_frequencies": [
+      0.4128386288270905,
+      0.43259270691012874,
+      0.43779271088014937,
+      0.8361580223439125
+    ],
+    "R64_gap21": 0.01975407808303825,
+    "R64_gap32": 0.005200003970020628,
+    "evidence_commit": "72ef3b58d6b890e19c381380d1101d9229f957c7",
+    "result_sha256": "6159e1de96d99772f3fe86631ca70dc8e22e73490350bbdae556826fe44e7eea"
+  },
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "main_baseline": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "schema": "e7i5c_fr00_spectral_contract_diagnosis_v1",
+  "source_binding": {
+    "actual_mpb_geometry": {
+      "adapter_schema": "e7i2c_reference_mpb_adapter_v1",
+      "background_relative_permittivity": 2.65,
+      "coordinate_mapping_digest": "b1fba20a9a77109f478ce5538aaa99d6a6c6d0f92a98a43b6a385cfe569d636f",
+      "geometry_type": "Prism",
+      "height": "inf",
+      "inclusion_epsilon": 1.0,
+      "lattice_basis": [
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.8660254037844386,
+          -0.8660254037844386
+        ]
+      ],
+      "polarization": "TE",
+      "primitive": {
+        "analytic_radius": 0.26708300832013504,
+        "construction": "mp.Prism",
+        "kind": "triangle",
+        "vertex_count": 3
+      },
+      "vertices_passed_to_mpb": [
+        [
+          1.6354117562294963e-17,
+          0.26708300832013504
+        ],
+        [
+          -0.23130067012440758,
+          -0.13354150416006744
+        ],
+        [
+          0.23130067012440747,
+          -0.13354150416006763
+        ]
+      ]
+    },
+    "actual_mpb_geometry_digest": "cbb1fc46af5d03a49c3e616490afbb1c2eb0d667c8d4d37fb98ed182f193dea5",
+    "fill_factor_check": {
+      "mephc_air_area_per_primitive_cell": 0.09266471820493492,
+      "mephc_cell_area": 0.8660254037844386,
+      "mephc_fill_factor_matches_numeric_contract": true,
+      "mephc_fill_factor_semantics": "TOTAL_AIR_HOLE_AREA_DIVIDED_BY_PRIMITIVE_CELL_AREA",
+      "mephc_ratio": 0.107,
+      "paper_air_area_per_primitive_cell": null,
+      "paper_fill_factor_semantics": "UNRESOLVED",
+      "status": "UNRESOLVED"
+    },
+    "intended_geometry": {
+      "air_area": 0.09266471820493492,
+      "air_fill_fraction": 0.107,
+      "analytic_area": 0.09266471820493492,
+      "analytic_radius": 0.26708300832013504,
+      "boundary_construction_version": "ANALYTIC_TRIANGLE_V1",
+      "boundary_digest": "0c130dab16a22c3f91bf56b8c5b4316beb64c20e030a929b92ee9186da05c638",
+      "cell_area": 0.8660254037844386,
+      "construction_status": "EXACT_INTERNAL_REFERENCE_CONTRACT",
+      "effective_permittivity": 2.65,
+      "fr": 0.0,
+      "geometry_equivalence": "PAPER_PARAMETER_BOUND",
+      "lattice_constant": 1.0,
+      "material_contract_digest": "35da462a6ff2fd0080f88b5e64e781596d117e7c644641996c43a308d22dcc65",
+      "material_contract_status": "REFERENCE_BOUND",
+      "mpb_epsilon_value": 2.65,
+      "orientation_convention": "PUBLIC_CARTESIAN_QX_QY_CCW",
+      "orientation_source_status": "CONVENTION_MAPPED",
+      "paper_parameter_equivalence": "PAPER_PARAMETER_BOUND",
+      "polarization": "TE",
+      "polygonization_area": 0.09266471820493492,
+      "polygonization_area_error": 0.0,
+      "polygonization_version": "ANALYTIC_TRIANGLE_V1",
+      "primitive_kind": "triangle",
+      "reference_material_semantics": "RELATIVE_PERMITTIVITY",
+      "reference_material_source_role": "Dai II.1 Structural model effective-permittivity statement",
+      "schema": "triangular_reference_geometry_v2",
+      "shape_kind": "triangle",
+      "triangle_orientation_degrees": 90.0,
+      "vertices": [
+        [
+          1.6354117562294963e-17,
+          0.26708300832013504
+        ],
+        [
+          -0.23130067012440758,
+          -0.13354150416006744
+        ],
+        [
+          0.23130067012440747,
+          -0.13354150416006763
+        ]
+      ]
+    },
+    "intended_geometry_digest": "4debd46e949e13c69183b27e3a6896405483d6164ed6fec6e4edcc8700ae3808",
+    "intended_vs_actual_mpb_geometry": "MATCH",
+    "mapping_check": {
+      "actual_mpb_K": [
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "actual_mpb_Kp": [
+        -0.3333333333333333,
+        -0.3333333333333333
+      ],
+      "expected_mpb_K": [
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "expected_mpb_Kp": [
+        -0.3333333333333333,
+        -0.3333333333333333
+      ],
+      "mapping_digest": "b1fba20a9a77109f478ce5538aaa99d6a6c6d0f92a98a43b6a385cfe569d636f",
+      "public_K": [
+        0.6666666666666666,
+        0.0
+      ],
+      "public_Kp": [
+        -0.6666666666666666,
+        -0.0
+      ],
+      "round_trip_residual": 3.557616665725061e-17,
+      "status": "VERIFIED"
+    },
+    "orientation_check": {
+      "current_orientation_source_status": "CONVENTION_MAPPED",
+      "current_triangle_orientation_degrees": 90.0,
+      "paper_triangle_orientation_relative_to_current": "UNRESOLVED",
+      "paper_triangle_orientation_source": "FIGURE_BOUND",
+      "source_compatible_discrete_orientation_representatives": [],
+      "status": "UNRESOLVED"
+    },
+    "paper_sources": {
+      "arxiv": "https://arxiv.org/abs/2603.27244v1",
+      "arxiv_html": "https://arxiv.org/html/2603.27244v1",
+      "figshare_doi": "10.6084/m9.figshare.31076839",
+      "figure_1": "https://arxiv.org/html/2603.27244v1/pic/f1.png",
+      "published_doi": "10.1103/1sq1-3168",
+      "source_version": "arXiv v1, submitted 2026-03-28"
+    },
+    "polarization_check": {
+      "mpb_te_field_content": "MPB_TE_MODE",
+      "paper_te_field_content": "UNRESOLVED_FROM_SOURCE_DEFINITIONS",
+      "te_convention_match": "UNRESOLVED"
+    },
+    "schema": "e7i5c_source_binding_v1",
+    "source_binding_digest": "5fa6c287c8972c2c1c3e06d5023450bbc33ad92f796a371ca46115c63a13b055",
+    "source_facts": {
+      "air_hole_area_held_fixed": true,
+      "air_hole_filling_factor": 0.107,
+      "effective_permittivity": 2.65,
+      "evidence_notes": [
+        "The paper text states regular triangular shape at fr=0.",
+        "The paper states the lattice constant and air-hole area are kept the same.",
+        "The paper states effective permittivity 2.65 and air-hole filling factor 10.7 percent.",
+        "The paper reports the two K gaps and three at-K Berry values for fr=0."
+      ],
+      "fr": 0.0,
+      "paper_berry_omega_over_a2": [
+        -0.92,
+        0.72,
+        0.19
+      ],
+      "paper_gap21": 0.045,
+      "paper_gap32": 0.044,
+      "paper_stencil_delta_kx_a_over_2pi": 0.027777777777777776,
+      "paper_stencil_delta_ky_a_over_2pi": 0.027777777777777776,
+      "polarization": "TE",
+      "shape": "regular triangular air hole",
+      "two_dimensional_model": true
+    },
+    "work_order": "TRILATT-E7I5C-20260824-152"
+  },
+  "source_binding_sha256": "e45c3c7077b767e8add6982f9534af7c578aae5a01b7449acdaecbd9f19489d2",
+  "symmetry_equivalent_K_diagnostic": {
+    "R48_frequency_symmetry_status": "VARIATION_REPORTED_NO_PASS_CUTOFF",
+    "R48_gap21_range": [
+      0.019671839938460445,
+      0.019675553958123315
+    ],
+    "R48_gap32_range": [
+      0.005033147850897146,
+      0.005039555149103148
+    ],
+    "candidate_count": 6,
+    "records": [
+      {
+        "by_resolution": {
+          "48": {
+            "frequencies": [
+              0.4127885526847114,
+              0.4324603969585134,
+              0.43749995210761655,
+              0.8359496983403467
+            ],
+            "gap21": 0.01967184427380203,
+            "gap21_abs_error_from_paper": 0.025328155726197968,
+            "gap32": 0.005039555149103148,
+            "gap32_abs_error_from_paper": 0.03896044485089685
+          },
+          "64": {
+            "frequencies": [
+              0.4128386288270907,
+              0.4325927069101288,
+              0.43779271088014926,
+              0.836158022343913
+            ],
+            "gap21": 0.019754078083038085,
+            "gap21_abs_error_from_paper": 0.025245921916961914,
+            "gap32": 0.0052000039700204614,
+            "gap32_abs_error_from_paper": 0.038799996029979536
+          }
+        },
+        "mpb_fractional_q": [
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "public_q": [
+          0.6666666666666666,
+          -3.557616665725061e-17
+        ],
+        "symmetry_index": 0
+      },
+      {
+        "by_resolution": {
+          "48": {
+            "frequencies": [
+              0.41278879555072623,
+              0.4324610175151676,
+              0.43749677402297216,
+              0.8359484837052659
+            ],
+            "gap21": 0.01967222196444135,
+            "gap21_abs_error_from_paper": 0.02532777803555865,
+            "gap32": 0.0050357565078045785,
+            "gap32_abs_error_from_paper": 0.03896424349219542
+          },
+          "64": {
+            "frequencies": [
+              0.4128388458720852,
+              0.4325929572941021,
+              0.437790784758129,
+              0.836157234821409
+            ],
+            "gap21": 0.019754111422016885,
+            "gap21_abs_error_from_paper": 0.025245888577983114,
+            "gap32": 0.005197827464026916,
+            "gap32_abs_error_from_paper": 0.03880217253597308
+          }
+        },
+        "mpb_fractional_q": [
+          -0.3333333333333333,
+          0.6666666666666666
+        ],
+        "public_q": [
+          0.3333333333333333,
+          -0.5773502691896257
+        ],
+        "symmetry_index": 1
+      },
+      {
+        "by_resolution": {
+          "48": {
+            "frequencies": [
+              0.4127887591758801,
+              0.4324610232331771,
+              0.43749684985923487,
+              0.835948767095645
+            ],
+            "gap21": 0.019672264057296995,
+            "gap21_abs_error_from_paper": 0.025327735942703003,
+            "gap32": 0.005035826626057782,
+            "gap32_abs_error_from_paper": 0.038964173373942215
+          },
+          "64": {
+            "frequencies": [
+              0.41283881319840127,
+              0.43259295855194707,
+              0.43779079106533636,
+              0.8361574466147349
+            ],
+            "gap21": 0.019754145353545804,
+            "gap21_abs_error_from_paper": 0.025245854646454194,
+            "gap32": 0.005197832513389289,
+            "gap32_abs_error_from_paper": 0.03880216748661071
+          }
+        },
+        "mpb_fractional_q": [
+          -0.6666666666666666,
+          0.3333333333333333
+        ],
+        "public_q": [
+          -0.3333333333333333,
+          -0.5773502691896257
+        ],
+        "symmetry_index": 2
+      },
+      {
+        "by_resolution": {
+          "48": {
+            "frequencies": [
+              0.41278880913589344,
+              0.4324610623603148,
+              0.4374968319513767,
+              0.8359487176745142
+            ],
+            "gap21": 0.019672253224421343,
+            "gap21_abs_error_from_paper": 0.025327746775578655,
+            "gap32": 0.005035769591061889,
+            "gap32_abs_error_from_paper": 0.03896423040893811
+          },
+          "64": {
+            "frequencies": [
+              0.41283883164561974,
+              0.43259296208075115,
+              0.43779077208119,
+              0.8361573516660991
+            ],
+            "gap21": 0.019754130435131412,
+            "gap21_abs_error_from_paper": 0.025245869564868587,
+            "gap32": 0.0051978100004388406,
+            "gap32_abs_error_from_paper": 0.03880218999956116
+          }
+        },
+        "mpb_fractional_q": [
+          -0.3333333333333333,
+          -0.3333333333333333
+        ],
+        "public_q": [
+          -0.6666666666666666,
+          3.557616665725061e-17
+        ],
+        "symmetry_index": 3
+      },
+      {
+        "by_resolution": {
+          "48": {
+            "frequencies": [
+              0.4127885979324826,
+              0.43246043787094307,
+              0.437499921112282,
+              0.8359496479756001
+            ],
+            "gap21": 0.019671839938460445,
+            "gap21_abs_error_from_paper": 0.025328160061539554,
+            "gap32": 0.005039483241338905,
+            "gap32_abs_error_from_paper": 0.03896051675866109
+          },
+          "64": {
+            "frequencies": [
+              0.41283864932901393,
+              0.43259270712663406,
+              0.4377926932824074,
+              0.8361579603718091
+            ],
+            "gap21": 0.019754057797620128,
+            "gap21_abs_error_from_paper": 0.02524594220237987,
+            "gap32": 0.0051999861557733285,
+            "gap32_abs_error_from_paper": 0.03880001384422667
+          }
+        },
+        "mpb_fractional_q": [
+          0.3333333333333333,
+          -0.6666666666666666
+        ],
+        "public_q": [
+          -0.3333333333333333,
+          0.5773502691896257
+        ],
+        "symmetry_index": 4
+      },
+      {
+        "by_resolution": {
+          "48": {
+            "frequencies": [
+              0.4127886515464059,
+              0.43246420550452924,
+              0.4374973533554264,
+              0.8359478728998111
+            ],
+            "gap21": 0.019675553958123315,
+            "gap21_abs_error_from_paper": 0.025324446041876683,
+            "gap32": 0.005033147850897146,
+            "gap32_abs_error_from_paper": 0.03896685214910285
+          },
+          "64": {
+            "frequencies": [
+              0.4128386900553613,
+              0.43259480814821777,
+              0.43779126993703027,
+              0.836156792707966
+            ],
+            "gap21": 0.01975611809285649,
+            "gap21_abs_error_from_paper": 0.02524388190714351,
+            "gap32": 0.005196461788812501,
+            "gap32_abs_error_from_paper": 0.0388035382111875
+          }
+        },
+        "mpb_fractional_q": [
+          0.6666666666666666,
+          -0.3333333333333333
+        ],
+        "public_q": [
+          0.3333333333333333,
+          0.5773502691896257
+        ],
+        "symmetry_index": 5
+      }
+    ]
+  },
+  "telemetry": {
+    "raw_requests": 12,
+    "solver_failures": 0,
+    "wall_time_seconds": 10.441671722001047
+  },
+  "work_order": "TRILATT-E7I5C-20260824-152"
+}
