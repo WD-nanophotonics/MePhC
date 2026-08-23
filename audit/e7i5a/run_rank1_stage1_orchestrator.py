@@ -38,6 +38,23 @@ def checkpoint_path(directory: Path, element_id: str) -> Path:
     return directory / (sha(element_id.encode())[:24] + ".json")
 def contract_identity(contract: dict) -> dict:
     return {key: contract[key] for key in ("runner_code_git_sha", "element_id", "evaluation_q", "integration_weight", "geometry_digest", "material_digest", "coordinate_mapping_digest", "domain_digest", "resolution", "representation", "polarization", "num_bands", "target_bands", "solver_tolerance", "deterministic", "mesh_size")}
+def result_invariants(final: dict) -> bool:
+    qualified = final.get("qualified")
+    omega = final.get("omega_trace_q")
+    if not isinstance(qualified, bool):
+        return False
+    if qualified != isinstance(omega, (int, float)):
+        return False
+    fully_qualified_statuses = (
+        final.get("profile_passed") is True
+        and final.get("reference_profile_passed") is True
+        and final.get("path_status") == "PATH_SINGLE_BAND_QUALIFIED"
+        and final.get("wilson_status") == "WILSON_LOOP_QUALIFIED"
+        and final.get("boundary_status") == "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+        and final.get("interior_status") == "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+        and (final.get("refinement") is None or final["refinement"].get("status") == "PLAQUETTE_REFINEMENT_SINGLE_BAND_QUALIFIED")
+    )
+    return not fully_qualified_statuses or qualified
 def valid_checkpoint(path: Path, contract: dict) -> bool:
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
@@ -50,9 +67,7 @@ def valid_checkpoint(path: Path, contract: dict) -> bool:
             return False
         for band in TARGET_BANDS:
             final = bands[str(band)].get("final", {})
-            if not isinstance(final.get("qualified"), bool):
-                return False
-            if final.get("qualified") and not isinstance(final.get("omega_trace_q"), (int, float)):
+            if not result_invariants(final):
                 return False
         return True
     except (OSError, ValueError, TypeError, KeyError):
@@ -138,10 +153,11 @@ def certify(root: Path) -> dict:
         contract = build_contract(root, sample, index, geometry, preflight, domain)
         contracts.append(contract)
         entries.append(run_worker(root, contract, directory, worker))
-    passed = len(contracts) == 6 and all(entry["status"] in {"COMPLETED", "REUSE"} for entry in entries) and all(all(entry["payload"]["bands"][str(b)]["final"]["profile_passed"] or not entry["payload"]["bands"][str(b)]["final"]["center_profile_passed"] for b in TARGET_BANDS) for entry in entries)
-    report = {"schema": "e7i5a_certification_report_v1", "work_order": WORK_ORDER, "certification_element_count": len(contracts), "certification_element_ids": [contract["element_id"] for contract in contracts], "certification_passed": passed, "execution_architecture": "FRESH_SUBPROCESS_PER_INTEGRATION_ELEMENT", "max_concurrent_workers": 1, "main_unchanged_required": True, "full_stage1_continuation": "AUTHORIZED_AFTER_CERTIFICATION" if passed else "NOT_AUTHORIZED"}
+    qualified_samples = sum(1 for entry in entries for band in TARGET_BANDS if entry["payload"]["bands"][str(band)]["final"]["qualified"])
+    passed = len(contracts) == 6 and all(entry["status"] in {"COMPLETED", "REUSE"} for entry in entries) and all(result_invariants(entry["payload"]["bands"][str(b)]["final"]) for entry in entries for b in TARGET_BANDS) and qualified_samples > 0 and all(all(entry["payload"]["bands"][str(b)]["final"]["profile_passed"] or not entry["payload"]["bands"][str(b)]["final"]["center_profile_passed"] for b in TARGET_BANDS) for entry in entries)
+    report = {"schema": "e7i5a_certification_report_v1", "work_order": WORK_ORDER, "certification_element_count": len(contracts), "certification_element_ids": [contract["element_id"] for contract in contracts], "certification_passed": passed, "qualified_samples": qualified_samples, "execution_architecture": "FRESH_SUBPROCESS_PER_INTEGRATION_ELEMENT", "max_concurrent_workers": 1, "main_unchanged_required": True, "full_stage1_continuation": "AUTHORIZED_AFTER_CERTIFICATION" if passed else "NOT_AUTHORIZED"}
     atomic_json(root / "audit" / "e7i5a" / "environment_report.json", report)
-    print(json.dumps({"certification_passed": passed, "elements": len(contracts)}))
+    print(json.dumps({"certification_passed": passed, "qualified_samples": qualified_samples, "elements": len(contracts)}))
     return report
 def run_full(root: Path) -> None:
     report = json.loads((root / "audit" / "e7i5a" / "environment_report.json").read_text())
