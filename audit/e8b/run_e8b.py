@@ -119,7 +119,7 @@ def local_omega(st,q,cache,counters):
         l1=PlaquetteRefinementLevel(boundary=primary["_boundary"],interior=primary["_interior"],step=PRIMARY_H,provenance={"work_order":WORK_ORDER})
         l2=PlaquetteRefinementLevel(boundary=reference["_boundary"],interior=reference["_interior"],step=REFERENCE_H,provenance={"work_order":WORK_ORDER})
         refinement=qualify_plaquette_refinement((l1,l2),thresholds=REFINEMENT,provenance={"work_order":WORK_ORDER}).to_dict()
-    qualified=bool(primary["qualified"] and reference["qualified"] and refinement is not None and refinement["is_qualified"])
+    qualified=bool(primary["qualified"] and reference["qualified"] and refinement is not None and refinement["authorization_granted"])
     return {"qualified":qualified,"omega_q":primary.get("omega_q") if qualified else None,"primary":{k:v for k,v in primary.items() if not k.startswith("_")},"reference":{k:v for k,v in reference.items() if not k.startswith("_")},"E4C":refinement,"E4C_executed":refinement is not None}
 
 def authority_replay(st,cache,counters):
