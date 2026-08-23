@@ -36,7 +36,7 @@ def periodic_benchmark():
  direct=np.array([float(np.mean(w*go[i])*area) for i in (0,1)])
  ibp=np.array([-float(np.mean(om*gw[i])*area) for i in (0,1)])
  full=np.array([float(np.mean(go[i])*area) for i in (0,1)])
- return {"full_derivative":full,"direct":direct,"ibp":ibp,"direct_ibp_error":float(np.linalg.norm(direct-ibp))}
+ return {"full_derivative":full.tolist(),"direct":direct.tolist(),"ibp":ibp.tolist(),"direct_ibp_error":float(np.linalg.norm(direct-ibp))}
 def coordinate_benchmark():
  b=np.array([[1.4,0.2],[0.1,0.75]],dtype=float); j=float(np.linalg.det(b)); f=np.array([[1.2,0.2],[0.0,1/1.2]])
  a,q=grid(8.0,401); k=np.einsum("ij,xyj->xyi",b,q); omk,gk=dirac(k)
