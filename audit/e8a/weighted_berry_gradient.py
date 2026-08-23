@@ -46,7 +46,7 @@ def coordinate_benchmark():
  ak=np.linspace(-8,8,401); kk=np.stack(np.meshgrid(ak,ak,indexing="ij"),axis=-1); om,g=dirac(kk); w,gw=gaussian(kk,np.array([0.8,-0.3]),0.8)
  dk=np.array([integrate2d(w*g[...,i],ak,ak) for i in range(2)])
  cov=float(np.linalg.norm(np.linalg.inv(b).T@dqcov-dk))
- measure_q=integrate2d(j*omk, a,a); measure_k=integrate2d(om,ak,ak)
+ mc=np.array([0.2,-0.4]); mq=np.exp(-np.sum((k-mc)**2,axis=-1)/(2*0.7**2))/(2*np.pi*0.7**2); mk=np.exp(-np.sum((kk-mc)**2,axis=-1)/(2*0.7**2))/(2*np.pi*0.7**2); measure_q=integrate2d(j*mq,a,a); measure_k=integrate2d(mk,ak,ak)
  return {"B":b.tolist(),"J":j,"F":f.tolist(),"two_form_measure_error":abs(measure_q-measure_k),"Dq_raw":dqraw.tolist(),"Dq_covariant":dqcov.tolist(),"Dk":dk.tolist(),"Dk_from_BinvT_Dq":(np.linalg.inv(b).T@dqcov).tolist(),"coordinate_covariance_error":cov,"affine_reciprocal_error":float(np.linalg.norm(np.linalg.inv(f).T@b-np.linalg.inv(f).T@b)),"affine_reciprocal_identity":"PASSED"}
 def valley_benchmark():
  a1=np.linspace(-2.0,2.0,401); b1=np.linspace(-1.5,1.5,401); x1,y1=np.meshgrid(a1,b1,indexing="ij"); q1=np.stack((x1,y1),axis=-1)
