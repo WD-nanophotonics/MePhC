@@ -1,0 +1,9 @@
+{
+  "element_count": 331,
+  "execution_architecture": "FRESH_SUBPROCESS_PER_INTEGRATION_ELEMENT",
+  "final_result": "DEFERRED_TO_COMMITTED_REDUCER",
+  "main_unchanged": true,
+  "schema": "e7i5a_c1_run_summary_v1",
+  "wall_time_seconds": 5123.630998731998,
+  "work_order": "TRILATT-E7I5A-C1-20260823-146"
+}

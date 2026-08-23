@@ -1,0 +1,227 @@
+{
+  "calculation_bundle_sha256": "4c17023f8e5183a09187cd33a9781ee37307a2b3b95d35ab86f1c0be0a26e2ad",
+  "candidate_pool": [
+    {
+      "element_id": "cell:12:0:element:0",
+      "index": 151,
+      "label": "near_K"
+    },
+    {
+      "element_id": "cell:9:0:element:1",
+      "index": 82,
+      "label": "ordinary_interior"
+    },
+    {
+      "element_id": "cell:17:9:element:0",
+      "index": 330,
+      "label": "outer_boundary"
+    },
+    {
+      "element_id": "cell:2:0:element:0",
+      "index": 0,
+      "label": "gamma_exclusion_boundary"
+    },
+    {
+      "element_id": "cell:3:0:element:0",
+      "index": 2,
+      "label": "historical_low_gap_region"
+    },
+    {
+      "element_id": "cell:17:-9:element:0",
+      "index": 293,
+      "label": "symmetry_pair_reflection"
+    },
+    {
+      "element_id": "cell:3:-1:element:0",
+      "index": 1,
+      "label": "deterministic_fill"
+    },
+    {
+      "element_id": "cell:3:0:element:1",
+      "index": 3,
+      "label": "deterministic_fill"
+    },
+    {
+      "element_id": "cell:3:0:element:2",
+      "index": 4,
+      "label": "deterministic_fill"
+    },
+    {
+      "element_id": "cell:3:0:element:3",
+      "index": 5,
+      "label": "deterministic_fill"
+    },
+    {
+      "element_id": "cell:3:1:element:0",
+      "index": 6,
+      "label": "deterministic_fill"
+    },
+    {
+      "element_id": "cell:4:-2:element:0",
+      "index": 7,
+      "label": "deterministic_fill"
+    }
+  ],
+  "candidates_attempted": 3,
+  "certification_passed": true,
+  "comparisons": [
+    {
+      "candidate": {
+        "element_id": "cell:12:0:element:0",
+        "index": 151,
+        "label": "near_K"
+      },
+      "comparison": {
+        "new_c1_checkpoint": {
+          "0": {
+            "center_profile_status": true,
+            "final_status": "PATH_SINGLE_BAND_QUALIFIED",
+            "omega": null,
+            "primary_delta": 0.006944444444444444
+          },
+          "1": {
+            "center_profile_status": true,
+            "final_status": "PATH_UNQUALIFIED",
+            "omega": null,
+            "primary_delta": 0.006944444444444444
+          },
+          "2": {
+            "center_profile_status": true,
+            "final_status": "PATH_UNQUALIFIED",
+            "omega": null,
+            "primary_delta": 0.006944444444444444
+          }
+        },
+        "old_194311_checkpoint": {
+          "0": {
+            "center_profile_status": true,
+            "final_status": "PATH_INCOMPLETE",
+            "omega": null,
+            "primary_delta": 0.006944444444444444
+          },
+          "1": {
+            "center_profile_status": true,
+            "final_status": "PATH_SUBSPACE_REQUIRED",
+            "omega": null,
+            "primary_delta": 0.006944444444444444
+          },
+          "2": {
+            "center_profile_status": true,
+            "final_status": "PATH_SUBSPACE_REQUIRED",
+            "omega": null,
+            "primary_delta": 0.006944444444444444
+          }
+        }
+      }
+    },
+    {
+      "candidate": {
+        "element_id": "cell:9:0:element:1",
+        "index": 82,
+        "label": "ordinary_interior"
+      },
+      "comparison": {
+        "new_c1_checkpoint": {
+          "0": {
+            "center_profile_status": true,
+            "final_status": "PATH_SINGLE_BAND_QUALIFIED",
+            "omega": -0.014995461946798034,
+            "primary_delta": 0.027777777777777776
+          },
+          "1": {
+            "center_profile_status": true,
+            "final_status": "PATH_UNQUALIFIED",
+            "omega": null,
+            "primary_delta": 0.006944444444444444
+          },
+          "2": {
+            "center_profile_status": true,
+            "final_status": "PATH_UNQUALIFIED",
+            "omega": null,
+            "primary_delta": 0.006944444444444444
+          }
+        },
+        "old_194311_checkpoint": {
+          "0": {
+            "center_profile_status": true,
+            "final_status": "PATH_INCOMPLETE",
+            "omega": null,
+            "primary_delta": 0.006944444444444444
+          },
+          "1": {
+            "center_profile_status": true,
+            "final_status": "PATH_SUBSPACE_REQUIRED",
+            "omega": null,
+            "primary_delta": 0.006944444444444444
+          },
+          "2": {
+            "center_profile_status": true,
+            "final_status": "PATH_SUBSPACE_REQUIRED",
+            "omega": null,
+            "primary_delta": 0.006944444444444444
+          }
+        }
+      }
+    },
+    {
+      "candidate": {
+        "element_id": "cell:17:9:element:0",
+        "index": 330,
+        "label": "outer_boundary"
+      },
+      "comparison": {
+        "new_c1_checkpoint": {
+          "0": {
+            "center_profile_status": true,
+            "final_status": "PATH_SINGLE_BAND_QUALIFIED",
+            "omega": 0.011940865941664474,
+            "primary_delta": 0.013888888888888888
+          },
+          "1": {
+            "center_profile_status": true,
+            "final_status": "PATH_SINGLE_BAND_QUALIFIED",
+            "omega": -1.7421936109708076,
+            "primary_delta": 0.006944444444444444
+          },
+          "2": {
+            "center_profile_status": true,
+            "final_status": "PATH_SINGLE_BAND_QUALIFIED",
+            "omega": 1.450928082386183,
+            "primary_delta": 0.006944444444444444
+          }
+        },
+        "old_194311_checkpoint": {
+          "0": {
+            "center_profile_status": true,
+            "final_status": "PATH_INCOMPLETE",
+            "omega": null,
+            "primary_delta": 0.006944444444444444
+          },
+          "1": {
+            "center_profile_status": true,
+            "final_status": "PATH_SUBSPACE_REQUIRED",
+            "omega": null,
+            "primary_delta": 0.006944444444444444
+          },
+          "2": {
+            "center_profile_status": true,
+            "final_status": "PATH_SUBSPACE_REQUIRED",
+            "omega": null,
+            "primary_delta": 0.006944444444444444
+          }
+        }
+      }
+    }
+  ],
+  "execution_architecture": "FRESH_SUBPROCESS_PER_INTEGRATION_ELEMENT",
+  "full_stage1_continuation": "AUTHORIZED_AFTER_CERTIFICATION",
+  "main_unchanged_required": true,
+  "max_concurrent_workers": 1,
+  "qualified_counts": {
+    "0": 2,
+    "1": 1,
+    "2": 1
+  },
+  "schema": "e7i5a_c1_certification_report_v1",
+  "work_order": "TRILATT-E7I5A-C1-20260823-146"
+}

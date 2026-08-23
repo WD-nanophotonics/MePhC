@@ -1,0 +1,198 @@
+{
+  "calculation_bundle_sha256": "4c17023f8e5183a09187cd33a9781ee37307a2b3b95d35ab86f1c0be0a26e2ad",
+  "calculation_status": "CHECKPOINTS_COMPLETE",
+  "checkpoint_count": 331,
+  "checkpoint_identity_status": "PASSED",
+  "checkpoint_schema_version": "e7i5a_rank1_element_checkpoint_c1_v1",
+  "expected_elements": 331,
+  "main_unchanged_required": true,
+  "per_band": {
+    "0": {
+      "center_profile_failed_count": 0,
+      "checkpoint_count": 331,
+      "chern": null,
+      "chern_status": "NOT_REPORTED_PARTIAL_COVERAGE",
+      "failure_class_counts": {
+        "REFINEMENT_FAILURE": 20
+      },
+      "failure_weight_by_class": {
+        "REFINEMENT_FAILURE": 0.02962962962962962
+      },
+      "first_blocking_element_ids": [
+        "cell:10:-3:element:1",
+        "cell:10:3:element:1",
+        "cell:10:4:element:1",
+        "cell:13:0:element:1",
+        "cell:12:0:element:0",
+        "cell:17:0:element:1",
+        "cell:15:0:element:1",
+        "cell:16:0:element:0",
+        "cell:15:0:element:0",
+        "cell:17:0:element:0"
+      ],
+      "full_coverage_qualified": false,
+      "low_gap_profile_count": 211,
+      "min_center_nearest_gap": 0.020297239535312483,
+      "min_gap_stability_ratio": 97.13328938249043,
+      "min_profile_passed_nearest_gap": 0.01972759481049019,
+      "omega_sign_counts": {
+        "negative": 188,
+        "positive": 123
+      },
+      "paper_style_reference": -0.1,
+      "qualified_count": 311,
+      "qualified_weight": 0.38750593985987625,
+      "qualified_weight_fraction": 0.9289688250131947,
+      "raw_full_gram_max_off_diagonal": 0.0002528951472796794,
+      "spatial_counts": {
+        "K_REGION": 11,
+        "OUTER_BOUNDARY": 9
+      },
+      "spatial_weight_by_class": {
+        "K_REGION": 0.016975308641975315,
+        "OUTER_BOUNDARY": 0.012654320987654311
+      },
+      "status_counts": {
+        "PATH_SINGLE_BAND_QUALIFIED": 331
+      },
+      "target_normalization_error_max": 4.440892098500626e-15,
+      "total_weight": 0.41713556948950603,
+      "weighted_omega_sum_partial_or_full": 0.0005059935767066488
+    },
+    "1": {
+      "center_profile_failed_count": 10,
+      "checkpoint_count": 331,
+      "chern": null,
+      "chern_status": "NOT_REPORTED_PARTIAL_COVERAGE",
+      "failure_class_counts": {
+        "CENTER_ISOLATION_PROFILE_FAILURE": 10,
+        "PATH_CONTINUITY_FAILURE": 18,
+        "PRIMARY_LEVEL_ISOLATION_PROFILE_FAILURE": 2,
+        "REFINEMENT_FAILURE": 25
+      },
+      "failure_weight_by_class": {
+        "CENTER_ISOLATION_PROFILE_FAILURE": 0.015432098765432101,
+        "PATH_CONTINUITY_FAILURE": 0.024642239710508846,
+        "PRIMARY_LEVEL_ISOLATION_PROFILE_FAILURE": 0.0030864197530864218,
+        "REFINEMENT_FAILURE": 0.03667562232068801
+      },
+      "first_blocking_element_ids": [
+        "cell:10:-3:element:1",
+        "cell:6:0:element:1",
+        "cell:3:0:element:2",
+        "cell:10:3:element:1",
+        "cell:10:4:element:1",
+        "cell:9:0:element:0",
+        "cell:9:0:element:1",
+        "cell:13:0:element:1",
+        "cell:11:0:element:0",
+        "cell:8:0:element:1"
+      ],
+      "full_coverage_qualified": false,
+      "low_gap_profile_count": 790,
+      "min_center_nearest_gap": 0.003487399815507941,
+      "min_gap_stability_ratio": 18.57239813488824,
+      "min_profile_passed_nearest_gap": 0.005050263299410718,
+      "omega_sign_counts": {
+        "negative": 226,
+        "positive": 50
+      },
+      "paper_style_reference": 0.54,
+      "qualified_count": 276,
+      "qualified_weight": 0.33729918893979016,
+      "qualified_weight_fraction": 0.8086080727965245,
+      "raw_full_gram_max_off_diagonal": 0.0002528951472796794,
+      "spatial_counts": {
+        "GAMMA_EXCLUSION_BOUNDARY": 4,
+        "INTERIOR": 9,
+        "K_REGION": 23,
+        "OUTER_BOUNDARY": 19
+      },
+      "spatial_weight_by_class": {
+        "GAMMA_EXCLUSION_BOUNDARY": 0.0026234567901234586,
+        "INTERIOR": 0.013888888888888897,
+        "K_REGION": 0.03549382716049383,
+        "OUTER_BOUNDARY": 0.027830207710209193
+      },
+      "status_counts": {
+        "PATH_SINGLE_BAND_QUALIFIED": 301,
+        "PATH_UNQUALIFIED": 30
+      },
+      "target_normalization_error_max": 4.884981308350689e-15,
+      "total_weight": 0.41713556948950603,
+      "weighted_omega_sum_partial_or_full": -0.3606056309016605
+    },
+    "2": {
+      "center_profile_failed_count": 10,
+      "checkpoint_count": 331,
+      "chern": null,
+      "chern_status": "NOT_REPORTED_PARTIAL_COVERAGE",
+      "failure_class_counts": {
+        "CENTER_ISOLATION_PROFILE_FAILURE": 10,
+        "PATH_CONTINUITY_FAILURE": 18,
+        "PRIMARY_LEVEL_ISOLATION_PROFILE_FAILURE": 2,
+        "REFINEMENT_FAILURE": 7
+      },
+      "failure_weight_by_class": {
+        "CENTER_ISOLATION_PROFILE_FAILURE": 0.015432098765432101,
+        "PATH_CONTINUITY_FAILURE": 0.024642239710508846,
+        "PRIMARY_LEVEL_ISOLATION_PROFILE_FAILURE": 0.0030864197530864218,
+        "REFINEMENT_FAILURE": 0.010132412444144815
+      },
+      "first_blocking_element_ids": [
+        "cell:6:0:element:1",
+        "cell:3:0:element:2",
+        "cell:9:0:element:0",
+        "cell:9:0:element:1",
+        "cell:11:0:element:0",
+        "cell:8:0:element:1",
+        "cell:6:0:element:0",
+        "cell:13:1:element:0",
+        "cell:12:0:element:0",
+        "cell:13:2:element:1"
+      ],
+      "full_coverage_qualified": false,
+      "low_gap_profile_count": 639,
+      "min_center_nearest_gap": 0.003487399815507941,
+      "min_gap_stability_ratio": 18.57239813488824,
+      "min_profile_passed_nearest_gap": 0.005050263299410718,
+      "omega_sign_counts": {
+        "negative": 27,
+        "positive": 267
+      },
+      "paper_style_reference": -0.43,
+      "qualified_count": 294,
+      "qualified_weight": 0.36384239881633346,
+      "qualified_weight_fraction": 0.8722401670555374,
+      "raw_full_gram_max_off_diagonal": 0.0002528951472796794,
+      "spatial_counts": {
+        "GAMMA_EXCLUSION_BOUNDARY": 4,
+        "INTERIOR": 9,
+        "K_REGION": 14,
+        "OUTER_BOUNDARY": 10
+      },
+      "spatial_weight_by_class": {
+        "GAMMA_EXCLUSION_BOUNDARY": 0.0026234567901234586,
+        "INTERIOR": 0.013888888888888897,
+        "K_REGION": 0.021604938271604944,
+        "OUTER_BOUNDARY": 0.015175886722554884
+      },
+      "status_counts": {
+        "PATH_SINGLE_BAND_QUALIFIED": 301,
+        "PATH_UNQUALIFIED": 30
+      },
+      "target_normalization_error_max": 4.884981308350689e-15,
+      "total_weight": 0.41713556948950603,
+      "weighted_omega_sum_partial_or_full": 0.3628758144053608
+    }
+  },
+  "reducer_git_head": "c7571f4c9354489b453d78801b174609d1918d54",
+  "schema": "e7i5a_c1_rank1_stage1_reduction_v1",
+  "scientific_contract_sha256": "cf9a62207e13c78179d7fdf04dad7b15938322104b98ee68ec287b98baf07ad4",
+  "sealed_composite_comparison_status": "NOT_COMPARABLE_UNTIL_FULL_SINGLE_BAND_COVERAGE",
+  "sealed_composite_stage1_chern": 0.00039168033110070674,
+  "unique_element_count": 331,
+  "work_order": "TRILATT-E7I5A-C1-20260823-146",
+  "worker_code_git_sha": "c7571f4c9354489b453d78801b174609d1918d54",
+  "worker_source_sha256": "3191fe616d5714d0e118416b5abaefbb31814f7da56b3c9553a8c50f4e1ec580"
+}
