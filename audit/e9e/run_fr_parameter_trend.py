@@ -9,12 +9,12 @@ sys.path.insert(0,str(ROOT))
 from audit.e9e.a_rounded_triangle_geometry import build_geometry, validate_geometry
 from audit.e9e.run_spectral_embedding import make_lattice, make_solver_geometry, polygon_case
 from audit.e9e.run_berry_evolution import (
-    BANDS, K_PUBLIC, KPRIME_PUBLIC, LABELS, MESH_SIZE, R96, REFINEMENT,
-    SIDES, SOLVER_TOLERANCE, TRANSPORT, compact_evidence, e4c,
-    solve_at, stencil_evidence,
+    BANDS, K_PUBLIC, KPRIME_PUBLIC, MESH_SIZE, R96, REFINEMENT,
+    SOLVER_TOLERANCE, TRANSPORT, solve_at, stencil_evidence,
 )
 from mephc.mpb_energy_spectral_provider import MPBLiveEnergySpectralProvider
 from mephc.valley_benchmark import build_triangular_coordinate_preflight
+from mephc.plaquette_domain import PlaquetteRefinementLevel, qualify_plaquette_refinement
 
 WORK_ORDER="TRILATT-E9E-E-20260824-199"
 NEW_FR=(0.1,0.2,0.3)
@@ -24,6 +24,8 @@ FR0_SHA="abf4eb1785ff18a56be3002d9d4859bd0ed65c3b4212589b0f811e82c5850a83"
 FR04_SHA="c3c04c9dc5ea73ef7e8dbb59b5755d9eb5aed700bc5ad942e64089337fc60827"
 TRS_LIMIT=0.01
 REPLAY_TOL=1e-7
+FINE_SIDES=(1.0/72.0,1.0/144.0,1.0/288.0)
+FINE_LABELS=("1/72","1/144","1/288")
 
 
 def sha(path): return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -38,11 +40,20 @@ def simple_value(e):
 def solve_spectrum(provider,preflight,q,cache,counters,tag):
     return solve_at(provider,preflight,q,R96,cache,counters,tag)
 
+def fine_evidence(center,side,label,band,resolution,provider,preflight,cache,counters,tag):
+    value=stencil_evidence(center,side,band,resolution,provider,preflight,cache,counters,tag)
+    value["stencil_label"]=label
+    return value
+
+def fine_e4c(primary,reference,fine,band,center_name):
+    levels=tuple(PlaquetteRefinementLevel(boundary=item["_boundary"], interior=item["_interior"], step=side, provenance={"source":"E9E.E fine ladder","band":band,"center":center_name,"label":FINE_LABELS[index]}) for index,(item,side) in enumerate(zip((primary,reference,fine),FINE_SIDES)))
+    result=qualify_plaquette_refinement(levels,thresholds=REFINEMENT,provenance={"source":"E9E.E final-pair 1/144-to-1/288 E4C","band":band,"center":center_name}).to_dict()
+    return {"status":result["status"],"authorization_granted":bool(result["authorization_granted"]),"qualified":bool(all(item["_basic_qualified"] for item in (primary,reference,fine)) and result["authorization_granted"]),"metrics":result["metrics"],"thresholds":result["thresholds"],"levels":result["levels"]}
 def berry_center(center_name,center,provider,preflight,cache,counters,tag):
     levels={}
     for band in BANDS:
-        values=[stencil_evidence(center,S,band,R96,provider,preflight,cache,counters,tag) for S in SIDES]
-        refinement=e4c(values[0],values[1],values[2],band,center_name)
+        values=[fine_evidence(center,S,L,band,R96,provider,preflight,cache,counters,tag) for S,L in zip(FINE_SIDES,FINE_LABELS)]
+        refinement=fine_e4c(values[0],values[1],values[2],band,center_name)
         levels[str(band+1)]={"band":band+1,"levels":[simple_value(v) for v in values],"E4C":refinement,"qualified":bool(refinement["qualified"]),"trend_value_1_288":values[2]["omega_over_a2_wilson"] if refinement["qualified"] else None}
     return levels
 
@@ -105,11 +116,11 @@ def run(output,contract_path):
     # Resolution control at f_r=0.2, K-prime, side 1/144.
     fr=0.2; p64,g64=make_provider(fr,64,96); p96,g96=make_provider(fr,96,96); c64={}; c96={}; res_rows=[]
     for band in BANDS:
-        a=stencil_evidence(KPRIME_PUBLIC,SIDES[1],band,64,p64,preflight,c64,control_counters,"fr=0.2|R64|T96"); b=stencil_evidence(KPRIME_PUBLIC,SIDES[1],band,96,p96,preflight,c96,control_counters,"fr=0.2|R96|T96"); res_rows.append({"band":band+1,"R64":simple_value(a),"R96":simple_value(b),"sign_pattern_stable":a["omega_over_a2_wilson"] is not None and b["omega_over_a2_wilson"] is not None and (a["omega_over_a2_wilson"]>0)==(b["omega_over_a2_wilson"]>0)})
+        a=fine_evidence(KPRIME_PUBLIC,FINE_SIDES[1],FINE_LABELS[1],band,64,p64,preflight,c64,control_counters,"fr=0.2|R64|T96"); b=fine_evidence(KPRIME_PUBLIC,FINE_SIDES[1],FINE_LABELS[1],band,96,p96,preflight,c96,control_counters,"fr=0.2|R96|T96"); res_rows.append({"band":band+1,"R64":simple_value(a),"R96":simple_value(b),"sign_pattern_stable":a["omega_over_a2_wilson"] is not None and b["omega_over_a2_wilson"] is not None and (a["omega_over_a2_wilson"]>0)==(b["omega_over_a2_wilson"]>0)})
     # Tessellation control at f_r=0.3, R64, K-prime, side 1/144.
     fr=0.3; p48,g48=make_provider(fr,64,48); p96t,g96t=make_provider(fr,64,96); c48={}; c96t={}; tess_rows=[]
     for band in BANDS:
-        a=stencil_evidence(KPRIME_PUBLIC,SIDES[1],band,64,p48,preflight,c48,control_counters,"fr=0.3|R64|T48"); b=stencil_evidence(KPRIME_PUBLIC,SIDES[1],band,64,p96t,preflight,c96t,control_counters,"fr=0.3|R64|T96"); tess_rows.append({"band":band+1,"TESS48":simple_value(a),"TESS96":simple_value(b),"sign_stable":a["omega_over_a2_wilson"] is not None and b["omega_over_a2_wilson"] is not None and (a["omega_over_a2_wilson"]>0)==(b["omega_over_a2_wilson"]>0)})
+        a=fine_evidence(KPRIME_PUBLIC,FINE_SIDES[1],FINE_LABELS[1],band,64,p48,preflight,c48,control_counters,"fr=0.3|R64|T48"); b=fine_evidence(KPRIME_PUBLIC,FINE_SIDES[1],FINE_LABELS[1],band,64,p96t,preflight,c96t,control_counters,"fr=0.3|R64|T96"); tess_rows.append({"band":band+1,"TESS48":simple_value(a),"TESS96":simple_value(b),"sign_stable":a["omega_over_a2_wilson"] is not None and b["omega_over_a2_wilson"] is not None and (a["omega_over_a2_wilson"]>0)==(b["omega_over_a2_wilson"]>0)})
     payload={"schema":"trilatt_e9e_e_fr_parameter_trend_raw_v1","work_order_id":WORK_ORDER,"base_sandbox_sha":BASE_SANDBOX,"expected_main_head":EXPECTED_MAIN,"calculation_code_git_sha":git_head(),"source_contract_sha256":sha(ROOT/"audit/e9e/e_source_trend_contract.json"),"calculation_contract_sha256":sha(contract_path),"endpoint_series":[ep0,ep04],"endpoint_sha256":{"fr0":FR0_SHA,"fr0p4":FR04_SHA},"source_contract":source,"contract":contract,"self_checks":checks,"geometry_self_checks":geometries,"new_results":new,"resolution_control":{"fr":0.2,"rows":res_rows},"tessellation_control":{"fr":0.3,"rows":tess_rows},"telemetry":{"wall_time_seconds":time.monotonic()-started,"peak_rss_kib":int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss),"solver_requests":sum(x["telemetry"]["solver_requests"] for x in new)+control_counters["solver_requests"],"cache_hits":sum(x["telemetry"]["cache_hits"] for x in new)+control_counters["cache_hits"],"solver_failures":sum(x["telemetry"]["solver_failures"] for x in new)+control_counters["solver_failures"]},"berry_field_map":"NOT_AUTHORIZED","fr0p5_work":"NOT_AUTHORIZED","valley_chern":"NOT_AUTHORIZED","full_bz_chern":"NOT_AUTHORIZED","hbz_integration":"NOT_AUTHORIZED","parameter_fitting":"NOT_AUTHORIZED"}
     Path(output).write_text(json.dumps(payload,sort_keys=True,indent=2,allow_nan=False)+"\n",encoding="utf-8"); return payload
 
@@ -119,5 +130,8 @@ if __name__=="__main__":
         c=json.loads(contract_path.read_text(encoding="utf-8-sig")); s=json.loads((ROOT/"audit/e9e/e_source_trend_contract.json").read_text(encoding="utf-8-sig")); ep0,ep04=endpoint_series(); pf=build_triangular_coordinate_preflight(); checks,_=self_checks(c,s,pf,ep0,ep04); print(json.dumps(checks,sort_keys=True))
     else:
         out=Path(sys.argv[sys.argv.index("--output")+1]) if "--output" in sys.argv else ROOT/"audit/e9e/e_raw_result.json"; p=run(out,contract_path); print(json.dumps({"schema":p["schema"],"calculation_code_git_sha":p["calculation_code_git_sha"],"telemetry":p["telemetry"]},sort_keys=True))
+
+
+
 
 
