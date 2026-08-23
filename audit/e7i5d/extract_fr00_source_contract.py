@@ -101,7 +101,7 @@ def raster_frequencies(f2: Path) -> dict:
 def extract_contract(source_root: Path, figshare_metadata: Path, manifest: dict) -> tuple[dict, list]:
     tex_path = source_root / "arxiv" / "NewBC.tex"
     text = tex_path.read_text(encoding="utf-8")
-    required = ["finite-element-method (FEM) using COMSOL", "two dimensional PhC model", "lattice constant a=400nm", "effective permittivity of silicon is set to 2.65", "filling factor of the air holes is $10.7\\%", "first three bands of the TE-polarization", "fr=0", "regular triangular shape", "Delta \\omega_{21}=0.045", "Delta \\omega_{32}=0.044"]
+    required = ["finite-element-method (FEM) using COMSOL", "two dimensional PhC model", "lattice constant a=400nm", "effective permittivity of silicon is set to 2.65", "filling factor of the air holes is $10.7\\%", "first three bands of the TE-polarization", "$f_r=0$", "regular triangular shape", "Delta \\omega_{21}=0.045", "Delta \\omega_{32}=0.044"]
     anchors = {phrase: text.find(phrase) for phrase in required}
     if any(value < 0 for value in anchors.values()):
         raise RuntimeError({phrase: value for phrase, value in anchors.items() if value < 0})
