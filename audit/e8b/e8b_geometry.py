@@ -39,12 +39,23 @@ def all_states():
 
 def solver_geometry(st):
     import meep as mp
-    A=np.asarray(st["A"],dtype=float)
-    lattice=mp.Lattice(size=mp.Vector3(1,1),basis1=mp.Vector3(float(A[0,0]),float(A[1,0])),basis2=mp.Vector3(float(A[0,1]),float(A[1,1])))
+    A=np.asarray(st["A"],dtype=float); strain=float(st["strain"])
+    if abs(strain)<1e-15:
+        lattice=mp.Lattice(size=mp.Vector3(1,1),basis1=mp.Vector3(float(A[0,0]),float(A[1,0])),basis2=mp.Vector3(float(A[0,1]),float(A[1,1])))
+        geometry=[]
+        for center,r in zip(st["centers_fractional"],st["radii"]):
+            geometry.append(mp.Cylinder(radius=float(r),center=mp.Vector3(float(center[0]),float(center[1])),material=mp.Medium(epsilon=EPSILON_INCLUSION)))
+        return geometry,lattice
+    lengths=np.linalg.norm(A,axis=0); directions=A/lengths[None,:]
+    lattice=mp.Lattice(size=mp.Vector3(1,1),basis1=mp.Vector3(float(directions[0,0]),float(directions[1,0])),basis2=mp.Vector3(float(directions[0,1]),float(directions[1,1])),basis_size=mp.Vector3(float(lengths[0]),float(lengths[1])))
+    e1=np.linalg.solve(A,np.array([1.0,0.0])); e2=np.linalg.solve(A,np.array([0.0,1.0]))
     geometry=[]
-    for center,(ax,ay) in zip(st["centers_cart"],st["ellipse_axes"]):
-        geometry.append(mp.Ellipsoid(size=mp.Vector3(2*ax,2*ay,mp.inf),center=mp.Vector3(float(center[0]),float(center[1])),material=mp.Medium(epsilon=EPSILON_INCLUSION)))
+    for center,(ax,ay) in zip(st["centers_fractional"],st["ellipse_axes"]):
+        geometry.append(mp.Ellipsoid(size=mp.Vector3(2*ax,2*ay,mp.inf),center=mp.Vector3(float(center[0]),float(center[1])),e1=mp.Vector3(float(e1[0]),float(e1[1])),e2=mp.Vector3(float(e2[0]),float(e2[1])),material=mp.Medium(epsilon=EPSILON_INCLUSION)))
     return geometry,lattice
+
+def actual_lattice_matrix(st):
+    A=np.asarray(st["A"],dtype=float); lengths=np.linalg.norm(A,axis=0); return (A/lengths[None,:])*lengths[None,:]
 
 def gh_nodes(order,Q=None):
     if order not in (3,5):
@@ -69,6 +80,7 @@ def check_geometry():
     assert all(np.allclose(x["ellipse_areas"],base,rtol=0,atol=1e-14) for x in states)
     assert all(abs(x["fill_fraction"]-states[1]["fill_fraction"])<1e-14 for x in states)
     assert np.allclose(states[1]["G"],G0)
+    assert all(np.allclose(actual_lattice_matrix(x),np.asarray(x["A"]),rtol=0,atol=1e-14) for x in states)
     assert all(np.allclose(np.asarray(x["G"]),np.linalg.inv(np.asarray(x["A"])).T,rtol=0,atol=1e-14) for x in states)
     assert all(np.allclose(np.asarray(x["K_cart"]),np.asarray(x["G"])@K_FRACTIONAL,rtol=0,atol=1e-14) for x in states)
     assert abs(sum(x["probability"] for x in gh_nodes(3))-1.0)<1e-14
