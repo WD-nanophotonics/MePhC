@@ -1,0 +1,122 @@
+{
+  "arxiv_source": "https://arxiv.org/e-print/2603.27244v1",
+  "figshare_api": "https://api.figshare.com/v2/articles/31076839",
+  "file_count": 14,
+  "files": [
+    {
+      "byte_size": 384,
+      "content_type": "application/json",
+      "original_filename": "arxiv/00README.json",
+      "sha256": "e458187e53db9cca3c5900c1b2ac12e0fd46ce711ca9da455165f3942d6d3441",
+      "source_name": "arXiv_2603.27244v1",
+      "source_role": "ARXIV_SOURCE_MANIFEST"
+    },
+    {
+      "byte_size": 48055,
+      "content_type": "text/x-tex",
+      "original_filename": "arxiv/NewBC.tex",
+      "sha256": "48a62bc1a87d1d5600addeb6757e2c8bff93565ef737d5e6c112b540786e3b1d",
+      "source_name": "arXiv_2603.27244v1",
+      "source_role": "ARXIV_SOURCE_TEXT"
+    },
+    {
+      "byte_size": 104,
+      "content_type": "text/x-bibtex",
+      "original_filename": "arxiv/NewBCNotes.bib",
+      "sha256": "61b9ca8a0eae79078bb6bcd4205c582b5f4f2ed0a16ece16a01837cc4718248d",
+      "source_name": "arXiv_2603.27244v1",
+      "source_role": "ARXIV_SOURCE_BIB"
+    },
+    {
+      "byte_size": 406718,
+      "content_type": "image/png",
+      "original_filename": "arxiv/pic/f1.png",
+      "sha256": "f7d6f42651bc2282cdb56d005fc1117f783428a1007fee9190e13e930aacfb8f",
+      "source_name": "arXiv_2603.27244v1",
+      "source_role": "ARXIV_SOURCE_FIGURE_ASSET"
+    },
+    {
+      "byte_size": 2254014,
+      "content_type": "image/png",
+      "original_filename": "arxiv/pic/f2.png",
+      "sha256": "6aa4cd9125279fea08876384d093bae6788c9922f3b83cd0f97b16ba7e5cc459",
+      "source_name": "arXiv_2603.27244v1",
+      "source_role": "ARXIV_SOURCE_FIGURE_ASSET"
+    },
+    {
+      "byte_size": 2729445,
+      "content_type": "image/png",
+      "original_filename": "arxiv/pic/f3.png",
+      "sha256": "7542ccf3a075a936e88d0df651dbfcdadea762f01aa366cbeb4a8c7708c4424e",
+      "source_name": "arXiv_2603.27244v1",
+      "source_role": "ARXIV_SOURCE_FIGURE_ASSET"
+    },
+    {
+      "byte_size": 549178,
+      "content_type": "image/png",
+      "original_filename": "arxiv/pic/f4.png",
+      "sha256": "9b28ae39dd1abce9cd33866f0d037d001cc18231e6c7ec41b1f11f29e15ad734",
+      "source_name": "arXiv_2603.27244v1",
+      "source_role": "ARXIV_SOURCE_FIGURE_ASSET"
+    },
+    {
+      "byte_size": 2238284,
+      "content_type": "image/png",
+      "original_filename": "arxiv/pic/f5.png",
+      "sha256": "28149cdf05936f0825fd730fc3eac93e3279a068f172e525ada5ac2f0be8780b",
+      "source_name": "arXiv_2603.27244v1",
+      "source_role": "ARXIV_SOURCE_FIGURE_ASSET"
+    },
+    {
+      "byte_size": 1156814,
+      "content_type": "image/png",
+      "original_filename": "arxiv/pic/f6.png",
+      "sha256": "62c3e84d365a4b9188f9c108334dbb307a06923ee4d2d2ec78e3d817ba5d10ec",
+      "source_name": "arXiv_2603.27244v1",
+      "source_role": "ARXIV_SOURCE_FIGURE_ASSET"
+    },
+    {
+      "byte_size": 555609,
+      "content_type": "image/png",
+      "original_filename": "arxiv/pic/f7.png",
+      "sha256": "6d4fdf322f92472ecb95789cbe18ce41a44c08f23dfe448c37b0296b8d7dadf9",
+      "source_name": "arXiv_2603.27244v1",
+      "source_role": "ARXIV_SOURCE_FIGURE_ASSET"
+    },
+    {
+      "byte_size": 733008,
+      "content_type": "image/png",
+      "original_filename": "arxiv/pic/f8.png",
+      "sha256": "28d9a67c82f0657359081822692827660eacc5ae9c5e1663842c6c208cb5b9c2",
+      "source_name": "arXiv_2603.27244v1",
+      "source_role": "ARXIV_SOURCE_FIGURE_ASSET"
+    },
+    {
+      "byte_size": 53544,
+      "content_type": "text/x-bibtex",
+      "original_filename": "arxiv/reference1.bib",
+      "sha256": "2b5253cc30a5c40b9f54aee12351ee49b74ef76fcff5308094ff8e8d4c127648",
+      "source_name": "arXiv_2603.27244v1",
+      "source_role": "ARXIV_SOURCE_BIB"
+    },
+    {
+      "byte_size": 3972,
+      "content_type": "application/json",
+      "original_filename": "figshare_metadata.json",
+      "sha256": "08ef2abb0288eb143df4c4063942d62c19f01e906abb9113aa5d0f06bf399eb7",
+      "source_name": "Figshare_31076839",
+      "source_role": "FIGSHARE_PRIMARY_METADATA"
+    },
+    {
+      "byte_size": 9913932,
+      "content_type": "application/x-tar",
+      "original_filename": "arxiv_source.tar",
+      "sha256": "2e19491a059c856e3f7f62d55eaa9a9e795703dbcc6e111b1ecba762f53fcdf1",
+      "source_name": "arXiv_2603.27244v1",
+      "source_role": "ARXIV_SOURCE_ARCHIVE"
+    }
+  ],
+  "manifest_sha256": "a4816acde211f22d19780122591ad19492c03470aec4652352d79d0ccffa50cb",
+  "published_doi": "10.1103/1sq1-3168",
+  "schema": "e7i5d_primary_source_manifest_v1"
+}

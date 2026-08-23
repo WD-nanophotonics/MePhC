@@ -1,0 +1,92 @@
+{
+  "E7I5D_overall": "PRIMARY_SOURCE_ARTIFACTS_INSUFFICIENT",
+  "TE_convention_match": "UNRESOLVED",
+  "actual_source_model_material_input": "SOURCE_MODEL_NOT_AVAILABLE",
+  "baseline_R48": {
+    "abs_error_gap21": 0.02532815572619808,
+    "abs_error_gap32": 0.03896044485089613,
+    "frequencies": [
+      0.4127885526847116,
+      0.4324603969585135,
+      0.4374999521076174,
+      0.8359496983403484
+    ],
+    "gap21": 0.01967184427380192,
+    "gap32": 0.005039555149103869
+  },
+  "baseline_R64": {
+    "abs_error_gap21": 0.025245921916961747,
+    "abs_error_gap32": 0.03879999602997937,
+    "frequencies": [
+      0.4128386288270905,
+      0.43259270691012874,
+      0.43779271088014937,
+      0.8361580223439125
+    ],
+    "gap21": 0.01975407808303825,
+    "gap32": 0.005200003970020628
+  },
+  "candidate_count": 1,
+  "complete": true,
+  "current_baseline_reused": {
+    "R48_R64_drift_gap21": 8.223380923633172e-05,
+    "R48_R64_drift_gap32": 0.00016044882091675872,
+    "R48_frequencies": [
+      0.4127885526847116,
+      0.4324603969585135,
+      0.4374999521076174,
+      0.8359496983403484
+    ],
+    "R48_gap21": 0.01967184427380192,
+    "R48_gap32": 0.005039555149103869,
+    "R64_frequencies": [
+      0.4128386288270905,
+      0.43259270691012874,
+      0.43779271088014937,
+      0.8361580223439125
+    ],
+    "R64_gap21": 0.01975407808303825,
+    "R64_gap32": 0.005200003970020628,
+    "evidence_commit": "72ef3b58d6b890e19c381380d1101d9229f957c7",
+    "result_sha256": "6159e1de96d99772f3fe86631ca70dc8e22e73490350bbdae556826fe44e7eea"
+  },
+  "new_Berry_calculation": "NOT_AUTHORIZED",
+  "new_Chern_calculation": "NOT_AUTHORIZED",
+  "new_live_K_diagnostics": "NONE_SOURCE_CONTRACT_INCOMPLETE",
+  "new_live_candidate_count": 0,
+  "paper_K_F1": 0.265748031496063,
+  "paper_K_F2": 0.3136482939632546,
+  "paper_K_F3": 0.35761154855643046,
+  "paper_K_F4": null,
+  "paper_K_frequency_uncertainty": 0.001968503937007874,
+  "paper_absolute_frequency_status": "RASTER_DIGITIZED",
+  "paper_comsol_TE_field_content": "UNRESOLVED",
+  "paper_fill_factor_semantics": "TEXT_ONLY_UNRESOLVED",
+  "paper_gap21_digitized": 0.04790026246719159,
+  "paper_gap21_text": 0.045,
+  "paper_gap32_digitized": 0.04396325459317585,
+  "paper_gap32_text": 0.044,
+  "paper_reference_model_recovered": false,
+  "paper_triangle_orientation_degrees_mod_120": 90.0,
+  "paper_triangle_orientation_source": "RASTER_DISCRETE_CLASS",
+  "schema": "e7i5d_primary_source_recovery_result_v1",
+  "source_contract_bound": false,
+  "source_contract_sha256": "b72e84847eb8f2d8c2415fb9597c160a6240c7fcfadc7618097ba7df57b585ac",
+  "source_justified_candidates": [
+    {
+      "candidate_id": "CURRENT_FR00_CONTRACT_REUSE",
+      "difference_from_baseline": "NONE",
+      "new_live_diagnostic": false,
+      "source_evidence": [
+        "NewBC.tex fr=0 regular triangular shape",
+        "NewBC.tex effective permittivity 2.65",
+        "NewBC.tex TE",
+        "NewBC.tex fixed air-hole area",
+        "Figure 2(b) same apex orientation class"
+      ],
+      "why_this_difference_is_source_justified": "This candidate is a reuse of the existing baseline; no unresolved parameter is changed."
+    }
+  ],
+  "spectral_mismatch_root_cause": "SOURCE_ARTIFACTS_INSUFFICIENT",
+  "spectral_structure_compatible": null
+}

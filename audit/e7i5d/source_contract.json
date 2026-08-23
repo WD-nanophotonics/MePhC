@@ -1,0 +1,128 @@
+{
+  "TE": {
+    "MPB_documented_convention": "E_IN_PLANE_HZ_OUT_OF_PLANE",
+    "alternate_TM_authorized": false,
+    "match": "UNRESOLVED",
+    "paper_comsol_TE_field_content": "UNRESOLVED"
+  },
+  "absolute_K_frequency": {
+    "F1": 0.265748031496063,
+    "F2": 0.3136482939632546,
+    "F3": 0.35761154855643046,
+    "F4": null,
+    "gap21_digitized": 0.04790026246719159,
+    "gap32_digitized": 0.04396325459317585,
+    "raster": {
+      "absolute_frequency_status": "RASTER_DIGITIZED",
+      "axis_calibration": {
+        "axis_quantity": "a/lambda = omega*a/(2*pi*c)",
+        "normalized_frequency_uncertainty": 0.001968503937007874,
+        "pixel_uncertainty_rows": 3.0,
+        "x_K_pixel": 2188,
+        "y_bottom_for_0.0": 1562,
+        "y_top_for_0.5": 800
+      },
+      "band4": {
+        "reason": "The source raster does not expose a calibrated fourth K-band value in Figure 2(b).",
+        "status": "NOT_AVAILABLE"
+      },
+      "bands": {
+        "band1": {
+          "normalized_frequency_a_over_lambda": 0.265748031496063,
+          "pixel_row_max": 1161,
+          "pixel_row_median": 1157,
+          "pixel_row_min": 1154
+        },
+        "band2": {
+          "normalized_frequency_a_over_lambda": 0.3136482939632546,
+          "pixel_row_max": 1085,
+          "pixel_row_median": 1084,
+          "pixel_row_min": 1079
+        },
+        "band3": {
+          "normalized_frequency_a_over_lambda": 0.35761154855643046,
+          "pixel_row_max": 1018,
+          "pixel_row_median": 1017,
+          "pixel_row_min": 1014
+        }
+      },
+      "extraction_digest": "b924873dfd047615b1870945dc69d59c2b084f9c082fd03c8c933cf828aa1bd4",
+      "image_size": [
+        5552,
+        4534
+      ],
+      "panel": "Figure 2(b) top band diagram, fr=0 Tri-TPC",
+      "source_asset": "arxiv/pic/f2.png",
+      "source_sha256": "6aa4cd9125279fea08876384d093bae6788c9922f3b83cd0f97b16ba7e5cc459"
+    },
+    "status": "RASTER_DIGITIZED",
+    "text_gap21_authoritative": 0.045,
+    "text_gap32_authoritative": 0.044,
+    "uncertainty_each": 0.001968503937007874
+  },
+  "fill_factor": {
+    "current_mephc_semantics": "AIR_AREA_OVER_PRIMITIVE_CELL_AREA",
+    "current_numeric_contract": 0.107,
+    "paper_semantics": "TEXT_ONLY_UNRESOLVED"
+  },
+  "material": {
+    "actual_source_model_material_input": "SOURCE_MODEL_NOT_AVAILABLE",
+    "alternate_epsilon2_authorized": false,
+    "machine_readable_COMSOL_model": false,
+    "paper_text_material_label": "EFFECTIVE_PERMITTIVITY_2P65"
+  },
+  "orientation": {
+    "current_degrees_mod_120": 90.0,
+    "degrees_mod_120": 90.0,
+    "mirror_class": "APEX_PLUS_PUBLIC_Y_NON_MIRRORED",
+    "source": "RASTER_DISCRETE_CLASS",
+    "source_asset": "arxiv/pic/f2.png",
+    "source_compatible_candidates": [
+      90.0
+    ]
+  },
+  "paper_source": {
+    "arxiv": "2603.27244v1",
+    "figshare_doi": "10.6084/m9.figshare.31076839.v2",
+    "published_doi": "10.1103/1sq1-3168",
+    "text_anchor_offsets": {
+      "$f_r=0$": 16523,
+      "Delta \\omega_{21}=0.045": 17812,
+      "Delta \\omega_{32}=0.044": 17856,
+      "effective permittivity of silicon is set to 2.65": 15794,
+      "filling factor of the air holes is $10.7\\%": 15848,
+      "finite-element-method (FEM) using COMSOL": 15662,
+      "first three bands of the TE-polarization": 16011,
+      "lattice constant a=400nm": 15764,
+      "regular triangular shape": 17717,
+      "two dimensional PhC model": 15733
+    }
+  },
+  "paper_text_contract": {
+    "air_hole_area_held_fixed": true,
+    "air_hole_filling_factor_text": 0.107,
+    "dimension": "2D",
+    "effective_permittivity_text": 2.65,
+    "lattice_constant_m": 4e-07,
+    "method": "FEM_COMSOL",
+    "paper_berry": [
+      -0.92,
+      0.72,
+      0.19
+    ],
+    "paper_gap21": 0.045,
+    "paper_gap32": 0.044,
+    "polarization_text": "TE",
+    "shape_fr0": "regular_triangle"
+  },
+  "schema": "e7i5d_source_contract_v1",
+  "source_artifact_status": {
+    "arxiv_source_package": "BOUND",
+    "figshare_assets": "NO_RELEVANT_ASSETS",
+    "published_supplementary": "NOT_ACCESSIBLE_IN_CURRENT_SOURCE_INVENTORY"
+  },
+  "source_contract_bound": false,
+  "source_contract_sha256": "b72e84847eb8f2d8c2415fb9597c160a6240c7fcfadc7618097ba7df57b585ac",
+  "source_manifest_sha256": "a4816acde211f22d19780122591ad19492c03470aec4652352d79d0ccffa50cb",
+  "spectral_structure_compatible": null
+}

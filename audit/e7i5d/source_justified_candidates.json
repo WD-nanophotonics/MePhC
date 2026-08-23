@@ -1,0 +1,15 @@
+[
+  {
+    "candidate_id": "CURRENT_FR00_CONTRACT_REUSE",
+    "difference_from_baseline": "NONE",
+    "new_live_diagnostic": false,
+    "source_evidence": [
+      "NewBC.tex fr=0 regular triangular shape",
+      "NewBC.tex effective permittivity 2.65",
+      "NewBC.tex TE",
+      "NewBC.tex fixed air-hole area",
+      "Figure 2(b) same apex orientation class"
+    ],
+    "why_this_difference_is_source_justified": "This candidate is a reuse of the existing baseline; no unresolved parameter is changed."
+  }
+]
