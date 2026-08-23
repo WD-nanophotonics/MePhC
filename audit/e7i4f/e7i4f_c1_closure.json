@@ -1,6 +1,4 @@
 {
-  "c1_closure_work_order": "TRILATT-E7I4F-C1-20260823-140",
-  "checkpoint_count": 1201,
   "checkpoint_manifest_sha256": "2774c36937e30ef8b95530af2320a6221f76d217a9f4cb71df1682a2c087e51d",
   "compact_reduction_manifest_sha256": "d1055905672253bbbe1a8ea2a9d98452604d83778c44a413dbb365240e61f3ef",
   "composite_valley_chern": 0.0003734072307648552,
@@ -31,14 +29,23 @@
     "min_low_gap_g34_r64": 0.027919751506157553,
     "min_low_gap_relative_g34": 0.04050354515912856
   },
-  "main_push_authorized": false,
-  "main_unchanged": true,
   "qualified_area_fraction": 1.0,
   "qualified_area_q": 0.4171355694895036,
   "qualified_element_count": 1201,
+  "reference_metrics": {
+    "paper_reference_band1_approx": -0.1,
+    "paper_reference_band2_approx": 0.54,
+    "paper_reference_band3_approx": -0.43,
+    "paper_reference_max_abs_individual": 0.54,
+    "paper_reference_rounded_sum_approx": 0.01,
+    "paper_reference_sum_abs_individual": 1.07,
+    "stage2_composite_to_max_individual_magnitude_ratio": 0.0006914948717867689,
+    "stage2_composite_to_sum_abs_individual_ratio": 0.0003489787203409862
+  },
+  "result_sha256": "02e9c87b36dfaa1b10ddb8e27f7ef8444944a388d238711fa34af19778c3974f",
   "retained_area_q": 0.4171355694895046,
   "runner_code_git_sha": "4e40f74326114651d0f21f8c21556112022eb6eb",
-  "schema": "e7i4f_stage2_result_v2",
+  "schema": "e7i4f_c1_closure_v1",
   "stage1_stage2_comparison": {
     "curvature_integral_abs_difference": 0.00011481327554684062,
     "integration_grid_abs_difference": 1.8273100335851518e-05,
@@ -51,10 +58,24 @@
     "stage2_curvature_integral": 0.0023461868259363554,
     "stage2_grid_spacing": "1/36"
   },
-  "stage2_composite_valley_chern": 0.0003734072307648552,
-  "stage2_status": "FULLY_QUALIFIED",
+  "stage2_replay_abs_difference": {
+    "composite_valley_chern": 0.0,
+    "curvature_integral": 0.0
+  },
+  "stage2_result_commit_sha": "387567e2b00271b62371a0838e36f085c7110e53",
   "unqualified_area_fraction": 0.0,
   "unqualified_area_q": 0,
-  "wall_time_seconds": 9592.434113786,
-  "work_order": "TRILATT-E7I4F-ENV1-20260823-138"
+  "validation": {
+    "area_semantics_corrected": true,
+    "checkpoint_manifest_replay": "PASSED",
+    "checkpoint_set": "EXACT_1201",
+    "compact_reduction_manifest": "COMMITTED_PENDING_PUSH",
+    "delta_distribution": "VERIFIED",
+    "low_gap_profile_reduction": "PASSED",
+    "main_unchanged": true,
+    "no_stage3_required": true,
+    "source_stage2_binding": "VERIFIED",
+    "stage2_reaggregation": "PASSED"
+  },
+  "work_order": "TRILATT-E7I4F-C1-20260823-140"
 }
