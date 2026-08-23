@@ -31,9 +31,9 @@ def reduce(raw_path,out_path):
         b=right["omega_1_288"][1] if right["omega_1_288"] is not None else right.get("omega_1_36",[None,None,None])[1]
         if a is not None and b is not None and a*b<0: sign_change_brackets.append([left["fr"],right["fr"]])
     res_rows=raw["resolution_control"]["rows"]
-    res_sign=all(row["sign_pattern_stable"] and row["R64"]["qualification_status"]=="QUALIFIED" and row["R96"]["qualification_status"]=="QUALIFIED" for row in res_rows)
+    res_sign=all(row["sign_pattern_stable"] and row["R64"]["qualified_before_refinement"] and row["R96"]["qualified_before_refinement"] for row in res_rows)
     tess_rows=raw["tessellation_control"]["rows"]
-    tess_sign=all(row["sign_stable"] and row["TESS48"]["qualification_status"]=="QUALIFIED" and row["TESS96"]["qualification_status"]=="QUALIFIED" for row in tess_rows)
+    tess_sign=all(row["sign_stable"] and row["TESS48"]["qualified_before_refinement"] and row["TESS96"]["qualified_before_refinement"] for row in tess_rows)
     tess_dom=all(max(range(3),key=lambda i:abs(row["TESS48"]["omega_over_a2_wilson"]))==max(range(3),key=lambda i:abs(row["TESS96"]["omega_over_a2_wilson"])) for row in tess_rows)
     all_e4c=all(item["qualification_all"] for item in ordered if item["source"]=="NEW_LIVE")
     classifications={
@@ -52,5 +52,6 @@ def reduce(raw_path,out_path):
     Path(out_path).write_text(json.dumps(payload,sort_keys=True,indent=2,allow_nan=False)+"\n",encoding="utf-8"); return payload
 if __name__=="__main__":
     raw=Path(sys.argv[sys.argv.index("--raw")+1]) if "--raw" in sys.argv else ROOT/"audit/e9e/e_raw_result.json"; out=Path(sys.argv[sys.argv.index("--output")+1]) if "--output" in sys.argv else ROOT/"audit/e9e/e_result.json"; p=reduce(raw,out); print(json.dumps({"schema":p["schema"],"E9E_E_OVERALL":p["E9E_E_OVERALL"],"raw_result_sha256":p["raw_result_sha256"]},sort_keys=True))
+
 
 
