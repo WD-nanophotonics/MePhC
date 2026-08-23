@@ -1,7 +1,8 @@
 {
-  "c1_closure_work_order": "TRILATT-E7I4F-C1-20260823-140",
+  "c1_closure_work_order": "TRILATT-E7I4F-C2-20260823-142",
   "checkpoint_count": 1201,
   "checkpoint_manifest_sha256": "2774c36937e30ef8b95530af2320a6221f76d217a9f4cb71df1682a2c087e51d",
+  "compact_manifest_sha256": "ab715f92832d541a3ba5aac211c9faf063658b3b05d098b26ab8900e3e188ffe",
   "compact_reduction_manifest_sha256": "d1055905672253bbbe1a8ea2a9d98452604d83778c44a413dbb365240e61f3ef",
   "composite_valley_chern": 0.0003734072307648552,
   "curvature_integral": 0.0023461868259363554,
@@ -36,6 +37,8 @@
   "qualified_area_fraction": 1.0,
   "qualified_area_q": 0.4171355694895036,
   "qualified_element_count": 1201,
+  "reducer_code_git_sha": "d843b164bebda7bd4d72ae83b893b747f197cd42",
+  "reducer_sha256": "58db030b83573628e044d79eb28a041bfc09fd811c23ab5afdfe8bcab3efbcde",
   "retained_area_q": 0.4171355694895046,
   "runner_code_git_sha": "4e40f74326114651d0f21f8c21556112022eb6eb",
   "schema": "e7i4f_stage2_result_v2",

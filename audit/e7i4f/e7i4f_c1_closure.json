@@ -1,5 +1,7 @@
 {
+  "c1_source_commit": "1f9ffe49cf66720ec729d66490d0f013d83321e6",
   "checkpoint_manifest_sha256": "2774c36937e30ef8b95530af2320a6221f76d217a9f4cb71df1682a2c087e51d",
+  "compact_manifest_sha256": "ab715f92832d541a3ba5aac211c9faf063658b3b05d098b26ab8900e3e188ffe",
   "compact_reduction_manifest_sha256": "d1055905672253bbbe1a8ea2a9d98452604d83778c44a413dbb365240e61f3ef",
   "composite_valley_chern": 0.0003734072307648552,
   "curvature_integral": 0.0023461868259363554,
@@ -32,6 +34,8 @@
   "qualified_area_fraction": 1.0,
   "qualified_area_q": 0.4171355694895036,
   "qualified_element_count": 1201,
+  "reducer_code_git_sha": "d843b164bebda7bd4d72ae83b893b747f197cd42",
+  "reducer_sha256": "58db030b83573628e044d79eb28a041bfc09fd811c23ab5afdfe8bcab3efbcde",
   "reference_metrics": {
     "paper_reference_band1_approx": -0.1,
     "paper_reference_band2_approx": 0.54,
@@ -42,10 +46,10 @@
     "stage2_composite_to_max_individual_magnitude_ratio": 0.0006914948717867689,
     "stage2_composite_to_sum_abs_individual_ratio": 0.0003489787203409862
   },
-  "result_sha256": "02e9c87b36dfaa1b10ddb8e27f7ef8444944a388d238711fa34af19778c3974f",
+  "result_json_sha256": "7f00774b52287b8bc17d907ad8a71ea60e46cc0b50b2052c6447d10a5e13495b",
   "retained_area_q": 0.4171355694895046,
   "runner_code_git_sha": "4e40f74326114651d0f21f8c21556112022eb6eb",
-  "schema": "e7i4f_c1_closure_v1",
+  "schema": "e7i4f_c2_closure_v1",
   "stage1_stage2_comparison": {
     "curvature_integral_abs_difference": 0.00011481327554684062,
     "integration_grid_abs_difference": 1.8273100335851518e-05,
@@ -69,7 +73,7 @@
     "area_semantics_corrected": true,
     "checkpoint_manifest_replay": "PASSED",
     "checkpoint_set": "EXACT_1201",
-    "compact_reduction_manifest": "COMMITTED_PENDING_PUSH",
+    "compact_reduction_manifest": "COMMITTED_AND_REMOTE_VERIFIED",
     "delta_distribution": "VERIFIED",
     "low_gap_profile_reduction": "PASSED",
     "main_unchanged": true,
@@ -77,5 +81,5 @@
     "source_stage2_binding": "VERIFIED",
     "stage2_reaggregation": "PASSED"
   },
-  "work_order": "TRILATT-E7I4F-C1-20260823-140"
+  "work_order": "TRILATT-E7I4F-C2-20260823-142"
 }
