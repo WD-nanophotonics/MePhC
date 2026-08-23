@@ -1,5 +1,4 @@
 ﻿from __future__ import annotations
-
 import hashlib
 import json
 import math
@@ -7,7 +6,6 @@ import numpy as np
 import subprocess
 from collections import defaultdict
 from pathlib import Path
-
 ROOT = Path('/home/icy/MePhC')
 AUDIT = ROOT / 'audit' / 'e7i4f'
 CHECKPOINTS = AUDIT / 'checkpoints' / 'full'
@@ -16,31 +14,19 @@ RESULT_COMMIT_SHA = '387567e2b00271b62371a0838e36f085c7110e53'
 C1_SOURCE_COMMIT = '1f9ffe49cf66720ec729d66490d0f013d83321e6'
 EXPECTED_CHECKPOINT_MANIFEST_SHA = '2774c36937e30ef8b95530af2320a6221f76d217a9f4cb71df1682a2c087e51d'
 PI = math.pi
-
-
 def canonical(value) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False).encode()
-
-
 def sha_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
-
-
 def atomic_json(path: Path, value: dict) -> None:
     tmp = path.with_name(path.name + '.tmp')
     raw = (json.dumps(value, sort_keys=True, indent=2, allow_nan=False) + '\n').encode()
     tmp.write_bytes(raw)
     tmp.replace(path)
-
-
 def close(value: float, target: float) -> bool:
     return math.isclose(value, target, rel_tol=0.0, abs_tol=1e-12)
-
-
 def finite(value) -> bool:
     return isinstance(value, (int, float)) and math.isfinite(float(value))
-
-
 def main() -> None:
     import sys
     sys.path.insert(0, str(ROOT))
@@ -53,25 +39,21 @@ def main() -> None:
         sample_domain,
         valid_checkpoint,
     )
-
     current_head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     subprocess.run(['git', 'merge-base', '--is-ancestor', C1_SOURCE_COMMIT, current_head], cwd=ROOT, check=True)
     reducer_sha256 = sha_bytes(Path(__file__).read_bytes())
-
     result_path = AUDIT / 'result.json'
     old_result = json.loads(result_path.read_text())
     if old_result.get('runner_code_git_sha') != RUNNER_SHA:
         raise RuntimeError('result runner SHA binding mismatch')
     if old_result.get('checkpoint_manifest_sha256') != EXPECTED_CHECKPOINT_MANIFEST_SHA:
         raise RuntimeError('result checkpoint manifest binding mismatch')
-
     geometry = build_triangular_reference_geometry(0.0)
     preflight = build_triangular_coordinate_preflight()
     domain = paper_style_truncated_k_hbz(fr=0.0, delta_k=0.10, delta_gamma=0.10)
     sample = sample_domain(domain, 1.0 / 36.0)
     if len(sample.centers) != 1201:
         raise RuntimeError(f'unexpected sample size {len(sample.centers)}')
-
     contracts = []
     payloads = []
     original_manifest = []
@@ -80,7 +62,6 @@ def main() -> None:
     telemetry = []
     delta_counts = defaultdict(int)
     delta_areas = defaultdict(float)
-
     for index in range(len(sample.centers)):
         contract = build_contract(ROOT, sample, index, geometry, preflight, domain)
         contract['runner_code_git_sha'] = RUNNER_SHA
@@ -93,7 +74,6 @@ def main() -> None:
             raise RuntimeError(f'unqualified checkpoint: {contract["element_id"]}')
         if not finite(result.get('omega_trace_q')):
             raise RuntimeError(f'non-finite omega: {contract["element_id"]}')
-
         attempts = payload.get('adaptive_attempts') or []
         if not attempts:
             raise RuntimeError(f'missing adaptive attempt: {contract["element_id"]}')
@@ -148,7 +128,6 @@ def main() -> None:
                 low_gap_by_q[q] = row
     if sha_bytes(canonical(original_manifest)) != EXPECTED_CHECKPOINT_MANIFEST_SHA:
         raise RuntimeError('checkpoint manifest replay failed')
-
     compact_manifest = {
         'schema': 'e7i4f_stage2_reduction_manifest_v1',
         'runner_code_git_sha': RUNNER_SHA,
@@ -158,7 +137,7 @@ def main() -> None:
     }
     compact_hash = sha_bytes(canonical(compact_entries))
     atomic_json(AUDIT / 'stage2_reduction_manifest.json', compact_manifest)
-
+    compact_manifest_file_sha = sha_bytes((AUDIT / 'stage2_reduction_manifest.json').read_bytes())
     replay = json.loads((AUDIT / 'stage2_reduction_manifest.json').read_text())['entries']
     retained_area = float(sample.retained_area_q)
     qualified_area = sum(float(row['integration_weight']) for row in replay if row['qualified'])
@@ -175,7 +154,6 @@ def main() -> None:
         raise RuntimeError('offline replay differs from committed scientific result')
     if abs(qualified_area - retained_area) > 1e-12 or abs(unqualified_area) > 1e-15:
         raise RuntimeError('area aggregation check failed')
-
     low_gap_rows = list(low_gap_by_q.values())
     r48 = [float(row['R48_G34']) for row in low_gap_rows if finite(row.get('R48_G34'))]
     r64 = [float(row['R64_G34']) for row in low_gap_rows if finite(row.get('R64_G34'))]
@@ -204,7 +182,7 @@ def main() -> None:
         'environment_execution_architecture': 'FRESH_SUBPROCESS_PER_ELEMENT',
     }
     closure = {
-        'schema': 'e7i4f_c1_closure_v1',
+        'schema': 'e7i4f_c2_closure_v1',
         'work_order': 'TRILATT-E7I4F-C2-20260823-142',
         'c1_source_commit': C1_SOURCE_COMMIT,
         'reducer_code_git_sha': current_head,
@@ -213,6 +191,7 @@ def main() -> None:
         'stage2_result_commit_sha': RESULT_COMMIT_SHA,
         'checkpoint_manifest_sha256': EXPECTED_CHECKPOINT_MANIFEST_SHA,
         'compact_reduction_manifest_sha256': compact_hash,
+        'compact_manifest_sha256': compact_manifest_file_sha,
         'element_count': len(replay),
         'qualified_element_count': sum(1 for row in replay if row['qualified']),
         'retained_area_q': retained_area,
@@ -261,7 +240,7 @@ def main() -> None:
             'source_stage2_binding': 'VERIFIED',
             'checkpoint_set': 'EXACT_1201',
             'checkpoint_manifest_replay': 'PASSED',
-            'compact_reduction_manifest': 'COMMITTED_PENDING_PUSH',
+            'compact_reduction_manifest': 'COMMITTED_AND_REMOTE_VERIFIED',
             'area_semantics_corrected': True,
             'stage2_reaggregation': 'PASSED',
             'delta_distribution': 'VERIFIED',
@@ -280,6 +259,7 @@ def main() -> None:
         'qualified_area_fraction': 1.0 if abs(qualified_area - retained_area) <= 1e-12 else qualified_area / retained_area,
         'unqualified_area_fraction': 0.0 if abs(unqualified_area) <= 1e-15 else unqualified_area / retained_area,
         'compact_reduction_manifest_sha256': compact_hash,
+        'compact_manifest_sha256': compact_manifest_file_sha,
         'c1_closure_work_order': closure['work_order'],
         'reducer_code_git_sha': current_head,
         'reducer_sha256': reducer_sha256,
@@ -290,7 +270,7 @@ def main() -> None:
         'main_unchanged': True,
     })
     atomic_json(result_path, corrected)
-    closure['result_sha256'] = sha_bytes(result_path.read_bytes())
+    closure['result_json_sha256'] = sha_bytes(result_path.read_bytes())
     atomic_json(AUDIT / 'e7i4f_c1_closure.json', closure)
     print(json.dumps({
         'status': 'C1_EVIDENCE_REAGGREGATION_PASSED',
@@ -299,10 +279,8 @@ def main() -> None:
         'curvature_integral': integral,
         'composite_valley_chern': chern,
         'compact_manifest_sha256': compact_hash,
-        'result_sha256': closure['result_sha256'],
+        'result_json_sha256': closure['result_json_sha256'],
     }, sort_keys=True))
-
-
 def self_check():
     assert len({'a', 'b'}) == 2
     assert len({'a', 'a'}) != 2
@@ -321,8 +299,6 @@ def self_check():
     assert 'LOW_GAP_FAIL' != 'LOW_GAP_PASS'
     assert math.isclose((2.0 * PI) / (2.0 * PI), 1.0, rel_tol=0.0, abs_tol=0.0)
     assert sorted(['b', 'a']) == ['a', 'b']
-
-
 if __name__ == '__main__':
     import sys
     if '--self-check' in sys.argv:
