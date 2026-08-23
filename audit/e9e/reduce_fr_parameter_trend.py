@@ -18,7 +18,7 @@ def reduce(raw_path,out_path):
     ordered=[ep0]
     for item in raw["new_results"]:
         kp=item["berry"]["K_prime"]
-        ordered.append({"fr":item["fr"],"source":"NEW_LIVE","gap21":item["spectra"]["K"]["gap21"],"gap32":item["spectra"]["K"]["gap32"],"omega_1_72":[kp[str(b+1)]["levels"][0]["omega_over_a2_wilson"] if kp[str(b+1)]["levels"][0]["qualified"] else None for b in range(3)],"omega_1_144":[kp[str(b+1)]["levels"][1]["omega_over_a2_wilson"] if kp[str(b+1)]["levels"][1]["qualified"] else None for b in range(3)],"omega_1_288":[kp[str(b+1)]["levels"][2]["omega_over_a2_wilson"] if kp[str(b+1)]["levels"][2]["qualified"] else None for b in range(3)],"E4C":["PASSED" if kp[str(b+1)]["E4C"]["qualified"] else "FAILED" for b in range(3)],"trs_max_relative_residual":item["trs"]["max_relative_residual"],"qualification_all":all(kp[str(b+1)]["qualified"] for b in range(3))})
+        ordered.append({"fr":item["fr"],"source":"NEW_LIVE","gap21":item["spectra"]["K"]["gap21"],"gap32":item["spectra"]["K"]["gap32"],"omega_1_72":[kp[str(b+1)]["levels"][0]["omega_over_a2_wilson"] if kp[str(b+1)]["levels"][0]["qualified_before_refinement"] else None for b in range(3)],"omega_1_144":[kp[str(b+1)]["levels"][1]["omega_over_a2_wilson"] if kp[str(b+1)]["levels"][1]["qualified_before_refinement"] else None for b in range(3)],"omega_1_288":[kp[str(b+1)]["levels"][2]["omega_over_a2_wilson"] if kp[str(b+1)]["levels"][2]["qualified_before_refinement"] else None for b in range(3)],"E4C":["PASSED" if kp[str(b+1)]["E4C"]["qualified"] else "FAILED" for b in range(3)],"trs_max_relative_residual":item["trs"]["max_relative_residual"],"qualification_all":all(kp[str(b+1)]["qualified"] for b in range(3))})
     ordered.append({"fr":ep04["fr"],"source":"EXISTING_SEALED","gap21":ep04["gap21"],"gap32":ep04["gap32"],"omega_1_72":None,"omega_1_144":None,"omega_1_288":ep04["omega_1_288"],"E4C":ep04["e4c"],"trs_max_relative_residual":None,"qualification_all":True})
     # f_r=0 has a sealed 1/36 anchor, not a new fine-ladder calculation.
     omega_final=[item["omega_1_288"] if item["omega_1_288"] is not None else item.get("omega_1_36") for item in ordered]
@@ -52,4 +52,5 @@ def reduce(raw_path,out_path):
     Path(out_path).write_text(json.dumps(payload,sort_keys=True,indent=2,allow_nan=False)+"\n",encoding="utf-8"); return payload
 if __name__=="__main__":
     raw=Path(sys.argv[sys.argv.index("--raw")+1]) if "--raw" in sys.argv else ROOT/"audit/e9e/e_raw_result.json"; out=Path(sys.argv[sys.argv.index("--output")+1]) if "--output" in sys.argv else ROOT/"audit/e9e/e_result.json"; p=reduce(raw,out); print(json.dumps({"schema":p["schema"],"E9E_E_OVERALL":p["E9E_E_OVERALL"],"raw_result_sha256":p["raw_result_sha256"]},sort_keys=True))
+
 
