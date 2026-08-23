@@ -80,7 +80,7 @@ def offset_node(center: tuple[int, int], dx_units: int, dy_units: int) -> tuple[
 def cache_key(node, resolution, tessellation, geometry_digest):
     return (
         F_R, geometry_digest, int(tessellation), int(resolution),
-        node_id((int(node[0]), int(node[1]))), REPRESENTATION,
+        (int(node[0]), int(node[1]), NODE_DENOM), REPRESENTATION,
         NUM_BANDS, SOLVER_TOLERANCE, MESH_SIZE,
     )
 
@@ -372,4 +372,5 @@ if __name__ == "__main__":
         output = Path(sys.argv[sys.argv.index("--output") + 1]) if "--output" in sys.argv else ROOT / "audit/e9e/d_raw_result.json"
         payload = run(output, contract_path)
         print(json.dumps({"schema":payload["schema"],"calculation_code_git_sha":payload["calculation_code_git_sha"],"telemetry":payload["telemetry"]}, sort_keys=True))
+
 
