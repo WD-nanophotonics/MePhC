@@ -1,0 +1,192 @@
+{
+  "E9D_C2_OVERALL": "CORRECTED_SOURCE_BOUND_FR0_DISTRIBUTION_COMPARISON_READY_FOR_SUPERVISOR_DECISION",
+  "at_k_relative_strength": {
+    "source_order": "|Omega1|>|Omega2|>|Omega3|",
+    "status": "REPRODUCED",
+    "values_abs_omega_over_a2": [
+      0.8913231885543922,
+      0.7099796418329564,
+      0.14952259899306233
+    ]
+  },
+  "band_comparisons": [
+    {
+      "band_one_based": 1,
+      "center_sign_match": true,
+      "dominant_sign_structure_match": true,
+      "material_sign_reversal_match": "UNDETERMINED",
+      "metrics": {
+        "abs_max_centered": true,
+        "center_sign": "NEGATIVE",
+        "center_value": -0.8913231885543378,
+        "dominant_sign_max_abs": 0.8913231885543378,
+        "dominant_sign_max_location": [
+          0.0,
+          0.0
+        ],
+        "dominant_sign_max_value": -0.8913231885543378,
+        "max_abs_location": [
+          0.0,
+          0.0
+        ],
+        "negative_pixel_count": 159,
+        "off_center_abs_weight_fraction": 0.9527219360164259,
+        "opposite_sign_max_abs": 0.0010008281868245897,
+        "opposite_sign_max_location": [
+          0.16666666666666666,
+          -0.16666666666666666
+        ],
+        "opposite_sign_max_value": 0.0010008281868245897,
+        "opposite_sign_pixel_count": 10,
+        "opposite_to_dominant_abs_ratio": 0.0011228566693612687,
+        "positive_pixel_count": 10,
+        "reported_pixel_count": 169,
+        "strict_any_pixel_sign_reversal": true
+      },
+      "off_center_structure_match": true,
+      "primary_feature_region_match": true,
+      "spatial_extent_class": "TIGHT",
+      "spatial_extent_order_match": true
+    },
+    {
+      "band_one_based": 2,
+      "center_sign_match": true,
+      "dominant_sign_structure_match": true,
+      "material_sign_reversal_match": true,
+      "metrics": {
+        "abs_max_centered": true,
+        "center_sign": "POSITIVE",
+        "center_value": 0.7099796418328996,
+        "dominant_sign_max_abs": 0.7099796418328996,
+        "dominant_sign_max_location": [
+          0.0,
+          0.0
+        ],
+        "dominant_sign_max_value": 0.7099796418328996,
+        "max_abs_location": [
+          0.0,
+          0.0
+        ],
+        "negative_pixel_count": 0,
+        "off_center_abs_weight_fraction": 0.9848773574452475,
+        "opposite_sign_max_abs": null,
+        "opposite_sign_max_location": null,
+        "opposite_sign_max_value": null,
+        "opposite_sign_pixel_count": 0,
+        "opposite_to_dominant_abs_ratio": 0.0,
+        "positive_pixel_count": 169,
+        "reported_pixel_count": 169,
+        "strict_any_pixel_sign_reversal": false
+      },
+      "off_center_structure_match": true,
+      "primary_feature_region_match": true,
+      "spatial_extent_class": "BROAD",
+      "spatial_extent_order_match": true
+    },
+    {
+      "band_one_based": 3,
+      "center_sign_match": true,
+      "dominant_sign_structure_match": true,
+      "material_sign_reversal_match": true,
+      "metrics": {
+        "abs_max_centered": false,
+        "center_sign": "POSITIVE",
+        "center_value": 0.14952259899305498,
+        "dominant_sign_max_abs": 0.14952259899305498,
+        "dominant_sign_max_location": [
+          0.0,
+          0.0
+        ],
+        "dominant_sign_max_value": 0.14952259899305498,
+        "max_abs_location": [
+          -0.08333333333333333,
+          -0.16666666666666666
+        ],
+        "negative_pixel_count": 160,
+        "off_center_abs_weight_fraction": 0.9952145556622631,
+        "opposite_sign_max_abs": 0.5636155933052267,
+        "opposite_sign_max_location": [
+          -0.08333333333333333,
+          -0.16666666666666666
+        ],
+        "opposite_sign_max_value": -0.5636155933052267,
+        "opposite_sign_pixel_count": 160,
+        "opposite_to_dominant_abs_ratio": 3.769434166479446,
+        "positive_pixel_count": 9,
+        "reported_pixel_count": 169,
+        "strict_any_pixel_sign_reversal": true
+      },
+      "off_center_structure_match": true,
+      "primary_feature_region_match": true,
+      "spatial_extent_class": "BROAD",
+      "spatial_extent_order_match": true
+    }
+  ],
+  "base_sandbox_sha": "4de9b8dbace000e5de7a1ee202417d4e1a4040f1",
+  "c1_preserved_as_historical_comparator_defect": true,
+  "classifications": {
+    "any_pixel_sign_reversal_tautology_removed": true,
+    "at_k_relative_band_strength": "REPRODUCED",
+    "band2_source_sign_reversal_corrected": true,
+    "fine_structure": "REPRODUCED",
+    "map_wide_relative_band_strength": "INSUFFICIENT_SOURCE_SUPPORT",
+    "overall_distribution_fidelity": "SUPPORTED",
+    "paper_comparison_policy": "TREND_FIDELITY_OVER_POINTWISE_NUMERICAL_COINCIDENCE",
+    "peak_region": "REPRODUCED",
+    "sign_structure": "REPRODUCED",
+    "spatial_concentration_trend": "REPRODUCED",
+    "spatial_extent_partial_order_used": true
+  },
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "full_bz_chern": "NOT_AUTHORIZED",
+  "historical_c1_result_sha256": "04a324743d420bf6230959ae97410e63271479a86fa0576356bffed7a8cc172f",
+  "map_wide_relative_strength": "INSUFFICIENT_SOURCE_SUPPORT",
+  "new_berry_calculation": "NONE",
+  "new_mpb_solver_requests": 0,
+  "original_e9d_numerical_evidence_unchanged": true,
+  "original_e9d_result_sha256": "abf4eb1785ff18a56be3002d9d4859bd0ed65c3b4212589b0f811e82c5850a83",
+  "schema": "trilatt_e9d_c2_corrected_source_bound_comparison_result_v1",
+  "source": {
+    "arxiv_url": "https://arxiv.org/abs/2603.27244",
+    "arxiv_version": "arXiv:2603.27244v1",
+    "band_mapping": {
+      "panel_d": 1,
+      "panel_e": 2,
+      "panel_f": 3
+    },
+    "doi": "10.1103/1sq1-3168",
+    "figure": "Figure 3 panels d-f",
+    "fr": 0,
+    "structure": "Tri-TPC",
+    "text_bound_semantics": {
+      "band1": {
+        "dominant_near_k": "NEGATIVE",
+        "material_sign_reversal": "NOT_DESCRIBED",
+        "primary_feature": "K_CENTERED",
+        "sign_at_k": "NEGATIVE",
+        "spatial_extent": "TIGHT"
+      },
+      "band2": {
+        "dominant_near_k": "POSITIVE",
+        "material_sign_reversal": "NOT_REQUIRED_BY_SOURCE",
+        "sign_at_k": "POSITIVE",
+        "spatial_extent": "BROAD",
+        "structure": "CENTRAL_TRIANGLE_PLUS_EXTENDED_PETAL"
+      },
+      "band3": {
+        "central_structure": "POSITIVE_ISLAND",
+        "dominant_near_k": "POSITIVE",
+        "material_sign_reversal": "PRESENT",
+        "off_center_structure": "NEGATIVE_PETAL",
+        "primary_abs_feature": "MAY_BE_OFF_K",
+        "sign_at_k": "POSITIVE",
+        "spatial_extent": "BROAD"
+      }
+    },
+    "title": "Fine Structures of Berry Curvature and Unquantized Valley Chern Numbers in Valley Photonic Crystals",
+    "valley_label": "paper K-HBZ"
+  },
+  "source_contract_sha256": "231fe56676792f455fcae0ccc1ee676f3ea807964211a3238e243109032dfeed",
+  "valley_chern": "NOT_AUTHORIZED",
+  "work_order_id": "TRILATT-E9D-C2-20260824-183"
+}
