@@ -1,0 +1,501 @@
+{
+  "E9E_A_OVERALL": "ROUNDED_TRIANGLE_PARAMETER_FAMILY_READY_FOR_LIVE_TREND_BENCHMARK",
+  "c3_symmetry_family": "PASSED",
+  "calculation_code_git_sha": "64d988f7d4749f86879b1f68fe2a00a7cc3b8602",
+  "cases": {
+    "0.0": {
+      "geometry": {
+        "arcs": [
+          {
+            "center": [
+              0.0,
+              0.4
+            ],
+            "incoming_tangent": [
+              0.0,
+              0.4
+            ],
+            "nominal_arc_radius_ratio": 0.0,
+            "outgoing_tangent": [
+              0.0,
+              0.4
+            ],
+            "radius": 0.0,
+            "sweep_radians": 0.0,
+            "vertex_index": 0
+          },
+          {
+            "center": [
+              -0.34641016151377546,
+              -0.2
+            ],
+            "incoming_tangent": [
+              -0.34641016151377546,
+              -0.2
+            ],
+            "nominal_arc_radius_ratio": 0.0,
+            "outgoing_tangent": [
+              -0.34641016151377546,
+              -0.2
+            ],
+            "radius": 0.0,
+            "sweep_radians": 0.0,
+            "vertex_index": 1
+          },
+          {
+            "center": [
+              0.34641016151377546,
+              -0.2
+            ],
+            "incoming_tangent": [
+              0.34641016151377546,
+              -0.2
+            ],
+            "nominal_arc_radius_ratio": 0.0,
+            "outgoing_tangent": [
+              0.34641016151377546,
+              -0.2
+            ],
+            "radius": 0.0,
+            "sweep_radians": 0.0,
+            "vertex_index": 2
+          }
+        ],
+        "area_scale": 1.0,
+        "base_circumradius": 0.4,
+        "boundary_digest": "39bf3a7a90858809e8051b2babee21caa89f45be36a07a03bc1109b540d6ef96",
+        "construction_arc_radius": 0.0,
+        "f_r": 0.0,
+        "nominal_triangle_circumradius": 0.4,
+        "physical_arc_radius": 0.0,
+        "physical_area_analytic": 0.20784609690826533,
+        "raw_area_before_normalization": 0.20784609690826533,
+        "straight_segments": [
+          {
+            "edge_index": 0,
+            "end": [
+              -0.34641016151377546,
+              -0.2
+            ],
+            "length": 0.692820323027551,
+            "start": [
+              0.0,
+              0.4
+            ]
+          },
+          {
+            "edge_index": 1,
+            "end": [
+              0.34641016151377546,
+              -0.2
+            ],
+            "length": 0.6928203230275509,
+            "start": [
+              -0.34641016151377546,
+              -0.2
+            ]
+          },
+          {
+            "edge_index": 2,
+            "end": [
+              0.0,
+              0.4
+            ],
+            "length": 0.692820323027551,
+            "start": [
+              0.34641016151377546,
+              -0.2
+            ]
+          }
+        ],
+        "target_area": 0.20784609690826533,
+        "vertices_cartesian": [
+          [
+            0.0,
+            0.4
+          ],
+          [
+            -0.34641016151377546,
+            -0.2
+          ],
+          [
+            0.34641016151377546,
+            -0.2
+          ]
+        ]
+      },
+      "validation": {
+        "all_checks_passed": true,
+        "analytic_area": 0.20784609690826533,
+        "area_error": 0.0,
+        "boundary_digest": "39bf3a7a90858809e8051b2babee21caa89f45be36a07a03bc1109b540d6ef96",
+        "center_radii": [
+          0.4,
+          0.4,
+          0.4
+        ],
+        "checks": {
+          "AREA_CONSERVATION": true,
+          "C2Z_RESTORED_GEOMETRICALLY": true,
+          "C3_SYMMETRY": true,
+          "CIRCULAR_LIMIT": true,
+          "CIRCUMRADIUS_REPLAY": true,
+          "E9A_C1_TRIANGLE_VERTEX_REPLAY": true,
+          "FILL_FRACTION_REPLAY": true,
+          "MPB_CONVERSION_EXACTLY_ONCE": true,
+          "NO_SELF_INTERSECTION": true,
+          "PUBLIC_CARTESIAN_GEOMETRY_FIRST": true,
+          "SMOOTH_JOIN_CONSTRUCTION": true
+        },
+        "f_r": 0.0,
+        "max_cartesian_mpb_roundtrip_error": 6.206335383118183e-17,
+        "max_tangent_orthogonality_error": 0.0,
+        "nominal_triangle_circumradius": 0.4,
+        "physical_arc_radius": 0.0,
+        "sampled_boundary_points": 4,
+        "sampled_signed_area": 0.20784609690826528,
+        "straight_segment_lengths": [
+          0.692820323027551,
+          0.6928203230275509,
+          0.692820323027551
+        ]
+      }
+    },
+    "0.4": {
+      "geometry": {
+        "arcs": [
+          {
+            "center": [
+              0.0,
+              0.09256482936757976
+            ],
+            "incoming_tangent": [
+              0.1603269874585919,
+              0.18512965873515952
+            ],
+            "nominal_arc_radius_ratio": 0.4,
+            "outgoing_tangent": [
+              -0.1603269874585919,
+              0.18512965873515952
+            ],
+            "radius": 0.18512965873515957,
+            "sweep_radians": 2.0943951023931953,
+            "vertex_index": 0
+          },
+          {
+            "center": [
+              -0.08016349372929593,
+              -0.04628241468378988
+            ],
+            "incoming_tangent": [
+              -0.24049048118788782,
+              0.046282414683789935
+            ],
+            "nominal_arc_radius_ratio": 0.4,
+            "outgoing_tangent": [
+              -0.08016349372929593,
+              -0.23141207341894945
+            ],
+            "radius": 0.18512965873515957,
+            "sweep_radians": 2.0943951023931953,
+            "vertex_index": 1
+          },
+          {
+            "center": [
+              0.08016349372929593,
+              -0.04628241468378988
+            ],
+            "incoming_tangent": [
+              0.08016349372929593,
+              -0.23141207341894945
+            ],
+            "nominal_arc_radius_ratio": 0.4,
+            "outgoing_tangent": [
+              0.24049048118788782,
+              0.046282414683789935
+            ],
+            "radius": 0.18512965873515957,
+            "sweep_radians": 2.0943951023931953,
+            "vertex_index": 2
+          }
+        ],
+        "area_scale": 1.1570603670947472,
+        "base_circumradius": 0.4,
+        "boundary_digest": "d52fd66afa87c1e6cda397616d6a46a23c980db292b0a2ef49171ec8f3f27f71",
+        "construction_arc_radius": 0.16000000000000003,
+        "f_r": 0.4,
+        "nominal_triangle_circumradius": 0.4628241468378989,
+        "physical_arc_radius": 0.18512965873515957,
+        "physical_area_analytic": 0.20784609690826533,
+        "raw_area_before_normalization": 0.15524936681887425,
+        "straight_segments": [
+          {
+            "edge_index": 0,
+            "end": [
+              -0.24049048118788782,
+              0.046282414683789935
+            ],
+            "length": 0.1603269874585918,
+            "start": [
+              -0.1603269874585919,
+              0.18512965873515952
+            ]
+          },
+          {
+            "edge_index": 1,
+            "end": [
+              0.08016349372929593,
+              -0.23141207341894945
+            ],
+            "length": 0.16032698745859186,
+            "start": [
+              -0.08016349372929593,
+              -0.23141207341894945
+            ]
+          },
+          {
+            "edge_index": 2,
+            "end": [
+              0.1603269874585919,
+              0.18512965873515952
+            ],
+            "length": 0.1603269874585918,
+            "start": [
+              0.24049048118788782,
+              0.046282414683789935
+            ]
+          }
+        ],
+        "target_area": 0.20784609690826533,
+        "vertices_cartesian": [
+          [
+            0.0,
+            0.4628241468378989
+          ],
+          [
+            -0.4008174686464797,
+            -0.23141207341894945
+          ],
+          [
+            0.4008174686464797,
+            -0.23141207341894945
+          ]
+        ]
+      },
+      "validation": {
+        "all_checks_passed": true,
+        "analytic_area": 0.20784609690826533,
+        "area_error": 0.0,
+        "boundary_digest": "d52fd66afa87c1e6cda397616d6a46a23c980db292b0a2ef49171ec8f3f27f71",
+        "center_radii": [
+          0.09256482936757976,
+          0.09256482936757976,
+          0.09256482936757976
+        ],
+        "checks": {
+          "AREA_CONSERVATION": true,
+          "C2Z_RESTORED_GEOMETRICALLY": true,
+          "C3_SYMMETRY": true,
+          "CIRCULAR_LIMIT": true,
+          "CIRCUMRADIUS_REPLAY": true,
+          "E9A_C1_TRIANGLE_VERTEX_REPLAY": true,
+          "FILL_FRACTION_REPLAY": true,
+          "MPB_CONVERSION_EXACTLY_ONCE": true,
+          "NO_SELF_INTERSECTION": true,
+          "PUBLIC_CARTESIAN_GEOMETRY_FIRST": true,
+          "SMOOTH_JOIN_CONSTRUCTION": true
+        },
+        "f_r": 0.4,
+        "max_cartesian_mpb_roundtrip_error": 1.0007415106216802e-16,
+        "max_tangent_orthogonality_error": 3.256298233158782e-16,
+        "nominal_triangle_circumradius": 0.4628241468378989,
+        "physical_arc_radius": 0.18512965873515957,
+        "sampled_boundary_points": 148,
+        "sampled_signed_area": 0.20781193484960384,
+        "straight_segment_lengths": [
+          0.1603269874585918,
+          0.16032698745859186,
+          0.1603269874585918
+        ]
+      }
+    },
+    "0.5": {
+      "geometry": {
+        "arcs": [
+          {
+            "center": [
+              0.0,
+              0.0
+            ],
+            "incoming_tangent": [
+              0.22275457478570734,
+              0.1286074137157488
+            ],
+            "nominal_arc_radius_ratio": 0.5,
+            "outgoing_tangent": [
+              -0.22275457478570734,
+              0.1286074137157488
+            ],
+            "radius": 0.25721482743149754,
+            "sweep_radians": 2.0943951023931953,
+            "vertex_index": 0
+          },
+          {
+            "center": [
+              -0.0,
+              -0.0
+            ],
+            "incoming_tangent": [
+              -0.22275457478570734,
+              0.12860741371574874
+            ],
+            "nominal_arc_radius_ratio": 0.5,
+            "outgoing_tangent": [
+              0.0,
+              -0.25721482743149754
+            ],
+            "radius": 0.25721482743149754,
+            "sweep_radians": 2.0943951023931953,
+            "vertex_index": 1
+          },
+          {
+            "center": [
+              0.0,
+              -0.0
+            ],
+            "incoming_tangent": [
+              0.0,
+              -0.25721482743149754
+            ],
+            "nominal_arc_radius_ratio": 0.5,
+            "outgoing_tangent": [
+              0.22275457478570734,
+              0.12860741371574874
+            ],
+            "radius": 0.25721482743149754,
+            "sweep_radians": 2.0943951023931953,
+            "vertex_index": 2
+          }
+        ],
+        "area_scale": 1.2860741371574875,
+        "base_circumradius": 0.4,
+        "boundary_digest": "c689caf6bb5942a2c53352a620e88629782b04c9ba774e6988f572a7c964e209",
+        "construction_arc_radius": 0.2,
+        "f_r": 0.5,
+        "nominal_triangle_circumradius": 0.5144296548629951,
+        "physical_arc_radius": 0.25721482743149754,
+        "physical_area_analytic": 0.20784609690826533,
+        "raw_area_before_normalization": 0.12566370614359176,
+        "straight_segments": [
+          {
+            "edge_index": 0,
+            "end": [
+              -0.22275457478570734,
+              0.12860741371574874
+            ],
+            "length": 5.551115123125783e-17,
+            "start": [
+              -0.22275457478570734,
+              0.1286074137157488
+            ]
+          },
+          {
+            "edge_index": 1,
+            "end": [
+              0.0,
+              -0.25721482743149754
+            ],
+            "length": 0.0,
+            "start": [
+              0.0,
+              -0.25721482743149754
+            ]
+          },
+          {
+            "edge_index": 2,
+            "end": [
+              0.22275457478570734,
+              0.1286074137157488
+            ],
+            "length": 5.551115123125783e-17,
+            "start": [
+              0.22275457478570734,
+              0.12860741371574874
+            ]
+          }
+        ],
+        "target_area": 0.20784609690826533,
+        "vertices_cartesian": [
+          [
+            0.0,
+            0.5144296548629951
+          ],
+          [
+            -0.4455091495714147,
+            -0.25721482743149754
+          ],
+          [
+            0.4455091495714147,
+            -0.25721482743149754
+          ]
+        ]
+      },
+      "validation": {
+        "all_checks_passed": true,
+        "analytic_area": 0.20784609690826533,
+        "area_error": 0.0,
+        "boundary_digest": "c689caf6bb5942a2c53352a620e88629782b04c9ba774e6988f572a7c964e209",
+        "center_radii": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "checks": {
+          "AREA_CONSERVATION": true,
+          "C2Z_RESTORED_GEOMETRICALLY": true,
+          "C3_SYMMETRY": true,
+          "CIRCULAR_LIMIT": true,
+          "CIRCUMRADIUS_REPLAY": true,
+          "E9A_C1_TRIANGLE_VERTEX_REPLAY": true,
+          "FILL_FRACTION_REPLAY": true,
+          "MPB_CONVERSION_EXACTLY_ONCE": true,
+          "NO_SELF_INTERSECTION": true,
+          "PUBLIC_CARTESIAN_GEOMETRY_FIRST": true,
+          "SMOOTH_JOIN_CONSTRUCTION": true
+        },
+        "f_r": 0.5,
+        "max_cartesian_mpb_roundtrip_error": 8.777083671441753e-17,
+        "max_tangent_orthogonality_error": 0.0,
+        "nominal_triangle_circumradius": 0.5144296548629951,
+        "physical_arc_radius": 0.25721482743149754,
+        "sampled_boundary_points": 145,
+        "sampled_signed_area": 0.20778015158011515,
+        "straight_segment_lengths": [
+          5.551115123125783e-17,
+          0.0,
+          5.551115123125783e-17
+        ]
+      }
+    }
+  },
+  "circular_limit": "PASSED",
+  "constant_area_family": "PASSED",
+  "contract_sha256": "d345422f3a1ba8b416b4042ecbf2eadda7d1a02c7a63af70ce1208a56f5b7d6f",
+  "fr0_triangle_replay": "PASSED",
+  "human_validated_physical_scale_unchanged": true,
+  "new_berry_calculation": "NONE",
+  "new_chern_calculation": "NONE",
+  "new_mpb_solver_requests": 0,
+  "production_code_changed": false,
+  "public_to_mpb_real_space_conversion": "EXACTLY_ONCE",
+  "schema": "trilatt_e9e_a_geometry_validation_result_v1",
+  "source_contract_schema": "trilatt_e9e_a_source_bound_rounded_triangle_geometry_contract_v1",
+  "source_parameter_definition_bound": true,
+  "source_representative_fr_values": [
+    0.0,
+    0.4,
+    0.5
+  ],
+  "source_representative_fr_values_bound": true,
+  "work_order_id": "TRILATT-E9E-A-20260824-187"
+}
