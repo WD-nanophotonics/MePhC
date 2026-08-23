@@ -47,7 +47,7 @@ def solver_geometry(st):
             geometry.append(mp.Cylinder(radius=float(r),center=mp.Vector3(float(center[0]),float(center[1])),material=mp.Medium(epsilon=EPSILON_INCLUSION)))
         return geometry,lattice
     lengths=np.linalg.norm(A,axis=0); directions=A/lengths[None,:]
-    lattice=mp.Lattice(size=mp.Vector3(1,1),basis1=mp.Vector3(float(directions[0,0]),float(directions[1,0])),basis2=mp.Vector3(float(directions[0,1]),float(directions[1,1])),basis_size=mp.Vector3(float(lengths[0]),float(lengths[1])))
+    lattice=mp.Lattice(size=mp.Vector3(1,1),basis1=mp.Vector3(float(directions[0,0]),float(directions[1,0])),basis2=mp.Vector3(float(directions[0,1]),float(directions[1,1])),basis_size=mp.Vector3(float(lengths[0]),float(lengths[1]),1.0))
     e1=np.linalg.solve(A,np.array([1.0,0.0])); e2=np.linalg.solve(A,np.array([0.0,1.0]))
     geometry=[]
     for center,(ax,ay) in zip(st["centers_fractional"],st["ellipse_axes"]):
