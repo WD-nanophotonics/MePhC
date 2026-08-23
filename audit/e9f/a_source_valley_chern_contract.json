@@ -1,0 +1,60 @@
+{
+  "schema": "trilatt_e9f_a_source_valley_chern_contract_v1",
+  "work_order_id": "TRILATT-E9F-A-20260824-201",
+  "scope": "SOURCE_BOUND_TRUNCATED_K_HBZ_INTEGRATION_DOMAIN_AND_QUADRATURE_PREFLIGHT",
+  "source_provenance": {
+    "authority": "supervisor_work_order",
+    "source_definition_location": "source valley-Chern definition passage associated with the K-HBZ valley-domain construction",
+    "source_domain_geometry_location": "Appendix B, Gamma-centered exclusion construction and the associated K-HBZ/TPC domain figure",
+    "local_source_artifact": "not present in the repository; the supervisor-bound statements below are the immutable source contract",
+    "figure_or_appendix_binding_status": "BOUND_BY_WORK_ORDER_WITHOUT_UNSUPPORTED_FIGURE_NUMBER_GUESS"
+  },
+  "valley_chern_definition": {
+    "formula": "C_v^K=(1/(2*pi))*integral_{K-HBZ} Omega(k) d^2k",
+    "trs_relation": "Omega_n(-k)=-Omega_n(k)",
+    "domain_convention": "K-HBZ is the source half-Brillouin-zone valley domain"
+  },
+  "public_q_convention": "q=k_phys*a/(2*pi)",
+  "project_points": {
+    "PUBLIC_K": [0.6666666666666666, 0.0],
+    "PUBLIC_K_PRIME": [-0.6666666666666666, 0.0],
+    "K_HBZ_CENTER": "PUBLIC_K_PRIME",
+    "orientation": "POSITIVE_PUBLIC_CARTESIAN_QX_QY"
+  },
+  "source_domains": [
+    {"case": "fr=0", "delta_K": 0.1, "delta_Gamma": 0.1, "delta_K_units": "normalized q, corresponding to 0.10*(2*pi/a)"},
+    {"case": "fr=0.4", "delta_K": 0.05, "delta_Gamma": 0.13, "delta_K_units": "normalized q, corresponding to 0.05*(2*pi/a)"}
+  ],
+  "source_grid": {
+    "grid_step_q": "1/36",
+    "identity": "integer grid index (i,j) with q=(i/36,j/36); no cumulative floating-point addition"
+  },
+  "truncation_geometry": {
+    "outer": "analytic equilateral K-HBZ triangle from reciprocal-lattice geometry, shrunken by the source delta_K as a circumradius decrement about the K-HBZ center",
+    "gamma_exclusions": "three source hexagonal exclusion regions centered at the three Gamma-equivalent vertices; regular hexagon construction is retained and is not replaced by a circle",
+    "ambiguity_policy": "fail closed if source geometry cannot support the hexagon orientation or radius interpretation"
+  },
+  "berry_stencil_preflight": {"SOURCE_STENCIL": "1/36", "MEPHC_FINE_STENCIL": "1/144", "selection_policy": "geometry-only; no Berry values"},
+  "quadrature": {
+    "source_grid_constant": "SOURCE_BOUND",
+    "exact_source_quadrature_implementation": "UNSPECIFIED_UNLESS_FURTHER_SOURCE_EVIDENCE_EXISTS",
+    "mephc_reproduction": "deterministic axis-aligned grid cells clipped against the source mask; explicit cell weights; no post-hoc fitting"
+  },
+  "source_chern_anchors": {
+    "fr=0": {"band1": -0.1, "band2": 0.54, "band3": -0.43},
+    "fr=0.4": {"band1": -0.03, "band2": 0.94, "band3": -0.89},
+    "total_first_three_bands_approx_zero": true,
+    "fr04_band23_large_opposite_valley_chern": true,
+    "role": "external_comparison_anchors_only; never fit"
+  },
+  "normalization_derivation": {
+    "q_to_k": "k_phys=(2*pi/a)q",
+    "area_jacobian": "d^2k=(2*pi/a)^2 d^2q",
+    "curvature_conversion": "Omega_k=(a^2/(2*pi)^2) Omega_q",
+    "invariant_integrand": "Omega_k d^2k=Omega_q d^2q",
+    "public_q_formula": "C_v=(1/(2*pi))*integral Omega_q d^2q",
+    "status": "ANALYTICALLY_BOUND"
+  },
+  "live_computation": {"new_mpb_solver_requests": 0, "new_berry_calculation": "NONE", "new_valley_chern_value": "NONE", "live_valley_chern_integration": "NOT_AUTHORIZED_IN_E9F_A"},
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5"
+}
