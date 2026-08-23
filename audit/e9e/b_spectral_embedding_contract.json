@@ -1,0 +1,85 @@
+﻿{
+  "schema": "trilatt_e9e_b_live_rounded_triangle_spectral_embedding_contract_v1",
+  "work_order_id": "TRILATT-E9E-B-20260824-189",
+  "base_sandbox_sha": "bbd8df8508e85dfdc33b17c0942c5c2a3e9be65f",
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "e9e_a_contract_sha256": "d345422f3a1ba8b416b4042ecbf2eadda7d1a02c7a63af70ce1208a56f5b7d6f",
+  "model": {
+    "lattice_constant_nm": 400.0,
+    "effective_refractive_index": 2.65,
+    "background_epsilon": 7.0225,
+    "air_epsilon": 1.0,
+    "polarization": "TE",
+    "constant_air_hole_area": 0.2078460969082653,
+    "constant_fill_fraction": 0.24,
+    "orientation": "E9A_E9D_ACCEPTED_90_DEGREES_MOD_120",
+    "public_geometry_first": true,
+    "real_space_conversion": "r_mpb = solve(A_real, r_cartesian)",
+    "conversion_count": "EXACTLY_ONCE"
+  },
+  "tessellation": {
+    "f_r_0p4_arc_segments_per_corner": [24, 48, 96],
+    "f_r_0p5_arc_segments_per_corner": 96,
+    "posthoc_area_rescale": false,
+    "polygon_is_numerical_representation_of_analytic_boundary": true,
+    "required_geometry_only_checks": [
+      "POLYGON_VERTEX_COUNT",
+      "POLYGON_AREA",
+      "RELATIVE_AREA_ERROR_TO_ANALYTIC",
+      "C3_VERTEX_SYMMETRY",
+      "MAX_DISTANCE_FROM_ANALYTIC_BOUNDARY",
+      "PUBLIC_CARTESIAN_TO_MPB_ROUNDTRIP_ERROR"
+    ]
+  },
+  "spectral": {
+    "resolutions": [64, 96],
+    "num_bands": 6,
+    "public_k": [0.6666666666666666, 0.0],
+    "fr0_exact_triangle": "R64",
+    "fr0p4_cases": ["R64_TESS48", "R64_TESS96", "R96_TESS96"],
+    "fr0p5_cases": ["R64_POLYGON96", "R64_EXACT_CIRCLE", "R96_EXACT_CIRCLE"],
+    "solver_tolerance": 1e-7,
+    "mesh_size": 3,
+    "fr0_replay_atol": 1e-7,
+    "circle_degeneracy_tolerance": 1e-6
+  },
+  "paper_anchors": {
+    "fr0": {
+      "gap21": 0.045,
+      "gap32": 0.044
+    },
+    "fr0p4": {
+      "gap21": 0.060,
+      "gap32": 0.011
+    },
+    "fr0p5": {
+      "band2_band3_at_k": "DEGENERATE"
+    },
+    "comparison_policy": "TREND_FIDELITY_OVER_POINTWISE_NUMERICAL_COINCIDENCE"
+  },
+  "authorization": {
+    "live_mpb_bounded": true,
+    "new_berry_calculation": false,
+    "valley_chern": false,
+    "full_bz_chern": false,
+    "parameter_fitting": false,
+    "production_code_change": false,
+    "main_push": false,
+    "sandbox_audit_code": true
+  },
+  "forbidden_scope": [
+    "berry_field_map",
+    "rank1_berry_at_fr0p5_k",
+    "valley_chern",
+    "full_bz_chern",
+    "parameter_fitting",
+    "independent_area_rescaling",
+    "modify_sealed_e9e_a_evidence",
+    "production_code",
+    "main_push",
+    "force_push",
+    "rebase",
+    "history_rewrite"
+  ]
+}
+
