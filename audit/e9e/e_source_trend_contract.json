@@ -1,0 +1,32 @@
+﻿{
+  "schema": "trilatt_e9e_e_source_trend_contract_v1",
+  "work_order_id": "TRILATT-E9E-E-20260824-199",
+  "source": {
+    "title": "Fine Structures of Berry Curvature and Unquantized Valley Chern Numbers in Valley Photonic Crystals",
+    "authors": ["Wei Dai", "Taiki Yoda", "Yuto Moritake", "Masaya Notomi"],
+    "version": "arXiv:2603.27244v1",
+    "doi": "10.1103/1sq1-3168",
+    "url": "https://arxiv.org/html/2603.27244v1",
+    "figure": "Figure 2(f)",
+    "structure": "Tri-TPC rounded triangle",
+    "parameter": "f_r"
+  },
+  "source_supported_statements": {
+    "fr_range": "0_to_0.5",
+    "omega1_trend": "approaches_zero_as_fr_increases",
+    "band2_below_0p19": "positive",
+    "band2_overall_evolution": "decreases_and_eventually_becomes_strongly_negative",
+    "band3_overall_evolution": "increases_strongly_positive",
+    "gap21_trend": "increases",
+    "gap32_trend": "decreases",
+    "fr0_source_anchor": [-0.92, 0.72, 0.19],
+    "fr0p4_source_anchor": [-0.19, -7.53, 7.68]
+  },
+  "binding_policy": {
+    "source_bound": true,
+    "raster_digitization": false,
+    "intermediate_decimal_extraction": false,
+    "curve_fitting": false,
+    "exact_crossing_at_0p19_not_required": true
+  }
+}

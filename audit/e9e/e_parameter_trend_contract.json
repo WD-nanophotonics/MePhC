@@ -1,0 +1,78 @@
+﻿{
+  "schema": "trilatt_e9e_e_fr_parameter_trend_contract_v1",
+  "work_order_id": "TRILATT-E9E-E-20260824-199",
+  "base_sandbox_sha": "9bb5b4f90b998ecca9a26eff437300156a30a413",
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "source_contract": "audit/e9e/e_source_trend_contract.json",
+  "new_fr_values": [0.1,0.2,0.3],
+  "ordered_series": ["0.0_EXISTING","0.1_NEW","0.2_NEW","0.3_NEW","0.4_EXISTING"],
+  "model": {
+    "f_r_range": [0.0,0.5],
+    "lattice_constant_nm": 400.0,
+    "effective_refractive_index": 2.65,
+    "background_epsilon": 7.0225,
+    "air_epsilon": 1.0,
+    "polarization": "TE",
+    "geometry_source": "E9E_A_ANALYTIC_LINE_ARC_CONSTRUCTION",
+    "constant_air_hole_area_a2": 0.2078460969082653,
+    "solver_tessellation": 96,
+    "resolution": 96,
+    "representation": "mpb_energy_eh_v1",
+    "num_bands": 6,
+    "rank": 1,
+    "public_geometry_first": true,
+    "coordinate_conversion": "Cartesian_to_MPB_exactly_once"
+  },
+  "stencil": {
+    "labels": ["1/72","1/144","1/288"],
+    "sides": [0.013888888888888888,0.006944444444444444,0.003472222222222222],
+    "min_external_gap": 0.005,
+    "min_singular_value": 0.9,
+    "max_principal_angle": 0.45,
+    "max_projector_distance": 0.3,
+    "max_e4c_metric_delta": 0.1,
+    "rank1_only": true,
+    "no_threshold_relaxation": true,
+    "no_composite_band23": true,
+    "no_fifth_stencil": true
+  },
+  "endpoints": {
+    "fr0_source": "audit/e9d/result.json",
+    "fr0_sha256": "abf4eb1785ff18a56be3002d9d4859bd0ed65c3b4212589b0f811e82c5850a83",
+    "fr0p4_source": "audit/e9e/c1_optimized_fine_stencil_result.json",
+    "fr0p4_sha256": "c3c04c9dc5ea73ef7e8dbb59b5755d9eb5aed700bc5ad942e64089337fc60827",
+    "fr0_reuse_required": true,
+    "fr0p4_reuse_required": true
+  },
+  "resolution_control": {
+    "fr": 0.2,
+    "center": "PUBLIC_K_PRIME",
+    "side": "1/144",
+    "tessellation": 96,
+    "resolutions": [64,96],
+    "sign_pattern_gate": true
+  },
+  "tessellation_control": {
+    "fr": 0.3,
+    "center": "PUBLIC_K_PRIME",
+    "resolution": 64,
+    "side": "1/144",
+    "tessellations": [48,96],
+    "sign_pattern_gate": true,
+    "dominance_pattern_gate": true
+  },
+  "authorization": {
+    "live_mpb_bounded": true,
+    "source_bound_parameter_trend": true,
+    "berry_field_map": false,
+    "fr0p5_work": false,
+    "valley_chern": false,
+    "full_bz_chern": false,
+    "hbz_integration": false,
+    "parameter_fitting": false,
+    "adaptive_fr_points": false,
+    "production_code_change": false,
+    "main_push": false
+  },
+  "required_self_checks": ["FR_SAMPLE_SET_EXACT","NO_ADAPTIVE_FR_POINTS","FR0_EVIDENCE_REUSED","FR0P4_EVIDENCE_REUSED","CONSTANT_AREA_GEOMETRY","C3_SYMMETRY","PUBLIC_CARTESIAN_GEOMETRY_FIRST","MPB_REAL_SPACE_CONVERSION_EXACTLY_ONCE","NO_FR0P5","NO_BERRY_MAP","NO_CHERN","NO_PARAMETER_FITTING"]
+}
