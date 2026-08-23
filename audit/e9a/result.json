@@ -1,0 +1,247 @@
+{
+  "E9A_OVERALL": "HUMAN_CORRECTED_DAI_K_SPECTRUM_READY_FOR_SUPERVISOR_AUDIT",
+  "R48": {
+    "field_kpoint_metadata_validated": null,
+    "frequencies": [
+      0.26712774423265284,
+      0.30607835262328875,
+      0.3352108511970865,
+      0.5593120087895733
+    ],
+    "gap21": 0.03895060839063591,
+    "gap32": 0.029132498573797738,
+    "mpb_fractional_k": [
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "provider_mpb_reciprocal_k_point": null,
+    "provider_representation": "mpb_energy_eh_v1",
+    "public_k": [
+      0.6666666666666666,
+      0.0
+    ],
+    "resolution": 48
+  },
+  "R48_R64_DRIFT_F1": 1.2888749221784401e-06,
+  "R48_R64_DRIFT_F2": 5.430672473155651e-05,
+  "R48_R64_DRIFT_F3": 4.106973036099859e-07,
+  "R48_R64_DRIFT_GAP21": 5.301784980937807e-05,
+  "R48_R64_DRIFT_GAP32": -5.3896027427946525e-05,
+  "R64": {
+    "field_kpoint_metadata_validated": null,
+    "frequencies": [
+      0.267129033107575,
+      0.3061326593480203,
+      0.3352112618943901,
+      0.5593478486476544
+    ],
+    "gap21": 0.03900362624044529,
+    "gap32": 0.02907860254636979,
+    "mpb_fractional_k": [
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "provider_mpb_reciprocal_k_point": null,
+    "provider_representation": "mpb_energy_eh_v1",
+    "public_k": [
+      0.6666666666666666,
+      0.0
+    ],
+    "resolution": 64
+  },
+  "base_sandbox_sha": "2cde6d402ae43abdbd1bf653a2617e05b97a6f79",
+  "calculation_code_git_sha": "7ee938bbcc049f96a6b8b6af5bd5c3e1752d2d00",
+  "comparison": {
+    "R48_abs_error_f1_to_raster": 0.001379712736589822,
+    "R48_abs_error_f2_to_raster": 0.007569941339965858,
+    "R48_abs_error_f3_to_raster": 0.02240069735934397,
+    "R48_abs_error_gap21_to_text": 0.006049391609364088,
+    "R48_abs_error_gap32_to_text": 0.01486750142620226,
+    "R64_abs_error_f1_to_raster": 0.0013810016115120005,
+    "R64_abs_error_f2_to_raster": 0.007515634615234301,
+    "R64_abs_error_f3_to_raster": 0.02240028666204036,
+    "R64_abs_error_gap21_to_text": 0.00599637375955471,
+    "R64_abs_error_gap32_to_text": 0.014921397453630206,
+    "paper_gap21": 0.045,
+    "paper_gap32": 0.044,
+    "paper_raster_frequencies": [
+      0.265748031496063,
+      0.3136482939632546,
+      0.35761154855643046
+    ],
+    "status": "RAW_ERRORS_REPORTED_NO_FITTING"
+  },
+  "contract_json_sha256": "a704c4c9348819877e117102b6ee5257801e92312433e4f9be305199550a5709",
+  "coordinate_preflight": {
+    "actual_mpb_fractional_k": [
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "expected_mpb_fractional_k": [
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "mapping_digest": "b1fba20a9a77109f478ce5538aaa99d6a6c6d0f92a98a43b6a385cfe569d636f",
+    "public_k": [
+      0.6666666666666666,
+      0.0
+    ],
+    "ready": true,
+    "real_space_basis": [
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.8660254037844386,
+        -0.8660254037844386
+      ]
+    ],
+    "round_trip_residual": 3.557616665725061e-17
+  },
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "geometry": {
+    "actual_cell_area": 0.8660254037844386,
+    "actual_fill_fraction": 0.24000000000000005,
+    "actual_triangle_area": 0.2078460969082653,
+    "actual_triangle_vertices_mpb_geometry_coordinates": [
+      [
+        2.4492935982947065e-17,
+        0.4
+      ],
+      [
+        -0.34641016151377557,
+        -0.1999999999999999
+      ],
+      [
+        0.34641016151377535,
+        -0.20000000000000018
+      ]
+    ],
+    "air_epsilon": 1.0,
+    "background_epsilon": 7.0225,
+    "circle_reference_fill_fraction": 0.23588460731866004,
+    "geometry_contract_digest": "2daf5d9dc440568da526dce67f4207cdcfd11cd8ea3719d190b30af9711e9ce2",
+    "intended_actual_geometry_match": true,
+    "intended_vertices_public_cartesian": [
+      [
+        2.4492935982947065e-17,
+        0.4
+      ],
+      [
+        -0.34641016151377557,
+        -0.1999999999999999
+      ],
+      [
+        0.34641016151377535,
+        -0.20000000000000018
+      ]
+    ],
+    "lattice_basis1": [
+      0.5,
+      0.8660254037844386
+    ],
+    "lattice_basis2": [
+      0.5,
+      -0.8660254037844386
+    ],
+    "polarization": "TE",
+    "prism_height": "mp.inf",
+    "prism_type": "mp.Prism",
+    "real_space_basis_rows": [
+      [
+        0.5,
+        0.5
+      ],
+      [
+        0.8660254037844386,
+        -0.8660254037844386
+      ]
+    ],
+    "triangle_circumradius_over_a": 0.4,
+    "triangle_orientation_mod_120_degrees": 90.0,
+    "triangle_side_length_over_a": 0.6928203230275509,
+    "vertex_coordinate_mapping": "IDENTITY_BY_ESTABLISHED_E7I5_MPB_GEOMETRY_CONVENTION"
+  },
+  "model_contract": {
+    "air_relative_permittivity": 1.0,
+    "background_material_semantics": "SQUARE_OF_HUMAN_CONFIRMED_EFFECTIVE_REFRACTIVE_INDEX",
+    "base_sandbox_sha": "2cde6d402ae43abdbd1bf653a2617e05b97a6f79",
+    "circle_reference_radius_nm": 102.0,
+    "circle_reference_radius_over_a": 0.255,
+    "deterministic": true,
+    "dielectric_effective_refractive_index": 2.65,
+    "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+    "full_band_path_authorized": false,
+    "geometry_semantics": "ONE_EXACT_REGULAR_TRIANGULAR_AIR_PRISM_PER_TRIANGULAR_PRIMITIVE_CELL",
+    "k_mpb_fractional": [
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "k_public": [
+      0.6666666666666666,
+      0.0
+    ],
+    "lattice_constant_nm": 400.0,
+    "main_push_authorized": false,
+    "mesh_size": 3,
+    "model": "TWO_DIMENSIONAL_EFFECTIVE_INDEX_PHOTONIC_CRYSTAL",
+    "mpb_background_relative_permittivity": 7.0225,
+    "new_berry_calculation_authorized": false,
+    "new_chern_calculation_authorized": false,
+    "normalized_a": 1.0,
+    "num_bands": 4,
+    "orientation_mapping": "REUSE_E7I5_ESTABLISHED_90_DEGREES_MOD_120_CONVENTION",
+    "paper_10p7_percent_fill_sentence": "NON_AUTHORITATIVE_FOR_GEOMETRY_IN_THIS_HUMAN_CORRECTED_CONTRACT",
+    "paper_gap21": 0.045,
+    "paper_gap32": 0.044,
+    "paper_raster_frequencies": [
+      0.265748031496063,
+      0.3136482939632546,
+      0.35761154855643046
+    ],
+    "paper_raster_single_frequency_uncertainty_approx": 0.001968503937007874,
+    "parameter_sweep_authorized": false,
+    "polarization": "TE",
+    "production_code_change_authorized": false,
+    "quadrature_or_berry": "NOT_AUTHORIZED",
+    "resolutions": [
+      48,
+      64
+    ],
+    "schema": "trilatt_e9a_human_corrected_dai_k_spectrum_contract_v1",
+    "solver_tolerance": 1e-07,
+    "structure": "TRI_TPC_FR0_REGULAR_TRIANGULAR_AIR_HOLE",
+    "triangle_circumradius_nm": 160.0,
+    "triangle_circumradius_over_a": 0.4,
+    "triangle_orientation_mod_120_degrees": 90.0,
+    "triangle_side_length_nm": 277.12812921102034,
+    "triangle_side_length_over_a": 0.6928203230275509,
+    "work_order_id": "TRILATT-E9A-20260824-169"
+  },
+  "new_berry_calculation": "NOT_AUTHORIZED",
+  "new_chern_calculation": "NOT_AUTHORIZED",
+  "production_code_changed": false,
+  "schema": "trilatt_e9a_k_only_spectrum_result_v1",
+  "self_checks": {
+    "CIRCLE_REFERENCE_AREA_FRACTION_TEST": true,
+    "K_MAPPING_EXACTLY_ONCE_TEST": true,
+    "NO_BERRY_CODE_PATH_TEST": true,
+    "NO_PARAMETER_SWEEP_TEST": true,
+    "N_TO_EPSILON_TEST": true,
+    "OLD_0P107_NOT_USED_FOR_GEOMETRY_TEST": true,
+    "TE_ONLY_TEST": true,
+    "TRIANGLE_AREA_TEST": true,
+    "TRIANGLE_CIRCUMRADIUS_TEST": true,
+    "TRIANGLE_FILL_FRACTION_TEST": true,
+    "TRIANGLE_ORIENTATION_FIXED_TEST": true,
+    "TRIANGLE_SIDE_TEST": true
+  },
+  "telemetry": {
+    "cache_hits": 0,
+    "raw_solver_requests": 2,
+    "solver_failures": 0,
+    "wall_time_seconds": 0.3202289389955695
+  },
+  "work_order_id": "TRILATT-E9A-20260824-169"
+}
