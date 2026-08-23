@@ -27,6 +27,10 @@ def file_sha256(path: Path) -> str:
 
 def finite_number(value) -> bool:
     return isinstance(value, (int, float)) and math.isfinite(float(value))
+def git_head(root: Path) -> str:
+    import subprocess
+    return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+
 
 
 def close_list(left, right, tolerance: float = 1e-14) -> bool:
@@ -171,7 +175,7 @@ def reduce_stage1(root: Path, checkpoint_dir: Path, result_path: Path, manifest_
         "schema": "e7i5a_rank1_stage1_reduction_v1",
         "work_order": WORK_ORDER,
         "calculation_runner_code_git_sha": EXPECTED_RUNNER_SHA,
-        "reducer_git_head": None,
+        "reducer_git_head": git_head(root),
         "expected_elements": EXPECTED_ELEMENTS,
         "checkpoint_count": len(files),
         "unique_element_count": len(seen),
