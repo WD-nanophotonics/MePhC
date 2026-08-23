@@ -56,7 +56,7 @@ def solve_one(st,res,q,cache,counters):
         return cache[key]
     counters["raw_solver_requests"]+=1
     with tempfile.NamedTemporaryFile(prefix="e8b-node-",suffix=".pkl",delete=False) as h: out=h.name
-    cmd=[sys.executable,str(Path(__file__).resolve()),"--worker","--strain",str(st["strain"]),"--resolution",str(int(res)),"--qx",str(float(q[0])),"--qy",str(float(q[1])),"--output",out]
+    cmd=[sys.executable,"-m","audit.e8b.run_e8b","--worker","--strain",str(st["strain"]),"--resolution",str(int(res)),"--qx",str(float(q[0])),"--qy",str(float(q[1])),"--output",out]
     try:
         p=subprocess.run(cmd,cwd=root_path(),stdout=subprocess.DEVNULL,stderr=subprocess.PIPE,text=True,timeout=900)
         if p.returncode!=0:
