@@ -1,0 +1,85 @@
+﻿{
+  "schema": "trilatt_e9c_human_corrected_dai_rank1_k_kprime_berry_contract_v1",
+  "work_order_id": "TRILATT-E9C-20260824-175",
+  "action": "EXECUTE_NOW",
+  "phase": "E9C",
+  "authorization": "HUMAN_CORRECTED_DAI_FR0_SINGLE_VALLEY_K_POINT_BERRY_REPRODUCTION_WITH_TIME_REVERSAL_CONTROL",
+  "base_sandbox_sha": "fe6095eec501b97500df963fe91f47b47fe2e03d",
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "e9a_c1_evidence_sha": "c11438bcbac29abbf7f615c048e252dd835a902b",
+  "e9a_c1_result_sha256": "40151AF5B668C53A9486D61D725FB64BD15F882FCEEC4BDD1CA680F2420CA703",
+  "live_mpb_authorized": true,
+  "production_code_change_authorized": false,
+  "sandbox_audit_code_authorized": true,
+  "main_push_authorized": false,
+  "berry_field_map_authorized": false,
+  "valley_chern_authorized": false,
+  "full_bz_chern_authorized": false,
+  "full_path_berry_authorized": false,
+  "model": {
+    "lattice_constant_nm": 400.0,
+    "effective_index": 2.65,
+    "epsilon_background": 7.0225,
+    "epsilon_air": 1.0,
+    "polarization": "TE",
+    "triangle_circumradius_over_a": 0.4,
+    "triangle_side_over_a": 0.6928203230275509,
+    "physical_fill_fraction": 0.24,
+    "triangle_orientation_mod_120_degrees": 90.0,
+    "geometry_conversion": "physical_cartesian_to_mpb_lattice_exactly_once",
+    "representation": "mpb_energy_eh_v1",
+    "num_bands": 6,
+    "target_zero_based_bands": [0, 1, 2],
+    "rank": 1,
+    "composite_subspace_mixing": false,
+    "resolutions": [64, 96],
+    "solver_tolerance": 1e-7,
+    "mesh_size": 3,
+    "deterministic": true
+  },
+  "valleys": {
+    "public_K": [0.6666666666666666, 0.0],
+    "public_K_prime": [-0.6666666666666666, 0.0],
+    "paper_label_K_comparison_center": "PUBLIC_K_PRIME",
+    "paper_to_mpb_sign_convention": "k_paper_equals_minus_k_MPB",
+    "public_K_is_time_reversal_control": true,
+    "posthoc_sign_flip": false
+  },
+  "stencils": {
+    "primary_side_q": 0.027777777777777776,
+    "primary_half_offset_q": 0.013888888888888888,
+    "reference_side_q": 0.013888888888888888,
+    "reference_half_offset_q": 0.006944444444444444,
+    "shape": "centered_axis_aligned_square_ccw",
+    "corner_solves": 4,
+    "center_solve": 1,
+    "reference_is_refinement_only": true
+  },
+  "qualification": {
+    "min_external_gap": 0.02,
+    "min_singular_value": 0.9,
+    "max_principal_angle": 0.45,
+    "max_projector_distance": 0.3,
+    "max_e4c_metric_delta": 0.1,
+    "external_spectrum": "complete_excluded_6_band_spectrum",
+    "estimators": [
+      "OMEGA_Q_PAPER_LITERAL=-Im(det(loop_product))/side_q^2",
+      "OMEGA_Q_WILSON=-principal_arg(det(loop_product))/side_q^2"
+    ],
+    "omega_over_a2": "OMEGA_Q/(2*pi)^2",
+    "trs_control": "omega(public_K)+omega(public_K_prime) and relative residual",
+    "paper_targets_omega_over_a2": [-0.92, 0.72, 0.19]
+  },
+  "prohibited_scope": [
+    "berry_field_map",
+    "valley_chern",
+    "full_bz_chern",
+    "full_path_berry",
+    "parameter_sweep",
+    "R128",
+    "rank2_or_rank3",
+    "posthoc_sign_flip"
+  ],
+  "stop_boundary": "complete R64/R96 public K and K-prime rank-1 two-stencil evidence, commit/push evidence, report to supervisor"
+}
+
