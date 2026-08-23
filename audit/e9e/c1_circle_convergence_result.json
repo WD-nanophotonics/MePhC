@@ -1,0 +1,161 @@
+{
+  "E9E_B_C1_OVERALL": "FAIL_CLOSED",
+  "absolute_gap_monotonic_decrease": false,
+  "base_sandbox_sha": "ec092cf325d1b1cf611c42a9a338c62dcab36390",
+  "calculation_code_git_sha": "317f58f08c06a4730810696b38d60a00b593856f",
+  "contract": {
+    "authorization": {
+      "full_bz_chern": false,
+      "live_mpb_bounded": true,
+      "main_push": false,
+      "new_berry_calculation": false,
+      "parameter_fitting": false,
+      "production_code_change": false,
+      "rank1_berry_at_exact_k": false,
+      "sandbox_audit_code": true,
+      "valley_chern": false
+    },
+    "base_sandbox_sha": "ec092cf325d1b1cf611c42a9a338c62dcab36390",
+    "carried_forward": {
+      "fr0_replay": "VALIDATED_FROM_E9E_B",
+      "fr0p4_gap21_trend": "VALIDATED_FROM_E9E_B",
+      "fr0p4_gap32_trend": "VALIDATED_FROM_E9E_B",
+      "original_e9e_b_absolute_1e6_gate": "HISTORICAL_FAILED_UNCHANGED"
+    },
+    "convergence_gate": {
+      "absolute_gap_order": "g64 > g96 > g128 >= 0",
+      "absolute_upper_bound": "NONE",
+      "effective_exponents": "DESCRIPTIVE_ONLY_NO_REQUIRED_ORDER",
+      "relative_gap_definition": "gap32 / ((F2+F3)/2)",
+      "relative_gap_order": "r64 > r96 > r128 >= 0",
+      "replacement_absolute_threshold": "FORBIDDEN"
+    },
+    "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+    "model": {
+      "air_epsilon": 1.0,
+      "background_epsilon": 7.0225,
+      "effective_refractive_index": 2.65,
+      "eigensolver_tolerance": 1e-07,
+      "f_r": 0.5,
+      "geometry": "EXACT_EQUAL_AREA_CIRCLE",
+      "lattice_constant_nm": 400.0,
+      "mesh_size": 3,
+      "num_bands": 6,
+      "physical_area": 0.2078460969082653,
+      "polarization": "TE",
+      "public_k": [
+        0.6666666666666666,
+        0.0
+      ]
+    },
+    "new_live_solve": {
+      "count": 1,
+      "polygon_solve": false,
+      "representation": "IDENTICAL_EXACT_MP_CYLINDER_AS_E9E_B",
+      "rerun_r64": false,
+      "rerun_r96": false,
+      "resolution": 128
+    },
+    "preserved_e9e_b_contract_sha256": "1f247863dbdb1ec5603737a1fc9f1fa454b5c59600553848ef588d26b04f8eeb",
+    "preserved_e9e_b_result_sha256": "1347b3340f976098ba30479dca5685a891bbdb3cf422e7a286a11a68ca253dda",
+    "schema": "trilatt_e9e_b_c1_exact_circle_convergence_contract_v1",
+    "work_order_id": "TRILATT-E9E-B-C1-20260824-191"
+  },
+  "contract_sha256": "4eba4b17ab4e9344d83e06505b8cdb16614a805d4844c27d8cb90f6f9b105804",
+  "coordinate_preflight": {
+    "conversion_count": "EXACTLY_ONCE",
+    "mapping_digest": "b1fba20a9a77109f478ce5538aaa99d6a6c6d0f92a98a43b6a385cfe569d636f",
+    "mpb_fractional_k": [
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "public_k": [
+      0.6666666666666666,
+      0.0
+    ],
+    "ready": true,
+    "real_space_coordinate_label": "r_not_q",
+    "round_trip_residual": 3.557616665725061e-17
+  },
+  "effective_convergence_exponent_64_96": 1.8096375888612053,
+  "effective_convergence_exponent_96_128": -0.5332704491158132,
+  "existing_e9e_b_authoritative_code_sha": "24162f6e0e532181303cde7f916b34e0d5fa0050",
+  "existing_e9e_b_result_sha": "1347b3340f976098ba30479dca5685a891bbdb3cf422e7a286a11a68ca253dda",
+  "existing_e9e_b_values_reused_without_rerun": true,
+  "existing_e9e_b_work_order": "TRILATT-E9E-B-20260824-189",
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "fr0_replay": "VALIDATED_FROM_E9E_B",
+  "fr0p4_gap21_trend": "VALIDATED_FROM_E9E_B",
+  "fr0p4_gap32_trend": "VALIDATED_FROM_E9E_B",
+  "fr0p5_degeneracy_trend": "UNRESOLVED_FAIL_CLOSED",
+  "fr0p5_rank1_berry_at_exact_k": "UNDEFINED_NOT_AUTHORIZED",
+  "full_bz_chern": "NOT_AUTHORIZED",
+  "gap32_r128": 1.5061768472601766e-05,
+  "gap32_r64": 2.6909844778821856e-05,
+  "gap32_r96": 1.2919622710549916e-05,
+  "geometry": "EXACT_EQUAL_AREA_CIRCLE",
+  "main_push": false,
+  "new_berry_calculation": "NONE",
+  "new_mpb_solver_requests": 1,
+  "original_absolute_1e6_gate": "HISTORICAL_FAILED_UNCHANGED",
+  "preserved_e9e_b_contract_sha256": "1f247863dbdb1ec5603737a1fc9f1fa454b5c59600553848ef588d26b04f8eeb",
+  "preserved_e9e_b_result_sha256": "1347b3340f976098ba30479dca5685a891bbdb3cf422e7a286a11a68ca253dda",
+  "production_code_changed": false,
+  "r128_result": {
+    "case_name": "FR0P5_R128_EXACT_CIRCLE",
+    "frequencies": [
+      0.2612052776617411,
+      0.3263861266215996,
+      0.3264011883900722,
+      0.553872012280224,
+      0.59981983023115,
+      0.5998216076796377
+    ],
+    "gap21": 0.06518084895985848,
+    "gap32": 1.5061768472601766e-05,
+    "geometry": "EXACT_EQUAL_AREA_CIRCLE",
+    "mpb_fractional_k": [
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "provider_representation": "mpb_energy_eh_v1",
+    "public_k": [
+      0.6666666666666666,
+      0.0
+    ],
+    "radius": 0.25721482743149754,
+    "resolution": 128
+  },
+  "relative_gap_monotonic_decrease": false,
+  "relative_gap_r128": 4.614602069077418e-05,
+  "relative_gap_r64": 8.24389769772613e-05,
+  "relative_gap_r96": 3.958123809230498e-05,
+  "resolutions_used": [
+    "64_EXISTING",
+    "96_EXISTING",
+    "128_NEW"
+  ],
+  "schema": "trilatt_e9e_b_c1_exact_circle_convergence_result_v1",
+  "self_checks": {
+    "CONTRACT_PATH_EXISTS": true,
+    "E9E_B_CONTRACT_PRESERVED": true,
+    "E9E_B_RESULT_PRESERVED": true,
+    "EXACT_CIRCLE_ONLY": true,
+    "NO_BERRY": true,
+    "NO_CHERN": true,
+    "NO_POLYGON": true,
+    "NO_PRODUCTION_CODE": true,
+    "NO_R64_RERUN": true,
+    "NO_R96_RERUN": true,
+    "NO_REPLACEMENT_ABSOLUTE_THRESHOLD": true,
+    "ONE_NEW_SOLVE": true,
+    "WORK_ORDER_BOUND": true
+  },
+  "telemetry": {
+    "new_solver_requests": 1,
+    "solver_failures": 0,
+    "wall_time_seconds": 1.3961858999973629
+  },
+  "valley_chern": "NOT_AUTHORIZED",
+  "work_order_id": "TRILATT-E9E-B-C1-20260824-191"
+}
