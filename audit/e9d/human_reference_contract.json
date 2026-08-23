@@ -1,0 +1,69 @@
+﻿{
+  "schema": "trilatt_e9d_bounded_local_berry_distribution_contract_v1",
+  "work_order_id": "TRILATT-E9D-20260824-179",
+  "phase": "E9D",
+  "base_sandbox_sha": "0b9ffafc025b65e282db8066508fc75e7fb9ac27",
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "live_mpb_authorized": true,
+  "production_code_change_authorized": false,
+  "sandbox_audit_code_authorized": true,
+  "main_push_authorized": false,
+  "berry_field_map_authorized": "TRUE_BOUNDED_LOCAL_PATCH",
+  "valley_chern_authorized": false,
+  "full_bz_chern_authorized": false,
+  "hbz_integration_authorized": false,
+  "model": {
+    "lattice_constant_nm": 400.0,
+    "effective_index": 2.65,
+    "epsilon_background": 7.0225,
+    "epsilon_air": 1.0,
+    "polarization": "TE",
+    "triangle_circumradius_nm": 160.0,
+    "triangle_orientation_mod_120_degrees": 90.0,
+    "physical_fill_fraction": 0.24,
+    "representation": "mpb_energy_eh_v1",
+    "num_bands": 6,
+    "target_zero_based_bands": [0, 1, 2],
+    "rank": 1,
+    "map_resolution": 64,
+    "map_grid": [13, 13],
+    "map_grid_step_q": 0.027777777777777776,
+    "map_plaquette_side_q": 0.027777777777777776,
+    "r96_validation_resolution": 96,
+    "solver_tolerance": 1e-7,
+    "mesh_size": 3,
+    "deterministic": true
+  },
+  "map": {
+    "center_public_q": [-0.6666666666666666, 0.0],
+    "offset_min_q": [-0.16666666666666666, -0.16666666666666666],
+    "offset_max_q": [0.16666666666666666, 0.16666666666666666],
+    "grid_step_units": "1/36",
+    "node_identity_denominator": 72,
+    "extended_zone_local_chart": true,
+    "individual_pixel_e4c_required": false,
+    "zero_fill": false,
+    "interpolation": false
+  },
+  "trs_control": {
+    "resolution": 64,
+    "offsets_in_1_72_units": [[0, 0], [4, 0], [-4, 0], [0, 4], [0, -4], [4, 4], [4, -4], [-4, 4], [-4, -4]],
+    "relative_residual_max": 0.01
+  },
+  "r96_validation": {
+    "resolution": 96,
+    "offsets_in_1_72_units": [[0, 0], [4, 0], [-4, 0], [0, 4], [0, -4]],
+    "count": 5
+  },
+  "qualification": {
+    "min_external_gap": 0.02,
+    "min_singular_value": 0.9,
+    "max_principal_angle": 0.45,
+    "max_projector_distance": 0.3,
+    "authoritative_estimator": "wilson_phase",
+    "literal_estimator_diagnostic": true
+  },
+  "prohibited_scope": ["valley_chern", "full_bz_chern", "hbz_integration", "parameter_fitting", "map_extent_tuning", "grid_step_tuning", "per_pixel_e4c_requirement", "zero_fill", "interpolation", "second_full_k_map", "r96_full_map", "production_code_change", "posthoc_sign_flip"],
+  "stop_boundary": "commit and push bounded map, TRS control, R96 validation, descriptors and plots; report to supervisor; stop"
+}
+
