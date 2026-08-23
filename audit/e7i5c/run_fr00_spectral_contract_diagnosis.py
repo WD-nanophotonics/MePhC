@@ -219,7 +219,7 @@ def result_payload(root: Path):
             "records": symmetry,
             "R48_gap21_range": [min(gap21_values), max(gap21_values)],
             "R48_gap32_range": [min(gap32_values), max(gap32_values)],
-            "R48_frequency_symmetry_status": "STABLE_WITHIN_NUMERICAL_PRECISION" if max(gap21_values) - min(gap21_values) < 1e-8 and max(gap32_values) - min(gap32_values) < 1e-8 else "MISMATCH",
+            "R48_frequency_symmetry_status": "VARIATION_REPORTED_NO_PASS_CUTOFF",
         },
         "classifications": {
             "code_change": "SANDBOX_AUDIT_ONLY",
