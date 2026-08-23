@@ -74,7 +74,7 @@ def run(contract: dict, output: Path) -> dict:
         final = ev
         if ev["qualified"]:
             break
-    result = _compact(final)
+    result = _compact({k: v for k, v in final.items() if not k.startswith("_")})
     payload = {
         "schema": "e7i4f_element_checkpoint_v1",
         "complete": True,
