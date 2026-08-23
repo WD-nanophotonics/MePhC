@@ -1,0 +1,2078 @@
+{
+  "E9C_C1_OVERALL": "FINER_STENCIL_REFINEMENT_READY_FOR_SUPERVISOR_DECISION",
+  "TRS_control_final_1_144": [
+    {
+      "K": 0.9397805830189636,
+      "K_prime": -0.9398384785616758,
+      "paper_band": 1,
+      "relative_residual": 6.160158796731334e-05,
+      "sum": -5.7895542712183e-05
+    },
+    {
+      "K": -0.7551186162576599,
+      "K_prime": 0.7552442201904411,
+      "paper_band": 2,
+      "relative_residual": 0.00016630902881931188,
+      "sum": 0.0001256039327812708
+    },
+    {
+      "K": -0.17293467384253802,
+      "K_prime": 0.17286594599574295,
+      "paper_band": 3,
+      "relative_residual": 0.0003974208599580662,
+      "sum": -6.872784679506916e-05
+    }
+  ],
+  "all_six_e4c_pairs_authorized": true,
+  "base_sandbox_sha": "3839981232641ca6f333ac29152c6002c74b7c2f",
+  "calculation_code_git_sha": "8d89d0c0fc8f5cce00867f487782bab3ef1379df",
+  "contract": {
+    "base_sandbox_sha": "3839981232641ca6f333ac29152c6002c74b7c2f",
+    "counts": {
+      "formula": "1 resolution x 2 valleys x 3 bands; each pair has 3 levels",
+      "total_e4c_refinement_pairs": 6,
+      "total_stencil_level_rows": 18
+    },
+    "existing_e9c_result_sha256": "205A92DEFE24343F9A664C29668DBCFF5F771103CFB118770FDC85040AA800A4",
+    "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+    "live_mpb_authorized": true,
+    "main_push_authorized": false,
+    "model": {
+      "deterministic": true,
+      "effective_index": 2.65,
+      "epsilon_air": 1.0,
+      "epsilon_background": 7.0225,
+      "lattice_constant_nm": 400.0,
+      "mesh_size": 3,
+      "num_bands": 6,
+      "physical_fill_fraction": 0.24,
+      "polarization": "TE",
+      "rank": 1,
+      "representation": "mpb_energy_eh_v1",
+      "resolution": 96,
+      "solver_tolerance": 1e-07,
+      "triangle_circumradius_nm": 160.0,
+      "triangle_orientation_mod_120_degrees": 90.0
+    },
+    "phase": "E9C.C1",
+    "production_code_change_authorized": false,
+    "prohibited_scope": [
+      "R64",
+      "R128",
+      "fourth_stencil",
+      "rank2",
+      "rank3",
+      "berry_field_map",
+      "valley_chern",
+      "full_bz_chern",
+      "parameter_fitting",
+      "production_code_change",
+      "posthoc_sign_flip"
+    ],
+    "qualification_thresholds": {
+      "max_metric_delta": 0.1,
+      "max_principal_angle": 0.45,
+      "max_projector_distance": 0.3,
+      "min_external_gap": 0.02,
+      "min_singular_value": 0.9,
+      "threshold_unchanged": true
+    },
+    "sandbox_audit_code_authorized": true,
+    "schema": "trilatt_e9c_c1_one_finer_stencil_identity_refinement_contract_v1",
+    "stencil_labels": [
+      "1/36",
+      "1/72",
+      "1/144"
+    ],
+    "stencil_ladder": [
+      0.027777777777777776,
+      0.013888888888888888,
+      0.006944444444444444
+    ],
+    "stop_boundary": "commit and push R96 three-level K/K-prime evidence, report to supervisor, stop",
+    "valleys": {
+      "paper_label_comparison_center": "PUBLIC_K_PRIME",
+      "posthoc_sign_flip": false,
+      "public_K": [
+        0.6666666666666666,
+        0.0
+      ],
+      "public_K_prime": [
+        -0.6666666666666666,
+        0.0
+      ]
+    },
+    "work_order_id": "TRILATT-E9C-C1-20260824-177"
+  },
+  "contract_json_sha256": "392f93bdd2f68d73d6f351f5d7e4173fa62feb2d30f53bd6c92ea424ff10de1f",
+  "coordinate_preflight": {
+    "mapping_digest": "b1fba20a9a77109f478ce5538aaa99d6a6c6d0f92a98a43b6a385cfe569d636f",
+    "mpb_K": [
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "mpb_K_prime": [
+      -0.3333333333333333,
+      -0.3333333333333333
+    ],
+    "public_K": [
+      0.6666666666666666,
+      0.0
+    ],
+    "public_K_prime": [
+      -0.6666666666666666,
+      0.0
+    ],
+    "ready": true,
+    "round_trip_residual": 3.557616665725061e-17
+  },
+  "counts": {
+    "e4c_authorized_pairs": 6,
+    "total_e4c_refinement_pairs": 6,
+    "total_stencil_level_rows": 18
+  },
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "geometry": {
+    "max_roundtrip_error": 6.206335383118183e-17,
+    "mpb_vertices": [
+      [
+        0.23094010767585033,
+        -0.23094010767585035
+      ],
+      [
+        -0.46188021535170065,
+        -0.2309401076758503
+      ],
+      [
+        0.23094010767585035,
+        0.46188021535170065
+      ]
+    ],
+    "orientation": "COUNTERCLOCKWISE",
+    "physical_fill_fraction": 0.24000000000000002,
+    "physical_vertices": [
+      [
+        0.0,
+        0.4
+      ],
+      [
+        -0.34641016151377546,
+        -0.2
+      ],
+      [
+        0.34641016151377546,
+        -0.2
+      ]
+    ],
+    "roundtrip_vertices": [
+      [
+        -1.3877787807814457e-17,
+        0.4
+      ],
+      [
+        -0.34641016151377546,
+        -0.20000000000000004
+      ],
+      [
+        0.3464101615137755,
+        -0.19999999999999998
+      ]
+    ]
+  },
+  "mephc_refined_local_berry_status": "QUALIFIED_BOUNDED_FINE_STENCIL_ESTIMATE",
+  "paper_stencil_external_reproduction": "VALIDATED",
+  "preserved_e9c_result_sha256": "205a92defe24343f9a664c29668dbcff5f771103cfb118770fdc85040aa800a4",
+  "resolution": 96,
+  "results": {
+    "PUBLIC_K": {
+      "0": {
+        "E4C": {
+          "authorization_granted": true,
+          "authorization_scope": "identity_refinement_only",
+          "evidence": [
+            "final identity quality and final-pair stability thresholds passed",
+            "authorization is limited to identity refinement evidence"
+          ],
+          "levels": [
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 0,
+                "center": "PUBLIC_K",
+                "side_label": "1/36",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.027777777777777776
+            },
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 0,
+                "center": "PUBLIC_K",
+                "side_label": "1/72",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.013888888888888888
+            },
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 0,
+                "center": "PUBLIC_K",
+                "side_label": "1/144",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.006944444444444444
+            }
+          ],
+          "metrics": [
+            {
+              "maximum_principal_angle": 0.1806685715473684,
+              "maximum_projector_distance": 0.2541162212634002,
+              "minimum_singular_value": 0.9837237788349966,
+              "provenance": {
+                "band": 0,
+                "center": "PUBLIC_K",
+                "side_label": "1/36",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.027777777777777776
+            },
+            {
+              "maximum_principal_angle": 0.08872030279211852,
+              "maximum_projector_distance": 0.12530491911265568,
+              "minimum_singular_value": 0.9960669348106509,
+              "provenance": {
+                "band": 0,
+                "center": "PUBLIC_K",
+                "side_label": "1/72",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.013888888888888888
+            },
+            {
+              "maximum_principal_angle": 0.04377071629447645,
+              "maximum_projector_distance": 0.06188137669758484,
+              "minimum_singular_value": 0.9990422151285729,
+              "provenance": {
+                "band": 0,
+                "center": "PUBLIC_K",
+                "side_label": "1/144",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.006944444444444444
+            }
+          ],
+          "provenance": {
+            "band": 0,
+            "center": "PUBLIC_K",
+            "source": "E9C.C1 final-pair 1/72-to-1/144 E4C"
+          },
+          "rank": 1,
+          "status": "PLAQUETTE_REFINEMENT_SINGLE_BAND_QUALIFIED",
+          "thresholds": {
+            "geometry_tolerance": 1e-10,
+            "max_metric_delta": 0.1,
+            "max_principal_angle": 0.45,
+            "max_projector_distance": 0.3,
+            "min_singular_value": 0.9
+          }
+        },
+        "E4C_authorization": "PASSED",
+        "center": "PUBLIC_K",
+        "delta_36_to_72": 0.026348118910020535,
+        "delta_72_to_144": 0.0068168753736510546,
+        "final_pair_max_principal_angle": 0.04377071629447645,
+        "final_pair_max_projector_distance": 0.06188137669758484,
+        "final_pair_metric_deltas": {
+          "maximum_principal_angle": 0.04494958649764207,
+          "maximum_projector_distance": 0.06342354241507084,
+          "minimum_singular_value": 0.0029752803179220466
+        },
+        "final_pair_min_singular_value": 0.9990422151285729,
+        "levels": [
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.044617601736038404,
+            "omega_over_a2_paper_literal": 0.906500346624374,
+            "omega_over_a2_wilson": 0.906615588735292,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/36",
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                0.013888888888888888
+              ],
+              [
+                0.6527777777777778,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.027613579662447374,
+                "real": 0.9996186724037449
+              },
+              "determinant_phase": -0.027617090137895237,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.027613579662447374,
+                    "real": 0.9996186724037449
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          },
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.044617601736038404,
+            "omega_over_a2_paper_literal": 0.9329558583369443,
+            "omega_over_a2_wilson": 0.9329637076453126,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/72",
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                0.006944444444444444
+              ],
+              [
+                0.6597222222222222,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.007104865158537348,
+                "real": 0.9999747601270138
+              },
+              "determinant_phase": -0.007104924934438906,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.007104865158537348,
+                    "real": 0.9999747601270138
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          },
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.044617601736038404,
+            "omega_over_a2_paper_literal": 0.9397800816036558,
+            "omega_over_a2_wilson": 0.9397805830189636,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/144",
+            "side_q": 0.006944444444444444,
+            "vertices": [
+              [
+                0.6631944444444444,
+                -0.003472222222222222
+              ],
+              [
+                0.6701388888888888,
+                -0.003472222222222222
+              ],
+              [
+                0.6701388888888888,
+                0.003472222222222222
+              ],
+              [
+                0.6631944444444444,
+                0.003472222222222222
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.0017892086476565504,
+                "real": 0.9999983993649265
+              },
+              "determinant_phase": -0.0017892096022805333,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.0017892086476565504,
+                    "real": 0.9999983993649265
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 1.1102230246251565e-16
+            }
+          }
+        ],
+        "omega_evolution_wilson": [
+          0.906615588735292,
+          0.9329637076453126,
+          0.9397805830189636
+        ],
+        "paper_band": 1,
+        "qualified": true,
+        "ratio_abs_delta_72_to_144_over_delta_36_to_72": 0.258723417672846,
+        "zero_based_band": 0
+      },
+      "1": {
+        "E4C": {
+          "authorization_granted": true,
+          "authorization_scope": "identity_refinement_only",
+          "evidence": [
+            "final identity quality and final-pair stability thresholds passed",
+            "authorization is limited to identity refinement evidence"
+          ],
+          "levels": [
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 1,
+                "center": "PUBLIC_K",
+                "side_label": "1/36",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.027777777777777776
+            },
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 1,
+                "center": "PUBLIC_K",
+                "side_label": "1/72",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.013888888888888888
+            },
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 1,
+                "center": "PUBLIC_K",
+                "side_label": "1/144",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.006944444444444444
+            }
+          ],
+          "metrics": [
+            {
+              "maximum_principal_angle": 0.177860260984108,
+              "maximum_projector_distance": 0.25020831529656273,
+              "minimum_singular_value": 0.9842245168040816,
+              "provenance": {
+                "band": 1,
+                "center": "PUBLIC_K",
+                "side_label": "1/36",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.027777777777777776
+            },
+            {
+              "maximum_principal_angle": 0.0894191632624262,
+              "maximum_projector_distance": 0.12628933919039476,
+              "minimum_singular_value": 0.9960047697694157,
+              "provenance": {
+                "band": 1,
+                "center": "PUBLIC_K",
+                "side_label": "1/72",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.013888888888888888
+            },
+            {
+              "maximum_principal_angle": 0.04473052559546577,
+              "maximum_projector_distance": 0.06323742324295983,
+              "minimum_singular_value": 0.9989997568322003,
+              "provenance": {
+                "band": 1,
+                "center": "PUBLIC_K",
+                "side_label": "1/144",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.006944444444444444
+            }
+          ],
+          "provenance": {
+            "band": 1,
+            "center": "PUBLIC_K",
+            "source": "E9C.C1 final-pair 1/72-to-1/144 E4C"
+          },
+          "rank": 1,
+          "status": "PLAQUETTE_REFINEMENT_SINGLE_BAND_QUALIFIED",
+          "thresholds": {
+            "geometry_tolerance": 1e-10,
+            "max_metric_delta": 0.1,
+            "max_principal_angle": 0.45,
+            "max_projector_distance": 0.3,
+            "min_singular_value": 0.9
+          }
+        },
+        "E4C_authorization": "PASSED",
+        "center": "PUBLIC_K",
+        "delta_36_to_72": -0.02918917441024038,
+        "delta_72_to_144": -0.007607361942795876,
+        "final_pair_max_principal_angle": 0.04473052559546577,
+        "final_pair_max_projector_distance": 0.06323742324295983,
+        "final_pair_metric_deltas": {
+          "maximum_principal_angle": 0.044688637666960435,
+          "maximum_projector_distance": 0.06305191594743492,
+          "minimum_singular_value": 0.002994987062784671
+        },
+        "final_pair_min_singular_value": 0.9989997568322003,
+        "levels": [
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04200585763589282,
+            "omega_over_a2_paper_literal": -0.7182647599983912,
+            "omega_over_a2_wilson": -0.7183220799046236,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/36",
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                0.013888888888888888
+              ],
+              [
+                0.6527777777777778,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.02187959579144294,
+                "real": 0.9997606129909314
+              },
+              "determinant_phase": 0.021881341855636834,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.02187959579144294,
+                    "real": 0.9997606129909314
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 1.1102230246251565e-16
+            }
+          },
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04200585763589282,
+            "omega_over_a2_paper_literal": -0.7475072170174778,
+            "omega_over_a2_wilson": -0.747511254314864,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/72",
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                0.006944444444444444
+              ],
+              [
+                0.6597222222222222,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.005692592992995182,
+                "real": 0.9999837970612407
+              },
+              "determinant_phase": 0.005692623738772999,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.005692592992995182,
+                    "real": 0.9999837970612407
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 6.661338147750939e-16
+            }
+          },
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04200585763589282,
+            "omega_over_a2_paper_literal": -0.7551183561436514,
+            "omega_over_a2_wilson": -0.7551186162576599,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/144",
+            "side_q": 0.006944444444444444,
+            "vertices": [
+              [
+                0.6631944444444444,
+                -0.003472222222222222
+              ],
+              [
+                0.6701388888888888,
+                -0.003472222222222222
+              ],
+              [
+                0.6701388888888888,
+                0.003472222222222222
+              ],
+              [
+                0.6631944444444444,
+                0.003472222222222222
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.0014376387830128748,
+                "real": 0.9999989665968306
+              },
+              "determinant_phase": 0.001437639278233238,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.0014376387830128748,
+                    "real": 0.9999989665968306
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 4.440892098500626e-16
+            }
+          }
+        ],
+        "omega_evolution_wilson": [
+          -0.7183220799046236,
+          -0.747511254314864,
+          -0.7551186162576599
+        ],
+        "paper_band": 2,
+        "qualified": true,
+        "ratio_abs_delta_72_to_144_over_delta_36_to_72": 0.2606227170346757,
+        "zero_based_band": 1
+      },
+      "2": {
+        "E4C": {
+          "authorization_granted": true,
+          "authorization_scope": "identity_refinement_only",
+          "evidence": [
+            "final identity quality and final-pair stability thresholds passed",
+            "authorization is limited to identity refinement evidence"
+          ],
+          "levels": [
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 2,
+                "center": "PUBLIC_K",
+                "side_label": "1/36",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.027777777777777776
+            },
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 2,
+                "center": "PUBLIC_K",
+                "side_label": "1/72",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.013888888888888888
+            },
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 2,
+                "center": "PUBLIC_K",
+                "side_label": "1/144",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.006944444444444444
+            }
+          ],
+          "metrics": [
+            {
+              "maximum_principal_angle": 0.14513767779235565,
+              "maximum_projector_distance": 0.20453581435976106,
+              "minimum_singular_value": 0.9894860030955944,
+              "provenance": {
+                "band": 2,
+                "center": "PUBLIC_K",
+                "side_label": "1/36",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.027777777777777776
+            },
+            {
+              "maximum_principal_angle": 0.06978742971628117,
+              "maximum_projector_distance": 0.09861423750278286,
+              "minimum_singular_value": 0.997565845486338,
+              "provenance": {
+                "band": 2,
+                "center": "PUBLIC_K",
+                "side_label": "1/72",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.013888888888888888
+            },
+            {
+              "maximum_principal_angle": 0.034118778101903106,
+              "maximum_projector_distance": 0.04824187779589879,
+              "minimum_singular_value": 0.9994180109510549,
+              "provenance": {
+                "band": 2,
+                "center": "PUBLIC_K",
+                "side_label": "1/144",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.006944444444444444
+            }
+          ],
+          "provenance": {
+            "band": 2,
+            "center": "PUBLIC_K",
+            "source": "E9C.C1 final-pair 1/72-to-1/144 E4C"
+          },
+          "rank": 1,
+          "status": "PLAQUETTE_REFINEMENT_SINGLE_BAND_QUALIFIED",
+          "thresholds": {
+            "geometry_tolerance": 1e-10,
+            "max_metric_delta": 0.1,
+            "max_principal_angle": 0.45,
+            "max_projector_distance": 0.3,
+            "min_singular_value": 0.9
+          }
+        },
+        "E4C_authorization": "PASSED",
+        "center": "PUBLIC_K",
+        "delta_36_to_72": -0.006922237386784769,
+        "delta_72_to_144": -0.0017611923350276393,
+        "final_pair_max_principal_angle": 0.034118778101903106,
+        "final_pair_max_projector_distance": 0.04824187779589879,
+        "final_pair_metric_deltas": {
+          "maximum_principal_angle": 0.035668651614378065,
+          "maximum_projector_distance": 0.05037235970688408,
+          "minimum_singular_value": 0.0018521654647168928
+        },
+        "final_pair_min_singular_value": 0.9994180109510549,
+        "levels": [
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04200585763589282,
+            "omega_over_a2_paper_literal": -0.16425055881607378,
+            "omega_over_a2_wilson": -0.16425124412072561,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/36",
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                0.013888888888888888
+              ],
+              [
+                0.6527777777777778,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.005003358142507741,
+                "real": 0.9999874831253128
+              },
+              "determinant_phase": 0.005003379018081222,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.005003358142507741,
+                    "real": 0.9999874831253128
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 0.0
+            }
+          },
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04200585763589282,
+            "omega_over_a2_paper_literal": -0.17117343302918026,
+            "omega_over_a2_wilson": -0.17117348150751038,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/72",
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                0.006944444444444444
+              ],
+              [
+                0.6597222222222222,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.0013035602376345462,
+                "real": 0.9999991503649927
+              },
+              "determinant_phase": 0.0013035606068181422,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.0013035602376345462,
+                    "real": 0.9999991503649927
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          },
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04200585763589282,
+            "omega_over_a2_paper_literal": -0.1729346707181534,
+            "omega_over_a2_wilson": -0.17293467384253802,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/144",
+            "side_q": 0.006944444444444444,
+            "vertices": [
+              [
+                0.6631944444444444,
+                -0.003472222222222222
+              ],
+              [
+                0.6701388888888888,
+                -0.003472222222222222
+              ],
+              [
+                0.6701388888888888,
+                0.003472222222222222
+              ],
+              [
+                0.6631944444444444,
+                0.003472222222222222
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.00032924320741142474,
+                "real": 0.9999999457994538
+              },
+              "determinant_phase": 0.0003292432133598121,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.00032924320741142474,
+                    "real": 0.9999999457994538
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          }
+        ],
+        "omega_evolution_wilson": [
+          -0.16425124412072561,
+          -0.17117348150751038,
+          -0.17293467384253802
+        ],
+        "paper_band": 3,
+        "qualified": true,
+        "ratio_abs_delta_72_to_144_over_delta_36_to_72": 0.254425301621399,
+        "zero_based_band": 2
+      }
+    },
+    "PUBLIC_K_PRIME": {
+      "0": {
+        "E4C": {
+          "authorization_granted": true,
+          "authorization_scope": "identity_refinement_only",
+          "evidence": [
+            "final identity quality and final-pair stability thresholds passed",
+            "authorization is limited to identity refinement evidence"
+          ],
+          "levels": [
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 0,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/36",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.027777777777777776
+            },
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 0,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/72",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.013888888888888888
+            },
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 0,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/144",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.006944444444444444
+            }
+          ],
+          "metrics": [
+            {
+              "maximum_principal_angle": 0.18067123111470546,
+              "maximum_projector_distance": 0.25411992124063837,
+              "minimum_singular_value": 0.9837233009410349,
+              "provenance": {
+                "band": 0,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/36",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.027777777777777776
+            },
+            {
+              "maximum_principal_angle": 0.0887216341282646,
+              "maximum_projector_distance": 0.1253067945010281,
+              "minimum_singular_value": 0.9960668168481162,
+              "provenance": {
+                "band": 0,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/72",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.013888888888888888
+            },
+            {
+              "maximum_principal_angle": 0.04377137492060929,
+              "maximum_projector_distance": 0.06188230724346314,
+              "minimum_singular_value": 0.9990421863090231,
+              "provenance": {
+                "band": 0,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/144",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.006944444444444444
+            }
+          ],
+          "provenance": {
+            "band": 0,
+            "center": "PUBLIC_K_PRIME",
+            "source": "E9C.C1 final-pair 1/72-to-1/144 E4C"
+          },
+          "rank": 1,
+          "status": "PLAQUETTE_REFINEMENT_SINGLE_BAND_QUALIFIED",
+          "thresholds": {
+            "geometry_tolerance": 1e-10,
+            "max_metric_delta": 0.1,
+            "max_principal_angle": 0.45,
+            "max_projector_distance": 0.3,
+            "min_singular_value": 0.9
+          }
+        },
+        "E4C_authorization": "PASSED",
+        "center": "PUBLIC_K_PRIME",
+        "delta_36_to_72": -0.026350167150052672,
+        "delta_72_to_144": -0.006817326275291635,
+        "final_pair_max_principal_angle": 0.04377137492060929,
+        "final_pair_max_projector_distance": 0.06188230724346314,
+        "final_pair_metric_deltas": {
+          "maximum_principal_angle": 0.04495025920765531,
+          "maximum_projector_distance": 0.06342448725756497,
+          "minimum_singular_value": 0.0029753694609069292
+        },
+        "final_pair_min_singular_value": 0.9990421863090231,
+        "levels": [
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04461700007991565,
+            "omega_over_a2_paper_literal": -0.9065557218999464,
+            "omega_over_a2_wilson": -0.9066709851363315,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/36",
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                -0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                0.013888888888888888
+              ],
+              [
+                -0.6805555555555555,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.027615266489803857,
+                "real": 0.9996186258052101
+              },
+              "determinant_phase": 0.02761877760877025,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.027615266489803857,
+                    "real": 0.9996186258052101
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 4.440892098500626e-16
+            }
+          },
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04461700007991565,
+            "omega_over_a2_paper_literal": -0.9330133015280309,
+            "omega_over_a2_wilson": -0.9330211522863842,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/72",
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                -0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                0.006944444444444444
+              ],
+              [
+                -0.673611111111111,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.007105302613453678,
+                "real": 0.9999747570187815
+              },
+              "determinant_phase": 0.0071053624003975,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.007105302613453678,
+                    "real": 0.9999747570187815
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          },
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04461700007991565,
+            "omega_over_a2_paper_literal": -0.9398379770536924,
+            "omega_over_a2_wilson": -0.9398384785616758,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/144",
+            "side_q": 0.006944444444444444,
+            "vertices": [
+              [
+                -0.6701388888888888,
+                -0.003472222222222222
+              ],
+              [
+                -0.6631944444444444,
+                -0.003472222222222222
+              ],
+              [
+                -0.6631944444444444,
+                0.003472222222222222
+              ],
+              [
+                -0.6701388888888888,
+                0.003472222222222222
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.0017893188724228473,
+                "real": 0.9999983991677046
+              },
+              "determinant_phase": 0.0017893198272232718,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.0017893188724228473,
+                    "real": 0.9999983991677046
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 9.992007221626409e-16
+            }
+          }
+        ],
+        "omega_evolution_wilson": [
+          -0.9066709851363315,
+          -0.9330211522863842,
+          -0.9398384785616758
+        ],
+        "paper_band": 1,
+        "qualified": true,
+        "ratio_abs_delta_72_to_144_over_delta_36_to_72": 0.258720418601899,
+        "zero_based_band": 0
+      },
+      "1": {
+        "E4C": {
+          "authorization_granted": true,
+          "authorization_scope": "identity_refinement_only",
+          "evidence": [
+            "final identity quality and final-pair stability thresholds passed",
+            "authorization is limited to identity refinement evidence"
+          ],
+          "levels": [
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 1,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/36",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.027777777777777776
+            },
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 1,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/72",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.013888888888888888
+            },
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 1,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/144",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.006944444444444444
+            }
+          ],
+          "metrics": [
+            {
+              "maximum_principal_angle": 0.17786278276732007,
+              "maximum_projector_distance": 0.2502118253750498,
+              "minimum_singular_value": 0.984224070636988,
+              "provenance": {
+                "band": 1,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/36",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.027777777777777776
+            },
+            {
+              "maximum_principal_angle": 0.08942014292801614,
+              "maximum_projector_distance": 0.12629071911148101,
+              "minimum_singular_value": 0.9960046822847534,
+              "provenance": {
+                "band": 1,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/72",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.013888888888888888
+            },
+            {
+              "maximum_principal_angle": 0.04473092810162957,
+              "maximum_projector_distance": 0.06323799190326228,
+              "minimum_singular_value": 0.9989997388338104,
+              "provenance": {
+                "band": 1,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/144",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.006944444444444444
+            }
+          ],
+          "provenance": {
+            "band": 1,
+            "center": "PUBLIC_K_PRIME",
+            "source": "E9C.C1 final-pair 1/72-to-1/144 E4C"
+          },
+          "rank": 1,
+          "status": "PLAQUETTE_REFINEMENT_SINGLE_BAND_QUALIFIED",
+          "thresholds": {
+            "geometry_tolerance": 1e-10,
+            "max_metric_delta": 0.1,
+            "max_principal_angle": 0.45,
+            "max_projector_distance": 0.3,
+            "min_singular_value": 0.9
+          }
+        },
+        "E4C_authorization": "PASSED",
+        "center": "PUBLIC_K_PRIME",
+        "delta_36_to_72": 0.02919171658306874,
+        "delta_72_to_144": 0.007608150948545611,
+        "final_pair_max_principal_angle": 0.04473092810162957,
+        "final_pair_max_projector_distance": 0.06323799190326228,
+        "final_pair_metric_deltas": {
+          "maximum_principal_angle": 0.044689214826386575,
+          "maximum_projector_distance": 0.06305272720821874,
+          "minimum_singular_value": 0.0029950565490570735
+        },
+        "final_pair_min_singular_value": 0.9989997388338104,
+        "levels": [
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042008418211238574,
+            "omega_over_a2_paper_literal": 0.7183870034771032,
+            "omega_over_a2_wilson": 0.7184443526588268,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/36",
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                -0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                0.013888888888888888
+              ],
+              [
+                -0.6805555555555555,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.02188331954075004,
+                "real": 0.9997605314903555
+              },
+              "determinant_phase": -0.02188506649672639,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.02188331954075004,
+                    "real": 0.9997605314903555
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 6.661338147750939e-16
+            }
+          },
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042008418211238574,
+            "omega_over_a2_paper_literal": 0.7476320299218027,
+            "omega_over_a2_wilson": 0.7476360692418955,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/72",
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                -0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                0.006944444444444444
+              ],
+              [
+                -0.673611111111111,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.005693543497616971,
+                "real": 0.9999837916498648
+              },
+              "determinant_phase": -0.00569357425879858,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.005693543497616971,
+                    "real": 0.9999837916498648
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 4.440892098500626e-16
+            }
+          },
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042008418211238574,
+            "omega_over_a2_paper_literal": 0.7552439599466118,
+            "omega_over_a2_wilson": 0.7552442201904411,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/144",
+            "side_q": 0.006944444444444444,
+            "vertices": [
+              [
+                -0.6701388888888888,
+                -0.003472222222222222
+              ],
+              [
+                -0.6631944444444444,
+                -0.003472222222222222
+              ],
+              [
+                -0.6631944444444444,
+                0.003472222222222222
+              ],
+              [
+                -0.6701388888888888,
+                0.003472222222222222
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.0014378779149277071,
+                "real": 0.9999989662530165
+              },
+              "determinant_phase": -0.0014378784103952311,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.0014378779149277071,
+                    "real": 0.9999989662530165
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 1.1102230246251565e-16
+            }
+          }
+        ],
+        "omega_evolution_wilson": [
+          0.7184443526588268,
+          0.7476360692418955,
+          0.7552442201904411
+        ],
+        "paper_band": 2,
+        "qualified": true,
+        "ratio_abs_delta_72_to_144_over_delta_36_to_72": 0.26062704900877104,
+        "zero_based_band": 1
+      },
+      "2": {
+        "E4C": {
+          "authorization_granted": true,
+          "authorization_scope": "identity_refinement_only",
+          "evidence": [
+            "final identity quality and final-pair stability thresholds passed",
+            "authorization is limited to identity refinement evidence"
+          ],
+          "levels": [
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 2,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/36",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.027777777777777776
+            },
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 2,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/72",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.013888888888888888
+            },
+            {
+              "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+              "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+              "provenance": {
+                "band": 2,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/144",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "step": 0.006944444444444444
+            }
+          ],
+          "metrics": [
+            {
+              "maximum_principal_angle": 0.14512971366130611,
+              "maximum_projector_distance": 0.20452466979009112,
+              "minimum_singular_value": 0.9894871549058265,
+              "provenance": {
+                "band": 2,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/36",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.027777777777777776
+            },
+            {
+              "maximum_principal_angle": 0.06978348033445332,
+              "maximum_projector_distance": 0.09860866582807903,
+              "minimum_singular_value": 0.997566120872097,
+              "provenance": {
+                "band": 2,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/72",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.013888888888888888
+            },
+            {
+              "maximum_principal_angle": 0.03411685166453399,
+              "maximum_projector_distance": 0.04823915498752202,
+              "minimum_singular_value": 0.9994180766641381,
+              "provenance": {
+                "band": 2,
+                "center": "PUBLIC_K_PRIME",
+                "side_label": "1/144",
+                "source": "E9C.C1 ordered three-stencil ladder"
+              },
+              "rank": 1,
+              "step": 0.006944444444444444
+            }
+          ],
+          "provenance": {
+            "band": 2,
+            "center": "PUBLIC_K_PRIME",
+            "source": "E9C.C1 final-pair 1/72-to-1/144 E4C"
+          },
+          "rank": 1,
+          "status": "PLAQUETTE_REFINEMENT_SINGLE_BAND_QUALIFIED",
+          "thresholds": {
+            "geometry_tolerance": 1e-10,
+            "max_metric_delta": 0.1,
+            "max_principal_angle": 0.45,
+            "max_projector_distance": 0.3,
+            "min_singular_value": 0.9
+          }
+        },
+        "E4C_authorization": "PASSED",
+        "center": "PUBLIC_K_PRIME",
+        "delta_36_to_72": 0.006918836325530225,
+        "delta_72_to_144": 0.0017607147086901032,
+        "final_pair_max_principal_angle": 0.03411685166453399,
+        "final_pair_max_projector_distance": 0.04823915498752202,
+        "final_pair_metric_deltas": {
+          "maximum_principal_angle": 0.035666628669919334,
+          "maximum_projector_distance": 0.05036951084055701,
+          "minimum_singular_value": 0.0018519557920411156
+        },
+        "final_pair_min_singular_value": 0.9994180766641381,
+        "levels": [
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042008418211238574,
+            "omega_over_a2_paper_literal": 0.16418571046825914,
+            "omega_over_a2_wilson": 0.16418639496152262,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/36",
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                -0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                0.013888888888888888
+              ],
+              [
+                -0.6805555555555555,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.005001382748868868,
+                "real": 0.9999874930070869
+              },
+              "determinant_phase": -0.005001403599726047,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.005001382748868868,
+                    "real": 0.9999874930070869
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 6.661338147750939e-16
+            }
+          },
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042008418211238574,
+            "omega_over_a2_paper_literal": 0.1711051828666873,
+            "omega_over_a2_wilson": 0.17110523128705285,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/72",
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                -0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                0.006944444444444444
+              ],
+              [
+                -0.673611111111111,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.0013030404829245806,
+                "real": 0.9999991510423895
+              },
+              "determinant_phase": -0.001303040851666751,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.0013030404829245806,
+                    "real": 0.9999991510423895
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          },
+          {
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042008418211238574,
+            "omega_over_a2_paper_literal": 0.172865942875082,
+            "omega_over_a2_wilson": 0.17286594599574295,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "side_label": "1/144",
+            "side_q": 0.006944444444444444,
+            "vertices": [
+              [
+                -0.6701388888888888,
+                -0.003472222222222222
+              ],
+              [
+                -0.6631944444444444,
+                -0.003472222222222222
+              ],
+              [
+                -0.6631944444444444,
+                0.003472222222222222
+              ],
+              [
+                -0.6701388888888888,
+                0.003472222222222222
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.0003291123592975252,
+                "real": 0.9999999458425262
+              },
+              "determinant_phase": -0.0003291123652388233,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.0003291123592975252,
+                    "real": 0.9999999458425262
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          }
+        ],
+        "omega_evolution_wilson": [
+          0.16418639496152262,
+          0.17110523128705285,
+          0.17286594599574295
+        ],
+        "paper_band": 3,
+        "qualified": true,
+        "ratio_abs_delta_72_to_144_over_delta_36_to_72": 0.2544813355669561,
+        "zero_based_band": 2
+      }
+    }
+  },
+  "schema": "trilatt_e9c_c1_r96_three_stencil_k_kprime_result_v1",
+  "scope_gates": {
+    "berry_field_map": "NOT_AUTHORIZED",
+    "full_bz_chern": "NOT_AUTHORIZED",
+    "parameter_fitting": "NOT_AUTHORIZED",
+    "posthoc_sign_flip": "NOT_USED",
+    "production_code_changed": false,
+    "valley_chern": "NOT_AUTHORIZED"
+  },
+  "self_checks": {
+    "BASE_SANDBOX_BOUND": true,
+    "COUNTS": true,
+    "EXISTING_E9C_PRESERVED": true,
+    "EXISTING_E9C_SHA_BOUND": true,
+    "KPRIME_MAPPING": true,
+    "K_MAPPING": true,
+    "MAPPING_READY": true,
+    "NO_FORBIDDEN_SCOPE": true,
+    "PHYSICAL_GEOMETRY": true,
+    "R96_ONLY": true,
+    "THREE_LEVELS": true,
+    "THRESHOLD_UNCHANGED": true,
+    "WORK_ORDER": true
+  },
+  "stencil_ladder": [
+    {
+      "half_offset_q": 0.013888888888888888,
+      "label": "1/36",
+      "side_q": 0.027777777777777776
+    },
+    {
+      "half_offset_q": 0.006944444444444444,
+      "label": "1/72",
+      "side_q": 0.013888888888888888
+    },
+    {
+      "half_offset_q": 0.003472222222222222,
+      "label": "1/144",
+      "side_q": 0.006944444444444444
+    }
+  ],
+  "telemetry": {
+    "cache_hits": 64,
+    "peak_rss_kib": 611768,
+    "solver_failures": 0,
+    "solver_requests": 26,
+    "wall_time_seconds": 5.897902222000994
+  },
+  "time_reversal_sign_control": "PASSED",
+  "work_order_id": "TRILATT-E9C-C1-20260824-177"
+}
