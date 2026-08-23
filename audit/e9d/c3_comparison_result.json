@@ -1,0 +1,84 @@
+{
+  "E9D_C3_OVERALL": "FR0_EXTERNAL_DISTRIBUTION_COMPARATOR_READY_FOR_FINAL_SEAL",
+  "arbitrary_band1_threshold_removed": true,
+  "at_k_relative_strength": {
+    "status": "REPRODUCED",
+    "values_abs_omega_over_a2": [
+      0.8913231885543922,
+      0.7099796418329564,
+      0.14952259899306233
+    ]
+  },
+  "band2_positive_weight_tautology_removed": true,
+  "band_comparisons": [
+    {
+      "band_one_based": 1,
+      "center_sign": "NEGATIVE",
+      "center_sign_match": true,
+      "dominant_sign_structure_match": true,
+      "global_abs_max_offcenter": false,
+      "material_sign_reversal_match": "NOT_REQUIRED_FOR_SOURCE_SEAL",
+      "off_center_observation": null,
+      "opposite_sign_pixel_count": 10,
+      "primary_feature_region_match": true,
+      "spatial_extent_class_match": true,
+      "spatial_extent_second_moment": 0.0807942085009144
+    },
+    {
+      "band_one_based": 2,
+      "center_sign": "POSITIVE",
+      "center_sign_match": true,
+      "dominant_sign_structure_match": true,
+      "global_abs_max_offcenter": false,
+      "material_sign_reversal_match": true,
+      "off_center_observation": [
+        -0.00867040627491002,
+        8.986518431915534e-06
+      ],
+      "opposite_sign_pixel_count": 0,
+      "primary_feature_region_match": true,
+      "spatial_extent_class_match": true,
+      "spatial_extent_second_moment": 0.13266735910519983
+    },
+    {
+      "band_one_based": 3,
+      "center_sign": "POSITIVE",
+      "center_sign_match": true,
+      "dominant_sign_structure_match": true,
+      "global_abs_max_offcenter": true,
+      "material_sign_reversal_match": true,
+      "off_center_observation": [
+        -0.08333333333333333,
+        -0.16666666666666666
+      ],
+      "opposite_sign_pixel_count": 160,
+      "primary_feature_region_match": true,
+      "spatial_extent_class_match": true,
+      "spatial_extent_second_moment": 0.15361756723777684
+    }
+  ],
+  "base_sandbox_sha": "f9bdaa2eb0bb80a8b1177f3051fdc956f9d3eaa8",
+  "c1_and_c2_preserved": true,
+  "classifications": {
+    "at_k_relative_band_strength": "REPRODUCED",
+    "fine_structure": "REPRODUCED",
+    "map_wide_relative_band_strength": "INSUFFICIENT_SOURCE_SUPPORT",
+    "overall_distribution_fidelity": "SUPPORTED",
+    "paper_comparison_policy": "TREND_FIDELITY_OVER_POINTWISE_NUMERICAL_COINCIDENCE",
+    "peak_region": "REPRODUCED",
+    "sign_structure": "REPRODUCED",
+    "spatial_concentration_trend": "REPRODUCED"
+  },
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "full_bz_chern": "NOT_AUTHORIZED",
+  "map_wide_relative_strength": "INSUFFICIENT_SOURCE_SUPPORT",
+  "new_berry_calculation": "NONE",
+  "new_mpb_solver_requests": 0,
+  "new_numeric_match_threshold_introduced": false,
+  "original_e9d_evidence_unchanged": true,
+  "original_e9d_result_sha256": "abf4eb1785ff18a56be3002d9d4859bd0ed65c3b4212589b0f811e82c5850a83",
+  "schema": "trilatt_e9d_c3_threshold_free_source_bound_comparison_result_v1",
+  "source_contract_sha256": "df50c16d08cb9d89ae35b88eea0b09624985ab9489045f79c6fe488600bd5c91",
+  "valley_chern": "NOT_AUTHORIZED",
+  "work_order_id": "TRILATT-E9D-C3-20260824-185"
+}
