@@ -205,18 +205,55 @@ def certify(root: Path) -> dict:
     print(json.dumps({"certification_passed": passed, "elements": len(indices), "max_worker_peak_rss_kib": report["max_worker_peak_rss_kib"]}))
     return report
 
+def run_full(root: Path) -> None:
+    report_path = root / "audit" / "e7i4f" / "environment_report.json"
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    if report.get("full_stage2_continuation") != "AUTHORIZED_AFTER_CERTIFICATION":
+        raise RuntimeError("12-element certification has not authorized full Stage 2")
+    geometry = build_triangular_reference_geometry(FR)
+    preflight = build_triangular_coordinate_preflight()
+    domain = paper_style_truncated_k_hbz(fr=FR, delta_k=0.10, delta_gamma=0.10)
+    sample = sample_domain(domain, SPACING)
+    checkpoints = root / "audit" / "e7i4f" / "checkpoints" / "full"
+    worker = Path(__file__).with_name("run_stage2_element_worker.py")
+    contracts = []
+    started = time.monotonic()
+    for index in range(len(sample.centers)):
+        contract = build_contract(root, sample, index, geometry, preflight, domain)
+        contracts.append(contract)
+        entry = run_element(root, contract, checkpoints, worker)
+        if entry["status"] == "FAILED":
+            atomic_json(root / "audit" / "e7i4f" / "stage2_failure_report.json", {"schema": "e7i4f_stage2_failure_v1", "element_id": contract["element_id"], "completed_elements": index, "expected_elements": len(sample.centers), "entry": entry, "stage2_composite_valley_chern": "NOT_REPORTED"})
+            print(json.dumps({"stage2_status": "STOPPED_FAIL_CLOSED", "completed": index, "total": len(sample.centers)}))
+            return
+        if index % 10 == 0:
+            print(json.dumps({"progress": index, "total": len(sample.centers), "status": entry["status"]}), flush=True)
+    result = aggregate(contracts, checkpoints)
+    qualified_area = None if result is None else float(result["qualified_area_fraction"])
+    if result is None or abs(qualified_area - float(sample.retained_area_q)) > 1e-10:
+        atomic_json(root / "audit" / "e7i4f" / "stage2_failure_report.json", {"schema": "e7i4f_stage2_failure_v1", "completed_elements": len(contracts), "expected_elements": len(sample.centers), "qualified_area_fraction": qualified_area, "required_area_fraction": float(sample.retained_area_q), "stage2_composite_valley_chern": "NOT_REPORTED"})
+        print(json.dumps({"stage2_status": "NOT_FULLY_QUALIFIED", "elements": len(contracts)}))
+        return
+    manifest = [{"element_id": c["element_id"], "checkpoint_sha256": sha_bytes(checkpoint_path(checkpoints, c["element_id"]).read_bytes()), "weight": c["integration_weight"]} for c in contracts]
+    result.update({"work_order": WORK_ORDER, "runner_code_git_sha": git_head(root), "stage2_status": "FULLY_QUALIFIED", "checkpoint_count": len(manifest), "checkpoint_manifest_sha256": sha_bytes(canonical(manifest)), "wall_time_seconds": time.monotonic() - started, "stage2_composite_valley_chern": result["composite_valley_chern"], "main_unchanged": True, "main_push_authorized": False})
+    atomic_json(root / "audit" / "e7i4f" / "result.json", result)
+    print(json.dumps({"stage2_status": "FULLY_QUALIFIED", "elements": len(contracts), "chern": result["composite_valley_chern"]}))
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--self-test", action="store_true")
     parser.add_argument("--certify", action="store_true")
+    parser.add_argument("--run-full", action="store_true")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
     if args.self_test:
         print(json.dumps(self_test(root)))
     elif args.certify:
         certify(root)
+    elif args.run_full:
+        run_full(root)
     else:
-        parser.error("choose --self-test or --certify")
+        parser.error("choose --self-test, --certify, or --run-full")
 
 if __name__ == "__main__":
     main()

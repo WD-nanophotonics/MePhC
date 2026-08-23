@@ -1,0 +1,271 @@
+{
+  "certification_element_ids": [
+    "cell:8:0:element:0",
+    "cell:8:0:element:1",
+    "cell:9:0:element:0",
+    "cell:9:0:element:1",
+    "cell:4:-1:element:0",
+    "cell:4:0:element:0",
+    "cell:4:0:element:1",
+    "cell:4:0:element:2",
+    "cell:5:0:element:1",
+    "cell:4:1:element:0",
+    "cell:5:-1:element:0",
+    "cell:5:-1:element:1"
+  ],
+  "certification_elements": 12,
+  "certification_passed": true,
+  "environment_root_cause": "WSL_OOM_CONFIRMED",
+  "execution_architecture": "FRESH_SUBPROCESS_PER_ELEMENT",
+  "full_stage2_continuation": "AUTHORIZED_AFTER_CERTIFICATION",
+  "main_push_authorized": false,
+  "main_unchanged_required": true,
+  "max_worker_peak_rss_kib": 179364,
+  "oom_events_after": 0,
+  "oom_events_before": 0,
+  "schema": "e7i4f_environment_report_v1",
+  "stage2_composite_valley_chern": "NOT_REPORTED",
+  "work_order": "TRILATT-E7I4F-ENV1-20260823-138",
+  "worker_entries": [
+    {
+      "checkpoint": "/home/icy/MePhC/audit/e7i4f/checkpoints/certification/9230755b7cec149d5bbf0700.json",
+      "checkpoint_sha256": "90c62f814c75f8b73aebe098481c577ef9541f19d19a827f4dfdc63a1dddd902",
+      "memory_after": {
+        "MemAvailable_kib": 7160388,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "memory_before": {
+        "MemAvailable_kib": 7100448,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "status": "COMPLETED",
+      "wall_time_seconds": 8.890137864,
+      "worker_exit_code": 0
+    },
+    {
+      "checkpoint": "/home/icy/MePhC/audit/e7i4f/checkpoints/certification/3087cf629dc855f842177612.json",
+      "checkpoint_sha256": "24f7e27cfe87fce158ad8478744beae81328af9888f3ca6a78f8f50f6a368c76",
+      "memory_after": {
+        "MemAvailable_kib": 7168912,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "memory_before": {
+        "MemAvailable_kib": 7160160,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "status": "COMPLETED",
+      "wall_time_seconds": 8.006629880999999,
+      "worker_exit_code": 0
+    },
+    {
+      "checkpoint": "/home/icy/MePhC/audit/e7i4f/checkpoints/certification/21ad0d6bd7c547e5da9178cb.json",
+      "checkpoint_sha256": "9e17f342a583ec3ebb6c16847c3d58a563158494bf95729fc3904ce3902d3d69",
+      "memory_after": {
+        "MemAvailable_kib": 7162720,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "memory_before": {
+        "MemAvailable_kib": 7168912,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "status": "COMPLETED",
+      "wall_time_seconds": 8.072691429999999,
+      "worker_exit_code": 0
+    },
+    {
+      "checkpoint": "/home/icy/MePhC/audit/e7i4f/checkpoints/certification/230492fc3533e8989d6ac495.json",
+      "checkpoint_sha256": "a3a21c7c2df1c7c96e59e32b6fa7253f68873c2afc6ff68d31a430ab1fe71c5f",
+      "memory_after": {
+        "MemAvailable_kib": 7090060,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "memory_before": {
+        "MemAvailable_kib": 7162036,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "status": "COMPLETED",
+      "wall_time_seconds": 8.100807314999997,
+      "worker_exit_code": 0
+    },
+    {
+      "checkpoint": "/home/icy/MePhC/audit/e7i4f/checkpoints/certification/67e6f59ef050f3f263333ded.json",
+      "checkpoint_sha256": "2f82d6162dbd3eba7d50fd39edd79e53db220f9a5a3ab6108d09ed9412046b0d",
+      "memory_after": {
+        "MemAvailable_kib": 7140116,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "memory_before": {
+        "MemAvailable_kib": 7089604,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "status": "COMPLETED",
+      "wall_time_seconds": 12.31503636,
+      "worker_exit_code": 0
+    },
+    {
+      "checkpoint": "/home/icy/MePhC/audit/e7i4f/checkpoints/certification/5d66d55c4dbf3d8c88e6a3af.json",
+      "checkpoint_sha256": "6fc15ad330ad817fc08b931cca6a57127149c80933563115baa71e72c3009bcc",
+      "memory_after": {
+        "MemAvailable_kib": 7143320,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "memory_before": {
+        "MemAvailable_kib": 7140116,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "status": "COMPLETED",
+      "wall_time_seconds": 12.307569404999995,
+      "worker_exit_code": 0
+    },
+    {
+      "checkpoint": "/home/icy/MePhC/audit/e7i4f/checkpoints/certification/b72d0bd7f85ba574c62895c9.json",
+      "checkpoint_sha256": "4064831b64a52d06856cc7752a63f24a48ace29fa58ef8ac217bbcce4f24a40a",
+      "memory_after": {
+        "MemAvailable_kib": 7178584,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "memory_before": {
+        "MemAvailable_kib": 7143092,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "status": "COMPLETED",
+      "wall_time_seconds": 11.137945859999988,
+      "worker_exit_code": 0
+    },
+    {
+      "checkpoint": "/home/icy/MePhC/audit/e7i4f/checkpoints/certification/c1c0f278bb4cf66e91a3b7ca.json",
+      "checkpoint_sha256": "ca101385cc89ca76da4c11075a2a86209ed9f7168e12916a84498dbf91e562f0",
+      "memory_after": {
+        "MemAvailable_kib": 7179568,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "memory_before": {
+        "MemAvailable_kib": 7202444,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "status": "COMPLETED",
+      "wall_time_seconds": 11.28026314200001,
+      "worker_exit_code": 0
+    },
+    {
+      "checkpoint": "/home/icy/MePhC/audit/e7i4f/checkpoints/certification/c4dcafb0898da9216c5dfa66.json",
+      "checkpoint_sha256": "3b35ce3fbac3d7743c14d3df4a0fc05d087d08855fe638329b9bc34290f3384b",
+      "memory_after": {
+        "MemAvailable_kib": 7172724,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "memory_before": {
+        "MemAvailable_kib": 7179568,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "status": "COMPLETED",
+      "wall_time_seconds": 11.278395465999992,
+      "worker_exit_code": 0
+    },
+    {
+      "checkpoint": "/home/icy/MePhC/audit/e7i4f/checkpoints/certification/7e45049be9f5bb41415a6d44.json",
+      "checkpoint_sha256": "17229b9cb82bcf22b99d8ca4062b2ae064b5c0636b3fc9a4aec53177df5d6dbc",
+      "memory_after": {
+        "MemAvailable_kib": 7147620,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "memory_before": {
+        "MemAvailable_kib": 7172496,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "status": "COMPLETED",
+      "wall_time_seconds": 13.327346762000005,
+      "worker_exit_code": 0
+    },
+    {
+      "checkpoint": "/home/icy/MePhC/audit/e7i4f/checkpoints/certification/9d5b22adb50d17b7c228d3fe.json",
+      "checkpoint_sha256": "fd45b8f6e4c64af561b3ff2f240f865987e588cefbf7bdb4778d2326330ecb35",
+      "memory_after": {
+        "MemAvailable_kib": 7198688,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "memory_before": {
+        "MemAvailable_kib": 7147624,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "status": "COMPLETED",
+      "wall_time_seconds": 11.97339541400001,
+      "worker_exit_code": 0
+    },
+    {
+      "checkpoint": "/home/icy/MePhC/audit/e7i4f/checkpoints/certification/716a0058f1f942289b51d2a7.json",
+      "checkpoint_sha256": "6a0d837c075548b5d260773eeba641a0357e9a1368e7858b8ddca0f13cdee5d3",
+      "memory_after": {
+        "MemAvailable_kib": 7130084,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "memory_before": {
+        "MemAvailable_kib": 7198460,
+        "MemTotal_kib": 7907476,
+        "SwapFree_kib": 2097152,
+        "SwapTotal_kib": 2097152
+      },
+      "status": "COMPLETED",
+      "wall_time_seconds": 12.195206659000007,
+      "worker_exit_code": 0
+    }
+  ],
+  "wsl_meminfo_after": {
+    "MemAvailable_kib": 7130084,
+    "MemTotal_kib": 7907476,
+    "SwapFree_kib": 2097152,
+    "SwapTotal_kib": 2097152
+  },
+  "wsl_meminfo_before": {
+    "MemAvailable_kib": 7100228,
+    "MemTotal_kib": 7907476,
+    "SwapFree_kib": 2097152,
+    "SwapTotal_kib": 2097152
+  }
+}
