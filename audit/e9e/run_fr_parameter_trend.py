@@ -10,11 +10,14 @@ from audit.e9e.a_rounded_triangle_geometry import build_geometry, validate_geome
 from audit.e9e.run_spectral_embedding import make_lattice, make_solver_geometry, polygon_case
 from audit.e9e.run_berry_evolution import (
     BANDS, K_PUBLIC, KPRIME_PUBLIC, MESH_SIZE, R96, REFINEMENT,
-    SOLVER_TOLERANCE, TRANSPORT, solve_at, stencil_evidence,
+    SOLVER_TOLERANCE, TRANSPORT, excluded, external_contexts, frame_rank1, solve_at,
 )
 from mephc.mpb_energy_spectral_provider import MPBLiveEnergySpectralProvider
-from mephc.valley_benchmark import build_triangular_coordinate_preflight
-from mephc.plaquette_domain import PlaquetteRefinementLevel, qualify_plaquette_refinement
+from mephc.valley_benchmark import build_triangular_coordinate_preflight, centered_ccw_plaquette_requests
+from mephc.plaquette_domain import PlaquetteRefinementLevel, qualify_plaquette_refinement, qualify_plaquette_boundary, qualify_plaquette_interior
+from mephc.path_domain import PATH_SINGLE_BAND_QUALIFIED, PATH_SUBSPACE_QUALIFIED, qualify_ordered_path
+from mephc.spectral_association import ExternalIsolationContext
+from mephc.wilson_geometry import WILSON_LOOP_QUALIFIED, compose_wilson_transport
 
 WORK_ORDER="TRILATT-E9E-E-20260824-199"
 NEW_FR=(0.1,0.2,0.3)
@@ -40,8 +43,32 @@ def simple_value(e):
 def solve_spectrum(provider,preflight,q,cache,counters,tag):
     return solve_at(provider,preflight,q,R96,cache,counters,tag)
 
+def local_stencil_evidence(center,side,label,band,resolution,provider,preflight,cache,counters,tag):
+    requests=centered_ccw_plaquette_requests((center,),side,period_basis=preflight.public_period_basis,coordinate_mapping_digest=preflight.mapping_digest)
+    vertices=[tuple(float(x) for x in request.nominal_vertex_q) for request in requests]
+    values=[solve_at(provider,preflight,q,resolution,cache,counters,tag) for q in vertices]
+    center_value=solve_at(provider,preflight,center,resolution,cache,counters,tag)
+    profile=[]
+    for name,value,q in [(f"vertex_{i}",value,q) for i,(value,q) in enumerate(zip(values,vertices))]+[("center",center_value,center)]:
+        target=float(value["frequencies"][band]); gap=min(abs(target-float(other)) for index,other in enumerate(value["frequencies"]) if index!=band)
+        profile.append({"label":name,"q":list(q),"frequencies":list(value["frequencies"]),"external_gap":float(gap),"E3_PROFILE":"PASS" if gap>=TRANSPORT.min_external_gap else "FAIL"})
+    frames=[frame_rank1(q,value["raw"],band) for q,value in zip(vertices,values)]
+    center_frame=frame_rank1(center,center_value["raw"],band)
+    contexts=external_contexts([value["frequencies"] for value in values],band)
+    path=qualify_ordered_path(tuple(frames),contexts,thresholds=TRANSPORT,closed=True,provenance={"source":"E9E.E local fine stencil","band":band,"side":side,"label":label})
+    wilson=compose_wilson_transport(path)
+    boundary=qualify_plaquette_boundary(tuple(frames),contexts,thresholds=TRANSPORT,provenance={"source":"E9E.E E4A","band":band,"side":side,"label":label})
+    spokes=tuple(ExternalIsolationContext(excluded(value["frequencies"],band),excluded(center_value["frequencies"],band),{"source":"E9E.E E4B","band":band,"side":side}) for value in values)
+    interior=qualify_plaquette_interior(boundary,center_frame,spokes,provenance={"source":"E9E.E E4B","band":band,"side":side,"label":label})
+    phase=None if wilson.determinant_phase is None else float(wilson.determinant_phase)
+    determinant=None if wilson.determinant is None else complex(wilson.determinant)
+    path_ok=path.status in (PATH_SINGLE_BAND_QUALIFIED,PATH_SUBSPACE_QUALIFIED)
+    basic=bool(all(row["E3_PROFILE"]=="PASS" for row in profile) and path_ok and wilson.status==WILSON_LOOP_QUALIFIED and boundary.is_qualified and interior.is_qualified and determinant is not None and phase is not None)
+    omega=None if not basic else float((-phase/(side**2))/((2.0*math.pi)**2))
+    literal=None if not basic else float((-(determinant.imag)/(side**2))/((2.0*math.pi)**2))
+    return {"band":band,"resolution":resolution,"center":list(center),"side_q":float(side),"stencil_label":label,"vertices":[list(q) for q in vertices],"profile_passed":all(row["E3_PROFILE"]=="PASS" for row in profile),"profile":profile,"path":{"status":path.status,"is_qualified":bool(path.is_qualified)},"wilson":{"status":wilson.status,"rank":wilson.rank,"determinant_phase":phase,"unitarity_residual":wilson.unitarity_residual},"boundary":{"status":boundary.status,"is_qualified":bool(boundary.is_qualified)},"interior":{"status":interior.status,"is_qualified":bool(interior.is_qualified)},"minimum_external_gap":float(min(row["external_gap"] for row in profile)),"omega_over_a2_paper_literal":literal,"omega_over_a2_wilson":omega,"qualified_before_refinement":basic,"_boundary":boundary,"_interior":interior,"_basic_qualified":basic}
 def fine_evidence(center,side,label,band,resolution,provider,preflight,cache,counters,tag):
-    value=stencil_evidence(center,side,band,resolution,provider,preflight,cache,counters,tag)
+    value=local_stencil_evidence(center,side,label,band,resolution,provider,preflight,cache,counters,tag)
     value["stencil_label"]=label
     return value
 
@@ -130,6 +157,9 @@ if __name__=="__main__":
         c=json.loads(contract_path.read_text(encoding="utf-8-sig")); s=json.loads((ROOT/"audit/e9e/e_source_trend_contract.json").read_text(encoding="utf-8-sig")); ep0,ep04=endpoint_series(); pf=build_triangular_coordinate_preflight(); checks,_=self_checks(c,s,pf,ep0,ep04); print(json.dumps(checks,sort_keys=True))
     else:
         out=Path(sys.argv[sys.argv.index("--output")+1]) if "--output" in sys.argv else ROOT/"audit/e9e/e_raw_result.json"; p=run(out,contract_path); print(json.dumps({"schema":p["schema"],"calculation_code_git_sha":p["calculation_code_git_sha"],"telemetry":p["telemetry"]},sort_keys=True))
+
+
+
 
 
 
