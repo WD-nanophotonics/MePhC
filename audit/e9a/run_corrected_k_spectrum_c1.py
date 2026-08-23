@@ -52,7 +52,8 @@ def signed_area(vertices):
 
 
 def digest(vertices):
-    return hashlib.sha256(json.dumps([[float(x) for x in row] for row in vertices], sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+    normalized = [[(round(float(x), 14) if round(float(x), 14) != 0.0 else 0.0) for x in row] for row in vertices]
+    return hashlib.sha256(json.dumps(normalized, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
 
 
 def geometry_contract(contract):
@@ -81,7 +82,7 @@ def geometry_contract(contract):
         "intended_physical_geometry_digest": digest(physical),
         "mpb_input_geometry_digest": digest(mpb),
         "roundtripped_physical_geometry_digest": digest(roundtrip),
-        "intended_vs_roundtripped_geometry": "MATCH" if np.allclose(physical, roundtrip, rtol=0.0, atol=1e-12) else "MISMATCH",
+        "intended_vs_roundtripped_geometry": "MATCH" if digest(physical) == digest(roundtrip) else "MISMATCH",
         "prism_type": "mp.Prism",
         "prism_height": "mp.inf",
         "background_epsilon": EPSILON_BACKGROUND,
