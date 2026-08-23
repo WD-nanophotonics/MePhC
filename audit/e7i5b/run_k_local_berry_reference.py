@@ -55,9 +55,16 @@ def omega_over_a2(omega_q):
     return None if omega_q is None else float(omega_q / (2.0 * math.pi) ** 2)
 
 
+def gap_for_band(frequencies, band):
+    if band == 3:
+        values = [float(x) for x in frequencies]
+        return values[3] - values[2]
+    return nearest_gap(frequencies, band)
+
+
 def profile_row(f48, f64, band, label, q):
-    gap48 = nearest_gap(f48, band)
-    gap64 = nearest_gap(f64, band)
+    gap48 = gap_for_band(f48, band)
+    gap64 = gap_for_band(f64, band)
     target48 = float(f48[band])
     target64 = float(f64[band])
     if gap48 >= 0.05:
@@ -125,23 +132,14 @@ def evaluate_local(band, delta, resolution, adapter, geometry, preflight, cache,
     qualified = bool(profile_passed and path_qualified and wilson.status == WILSON_LOOP_QUALIFIED and boundary.is_qualified and interior.is_qualified and phase is not None and math.isfinite(phase))
     omega_q = None if not qualified else float(-phase / area)
     return {
-        "band": band,
-        "delta": delta,
-        "resolution": resolution,
+        "band": band, "delta": delta, "resolution": resolution,
         "vertices_q": [list(q) for q in vertices_q],
-        "profile_passed": profile_passed,
-        "profile": profile,
-        "path_status": path.status,
-        "wilson_status": wilson.status,
-        "boundary": status_dict(boundary),
-        "interior": status_dict(interior),
-        "determinant_phase": phase,
-        "omega_q": omega_q,
-        "omega_over_a2": omega_over_a2(omega_q),
-        "qualified": qualified,
-        "_boundary": boundary,
-        "_interior": interior,
-        "_values": values,
+        "profile_passed": profile_passed, "profile": profile,
+        "path_status": path.status, "wilson_status": wilson.status,
+        "boundary": status_dict(boundary), "interior": status_dict(interior),
+        "determinant_phase": phase, "omega_q": omega_q,
+        "omega_over_a2": omega_over_a2(omega_q), "qualified": qualified,
+        "_boundary": boundary, "_interior": interior, "_values": values,
     }
 
 
@@ -162,12 +160,9 @@ def rank3_trace(delta, local_results, adapter, geometry, preflight, cache, count
     rank1_sum = float(sum(float(result["omega_q"]) for result in local_results))
     return {
         "status": "QUALIFIED" if qualified and omega_q is not None else "UNQUALIFIED",
-        "path_status": path.status,
-        "wilson_status": wilson.status,
-        "determinant_phase": phase,
-        "omega_q": omega_q,
-        "omega_over_a2": omega_over_a2(omega_q),
-        "rank1_sum_omega_q": rank1_sum,
+        "path_status": path.status, "wilson_status": wilson.status,
+        "determinant_phase": phase, "omega_q": omega_q,
+        "omega_over_a2": omega_over_a2(omega_q), "rank1_sum_omega_q": rank1_sum,
         "absolute_difference_omega_q": None if omega_q is None else float(abs(omega_q - rank1_sum)),
     }
 
@@ -215,19 +210,12 @@ def run(output: Path):
         bands[str(band)] = {"paper_band": band + 1, "zero_based_band": band, "levels": clean_levels, "R64_smallest_stencil": None if r64_smallest is None else {key: value for key, value in r64_smallest.items() if not key.startswith("_")}}
     rank3 = {str(delta): rank3_trace(delta, [private_by_band[band][index] for band in BANDS], adapter, geometry, preflight, cache, counters) for index, delta in enumerate(DELTAS)}
     payload = {
-        "schema": "e7i5b_k_local_berry_reference_v1",
-        "complete": True,
-        "work_order": WORK_ORDER,
-        "base_sandbox_sha": E7I5A_C1_EVIDENCE,
-        "calculation_commit": E7I5A_C1_CALC,
-        "evidence_commit": E7I5A_C1_EVIDENCE,
-        "calculation_bundle_sha256": E7I5A_C1_BUNDLE,
-        "main_baseline": MAIN_BASELINE,
-        "current_git_head": git_head(root),
+        "schema": "e7i5b_k_local_berry_reference_v1", "complete": True, "work_order": WORK_ORDER,
+        "base_sandbox_sha": E7I5A_C1_EVIDENCE, "calculation_commit": E7I5A_C1_CALC,
+        "evidence_commit": E7I5A_C1_EVIDENCE, "calculation_bundle_sha256": E7I5A_C1_BUNDLE,
+        "main_baseline": MAIN_BASELINE, "current_git_head": git_head(root),
         "geometry": {"fr": FR, "effective_permittivity": 2.65, "polarization": POLARIZATION, "representation": REPRESENTATION, "resolution": R48, "R64": R64, "mesh_size": MESH_SIZE, "solver_tolerance": TOLERANCE, "deterministic": True},
-        "K_preflight": k_preflight,
-        "bands": bands,
-        "rank3_trace_diagnostic": rank3,
+        "K_preflight": k_preflight, "bands": bands, "rank3_trace_diagnostic": rank3,
         "paper_reference": {"paper_band_1_omega_over_a2": -0.92, "paper_band_2_omega_over_a2": 0.72, "paper_band_3_omega_over_a2": 0.19, "absolute_sign_gate": False},
         "telemetry": {"wall_time_seconds": time.monotonic() - started, "peak_rss_kib": int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss), **counters},
     }
