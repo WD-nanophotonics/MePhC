@@ -349,14 +349,13 @@ def run(output: Path, contract_path: Path) -> dict:
     def sign(value: float | None) -> int | None:
         return None if value is None else (1 if value > 0.0 else -1 if value < 0.0 else 0)
     tess_sign_stable = all(sign(a) == sign(b) for a, b in zip(tess48, tess96))
-    tess_dominance_stable = all(
-        a is not None
-        and b is not None
-        and c is not None
-        and abs(b) > abs(a)
-        and abs(c) > abs(a)
-        for a, b, c in zip(tess48, tess96, tess96)
-    )
+    def dominance_pattern(values: list[float | None]) -> bool:
+        return (
+            all(value is not None for value in values)
+            and abs(values[1]) > abs(values[0])
+            and abs(values[2]) > abs(values[0])
+        )
+    tess_dominance_stable = dominance_pattern(tess48) and dominance_pattern(tess96)
     all_qualified = all(r96[center][str(band)]["qualified"] for center in r96 for band in BANDS)
     classifications = {
         "BAND1_SUPPRESSION": "REPRODUCED" if fine_values[0] is not None and abs(fine_values[0]) < abs(PAPER_FR0[0]) else "NOT_REPRODUCED",
@@ -441,4 +440,5 @@ if __name__ == "__main__":
     else:
         payload = run(output, contract_path)
         print(json.dumps({"schema": payload["schema"], "overall": payload["E9E_C_C1_OVERALL"], "telemetry": payload["telemetry"]}, sort_keys=True))
+
 
