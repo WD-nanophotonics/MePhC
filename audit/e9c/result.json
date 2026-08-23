@@ -1,0 +1,4965 @@
+{
+  "E9A_C1_R64_K_REPLAY": [
+    {
+      "abs_error": 7.821355674231256e-09,
+      "actual": 0.26833165178721774,
+      "band_index": 0,
+      "expected_e9a_c1_r64": 0.26833164396586207
+    },
+    {
+      "abs_error": 7.413941127687451e-10,
+      "actual": 0.3134784452652927,
+      "band_index": 1,
+      "expected_e9a_c1_r64": 0.3134784445238986
+    },
+    {
+      "abs_error": 8.179054100665439e-10,
+      "actual": 0.356328777214934,
+      "band_index": 2,
+      "expected_e9a_c1_r64": 0.3563287763970286
+    },
+    {
+      "abs_error": 4.872866554705979e-10,
+      "actual": 0.5644651262457081,
+      "band_index": 3,
+      "expected_e9a_c1_r64": 0.5644651267329948
+    }
+  ],
+  "E9A_C1_R64_K_REPLAY_STATUS": "PASSED_WITHIN_SOLVER_TOLERANCE",
+  "E9A_C1_R64_K_REPLAY_TOLERANCE": 1e-07,
+  "E9C_OVERALL": "RANK1_K_KPRIME_BERRY_EVIDENCE_COMPLETE_WITH_E4C_REVIEW_REQUIRED",
+  "TRS_control": {
+    "R64_primary_literal": [
+      {
+        "K": 0.8909741136988003,
+        "K_prime": -0.8912136800550192,
+        "paper_band": 1,
+        "relative_residual": 0.0002688091100712485,
+        "sum": -0.0002395663562189121
+      },
+      {
+        "K": -0.70951389757839,
+        "K_prime": 0.7099242958951618,
+        "paper_band": 2,
+        "relative_residual": 0.0005780874371320504,
+        "sum": 0.0004103983167718095
+      },
+      {
+        "K": -0.149693829751096,
+        "K_prime": 0.14952208200765876,
+        "paper_band": 3,
+        "relative_residual": 0.0011473268051382115,
+        "sum": -0.00017174774343722832
+      }
+    ],
+    "R64_primary_wilson": [
+      {
+        "K": 0.8910835338917457,
+        "K_prime": -0.8913231885543922,
+        "paper_band": 1,
+        "relative_residual": 0.0002688751574333153,
+        "sum": -0.0002396546626465268
+      },
+      {
+        "K": -0.709569147573843,
+        "K_prime": 0.7099796418329564,
+        "paper_band": 2,
+        "relative_residual": 0.0005781775066867428,
+        "sum": 0.0004104942591133254
+      },
+      {
+        "K": -0.14969434852005534,
+        "K_prime": 0.14952259899306233,
+        "paper_band": 3,
+        "relative_residual": 0.0011473347437027219,
+        "sum": -0.0001717495269930036
+      }
+    ],
+    "R64_reference_literal": [
+      {
+        "K": 0.9165386141080435,
+        "K_prime": -0.9167990470029437,
+        "paper_band": 1,
+        "relative_residual": 0.00028406758902242886,
+        "sum": -0.0002604328949001866
+      },
+      {
+        "K": -0.7383820336357654,
+        "K_prime": 0.7388076263025561,
+        "paper_band": 2,
+        "relative_residual": 0.0005760534293895816,
+        "sum": 0.0004255926667907639
+      },
+      {
+        "K": -0.1559338128720442,
+        "K_prime": 0.15576021570033402,
+        "paper_band": 3,
+        "relative_residual": 0.001113274719015698,
+        "sum": -0.00017359717171017142
+      }
+    ],
+    "R64_reference_wilson": [
+      {
+        "K": 0.9165460562861372,
+        "K_prime": -0.9168064955269801,
+        "paper_band": 1,
+        "relative_residual": 0.0002840722029279008,
+        "sum": -0.0002604392408429579
+      },
+      {
+        "K": -0.7383859248736309,
+        "K_prime": 0.7388115242729238,
+        "paper_band": 2,
+        "relative_residual": 0.0005760595027423611,
+        "sum": 0.0004255993992929863
+      },
+      {
+        "K": -0.15593384952081454,
+        "K_prime": 0.1557602522268401,
+        "paper_band": 3,
+        "relative_residual": 0.0011132752414432065,
+        "sum": -0.00017359729397445345
+      }
+    ],
+    "R96_primary_literal": [
+      {
+        "K": 0.906500346624374,
+        "K_prime": -0.9065557218999464,
+        "paper_band": 1,
+        "relative_residual": 6.108314606008739e-05,
+        "sum": -5.537527557242239e-05
+      },
+      {
+        "K": -0.7182647599983912,
+        "K_prime": 0.7183870034771032,
+        "paper_band": 2,
+        "relative_residual": 0.0001701638227309906,
+        "sum": 0.0001222434787119253
+      },
+      {
+        "K": -0.16425055881607378,
+        "K_prime": 0.16418571046825914,
+        "paper_band": 3,
+        "relative_residual": 0.0003948135597350448,
+        "sum": -6.484834781464444e-05
+      }
+    ],
+    "R96_primary_wilson": [
+      {
+        "K": 0.906615588735292,
+        "K_prime": -0.9066709851363315,
+        "paper_band": 1,
+        "relative_residual": 6.109868072058694e-05,
+        "sum": -5.539640103946475e-05
+      },
+      {
+        "K": -0.7183220799046236,
+        "K_prime": 0.7184443526588268,
+        "paper_band": 2,
+        "relative_residual": 0.00017019098800160427,
+        "sum": 0.00012227275420317874
+      },
+      {
+        "K": -0.16425124412072561,
+        "K_prime": 0.16418639496152262,
+        "paper_band": 3,
+        "relative_residual": 0.0003948168523784534,
+        "sum": -6.484915920298984e-05
+      }
+    ],
+    "R96_reference_literal": [
+      {
+        "K": 0.9329558583369443,
+        "K_prime": -0.9330133015280309,
+        "paper_band": 1,
+        "relative_residual": 6.156738708066058e-05,
+        "sum": -5.744319108658136e-05
+      },
+      {
+        "K": -0.7475072170174778,
+        "K_prime": 0.7476320299218027,
+        "paper_band": 2,
+        "relative_residual": 0.00016694429790270156,
+        "sum": 0.0001248129043248669
+      },
+      {
+        "K": -0.17117343302918026,
+        "K_prime": 0.1711051828666873,
+        "paper_band": 3,
+        "relative_residual": 0.00039871936482877414,
+        "sum": -6.825016249295546e-05
+      }
+    ],
+    "R96_reference_wilson": [
+      {
+        "K": 0.9329637076453126,
+        "K_prime": -0.9330211522863842,
+        "paper_band": 1,
+        "relative_residual": 6.1568423106843e-05,
+        "sum": -5.74446410716023e-05
+      },
+      {
+        "K": -0.747511254314864,
+        "K_prime": 0.7476360692418955,
+        "paper_band": 2,
+        "relative_residual": 0.00016694610140746463,
+        "sum": 0.00012481492703153574
+      },
+      {
+        "K": -0.17117348150751038,
+        "K_prime": 0.17110523128705285,
+        "paper_band": 3,
+        "relative_residual": 0.00039871959053738415,
+        "sum": -6.825022045753304e-05
+      }
+    ]
+  },
+  "base_sandbox_sha": "fe6095eec501b97500df963fe91f47b47fe2e03d",
+  "calculation_code_git_sha": "d69c83a3f5e92fa503c924adfe5bf5b0cede40e5",
+  "contract": {
+    "action": "EXECUTE_NOW",
+    "authorization": "HUMAN_CORRECTED_DAI_FR0_SINGLE_VALLEY_K_POINT_BERRY_REPRODUCTION_WITH_TIME_REVERSAL_CONTROL",
+    "base_sandbox_sha": "fe6095eec501b97500df963fe91f47b47fe2e03d",
+    "berry_field_map_authorized": false,
+    "e9a_c1_evidence_sha": "c11438bcbac29abbf7f615c048e252dd835a902b",
+    "e9a_c1_result_sha256": "40151AF5B668C53A9486D61D725FB64BD15F882FCEEC4BDD1CA680F2420CA703",
+    "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+    "full_bz_chern_authorized": false,
+    "full_path_berry_authorized": false,
+    "live_mpb_authorized": true,
+    "main_push_authorized": false,
+    "model": {
+      "composite_subspace_mixing": false,
+      "deterministic": true,
+      "effective_index": 2.65,
+      "epsilon_air": 1.0,
+      "epsilon_background": 7.0225,
+      "geometry_conversion": "physical_cartesian_to_mpb_lattice_exactly_once",
+      "lattice_constant_nm": 400.0,
+      "mesh_size": 3,
+      "num_bands": 6,
+      "physical_fill_fraction": 0.24,
+      "polarization": "TE",
+      "rank": 1,
+      "representation": "mpb_energy_eh_v1",
+      "resolutions": [
+        64,
+        96
+      ],
+      "solver_tolerance": 1e-07,
+      "target_zero_based_bands": [
+        0,
+        1,
+        2
+      ],
+      "triangle_circumradius_over_a": 0.4,
+      "triangle_orientation_mod_120_degrees": 90.0,
+      "triangle_side_over_a": 0.6928203230275509
+    },
+    "phase": "E9C",
+    "production_code_change_authorized": false,
+    "prohibited_scope": [
+      "berry_field_map",
+      "valley_chern",
+      "full_bz_chern",
+      "full_path_berry",
+      "parameter_sweep",
+      "R128",
+      "rank2_or_rank3",
+      "posthoc_sign_flip"
+    ],
+    "qualification": {
+      "estimators": [
+        "OMEGA_Q_PAPER_LITERAL=-Im(det(loop_product))/side_q^2",
+        "OMEGA_Q_WILSON=-principal_arg(det(loop_product))/side_q^2"
+      ],
+      "external_spectrum": "complete_excluded_6_band_spectrum",
+      "max_e4c_metric_delta": 0.1,
+      "max_principal_angle": 0.45,
+      "max_projector_distance": 0.3,
+      "min_external_gap": 0.02,
+      "min_singular_value": 0.9,
+      "omega_over_a2": "OMEGA_Q/(2*pi)^2",
+      "paper_targets_omega_over_a2": [
+        -0.92,
+        0.72,
+        0.19
+      ],
+      "trs_control": "omega(public_K)+omega(public_K_prime) and relative residual"
+    },
+    "sandbox_audit_code_authorized": true,
+    "schema": "trilatt_e9c_human_corrected_dai_rank1_k_kprime_berry_contract_v1",
+    "stencils": {
+      "center_solve": 1,
+      "corner_solves": 4,
+      "primary_half_offset_q": 0.013888888888888888,
+      "primary_side_q": 0.027777777777777776,
+      "reference_half_offset_q": 0.006944444444444444,
+      "reference_is_refinement_only": true,
+      "reference_side_q": 0.013888888888888888,
+      "shape": "centered_axis_aligned_square_ccw"
+    },
+    "stop_boundary": "complete R64/R96 public K and K-prime rank-1 two-stencil evidence, commit/push evidence, report to supervisor",
+    "valley_chern_authorized": false,
+    "valleys": {
+      "paper_label_K_comparison_center": "PUBLIC_K_PRIME",
+      "paper_to_mpb_sign_convention": "k_paper_equals_minus_k_MPB",
+      "posthoc_sign_flip": false,
+      "public_K": [
+        0.6666666666666666,
+        0.0
+      ],
+      "public_K_is_time_reversal_control": true,
+      "public_K_prime": [
+        -0.6666666666666666,
+        0.0
+      ]
+    },
+    "work_order_id": "TRILATT-E9C-20260824-175"
+  },
+  "contract_sha256": "1ae9f41cfd698dd8da7cb51b4664cf36a7623baa6a6a4f8e6c9e521ce3316a19",
+  "coordinate_preflight": {
+    "mapping_digest": "b1fba20a9a77109f478ce5538aaa99d6a6c6d0f92a98a43b6a385cfe569d636f",
+    "mpb_K": [
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "mpb_K_prime": [
+      -0.3333333333333333,
+      -0.3333333333333333
+    ],
+    "public_K": [
+      0.6666666666666666,
+      0.0
+    ],
+    "public_K_prime": [
+      -0.6666666666666666,
+      0.0
+    ],
+    "ready": true,
+    "round_trip_residual": 3.557616665725061e-17
+  },
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "geometry": {
+    "cell_area": 0.8660254037844386,
+    "max_roundtrip_error": 6.206335383118183e-17,
+    "mpb_vertices": [
+      [
+        0.23094010767585033,
+        -0.23094010767585035
+      ],
+      [
+        -0.46188021535170065,
+        -0.2309401076758503
+      ],
+      [
+        0.23094010767585035,
+        0.46188021535170065
+      ]
+    ],
+    "orientation": "COUNTERCLOCKWISE",
+    "physical_area": 0.20784609690826528,
+    "physical_fill_fraction": 0.24000000000000002,
+    "physical_vertices": [
+      [
+        0.0,
+        0.4
+      ],
+      [
+        -0.34641016151377546,
+        -0.2
+      ],
+      [
+        0.34641016151377546,
+        -0.2
+      ]
+    ],
+    "roundtrip_vertices": [
+      [
+        -1.3877787807814457e-17,
+        0.4
+      ],
+      [
+        -0.34641016151377546,
+        -0.20000000000000004
+      ],
+      [
+        0.3464101615137755,
+        -0.19999999999999998
+      ]
+    ]
+  },
+  "paper_comparison": {
+    "center": "PUBLIC_K_PRIME",
+    "rows": [
+      {
+        "literal": -0.8912136800550192,
+        "literal_signed_error": 0.02878631994498082,
+        "paper_band": 1,
+        "resolution": 64,
+        "target": -0.92,
+        "wilson": -0.8913231885543922,
+        "wilson_signed_error": 0.028676811445607853
+      },
+      {
+        "literal": 0.7099242958951618,
+        "literal_signed_error": -0.010075704104838157,
+        "paper_band": 2,
+        "resolution": 64,
+        "target": 0.72,
+        "wilson": 0.7099796418329564,
+        "wilson_signed_error": -0.010020358167043608
+      },
+      {
+        "literal": 0.14952208200765876,
+        "literal_signed_error": -0.04047791799234124,
+        "paper_band": 3,
+        "resolution": 64,
+        "target": 0.19,
+        "wilson": 0.14952259899306233,
+        "wilson_signed_error": -0.04047740100693767
+      },
+      {
+        "literal": -0.9065557218999464,
+        "literal_signed_error": 0.013444278100053664,
+        "paper_band": 1,
+        "resolution": 96,
+        "target": -0.92,
+        "wilson": -0.9066709851363315,
+        "wilson_signed_error": 0.013329014863668553
+      },
+      {
+        "literal": 0.7183870034771032,
+        "literal_signed_error": -0.0016129965228968146,
+        "paper_band": 2,
+        "resolution": 96,
+        "target": 0.72,
+        "wilson": 0.7184443526588268,
+        "wilson_signed_error": -0.0015556473411731941
+      },
+      {
+        "literal": 0.16418571046825914,
+        "literal_signed_error": -0.025814289531740864,
+        "paper_band": 3,
+        "resolution": 96,
+        "target": 0.19,
+        "wilson": 0.16418639496152262,
+        "wilson_signed_error": -0.025813605038477377
+      }
+    ]
+  },
+  "paper_comparison_center": "PUBLIC_K_PRIME",
+  "paper_targets_omega_over_a2": [
+    -0.92,
+    0.72,
+    0.19
+  ],
+  "production_code_changed": false,
+  "qualification_summary": {
+    "all_rows_qualified": false,
+    "qualified_rows": 0,
+    "total_rows": 24
+  },
+  "results": {
+    "64": {
+      "PUBLIC_K": {
+        "0": {
+          "E4C": {
+            "authorization_granted": false,
+            "levels": [
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 0,
+                  "resolution": 64,
+                  "source": "E9C primary square"
+                },
+                "step": 0.027777777777777776
+              },
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 0,
+                  "resolution": 64,
+                  "source": "E9C reference refinement square"
+                },
+                "step": 0.013888888888888888
+              }
+            ],
+            "metrics": [
+              {
+                "maximum_principal_angle": 0.18032555983992882,
+                "maximum_projector_distance": 0.2536390099763281,
+                "minimum_singular_value": 0.9837853558114769,
+                "provenance": {
+                  "band": 0,
+                  "resolution": 64,
+                  "source": "E9C primary square"
+                },
+                "rank": 1,
+                "step": 0.027777777777777776
+              },
+              {
+                "maximum_principal_angle": 0.08858095254956216,
+                "maximum_projector_distance": 0.12510862198683256,
+                "minimum_singular_value": 0.9960792721225946,
+                "provenance": {
+                  "band": 0,
+                  "resolution": 64,
+                  "source": "E9C reference refinement square"
+                },
+                "rank": 1,
+                "step": 0.013888888888888888
+              }
+            ],
+            "qualified": false,
+            "status": "PLAQUETTE_REFINEMENT_UNQUALIFIED",
+            "thresholds": {
+              "geometry_tolerance": 1e-10,
+              "max_metric_delta": 0.1,
+              "max_principal_angle": 0.45,
+              "max_projector_distance": 0.3,
+              "min_singular_value": 0.9
+            }
+          },
+          "paper_band": 1,
+          "primary": {
+            "band": 0,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04514679347807499,
+            "omega_over_a2_paper_literal": 0.8909741136988003,
+            "omega_over_a2_wilson": 0.8910835338917457,
+            "omega_q_paper_literal": 35.17424813527348,
+            "omega_q_wilson": 35.178567871344924,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04614357648833589,
+                "frequencies": [
+                  0.2676785194164814,
+                  0.3138220959048173,
+                  0.35682553523739713,
+                  0.5636063462199737,
+                  0.5926784502517327,
+                  0.6230412715926132
+                ],
+                "label": "vertex_0",
+                "q": [
+                  0.6527777777777778,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.046243744251023566,
+                "frequencies": [
+                  0.26752919067019215,
+                  0.3137729349212157,
+                  0.35695911638889416,
+                  0.5639698021860395,
+                  0.5924074943751555,
+                  0.6230210678553777
+                ],
+                "label": "vertex_1",
+                "q": [
+                  0.6805555555555555,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.0462455853441433,
+                "frequencies": [
+                  0.26752776446069415,
+                  0.31377334980483745,
+                  0.3569592183212889,
+                  0.563973491007374,
+                  0.5923992193493309,
+                  0.6230278926604167
+                ],
+                "label": "vertex_2",
+                "q": [
+                  0.6805555555555555,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.046144459281036554,
+                "frequencies": [
+                  0.26767731217359886,
+                  0.3138217714546354,
+                  0.35682618214162953,
+                  0.5636097421904529,
+                  0.5926702692433271,
+                  0.6230483420209957
+                ],
+                "label": "vertex_3",
+                "q": [
+                  0.6527777777777778,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04514679347807499,
+                "frequencies": [
+                  0.26833165178721774,
+                  0.3134784452652927,
+                  0.356328777214934,
+                  0.5644651262457081,
+                  0.5925937550875598,
+                  0.6222827318054929
+                ],
+                "label": "center",
+                "q": [
+                  0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 64,
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                0.013888888888888888
+              ],
+              [
+                0.6527777777777778,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.02714062356116781,
+                "real": 0.9996316254264417
+              },
+              "determinant_phase": -0.027143956690852563,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.02714062356116781,
+                    "real": 0.9996316254264417
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 1.1102230246251565e-15
+            }
+          },
+          "primary_literal_value_for_trs": 0.8909741136988003,
+          "primary_reference_difference_omega_over_a2_literal": 0.025564500409243185,
+          "primary_reference_difference_omega_over_a2_wilson": 0.025462522394391507,
+          "primary_wilson_value_for_trs": 0.8910835338917457,
+          "qualified": false,
+          "reference": {
+            "band": 0,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04514679347807499,
+            "omega_over_a2_paper_literal": 0.9165386141080435,
+            "omega_over_a2_wilson": 0.9165460562861372,
+            "omega_q_paper_literal": 36.183494158276346,
+            "omega_q_wilson": 36.18378796369102,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04541955726674257,
+                "frequencies": [
+                  0.2681726444925498,
+                  0.31359220175929237,
+                  0.3564283131509884,
+                  0.5642183523164668,
+                  0.5926206230043306,
+                  0.6224900202269783
+                ],
+                "label": "vertex_0",
+                "q": [
+                  0.6597222222222222,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04540273007545953,
+                "frequencies": [
+                  0.2681238696986423,
+                  0.31352659977410186,
+                  0.3565117434065012,
+                  0.5643696110670136,
+                  0.5925424458127512,
+                  0.6224519155765128
+                ],
+                "label": "vertex_1",
+                "q": [
+                  0.673611111111111,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.045403547138109956,
+                "frequencies": [
+                  0.2681231792471351,
+                  0.31352672638524504,
+                  0.35651186384424677,
+                  0.5643714891854423,
+                  0.5925381490048403,
+                  0.6224554816767276
+                ],
+                "label": "vertex_2",
+                "q": [
+                  0.673611111111111,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04542012744940671,
+                "frequencies": [
+                  0.268172011294829,
+                  0.3135921387442357,
+                  0.35642857192476474,
+                  0.5642201609947999,
+                  0.5926163546004038,
+                  0.6224936381579536
+                ],
+                "label": "vertex_3",
+                "q": [
+                  0.6597222222222222,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04514679347807499,
+                "frequencies": [
+                  0.26833165178721774,
+                  0.3134784452652927,
+                  0.356328777214934,
+                  0.5644651262457081,
+                  0.5925937550875598,
+                  0.6222827318054929
+                ],
+                "label": "center",
+                "q": [
+                  0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 64,
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                0.006944444444444444
+              ],
+              [
+                0.6597222222222222,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.0069798406941119495,
+                "real": 0.9999756406152527
+              },
+              "determinant_phase": -0.006979897369539162,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.0069798406941119495,
+                    "real": 0.9999756406152527
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          },
+          "zero_based_band": 0
+        },
+        "1": {
+          "E4C": {
+            "authorization_granted": false,
+            "levels": [
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 1,
+                  "resolution": 64,
+                  "source": "E9C primary square"
+                },
+                "step": 0.027777777777777776
+              },
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 1,
+                  "resolution": 64,
+                  "source": "E9C reference refinement square"
+                },
+                "step": 0.013888888888888888
+              }
+            ],
+            "metrics": [
+              {
+                "maximum_principal_angle": 0.17762550184235665,
+                "maximum_projector_distance": 0.24988154629620002,
+                "minimum_singular_value": 0.9842660242080441,
+                "provenance": {
+                  "band": 1,
+                  "resolution": 64,
+                  "source": "E9C primary square"
+                },
+                "rank": 1,
+                "step": 0.027777777777777776
+              },
+              {
+                "maximum_principal_angle": 0.08921770427142174,
+                "maximum_projector_distance": 0.1260055688574154,
+                "minimum_singular_value": 0.9960227398550997,
+                "provenance": {
+                  "band": 1,
+                  "resolution": 64,
+                  "source": "E9C reference refinement square"
+                },
+                "rank": 1,
+                "step": 0.013888888888888888
+              }
+            ],
+            "qualified": false,
+            "status": "PLAQUETTE_REFINEMENT_UNQUALIFIED",
+            "thresholds": {
+              "geometry_tolerance": 1e-10,
+              "max_metric_delta": 0.1,
+              "max_principal_angle": 0.45,
+              "max_projector_distance": 0.3,
+              "min_singular_value": 0.9
+            }
+          },
+          "paper_band": 2,
+          "primary": {
+            "band": 1,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042850331949641274,
+            "omega_over_a2_paper_literal": -0.70951389757839,
+            "omega_over_a2_wilson": -0.709569147573843,
+            "omega_q_paper_literal": -28.010485944694967,
+            "omega_q_wilson": -28.0126671270881,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04300343933257983,
+                "frequencies": [
+                  0.2676785194164814,
+                  0.3138220959048173,
+                  0.35682553523739713,
+                  0.5636063462199737,
+                  0.5926784502517327,
+                  0.6230412715926132
+                ],
+                "label": "vertex_0",
+                "q": [
+                  0.6527777777777778,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04318618146767844,
+                "frequencies": [
+                  0.26752919067019215,
+                  0.3137729349212157,
+                  0.35695911638889416,
+                  0.5639698021860395,
+                  0.5924074943751555,
+                  0.6230210678553777
+                ],
+                "label": "vertex_1",
+                "q": [
+                  0.6805555555555555,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04318586851645145,
+                "frequencies": [
+                  0.26752776446069415,
+                  0.31377334980483745,
+                  0.3569592183212889,
+                  0.563973491007374,
+                  0.5923992193493309,
+                  0.6230278926604167
+                ],
+                "label": "vertex_2",
+                "q": [
+                  0.6805555555555555,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04300441068699412,
+                "frequencies": [
+                  0.26767731217359886,
+                  0.3138217714546354,
+                  0.35682618214162953,
+                  0.5636097421904529,
+                  0.5926702692433271,
+                  0.6230483420209957
+                ],
+                "label": "vertex_3",
+                "q": [
+                  0.6527777777777778,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042850331949641274,
+                "frequencies": [
+                  0.26833165178721774,
+                  0.3134784452652927,
+                  0.356328777214934,
+                  0.5644651262457081,
+                  0.5925937550875598,
+                  0.6222827318054929
+                ],
+                "label": "center",
+                "q": [
+                  0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 64,
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                0.013888888888888888
+              ],
+              [
+                0.6527777777777778,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.021613029278314017,
+                "real": 0.999766411200844
+              },
+              "determinant_phase": 0.02161471228941983,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.021613029278314017,
+                    "real": 0.999766411200844
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          },
+          "primary_literal_value_for_trs": -0.70951389757839,
+          "primary_reference_difference_omega_over_a2_literal": 0.02886813605737537,
+          "primary_reference_difference_omega_over_a2_wilson": 0.02881677729978782,
+          "primary_wilson_value_for_trs": -0.709569147573843,
+          "qualified": false,
+          "reference": {
+            "band": 1,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04283611139169602,
+            "omega_over_a2_paper_literal": -0.7383820336357654,
+            "omega_over_a2_wilson": -0.7383859248736309,
+            "omega_q_paper_literal": -29.15015427542744,
+            "omega_q_wilson": -29.150307895340895,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04283611139169602,
+                "frequencies": [
+                  0.2681726444925498,
+                  0.31359220175929237,
+                  0.3564283131509884,
+                  0.5642183523164668,
+                  0.5926206230043306,
+                  0.6224900202269783
+                ],
+                "label": "vertex_0",
+                "q": [
+                  0.6597222222222222,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04298514363239936,
+                "frequencies": [
+                  0.2681238696986423,
+                  0.31352659977410186,
+                  0.3565117434065012,
+                  0.5643696110670136,
+                  0.5925424458127512,
+                  0.6224519155765128
+                ],
+                "label": "vertex_1",
+                "q": [
+                  0.673611111111111,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04298513745900173,
+                "frequencies": [
+                  0.2681231792471351,
+                  0.31352672638524504,
+                  0.35651186384424677,
+                  0.5643714891854423,
+                  0.5925381490048403,
+                  0.6224554816767276
+                ],
+                "label": "vertex_2",
+                "q": [
+                  0.673611111111111,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04283643318052904,
+                "frequencies": [
+                  0.268172011294829,
+                  0.3135921387442357,
+                  0.35642857192476474,
+                  0.5642201609947999,
+                  0.5926163546004038,
+                  0.6224936381579536
+                ],
+                "label": "vertex_3",
+                "q": [
+                  0.6597222222222222,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042850331949641274,
+                "frequencies": [
+                  0.26833165178721774,
+                  0.3134784452652927,
+                  0.356328777214934,
+                  0.5644651262457081,
+                  0.5925937550875598,
+                  0.6222827318054929
+                ],
+                "label": "center",
+                "q": [
+                  0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 64,
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                0.006944444444444444
+              ],
+              [
+                0.6597222222222222,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.005623100747574737,
+                "real": 0.9999841902440174
+              },
+              "determinant_phase": 0.005623130381045697,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.005623100747574737,
+                    "real": 0.9999841902440174
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 6.661338147750939e-16
+            }
+          },
+          "zero_based_band": 1
+        },
+        "2": {
+          "E4C": {
+            "authorization_granted": false,
+            "levels": [
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 2,
+                  "resolution": 64,
+                  "source": "E9C primary square"
+                },
+                "step": 0.027777777777777776
+              },
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 2,
+                  "resolution": 64,
+                  "source": "E9C reference refinement square"
+                },
+                "step": 0.013888888888888888
+              }
+            ],
+            "metrics": [
+              {
+                "maximum_principal_angle": 0.14121957883706335,
+                "maximum_projector_distance": 0.19905148810127316,
+                "minimum_singular_value": 0.9900450760153976,
+                "provenance": {
+                  "band": 2,
+                  "resolution": 64,
+                  "source": "E9C primary square"
+                },
+                "rank": 1,
+                "step": 0.027777777777777776
+              },
+              {
+                "maximum_principal_angle": 0.06778280863053074,
+                "maximum_projector_distance": 0.09578597966546487,
+                "minimum_singular_value": 0.9977036248554796,
+                "provenance": {
+                  "band": 2,
+                  "resolution": 64,
+                  "source": "E9C reference refinement square"
+                },
+                "rank": 1,
+                "step": 0.013888888888888888
+              }
+            ],
+            "qualified": false,
+            "status": "PLAQUETTE_REFINEMENT_UNQUALIFIED",
+            "thresholds": {
+              "geometry_tolerance": 1e-10,
+              "max_metric_delta": 0.1,
+              "max_principal_angle": 0.45,
+              "max_projector_distance": 0.3,
+              "min_singular_value": 0.9
+            }
+          },
+          "paper_band": 3,
+          "primary": {
+            "band": 2,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042850331949641274,
+            "omega_over_a2_paper_literal": -0.149693829751096,
+            "omega_over_a2_wilson": -0.14969434852005534,
+            "omega_q_paper_literal": -5.909675523709352,
+            "omega_q_wilson": -5.909696003886969,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04300343933257983,
+                "frequencies": [
+                  0.2676785194164814,
+                  0.3138220959048173,
+                  0.35682553523739713,
+                  0.5636063462199737,
+                  0.5926784502517327,
+                  0.6230412715926132
+                ],
+                "label": "vertex_0",
+                "q": [
+                  0.6527777777777778,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04318618146767844,
+                "frequencies": [
+                  0.26752919067019215,
+                  0.3137729349212157,
+                  0.35695911638889416,
+                  0.5639698021860395,
+                  0.5924074943751555,
+                  0.6230210678553777
+                ],
+                "label": "vertex_1",
+                "q": [
+                  0.6805555555555555,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04318586851645145,
+                "frequencies": [
+                  0.26752776446069415,
+                  0.31377334980483745,
+                  0.3569592183212889,
+                  0.563973491007374,
+                  0.5923992193493309,
+                  0.6230278926604167
+                ],
+                "label": "vertex_2",
+                "q": [
+                  0.6805555555555555,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04300441068699412,
+                "frequencies": [
+                  0.26767731217359886,
+                  0.3138217714546354,
+                  0.35682618214162953,
+                  0.5636097421904529,
+                  0.5926702692433271,
+                  0.6230483420209957
+                ],
+                "label": "vertex_3",
+                "q": [
+                  0.6527777777777778,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042850331949641274,
+                "frequencies": [
+                  0.26833165178721774,
+                  0.3134784452652927,
+                  0.356328777214934,
+                  0.5644651262457081,
+                  0.5925937550875598,
+                  0.6222827318054929
+                ],
+                "label": "center",
+                "q": [
+                  0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 64,
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                0.013888888888888888
+              ],
+              [
+                0.6527777777777778,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.004559934817676969,
+                "real": 0.9999896034431851
+              },
+              "determinant_phase": 0.004559950620283155,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.004559934817676969,
+                    "real": 0.9999896034431851
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 0.0
+            }
+          },
+          "primary_literal_value_for_trs": -0.149693829751096,
+          "primary_reference_difference_omega_over_a2_literal": 0.0062399831209482,
+          "primary_reference_difference_omega_over_a2_wilson": 0.006239501000759207,
+          "primary_wilson_value_for_trs": -0.14969434852005534,
+          "qualified": false,
+          "reference": {
+            "band": 2,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04283611139169602,
+            "omega_over_a2_paper_literal": -0.1559338128720442,
+            "omega_over_a2_wilson": -0.15593384952081454,
+            "omega_q_paper_literal": -6.156020183202287,
+            "omega_q_wilson": -6.156021630037747,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04283611139169602,
+                "frequencies": [
+                  0.2681726444925498,
+                  0.31359220175929237,
+                  0.3564283131509884,
+                  0.5642183523164668,
+                  0.5926206230043306,
+                  0.6224900202269783
+                ],
+                "label": "vertex_0",
+                "q": [
+                  0.6597222222222222,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04298514363239936,
+                "frequencies": [
+                  0.2681238696986423,
+                  0.31352659977410186,
+                  0.3565117434065012,
+                  0.5643696110670136,
+                  0.5925424458127512,
+                  0.6224519155765128
+                ],
+                "label": "vertex_1",
+                "q": [
+                  0.673611111111111,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04298513745900173,
+                "frequencies": [
+                  0.2681231792471351,
+                  0.31352672638524504,
+                  0.35651186384424677,
+                  0.5643714891854423,
+                  0.5925381490048403,
+                  0.6224554816767276
+                ],
+                "label": "vertex_2",
+                "q": [
+                  0.673611111111111,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04283643318052904,
+                "frequencies": [
+                  0.268172011294829,
+                  0.3135921387442357,
+                  0.35642857192476474,
+                  0.5642201609947999,
+                  0.5926163546004038,
+                  0.6224936381579536
+                ],
+                "label": "vertex_3",
+                "q": [
+                  0.6597222222222222,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042850331949641274,
+                "frequencies": [
+                  0.26833165178721774,
+                  0.3134784452652927,
+                  0.356328777214934,
+                  0.5644651262457081,
+                  0.5925937550875598,
+                  0.6222827318054929
+                ],
+                "label": "center",
+                "q": [
+                  0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 64,
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                0.006944444444444444
+              ],
+              [
+                0.6597222222222222,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.0011875038933646387,
+                "real": 0.9999992949170032
+              },
+              "determinant_phase": 0.0011875041724609852,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.0011875038933646387,
+                    "real": 0.9999992949170032
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 4.440892098500626e-16
+            }
+          },
+          "zero_based_band": 2
+        }
+      },
+      "PUBLIC_K_PRIME": {
+        "0": {
+          "E4C": {
+            "authorization_granted": false,
+            "levels": [
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 0,
+                  "resolution": 64,
+                  "source": "E9C primary square"
+                },
+                "step": 0.027777777777777776
+              },
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 0,
+                  "resolution": 64,
+                  "source": "E9C reference refinement square"
+                },
+                "step": 0.013888888888888888
+              }
+            ],
+            "metrics": [
+              {
+                "maximum_principal_angle": 0.18034200904318484,
+                "maximum_projector_distance": 0.2536618954321654,
+                "minimum_singular_value": 0.9837824055160168,
+                "provenance": {
+                  "band": 0,
+                  "resolution": 64,
+                  "source": "E9C primary square"
+                },
+                "rank": 1,
+                "step": 0.027777777777777776
+              },
+              {
+                "maximum_principal_angle": 0.08858909368093582,
+                "maximum_projector_distance": 0.1251200901405785,
+                "minimum_singular_value": 0.9960785518831368,
+                "provenance": {
+                  "band": 0,
+                  "resolution": 64,
+                  "source": "E9C reference refinement square"
+                },
+                "rank": 1,
+                "step": 0.013888888888888888
+              }
+            ],
+            "qualified": false,
+            "status": "PLAQUETTE_REFINEMENT_UNQUALIFIED",
+            "thresholds": {
+              "geometry_tolerance": 1e-10,
+              "max_metric_delta": 0.1,
+              "max_principal_angle": 0.45,
+              "max_projector_distance": 0.3,
+              "min_singular_value": 0.9
+            }
+          },
+          "paper_band": 1,
+          "primary": {
+            "band": 0,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04514298920305693,
+            "omega_over_a2_paper_literal": -0.8912136800550192,
+            "omega_over_a2_wilson": -0.8913231885543922,
+            "omega_q_paper_literal": -35.183705835928244,
+            "omega_q_wilson": -35.18802905819771,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04624150652082887,
+                "frequencies": [
+                  0.2675288580234011,
+                  0.31377036454422996,
+                  0.3569627957591767,
+                  0.5639736363947306,
+                  0.5923999670221104,
+                  0.6230341853059141
+                ],
+                "label": "vertex_0",
+                "q": [
+                  -0.6805555555555555,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04614113547488363,
+                "frequencies": [
+                  0.2676784120413466,
+                  0.31381954751623026,
+                  0.3568294941944198,
+                  0.5636096357379947,
+                  0.5926707388614607,
+                  0.6230548635048591
+                ],
+                "label": "vertex_1",
+                "q": [
+                  -0.6527777777777778,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04614027377561941,
+                "frequencies": [
+                  0.267679618462239,
+                  0.3138198922378584,
+                  0.3568288249178523,
+                  0.5636062227920079,
+                  0.5926789430226911,
+                  0.6230477725924567
+                ],
+                "label": "vertex_2",
+                "q": [
+                  -0.6527777777777778,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04623967913909616,
+                "frequencies": [
+                  0.26753028656138533,
+                  0.3137699657004815,
+                  0.3569626718886305,
+                  0.5639699303144593,
+                  0.5924082597414679,
+                  0.6230273448994784
+                ],
+                "label": "vertex_3",
+                "q": [
+                  -0.6805555555555555,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04514298920305693,
+                "frequencies": [
+                  0.26833278265980326,
+                  0.3134757718628602,
+                  0.35633224652880324,
+                  0.5644650670940968,
+                  0.5925943158761533,
+                  0.6222892475825281
+                ],
+                "label": "center",
+                "q": [
+                  -0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 64,
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                -0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                0.013888888888888888
+              ],
+              [
+                -0.6805555555555555,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.02714792116969772,
+                "real": 0.9996314272651516
+              },
+              "determinant_phase": 0.027151256989350087,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.02714792116969772,
+                    "real": 0.9996314272651516
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          },
+          "primary_literal_value_for_trs": -0.8912136800550192,
+          "primary_reference_difference_omega_over_a2_literal": 0.02558536694792446,
+          "primary_reference_difference_omega_over_a2_wilson": 0.025483306972587938,
+          "primary_wilson_value_for_trs": -0.8913231885543922,
+          "qualified": false,
+          "reference": {
+            "band": 0,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04514298920305693,
+            "omega_over_a2_paper_literal": -0.9167990470029437,
+            "omega_over_a2_wilson": -0.9168064955269801,
+            "omega_q_paper_literal": -36.19377563685913,
+            "omega_q_wilson": -36.19406969280158,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04539957583881721,
+                "frequencies": [
+                  0.2681243000494579,
+                  0.3135238758882751,
+                  0.3565153953562777,
+                  0.564371516661626,
+                  0.5925387839641806,
+                  0.6224619120077017
+                ],
+                "label": "vertex_0",
+                "q": [
+                  -0.673611111111111,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04541654124106986,
+                "frequencies": [
+                  0.26817313117654024,
+                  0.3135896724176101,
+                  0.3564319716038799,
+                  0.5642200579338098,
+                  0.5926168577699529,
+                  0.6225001812357418
+                ],
+                "label": "vertex_1",
+                "q": [
+                  -0.6597222222222222,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04541597544159748,
+                "frequencies": [
+                  0.2681737707057078,
+                  0.3135897461473053,
+                  0.356431702500656,
+                  0.5642182435760758,
+                  0.5926211442909988,
+                  0.6224965652124014
+                ],
+                "label": "vertex_2",
+                "q": [
+                  -0.6597222222222222,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04539876112525132,
+                "frequencies": [
+                  0.26812499779276455,
+                  0.31352375891801587,
+                  0.35651526471965017,
+                  0.564369632542687,
+                  0.5925430956837033,
+                  0.6224583520354823
+                ],
+                "label": "vertex_3",
+                "q": [
+                  -0.673611111111111,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04514298920305693,
+                "frequencies": [
+                  0.26833278265980326,
+                  0.3134757718628602,
+                  0.35633224652880324,
+                  0.5644650670940968,
+                  0.5925943158761533,
+                  0.6222892475825281
+                ],
+                "label": "center",
+                "q": [
+                  -0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 64,
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                -0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                0.006944444444444444
+              ],
+              [
+                -0.673611111111111,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.006981824004023751,
+                "real": 0.999975626769761
+              },
+              "determinant_phase": 0.006981880727778082,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.006981824004023751,
+                    "real": 0.999975626769761
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 4.440892098500626e-16
+            }
+          },
+          "zero_based_band": 0
+        },
+        "1": {
+          "E4C": {
+            "authorization_granted": false,
+            "levels": [
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 1,
+                  "resolution": 64,
+                  "source": "E9C primary square"
+                },
+                "step": 0.027777777777777776
+              },
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 1,
+                  "resolution": 64,
+                  "source": "E9C reference refinement square"
+                },
+                "step": 0.013888888888888888
+              }
+            ],
+            "metrics": [
+              {
+                "maximum_principal_angle": 0.17764172256283375,
+                "maximum_projector_distance": 0.2499041248956887,
+                "minimum_singular_value": 0.9842631579918351,
+                "provenance": {
+                  "band": 1,
+                  "resolution": 64,
+                  "source": "E9C primary square"
+                },
+                "rank": 1,
+                "step": 0.027777777777777776
+              },
+              {
+                "maximum_principal_angle": 0.08922483429122459,
+                "maximum_projector_distance": 0.12601561212072868,
+                "minimum_singular_value": 0.9960221045493514,
+                "provenance": {
+                  "band": 1,
+                  "resolution": 64,
+                  "source": "E9C reference refinement square"
+                },
+                "rank": 1,
+                "step": 0.013888888888888888
+              }
+            ],
+            "qualified": false,
+            "status": "PLAQUETTE_REFINEMENT_UNQUALIFIED",
+            "thresholds": {
+              "geometry_tolerance": 1e-10,
+              "max_metric_delta": 0.1,
+              "max_principal_angle": 0.45,
+              "max_projector_distance": 0.3,
+              "min_singular_value": 0.9
+            }
+          },
+          "paper_band": 2,
+          "primary": {
+            "band": 1,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042856474665943056,
+            "omega_over_a2_paper_literal": 0.7099242958951618,
+            "omega_over_a2_wilson": 0.7099796418329564,
+            "omega_q_paper_literal": 28.02668782082861,
+            "omega_q_wilson": 28.028872790873567,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04319243121494676,
+                "frequencies": [
+                  0.2675288580234011,
+                  0.31377036454422996,
+                  0.3569627957591767,
+                  0.5639736363947306,
+                  0.5923999670221104,
+                  0.6230341853059141
+                ],
+                "label": "vertex_0",
+                "q": [
+                  -0.6805555555555555,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.043009946678189526,
+                "frequencies": [
+                  0.2676784120413466,
+                  0.31381954751623026,
+                  0.3568294941944198,
+                  0.5636096357379947,
+                  0.5926707388614607,
+                  0.6230548635048591
+                ],
+                "label": "vertex_1",
+                "q": [
+                  -0.6527777777777778,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.043008932679993894,
+                "frequencies": [
+                  0.267679618462239,
+                  0.3138198922378584,
+                  0.3568288249178523,
+                  0.5636062227920079,
+                  0.5926789430226911,
+                  0.6230477725924567
+                ],
+                "label": "vertex_2",
+                "q": [
+                  -0.6527777777777778,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04319270618814902,
+                "frequencies": [
+                  0.26753028656138533,
+                  0.3137699657004815,
+                  0.3569626718886305,
+                  0.5639699303144593,
+                  0.5924082597414679,
+                  0.6230273448994784
+                ],
+                "label": "vertex_3",
+                "q": [
+                  -0.6805555555555555,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042856474665943056,
+                "frequencies": [
+                  0.26833278265980326,
+                  0.3134757718628602,
+                  0.35633224652880324,
+                  0.5644650670940968,
+                  0.5925943158761533,
+                  0.6222892475825281
+                ],
+                "label": "center",
+                "q": [
+                  -0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 64,
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                -0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                0.013888888888888888
+              ],
+              [
+                -0.6805555555555555,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.021625530725948,
+                "real": 0.999766140865363
+              },
+              "determinant_phase": -0.021627216659624665,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.021625530725948,
+                    "real": 0.999766140865363
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          },
+          "primary_literal_value_for_trs": 0.7099242958951618,
+          "primary_reference_difference_omega_over_a2_literal": 0.028883330407394325,
+          "primary_reference_difference_omega_over_a2_wilson": 0.028831882439967482,
+          "primary_wilson_value_for_trs": 0.7099796418329564,
+          "qualified": false,
+          "reference": {
+            "band": 1,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042841956353350696,
+            "omega_over_a2_paper_literal": 0.7388076263025561,
+            "omega_over_a2_wilson": 0.7388115242729238,
+            "omega_q_paper_literal": 29.16695600045636,
+            "omega_q_wilson": 29.167109886158347,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04299151946800256,
+                "frequencies": [
+                  0.2681243000494579,
+                  0.3135238758882751,
+                  0.3565153953562777,
+                  0.564371516661626,
+                  0.5925387839641806,
+                  0.6224619120077017
+                ],
+                "label": "vertex_0",
+                "q": [
+                  -0.673611111111111,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042842299186269805,
+                "frequencies": [
+                  0.26817313117654024,
+                  0.3135896724176101,
+                  0.3564319716038799,
+                  0.5642200579338098,
+                  0.5926168577699529,
+                  0.6225001812357418
+                ],
+                "label": "vertex_1",
+                "q": [
+                  -0.6597222222222222,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042841956353350696,
+                "frequencies": [
+                  0.2681737707057078,
+                  0.3135897461473053,
+                  0.356431702500656,
+                  0.5642182435760758,
+                  0.5926211442909988,
+                  0.6224965652124014
+                ],
+                "label": "vertex_2",
+                "q": [
+                  -0.6597222222222222,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.0429915058016343,
+                "frequencies": [
+                  0.26812499779276455,
+                  0.31352375891801587,
+                  0.35651526471965017,
+                  0.564369632542687,
+                  0.5925430956837033,
+                  0.6224583520354823
+                ],
+                "label": "vertex_3",
+                "q": [
+                  -0.673611111111111,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042856474665943056,
+                "frequencies": [
+                  0.26833278265980326,
+                  0.3134757718628602,
+                  0.35633224652880324,
+                  0.5644650670940968,
+                  0.5925943158761533,
+                  0.6222892475825281
+                ],
+                "label": "center",
+                "q": [
+                  -0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 64,
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                -0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                0.006944444444444444
+              ],
+              [
+                -0.673611111111111,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.005626341821075687,
+                "real": 0.9999841720135934
+              },
+              "determinant_phase": -0.005626371505817582,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.005626341821075687,
+                    "real": 0.9999841720135934
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 5.551115123125783e-16
+            }
+          },
+          "zero_based_band": 1
+        },
+        "2": {
+          "E4C": {
+            "authorization_granted": false,
+            "levels": [
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 2,
+                  "resolution": 64,
+                  "source": "E9C primary square"
+                },
+                "step": 0.027777777777777776
+              },
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 2,
+                  "resolution": 64,
+                  "source": "E9C reference refinement square"
+                },
+                "step": 0.013888888888888888
+              }
+            ],
+            "metrics": [
+              {
+                "maximum_principal_angle": 0.1412015747146769,
+                "maximum_projector_distance": 0.19902627986398533,
+                "minimum_singular_value": 0.990047609946992,
+                "provenance": {
+                  "band": 2,
+                  "resolution": 64,
+                  "source": "E9C primary square"
+                },
+                "rank": 1,
+                "step": 0.027777777777777776
+              },
+              {
+                "maximum_principal_angle": 0.06777395176209047,
+                "maximum_projector_distance": 0.09577348292149462,
+                "minimum_singular_value": 0.9977042247001578,
+                "provenance": {
+                  "band": 2,
+                  "resolution": 64,
+                  "source": "E9C reference refinement square"
+                },
+                "rank": 1,
+                "step": 0.013888888888888888
+              }
+            ],
+            "qualified": false,
+            "status": "PLAQUETTE_REFINEMENT_UNQUALIFIED",
+            "thresholds": {
+              "geometry_tolerance": 1e-10,
+              "max_metric_delta": 0.1,
+              "max_principal_angle": 0.45,
+              "max_projector_distance": 0.3,
+              "min_singular_value": 0.9
+            }
+          },
+          "paper_band": 3,
+          "primary": {
+            "band": 2,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042856474665943056,
+            "omega_over_a2_paper_literal": 0.14952208200765876,
+            "omega_over_a2_wilson": 0.14952259899306233,
+            "omega_q_paper_literal": 5.9028951945713315,
+            "omega_q_wilson": 5.902915604336989,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04319243121494676,
+                "frequencies": [
+                  0.2675288580234011,
+                  0.31377036454422996,
+                  0.3569627957591767,
+                  0.5639736363947306,
+                  0.5923999670221104,
+                  0.6230341853059141
+                ],
+                "label": "vertex_0",
+                "q": [
+                  -0.6805555555555555,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.043009946678189526,
+                "frequencies": [
+                  0.2676784120413466,
+                  0.31381954751623026,
+                  0.3568294941944198,
+                  0.5636096357379947,
+                  0.5926707388614607,
+                  0.6230548635048591
+                ],
+                "label": "vertex_1",
+                "q": [
+                  -0.6527777777777778,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.043008932679993894,
+                "frequencies": [
+                  0.267679618462239,
+                  0.3138198922378584,
+                  0.3568288249178523,
+                  0.5636062227920079,
+                  0.5926789430226911,
+                  0.6230477725924567
+                ],
+                "label": "vertex_2",
+                "q": [
+                  -0.6527777777777778,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04319270618814902,
+                "frequencies": [
+                  0.26753028656138533,
+                  0.3137699657004815,
+                  0.3569626718886305,
+                  0.5639699303144593,
+                  0.5924082597414679,
+                  0.6230273448994784
+                ],
+                "label": "vertex_3",
+                "q": [
+                  -0.6805555555555555,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042856474665943056,
+                "frequencies": [
+                  0.26833278265980326,
+                  0.3134757718628602,
+                  0.35633224652880324,
+                  0.5644650670940968,
+                  0.5925943158761533,
+                  0.6222892475825281
+                ],
+                "label": "center",
+                "q": [
+                  -0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 64,
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                -0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                0.013888888888888888
+              ],
+              [
+                -0.6805555555555555,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.004554703082230965,
+                "real": 0.9999896272861194
+              },
+              "determinant_phase": -0.004554718830506935,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.004554703082230965,
+                    "real": 0.9999896272861194
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 7.771561172376096e-16
+            }
+          },
+          "primary_literal_value_for_trs": 0.14952208200765876,
+          "primary_reference_difference_omega_over_a2_literal": 0.006238133692675257,
+          "primary_reference_difference_omega_over_a2_wilson": 0.006237653233777757,
+          "primary_wilson_value_for_trs": 0.14952259899306233,
+          "qualified": false,
+          "reference": {
+            "band": 2,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042841956353350696,
+            "omega_over_a2_paper_literal": 0.15576021570033402,
+            "omega_over_a2_wilson": 0.1557602522268401,
+            "omega_q_paper_literal": 6.149166841562577,
+            "omega_q_wilson": 6.149168283571238,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04299151946800256,
+                "frequencies": [
+                  0.2681243000494579,
+                  0.3135238758882751,
+                  0.3565153953562777,
+                  0.564371516661626,
+                  0.5925387839641806,
+                  0.6224619120077017
+                ],
+                "label": "vertex_0",
+                "q": [
+                  -0.673611111111111,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042842299186269805,
+                "frequencies": [
+                  0.26817313117654024,
+                  0.3135896724176101,
+                  0.3564319716038799,
+                  0.5642200579338098,
+                  0.5926168577699529,
+                  0.6225001812357418
+                ],
+                "label": "vertex_1",
+                "q": [
+                  -0.6597222222222222,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042841956353350696,
+                "frequencies": [
+                  0.2681737707057078,
+                  0.3135897461473053,
+                  0.356431702500656,
+                  0.5642182435760758,
+                  0.5926211442909988,
+                  0.6224965652124014
+                ],
+                "label": "vertex_2",
+                "q": [
+                  -0.6597222222222222,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.0429915058016343,
+                "frequencies": [
+                  0.26812499779276455,
+                  0.31352375891801587,
+                  0.35651526471965017,
+                  0.564369632542687,
+                  0.5925430956837033,
+                  0.6224583520354823
+                ],
+                "label": "vertex_3",
+                "q": [
+                  -0.673611111111111,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042856474665943056,
+                "frequencies": [
+                  0.26833278265980326,
+                  0.3134757718628602,
+                  0.35633224652880324,
+                  0.5644650670940968,
+                  0.5925943158761533,
+                  0.6222892475825281
+                ],
+                "label": "center",
+                "q": [
+                  -0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 64,
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                -0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                0.006944444444444444
+              ],
+              [
+                -0.673611111111111,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.001186181875301423,
+                "real": 0.9999992964860319
+              },
+              "determinant_phase": -0.0011861821534666739,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.001186181875301423,
+                    "real": 0.9999992964860319
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 0.0
+            }
+          },
+          "zero_based_band": 2
+        }
+      }
+    },
+    "96": {
+      "PUBLIC_K": {
+        "0": {
+          "E4C": {
+            "authorization_granted": false,
+            "levels": [
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 0,
+                  "resolution": 96,
+                  "source": "E9C primary square"
+                },
+                "step": 0.027777777777777776
+              },
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 0,
+                  "resolution": 96,
+                  "source": "E9C reference refinement square"
+                },
+                "step": 0.013888888888888888
+              }
+            ],
+            "metrics": [
+              {
+                "maximum_principal_angle": 0.1806685715473684,
+                "maximum_projector_distance": 0.2541162212634002,
+                "minimum_singular_value": 0.9837237788349966,
+                "provenance": {
+                  "band": 0,
+                  "resolution": 96,
+                  "source": "E9C primary square"
+                },
+                "rank": 1,
+                "step": 0.027777777777777776
+              },
+              {
+                "maximum_principal_angle": 0.08872030279211852,
+                "maximum_projector_distance": 0.12530491911265568,
+                "minimum_singular_value": 0.9960669348106509,
+                "provenance": {
+                  "band": 0,
+                  "resolution": 96,
+                  "source": "E9C reference refinement square"
+                },
+                "rank": 1,
+                "step": 0.013888888888888888
+              }
+            ],
+            "qualified": false,
+            "status": "PLAQUETTE_REFINEMENT_UNQUALIFIED",
+            "thresholds": {
+              "geometry_tolerance": 1e-10,
+              "max_metric_delta": 0.1,
+              "max_principal_angle": 0.45,
+              "max_projector_distance": 0.3,
+              "min_singular_value": 0.9
+            }
+          },
+          "paper_band": 1,
+          "primary": {
+            "band": 0,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.044617601736038404,
+            "omega_over_a2_paper_literal": 0.906500346624374,
+            "omega_over_a2_wilson": 0.906615588735292,
+            "omega_q_paper_literal": 35.7871992425318,
+            "omega_q_wilson": 35.79174881871223,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04557975445889867,
+                "frequencies": [
+                  0.26713334195425364,
+                  0.3127130964131523,
+                  0.3550484520383475,
+                  0.5622090223127952,
+                  0.5908975121687717,
+                  0.6217069538853649
+                ],
+                "label": "vertex_0",
+                "q": [
+                  0.6527777777777778,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04576045999250311,
+                "frequencies": [
+                  0.26706390448186007,
+                  0.3128243644743632,
+                  0.35500308125234203,
+                  0.5622962288519885,
+                  0.5907418391477292,
+                  0.621778279735999
+                ],
+                "label": "vertex_1",
+                "q": [
+                  0.6805555555555555,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.045760455375490006,
+                "frequencies": [
+                  0.26706390915185524,
+                  0.31282436452734524,
+                  0.3550030783847962,
+                  0.5622962232420222,
+                  0.5907418490484376,
+                  0.621778275603083
+                ],
+                "label": "vertex_2",
+                "q": [
+                  0.6805555555555555,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04557975168890538,
+                "frequencies": [
+                  0.2671333461584199,
+                  0.31271309784732526,
+                  0.3550484481831521,
+                  0.5622090156955181,
+                  0.5908975247343395,
+                  0.6217069484732719
+                ],
+                "label": "vertex_3",
+                "q": [
+                  0.6527777777777778,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.044617601736038404,
+                "frequencies": [
+                  0.267832534752395,
+                  0.3124501364884334,
+                  0.3544559941243262,
+                  0.5629326557663751,
+                  0.5908578104795478,
+                  0.6210022540260195
+                ],
+                "label": "center",
+                "q": [
+                  0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 96,
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                0.013888888888888888
+              ],
+              [
+                0.6527777777777778,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.027613579662447374,
+                "real": 0.9996186724037449
+              },
+              "determinant_phase": -0.027617090137895237,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.027613579662447374,
+                    "real": 0.9996186724037449
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          },
+          "primary_literal_value_for_trs": 0.906500346624374,
+          "primary_reference_difference_omega_over_a2_literal": 0.026455511712570323,
+          "primary_reference_difference_omega_over_a2_wilson": 0.026348118910020535,
+          "primary_wilson_value_for_trs": 0.906615588735292,
+          "qualified": false,
+          "reference": {
+            "band": 0,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.044617601736038404,
+            "omega_over_a2_paper_literal": 0.9329558583369443,
+            "omega_over_a2_wilson": 0.9329637076453126,
+            "omega_q_paper_literal": 36.83162098185762,
+            "omega_q_wilson": 36.83193086013129,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04487228999254417,
+                "frequencies": [
+                  0.26765151901920853,
+                  0.3125238090117527,
+                  0.3546020751812548,
+                  0.562756255492888,
+                  0.5908568500771647,
+                  0.621185060189583
+                ],
+                "label": "vertex_0",
+                "q": [
+                  0.6597222222222222,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04489485902352264,
+                "frequencies": [
+                  0.2676432946570527,
+                  0.31253815368057536,
+                  0.3545957065763964,
+                  0.562766283725825,
+                  0.5908385621392102,
+                  0.6211935655269277
+                ],
+                "label": "vertex_1",
+                "q": [
+                  0.673611111111111,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04489485690838885,
+                "frequencies": [
+                  0.2676432969542809,
+                  0.31253815386266975,
+                  0.35459570500721943,
+                  0.5627662806983049,
+                  0.5908385675505197,
+                  0.6211935632769976
+                ],
+                "label": "vertex_2",
+                "q": [
+                  0.673611111111111,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.044872288353105805,
+                "frequencies": [
+                  0.26765152119390584,
+                  0.31252380954701164,
+                  0.35460207335978594,
+                  0.5627562521902489,
+                  0.5908568561765399,
+                  0.6211850576131069
+                ],
+                "label": "vertex_3",
+                "q": [
+                  0.6597222222222222,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.044617601736038404,
+                "frequencies": [
+                  0.267832534752395,
+                  0.3124501364884334,
+                  0.3544559941243262,
+                  0.5629326557663751,
+                  0.5908578104795478,
+                  0.6210022540260195
+                ],
+                "label": "center",
+                "q": [
+                  0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 96,
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                0.006944444444444444
+              ],
+              [
+                0.6597222222222222,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.007104865158537348,
+                "real": 0.9999747601270138
+              },
+              "determinant_phase": -0.007104924934438906,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.007104865158537348,
+                    "real": 0.9999747601270138
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          },
+          "zero_based_band": 0
+        },
+        "1": {
+          "E4C": {
+            "authorization_granted": false,
+            "levels": [
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 1,
+                  "resolution": 96,
+                  "source": "E9C primary square"
+                },
+                "step": 0.027777777777777776
+              },
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 1,
+                  "resolution": 96,
+                  "source": "E9C reference refinement square"
+                },
+                "step": 0.013888888888888888
+              }
+            ],
+            "metrics": [
+              {
+                "maximum_principal_angle": 0.177860260984108,
+                "maximum_projector_distance": 0.25020831529656273,
+                "minimum_singular_value": 0.9842245168040816,
+                "provenance": {
+                  "band": 1,
+                  "resolution": 96,
+                  "source": "E9C primary square"
+                },
+                "rank": 1,
+                "step": 0.027777777777777776
+              },
+              {
+                "maximum_principal_angle": 0.0894191632624262,
+                "maximum_projector_distance": 0.12628933919039476,
+                "minimum_singular_value": 0.9960047697694157,
+                "provenance": {
+                  "band": 1,
+                  "resolution": 96,
+                  "source": "E9C reference refinement square"
+                },
+                "rank": 1,
+                "step": 0.013888888888888888
+              }
+            ],
+            "qualified": false,
+            "status": "PLAQUETTE_REFINEMENT_UNQUALIFIED",
+            "thresholds": {
+              "geometry_tolerance": 1e-10,
+              "max_metric_delta": 0.1,
+              "max_principal_angle": 0.45,
+              "max_projector_distance": 0.3,
+              "min_singular_value": 0.9
+            }
+          },
+          "paper_band": 2,
+          "primary": {
+            "band": 1,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04200585763589282,
+            "omega_over_a2_paper_literal": -0.7182647599983912,
+            "omega_over_a2_wilson": -0.7183220799046236,
+            "omega_q_paper_literal": -28.355956145710053,
+            "omega_q_wilson": -28.35821904490534,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04233535562519519,
+                "frequencies": [
+                  0.26713334195425364,
+                  0.3127130964131523,
+                  0.3550484520383475,
+                  0.5622090223127952,
+                  0.5908975121687717,
+                  0.6217069538853649
+                ],
+                "label": "vertex_0",
+                "q": [
+                  0.6527777777777778,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04217871677797885,
+                "frequencies": [
+                  0.26706390448186007,
+                  0.3128243644743632,
+                  0.35500308125234203,
+                  0.5622962288519885,
+                  0.5907418391477292,
+                  0.621778279735999
+                ],
+                "label": "vertex_1",
+                "q": [
+                  0.6805555555555555,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04217871385745098,
+                "frequencies": [
+                  0.26706390915185524,
+                  0.31282436452734524,
+                  0.3550030783847962,
+                  0.5622962232420222,
+                  0.5907418490484376,
+                  0.621778275603083
+                ],
+                "label": "vertex_2",
+                "q": [
+                  0.6805555555555555,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04233535033582686,
+                "frequencies": [
+                  0.2671333461584199,
+                  0.31271309784732526,
+                  0.3550484481831521,
+                  0.5622090156955181,
+                  0.5908975247343395,
+                  0.6217069484732719
+                ],
+                "label": "vertex_3",
+                "q": [
+                  0.6527777777777778,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04200585763589282,
+                "frequencies": [
+                  0.267832534752395,
+                  0.3124501364884334,
+                  0.3544559941243262,
+                  0.5629326557663751,
+                  0.5908578104795478,
+                  0.6210022540260195
+                ],
+                "label": "center",
+                "q": [
+                  0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 96,
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                0.013888888888888888
+              ],
+              [
+                0.6527777777777778,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.02187959579144294,
+                "real": 0.9997606129909314
+              },
+              "determinant_phase": 0.021881341855636834,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.02187959579144294,
+                    "real": 0.9997606129909314
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 1.1102230246251565e-16
+            }
+          },
+          "primary_literal_value_for_trs": -0.7182647599983912,
+          "primary_reference_difference_omega_over_a2_literal": 0.029242457019086565,
+          "primary_reference_difference_omega_over_a2_wilson": 0.02918917441024038,
+          "primary_wilson_value_for_trs": -0.7183220799046236,
+          "qualified": false,
+          "reference": {
+            "band": 1,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04200585763589282,
+            "omega_over_a2_paper_literal": -0.7475072170174778,
+            "omega_over_a2_wilson": -0.747511254314864,
+            "omega_q_paper_literal": -29.510402075687026,
+            "omega_q_wilson": -29.51056146179923,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04207826616950211,
+                "frequencies": [
+                  0.26765151901920853,
+                  0.3125238090117527,
+                  0.3546020751812548,
+                  0.562756255492888,
+                  0.5908568500771647,
+                  0.621185060189583
+                ],
+                "label": "vertex_0",
+                "q": [
+                  0.6597222222222222,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042057552895821027,
+                "frequencies": [
+                  0.2676432946570527,
+                  0.31253815368057536,
+                  0.3545957065763964,
+                  0.562766283725825,
+                  0.5908385621392102,
+                  0.6211935655269277
+                ],
+                "label": "vertex_1",
+                "q": [
+                  0.673611111111111,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042057551144549676,
+                "frequencies": [
+                  0.2676432969542809,
+                  0.31253815386266975,
+                  0.35459570500721943,
+                  0.5627662806983049,
+                  0.5908385675505197,
+                  0.6211935632769976
+                ],
+                "label": "vertex_2",
+                "q": [
+                  0.673611111111111,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.0420782638127743,
+                "frequencies": [
+                  0.26765152119390584,
+                  0.31252380954701164,
+                  0.35460207335978594,
+                  0.5627562521902489,
+                  0.5908568561765399,
+                  0.6211850576131069
+                ],
+                "label": "vertex_3",
+                "q": [
+                  0.6597222222222222,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04200585763589282,
+                "frequencies": [
+                  0.267832534752395,
+                  0.3124501364884334,
+                  0.3544559941243262,
+                  0.5629326557663751,
+                  0.5908578104795478,
+                  0.6210022540260195
+                ],
+                "label": "center",
+                "q": [
+                  0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 96,
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                0.006944444444444444
+              ],
+              [
+                0.6597222222222222,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.005692592992995182,
+                "real": 0.9999837970612407
+              },
+              "determinant_phase": 0.005692623738772999,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.005692592992995182,
+                    "real": 0.9999837970612407
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 6.661338147750939e-16
+            }
+          },
+          "zero_based_band": 1
+        },
+        "2": {
+          "E4C": {
+            "authorization_granted": false,
+            "levels": [
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 2,
+                  "resolution": 96,
+                  "source": "E9C primary square"
+                },
+                "step": 0.027777777777777776
+              },
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 2,
+                  "resolution": 96,
+                  "source": "E9C reference refinement square"
+                },
+                "step": 0.013888888888888888
+              }
+            ],
+            "metrics": [
+              {
+                "maximum_principal_angle": 0.14513767779235565,
+                "maximum_projector_distance": 0.20453581435976106,
+                "minimum_singular_value": 0.9894860030955944,
+                "provenance": {
+                  "band": 2,
+                  "resolution": 96,
+                  "source": "E9C primary square"
+                },
+                "rank": 1,
+                "step": 0.027777777777777776
+              },
+              {
+                "maximum_principal_angle": 0.06978742971628117,
+                "maximum_projector_distance": 0.09861423750278286,
+                "minimum_singular_value": 0.997565845486338,
+                "provenance": {
+                  "band": 2,
+                  "resolution": 96,
+                  "source": "E9C reference refinement square"
+                },
+                "rank": 1,
+                "step": 0.013888888888888888
+              }
+            ],
+            "qualified": false,
+            "status": "PLAQUETTE_REFINEMENT_UNQUALIFIED",
+            "thresholds": {
+              "geometry_tolerance": 1e-10,
+              "max_metric_delta": 0.1,
+              "max_principal_angle": 0.45,
+              "max_projector_distance": 0.3,
+              "min_singular_value": 0.9
+            }
+          },
+          "paper_band": 3,
+          "primary": {
+            "band": 2,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04200585763589282,
+            "omega_over_a2_paper_literal": -0.16425055881607378,
+            "omega_over_a2_wilson": -0.16425124412072561,
+            "omega_q_paper_literal": -6.4843521526900325,
+            "omega_q_wilson": -6.484379207433264,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04233535562519519,
+                "frequencies": [
+                  0.26713334195425364,
+                  0.3127130964131523,
+                  0.3550484520383475,
+                  0.5622090223127952,
+                  0.5908975121687717,
+                  0.6217069538853649
+                ],
+                "label": "vertex_0",
+                "q": [
+                  0.6527777777777778,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04217871677797885,
+                "frequencies": [
+                  0.26706390448186007,
+                  0.3128243644743632,
+                  0.35500308125234203,
+                  0.5622962288519885,
+                  0.5907418391477292,
+                  0.621778279735999
+                ],
+                "label": "vertex_1",
+                "q": [
+                  0.6805555555555555,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04217871385745098,
+                "frequencies": [
+                  0.26706390915185524,
+                  0.31282436452734524,
+                  0.3550030783847962,
+                  0.5622962232420222,
+                  0.5907418490484376,
+                  0.621778275603083
+                ],
+                "label": "vertex_2",
+                "q": [
+                  0.6805555555555555,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04233535033582686,
+                "frequencies": [
+                  0.2671333461584199,
+                  0.31271309784732526,
+                  0.3550484481831521,
+                  0.5622090156955181,
+                  0.5908975247343395,
+                  0.6217069484732719
+                ],
+                "label": "vertex_3",
+                "q": [
+                  0.6527777777777778,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04200585763589282,
+                "frequencies": [
+                  0.267832534752395,
+                  0.3124501364884334,
+                  0.3544559941243262,
+                  0.5629326557663751,
+                  0.5908578104795478,
+                  0.6210022540260195
+                ],
+                "label": "center",
+                "q": [
+                  0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 96,
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                0.6805555555555555,
+                0.013888888888888888
+              ],
+              [
+                0.6527777777777778,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.005003358142507741,
+                "real": 0.9999874831253128
+              },
+              "determinant_phase": 0.005003379018081222,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.005003358142507741,
+                    "real": 0.9999874831253128
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 0.0
+            }
+          },
+          "primary_literal_value_for_trs": -0.16425055881607378,
+          "primary_reference_difference_omega_over_a2_literal": 0.0069228742131064724,
+          "primary_reference_difference_omega_over_a2_wilson": 0.006922237386784769,
+          "primary_wilson_value_for_trs": -0.16425124412072561,
+          "qualified": false,
+          "reference": {
+            "band": 2,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04200585763589282,
+            "omega_over_a2_paper_literal": -0.17117343302918026,
+            "omega_over_a2_wilson": -0.17117348150751038,
+            "omega_q_paper_literal": -6.7576562718974875,
+            "omega_q_wilson": -6.75765818574525,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04207826616950211,
+                "frequencies": [
+                  0.26765151901920853,
+                  0.3125238090117527,
+                  0.3546020751812548,
+                  0.562756255492888,
+                  0.5908568500771647,
+                  0.621185060189583
+                ],
+                "label": "vertex_0",
+                "q": [
+                  0.6597222222222222,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042057552895821027,
+                "frequencies": [
+                  0.2676432946570527,
+                  0.31253815368057536,
+                  0.3545957065763964,
+                  0.562766283725825,
+                  0.5908385621392102,
+                  0.6211935655269277
+                ],
+                "label": "vertex_1",
+                "q": [
+                  0.673611111111111,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042057551144549676,
+                "frequencies": [
+                  0.2676432969542809,
+                  0.31253815386266975,
+                  0.35459570500721943,
+                  0.5627662806983049,
+                  0.5908385675505197,
+                  0.6211935632769976
+                ],
+                "label": "vertex_2",
+                "q": [
+                  0.673611111111111,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.0420782638127743,
+                "frequencies": [
+                  0.26765152119390584,
+                  0.31252380954701164,
+                  0.35460207335978594,
+                  0.5627562521902489,
+                  0.5908568561765399,
+                  0.6211850576131069
+                ],
+                "label": "vertex_3",
+                "q": [
+                  0.6597222222222222,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04200585763589282,
+                "frequencies": [
+                  0.267832534752395,
+                  0.3124501364884334,
+                  0.3544559941243262,
+                  0.5629326557663751,
+                  0.5908578104795478,
+                  0.6210022540260195
+                ],
+                "label": "center",
+                "q": [
+                  0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 96,
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                0.673611111111111,
+                0.006944444444444444
+              ],
+              [
+                0.6597222222222222,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.0013035602376345462,
+                "real": 0.9999991503649927
+              },
+              "determinant_phase": 0.0013035606068181422,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.0013035602376345462,
+                    "real": 0.9999991503649927
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          },
+          "zero_based_band": 2
+        }
+      },
+      "PUBLIC_K_PRIME": {
+        "0": {
+          "E4C": {
+            "authorization_granted": false,
+            "levels": [
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 0,
+                  "resolution": 96,
+                  "source": "E9C primary square"
+                },
+                "step": 0.027777777777777776
+              },
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 0,
+                  "resolution": 96,
+                  "source": "E9C reference refinement square"
+                },
+                "step": 0.013888888888888888
+              }
+            ],
+            "metrics": [
+              {
+                "maximum_principal_angle": 0.18067123111470546,
+                "maximum_projector_distance": 0.25411992124063837,
+                "minimum_singular_value": 0.9837233009410349,
+                "provenance": {
+                  "band": 0,
+                  "resolution": 96,
+                  "source": "E9C primary square"
+                },
+                "rank": 1,
+                "step": 0.027777777777777776
+              },
+              {
+                "maximum_principal_angle": 0.0887216341282646,
+                "maximum_projector_distance": 0.1253067945010281,
+                "minimum_singular_value": 0.9960668168481162,
+                "provenance": {
+                  "band": 0,
+                  "resolution": 96,
+                  "source": "E9C reference refinement square"
+                },
+                "rank": 1,
+                "step": 0.013888888888888888
+              }
+            ],
+            "qualified": false,
+            "status": "PLAQUETTE_REFINEMENT_UNQUALIFIED",
+            "thresholds": {
+              "geometry_tolerance": 1e-10,
+              "max_metric_delta": 0.1,
+              "max_principal_angle": 0.45,
+              "max_projector_distance": 0.3,
+              "min_singular_value": 0.9
+            }
+          },
+          "paper_band": 1,
+          "primary": {
+            "band": 0,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04461700007991565,
+            "omega_over_a2_paper_literal": -0.9065557218999464,
+            "omega_over_a2_wilson": -0.9066709851363315,
+            "omega_q_paper_literal": -35.7893853707858,
+            "omega_q_wilson": -35.793935780966244,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04575975533504956,
+                "frequencies": [
+                  0.2670638750757068,
+                  0.31282363041075634,
+                  0.35500498347730486,
+                  0.5622968130947804,
+                  0.5907426468460502,
+                  0.6217811294729867
+                ],
+                "label": "vertex_0",
+                "q": [
+                  -0.6805555555555555,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04557929810531042,
+                "frequencies": [
+                  0.26713329642664607,
+                  0.3127125945319565,
+                  0.3550503450357425,
+                  0.5622092414275532,
+                  0.5908982250548586,
+                  0.6217101518412765
+                ],
+                "label": "vertex_1",
+                "q": [
+                  -0.6527777777777778,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04557930012427985,
+                "frequencies": [
+                  0.26713329229482397,
+                  0.3127125924191038,
+                  0.3550503486200587,
+                  0.5622092486549585,
+                  0.5908982182572626,
+                  0.6217101406065779
+                ],
+                "label": "vertex_2",
+                "q": [
+                  -0.6527777777777778,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04575975967883139,
+                "frequencies": [
+                  0.26706387105322577,
+                  0.31282363073205716,
+                  0.3550049866716066,
+                  0.5622968188565342,
+                  0.590742640405513,
+                  0.6217811327211761
+                ],
+                "label": "vertex_3",
+                "q": [
+                  -0.6805555555555555,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04461700007991565,
+                "frequencies": [
+                  0.2678324955388691,
+                  0.31244949561878477,
+                  0.35445791383002334,
+                  0.5629330354985379,
+                  0.5908585437543996,
+                  0.6210053289371793
+                ],
+                "label": "center",
+                "q": [
+                  -0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 96,
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                -0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                0.013888888888888888
+              ],
+              [
+                -0.6805555555555555,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.027615266489803857,
+                "real": 0.9996186258052101
+              },
+              "determinant_phase": 0.02761877760877025,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.027615266489803857,
+                    "real": 0.9996186258052101
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 4.440892098500626e-16
+            }
+          },
+          "primary_literal_value_for_trs": -0.9065557218999464,
+          "primary_reference_difference_omega_over_a2_literal": 0.026457579628084482,
+          "primary_reference_difference_omega_over_a2_wilson": 0.026350167150052672,
+          "primary_wilson_value_for_trs": -0.9066709851363315,
+          "qualified": false,
+          "reference": {
+            "band": 0,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.04461700007991565,
+            "omega_over_a2_paper_literal": -0.9330133015280309,
+            "omega_over_a2_wilson": -0.9330211522863842,
+            "omega_q_paper_literal": -36.83388874814386,
+            "omega_q_wilson": -36.834198683660645,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04489419982582088,
+                "frequencies": [
+                  0.2676432613338187,
+                  0.3125374611596396,
+                  0.35459762151148533,
+                  0.5627667607596477,
+                  0.5908393268612275,
+                  0.6211965404953372
+                ],
+                "label": "vertex_0",
+                "q": [
+                  -0.673611111111111,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.044871754639703276,
+                "frequencies": [
+                  0.2676514764618643,
+                  0.3125232311015676,
+                  0.35460398644707763,
+                  0.5627565451054821,
+                  0.5908575708065366,
+                  0.6211882031877014
+                ],
+                "label": "vertex_1",
+                "q": [
+                  -0.6597222222222222,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04487175621047618,
+                "frequencies": [
+                  0.26765147484123447,
+                  0.31252323105171065,
+                  0.3546039885224214,
+                  0.562756549187465,
+                  0.5908575675011534,
+                  0.62118820451425
+                ],
+                "label": "vertex_2",
+                "q": [
+                  -0.6597222222222222,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.044894201830543046,
+                "frequencies": [
+                  0.26764325940033035,
+                  0.3125374612308734,
+                  0.3545976232600155,
+                  0.5627667640163294,
+                  0.5908393233934112,
+                  0.6211965420982005
+                ],
+                "label": "vertex_3",
+                "q": [
+                  -0.673611111111111,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04461700007991565,
+                "frequencies": [
+                  0.2678324955388691,
+                  0.31244949561878477,
+                  0.35445791383002334,
+                  0.5629330354985379,
+                  0.5908585437543996,
+                  0.6210053289371793
+                ],
+                "label": "center",
+                "q": [
+                  -0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 96,
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                -0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                0.006944444444444444
+              ],
+              [
+                -0.673611111111111,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": 0.007105302613453678,
+                "real": 0.9999747570187815
+              },
+              "determinant_phase": 0.0071053624003975,
+              "product_matrix": [
+                [
+                  {
+                    "imag": 0.007105302613453678,
+                    "real": 0.9999747570187815
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          },
+          "zero_based_band": 0
+        },
+        "1": {
+          "E4C": {
+            "authorization_granted": false,
+            "levels": [
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 1,
+                  "resolution": 96,
+                  "source": "E9C primary square"
+                },
+                "step": 0.027777777777777776
+              },
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 1,
+                  "resolution": 96,
+                  "source": "E9C reference refinement square"
+                },
+                "step": 0.013888888888888888
+              }
+            ],
+            "metrics": [
+              {
+                "maximum_principal_angle": 0.17786278276732007,
+                "maximum_projector_distance": 0.2502118253750498,
+                "minimum_singular_value": 0.984224070636988,
+                "provenance": {
+                  "band": 1,
+                  "resolution": 96,
+                  "source": "E9C primary square"
+                },
+                "rank": 1,
+                "step": 0.027777777777777776
+              },
+              {
+                "maximum_principal_angle": 0.08942014292801614,
+                "maximum_projector_distance": 0.12629071911148101,
+                "minimum_singular_value": 0.9960046822847534,
+                "provenance": {
+                  "band": 1,
+                  "resolution": 96,
+                  "source": "E9C reference refinement square"
+                },
+                "rank": 1,
+                "step": 0.013888888888888888
+              }
+            ],
+            "qualified": false,
+            "status": "PLAQUETTE_REFINEMENT_UNQUALIFIED",
+            "thresholds": {
+              "geometry_tolerance": 1e-10,
+              "max_metric_delta": 0.1,
+              "max_principal_angle": 0.45,
+              "max_projector_distance": 0.3,
+              "min_singular_value": 0.9
+            }
+          },
+          "paper_band": 2,
+          "primary": {
+            "band": 1,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042008418211238574,
+            "omega_over_a2_paper_literal": 0.7183870034771032,
+            "omega_over_a2_wilson": 0.7184443526588268,
+            "omega_q_paper_literal": 28.360782124812054,
+            "omega_q_wilson": 28.363046179757404,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04218135306654852,
+                "frequencies": [
+                  0.2670638750757068,
+                  0.31282363041075634,
+                  0.35500498347730486,
+                  0.5622968130947804,
+                  0.5907426468460502,
+                  0.6217811294729867
+                ],
+                "label": "vertex_0",
+                "q": [
+                  -0.6805555555555555,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04233775050378602,
+                "frequencies": [
+                  0.26713329642664607,
+                  0.3127125945319565,
+                  0.3550503450357425,
+                  0.5622092414275532,
+                  0.5908982250548586,
+                  0.6217101518412765
+                ],
+                "label": "vertex_1",
+                "q": [
+                  -0.6527777777777778,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04233775620095487,
+                "frequencies": [
+                  0.26713329229482397,
+                  0.3127125924191038,
+                  0.3550503486200587,
+                  0.5622092486549585,
+                  0.5908982182572626,
+                  0.6217101406065779
+                ],
+                "label": "vertex_2",
+                "q": [
+                  -0.6527777777777778,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04218135593954947,
+                "frequencies": [
+                  0.26706387105322577,
+                  0.31282363073205716,
+                  0.3550049866716066,
+                  0.5622968188565342,
+                  0.590742640405513,
+                  0.6217811327211761
+                ],
+                "label": "vertex_3",
+                "q": [
+                  -0.6805555555555555,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042008418211238574,
+                "frequencies": [
+                  0.2678324955388691,
+                  0.31244949561878477,
+                  0.35445791383002334,
+                  0.5629330354985379,
+                  0.5908585437543996,
+                  0.6210053289371793
+                ],
+                "label": "center",
+                "q": [
+                  -0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 96,
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                -0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                0.013888888888888888
+              ],
+              [
+                -0.6805555555555555,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.02188331954075004,
+                "real": 0.9997605314903555
+              },
+              "determinant_phase": -0.02188506649672639,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.02188331954075004,
+                    "real": 0.9997605314903555
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 6.661338147750939e-16
+            }
+          },
+          "primary_literal_value_for_trs": 0.7183870034771032,
+          "primary_reference_difference_omega_over_a2_literal": 0.029245026444699507,
+          "primary_reference_difference_omega_over_a2_wilson": 0.02919171658306874,
+          "primary_wilson_value_for_trs": 0.7184443526588268,
+          "qualified": false,
+          "reference": {
+            "band": 1,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042008418211238574,
+            "omega_over_a2_paper_literal": 0.7476320299218027,
+            "omega_over_a2_wilson": 0.7476360692418955,
+            "omega_q_paper_literal": 29.515329491646376,
+            "omega_q_wilson": 29.51548895761184,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04206016035184573,
+                "frequencies": [
+                  0.2676432613338187,
+                  0.3125374611596396,
+                  0.35459762151148533,
+                  0.5627667607596477,
+                  0.5908393268612275,
+                  0.6211965404953372
+                ],
+                "label": "vertex_0",
+                "q": [
+                  -0.673611111111111,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042080755345510035,
+                "frequencies": [
+                  0.2676514764618643,
+                  0.3125232311015676,
+                  0.35460398644707763,
+                  0.5627565451054821,
+                  0.5908575708065366,
+                  0.6211882031877014
+                ],
+                "label": "vertex_1",
+                "q": [
+                  -0.6597222222222222,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04208075747071077,
+                "frequencies": [
+                  0.26765147484123447,
+                  0.31252323105171065,
+                  0.3546039885224214,
+                  0.562756549187465,
+                  0.5908575675011534,
+                  0.62118820451425
+                ],
+                "label": "vertex_2",
+                "q": [
+                  -0.6597222222222222,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04206016202914209,
+                "frequencies": [
+                  0.26764325940033035,
+                  0.3125374612308734,
+                  0.3545976232600155,
+                  0.5627667640163294,
+                  0.5908393233934112,
+                  0.6211965420982005
+                ],
+                "label": "vertex_3",
+                "q": [
+                  -0.673611111111111,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042008418211238574,
+                "frequencies": [
+                  0.2678324955388691,
+                  0.31244949561878477,
+                  0.35445791383002334,
+                  0.5629330354985379,
+                  0.5908585437543996,
+                  0.6210053289371793
+                ],
+                "label": "center",
+                "q": [
+                  -0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 96,
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                -0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                0.006944444444444444
+              ],
+              [
+                -0.673611111111111,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.005693543497616971,
+                "real": 0.9999837916498648
+              },
+              "determinant_phase": -0.00569357425879858,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.005693543497616971,
+                    "real": 0.9999837916498648
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 4.440892098500626e-16
+            }
+          },
+          "zero_based_band": 1
+        },
+        "2": {
+          "E4C": {
+            "authorization_granted": false,
+            "levels": [
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 2,
+                  "resolution": 96,
+                  "source": "E9C primary square"
+                },
+                "step": 0.027777777777777776
+              },
+              {
+                "boundary_status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED",
+                "interior_status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED",
+                "provenance": {
+                  "band": 2,
+                  "resolution": 96,
+                  "source": "E9C reference refinement square"
+                },
+                "step": 0.013888888888888888
+              }
+            ],
+            "metrics": [
+              {
+                "maximum_principal_angle": 0.14512971366130611,
+                "maximum_projector_distance": 0.20452466979009112,
+                "minimum_singular_value": 0.9894871549058265,
+                "provenance": {
+                  "band": 2,
+                  "resolution": 96,
+                  "source": "E9C primary square"
+                },
+                "rank": 1,
+                "step": 0.027777777777777776
+              },
+              {
+                "maximum_principal_angle": 0.06978348033445332,
+                "maximum_projector_distance": 0.09860866582807903,
+                "minimum_singular_value": 0.997566120872097,
+                "provenance": {
+                  "band": 2,
+                  "resolution": 96,
+                  "source": "E9C reference refinement square"
+                },
+                "rank": 1,
+                "step": 0.013888888888888888
+              }
+            ],
+            "qualified": false,
+            "status": "PLAQUETTE_REFINEMENT_UNQUALIFIED",
+            "thresholds": {
+              "geometry_tolerance": 1e-10,
+              "max_metric_delta": 0.1,
+              "max_principal_angle": 0.45,
+              "max_projector_distance": 0.3,
+              "min_singular_value": 0.9
+            }
+          },
+          "paper_band": 3,
+          "primary": {
+            "band": 2,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042008418211238574,
+            "omega_over_a2_paper_literal": 0.16418571046825914,
+            "omega_over_a2_wilson": 0.16418639496152262,
+            "omega_q_paper_literal": 6.481792042534054,
+            "omega_q_wilson": 6.481819065244958,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04218135306654852,
+                "frequencies": [
+                  0.2670638750757068,
+                  0.31282363041075634,
+                  0.35500498347730486,
+                  0.5622968130947804,
+                  0.5907426468460502,
+                  0.6217811294729867
+                ],
+                "label": "vertex_0",
+                "q": [
+                  -0.6805555555555555,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04233775050378602,
+                "frequencies": [
+                  0.26713329642664607,
+                  0.3127125945319565,
+                  0.3550503450357425,
+                  0.5622092414275532,
+                  0.5908982250548586,
+                  0.6217101518412765
+                ],
+                "label": "vertex_1",
+                "q": [
+                  -0.6527777777777778,
+                  -0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04233775620095487,
+                "frequencies": [
+                  0.26713329229482397,
+                  0.3127125924191038,
+                  0.3550503486200587,
+                  0.5622092486549585,
+                  0.5908982182572626,
+                  0.6217101406065779
+                ],
+                "label": "vertex_2",
+                "q": [
+                  -0.6527777777777778,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04218135593954947,
+                "frequencies": [
+                  0.26706387105322577,
+                  0.31282363073205716,
+                  0.3550049866716066,
+                  0.5622968188565342,
+                  0.590742640405513,
+                  0.6217811327211761
+                ],
+                "label": "vertex_3",
+                "q": [
+                  -0.6805555555555555,
+                  0.013888888888888888
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042008418211238574,
+                "frequencies": [
+                  0.2678324955388691,
+                  0.31244949561878477,
+                  0.35445791383002334,
+                  0.5629330354985379,
+                  0.5908585437543996,
+                  0.6210053289371793
+                ],
+                "label": "center",
+                "q": [
+                  -0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 96,
+            "side_q": 0.027777777777777776,
+            "vertices": [
+              [
+                -0.6805555555555555,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                -0.013888888888888888
+              ],
+              [
+                -0.6527777777777778,
+                0.013888888888888888
+              ],
+              [
+                -0.6805555555555555,
+                0.013888888888888888
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.005001382748868868,
+                "real": 0.9999874930070869
+              },
+              "determinant_phase": -0.005001403599726047,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.005001382748868868,
+                    "real": 0.9999874930070869
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 6.661338147750939e-16
+            }
+          },
+          "primary_literal_value_for_trs": 0.16418571046825914,
+          "primary_reference_difference_omega_over_a2_literal": 0.006919472398428161,
+          "primary_reference_difference_omega_over_a2_wilson": 0.006918836325530225,
+          "primary_wilson_value_for_trs": 0.16418639496152262,
+          "qualified": false,
+          "reference": {
+            "band": 2,
+            "boundary": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_BOUNDARY_SINGLE_BAND_QUALIFIED"
+            },
+            "center": [
+              -0.6666666666666666,
+              0.0
+            ],
+            "interior": {
+              "is_qualified": true,
+              "status": "PLAQUETTE_INTERIOR_SINGLE_BAND_QUALIFIED"
+            },
+            "minimum_external_gap": 0.042008418211238574,
+            "omega_over_a2_paper_literal": 0.1711051828666873,
+            "omega_over_a2_wilson": 0.17110523128705285,
+            "omega_q_paper_literal": 6.754961863481026,
+            "omega_q_wilson": 6.754963775040437,
+            "path": {
+              "is_qualified": true,
+              "status": "PATH_SINGLE_BAND_QUALIFIED"
+            },
+            "profile": [
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04206016035184573,
+                "frequencies": [
+                  0.2676432613338187,
+                  0.3125374611596396,
+                  0.35459762151148533,
+                  0.5627667607596477,
+                  0.5908393268612275,
+                  0.6211965404953372
+                ],
+                "label": "vertex_0",
+                "q": [
+                  -0.673611111111111,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042080755345510035,
+                "frequencies": [
+                  0.2676514764618643,
+                  0.3125232311015676,
+                  0.35460398644707763,
+                  0.5627565451054821,
+                  0.5908575708065366,
+                  0.6211882031877014
+                ],
+                "label": "vertex_1",
+                "q": [
+                  -0.6597222222222222,
+                  -0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04208075747071077,
+                "frequencies": [
+                  0.26765147484123447,
+                  0.31252323105171065,
+                  0.3546039885224214,
+                  0.562756549187465,
+                  0.5908575675011534,
+                  0.62118820451425
+                ],
+                "label": "vertex_2",
+                "q": [
+                  -0.6597222222222222,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.04206016202914209,
+                "frequencies": [
+                  0.26764325940033035,
+                  0.3125374612308734,
+                  0.3545976232600155,
+                  0.5627667640163294,
+                  0.5908393233934112,
+                  0.6211965420982005
+                ],
+                "label": "vertex_3",
+                "q": [
+                  -0.673611111111111,
+                  0.006944444444444444
+                ]
+              },
+              {
+                "E3_PROFILE": "PASS",
+                "external_gap": 0.042008418211238574,
+                "frequencies": [
+                  0.2678324955388691,
+                  0.31244949561878477,
+                  0.35445791383002334,
+                  0.5629330354985379,
+                  0.5908585437543996,
+                  0.6210053289371793
+                ],
+                "label": "center",
+                "q": [
+                  -0.6666666666666666,
+                  0.0
+                ]
+              }
+            ],
+            "profile_passed": true,
+            "qualified_before_refinement": true,
+            "resolution": 96,
+            "side_q": 0.013888888888888888,
+            "vertices": [
+              [
+                -0.673611111111111,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                -0.006944444444444444
+              ],
+              [
+                -0.6597222222222222,
+                0.006944444444444444
+              ],
+              [
+                -0.673611111111111,
+                0.006944444444444444
+              ]
+            ],
+            "wilson": {
+              "determinant": {
+                "imag": -0.0013030404829245806,
+                "real": 0.9999991510423895
+              },
+              "determinant_phase": -0.001303040851666751,
+              "product_matrix": [
+                [
+                  {
+                    "imag": -0.0013030404829245806,
+                    "real": 0.9999991510423895
+                  }
+                ]
+              ],
+              "rank": 1,
+              "status": "WILSON_LOOP_QUALIFIED",
+              "unitarity_residual": 2.220446049250313e-16
+            }
+          },
+          "zero_based_band": 2
+        }
+      }
+    }
+  },
+  "schema": "trilatt_e9c_rank1_k_kprime_berry_result_v1",
+  "scope_gates": {
+    "berry_field_map": "NOT_AUTHORIZED",
+    "full_bz_chern": "NOT_AUTHORIZED",
+    "full_path_berry": "NOT_AUTHORIZED",
+    "parameter_sweep": "NOT_AUTHORIZED",
+    "posthoc_sign_flip": "NOT_USED",
+    "rank1_only": true,
+    "valley_chern": "NOT_AUTHORIZED"
+  },
+  "self_checks": {
+    "CONTRACT_NUM_BANDS": true,
+    "CONTRACT_SCOPE_BOUNDED": true,
+    "CONTRACT_TARGET_RANK1_ONLY": true,
+    "CONTRACT_WORK_ORDER": true,
+    "KPRIME_MAPPING": true,
+    "K_MAPPING": true,
+    "MAPPING_READY": true,
+    "NO_POSTHOC_SIGN_FLIP": true,
+    "OLD_E9A_C1_PRESENT": true,
+    "PHYSICAL_FILL": true,
+    "PHYSICAL_GEOMETRY_ROUNDTRIP": true,
+    "PHYSICAL_ORIENTATION": true,
+    "RESOLUTIONS_EXACT": true,
+    "STENCIL_PRIMARY": true,
+    "STENCIL_REFERENCE": true,
+    "UNIT_CONVERSION": true
+  },
+  "telemetry": {
+    "cache_hits": 85,
+    "peak_rss_kib": 612860,
+    "solver_failures": 0,
+    "solver_requests": 36,
+    "wall_time_seconds": 5.757185599999502
+  },
+  "work_order_id": "TRILATT-E9C-20260824-175"
+}
