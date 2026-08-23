@@ -1,0 +1,99 @@
+﻿{
+  "schema": "trilatt_e9e_a_source_bound_rounded_triangle_geometry_contract_v1",
+  "work_order_id": "TRILATT-E9E-A-20260824-187",
+  "base_sandbox_sha": "109ffd0e0967966278090e7fbace54108a30f18b",
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "source": {
+    "title": "Fine Structures of Berry Curvature and Unquantized Valley Chern Numbers in Valley Photonic Crystals",
+    "authors": ["Wei Dai", "Taiki Yoda", "Yuto Moritake", "Masaya Notomi"],
+    "version": "arXiv:2603.27244v1",
+    "url": "https://arxiv.org/abs/2603.27244",
+    "doi": "10.1103/1sq1-3168",
+    "structural_model_section": "II.1 Structural model",
+    "geometry_figure": "Figure 1",
+    "parameter_evolution_figure": "Figure 2 panels b-c and Figure 3 panels d-i"
+  },
+  "source_parameter_definition": {
+    "name": "f_r",
+    "definition": "r_cir_over_r_tri",
+    "r_cir_meaning": "radius of the circular arcs replacing the three triangle corners",
+    "r_tri_meaning": "nominal circumradius of the equilateral triangular construction before uniform area normalization",
+    "allowed_range": [0.0, 0.5],
+    "regular_triangle_limit": 0.0,
+    "circular_hole_limit": 0.5,
+    "intermediate_source_anchor": 0.4,
+    "source_statement_near_zero": "For f_r below approximately 0.19, the second-band at-K Berry curvature remains positive.",
+    "intermediate_source_anchor_policy": "Do not invent intermediate values; the approximate 0.19 statement is not frozen as a direct distribution-comparison value."
+  },
+  "source_representative_fr_values": [0.0, 0.4, 0.5],
+  "internal_trend_sampling": [],
+  "human_authoritative_physical_scale": {
+    "lattice_constant_nm": 400.0,
+    "normalized_a": 1.0,
+    "background_refractive_index": 2.65,
+    "background_epsilon": 7.0225,
+    "air_epsilon": 1.0,
+    "polarization": "TE",
+    "fr0_triangle_circumradius_nm": 160.0,
+    "fr0_triangle_circumradius_over_a": 0.4,
+    "fr0_triangle_fill_fraction": 0.24,
+    "fr0_triangle_area_over_a2": 0.2078460969082653,
+    "fr0_orientation_mod_120_degrees": 90.0,
+    "obsolete_paper_fill_fraction": "NOT_USED"
+  },
+  "geometry_construction": {
+    "public_space": "Cartesian physical geometry is defined first.",
+    "base_shape": "Accepted E9A regular equilateral triangle with one vertex at positive y.",
+    "corner_replacement": "Each vertex is replaced by a circular arc tangent to both adjacent sides.",
+    "arc_center_rule": "For nominal triangle circumradius R and arc radius rho, each arc center is displaced 2*rho inward along the vertex bisector.",
+    "tangent_offset_rule": "Each tangent point is sqrt(3)*rho from its vertex along the adjacent side.",
+    "maximum_rounding_rule": "At f_r=0.5 the tangent segments vanish and the three arcs share the triangle center, forming one circle.",
+    "constant_area_rule": "Uniformly scale the nominal rounded construction so its analytic area equals the accepted fr=0 triangle area.",
+    "analytic_raw_area_rule": "A_raw = 3*sqrt(3)*R0^2/4 - (3*sqrt(3)-pi)*(f_r*R0)^2 before the area-normalizing scale.",
+    "nominal_radius_rule": "R_nominal = R0*sqrt(A_target/A_raw); rho = f_r*R_nominal.",
+    "c3_rule": "Three identical corners and 120-degree rotational repetition.",
+    "join_rule": "Line-to-arc joins are tangent; no corner polygon approximation is used as the public geometry.",
+    "self_intersection_rule": "The allowed interval and tangent offset bound are checked analytically and with a sampled boundary intersection audit."
+  },
+  "coordinate_adapter": {
+    "real_space_basis_rows": [[0.5, 0.5], [0.8660254037844386, -0.8660254037844386]],
+    "mapping": "q_mpb = solve(A_real, q_cartesian)",
+    "conversion_count": "EXACTLY_ONCE",
+    "mpb_use": "Self-check only; no MPB object or solver is allowed in E9E.A."
+  },
+  "future_e9e_benchmark_contract": {
+    "status": "CONCEPT_ONLY_NOT_EXECUTED",
+    "priorities": [
+      "AT_K_SIGN_EVOLUTION",
+      "AT_K_RELATIVE_BAND_PARTICIPATION",
+      "TRIANGLE_PETAL_ISLAND_REDISTRIBUTION",
+      "OFF_K_SIGN_STRUCTURE",
+      "SPATIAL_LOCALIZATION_EVOLUTION",
+      "APPROACH_TO_BAND2_BAND3_DEGENERACY"
+    ],
+    "acceptance_policy": "TREND_FIDELITY_OVER_POINTWISE_NUMERICAL_COINCIDENCE"
+  },
+  "authorization": {
+    "new_mpb_solver": false,
+    "new_berry_calculation": false,
+    "new_chern_calculation": false,
+    "parameter_fitting": false,
+    "production_code_change": false,
+    "main_push": false,
+    "sandbox_audit_code": true
+  },
+  "required_checks": [
+    "AREA_CONSERVATION",
+    "C3_SYMMETRY",
+    "SMOOTH_JOIN_CONSTRUCTION",
+    "NO_SELF_INTERSECTION",
+    "PUBLIC_CARTESIAN_GEOMETRY_FIRST",
+    "MPB_CONVERSION_EXACTLY_ONCE",
+    "E9A_C1_TRIANGLE_VERTEX_REPLAY",
+    "CIRCUMRADIUS_REPLAY",
+    "FILL_FRACTION_REPLAY",
+    "CIRCULAR_LIMIT",
+    "C2Z_RESTORED_GEOMETRICALLY"
+  ]
+}
+
