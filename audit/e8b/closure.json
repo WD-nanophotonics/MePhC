@@ -1,4 +1,4 @@
-{
+﻿{
   "ACTUAL_MPB_GEOMETRY_CONTRACT_DIGEST_MINUS": {
     "A_s": [
       [
@@ -389,8 +389,8 @@
     }
   },
   "e8b_c2_overall": "E8B_FIRST_LIVE_AFFINE_WEIGHTED_RESPONSE_FULLY_AUDITABLE_AND_READY_FOR_FINAL_SUPERVISOR_SEAL",
-  "evidence_commit_sha": "PENDING_CLOSURE_COMMIT",
-  "final_sandbox_sha": "PENDING_CLOSURE_COMMIT",
+  "evidence_commit_sha": "d6cb36f93df5c0258cfee4927197db43cca88513",
+  "final_sandbox_sha": "d6cb36f93df5c0258cfee4927197db43cca88513",
   "first_component_status": "SMALL_AND_QUADRATURE_SENSITIVE",
   "global_max_rel_stencil_difference": {
     "node": {
@@ -556,7 +556,7 @@
       "second_component_relative_difference": 0.00866239322549294
     }
   },
-  "sandbox_remote_head_verified": false,
+  "sandbox_remote_head_verified": true,
   "schema": "trilatt_e8b_c2_closure_v1",
   "self_checks": {
     "ALL_NODE_ACTUAL_CENTER_REPLAY": true,
@@ -666,3 +666,4 @@
   "total_wall_time_seconds": "NOT_AVAILABLE",
   "work_order_id": "TRILATT-E8B-C2-20260824-167"
 }
+
