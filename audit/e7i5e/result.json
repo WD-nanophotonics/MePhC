@@ -1,0 +1,333 @@
+{
+  "E7I5E_overall": "DISCRETE_CONVENTION_DIAGNOSIS_COMPLETE",
+  "baseline": {
+    "48": {
+      "abs_error_f1": 0.14704052118864858,
+      "abs_error_f2": 0.1188121029952589,
+      "abs_error_f3": 0.07988840355118693,
+      "abs_error_gap21": 0.02532815572619808,
+      "abs_error_gap32": 0.03896044485089613,
+      "absolute_scale_vector": [
+        0.4127885526847116,
+        0.4324603969585135,
+        0.4374999521076174
+      ],
+      "frequencies": [
+        0.4127885526847116,
+        0.4324603969585135,
+        0.4374999521076174,
+        0.8359496983403484
+      ],
+      "gap21": 0.01967184427380192,
+      "gap32": 0.005039555149103869,
+      "gap_vector": [
+        0.01967184427380192,
+        0.005039555149103869
+      ],
+      "mean_first3_frequency": 0.42758296725028083,
+      "mean_first3_frequency_ratio_to_paper": 1.3689841220366132,
+      "paper_absolute_scale_vector": [
+        0.265748031496063,
+        0.3136482939632546,
+        0.35761154855643046
+      ],
+      "paper_gap_vector": [
+        0.045,
+        0.044
+      ]
+    },
+    "64": {
+      "abs_error_f1": 0.14709059733102747,
+      "abs_error_f2": 0.11894441294687413,
+      "abs_error_f3": 0.08018116232371891,
+      "abs_error_gap21": 0.025245921916961747,
+      "abs_error_gap32": 0.03879999602997937,
+      "absolute_scale_vector": [
+        0.4128386288270905,
+        0.43259270691012874,
+        0.43779271088014937
+      ],
+      "frequencies": [
+        0.4128386288270905,
+        0.43259270691012874,
+        0.43779271088014937,
+        0.8361580223439125
+      ],
+      "gap21": 0.01975407808303825,
+      "gap32": 0.005200003970020628,
+      "gap_vector": [
+        0.01975407808303825,
+        0.005200003970020628
+      ],
+      "mean_first3_frequency": 0.4277413488724562,
+      "mean_first3_frequency_ratio_to_paper": 1.3694912094151748,
+      "paper_absolute_scale_vector": [
+        0.265748031496063,
+        0.3136482939632546,
+        0.35761154855643046
+      ],
+      "paper_gap_vector": [
+        0.045,
+        0.044
+      ]
+    }
+  },
+  "baseline_reused": true,
+  "calculation_code_git_sha": "91d7f6f2ef1ef9b9ab4df0a030e6ce3e27d3fbc8",
+  "candidate_list": {
+    "base_sandbox_sha": "ebd99df0c6c41496d84b3084d9bbf8c28328e964",
+    "candidates": [
+      {
+        "background_epsilon": 2.65,
+        "candidate_id": "BASELINE_REUSE",
+        "new_live_diagnostic": false,
+        "polarization": "TE"
+      },
+      {
+        "background_epsilon": 7.0225,
+        "candidate_id": "MATERIAL_N2P65_INTERPRETATION_DIAGNOSTIC",
+        "new_live_diagnostic": true,
+        "polarization": "TE"
+      },
+      {
+        "background_epsilon": 2.65,
+        "candidate_id": "ALTERNATE_MPB_TM_CONVENTION_DIAGNOSTIC",
+        "new_live_diagnostic": true,
+        "polarization": "TM"
+      }
+    ],
+    "exact_k": {
+      "mpb_fractional": [
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "num_bands": 4,
+      "public": [
+        0.6666666666666666,
+        0.0
+      ],
+      "resolutions": [
+        48,
+        64
+      ]
+    },
+    "forbidden_combined_candidate": {
+      "background_epsilon": 7.0225,
+      "polarization": "TM"
+    },
+    "schema": "e7i5e_candidate_contract_v1",
+    "work_order_id": "TRILATT-E7I5E-20260824-156"
+  },
+  "candidate_list_committed_before_execution": true,
+  "code_change": "SANDBOX_AUDIT_ONLY",
+  "complete": true,
+  "dai_fr00_exact_model_recovery_status": "EMPIRICALLY_SUPPORTED_CONVENTION_HYPOTHESIS",
+  "diagnostics": [
+    {
+      "R48": {
+        "abs_error_f1": 0.010788657397653667,
+        "abs_error_f2": 0.038909109878551784,
+        "abs_error_f3": 0.07082724096003179,
+        "abs_error_gap21": 0.025220190013706525,
+        "abs_error_gap32": 0.031954876488304154,
+        "absolute_scale_vector": [
+          0.25495937409840935,
+          0.2747391840847028,
+          0.28678430759639867
+        ],
+        "frequencies": [
+          0.25495937409840935,
+          0.2747391840847028,
+          0.28678430759639867,
+          0.5193589892287737
+        ],
+        "gap21": 0.019779809986293473,
+        "gap32": 0.012045123511695843,
+        "gap_vector": [
+          0.019779809986293473,
+          0.012045123511695843
+        ],
+        "mean_first3_frequency": 0.27216095525983697,
+        "mean_first3_frequency_ratio_to_paper": 0.8713724702016628,
+        "paper_absolute_scale_vector": [
+          0.265748031496063,
+          0.3136482939632546,
+          0.35761154855643046
+        ],
+        "paper_gap_vector": [
+          0.045,
+          0.044
+        ],
+        "solver_provenance": "{'representation': 'mpb_energy_eh_v1', 'spatial_shape': (48, 48), 'component_count': 3, 'flattening_order': 'C', 'component_order': 'supplied final axis order; vector=(sqrt(epsilon)E,H)', 'normalization_convention': 'full Maxwell discrete energy norm', 'metric': 'sum(epsilon*conj(E1)*E2 + conj(H1)*H2)', 'quadrature': 'uniform cell quadrature with common cell volume omitted', 'periodic_e_and_h_envelopes': True, 'bloch_phase_excluded': True, 'live_mpb_extraction_validated': True, 'mpb_k_point': (0.33333333333333337, 0.33333333333333337, 0.0), 'solver_index_semantics': 'ordering metadata only', 'batch_orthogonality_status': 'MPB_H_ENVELOPE_UNQUALIFIED', 'batch_max_off_diagonal_gram': 0.0008016786569694484, 'batch_max_normalization_error': 1.1102230246251565e-15, 'caller_provenance': mappingproxy({'live_provider': 'mpb_live_energy_eh_v1', 'representation': 'mpb_energy_eh_v1', 'solver_settings': mappingproxy({'resolution': 48, 'num_bands': 4, 'mesh_size': 3, 'eigensolver_tolerance': 1e-07, 'deterministic': True, 'polarization': '1', 'phase_callback': None, 'field_extraction': 'get_efield/get_hfield(band, bloch_phase=False)', 'epsilon_extraction': 'get_epsilon() reshaped to spatial grid'}), 'mpb_reciprocal_k_point': (0.33333333333333337, 0.33333333333333337, 0.0), 'field_kpoint_metadata_validated': True, 'phase_callback_is_gauge_choice': False, 'energy_metric': 'sum(epsilon*conj(E1)*E2 + conj(H1)*H2)', 'quadrature': 'uniform discrete cell quadrature; common cell volume cancels', 'epsilon_weighting': 'electric contribution weighted exactly once by epsilon', 'periodic_e_and_h_envelopes': True, 'bloch_phase_excluded': True})}"
+      },
+      "R48_R64_drift_f1": 0.00010584805254409968,
+      "R48_R64_drift_f2": 0.00029394638033325426,
+      "R48_R64_drift_f3": 0.000824144399523774,
+      "R48_R64_drift_gap21": 0.00018809832778915458,
+      "R48_R64_drift_gap32": 0.0005301980191905198,
+      "R64": {
+        "abs_error_f1": 0.010682809345109567,
+        "abs_error_f2": 0.03861516349821853,
+        "abs_error_f3": 0.07000309656050802,
+        "abs_error_gap21": 0.02503209168591737,
+        "abs_error_gap32": 0.031424678469113634,
+        "absolute_scale_vector": [
+          0.25506522215095345,
+          0.2750331304650361,
+          0.28760845199592244
+        ],
+        "frequencies": [
+          0.25506522215095345,
+          0.2750331304650361,
+          0.28760845199592244,
+          0.5197698349840669
+        ],
+        "gap21": 0.019967908314082627,
+        "gap32": 0.012575321530886363,
+        "gap_vector": [
+          0.019967908314082627,
+          0.012575321530886363
+        ],
+        "mean_first3_frequency": 0.2725689348706373,
+        "mean_first3_frequency_ratio_to_paper": 0.872678690636242,
+        "paper_absolute_scale_vector": [
+          0.265748031496063,
+          0.3136482939632546,
+          0.35761154855643046
+        ],
+        "paper_gap_vector": [
+          0.045,
+          0.044
+        ],
+        "solver_provenance": "{'representation': 'mpb_energy_eh_v1', 'spatial_shape': (64, 64), 'component_count': 3, 'flattening_order': 'C', 'component_order': 'supplied final axis order; vector=(sqrt(epsilon)E,H)', 'normalization_convention': 'full Maxwell discrete energy norm', 'metric': 'sum(epsilon*conj(E1)*E2 + conj(H1)*H2)', 'quadrature': 'uniform cell quadrature with common cell volume omitted', 'periodic_e_and_h_envelopes': True, 'bloch_phase_excluded': True, 'live_mpb_extraction_validated': True, 'mpb_k_point': (0.33333333333333337, 0.33333333333333337, 0.0), 'solver_index_semantics': 'ordering metadata only', 'batch_orthogonality_status': 'MPB_H_ENVELOPE_UNQUALIFIED', 'batch_max_off_diagonal_gram': 0.0005458220535858244, 'batch_max_normalization_error': 2.55351295663786e-15, 'caller_provenance': mappingproxy({'live_provider': 'mpb_live_energy_eh_v1', 'representation': 'mpb_energy_eh_v1', 'solver_settings': mappingproxy({'resolution': 64, 'num_bands': 4, 'mesh_size': 3, 'eigensolver_tolerance': 1e-07, 'deterministic': True, 'polarization': '1', 'phase_callback': None, 'field_extraction': 'get_efield/get_hfield(band, bloch_phase=False)', 'epsilon_extraction': 'get_epsilon() reshaped to spatial grid'}), 'mpb_reciprocal_k_point': (0.33333333333333337, 0.33333333333333337, 0.0), 'field_kpoint_metadata_validated': True, 'phase_callback_is_gauge_choice': False, 'energy_metric': 'sum(epsilon*conj(E1)*E2 + conj(H1)*H2)', 'quadrature': 'uniform discrete cell quadrature; common cell volume cancels', 'epsilon_weighting': 'electric contribution weighted exactly once by epsilon', 'periodic_e_and_h_envelopes': True, 'bloch_phase_excluded': True})}"
+      },
+      "background_epsilon": 7.0225,
+      "candidate_id": "MATERIAL_N2P65_INTERPRETATION_DIAGNOSTIC",
+      "candidate_spectral_classification": "BOTH_ABSOLUTE_SCALE_AND_GAP_STRUCTURE_IMPROVED",
+      "polarization": "TE"
+    },
+    {
+      "R48": {
+        "abs_error_f1": 0.1451063351755344,
+        "abs_error_f2": 0.09958578452638173,
+        "abs_error_f3": 0.0843181895806237,
+        "abs_error_gap21": 0.04262028818196108,
+        "abs_error_gap32": 0.015304340352582171,
+        "absolute_scale_vector": [
+          0.4108543666715974,
+          0.41323407848963634,
+          0.44192973813705416
+        ],
+        "frequencies": [
+          0.4108543666715974,
+          0.41323407848963634,
+          0.44192973813705416,
+          0.827151400067113
+        ],
+        "gap21": 0.002379711818038921,
+        "gap32": 0.028695659647417826,
+        "gap_vector": [
+          0.002379711818038921,
+          0.028695659647417826
+        ],
+        "mean_first3_frequency": 0.42200606109942934,
+        "mean_first3_frequency_ratio_to_paper": 1.3511286494023744,
+        "paper_absolute_scale_vector": [
+          0.265748031496063,
+          0.3136482939632546,
+          0.35761154855643046
+        ],
+        "paper_gap_vector": [
+          0.045,
+          0.044
+        ],
+        "solver_provenance": "{'representation': 'mpb_energy_eh_v1', 'spatial_shape': (48, 48), 'component_count': 3, 'flattening_order': 'C', 'component_order': 'supplied final axis order; vector=(sqrt(epsilon)E,H)', 'normalization_convention': 'full Maxwell discrete energy norm', 'metric': 'sum(epsilon*conj(E1)*E2 + conj(H1)*H2)', 'quadrature': 'uniform cell quadrature with common cell volume omitted', 'periodic_e_and_h_envelopes': True, 'bloch_phase_excluded': True, 'live_mpb_extraction_validated': True, 'mpb_k_point': (0.33333333333333337, 0.33333333333333337, 0.0), 'solver_index_semantics': 'ordering metadata only', 'batch_orthogonality_status': 'MPB_H_ENVELOPE_UNQUALIFIED', 'batch_max_off_diagonal_gram': 0.00018621457816389296, 'batch_max_normalization_error': 2.6645352591003757e-15, 'caller_provenance': mappingproxy({'live_provider': 'mpb_live_energy_eh_v1', 'representation': 'mpb_energy_eh_v1', 'solver_settings': mappingproxy({'resolution': 48, 'num_bands': 4, 'mesh_size': 3, 'eigensolver_tolerance': 1e-07, 'deterministic': True, 'polarization': '2', 'phase_callback': None, 'field_extraction': 'get_efield/get_hfield(band, bloch_phase=False)', 'epsilon_extraction': 'get_epsilon() reshaped to spatial grid'}), 'mpb_reciprocal_k_point': (0.33333333333333337, 0.33333333333333337, 0.0), 'field_kpoint_metadata_validated': True, 'phase_callback_is_gauge_choice': False, 'energy_metric': 'sum(epsilon*conj(E1)*E2 + conj(H1)*H2)', 'quadrature': 'uniform discrete cell quadrature; common cell volume cancels', 'epsilon_weighting': 'electric contribution weighted exactly once by epsilon', 'periodic_e_and_h_envelopes': True, 'bloch_phase_excluded': True})}"
+      },
+      "R48_R64_drift_f1": 2.0296795743335316e-05,
+      "R48_R64_drift_f2": 5.360938721016284e-05,
+      "R48_R64_drift_f3": 0.00027047016501979826,
+      "R48_R64_drift_gap21": 3.3312591466827524e-05,
+      "R48_R64_drift_gap32": 0.00021686077780963542,
+      "R64": {
+        "abs_error_f1": 0.14508603837979106,
+        "abs_error_f2": 0.09953217513917156,
+        "abs_error_f3": 0.0840477194156039,
+        "abs_error_gap21": 0.042653600773427905,
+        "abs_error_gap32": 0.015521201130391807,
+        "absolute_scale_vector": [
+          0.4108340698758541,
+          0.4131804691024262,
+          0.44165926797203436
+        ],
+        "frequencies": [
+          0.4108340698758541,
+          0.4131804691024262,
+          0.44165926797203436,
+          0.8270271881923397
+        ],
+        "gap21": 0.0023463992265720934,
+        "gap32": 0.02847879886960819,
+        "gap_vector": [
+          0.0023463992265720934,
+          0.02847879886960819
+        ],
+        "mean_first3_frequency": 0.4218912689834382,
+        "mean_first3_frequency_ratio_to_paper": 1.350761121703277,
+        "paper_absolute_scale_vector": [
+          0.265748031496063,
+          0.3136482939632546,
+          0.35761154855643046
+        ],
+        "paper_gap_vector": [
+          0.045,
+          0.044
+        ],
+        "solver_provenance": "{'representation': 'mpb_energy_eh_v1', 'spatial_shape': (64, 64), 'component_count': 3, 'flattening_order': 'C', 'component_order': 'supplied final axis order; vector=(sqrt(epsilon)E,H)', 'normalization_convention': 'full Maxwell discrete energy norm', 'metric': 'sum(epsilon*conj(E1)*E2 + conj(H1)*H2)', 'quadrature': 'uniform cell quadrature with common cell volume omitted', 'periodic_e_and_h_envelopes': True, 'bloch_phase_excluded': True, 'live_mpb_extraction_validated': True, 'mpb_k_point': (0.33333333333333337, 0.33333333333333337, 0.0), 'solver_index_semantics': 'ordering metadata only', 'batch_orthogonality_status': 'MPB_H_ENVELOPE_UNQUALIFIED', 'batch_max_off_diagonal_gram': 0.00021003422715916572, 'batch_max_normalization_error': 3.9968028886505635e-15, 'caller_provenance': mappingproxy({'live_provider': 'mpb_live_energy_eh_v1', 'representation': 'mpb_energy_eh_v1', 'solver_settings': mappingproxy({'resolution': 64, 'num_bands': 4, 'mesh_size': 3, 'eigensolver_tolerance': 1e-07, 'deterministic': True, 'polarization': '2', 'phase_callback': None, 'field_extraction': 'get_efield/get_hfield(band, bloch_phase=False)', 'epsilon_extraction': 'get_epsilon() reshaped to spatial grid'}), 'mpb_reciprocal_k_point': (0.33333333333333337, 0.33333333333333337, 0.0), 'field_kpoint_metadata_validated': True, 'phase_callback_is_gauge_choice': False, 'energy_metric': 'sum(epsilon*conj(E1)*E2 + conj(H1)*H2)', 'quadrature': 'uniform discrete cell quadrature; common cell volume cancels', 'epsilon_weighting': 'electric contribution weighted exactly once by epsilon', 'periodic_e_and_h_envelopes': True, 'bloch_phase_excluded': True})}"
+      },
+      "background_epsilon": 2.65,
+      "candidate_id": "ALTERNATE_MPB_TM_CONVENTION_DIAGNOSTIC",
+      "candidate_spectral_classification": "BOTH_ABSOLUTE_SCALE_AND_GAP_STRUCTURE_IMPROVED",
+      "polarization": "TM"
+    }
+  ],
+  "fill_factor": 0.107,
+  "full_domain_run": false,
+  "main_push": false,
+  "mapping": {
+    "expected_mpb_fractional_K": [
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "mpb_fractional_K": [
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "public_K": [
+      0.6666666666666666,
+      0
+    ],
+    "status": "VERIFIED"
+  },
+  "material_convention_diagnostic": "SUPPORTED_AS_LIKELY_CONTRIBUTOR",
+  "new_berry_calculation": "NOT_AUTHORIZED",
+  "new_chern_calculation": "NOT_AUTHORIZED",
+  "new_live_candidate_count": 2,
+  "new_live_solve_count": 4,
+  "no_further_dai_parameter_hunt": false,
+  "orientation_mod_120": 90.0,
+  "paper_reference_model_recovered": false,
+  "polarization_convention_diagnostic": "SUPPORTED_AS_LIKELY_CONTRIBUTOR",
+  "production_code_changed": false,
+  "schema": "e7i5e_convention_diagnostics_v1",
+  "source_e7i5d_binding": {
+    "evidence_commit": "ebd99df0c6c41496d84b3084d9bbf8c28328e964",
+    "result_json_sha256": "328cdcaeb51ef39b481cff56bdd58d325be777ef6b14104dfa0fb9c8bb07b633",
+    "source_contract_json_sha256": "7010bde6e89257fc062c531ca26cb7cacd919d08121e5dc1cc927ab0a2f44457",
+    "source_manifest_json_sha256": "15b54229c13e122edef69df428783b9bb57332afc88a411f18efdf9d53a9fadb"
+  },
+  "telemetry": {
+    "new_live_solve_count": 4,
+    "wall_time_seconds": 0.5500289759947918
+  },
+  "work_order": "TRILATT-E7I5E-20260824-156"
+}
