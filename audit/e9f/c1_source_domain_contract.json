@@ -1,0 +1,52 @@
+{
+  "schema": "trilatt_e9f_a_c1_source_domain_contract_v1",
+  "work_order_id": "TRILATT-E9F-A-C1-20260824-202",
+  "preserved_e9f_a_artifacts": {
+    "contract": "audit/e9f/a_source_valley_chern_contract.json",
+    "geometry_code": "audit/e9f/a_hbz_domain.py",
+    "validation": "audit/e9f/a_domain_validation.json",
+    "capability_audit": "audit/e9f/a_integration_capability_audit.json"
+  },
+  "source": {
+    "title": "Fine Structures of Berry Curvature and Unquantized Valley Chern Numbers in Valley Photonic Crystals",
+    "authors": "Wei Dai, Taiki Yoda, Yuto Moritake, Masaya Notomi",
+    "locations": ["Section B, Berry curvatures in half-Brillouin zone and valley Chern number", "Appendix B", "Figure 7"],
+    "delta_K_text_binding": "Appendix B states that the shrunken K-HBZ radius is smaller than the original by delta_K.",
+    "delta_Gamma_text_binding": "Appendix B states that the three dashed hexagons centered at Gamma points have radius delta_Gamma.",
+    "orientation_binding": "Figure 7 qualitatively binds the exclusion hexagons to the FBZ/HBZ axes; no pixel digitization is used.",
+    "grid_binding": "Appendix B states grid interval 1/36*(2*pi/a) for the actual calculation."
+  },
+  "source_parameter_semantics": {
+    "delta_K_geometric_meaning": "CIRCUMRADIUS_DECREMENT_FROM_VALLEY_CENTER",
+    "delta_K_source_location": "Appendix B and Figure 7",
+    "delta_K_units": "normalized public q units corresponding to delta_K*(2*pi/a)",
+    "outer_boundary_construction": "analytic reciprocal-lattice K-HBZ triangle; reduce its circumradius about the valley center by delta_K",
+    "delta_Gamma_geometric_meaning": "HEXAGON_CIRCUMRADIUS",
+    "delta_Gamma_source_location": "Appendix B and Figure 7",
+    "delta_Gamma_units": "normalized public q units corresponding to delta_Gamma*(2*pi/a)",
+    "hexagon_rotation_relative_to_public_q_axes": "source-figure-aligned_with_FBZ_axes; project convention uses one hexagon vertex on +public_qx and does not digitize the figure",
+    "hexagon_edge_relation_to_hbz": "each Gamma-centered exclusion is a regular hexagon in the source FBZ/HBZ orientation; it is an exclusion mask, not an HBZ boundary",
+    "hexagon_center_locations": "the three Gamma-equivalent vertices of the untruncated K-HBZ"
+  },
+  "public_paper_label_mapping": {
+    "PAPER_VALLEY_LABEL": "K",
+    "PROJECT_PUBLIC_VALLEY_CENTER": "PUBLIC_K_PRIME",
+    "PUBLIC_K_PRIME": [-0.6666666666666666, 0.0],
+    "BLOCH_MAPPING": "paper_k=-mpb_k",
+    "DOMAIN_CANONICAL_NAME": "PAPER_K_PROJECT_KPRIME_HBZ",
+    "TIME_REVERSED_PARTNER": "PAPER_KPRIME_PROJECT_K_HBZ",
+    "domain_label_mapping_unambiguous": true
+  },
+  "source_cases": [
+    {"fr": 0.0, "delta_K": 0.10, "delta_Gamma": 0.10},
+    {"fr": 0.4, "delta_K": 0.05, "delta_Gamma": 0.13}
+  ],
+  "grid": {"step_q": "1/36", "identity": "q=(i/36,j/36) with integer indices"},
+  "source_fidelity_policy": {
+    "source_outanks_previous_provisional_geometry": true,
+    "no_image_digitization": true,
+    "no_parameter_fitting": true,
+    "if_semantics_unresolved": "FAIL_CLOSED"
+  },
+  "live_work": {"new_mpb_solver_requests": 0, "new_berry_calculation": "NONE", "new_valley_chern_value": "NONE", "production_code_change": false}
+}
