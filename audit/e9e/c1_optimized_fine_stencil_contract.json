@@ -1,0 +1,83 @@
+﻿{
+  "schema": "trilatt_e9e_c_c1_optimized_fine_stencil_contract_v1",
+  "work_order_id": "TRILATT-E9E-C-C1-20260824-195",
+  "base_sandbox_sha": "cf07253b15b1e9fb8031ca9d8039da25ce801d1e",
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "preserved_e9e_c_contract_sha256": "73c9ae8eb8877d98d7c0bd88d95c5a40e3dcd29616591be9adc1bacdca970850",
+  "preserved_e9e_c_result_sha256": "7c63b60c64bc49d159e6b1e33aa4a5a6f91e7dc3a7ca9849369f8f124a66ff2a",
+  "model": {
+    "f_r": 0.4,
+    "lattice_constant_nm": 400.0,
+    "effective_refractive_index": 2.65,
+    "background_epsilon": 7.0225,
+    "air_epsilon": 1.0,
+    "polarization": "TE",
+    "geometry_source": "E9E_A_ANALYTIC_LINE_ARC_CONSTRUCTION",
+    "tessellation": 96,
+    "representation": "mpb_energy_eh_v1",
+    "num_bands": 6,
+    "rank": 1,
+    "resolutions": [64, 96],
+    "public_geometry_first": true,
+    "real_space_conversion": "r_mpb = solve(A_real,r_cartesian)",
+    "conversion_count": "EXACTLY_ONCE"
+  },
+  "optimized_stencil_ladder": {
+    "sides": [0.013888888888888888, 0.006944444444444444, 0.003472222222222222],
+    "labels": ["1/72", "1/144", "1/288"],
+    "paper_1_36_band2": "UNQUALIFIED_NOT_REPORTED",
+    "paper_1_36_band3": "UNQUALIFIED_NOT_REPORTED",
+    "final_pair": "1/144_TO_1/288"
+  },
+  "qualification": {
+    "min_external_gap": 0.005,
+    "min_singular_value": 0.9,
+    "max_principal_angle": 0.45,
+    "max_projector_distance": 0.3,
+    "max_e4c_metric_delta": 0.1,
+    "no_threshold_relaxation": true
+  },
+  "trs_control": {
+    "resolution": 96,
+    "tessellation": 96,
+    "side": "1/288",
+    "relative_residual_max": 0.01,
+    "posthoc_sign_flip": false
+  },
+  "tessellation_control": {
+    "resolution": 64,
+    "side": "1/144",
+    "tessellations": [48, 96],
+    "qualitative_gate": "sign_and_band_dominance_stable"
+  },
+  "authorization": {
+    "live_mpb_bounded": true,
+    "new_berry_calculation": true,
+    "berry_scope": "FR0P4_K_AND_KPRIME_FINE_STENCIL_ONLY",
+    "f_r_0p5_berry": false,
+    "berry_field_map": false,
+    "valley_chern": false,
+    "full_bz_chern": false,
+    "production_code_change": false,
+    "main_push": false,
+    "sandbox_audit_code": true
+  },
+  "forbidden_scope": [
+    "retry_paper_1_36_band2_band3",
+    "threshold_relaxation",
+    "parameter_fitting",
+    "geometry_change",
+    "rank2_or_rank3_substitution",
+    "fifth_stencil",
+    "f_r_0p5_berry",
+    "berry_field_map",
+    "valley_chern",
+    "full_bz_chern",
+    "production_code",
+    "main_push",
+    "force_push",
+    "rebase",
+    "history_rewrite"
+  ]
+}
+
