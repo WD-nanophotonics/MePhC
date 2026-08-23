@@ -1,16 +1,61 @@
 {
+  "boundary_term_case_x": {
+    "D_direct": [
+      0.21664415807636858,
+      -1.4816851182156665e-18
+    ],
+    "D_ibp_bulk": [
+      0.21664415807636855,
+      -1.3829566880495465e-19
+    ],
+    "boundary_term": [
+      -6.082653829599979e-21,
+      0.0
+    ],
+    "residual": [
+      2.776165826945851e-17,
+      -1.3433894494107119e-18
+    ],
+    "residual_norm": 2.779414263982579e-17
+  },
   "classification": {
     "affine_reciprocal_transform": "PASSED",
+    "basis_change_alone_physical_response_change": "ZERO_WITHIN_NUMERICAL_ERROR",
+    "berry_two_form_pointwise": "PASSED",
+    "chern_measure_invariance": "PASSED",
     "coordinate_covariance": "PASSED",
+    "coordinate_reparametrization_invariance": "PASSED",
     "deformation_physics_live_solve": "NOT_AUTHORIZED",
+    "finite_domain_ibp_boundary_accounting": "PASSED",
     "full_bz_unweighted_derivative": "ZERO_AS_PERIODIC_BOUNDARY_IDENTITY",
     "live_mpb": "NOT_AUTHORIZED",
     "observable_name": "WEIGHTED_BERRY_CURVATURE_GRADIENT_FUNCTIONAL",
     "physical_response_status": "GEOMETRIC_FUNCTIONAL_VALIDATED_DYNAMICAL_OBSERVABLE_NOT_YET_DERIVED",
+    "reciprocal_determinant_scaling": "PASSED",
     "unweighted_valley_derivative": "BOUNDARY_DEPENDENT_NOT_BULK_INVARIANT",
-    "weighted_direct_vs_ibp": "PASSED"
+    "weighted_direct_vs_ibp_periodic": "PASSED"
   },
   "coordinate": {
+    "A": [
+      [
+        1.2,
+        0.15
+      ],
+      [
+        0.1,
+        0.9
+      ]
+    ],
+    "A_prime": [
+      [
+        1.34,
+        0.34500000000000003
+      ],
+      [
+        0.14,
+        0.7275
+      ]
+    ],
     "B": [
       [
         1.4,
@@ -21,37 +66,181 @@
         0.75
       ]
     ],
-    "Dk": [
-      0.2013806115810305,
-      -0.07551772934288643
+    "B_prime_expected": [
+      [
+        0.785170794884248,
+        -0.15109815984026764
+      ],
+      [
+        -0.3723490367492309,
+        1.4462252441854186
+      ]
     ],
-    "Dk_from_BinvT_Dq": [
-      0.2013806115810302,
+    "B_prime_from_direct": [
+      [
+        0.7851707948842479,
+        -0.15109815984026764
+      ],
+      [
+        -0.372349036749231,
+        1.4462252441854189
+      ]
+    ],
+    "Dk_from_B_inverse_transpose_Dq": [
+      0.20138061158103018,
       -0.07551772934288488
     ],
-    "Dq_covariant": [
-      0.27438108327915384,
-      -0.016362174690957618
+    "Dk_from_q_prime": [
+      0.2013806115810302,
+      -0.07551772934288492
     ],
-    "Dq_raw": [
-      0.28261251577752844,
-      -0.016853039931686346
+    "Dk_same_physical_domain": [
+      0.20138061158103024,
+      -0.07551772934288487
+    ],
+    "Dq_direct": [
+      0.2743810832791538,
+      -0.016362174690957625
+    ],
+    "Dq_prime": [
+      0.25626720868075686,
+      -0.0751284626967878
+    ],
+    "Dq_prime_expected": [
+      0.25626720868075686,
+      -0.07512846269678777
     ],
     "F": [
       [
-        1.2,
+        1.1,
         0.2
       ],
       [
-        0.0,
-        0.8333333333333334
+        0.05,
+        0.8
       ]
     ],
     "J": 1.03,
-    "affine_reciprocal_error": 0.0,
+    "S": [
+      [
+        1.1,
+        0.2
+      ],
+      [
+        0.1,
+        0.9
+      ]
+    ],
     "affine_reciprocal_identity": "PASSED",
-    "coordinate_covariance_error": 1.5788995281571396e-15,
-    "two_form_measure_error": 2.9976021664879227e-15
+    "affine_reciprocal_matrix_error": 2.5438405243138006e-16,
+    "basis_change_alone_response_error": 6.206335383118183e-17,
+    "chern_measure_invariance_error": 0.0,
+    "chern_measure_k_same_physical_domain": -2.934568434494582,
+    "chern_measure_q": -2.934568434494582,
+    "coordinate_covariance_error": 5.721958498152797e-17,
+    "coordinate_reparametrization_error": 2.7755575615628914e-17,
+    "max_pointwise_two_form_transform_error": 0.0,
+    "omega_k_sample": [
+      [
+        -8.823668120114439e-05,
+        -0.00012417724957035784,
+        -0.00016789672337603505,
+        -0.00020785791730175483,
+        -0.00022417070494754407,
+        -0.0002061235781810193
+      ],
+      [
+        -0.00022866325313608522,
+        -0.0004070063616908779,
+        -0.0007042566795026153,
+        -0.0009973643851963797,
+        -0.0009481341851560693,
+        -0.0006260386620234685
+      ],
+      [
+        -0.0006981403407474829,
+        -0.0021975355450536242,
+        -0.010504118661794353,
+        -0.023668137058373895,
+        -0.005273575435740229,
+        -0.001311171796826759
+      ],
+      [
+        -0.001311171796826759,
+        -0.005273575435740231,
+        -0.023668137058373895,
+        -0.010504118661794353,
+        -0.0021975355450536234,
+        -0.0006981403407474829
+      ],
+      [
+        -0.0006260386620234679,
+        -0.000948134185156069,
+        -0.000997364385196379,
+        -0.000704256679502615,
+        -0.0004070063616908778,
+        -0.00022866325313608522
+      ],
+      [
+        -0.0002061235781810193,
+        -0.00022417070494754407,
+        -0.00020785791730175483,
+        -0.00016789672337603505,
+        -0.00012417724957035784,
+        -8.823668120114439e-05
+      ]
+    ],
+    "omega_q_sample": [
+      [
+        -9.088378163717872e-05,
+        -0.00012790256705746858,
+        -0.0001729336250773161,
+        -0.0002140936548208075,
+        -0.0002308958260959704,
+        -0.00021230728552644988
+      ],
+      [
+        -0.00023552315073016778,
+        -0.00041921655254160425,
+        -0.0007253843798876938,
+        -0.001027285316752271,
+        -0.0009765782107107514,
+        -0.0006448198218841725
+      ],
+      [
+        -0.0007190845509699074,
+        -0.002263461611405233,
+        -0.010819242221648184,
+        -0.02437818117012511,
+        -0.0054317826988124355,
+        -0.0013505069507315619
+      ],
+      [
+        -0.0013505069507315619,
+        -0.005431782698812438,
+        -0.02437818117012511,
+        -0.010819242221648184,
+        -0.002263461611405232,
+        -0.0007190845509699074
+      ],
+      [
+        -0.000644819821884172,
+        -0.000976578210710751,
+        -0.0010272853167522704,
+        -0.0007253843798876935,
+        -0.00041921655254160414,
+        -0.00023552315073016778
+      ],
+      [
+        -0.00021230728552644988,
+        -0.0002308958260959704,
+        -0.0002140936548208075,
+        -0.0001729336250773161,
+        -0.00012790256705746858,
+        -9.088378163717872e-05
+      ]
+    ],
+    "reciprocal_determinant_error": 2.220446049250313e-16
   },
   "dirac_cases": {
     "CASE_0": {
@@ -180,15 +369,24 @@
       0.03821862397138317
     ]
   },
-  "schema": "e8a_weighted_berry_gradient_analytic_benchmarks_v1",
+  "schema": "e8a_c1_weighted_berry_gradient_corrected_v1",
   "self_checks": "PASSED",
   "symmetry": {
     "centered_weight_norm": 2.482997612495807e-18,
     "mass_reversal_error": 0.0,
     "mirror_qx_sum_norm": 2.900653220908323e-17,
-    "mirror_qy_expected_zero": 0.0,
     "rotation_covariance_error": 2.7755575615628914e-17,
     "tau_reversal_error": 0.0
+  },
+  "units": {
+    "B_units": "INVERSE_LENGTH",
+    "D_k_units": "LENGTH",
+    "D_q_units": "DIMENSIONLESS",
+    "analytic_length_unit": "1",
+    "omega_k_units": "LENGTH_SQUARED",
+    "omega_q_units": "DIMENSIONLESS_TWO_FORM_COMPONENT",
+    "q_coordinates": "DIMENSIONLESS",
+    "weight_units": "DIMENSIONLESS_NORMALIZED_RECIPROCAL_SPACE_WEIGHT"
   },
   "valley": {
     "D_valley_domain_A": [
@@ -201,8 +399,8 @@
     ],
     "domain_A": [
       [
-        -2.0,
-        2.0
+        -2,
+        2
       ],
       [
         -1.5,
@@ -211,7 +409,7 @@
     ],
     "domain_B": [
       [
-        -2.0,
+        -2,
         2.5
       ],
       [
