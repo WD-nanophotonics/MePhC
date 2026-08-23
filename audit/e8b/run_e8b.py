@@ -46,7 +46,7 @@ def worker_solve(strain,resolution,q,outfile):
     geometry,lattice=solver_geometry(st)
     provider=MPBLiveEnergySpectralProvider(geometry=geometry,geometry_lattice=lattice,resolution=int(resolution),num_bands=NUM_BANDS,polarization=mp.TM,default_material=mp.air,eigensolver_tolerance=SOLVER_TOL,deterministic=True,mesh_size=MESH,phase_callback=mpb.fix_efield_phase)
     raw=provider.solve(tuple(float(x) for x in q))
-    payload={"k_point":list(raw.k_point),"frequencies":[float(x) for x in raw.frequencies],"vectors":[np.asarray(v,dtype=np.complex128) for v in raw.normalized_vectors],"max_normalization_error":float(raw.max_normalization_error),"max_off_diagonal_gram":float(raw.max_off_diagonal_gram),"orthogonality_status":raw.orthogonality_status,"gram_matrix":np.asarray(raw.gram_matrix),"provenance":raw.provenance}
+    payload={"k_point":list(raw.k_point),"frequencies":[float(x) for x in raw.frequencies],"vectors":[np.asarray(v,dtype=np.complex128) for v in raw.normalized_vectors],"max_normalization_error":float(raw.max_normalization_error),"max_off_diagonal_gram":float(raw.max_off_diagonal_gram),"orthogonality_status":raw.orthogonality_status,"gram_matrix":np.asarray(raw.gram_matrix)}
     Path(outfile).write_bytes(pickle.dumps(payload,protocol=pickle.HIGHEST_PROTOCOL))
 
 def solve_one(st,res,q,cache,counters):
