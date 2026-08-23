@@ -1,0 +1,41 @@
+{
+  "capabilities": {
+    "NOT_REPORTED_failed_berry_samples": {
+      "classification": "MISSING",
+      "evidence": "no live Berry sample failure provenance field"
+    },
+    "arbitrary_triangular_domain": {
+      "classification": "MISSING",
+      "evidence": "build_valley_chern_audit accepts sealed flux, not an integration domain"
+    },
+    "coordinate_jacobian_consistency": {
+      "classification": "SUPPORTED",
+      "evidence": "coordinate_flux_invariance explicitly checks q/physical-area restoration"
+    },
+    "explicit_quadrature_weights": {
+      "classification": "MISSING",
+      "evidence": "no cell/node quadrature weight input"
+    },
+    "gamma_centered_exclusions": {
+      "classification": "MISSING",
+      "evidence": "no source exclusion geometry"
+    },
+    "per_band_qualification_provenance": {
+      "classification": "PARTIAL",
+      "evidence": "sealed band and inversion provenance exists, but not future domain-sample qualification"
+    },
+    "shrunken_hbz": {
+      "classification": "MISSING",
+      "evidence": "no source-bound shrunken-HBZ construction"
+    }
+  },
+  "live_integration_status": "NOT_AUTHORIZED_IN_E9F_A",
+  "new_berry_calculation": "NONE",
+  "new_mpb_solver_requests": 0,
+  "new_valley_chern_value": "NONE",
+  "production_code_changed_in_e9f_a": false,
+  "production_file": "mephc/valley_chern.py",
+  "production_file_sha256": "82e94dfbbb2e1457f9d15ff34908c266d9e254167431479ae7be069389340dc7",
+  "schema": "trilatt_e9f_a_integration_capability_audit_v1",
+  "source_text_contains_solver_invocation": true
+}
