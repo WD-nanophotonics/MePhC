@@ -1,0 +1,668 @@
+{
+  "ACTUAL_MPB_GEOMETRY_CONTRACT_DIGEST_MINUS": {
+    "A_s": [
+      [
+        0.8488769518394538,
+        0.8488769518394538
+      ],
+      [
+        0.5101006700133779,
+        -0.5101006700133779
+      ]
+    ],
+    "background_epsilon": 1.0,
+    "basis1_direction": [
+      0.8571477130549714,
+      0.5150706728252272
+    ],
+    "basis2_direction": [
+      0.8571477130549714,
+      -0.5150706728252272
+    ],
+    "basis_size": [
+      0.9903508332466527,
+      0.9903508332466527,
+      1.0
+    ],
+    "classification": "AUDIT_INPUT_CONTRACT_DIGEST",
+    "e1_mpb_coordinates": [
+      0.5890135182920644,
+      0.9801986733067553
+    ],
+    "e2_mpb_coordinates": [
+      0.5890135182920644,
+      -0.9801986733067553
+    ],
+    "ellipse_semi_axis_lengths": [
+      [
+        0.1470298009960133,
+        0.15303020100401335
+      ],
+      [
+        0.2450496683266888,
+        0.25505033500668894
+      ]
+    ],
+    "fractional_centers": [
+      [
+        0.16666666666666666,
+        0.16666666666666666
+      ],
+      [
+        -0.16666666666666666,
+        -0.16666666666666666
+      ]
+    ],
+    "inclusion_epsilon": 12.0,
+    "object_type": "Ellipsoid",
+    "objects": [
+      {
+        "background_epsilon": 1.0,
+        "center_fractional": [
+          0.16666666666666666,
+          0.16666666666666666
+        ],
+        "center_physical_cartesian": [
+          0.28295898394648455,
+          0.0
+        ],
+        "e1_mpb_coordinates": [
+          0.5890135182920644,
+          0.9801986733067553
+        ],
+        "e2_mpb_coordinates": [
+          0.5890135182920644,
+          -0.9801986733067553
+        ],
+        "ellipse_semi_axes": [
+          0.1470298009960133,
+          0.15303020100401335
+        ],
+        "inclusion_epsilon": 12.0,
+        "object_type": "Ellipsoid",
+        "polarization": "TM",
+        "radius": 0.15
+      },
+      {
+        "background_epsilon": 1.0,
+        "center_fractional": [
+          -0.16666666666666666,
+          -0.16666666666666666
+        ],
+        "center_physical_cartesian": [
+          -0.28295898394648455,
+          0.0
+        ],
+        "e1_mpb_coordinates": [
+          0.5890135182920644,
+          0.9801986733067553
+        ],
+        "e2_mpb_coordinates": [
+          0.5890135182920644,
+          -0.9801986733067553
+        ],
+        "ellipse_semi_axes": [
+          0.2450496683266888,
+          0.25505033500668894
+        ],
+        "inclusion_epsilon": 12.0,
+        "object_type": "Ellipsoid",
+        "polarization": "TM",
+        "radius": 0.25
+      }
+    ],
+    "physical_cartesian_centers": [
+      [
+        0.28295898394648455,
+        0.0
+      ],
+      [
+        -0.28295898394648455,
+        0.0
+      ]
+    ],
+    "polarization": "TM",
+    "radii": [
+      0.15,
+      0.25
+    ],
+    "state_geometry_digest": "463f20e9719bd23e59eb4f4c5facfd56388c6c51a6d0b8ed67af1164b8e5cf12",
+    "strain": -0.02
+  },
+  "ACTUAL_MPB_GEOMETRY_CONTRACT_DIGEST_PLUS": {
+    "A_s": [
+      [
+        0.8835202774380965,
+        0.8835202774380965
+      ],
+      [
+        0.4900993366533776,
+        -0.4900993366533776
+      ]
+    ],
+    "background_epsilon": 1.0,
+    "basis1_direction": [
+      0.8744702383960138,
+      0.48507917102223547
+    ],
+    "basis2_direction": [
+      0.8744702383960138,
+      -0.48507917102223547
+    ],
+    "basis_size": [
+      1.010349167581372,
+      1.010349167581372,
+      1.0
+    ],
+    "classification": "AUDIT_INPUT_CONTRACT_DIGEST",
+    "e1_mpb_coordinates": [
+      0.5659179678929693,
+      1.0202013400267558
+    ],
+    "e2_mpb_coordinates": [
+      0.5659179678929693,
+      -1.0202013400267558
+    ],
+    "ellipse_semi_axis_lengths": [
+      [
+        0.15303020100401335,
+        0.1470298009960133
+      ],
+      [
+        0.25505033500668894,
+        0.2450496683266888
+      ]
+    ],
+    "fractional_centers": [
+      [
+        0.16666666666666666,
+        0.16666666666666666
+      ],
+      [
+        -0.16666666666666666,
+        -0.16666666666666666
+      ]
+    ],
+    "inclusion_epsilon": 12.0,
+    "object_type": "Ellipsoid",
+    "objects": [
+      {
+        "background_epsilon": 1.0,
+        "center_fractional": [
+          0.16666666666666666,
+          0.16666666666666666
+        ],
+        "center_physical_cartesian": [
+          0.2945067591460322,
+          0.0
+        ],
+        "e1_mpb_coordinates": [
+          0.5659179678929693,
+          1.0202013400267558
+        ],
+        "e2_mpb_coordinates": [
+          0.5659179678929693,
+          -1.0202013400267558
+        ],
+        "ellipse_semi_axes": [
+          0.15303020100401335,
+          0.1470298009960133
+        ],
+        "inclusion_epsilon": 12.0,
+        "object_type": "Ellipsoid",
+        "polarization": "TM",
+        "radius": 0.15
+      },
+      {
+        "background_epsilon": 1.0,
+        "center_fractional": [
+          -0.16666666666666666,
+          -0.16666666666666666
+        ],
+        "center_physical_cartesian": [
+          -0.2945067591460322,
+          0.0
+        ],
+        "e1_mpb_coordinates": [
+          0.5659179678929693,
+          1.0202013400267558
+        ],
+        "e2_mpb_coordinates": [
+          0.5659179678929693,
+          -1.0202013400267558
+        ],
+        "ellipse_semi_axes": [
+          0.25505033500668894,
+          0.2450496683266888
+        ],
+        "inclusion_epsilon": 12.0,
+        "object_type": "Ellipsoid",
+        "polarization": "TM",
+        "radius": 0.25
+      }
+    ],
+    "physical_cartesian_centers": [
+      [
+        0.2945067591460322,
+        0.0
+      ],
+      [
+        -0.2945067591460322,
+        0.0
+      ]
+    ],
+    "polarization": "TM",
+    "radii": [
+      0.15,
+      0.25
+    ],
+    "state_geometry_digest": "5f81cab8c65ad7e66b1656c79b964a919947b68fade39a77458e125144cdd720",
+    "strain": 0.02
+  },
+  "ACTUAL_MPB_GEOMETRY_CONTRACT_DIGEST_ZERO": {
+    "A_s": [
+      [
+        0.8660254037844386,
+        0.8660254037844386
+      ],
+      [
+        0.5,
+        -0.5
+      ]
+    ],
+    "background_epsilon": 1.0,
+    "basis1_direction": [
+      0.8660254037844386,
+      0.5
+    ],
+    "basis2_direction": [
+      0.8660254037844386,
+      -0.5
+    ],
+    "basis_size": null,
+    "classification": "AUDIT_INPUT_CONTRACT_DIGEST",
+    "e1_mpb_coordinates": null,
+    "e2_mpb_coordinates": null,
+    "ellipse_semi_axis_lengths": null,
+    "fractional_centers": [
+      [
+        0.16666666666666666,
+        0.16666666666666666
+      ],
+      [
+        -0.16666666666666666,
+        -0.16666666666666666
+      ]
+    ],
+    "inclusion_epsilon": 12.0,
+    "object_type": "Cylinder",
+    "objects": [
+      {
+        "background_epsilon": 1.0,
+        "center_fractional": [
+          0.16666666666666666,
+          0.16666666666666666
+        ],
+        "center_physical_cartesian": [
+          0.28867513459481287,
+          0.0
+        ],
+        "e1_mpb_coordinates": null,
+        "e2_mpb_coordinates": null,
+        "ellipse_semi_axes": null,
+        "inclusion_epsilon": 12.0,
+        "object_type": "Cylinder",
+        "polarization": "TM",
+        "radius": 0.15
+      },
+      {
+        "background_epsilon": 1.0,
+        "center_fractional": [
+          -0.16666666666666666,
+          -0.16666666666666666
+        ],
+        "center_physical_cartesian": [
+          -0.28867513459481287,
+          0.0
+        ],
+        "e1_mpb_coordinates": null,
+        "e2_mpb_coordinates": null,
+        "ellipse_semi_axes": null,
+        "inclusion_epsilon": 12.0,
+        "object_type": "Cylinder",
+        "polarization": "TM",
+        "radius": 0.25
+      }
+    ],
+    "physical_cartesian_centers": [
+      [
+        0.28867513459481287,
+        0.0
+      ],
+      [
+        -0.28867513459481287,
+        0.0
+      ]
+    ],
+    "polarization": "TM",
+    "radii": [
+      0.15,
+      0.25
+    ],
+    "state_geometry_digest": "490de1f8197dbd5117dfec5d3bf2e4de4dcfb28480b6e5a195658d7c9b42954a",
+    "strain": 0.0
+  },
+  "base_sandbox_sha": "7e5b644be1cf119dc82fa8bfe2e9c596f2f166ed",
+  "counts": {
+    "gh3": {
+      "actual_center_solve_count": 54,
+      "actual_node_count": 27,
+      "e4c_authorization_granted_count": 27,
+      "e4c_executed_count": 27,
+      "expected_center_solve_count": 54,
+      "expected_e4c_count": 27,
+      "expected_node_count": 27,
+      "qualified_node_count": 27
+    },
+    "gh5": {
+      "actual_center_solve_count": 150,
+      "actual_node_count": 75,
+      "e4c_authorization_granted_count": 75,
+      "e4c_executed_count": 75,
+      "expected_center_solve_count": 150,
+      "expected_e4c_count": 75,
+      "expected_node_count": 75,
+      "qualified_node_count": 75
+    }
+  },
+  "e4c_quality_envelope": {
+    "e4c_unqualified_count": 0,
+    "global_max_metric_delta": 0.0028201942776315964,
+    "global_max_principal_angle": 0.003986718456658882,
+    "global_max_projector_distance": 0.005638056375602564,
+    "global_min_singular_value": 0.9999920530484994,
+    "thresholds": {
+      "max_metric_delta": 0.1,
+      "max_principal_angle": 0.45,
+      "max_projector_distance": 0.3,
+      "min_singular_value": 0.9
+    }
+  },
+  "e8b_c2_overall": "E8B_FIRST_LIVE_AFFINE_WEIGHTED_RESPONSE_FULLY_AUDITABLE_AND_READY_FOR_FINAL_SUPERVISOR_SEAL",
+  "evidence_commit_sha": "PENDING_CLOSURE_COMMIT",
+  "final_sandbox_sha": "PENDING_CLOSURE_COMMIT",
+  "first_component_status": "SMALL_AND_QUADRATURE_SENSITIVE",
+  "global_max_rel_stencil_difference": {
+    "node": {
+      "abs": 0.003382935787623609,
+      "indices": [
+        1,
+        4
+      ],
+      "node": [
+        -0.03389065449935662,
+        -0.5452424163198464
+      ],
+      "order": "gh5",
+      "rel": 0.000804937591975146,
+      "strain": 0.0
+    },
+    "value": 0.000804937591975146
+  },
+  "interpretation": {
+    "BCD_PHYSICAL_OBSERVABLE": "NOT_CLAIMED",
+    "DOMINANT_SECOND_COMPONENT_QUADRATURE_STATUS": "STABLE_IN_GH3_TO_GH5_BOUNDED_PILOT",
+    "DYNAMICAL_HALL_SHIFT": "NOT_DERIVED",
+    "LOCAL_NONUNIFORM_DEFORMATION": "NOT_YET_STARTED",
+    "NONLINEAR_HALL_COEFFICIENT": "NOT_DERIVED",
+    "STRAIN_DERIVATIVE_CONVERGENCE": "NOT_YET_ESTABLISHED",
+    "STRAIN_LINEARITY": "NOT_YET_ESTABLISHED",
+    "UNIFORM_AFFINE_DEFORMATION": "VALIDATED_FOR_THIS_THREE_POINT_PILOT",
+    "WEIGHTED_BERRY_GRADIENT_STRAIN_RESPONSE": "RESOLVED_BOUNDED_PILOT",
+    "WEIGHT_DEPENDENCE": "NOT_YET_CHARACTERIZED"
+  },
+  "main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "main_unchanged": true,
+  "raw_result_expected_sha256": "17256fff331d57aad09dcbebcff3257b2e9044c4ef7fde7434f996f35e334707",
+  "raw_result_json_sha256": "17256fff331d57aad09dcbebcff3257b2e9044c4ef7fde7434f996f35e334707",
+  "raw_wall_time_field": "PARTIAL_SCOPE_NOT_TOTAL_RUNTIME",
+  "reducer_code_git_sha": "2a567acd9b3d2280bda48c88e4b7c236ab7a7d99",
+  "reducer_committed_before_replay": true,
+  "response_replay": {
+    "gh3": {
+      "-0.02": {
+        "passed": true,
+        "replayed": [
+          -0.00029387043354844877,
+          96.02756846865702
+        ],
+        "stored": [
+          -0.0002938704335466724,
+          96.02756846865701
+        ]
+      },
+      "0.0": {
+        "passed": true,
+        "replayed": [
+          0.0002519690353537385,
+          86.34595359499423
+        ],
+        "stored": [
+          0.00025196903535551485,
+          86.34595359499421
+        ]
+      },
+      "0.02": {
+        "passed": true,
+        "replayed": [
+          0.0024262589134451673,
+          71.84687491887033
+        ],
+        "stored": [
+          0.0024262589134611545,
+          71.84687491887031
+        ]
+      }
+    },
+    "gh5": {
+      "-0.02": {
+        "passed": true,
+        "replayed": [
+          0.00045262719196031975,
+          97.01575161504762
+        ],
+        "stored": [
+          0.00045262719195676704,
+          97.01575161504765
+        ]
+      },
+      "0.0": {
+        "passed": true,
+        "replayed": [
+          -0.013334185264806724,
+          87.28481048215168
+        ],
+        "stored": [
+          -0.013334185264810276,
+          87.28481048215168
+        ]
+      },
+      "0.02": {
+        "passed": true,
+        "replayed": [
+          4.398349501333332e-06,
+          72.47467908802219
+        ],
+        "stored": [
+          4.398349529310952e-06,
+          72.47467908802217
+        ]
+      }
+    }
+  },
+  "responses": {
+    "-0.02": {
+      "D_Q_GH3": [
+        -0.0002938704335466724,
+        96.02756846865701
+      ],
+      "D_Q_GH5": [
+        0.00045262719195676704,
+        97.01575161504765
+      ],
+      "GH3_GH5_vector_abs_difference": 0.9881834283518464,
+      "GH3_GH5_vector_relative_difference": 0.010185803973999406,
+      "componentwise_GH5_minus_GH3": [
+        0.0007464976255034395,
+        0.9881831463906394
+      ],
+      "first_component_absolute_difference": 0.0007464976255034395,
+      "second_component_relative_difference": 0.01018580106776565
+    },
+    "0.0": {
+      "D_Q_GH3": [
+        0.00025196903535551485,
+        86.34595359499421
+      ],
+      "D_Q_GH5": [
+        -0.013334185264810276,
+        87.28481048215168
+      ],
+      "GH3_GH5_vector_abs_difference": 0.938955184314823,
+      "GH3_GH5_vector_relative_difference": 0.010757371966229546,
+      "componentwise_GH5_minus_GH3": [
+        -0.013586154300165791,
+        0.9388568871574705
+      ],
+      "first_component_absolute_difference": 0.013586154300165791,
+      "second_component_relative_difference": 0.010756245926081851
+    },
+    "0.02": {
+      "D_Q_GH3": [
+        0.0024262589134611545,
+        71.84687491887031
+      ],
+      "D_Q_GH5": [
+        4.398349529310952e-06,
+        72.47467908802217
+      ],
+      "GH3_GH5_vector_abs_difference": 0.6278088405024622,
+      "GH3_GH5_vector_relative_difference": 0.008662457680426191,
+      "componentwise_GH5_minus_GH3": [
+        -0.0024218605639318436,
+        0.6278041691518581
+      ],
+      "first_component_absolute_difference": 0.0024218605639318436,
+      "second_component_relative_difference": 0.00866239322549294
+    }
+  },
+  "sandbox_remote_head_verified": false,
+  "schema": "trilatt_e8b_c2_closure_v1",
+  "self_checks": {
+    "ALL_NODE_ACTUAL_CENTER_REPLAY": true,
+    "ALL_NODE_E4C_REPLAY": true,
+    "COORDINATE_REEXPRESSION_REPLAY": true,
+    "E4C_ENVELOPE_REPLAY": true,
+    "GEOMETRY_CONTRACT_DIGEST_REPLAY": true,
+    "GH3_COUNT_REPLAY": true,
+    "GH5_COUNT_REPLAY": true,
+    "GH_RESPONSE_REPLAY": true,
+    "NO_SOLVER_IMPORT_OR_CALL": true,
+    "PRIMARY_REFERENCE_STENCIL_REPLAY": true,
+    "RAW_RESULT_PARSE": true,
+    "RAW_RESULT_UNCHANGED": true,
+    "STRAIN_ARITHMETIC_REPLAY": true
+  },
+  "small_first_component_diagnostic": {
+    "-0.02": {
+      "abs_DX_GH5_minus_DX_GH3": 0.0007464976255034395,
+      "abs_DX_over_abs_DY_GH5": 4.665502090348824e-06
+    },
+    "0.0": {
+      "abs_DX_GH5_minus_DX_GH3": 0.013586154300165791,
+      "abs_DX_over_abs_DY_GH5": 0.00015276638846041716
+    },
+    "0.02": {
+      "abs_DX_GH5_minus_DX_GH3": 0.0024218605639318436,
+      "abs_DX_over_abs_DY_GH5": 6.068808561358451e-08
+    }
+  },
+  "stencil_replay": {
+    "gh3": {
+      "max_abs_stencil_difference": 0.0012960465861890924,
+      "max_rel_stencil_difference": 9.97850691946101e-05,
+      "median_rel_stencil_difference": 6.5008485050745615e-06,
+      "node_of_max_rel_stencil_difference": {
+        "abs": 0.0012960465861890924,
+        "indices": [
+          0,
+          0
+        ],
+        "node": [
+          -0.043301270189222016,
+          -0.6734354968737257
+        ],
+        "order": "gh3",
+        "rel": 9.97850691946101e-05,
+        "strain": 0.02
+      }
+    },
+    "gh5": {
+      "max_abs_stencil_difference": 0.003382935787623609,
+      "max_rel_stencil_difference": 0.000804937591975146,
+      "median_rel_stencil_difference": 5.941207421215148e-06,
+      "node_of_max_rel_stencil_difference": {
+        "abs": 0.003382935787623609,
+        "indices": [
+          1,
+          4
+        ],
+        "node": [
+          -0.03389065449935662,
+          -0.5452424163198464
+        ],
+        "order": "gh5",
+        "rel": 0.000804937591975146,
+        "strain": 0.0
+      }
+    }
+  },
+  "strain_response": {
+    "D_MINUS": [
+      0.00045262719195676704,
+      97.01575161504765
+    ],
+    "D_PLUS": [
+      4.398349529310952e-06,
+      72.47467908802217
+    ],
+    "D_ZERO": [
+      -0.013334185264810276,
+      87.28481048215168
+    ],
+    "central_strain_derivative": [
+      -0.011205721060686402,
+      -613.5268131756369
+    ],
+    "even_nonlinear_component": [
+      0.013562698035553315,
+      -2.5395951306167746
+    ],
+    "norm_D_MINUS": 97.01575161610351,
+    "norm_D_PLUS": 72.4746790880223,
+    "norm_D_ZERO": 87.28481150065934,
+    "norm_central_strain_derivative": 613.52681327797,
+    "odd_deformation_component": [
+      -0.00022411442121372804,
+      -12.270536263512739
+    ]
+  },
+  "telemetry": {
+    "cache_hits": 147,
+    "raw_solver_requests": 924,
+    "solver_failures": 0,
+    "wall_time_seconds": 4.951096126002085
+  },
+  "total_wall_time_seconds": "NOT_AVAILABLE",
+  "work_order_id": "TRILATT-E8B-C2-20260824-167"
+}
