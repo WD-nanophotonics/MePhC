@@ -20,7 +20,7 @@
     "text_bound_semantics": {
       "band1": {"sign_at_k": "NEGATIVE", "dominant_near_k": "NEGATIVE", "primary_feature": "K_CENTERED", "spatial_extent": "TIGHT", "material_sign_reversal": "NOT_DESCRIBED"},
       "band2": {"sign_at_k": "POSITIVE", "dominant_near_k": "POSITIVE", "structure": "CENTRAL_TRIANGLE_PLUS_EXTENDED_PETAL", "spatial_extent": "BROAD", "material_sign_reversal": "NOT_REQUIRED_BY_SOURCE"},
-      "band3": {"sign_at_k": "POSITIVE", "central_structure": "POSITIVE_ISLAND", "off_center_structure": "NEGATIVE_PETAL", "primary_abs_feature": "MAY_BE_OFF_K", "spatial_extent": "BROAD", "material_sign_reversal": "PRESENT"}
+      "band3": {"sign_at_k": "POSITIVE", "dominant_near_k": "POSITIVE", "central_structure": "POSITIVE_ISLAND", "off_center_structure": "NEGATIVE_PETAL", "primary_abs_feature": "MAY_BE_OFF_K", "spatial_extent": "BROAD", "material_sign_reversal": "PRESENT"}
     }
   },
   "comparison_policy": "TREND_FIDELITY_OVER_POINTWISE_NUMERICAL_COINCIDENCE",
@@ -43,4 +43,5 @@
   },
   "prohibited_scope": ["new_mpb", "new_berry_solve", "parameter_fitting", "pixel_fitting", "valley_chern", "full_bz_chern", "production_code_change", "posthoc_sign_flip"]
 }
+
 
