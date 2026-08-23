@@ -11,7 +11,7 @@ def read(path): return json.loads(Path(path).read_text())
 def component_errors(row):
  return [row["abs_error_f1"],row["abs_error_f2"],row["abs_error_f3"],row["abs_error_gap21"],row["abs_error_gap32"]]
 def component_changes(candidate,base):
- cr=candidate["R48"]; br=base["R48"]
+ cr=candidate["R48"]; br=base["48"]
  keys=("abs_error_f1","abs_error_f2","abs_error_f3","abs_error_gap21","abs_error_gap32")
  return {key:cr[key]-br[key] for key in keys}
 def classify(candidate,base):
