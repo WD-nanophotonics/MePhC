@@ -37,7 +37,7 @@ def solve(c,a,count):
  pol=mp.TE if c["polarization"]=="TE" else mp.TM; out={}
  for r in (48,64):
   p=MPBLiveEnergySpectralProvider(geometry=list(a.geometry),geometry_lattice=a.geometry_lattice,resolution=r,num_bands=4,polarization=pol,default_material=mp.Medium(epsilon=float(c["background_epsilon"])),eigensolver_tolerance=1e-7,deterministic=True,mesh_size=3)
-  raw=p.solve(K); count[0]+=1; out["R"+str(r)]=metric(raw.frequencies); out["R"+str(r)]["solver_provenance"]=raw.provenance
+  raw=p.solve(K); count[0]+=1; out["R"+str(r)]=metric(raw.frequencies); out["R"+str(r)]["solver_provenance"]=str(raw.provenance)
  row={"candidate_id":c["candidate_id"],"background_epsilon":c["background_epsilon"],"polarization":c["polarization"],"R48":out["R48"],"R64":out["R64"]}
  row.update({"R48_R64_drift_f1":abs(out["R48"]["frequencies"][0]-out["R64"]["frequencies"][0]),"R48_R64_drift_f2":abs(out["R48"]["frequencies"][1]-out["R64"]["frequencies"][1]),"R48_R64_drift_f3":abs(out["R48"]["frequencies"][2]-out["R64"]["frequencies"][2]),"R48_R64_drift_gap21":abs(out["R48"]["gap21"]-out["R64"]["gap21"]),"R48_R64_drift_gap32":abs(out["R48"]["gap32"]-out["R64"]["gap32"])})
  row["candidate_spectral_classification"]=classify(row); return row
