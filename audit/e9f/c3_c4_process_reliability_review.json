@@ -1,0 +1,28 @@
+{
+  "schema": "mephc_e9f_c1_rp2_c3_c4_process_reliability_review_v1",
+  "work_order_id": "MEPHC-E9F-C1-RP2-C3-C4-20260825-246",
+  "phase": "E9F.C1.RP2.C3.C4",
+  "pipeline_health": "PIPELINE_REQUIRES_CORRECTIVE",
+  "incidents": [
+    {"incident_id":"REL-021","priority":"P1","CORRECTIVE_STATUS":"OPEN"},
+    {"incident_id":"REL-026","priority":"P1","CORRECTIVE_STATUS":"OPEN"},
+    {"incident_id":"REL-035","priority":"P2","CORRECTIVE_STATUS":"OPEN"},
+    {"incident_id":"REL-036","priority":"P1","CORRECTIVE_STATUS":"AWAITING_CORRECTIVE"},
+    {"incident_id":"REL-037","priority":"P1","CORRECTIVE_STATUS":"AWAITING_CORRECTIVE"},
+    {"incident_id":"REL-038","priority":"P1","CORRECTIVE_STATUS":"AWAITING_CORRECTIVE"},
+    {"incident_id":"REL-039","priority":"P1","CORRECTIVE_STATUS":"OPEN"},
+    {"incident_id":"REL-040","priority":"P1","CORRECTIVE_STATUS":"CLOSED"},
+    {"incident_id":"REL-041","priority":"P1","CORRECTIVE_STATUS":"AWAITING_CORRECTIVE"},
+    {"incident_id":"REL-042","priority":"P1","CORRECTIVE_STATUS":"OPEN"},
+    {"incident_id":"REL-043","priority":"P1","CORRECTIVE_STATUS":"AWAITING_CORRECTIVE"},
+    {"incident_id":"REL-044","priority":"P1","CORRECTIVE_STATUS":"OPEN"},
+    {"incident_id":"REL-045","priority":"P1","CORRECTIVE_STATUS":"OPEN"},
+    {"incident_id":"REL-046","priority":"P1","CORRECTIVE_STATUS":"CLOSED"},
+    {"incident_id":"REL-047","priority":"P1","CORRECTIVE_STATUS":"OPEN"},
+    {"incident_id":"REL-048","priority":"P1","CORRECTIVE_STATUS":"OPEN"},
+    {"incident_id":"REL-049","priority":"P1","CORRECTIVE_STATUS":"OPEN"}
+  ],
+  "p0_items": [],
+  "p1_items": ["REL-021","REL-026","REL-036","REL-037","REL-038","REL-039","REL-041","REL-042","REL-043","REL-044","REL-045","REL-047","REL-048","REL-049"],
+  "p2_items": ["REL-035"]
+}

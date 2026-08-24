@@ -1,0 +1,18 @@
+{
+  "schema": "mephc_e9f_c1_rp2_c3_c4_execution_contract_v1",
+  "project_id": "MEPHC",
+  "work_order_id": "MEPHC-E9F-C1-RP2-C3-C4-20260825-246",
+  "phase": "E9F.C1.RP2.C3.C4",
+  "parent_failed_execution_sha": "034339cc7ba04dd7cdf78cf0e37f7d3fc98111e5",
+  "runner_relative_path": "audit/e9f/run_e9f_c1_rp2_c3_c4.py",
+  "canary_sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+  "canary_resolution": 64,
+  "expected_native_solves": 9,
+  "stencils": ["1/72", "1/144"],
+  "representation": "mpb_periodic_h_l2_v1",
+  "live_provider": "mpb_live_periodic_h_l2_v1",
+  "h_gate": {"orthogonality_tolerance": 1e-10, "selected_pair_offdiag_tolerance": 1e-10, "normalization_tolerance": 1e-14},
+  "required_incident_ids": ["REL-021", "REL-026", "REL-035", "REL-036", "REL-037", "REL-038", "REL-039", "REL-040", "REL-041", "REL-042", "REL-043", "REL-044", "REL-045", "REL-046", "REL-047", "REL-048", "REL-049"],
+  "atomic_publication": true,
+  "matrix_release_authorized": false
+}

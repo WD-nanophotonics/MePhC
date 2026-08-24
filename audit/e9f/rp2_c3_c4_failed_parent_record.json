@@ -1,0 +1,20 @@
+{
+  "schema": "mephc_e9f_c1_rp2_c3_c4_failed_parent_record_v1",
+  "failed_execution_sha": "034339cc7ba04dd7cdf78cf0e37f7d3fc98111e5",
+  "work_order_id": "MEPHC-E9F-C1-RP2-C3-C3-20260825-244",
+  "canary_worker_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=64",
+  "child_pid": 916382,
+  "return_code": 1,
+  "native_solve_count": 9,
+  "direct_pid_gone": true,
+  "orphan_pids": [],
+  "stdout_sha256": "838e42e6c589577d45b10451a0e53ce03514e13113afa3053a3cc74fb772d6bb",
+  "stderr_sha256": "0394fe06b9cfabf110e65ca49f5d9dce24b5e7cbfcc4bd596b9f7bd7e1167c53",
+  "child_failure_sidecar_sha256": "34b3897110cf586a7060d4bffa2cc9a1cc8b4be0f4222a6b8b6b546e7a2c9306",
+  "parent_failure_artifact_sha256": "3b7cf94f61a5beaf8eb43f9c4528030973fa6d5686b2cf56a419494904027168",
+  "exception_type": "ValueError",
+  "exception_message": "C3_C3_PAYLOAD_IDENTITY_MISMATCH:execution_sha",
+  "payload_final_exists": false,
+  "scientific_result_accepted": false,
+  "same_execution_retry": false
+}
