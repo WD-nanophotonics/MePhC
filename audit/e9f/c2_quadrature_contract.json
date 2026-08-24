@@ -1,0 +1,41 @@
+{
+  "schema": "trilatt_e9f_a_c2_quadrature_contract_v1",
+  "work_order_id": "TRILATT-E9F-A-C2-20260824-203",
+  "preserved_c1_required": true,
+  "source_grid_estimator": {
+    "purpose": "closest reproducible interpretation of the paper's stated 1/36 calculation grid",
+    "centers": "integer q=(i/36,j/36) centers retained iff inside shrunken K-HBZ and outside every Gamma exclusion",
+    "weight_q2": "(1/36)^2",
+    "boundary_relocation": false,
+    "clipped_partial_weight": false
+  },
+  "mephc_clipped_domain_estimator": {
+    "purpose": "exact deterministic quadrature of the source-bound retained polygonal domain",
+    "cell_region": "cell intersect shrunken HBZ minus Gamma exclusions",
+    "full_cell": "one original cell-center sample with full weight",
+    "clipped_cell": "sequential convex half-plane subtraction followed by deterministic fan triangulation",
+    "sample_point": "triangle centroid",
+    "weight_q2": "triangle area",
+    "zero_area_fragments": "discard explicitly with reason",
+    "random_sampling": false,
+    "raster_mask": false
+  },
+  "sample_invariants": {
+    "inside_shrunken_hbz": true,
+    "inside_any_gamma_exclusion": false,
+    "positive_weight": true,
+    "finite_public_q": true,
+    "sample_outside_outer_count": 0,
+    "sample_inside_exclusion_count": 0,
+    "invalid_sample_count": 0
+  },
+  "future_failure_policy": {
+    "per_sample_band_status": ["QUALIFIED_REPORTED", "NOT_REPORTED_WITH_REASON"],
+    "missing_row": "FORBIDDEN",
+    "nan_as_zero": "FORBIDDEN",
+    "failed_weight_removal": "FORBIDDEN",
+    "incomplete_integral": "INCOMPLETE_NOT_REPORTED_UNLESS_EXACT_SAMPLE_RECOVERY_IS_AUTHORIZED"
+  },
+  "normalization_fixture": "constant Omega_q integrates to constant times the estimator weight sum before the 1/(2*pi) prefactor",
+  "live_work": {"new_mpb_solver_requests": 0, "new_berry_calculation": "NONE", "new_valley_chern_value": "NONE", "production_code_change": false}
+}
