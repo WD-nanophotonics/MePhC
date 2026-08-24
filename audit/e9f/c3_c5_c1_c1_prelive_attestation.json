@@ -1,0 +1,26 @@
+{
+  "failed_count": 0,
+  "git_clean_after": true,
+  "git_clean_before": true,
+  "implementation_sha": "a75426be91ab03b297d89ccba05f8d00e394d786",
+  "native_execution_performed": false,
+  "passed_count": 47,
+  "pytest_exit_status": 0,
+  "pytest_node_count": 47,
+  "schema": "mephc_e9f_c1_c5_c1_c1_prelive_attestation_v1",
+  "skipped_count": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_tail": "",
+  "stdout_sha256": "0738a7adb3d90d6cb0ec6c904ec51408d8e64f4e7d8924f188d7db7a1e6f2330",
+  "stdout_tail": "...............................................                          [100%]\n47 passed in 0.53s\n",
+  "test_command": [
+    "/home/icy/miniconda3/envs/mp/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_e9f_c1_rp2_c3_c5_c1.py",
+    "tests/test_e9f_c1_rp2_c3_c5_c1_c1.py",
+    "--disable-warnings"
+  ],
+  "work_order_id": "MEPHC-E9F-C1-RP2-C3-C5-C1-C1-20260825-252"
+}
