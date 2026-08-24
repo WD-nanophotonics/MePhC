@@ -344,7 +344,7 @@ def _probe_stencil(center: Sequence[float], stencil: str, provider: Any, preflig
 
 def compute_worker(root: Path, row: Mapping[str, Any]) -> dict[str, Any]:
     import meep as mp  # noqa: F401
-    from audit.e9f.run_k_kprime_rank1_berry import build_inputs, geometry_inputs, make_provider
+    from audit.e9c.run_k_kprime_rank1_berry import build_inputs, geometry_inputs, make_provider
     from mephc.valley_benchmark import PhysicalSolveCache
 
     execution = load_execution_contract(root)
