@@ -1,0 +1,13 @@
+{
+  "schema": "mephc_e9f_c1_rp2_c3_c1_failed_parent_canary_v1",
+  "failed_execution_sha": "c0153d37e2f01f456e7ba1e4aa7fd532e8770bec",
+  "canary_sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+  "resolution": 64,
+  "stencil": "1/72",
+  "native_solves_completed": 5,
+  "failure_class": "IMPLEMENTATION_RUNTIME_ATTRIBUTE_ERROR",
+  "traceback_terminus": "AttributeError: 'SubspaceOverlap' object has no attribute 'overlap'",
+  "scientific_result_accepted": false,
+  "retry_under_same_execution": false,
+  "execution_identity_status": "PERMANENTLY_FAILED_PROCESS_EVIDENCE_ONLY"
+}
