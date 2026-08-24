@@ -1,0 +1,33 @@
+{
+  "base_sandbox_sha": "14615bc1f0b4ca687a5b8229d4b81feacb38a924",
+  "changed_files": [
+    "audit/infrastructure/campaign_runtime.py",
+    "tests/test_campaign_runtime.py",
+    "audit/e9f/c1_p1h_c1_result.json",
+    "audit/e9f/c1_p1h_c1_process_reliability_review.json",
+    "audit/e9f/c1_p1h_c1_provenance_manifest.json"
+  ],
+  "checkpoint_schema": "trilatt_campaign_checkpoint_v2",
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "file_sha256": {
+    "audit/e9f/c1_p1h_c1_process_reliability_review.json": "325aa49d0bc67c26e9ebb8184375801450f0df74a4d9d3421d810322d76c9090",
+    "audit/e9f/c1_p1h_c1_result.json": "f3745cd7e57c6d6186a33265444b9c7837b1f86abe819e376c79fd7c0416163d",
+    "audit/infrastructure/campaign_runtime.py": "fb5e35aa81e61730d38099f0f4437fdc2bfad00f04ae3ee6a05a46c8ea3d0104",
+    "tests/test_campaign_runtime.py": "8739e8c020cb80d8bc273cdfdd7f95497301a0f4aa5f0f9f19e8d6e8db85e271"
+  },
+  "implementation_sha": "d7ddec54e03741d7c91c8428243b6e308dfb7668",
+  "main_unchanged": true,
+  "no_mpb_or_scientific_solve": true,
+  "real_origin_preflight": {
+    "ancestry_verified": true,
+    "execution_sha": "d7ddec54e03741d7c91c8428243b6e308dfb7668",
+    "remote_head_sha": "d7ddec54e03741d7c91c8428243b6e308dfb7668",
+    "remote_name": "origin",
+    "remote_ref": "refs/heads/sandbox",
+    "worker_launched": false
+  },
+  "schema": "trilatt_e9f_c1_p1h_c1_provenance_manifest_v1",
+  "self_hash_excluded": true,
+  "synthetic_fixture_label": "SYNTHETIC_TEST_REMOTE",
+  "work_order_id": "TRILATT-E9F-C1-P1H-C1-20260824-223"
+}
