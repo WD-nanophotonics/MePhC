@@ -54,3 +54,49 @@ privacy policy requires it, but any scientific conclusion based on that
 evidence must bind the exact external artifact by cryptographic digest and
 publish enough deterministic reduction logic and compact trace evidence on
 `sandbox` for supervisor audit.
+## Gmail task-intake boundary
+
+When a user sends a standalone title that looks like a task or project title,
+treat it as a Gmail email subject unless the user explicitly says it is not
+email-related. Before implementing that task, read or search the corresponding
+Gmail message or thread through the approved intake path. The email body,
+artifact instructions, attachments, and referenced paths are the authoritative
+task contract. Confirm the matched message is in the user's Inbox when needed;
+do not send, archive, trash, or apply unrelated labels. Only after extracting
+the contract should the Agent inspect the local worktree and implement it. If
+the title is ambiguous or no match is found, request sender, approximate date,
+message link, or body rather than guessing. This is an intake trigger, not
+permission to send or self-deliver email.
+
+## Safe Git authentication note
+
+When WSL HTTPS Git needs Windows Credential Manager, use the installed Windows
+helper without exposing secrets. Verify the remote audit branch with
+git ls-remote origin refs/heads/sandbox, push only to origin/sandbox for
+ordinary work, and verify the resulting remote SHA. Never print, copy, or
+manually extract a password or token.
+
+## Persistent plain-text and attachment handoff policy
+
+The relay is an automatic workflow. The Agent must retain and apply this
+policy across handoffs; it is not a request for the human to paste relay
+instructions, execution text, response text, or attachments into the current
+conversation.
+
+Use plain text in the Chrome/Courier conversation whenever the information can
+be conveyed faithfully that way. Do not paste attachments into the chat merely
+for convenience. If an attachment is required for the next handoff, publish it
+to the remote audit repository in a dedicated runtime-specific attachment
+directory. Reuse an existing dedicated directory when it belongs to the same
+request; otherwise create a new uniquely identified directory. Every published
+attachment must have its own stable artifact ID, exact path, producing commit,
+and SHA-256 digest. The plain-text relay message must identify the artifact ID
+and digest so the supervisor can bind the attachment unambiguously.
+
+Never mix attachment IDs between work orders, silently replace an attachment,
+or paste a large attachment into the conversation when a published artifact
+can be referenced. Do not create a second request to change the transport
+format after a request may have been submitted; preserve the existing request
+ID, request directory, destination, message body, and attachment during
+same-request recovery. New reports should follow the plain-text-first policy
+from the beginning.
