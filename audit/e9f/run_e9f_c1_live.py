@@ -1,6 +1,7 @@
 """Bounded E9F.C.C1 fr=0 source-grid live Berry campaign."""
 from __future__ import annotations
 
+import gc
 import hashlib
 import json
 import math
@@ -105,14 +106,8 @@ def self_checks(contract: dict, plan: dict, preflight, geometry: dict) -> dict:
 
 def solve_sample(plan_row: dict, plan: dict, band: int, provider, preflight, cache: dict, counters: dict) -> tuple[dict, dict]:
     center = tuple(float(x) for x in plan_row["PUBLIC_Q"])
-    cache_key = (RESOLUTION, center, band)
-    if cache_key in cache:
-        counters["cache_hits"] += 1
-        evidence = cache[cache_key]
-    else:
-        counters["sample_evaluations"] += 1
-        evidence = stencil_evidence(center, SIDE, band, RESOLUTION, provider, preflight, cache, counters)
-        cache[cache_key] = evidence
+    counters["sample_evaluations"] += 1
+    evidence = stencil_evidence(center, SIDE, band, RESOLUTION, provider, preflight, cache, counters)
     phase = evidence["wilson"]["determinant_phase"]
     qualified = bool(evidence["qualified_before_refinement"] and phase is not None and math.isfinite(float(phase)))
     diagnostics = {
@@ -211,6 +206,8 @@ def run(output: Path, checkpoint: Path) -> dict:
             bands[str(band)] = {"row": row, "diagnostics": diagnostics}
         completed[sample_id] = {"sample_id": sample_id, "public_q": list(plan_row["PUBLIC_Q"]), "bands": bands}
         atomic_json(checkpoint, checkpoint_payload(contract, plan, completed, counters))
+        cache.clear()
+        gc.collect()
         if index % 25 == 0 or index == len(plan["ROWS"]):
             print(json.dumps({"event": "sample_checkpoint", "completed": index, "total": len(plan["ROWS"]), "solver_requests": counters["solver_requests"], "cache_hits": counters["cache_hits"]}), flush=True)
     if set(completed) != set(rows_by_id):
