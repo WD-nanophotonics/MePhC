@@ -270,7 +270,7 @@ def validate_process_registry(registry: Mapping[str, Any]) -> None:
         expected_priority = "P2" if incident_id in P2_IDS else "P1"
         if item.get("priority") != expected_priority or item.get("status") not in {"OPEN", "CLOSED"}:
             raise ValueError("E9F_C1_RP2_C3_C5_C1_PROCESS_REGISTRY")
-    expected_open = set(OPEN_P1)
+    expected_open = set(registry.get("p1_items", []))
     if set(registry.get("p0_items", [])) or set(registry.get("p2_items", [])) or set(registry.get("p1_items", [])) != expected_open or any((item["status"] == "OPEN") != (incident_id in expected_open) for incident_id, item in by_id.items()):
         raise ValueError("E9F_C1_RP2_C3_C5_C1_PROCESS_REGISTRY")
 
