@@ -1,4 +1,5 @@
 import json
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -345,3 +346,92 @@ def test_production_mode_requires_repository_path():
             contract_path=Path("contract"),
             production_mode=True,
         )
+
+
+def test_equal_worker_coordinate_is_accepted(tmp_path):
+    runtime, identity, runner, contract = make_runtime(tmp_path, ids=("s0",))
+    plan = rows(("s0",))
+    plan[0]["public_q"] = [0.1, 0.2]
+    plan[0]["worker_coordinate"] = [0.1, 0.2]
+    plan_id = semantic_plan_fingerprint(plan, estimator_id="TEST", semantic_domain_id="D", spacing_id="1/36")
+    runtime.identity = replace(identity, plan_semantic_id=plan_id)
+    runtime._preflight_report = None
+    runtime.preflight(
+        current_execution_sha=runtime.identity.execution_git_sha,
+        dirty=False,
+        current_plan_semantic_id=plan_id,
+    )
+    result = runtime.run(plan, lambda row: {"value": row["sample_id"]})
+    assert result["status"] == "COMPLETE"
+
+
+def test_missing_authoritative_coordinate_fails_before_worker(tmp_path):
+    runtime, identity, runner, contract = make_runtime(tmp_path, ids=("s0",))
+    plan = rows(("s0",))
+    plan[0].pop("public_q")
+    with pytest.raises(CampaignRuntimeError, match="AUTHORITATIVE_COORDINATE_REQUIRED"):
+        runtime.run(plan, lambda row: pytest.fail("worker must not launch"))
+
+
+def test_checkpoint_missing_worker_artifact_fails_closed(tmp_path):
+    runtime, identity, runner, contract = make_runtime(tmp_path, ids=("s0",))
+    runtime.run(rows(("s0",)), lambda row: {"value": "complete"})
+    runtime._artifact_path("s0").unlink()
+    resumed = CampaignRuntime(
+        runtime.root, identity, runner_path=runner, contract_path=contract,
+        local_object_checker=lambda sha: True, remote_object_checker=lambda sha: True,
+    )
+    resumed.preflight(
+        current_execution_sha=identity.execution_git_sha,
+        dirty=False,
+        current_plan_semantic_id=identity.plan_semantic_id,
+    )
+    with pytest.raises(CheckpointValidationError, match="CHECKPOINT_ARTIFACT_MISSING"):
+        resumed.run(rows(("s0",)), lambda row: pytest.fail("missing evidence must not be rerun"))
+
+
+def test_checkpoint_mutated_worker_artifact_fails_by_hash(tmp_path):
+    runtime, identity, runner, contract = make_runtime(tmp_path, ids=("s0",))
+    runtime.run(rows(("s0",)), lambda row: {"value": "complete"})
+    path = runtime._artifact_path("s0")
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["value"] = "mutated"
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    resumed = CampaignRuntime(
+        runtime.root, identity, runner_path=runner, contract_path=contract,
+        local_object_checker=lambda sha: True, remote_object_checker=lambda sha: True,
+    )
+    resumed.preflight(
+        current_execution_sha=identity.execution_git_sha,
+        dirty=False,
+        current_plan_semantic_id=identity.plan_semantic_id,
+    )
+    with pytest.raises(CheckpointValidationError, match="CHECKPOINT_ARTIFACT_HASH_MISMATCH"):
+        resumed.run(rows(("s0",)), lambda row: pytest.fail("mutated evidence must not be rerun"))
+
+
+def test_orphan_valid_worker_artifact_is_adopted_and_checkpointed(tmp_path):
+    runtime, identity, runner, contract = make_runtime(tmp_path, ids=("s0",))
+    runtime.publish_worker_artifact(sample_id="s0", sample_index=0, result={"value": "orphan"})
+    assert not runtime.checkpoint_path.exists()
+    resumed = CampaignRuntime(
+        runtime.root, identity, runner_path=runner, contract_path=contract,
+        local_object_checker=lambda sha: True, remote_object_checker=lambda sha: True,
+    )
+    resumed.preflight(
+        current_execution_sha=identity.execution_git_sha,
+        dirty=False,
+        current_plan_semantic_id=identity.plan_semantic_id,
+    )
+    result = resumed.run(rows(("s0",)), lambda row: pytest.fail("valid orphan must be adopted"))
+    assert result["status"] == "COMPLETE"
+    checkpoint = json.loads(resumed.checkpoint_path.read_text(encoding="utf-8"))
+    assert checkpoint["completed_artifacts"]["s0"]["sha256"]
+
+
+def test_direct_publication_identity_checks(tmp_path):
+    runtime, identity, runner, contract = make_runtime(tmp_path, ids=("s0",))
+    with pytest.raises(ArtifactValidationError, match="UNKNOWN_SAMPLE_ID"):
+        runtime.publish_worker_artifact(sample_id="unknown", sample_index=0, result={})
+    with pytest.raises(ArtifactValidationError, match="SAMPLE_INDEX_MISMATCH"):
+        runtime.publish_worker_artifact(sample_id="s0", sample_index=1, result={})

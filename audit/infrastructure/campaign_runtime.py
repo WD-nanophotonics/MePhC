@@ -203,7 +203,7 @@ class CampaignRuntime:
     """Generic parent-side campaign runtime; worker execution is injected."""
 
     ARTIFACT_SCHEMA = "trilatt_campaign_worker_artifact_v1"
-    CHECKPOINT_SCHEMA = "trilatt_campaign_checkpoint_v1"
+    CHECKPOINT_SCHEMA = "trilatt_campaign_checkpoint_v2"
 
     def __init__(
         self,
@@ -272,8 +272,10 @@ class CampaignRuntime:
             if int(row["sample_index"]) != expected[sample_id]:
                 raise CampaignRuntimeError("SAMPLE_INDEX_MAPPING_MISMATCH")
             declared = _authoritative_coordinate(row)
+            if declared is None:
+                raise CampaignRuntimeError("AUTHORITATIVE_COORDINATE_REQUIRED")
             worker = _worker_coordinate(row)
-            if worker is not None and worker != declared:
+            if worker is not None and worker[1] != declared[1]:
                 raise CampaignRuntimeError("WORKER_COORDINATE_SEMANTIC_MISMATCH")
             mapping[sample_id] = row
         return mapping
@@ -430,6 +432,13 @@ class CampaignRuntime:
     def publish_worker_artifact(self, *, sample_id: str, sample_index: int, result: Mapping[str, Any]) -> Path:
         if self._preflight_report is None:
             raise CampaignPreflightError("PREFLIGHT_REQUIRED_BEFORE_WORKER")
+        expected_indices = self._expected_index_map()
+        if sample_id not in expected_indices:
+            raise ArtifactValidationError(f"UNKNOWN_SAMPLE_ID:{sample_id}")
+        if sample_index != expected_indices[sample_id]:
+            raise ArtifactValidationError(
+                f"SAMPLE_INDEX_MISMATCH:{sample_index}!={expected_indices[sample_id]}"
+            )
         path = self._artifact_path(sample_id)
         if path.exists():
             raise ArtifactValidationError(f"DUPLICATE_SAMPLE:{sample_id}")
@@ -480,11 +489,34 @@ class CampaignRuntime:
         self.telemetry["completed_sample_count"] = len(completed)
         return completed
 
+    def _artifact_binding(self, sample_id: str, sample_index: int) -> dict[str, Any]:
+        path = self._artifact_path(sample_id)
+        if not path.is_file():
+            raise CheckpointValidationError(f"CHECKPOINT_ARTIFACT_MISSING:{sample_id}")
+        try:
+            artifact = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise CheckpointValidationError(f"CHECKPOINT_ARTIFACT_CORRUPT:{sample_id}") from exc
+        try:
+            self._validate_artifact(artifact, sample_id=sample_id, sample_index=sample_index)
+        except ArtifactValidationError as exc:
+            raise CheckpointValidationError(f"CHECKPOINT_ARTIFACT_INVALID:{sample_id}") from exc
+        return {
+            "sample_index": sample_index,
+            "sha256": sha256_file(path),
+            "schema": artifact["schema"],
+        }
+
     def write_checkpoint(self, completed_sample_ids: Iterable[str]) -> Path:
         completed = sorted(set(completed_sample_ids))
         expected = sorted(self.identity.expected_sample_ids)
+        expected_indices = self._expected_index_map()
         if not set(completed).issubset(set(expected)):
             raise CheckpointValidationError("CHECKPOINT_HAS_UNKNOWN_SAMPLE")
+        completed_artifacts = {
+            sample_id: self._artifact_binding(sample_id, expected_indices[sample_id])
+            for sample_id in completed
+        }
         generation = int(self.telemetry["checkpoint_generation_count"]) + 1
         checkpoint_telemetry = dict(self.telemetry)
         checkpoint_telemetry["checkpoint_generation_count"] = generation
@@ -493,6 +525,7 @@ class CampaignRuntime:
             "identity": self.identity.as_dict(),
             "expected_sample_ids": expected,
             "completed_sample_ids": completed,
+            "completed_artifacts": completed_artifacts,
             "telemetry": checkpoint_telemetry,
             "generation": generation,
         }
@@ -518,6 +551,21 @@ class CampaignRuntime:
             raise CheckpointValidationError("CHECKPOINT_COMPLETION_DUPLICATE")
         if not set(completed).issubset(set(self.identity.expected_sample_ids)):
             raise CheckpointValidationError("CHECKPOINT_UNKNOWN_SAMPLE")
+        bindings = payload.get("completed_artifacts")
+        if not isinstance(bindings, dict) or set(bindings) != set(completed):
+            raise CheckpointValidationError("CHECKPOINT_ARTIFACT_BINDING_SET_MISMATCH")
+        expected_indices = self._expected_index_map()
+        for sample_id in completed:
+            binding = bindings.get(sample_id)
+            if not isinstance(binding, dict):
+                raise CheckpointValidationError(f"CHECKPOINT_ARTIFACT_BINDING_INVALID:{sample_id}")
+            if binding.get("sample_index") != expected_indices[sample_id]:
+                raise CheckpointValidationError(f"CHECKPOINT_ARTIFACT_INDEX_MISMATCH:{sample_id}")
+            actual = self._artifact_binding(sample_id, expected_indices[sample_id])
+            if actual["sha256"] != binding.get("sha256"):
+                raise CheckpointValidationError(f"CHECKPOINT_ARTIFACT_HASH_MISMATCH:{sample_id}")
+            if actual["schema"] != binding.get("schema"):
+                raise CheckpointValidationError(f"CHECKPOINT_ARTIFACT_SCHEMA_MISMATCH:{sample_id}")
         generation = payload.get("generation")
         telemetry = payload.get("telemetry")
         if isinstance(generation, bool) or not isinstance(generation, int) or generation < 1:
@@ -536,7 +584,9 @@ class CampaignRuntime:
         self._validate_plan_rows(rows)
         if self._computed_plan_semantic_id(rows) != self.identity.plan_semantic_id:
             raise CampaignRuntimeError("PLAN_SEMANTIC_ID_MISMATCH")
-        completed = self.load_checkpoint() | self.load_completed_artifacts(rows)
+        artifact_completed = self.load_completed_artifacts(rows)
+        checkpoint_completed = self.load_checkpoint()
+        completed = artifact_completed | checkpoint_completed
         for row in rows:
             sample_id = str(row["sample_id"])
             if sample_id in completed:
@@ -552,6 +602,9 @@ class CampaignRuntime:
                 self.telemetry["worker_failure_count"] += 1
                 raise
             completed.add(sample_id)
+            self.write_checkpoint(completed)
+            checkpoint_completed = set(completed)
+        if completed != checkpoint_completed:
             self.write_checkpoint(completed)
         self.telemetry["completed_sample_count"] = len(completed)
         return {
