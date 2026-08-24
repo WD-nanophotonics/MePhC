@@ -294,6 +294,8 @@ def _association_probe(vertices: Sequence[Mapping[str, Any]], representation: st
         if association.status == "CLEAR":
             mapping = dict(association.matched_by_solver_index)
             maps.append({branch: mapping[maps[index][branch]] for branch in (2, 3)})
+        else:
+            maps.append(dict(maps[index]))
     clear = sum(edge["association_status"] == "CLEAR" for edge in edges)
     precondition_pass = sum(edge["precondition_status"] == "PASS" for edge in edges)
     closure = bool(clear == 4 and len(maps) == 5 and maps[4] == maps[0])
