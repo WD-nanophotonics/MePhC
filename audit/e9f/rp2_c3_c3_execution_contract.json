@@ -1,0 +1,18 @@
+{
+  "schema": "mephc_e9f_c1_rp2_c3_c3_execution_contract_v1",
+  "project_id": "MEPHC",
+  "work_order_id": "MEPHC-E9F-C1-RP2-C3-C3-20260825-244",
+  "phase": "E9F.C1.RP2.C3.C3",
+  "parent_failed_execution_sha": "1cbf56826456aaca2cabaf5244dc72a92f250040",
+  "representation": "mpb_periodic_h_l2_v1",
+  "live_provider": "mpb_live_periodic_h_l2_v1",
+  "runner_relative_path": "audit/e9f/run_e9f_c1_rp2_c3_c3.py",
+  "canary_sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+  "canary_resolution": 64,
+  "stencils": ["1/72", "1/144"],
+  "expected_native_solves": 9,
+  "payload_hash_semantics": {"payload_file_sha256": "final_payload_file_bytes", "payload_body_sha256": "canonical_payload_without_hash_fields"},
+  "h_gate": {"max_offdiag": 1e-10, "selected_pair_offdiag": 1e-10, "max_normalization_error": 1e-10},
+  "atomic_publication": true,
+  "matrix_release_authorized": false
+}

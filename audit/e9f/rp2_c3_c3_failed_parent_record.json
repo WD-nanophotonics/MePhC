@@ -1,0 +1,20 @@
+{
+  "schema": "mephc_e9f_c1_rp2_c3_c3_failed_parent_record_v1",
+  "failed_execution_sha": "1cbf56826456aaca2cabaf5244dc72a92f250040",
+  "work_order_id": "MEPHC-E9F-C1-RP2-C3-C2-20260825-242",
+  "canary_worker_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=64",
+  "child_pid": 874873,
+  "parent_pid": 874834,
+  "child_return_code": 0,
+  "native_solve_count": 9,
+  "payload_path": "/home/icy/MePhC/.c3-c2-live/audit/e9f/rp2_c3_c2_runtime/workers/32d39d8cf29a52bfe3b5f86688905e43/payload.json",
+  "payload_file_sha256": "61d1f771100db5757f9b9c829284a409e11cc014c55f462646a6a2b50cc9372b",
+  "checkpoint_path": "/home/icy/MePhC/.c3-c2-live/audit/e9f/rp2_c3_c2_runtime/checkpoint.json",
+  "checkpoint_sha256": "42d88e000d41f29bcc30898432aaa864a1494e7385424673c1c36aacef003320",
+  "publication_failure_artifact_path": "/home/icy/MePhC/.c3-c2-live/audit/e9f/rp2_c3_c2_runtime/runner_publication_failure.json",
+  "publication_failure_artifact_sha256": "78c5ed02494d4ce1b64f7438d7ed44ded61272f9954006c9a29bc25717216fc5",
+  "publication_exception_type": "FileNotFoundError",
+  "publication_stage": "parent_result_publication",
+  "science_accepted": false,
+  "same_execution_retry": false
+}
