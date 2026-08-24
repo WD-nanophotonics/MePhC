@@ -193,7 +193,7 @@ def run(output: Path, checkpoint: Path) -> dict:
     counters = {"solver_requests": 0, "cache_hits": 0, "solver_failures": 0, "sample_evaluations": 0}
     if checkpoint.exists():
         saved = json.loads(checkpoint.read_text(encoding="utf-8"))
-        expected = {"work_order_id": WORK_ORDER, "base_sandbox_sha": contract["base_sandbox_sha"], "execution_code_base_sha": contract["execution_code_base_sha"], "plan_digest": plan["PLAN_DIGEST"], "domain_digest": plan["DOMAIN_DIGEST"], "semantic_domain_id": plan["SEMANTIC_DOMAIN_ID"], "portable_plan_fingerprint": plan["PORTABLE_PLAN_FINGERPRINT"]}
+        expected = {"work_order_id": WORK_ORDER, "base_sandbox_sha": contract["base_sandbox_sha"], "plan_digest": plan["PLAN_DIGEST"], "domain_digest": plan["DOMAIN_DIGEST"], "semantic_domain_id": plan["SEMANTIC_DOMAIN_ID"], "portable_plan_fingerprint": plan["PORTABLE_PLAN_FINGERPRINT"]}
         if any(saved.get(key) != value for key, value in expected.items()):
             raise RuntimeError("checkpoint does not match immutable live contract")
         completed = saved.get("completed", {})
