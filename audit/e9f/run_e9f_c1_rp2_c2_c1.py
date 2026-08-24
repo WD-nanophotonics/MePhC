@@ -406,7 +406,7 @@ def run_parent(root: Path, runtime_root: Path) -> dict[str, Any]:
     if runtime_root.exists() and any(runtime_root.iterdir()):
         raise PayloadChannelError("C2_C1_RUNTIME_ROOT_NOT_FRESH")
     runtime_root.mkdir(parents=True, exist_ok=True)
-    runner = root / Path(__file__).name
+    runner = root / "audit/e9f" / Path(__file__).name
     contract_path = root / TRANSPORT_CONTRACT_REL
     plan_id = semantic_plan_fingerprint(rows, estimator_id="E9F_C1_RP2_C2_REPRESENTATION_PROBE", semantic_domain_id="RP2_PRIMARY_PLUS_K_CONTROL", spacing_id="1/72_AND_1/144")
     identity = CampaignIdentity(
