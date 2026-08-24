@@ -519,6 +519,7 @@ class CampaignRuntime:
         }
         generation = int(self.telemetry["checkpoint_generation_count"]) + 1
         checkpoint_telemetry = dict(self.telemetry)
+        checkpoint_telemetry["completed_sample_count"] = len(completed)
         checkpoint_telemetry["checkpoint_generation_count"] = generation
         payload = {
             "schema": self.CHECKPOINT_SCHEMA,
@@ -575,6 +576,11 @@ class CampaignRuntime:
         telemetry_generation = telemetry.get("checkpoint_generation_count")
         if isinstance(telemetry_generation, bool) or telemetry_generation != generation:
             raise CheckpointValidationError("CHECKPOINT_GENERATION_INCONSISTENT")
+        telemetry_count = telemetry.get("completed_sample_count")
+        if isinstance(telemetry_count, bool) or not isinstance(telemetry_count, int):
+            raise CheckpointValidationError("CHECKPOINT_COMPLETED_COUNT_INCONSISTENT")
+        if telemetry_count != len(completed) or len(completed) != len(bindings):
+            raise CheckpointValidationError("CHECKPOINT_COMPLETED_COUNT_INCONSISTENT")
         self.telemetry.update(telemetry)
         return set(completed)
 
