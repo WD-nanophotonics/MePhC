@@ -1,0 +1,19 @@
+{
+  "fixtures": {
+    "all_passed": true,
+    "complete_all_qualified": true,
+    "duplicate": true,
+    "missing_row": true,
+    "mixed_estimator_rejected": true,
+    "nan": true,
+    "one_not_reported": true,
+    "permutation_invariance": true,
+    "silent_drop": true,
+    "zero_fill": true
+  },
+  "future_failure_rule": "INCOMPLETE_NOT_REPORTED",
+  "mixed_estimator_plan": "REJECTED",
+  "schema": "trilatt_e9f_a_c3_status_policy_validation_v1",
+  "scientific_numerical_integral": "NOT_EMITTED",
+  "work_order_id": "TRILATT-E9F-A-C3-20260824-204"
+}

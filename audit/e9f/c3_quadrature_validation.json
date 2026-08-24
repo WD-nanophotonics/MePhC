@@ -1,0 +1,391 @@
+{
+  "all_eight_fixture_classes_fr0": true,
+  "all_eight_fixture_classes_fr04": true,
+  "cases": [
+    {
+      "clipped_abs_area_error": 1.2212453270876722e-15,
+      "clipped_constant_field_passed": true,
+      "clipped_membership": {
+        "clipped_exclusion": 0,
+        "clipped_identity_failures": 0,
+        "clipped_outside": 0,
+        "invalid": 0,
+        "source_exclusion": 0,
+        "source_grid_identity_failures": 0,
+        "source_outside": 0
+      },
+      "clipped_plan_rebuild_digest_1": "3ce3bd88d9e29ebd81320d6bf119b5826f883a4c95b3b4009dc3284fff307909",
+      "clipped_plan_rebuild_digest_2": "3ce3bd88d9e29ebd81320d6bf119b5826f883a4c95b3b4009dc3284fff307909",
+      "clipped_rel_area_error": 2.9276940553936614e-15,
+      "clipped_weight_sum_independent": 0.41713556948950337,
+      "continuous_domain_area": 0.4171355694895046,
+      "failed_cell_weight_conservation_count": 0,
+      "fixtures": [
+        {
+          "fixture": "full",
+          "gamma_intersection_q2": 0.0,
+          "grid_index": [
+            -33,
+            -16
+          ],
+          "intersected_vertex_coordinate": null,
+          "no_relevant_vertex_inside_or_on_cell": null,
+          "passed": true,
+          "public_q": [
+            -0.9166666666666666,
+            -0.4444444444444444
+          ],
+          "retained_area_q2": 0.0007716049382716084,
+          "synthetic": false
+        },
+        {
+          "fixture": "outer_edge",
+          "gamma_intersection_q2": 0.0,
+          "grid_index": [
+            -34,
+            -17
+          ],
+          "intersected_vertex_coordinate": null,
+          "no_relevant_vertex_inside_or_on_cell": true,
+          "passed": true,
+          "public_q": [
+            -0.9444444444444444,
+            -0.4722222222222222
+          ],
+          "retained_area_q2": 0.0005025177561011063,
+          "synthetic": false
+        },
+        {
+          "fixture": "outer_vertex",
+          "gamma_intersection_q2": 0.0,
+          "grid_index": [
+            -34,
+            -18
+          ],
+          "intersected_vertex_coordinate": [
+            -0.95,
+            -0.49074772881118184
+          ],
+          "no_relevant_vertex_inside_or_on_cell": null,
+          "passed": true,
+          "public_q": [
+            -0.9444444444444444,
+            -0.5
+          ],
+          "retained_area_q2": 1.861800785749046e-05,
+          "synthetic": false
+        },
+        {
+          "fixture": "hole_edge",
+          "gamma_intersection_q2": 0.0,
+          "grid_index": [
+            "synthetic",
+            "hole_edge"
+          ],
+          "intersected_vertex_coordinate": null,
+          "no_relevant_vertex_inside_or_on_cell": true,
+          "passed": true,
+          "public_q": [
+            -0.925,
+            -0.5340489990004038
+          ],
+          "retained_area_q2": 0.0,
+          "synthetic": true
+        },
+        {
+          "fixture": "hole_vertex",
+          "gamma_intersection_q2": 0.0,
+          "grid_index": [
+            "synthetic",
+            "hole_vertex"
+          ],
+          "intersected_vertex_coordinate": [
+            -0.9,
+            -0.5773502691896257
+          ],
+          "no_relevant_vertex_inside_or_on_cell": null,
+          "passed": true,
+          "public_q": [
+            -0.9,
+            -0.5773502691896257
+          ],
+          "retained_area_q2": 0.0,
+          "synthetic": true
+        },
+        {
+          "fixture": "outside_center",
+          "gamma_intersection_q2": 0.0,
+          "grid_index": [
+            -34,
+            -18
+          ],
+          "intersected_vertex_coordinate": null,
+          "no_relevant_vertex_inside_or_on_cell": null,
+          "passed": true,
+          "public_q": [
+            -0.9444444444444444,
+            -0.5
+          ],
+          "retained_area_q2": 1.861800785749046e-05,
+          "synthetic": false
+        },
+        {
+          "fixture": "inside_hole_center",
+          "gamma_intersection_q2": 0.0,
+          "grid_index": [
+            "synthetic",
+            "inside_hole"
+          ],
+          "intersected_vertex_coordinate": null,
+          "no_relevant_vertex_inside_or_on_cell": null,
+          "passed": true,
+          "public_q": [
+            -0.9475,
+            -0.49507785583010405
+          ],
+          "retained_area_q2": 7.912059241171887e-05,
+          "synthetic": true
+        },
+        {
+          "fixture": "small",
+          "gamma_intersection_q2": 0.0,
+          "grid_index": [
+            "synthetic",
+            "small"
+          ],
+          "intersected_vertex_coordinate": null,
+          "no_relevant_vertex_inside_or_on_cell": null,
+          "passed": true,
+          "public_q": [
+            -0.1111111111111111,
+            0.027777777777777776
+          ],
+          "retained_area_q2": 2.5710645671912606e-07,
+          "synthetic": true
+        }
+      ],
+      "fr": 0.0,
+      "max_per_cell_weight_error": 1.734723475976807e-18,
+      "source_constant_field_passed": true,
+      "source_membership": {
+        "clipped_exclusion": 0,
+        "clipped_identity_failures": 0,
+        "clipped_outside": 0,
+        "invalid": 0,
+        "source_exclusion": 0,
+        "source_grid_identity_failures": 0,
+        "source_outside": 0
+      },
+      "source_plan_rebuild_digest_1": "5480c1cfe6d093d9adc17f93f511f1459b753a8f0d1eb1a00527d80dbacfdfd8",
+      "source_plan_rebuild_digest_2": "5480c1cfe6d093d9adc17f93f511f1459b753a8f0d1eb1a00527d80dbacfdfd8"
+    },
+    {
+      "clipped_abs_area_error": 1.609823385706477e-15,
+      "clipped_constant_field_passed": true,
+      "clipped_membership": {
+        "clipped_exclusion": 0,
+        "clipped_identity_failures": 0,
+        "clipped_outside": 0,
+        "invalid": 0,
+        "source_exclusion": 0,
+        "source_grid_identity_failures": 0,
+        "source_outside": 0
+      },
+      "clipped_plan_rebuild_digest_1": "eccc5580df94b32820469d5edfa1f4cd1a111f13371aeb16f6ac0376aa908ac5",
+      "clipped_plan_rebuild_digest_2": "eccc5580df94b32820469d5edfa1f4cd1a111f13371aeb16f6ac0376aa908ac5",
+      "clipped_rel_area_error": 3.3145661330276297e-15,
+      "clipped_weight_sum_independent": 0.48568148019904134,
+      "continuous_domain_area": 0.48568148019904295,
+      "failed_cell_weight_conservation_count": 0,
+      "fixtures": [
+        {
+          "fixture": "full",
+          "gamma_intersection_q2": 0.0,
+          "grid_index": [
+            -34,
+            -16
+          ],
+          "intersected_vertex_coordinate": null,
+          "no_relevant_vertex_inside_or_on_cell": null,
+          "passed": true,
+          "public_q": [
+            -0.9444444444444444,
+            -0.4444444444444444
+          ],
+          "retained_area_q2": 0.0007716049382715529,
+          "synthetic": false
+        },
+        {
+          "fixture": "outer_edge",
+          "gamma_intersection_q2": 0.0,
+          "grid_index": [
+            -35,
+            -16
+          ],
+          "intersected_vertex_coordinate": null,
+          "no_relevant_vertex_inside_or_on_cell": true,
+          "passed": true,
+          "public_q": [
+            -0.9722222222222222,
+            -0.4444444444444444
+          ],
+          "retained_area_q2": 0.00046296296296297057,
+          "synthetic": false
+        },
+        {
+          "fixture": "outer_vertex",
+          "gamma_intersection_q2": 0.00013721544471556602,
+          "grid_index": [
+            "synthetic",
+            "outer_vertex"
+          ],
+          "intersected_vertex_coordinate": [
+            -0.975,
+            -0.5340489990004038
+          ],
+          "no_relevant_vertex_inside_or_on_cell": null,
+          "passed": true,
+          "public_q": [
+            -0.975,
+            -0.5340489990004038
+          ],
+          "retained_area_q2": 0.0,
+          "synthetic": true
+        },
+        {
+          "fixture": "hole_edge",
+          "gamma_intersection_q2": 0.00035573574022434995,
+          "grid_index": [
+            -35,
+            -17
+          ],
+          "intersected_vertex_coordinate": null,
+          "no_relevant_vertex_inside_or_on_cell": true,
+          "passed": true,
+          "public_q": [
+            -0.9722222222222222,
+            -0.4722222222222222
+          ],
+          "retained_area_q2": 0.00010722722273859286,
+          "synthetic": false
+        },
+        {
+          "fixture": "hole_vertex",
+          "gamma_intersection_q2": 0.0005757862257313173,
+          "grid_index": [
+            -34,
+            -17
+          ],
+          "intersected_vertex_coordinate": [
+            -0.9349999999999999,
+            -0.4647669666976487
+          ],
+          "no_relevant_vertex_inside_or_on_cell": null,
+          "passed": true,
+          "public_q": [
+            -0.9444444444444444,
+            -0.4722222222222222
+          ],
+          "retained_area_q2": 0.0001958187125403188,
+          "synthetic": false
+        },
+        {
+          "fixture": "outside_center",
+          "gamma_intersection_q2": 0.0,
+          "grid_index": [
+            -32,
+            -18
+          ],
+          "intersected_vertex_coordinate": null,
+          "no_relevant_vertex_inside_or_on_cell": null,
+          "passed": true,
+          "public_q": [
+            -0.8888888888888888,
+            -0.5
+          ],
+          "retained_area_q2": 3.3724933062889706e-05,
+          "synthetic": false
+        },
+        {
+          "fixture": "inside_hole_center",
+          "gamma_intersection_q2": 0.00035573574022434995,
+          "grid_index": [
+            -35,
+            -17
+          ],
+          "intersected_vertex_coordinate": null,
+          "no_relevant_vertex_inside_or_on_cell": null,
+          "passed": true,
+          "public_q": [
+            -0.9722222222222222,
+            -0.4722222222222222
+          ],
+          "retained_area_q2": 0.00010722722273859286,
+          "synthetic": false
+        },
+        {
+          "fixture": "small",
+          "gamma_intersection_q2": 0.0,
+          "grid_index": [
+            "synthetic",
+            "small"
+          ],
+          "intersected_vertex_coordinate": null,
+          "no_relevant_vertex_inside_or_on_cell": null,
+          "passed": true,
+          "public_q": [
+            -0.6388888888888888,
+            -0.3611111111111111
+          ],
+          "retained_area_q2": 5.428014428765504e-07,
+          "synthetic": true
+        }
+      ],
+      "fr": 0.4,
+      "max_per_cell_weight_error": 2.7755575615628914e-17,
+      "source_constant_field_passed": true,
+      "source_membership": {
+        "clipped_exclusion": 0,
+        "clipped_identity_failures": 0,
+        "clipped_outside": 0,
+        "invalid": 0,
+        "source_exclusion": 0,
+        "source_grid_identity_failures": 0,
+        "source_outside": 0
+      },
+      "source_plan_rebuild_digest_1": "47e4310ba913f170cf5d2eada5df731c4097240d27194adfbe8f364b2a54b3b7",
+      "source_plan_rebuild_digest_2": "47e4310ba913f170cf5d2eada5df731c4097240d27194adfbe8f364b2a54b3b7"
+    }
+  ],
+  "deterministic_clipped_plan_rebuild": true,
+  "deterministic_source_plan_rebuild": true,
+  "independent_membership_all_passed": true,
+  "main_expected_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "mixed_estimator_plan": "REJECTED",
+  "new_berry_calculation": "NONE",
+  "new_mpb_solver_requests": 0,
+  "new_valley_chern_value": "NONE",
+  "overall": "RETAINED_DOMAIN_QUADRATURE_VALIDATION_READY_FOR_PRODUCTION_IMPLEMENTATION",
+  "preserved_c2_sha256": {
+    "c2_future_status_policy.json": "f41af5a3ab3351496736b7f973f524c9b562ce542496c9c7f73717d86dd66811",
+    "c2_quadrature_contract.json": "ceb5e7c0cdad5ed8929048785d43332ed040065892bf550e620b98bbd1577d2b",
+    "c2_quadrature_validation.json": "1af84f9d1d2dc2827e5763abca3bce807ade4dfcf7e2099044c99df2fa067eaf",
+    "c2_retained_quadrature.py": "ea5db1f4f30b97283088eeb1d23eb9f9b5adaa206954092c9adc89d504fc9365"
+  },
+  "production_code_change": false,
+  "schema": "trilatt_e9f_a_c3_quadrature_validation_v1",
+  "source_and_mephc_estimators_separated": true,
+  "status_policy_fixtures": {
+    "all_passed": true,
+    "complete_all_qualified": true,
+    "duplicate": true,
+    "missing_row": true,
+    "mixed_estimator_rejected": true,
+    "nan": true,
+    "one_not_reported": true,
+    "permutation_invariance": true,
+    "silent_drop": true,
+    "zero_fill": true
+  },
+  "work_order_id": "TRILATT-E9F-A-C3-20260824-204"
+}
