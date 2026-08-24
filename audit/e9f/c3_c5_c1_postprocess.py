@@ -212,7 +212,7 @@ def build_replay_index(evidence_root: Path) -> dict[tuple[str, int, tuple[float,
             for record in records:
                 q = record.get("EVALUATED_Q")
                 if q is not None:
-                    key = (sample, resolution, tuple(float(x) for x in q)); index[key] = index.get(key, 0) + 1
+                    key = (sample, resolution, tuple(float(x) for x in q)); index.setdefault(key, 1)
     return index
 
 
