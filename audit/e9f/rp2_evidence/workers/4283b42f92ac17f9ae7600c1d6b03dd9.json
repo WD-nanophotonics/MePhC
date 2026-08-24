@@ -1,0 +1,403 @@
+{
+  "authoritative_coordinate": [
+    -0.9444444444444444,
+    0.4722222222222222
+  ],
+  "child_pid": 304932,
+  "completion_status": "COMPLETE",
+  "counters": {
+    "cache_hits": 0,
+    "solver_failures": 0,
+    "solver_requests": 9
+  },
+  "diagnostic_only": true,
+  "execution_git_sha": "8121dbfba352b1a77551213771694d25c1bf3f01",
+  "matrix_entry_count": 2,
+  "native_import_confirmed": true,
+  "no_band2_recovery": true,
+  "no_berry_or_chern": true,
+  "no_source_anchor": true,
+  "no_three_band_sum": true,
+  "phase": "E9F.C1.RP2",
+  "plan_semantic_id": "1966a925add30490321486ba468b5cda5715d2e06e2c72a9b4e62a8e7761380d",
+  "policy_canonical_semantic_sha256": "cfbe71ff9f648048901038823c25ffd358bb8a80394fe05d082a57957acfc84a",
+  "policy_contract_sha256": "75f2d32853ab7e0a5878c19a732f4ac91ef993c105a8000b87e4a8a6ed6d5145",
+  "policy_sample_ids_derived": true,
+  "process_measurement": {
+    "direct_pid_gone": true,
+    "launched_pid": 304932,
+    "orphan_count": 0,
+    "orphan_pids": [],
+    "parent_rss_after_kib": 24672,
+    "parent_rss_before_kib": 24672,
+    "returncode": 0,
+    "worker_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID::resolution=96"
+  },
+  "reducer_admissible": false,
+  "resolution": 96,
+  "runner_sha256": "f2dc2c95d128204f8b9c46c4b88b59057a1bfa08302adb09b0906bfc36d5e5de",
+  "sample_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID::resolution=96",
+  "sample_index": 7,
+  "schema": "trilatt_e9f_c1_rp2_worker_v1",
+  "scientific_contract_sha256": "67567111062d454e839e8b0cc9bfac56a224676d92cba0f8381b523f2b60542c",
+  "source_sample_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+  "source_sample_index": 7,
+  "stencils": {
+    "1/144": {
+      "DIAGNOSTIC_ONLY": true,
+      "L0": {
+        "band_ordering": "ORDERED",
+        "gap_12": 0.38029026933745785,
+        "internal_gap_23": 0.05351702878966197,
+        "internal_gap_sign": "POSITIVE",
+        "ordered_frequencies_bands_1_2_3_4": [
+          0.05500985153747449,
+          0.43530012087493236,
+          0.48881714966459433,
+          0.5020765048465328
+        ],
+        "qualification_decision": false,
+        "r64_r96_absolute_internal_gap_difference": null,
+        "status": "DIAGNOSTIC_REPORTED",
+        "upper_external_gap_34": 0.013259355181938437
+      },
+      "L1": {
+        "2": {
+          "reason": "RANK1_ASSOCIATION_UNAVAILABLE:left raw candidate frame must be within-k Gram orthonormal",
+          "status": "NOT_AVAILABLE_WITH_REASON"
+        },
+        "3": {
+          "reason": "RANK1_ASSOCIATION_UNAVAILABLE:left raw candidate frame must be within-k Gram orthonormal",
+          "status": "NOT_AVAILABLE_WITH_REASON"
+        }
+      },
+      "L2": {
+        "reason": "RANK2_ASSOCIATION_UNAVAILABLE:left raw candidate frame must be within-k Gram orthonormal",
+        "status": "NOT_AVAILABLE_WITH_REASON"
+      },
+      "L3": {
+        "reason": "L3_ASSOCIATION_UNAVAILABLE:left raw candidate frame must be within-k Gram orthonormal",
+        "status": "NOT_AVAILABLE_WITH_REASON"
+      },
+      "MANIFEST_Q": [
+        -0.9444444444444444,
+        0.4722222222222222
+      ],
+      "NOMINAL_Q": [
+        -0.9444444444444444,
+        0.4722222222222222
+      ],
+      "REDUCER_ADMISSIBLE": false,
+      "association": [
+        {
+          "reason": "left raw candidate frame must be within-k Gram orthonormal",
+          "status": "NOT_AVAILABLE_WITH_REASON"
+        }
+      ],
+      "center_sampling": {
+        "EVALUATED_Q": [
+          -0.9444444444444444,
+          0.4722222222222222
+        ],
+        "MANIFEST_Q": [
+          -0.9444444444444444,
+          0.4722222222222222
+        ],
+        "NOMINAL_Q": [
+          -0.9444444444444444,
+          0.4722222222222222
+        ],
+        "frequencies": [
+          0.05500985153747449,
+          0.43530012087493236,
+          0.48881714966459433,
+          0.5020765048465328,
+          0.5368451567929724,
+          0.6026881912371398
+        ],
+        "physical_cache_identity": "8528c0f96c354f206eb50bf1ed9fdc91a7ca5cd2f09a9f28eb0089bfd1d93a2a",
+        "provider_representation": "mpb_energy_eh_v1"
+      },
+      "stencil": "1/144",
+      "vertex_sampling": [
+        {
+          "EVALUATED_Q": [
+            1.0520833333333335,
+            0.46874999999999983
+          ],
+          "MANIFEST_Q": [
+            1.0520833333333335,
+            0.46874999999999983
+          ],
+          "NOMINAL_Q": [
+            -0.9479166666666666,
+            0.46875
+          ],
+          "frequencies": [
+            0.05572006645441456,
+            0.43499156983026316,
+            0.4887004776997632,
+            0.5021086126551317,
+            0.5366755679740866,
+            0.6028351495759094
+          ],
+          "physical_cache_identity": "437fffb6ddd4b8bc6f0371d6b0f69e84f02951db0f8ab1069bff413094ee7a4e",
+          "provider_representation": "mpb_energy_eh_v1"
+        },
+        {
+          "EVALUATED_Q": [
+            1.0590277777777777,
+            0.46875
+          ],
+          "MANIFEST_Q": [
+            1.0590277777777777,
+            0.46875
+          ],
+          "NOMINAL_Q": [
+            -0.9409722222222222,
+            0.46875
+          ],
+          "frequencies": [
+            0.057178710066399525,
+            0.4343697432228393,
+            0.4881725820033808,
+            0.5025191937570376,
+            0.5362485781906492,
+            0.6031735419109907
+          ],
+          "physical_cache_identity": "3c23bf922665f26dd92c7e9fb2f31cfab9b6b63ed8946e22e80b0d8d62784994",
+          "provider_representation": "mpb_energy_eh_v1"
+        },
+        {
+          "EVALUATED_Q": [
+            1.0590277777777777,
+            0.4756944444444444
+          ],
+          "MANIFEST_Q": [
+            1.0590277777777777,
+            0.4756944444444444
+          ],
+          "NOMINAL_Q": [
+            -0.9409722222222222,
+            0.4756944444444444
+          ],
+          "frequencies": [
+            0.054384895154819125,
+            0.43556734462515784,
+            0.4889651817343365,
+            0.5019837210293321,
+            0.5370124359999339,
+            0.602548553191805
+          ],
+          "physical_cache_identity": "4f2c50225adc18f4701b2a0282ce86ab93fad5039bfd3da3da866da01ffc0632",
+          "provider_representation": "mpb_energy_eh_v1"
+        },
+        {
+          "EVALUATED_Q": [
+            1.0520833333333335,
+            0.47569444444444425
+          ],
+          "MANIFEST_Q": [
+            1.0520833333333335,
+            0.47569444444444425
+          ],
+          "NOMINAL_Q": [
+            -0.9479166666666666,
+            0.4756944444444444
+          ],
+          "frequencies": [
+            0.05284840776302118,
+            0.43621101882563323,
+            0.48941401804279994,
+            0.5016284580595097,
+            0.5374884333382653,
+            0.6022139162184841
+          ],
+          "physical_cache_identity": "e7f90d721bbd61fd1b788dc0433b99de9c6cfc21e6230d5daf7912381d3b8ec6",
+          "provider_representation": "mpb_energy_eh_v1"
+        }
+      ]
+    },
+    "1/72": {
+      "DIAGNOSTIC_ONLY": true,
+      "L0": {
+        "band_ordering": "ORDERED",
+        "gap_12": 0.38029026933745785,
+        "internal_gap_23": 0.05351702878966197,
+        "internal_gap_sign": "POSITIVE",
+        "ordered_frequencies_bands_1_2_3_4": [
+          0.05500985153747449,
+          0.43530012087493236,
+          0.48881714966459433,
+          0.5020765048465328
+        ],
+        "qualification_decision": false,
+        "r64_r96_absolute_internal_gap_difference": null,
+        "status": "DIAGNOSTIC_REPORTED",
+        "upper_external_gap_34": 0.013259355181938437
+      },
+      "L1": {
+        "2": {
+          "reason": "RANK1_ASSOCIATION_UNAVAILABLE:left raw candidate frame must be within-k Gram orthonormal",
+          "status": "NOT_AVAILABLE_WITH_REASON"
+        },
+        "3": {
+          "reason": "RANK1_ASSOCIATION_UNAVAILABLE:left raw candidate frame must be within-k Gram orthonormal",
+          "status": "NOT_AVAILABLE_WITH_REASON"
+        }
+      },
+      "L2": {
+        "reason": "RANK2_ASSOCIATION_UNAVAILABLE:left raw candidate frame must be within-k Gram orthonormal",
+        "status": "NOT_AVAILABLE_WITH_REASON"
+      },
+      "L3": {
+        "reason": "L3_ASSOCIATION_UNAVAILABLE:left raw candidate frame must be within-k Gram orthonormal",
+        "status": "NOT_AVAILABLE_WITH_REASON"
+      },
+      "MANIFEST_Q": [
+        -0.9444444444444444,
+        0.4722222222222222
+      ],
+      "NOMINAL_Q": [
+        -0.9444444444444444,
+        0.4722222222222222
+      ],
+      "REDUCER_ADMISSIBLE": false,
+      "association": [
+        {
+          "reason": "left raw candidate frame must be within-k Gram orthonormal",
+          "status": "NOT_AVAILABLE_WITH_REASON"
+        }
+      ],
+      "center_sampling": {
+        "EVALUATED_Q": [
+          -0.9444444444444444,
+          0.4722222222222222
+        ],
+        "MANIFEST_Q": [
+          -0.9444444444444444,
+          0.4722222222222222
+        ],
+        "NOMINAL_Q": [
+          -0.9444444444444444,
+          0.4722222222222222
+        ],
+        "frequencies": [
+          0.05500985153747449,
+          0.43530012087493236,
+          0.48881714966459433,
+          0.5020765048465328,
+          0.5368451567929724,
+          0.6026881912371398
+        ],
+        "physical_cache_identity": "8528c0f96c354f206eb50bf1ed9fdc91a7ca5cd2f09a9f28eb0089bfd1d93a2a",
+        "provider_representation": "mpb_energy_eh_v1"
+      },
+      "stencil": "1/72",
+      "vertex_sampling": [
+        {
+          "EVALUATED_Q": [
+            1.0486111111111112,
+            0.4652777777777776
+          ],
+          "MANIFEST_Q": [
+            1.0486111111111112,
+            0.4652777777777776
+          ],
+          "NOMINAL_Q": [
+            -0.9513888888888888,
+            0.4652777777777778
+          ],
+          "frequencies": [
+            0.056512388614243646,
+            0.43464118352699327,
+            0.48861530167766726,
+            0.502077704660522,
+            0.5365193793151151,
+            0.6030021354021886
+          ],
+          "physical_cache_identity": "0b8f4b732f12e8e32e140596ba1f59c4626e6b369c0280c8f0e3291a93b06b7e",
+          "provider_representation": "mpb_energy_eh_v1"
+        },
+        {
+          "EVALUATED_Q": [
+            1.0625,
+            0.4652777777777779
+          ],
+          "MANIFEST_Q": [
+            1.0625,
+            0.4652777777777779
+          ],
+          "NOMINAL_Q": [
+            -0.9375,
+            0.4652777777777778
+          ],
+          "frequencies": [
+            0.059354157688100144,
+            0.4334199411159176,
+            0.48747900304532243,
+            0.5029564432225467,
+            0.5357127517275251,
+            0.6036825462717708
+          ],
+          "physical_cache_identity": "1a0c6074575ff1886d8da58404484aec7233e0aa880186953b12d067c5e05561",
+          "provider_representation": "mpb_energy_eh_v1"
+        },
+        {
+          "EVALUATED_Q": [
+            1.0625,
+            0.47916666666666674
+          ],
+          "MANIFEST_Q": [
+            1.0625,
+            0.47916666666666674
+          ],
+          "NOMINAL_Q": [
+            -0.9375,
+            0.47916666666666663
+          ],
+          "frequencies": [
+            0.053848311163655134,
+            0.4357917778829449,
+            0.4891425823628265,
+            0.5018370412051237,
+            0.5371826870161247,
+            0.602429238517651
+          ],
+          "physical_cache_identity": "c7fe7659e01827333682caa16e24ae1de862a19eaefafce75721112239171fad",
+          "provider_representation": "mpb_energy_eh_v1"
+        },
+        {
+          "EVALUATED_Q": [
+            1.0486111111111112,
+            0.4791666666666665
+          ],
+          "MANIFEST_Q": [
+            1.0486111111111112,
+            0.4791666666666665
+          ],
+          "NOMINAL_Q": [
+            -0.9513888888888888,
+            0.47916666666666663
+          ],
+          "frequencies": [
+            0.05069556567325568,
+            0.4371001480104581,
+            0.48996355865671726,
+            0.5011790195305259,
+            0.5381849424389274,
+            0.6017636919873366
+          ],
+          "physical_cache_identity": "f20ac06f537258747e6ff36ba36b48d90de747eeab573e80314d757621df728c",
+          "provider_representation": "mpb_energy_eh_v1"
+        }
+      ]
+    }
+  },
+  "work_order_id": "TRILATT-E9F-C1-RP2-20260824-229",
+  "worker_coordinate": [
+    -0.9444444444444444,
+    0.4722222222222222
+  ],
+  "worker_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID::resolution=96"
+}

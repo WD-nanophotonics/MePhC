@@ -1,0 +1,53 @@
+{
+  "schema": "trilatt_e9f_c1_rp2_evidence_manifest_v1",
+  "work_order_id": "TRILATT-E9F-C1-RP2-20260824-229",
+  "phase": "E9F.C1.RP2",
+  "execution_git_sha": "8121dbfba352b1a77551213771694d25c1bf3f01",
+  "runner_sha256": "f2dc2c95d128204f8b9c46c4b88b59057a1bfa08302adb09b0906bfc36d5e5de",
+  "execution_contract_sha256": "67567111062d454e839e8b0cc9bfac56a224676d92cba0f8381b523f2b60542c",
+  "policy_contract_sha256": "75f2d32853ab7e0a5878c19a732f4ac91ef993c105a8000b87e4a8a6ed6d5145",
+  "policy_canonical_semantic_sha256": "cfbe71ff9f648048901038823c25ffd358bb8a80394fe05d082a57957acfc84a",
+  "plan_semantic_id": "1966a925add30490321486ba468b5cda5715d2e06e2c72a9b4e62a8e7761380d",
+  "matrix": {
+    "source_sample_count": 6,
+    "logical_worker_count": 12,
+    "matrix_entry_count": 24,
+    "resolutions": [64, 96],
+    "stencils": ["1/72", "1/144"],
+    "level_rows": 120,
+    "level_status_counts": {"DIAGNOSTIC_REPORTED": 24, "NOT_AVAILABLE_WITH_REASON": 96}
+  },
+  "process_controls": {
+    "result_status": "COMPLETE",
+    "orphan_native_child_count": 0,
+    "direct_pid_gone_all": true,
+    "parent_rss_measured_before_after_all": true,
+    "parent_rss_nonzero_all": true
+  },
+  "raw_evidence_relative_path": "audit/e9f/rp2_evidence",
+  "result_sha256": "335aefd26475385055bc0cb30dcbab8dc7f674386374e71c61a399f594641e81",
+  "checkpoint_sha256": "7079d53d37253036e1d43b3ff26038e59343f19a7ee8f5fa1246da5d6a75cfc4",
+  "worker_artifact_sha256": {
+    "1584750e0c77fb03584bd9534394cd44.json": "8dc414c9e8a83158061b6ea77532982ec4bf7910f2ebb2a7df1d4b5ad045b2f4",
+    "29618a1ff6d2325af241f6a9bdcdb135.json": "258f1d45ceda57f06b8834c52a84a52c112db00702c46834c86b25449da1b8c6",
+    "32d39d8cf29a52bfe3b5f86688905e43.json": "94a18bf2448c8ef859b6a5c2fc4d8fae7cedabf5353735e2cb782d2ff3307949",
+    "3344e17dd5cd8a16308a0f85dce5f192.json": "93f52e760a67dfb068ec88f1d3cc64f731951daf4a0ca95101539cbdb1799faa",
+    "3b6a1be31e854b327f64c03130534f2e.json": "f2f9ede78f250892f2c7f69d39ca13b2b327a6ecedcdfd475f819300ee03bbec",
+    "4283b42f92ac17f9ae7600c1d6b03dd9.json": "ec2486a4adc49767824bf8be92b490fa5d46124d7e03689e61d8218c10aa5299",
+    "4ffa643e401183a8927344166288fe0d.json": "fde5eb25c0a8f2ddca519fe56903932c0866e03be7c1dd67279c6752a5ced093",
+    "916889bd7f0be84791900ee0566d1511.json": "82c18afa94bf3dfd535fa9e2d214422ab29868f8b44b7fa35bc0a8c06b51979b",
+    "a237eb93ce1e551bc094f1a96132ef08.json": "e275480671553a526dd67dfb983beb65707c683bd7a91e5fad368179fb9a205e",
+    "aefd7b482832a1d8764929ec36cc36d4.json": "fa98a2c0712cbec05207615a85ff3ba12f7789d5ce2eb324dffdddd8213b6ab9",
+    "cd323720fc9eb34474edf974526ab5e5.json": "c405c99f029d24f0a34e966c9ae47311c4923944a20fd2c8ad8c589450d2d7f8",
+    "eebd3d8ef376f0466dd2d794e1436c71.json": "8b1b12fcff77c1b9090125e302eae071e4496c80109b70d071b97eacdbe74c8e"
+  },
+  "scientific_firewall": {
+    "diagnostic_only": true,
+    "reducer_admissible": false,
+    "forbidden_output_hits": [],
+    "no_band2_recovery": true,
+    "no_berry_or_chern": true,
+    "no_three_band_sum": true,
+    "no_source_anchor": true
+  }
+}
