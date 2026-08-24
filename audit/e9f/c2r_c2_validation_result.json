@@ -1,0 +1,94 @@
+{
+  "BASE_SANDBOX_SHA": "2eba61cac5658022a193d0ddcfc48901dc4d8fb5",
+  "CHANGED_FILES": [
+    "mephc/valley_integration.py",
+    "mephc/valley_chern.py",
+    "tests/test_e9f_b_valley_integration.py"
+  ],
+  "IMPLEMENTATION_COMMIT": "286a13075bb7ef1af41016b58a98b6d022846fbe",
+  "MAIN_SHA": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "MAIN_UNCHANGED": true,
+  "NO_MAIN_PUSH": true,
+  "VALIDATION_SOURCE_MUTATION_AFTER_IMPLEMENTATION": false,
+  "WORK_ORDER_ID": "TRILATT-E9F-B-C2R-C2-20260824-213",
+  "new_berry_calculations": 0,
+  "new_scientific_chern_values": 0,
+  "new_scientific_solver_requests": 0,
+  "portability": {
+    "fr=0 clipped": {
+      "max_q_drift": 2.220446049250313e-16,
+      "max_total_weight_drift": 5.551115123125783e-17,
+      "max_weight_drift": 2.7755575615628914e-17,
+      "numerically_equivalent": true,
+      "portable_fingerprints_equal": true,
+      "raw_domain_digest_equal": false,
+      "raw_plan_digest_equal": false,
+      "sample_count": 752,
+      "sample_ids_equal": true,
+      "semantic_domain_ids_equal": true,
+      "topology_equal": true
+    },
+    "fr=0 source": {
+      "max_q_drift": 0.0,
+      "max_total_weight_drift": 0.0,
+      "max_weight_drift": 0.0,
+      "numerically_equivalent": true,
+      "portable_fingerprints_equal": true,
+      "raw_domain_digest_equal": false,
+      "raw_plan_digest_equal": false,
+      "sample_count": 551,
+      "sample_ids_equal": true,
+      "semantic_domain_ids_equal": true,
+      "topology_equal": true
+    },
+    "fr=0.4 clipped": {
+      "max_q_drift": 2.220446049250313e-16,
+      "max_total_weight_drift": 1.1102230246251565e-16,
+      "max_weight_drift": 5.551115123125783e-17,
+      "numerically_equivalent": true,
+      "portable_fingerprints_equal": true,
+      "raw_domain_digest_equal": false,
+      "raw_plan_digest_equal": false,
+      "sample_count": 872,
+      "sample_ids_equal": true,
+      "semantic_domain_ids_equal": true,
+      "topology_equal": true
+    },
+    "fr=0.4 source": {
+      "max_q_drift": 0.0,
+      "max_total_weight_drift": 0.0,
+      "max_weight_drift": 0.0,
+      "numerically_equivalent": true,
+      "portable_fingerprints_equal": true,
+      "raw_domain_digest_equal": false,
+      "raw_plan_digest_equal": false,
+      "sample_count": 641,
+      "sample_ids_equal": true,
+      "semantic_domain_ids_equal": true,
+      "topology_equal": true
+    }
+  },
+  "portability_tolerance": 1e-12,
+  "runtimes": {
+    "windows": "Python 3.12.0",
+    "wsl": "Python 3.13.13 Miniconda mp"
+  },
+  "synthetic_reduction": {
+    "complete": "passed",
+    "failed_weight_removed": false,
+    "incomplete_fail_closed": "passed",
+    "numeric_flux_on_incomplete": "not emitted",
+    "numeric_valley_chern_on_incomplete": "not emitted",
+    "posthoc_renormalization": false
+  },
+  "temporary_environment_setup": [
+    "created /tmp/TriLatt -> /home/icy/TriLatt",
+    "created /tmp/SqrLatt -> /home/icy/SqrLatt",
+    "removed both symlinks after regression"
+  ],
+  "tests": {
+    "existing_e7i1h_valley_chern": "19 passed",
+    "focused_e9f_b_c2r_c2": "34 passed WSL; 34 passed Windows",
+    "full_repository_regression": "482 passed, 27 subtests passed"
+  }
+}
