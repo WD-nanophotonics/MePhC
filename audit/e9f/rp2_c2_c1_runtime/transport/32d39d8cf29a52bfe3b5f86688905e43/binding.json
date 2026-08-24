@@ -1,0 +1,8 @@
+{
+  "execution_git_sha": "745f693389d510fc95c52f71d59e686917e9bf8e",
+  "payload_path": "/home/icy/MePhC-C1-214-rp2-c1-pub/audit/e9f/rp2_c2_c1_runtime/transport/32d39d8cf29a52bfe3b5f86688905e43/payload.json",
+  "resolution": 64,
+  "scientific_work_order_id": "TRILATT-E9F-C1-RP2-C2-20260824-233",
+  "transport_work_order_id": "TRILATT-E9F-C1-RP2-C2-C1-20260825-234",
+  "worker_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=64"
+}

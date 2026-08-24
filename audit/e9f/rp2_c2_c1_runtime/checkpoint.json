@@ -1,0 +1,61 @@
+{
+  "completed_artifacts": {
+    "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=64": {
+      "sample_index": 0,
+      "schema": "trilatt_e9f_c1_rp2_c2_c1_worker_artifact_v1",
+      "sha256": "ce716e5880a5885c52c72d0d82487a1735fcaa5898000a7ebb626e4a8321029b"
+    },
+    "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=96": {
+      "sample_index": 1,
+      "schema": "trilatt_e9f_c1_rp2_c2_c1_worker_artifact_v1",
+      "sha256": "edb32d236f79cb0a2569cf29d3b0f2962037265dc0d08c0335df977e007e028b"
+    }
+  },
+  "completed_sample_ids": [
+    "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=64",
+    "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=96"
+  ],
+  "expected_sample_ids": [
+    "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=64",
+    "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=96"
+  ],
+  "generation": 2,
+  "identity": {
+    "execution_git_sha": "745f693389d510fc95c52f71d59e686917e9bf8e",
+    "expected_sample_ids": [
+      "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=64",
+      "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=96"
+    ],
+    "expected_sample_indices": [
+      0,
+      1
+    ],
+    "plan_semantic_id": "2f8151194189402ab352794e8b49414ad9d751cf2ad1e10b40079daa5fe7188f",
+    "raw_runtime_digest": null,
+    "runner_sha256": "2ebeab6380eb84ca5d0f08470467d85186a1b8214cff015395fd002f64a400c1",
+    "scientific_contract_sha256": "2564d2cc6334a73733d56ace33e626015d8d042b42930dc01a4b635685a463ee",
+    "semantic_domain_id": "RP2_PRIMARY_PLUS_K_CONTROL",
+    "semantic_estimator_id": "E9F_C1_RP2_C2_REPRESENTATION_PROBE",
+    "semantic_spacing_id": "1/72_AND_1/144"
+  },
+  "schema": "trilatt_campaign_checkpoint_v2",
+  "telemetry": {
+    "checkpoint_generation_count": 2,
+    "completed_sample_count": 2,
+    "peak_rss_kib": 26168,
+    "rejected_stale_artifact_count": 0,
+    "retry_count": 0,
+    "rss_available": true,
+    "worker_exit_status": [
+      {
+        "sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=64",
+        "status": 0
+      },
+      {
+        "sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=96",
+        "status": 0
+      }
+    ],
+    "worker_failure_count": 0
+  }
+}
