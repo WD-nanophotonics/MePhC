@@ -1,0 +1,8 @@
+{
+  "schema":"mephc_e9f_c1_rp2_c3_c5_failed_parent_record_v1",
+  "failed_execution_sha":"98a37d3e29b9c070b0523e9fa897a03aee7cf94c",
+  "work_order_id":"MEPHC-E9F-C1-RP2-C3-C4-20260825-246",
+  "accepted_canary":true,
+  "scientific_result_accepted":true,
+  "same_execution_retry":false
+}
