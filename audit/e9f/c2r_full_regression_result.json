@@ -1,0 +1,78 @@
+{
+  "schema": "trilatt_e9f_b_c2r_full_regression_result_v1",
+  "work_order_id": "TRILATT-E9F-B-C2R-20260824-211",
+  "base_sandbox_sha": "0197bc71ed32e1cdb6393b620f3be5788af348b0",
+  "regression_source_sha": "0197bc71ed32e1cdb6393b620f3be5788af348b0",
+  "python_executable": "/home/icy/miniconda3/envs/mp/bin/python",
+  "python_version": "3.13.13",
+  "meep_version": "1.33.0",
+  "scipy_version": "1.17.1",
+  "shapely_version": "2.1.2",
+  "pytest_version": "9.1.1",
+  "dependency_complete_environment": "CONFIRMED",
+  "compileall": "PASSED",
+  "git_diff_check": "PASSED",
+  "focused_e9f_b_tests": "29 passed",
+  "existing_valley_chern_tests": "19 passed",
+  "public_api_reexports": "PASSED",
+  "c1_count_parity": "PASSED",
+  "c1_weight_parity": "FAILED_EXACT_REPLAY",
+  "c1_plan_digest_replay": "FAILED",
+  "c1_replay": {
+    "fr=0": {
+      "expected": {
+        "source_count": 551,
+        "clipped_count": 752,
+        "source_weight_q2": 0.4251543209876543,
+        "clipped_weight_q2": 0.4171355694895034,
+        "source_plan_digest": "734493221730c0a6158ea3f58e31624e68c7be8aaae899488e1de2e2d7df5827",
+        "clipped_plan_digest": "a576fdff53342f8b3d4897b19ec5b2ada2db8dc34daeb390413740bac942c8b1"
+      },
+      "actual": {
+        "source_count": 551,
+        "clipped_count": 752,
+        "source_weight_q2": 0.4251543209876543,
+        "clipped_weight_q2": 0.41713556948950337,
+        "source_plan_digest": "5be4a51552e6e8ba2b421157d6f757fd26469c203cf36b7e7773b91baaec526f",
+        "clipped_plan_digest": "314d5b64b5ed0248f81ebba6abfd76d525a290547f86c81fc440dc408288f5d5"
+      }
+    },
+    "fr=0.4": {
+      "expected": {
+        "source_count": 641,
+        "clipped_count": 872,
+        "source_weight_q2": 0.49459876543209874,
+        "clipped_weight_q2": 0.48568148019904145,
+        "source_plan_digest": "23d101a390a780fefa235ad75a6c88e66f048efe0234948b63330708d08d809d",
+        "clipped_plan_digest": "65870e0c3a2933913a6d873e381915260be146be2e43a0e202a54578822a7b7c"
+      },
+      "actual": {
+        "source_count": 641,
+        "clipped_count": 872,
+        "source_weight_q2": 0.49459876543209874,
+        "clipped_weight_q2": 0.48568148019904134,
+        "source_plan_digest": "015e7c4b1fe733d38848800fd2f7465f7053a92082a4fdb4f7fed42f36788a88",
+        "clipped_plan_digest": "1ae712c819a835430da51a4786c94ea5bfd4ec617b72e1e65a9704f23d4ec767"
+      }
+    }
+  },
+  "complete_synthetic_reduction": "NOT_RUN_REPLAY_GATE",
+  "incomplete_synthetic_fail_closed": "NOT_RUN_REPLAY_GATE",
+  "provenance_binding_negative_tests": "NOT_RUN_REPLAY_GATE",
+  "full_test_suite": "NOT_RUN_REPLAY_GATE",
+  "full_suite_failures": "NOT_RUN",
+  "full_suite_errors": "NOT_RUN",
+  "dependency_collection_errors": "NOT_RUN",
+  "source_tree_immutable_during_regression": true,
+  "production_file_diff_during_regression": "NONE",
+  "test_file_diff_during_regression": "NONE",
+  "test_time_solver_activity": "NONE",
+  "new_scientific_mpb_solver_requests": 0,
+  "new_scientific_berry_calculation": "NONE",
+  "new_scientific_valley_chern_value": "NONE",
+  "replay_interpretation": "Counts match, but canonical plan digests and exact clipped floating totals differ between the sealed C1 reference and the authorized WSL mp interpreter replay. No code or test changes were made to reconcile this.",
+  "main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "main_unchanged": true,
+  "result_sha256": "RECORDED_IN_FINAL_COURIER_RECEIPT",
+  "overall": "FAIL_CLOSED_PLAN_DIGEST_REPLAY_MISMATCH"
+}
