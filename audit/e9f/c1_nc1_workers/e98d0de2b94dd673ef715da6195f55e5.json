@@ -1,0 +1,26 @@
+{
+  "WORKER_COORDINATE_USED": [
+    0.17,
+    0.23
+  ],
+  "child_schema": "trilatt_e9f_c1_nc1_child_v1",
+  "completion_status": "COMPLETE",
+  "end_time": 1787565999.0642438,
+  "execution_git_sha": "8fb3af5eed59bcdfea70c9d89c0d7646230bc2ec",
+  "exit_code": 0,
+  "frequency_digest": "870e413ea970f3d7694ba1a1cb2620d9304773dd6e54211a8e11ce68defbeb05",
+  "frequency_vector": [
+    0.2528502400256474,
+    0.5763668090782799
+  ],
+  "native_import_confirmed": true,
+  "peak_rss_kib": 137756,
+  "pid": 654,
+  "plan_semantic_id": "c610cab0d9e93d5577cc41cd2c6b371c80e4214306eaa787560bfa89dd3a4cc9",
+  "runner_sha256": "d38a6647cc3b6a79b6da73cccaef3f139e9d4448be5aec68033f0b470a0c0e4a",
+  "sample_id": "native_canary_2",
+  "sample_index": 2,
+  "schema": "trilatt_campaign_worker_artifact_v1",
+  "scientific_contract_sha256": "bf9762b2d7af2961a9ac66bd0a0f24e9a7eb14940ab5dee1d55413f733310ae4",
+  "start_time": 1787565998.5777714
+}

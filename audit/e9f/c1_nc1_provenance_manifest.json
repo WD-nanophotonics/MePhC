@@ -1,0 +1,48 @@
+{
+  "base_sandbox_sha": "571c3ec88bf008535b647f3b5120f10c16d2830f",
+  "canary_contract_sha256": "bf9762b2d7af2961a9ac66bd0a0f24e9a7eb14940ab5dee1d55413f733310ae4",
+  "changed_files": [
+    "audit/infrastructure/native_canary.py",
+    "audit/e9f/c1_nc1_contract.json",
+    "tests/test_native_canary.py",
+    "audit/e9f/c1_nc1_result.json",
+    "audit/e9f/c1_nc1_checkpoint.json",
+    "audit/e9f/c1_nc1_process_reliability_review.json",
+    "audit/e9f/c1_nc1_workers/75d3ae41e4be13ef5146b81a6f2e7799.json",
+    "audit/e9f/c1_nc1_workers/8ba62af0797d0aafd724771238132e19.json",
+    "audit/e9f/c1_nc1_workers/e98d0de2b94dd673ef715da6195f55e5.json",
+    "audit/e9f/c1_nc1_provenance_manifest.json"
+  ],
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "file_sha256": {
+    "audit/e9f/c1_nc1_checkpoint.json": "a579d7ad0b5212405d025a448dc6417f54ef5c7d6fef116c60ab6b27aec004d2",
+    "audit/e9f/c1_nc1_contract.json": "bf9762b2d7af2961a9ac66bd0a0f24e9a7eb14940ab5dee1d55413f733310ae4",
+    "audit/e9f/c1_nc1_process_reliability_review.json": "cc2664a86bacb83d1a9f788e83a0f1bb6ed5deb367b7ad3191cc9eb3dc5bcbed",
+    "audit/e9f/c1_nc1_result.json": "af1c557a95af6c0d7ddc1e3cc23c1912bc6245c2b0a45b51bf8fb31e02c4d9e7",
+    "audit/e9f/c1_nc1_workers/75d3ae41e4be13ef5146b81a6f2e7799.json": "6486c8cffa64504aeea6224e34b0213f4a330d17ead6befd04cace7b9eab3582",
+    "audit/e9f/c1_nc1_workers/8ba62af0797d0aafd724771238132e19.json": "3ad4416e69d962671e16d5b8a47f304d11a4705c1f957c92b912f1dc14bb4b5c",
+    "audit/e9f/c1_nc1_workers/e98d0de2b94dd673ef715da6195f55e5.json": "277424dc24f887f38a8fdf78b38a2097bcec17d4843f91357d728ef95c7a0c41",
+    "audit/infrastructure/native_canary.py": "d38a6647cc3b6a79b6da73cccaef3f139e9d4448be5aec68033f0b470a0c0e4a",
+    "tests/test_native_canary.py": "c3b05fadd352a89b4a15561d8758e0f0b36e4bad1e43dcf3d90b8c8fb801761a"
+  },
+  "implementation_sha": "8fb3af5eed59bcdfea70c9d89c0d7646230bc2ec",
+  "injected_failure_count": 1,
+  "main_unchanged": true,
+  "native_reproducibility_max_abs_diff": 2.0039525594484076e-14,
+  "native_successful_worker_count": 3,
+  "no_scientific_recovery": true,
+  "orphan_native_child_count": 0,
+  "parent_restart_resume": "passed",
+  "plan_semantic_id": "c610cab0d9e93d5577cc41cd2c6b371c80e4214306eaa787560bfa89dd3a4cc9",
+  "real_origin_preflight": {
+    "ancestry_verified": true,
+    "execution_sha": "8fb3af5eed59bcdfea70c9d89c0d7646230bc2ec",
+    "remote_head_sha": "8fb3af5eed59bcdfea70c9d89c0d7646230bc2ec",
+    "remote_name": "origin",
+    "remote_ref": "refs/heads/sandbox",
+    "worker_launched_before_preflight": false
+  },
+  "schema": "trilatt_e9f_c1_nc1_provenance_manifest_v1",
+  "self_hash_excluded": true,
+  "work_order_id": "TRILATT-E9F-C1-NC1-20260824-224"
+}
