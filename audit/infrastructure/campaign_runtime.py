@@ -10,6 +10,7 @@ import hashlib
 import json
 import os
 import subprocess
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 try:
     import resource
@@ -51,18 +52,58 @@ def sha256_file(path: Path) -> str:
     return sha256_bytes(path.read_bytes())
 
 
+def _canonical_semantic_value(value: Any) -> Any:
+    if isinstance(value, bool) or value is None:
+        return value
+    if isinstance(value, int):
+        return str(value)
+    if isinstance(value, float):
+        if not (value == value and abs(value) != float("inf")):
+            raise ValueError("non-finite semantic coordinate")
+        value = str(value)
+    if isinstance(value, str):
+        try:
+            number = Decimal(value)
+        except InvalidOperation:
+            return value
+        normalized = format(number.normalize(), "f")
+        return "0" if normalized in {"-0", ""} else normalized
+    if isinstance(value, Mapping):
+        return {str(key): _canonical_semantic_value(value[key]) for key in sorted(value, key=str)}
+    if isinstance(value, (list, tuple)):
+        return [_canonical_semantic_value(item) for item in value]
+    return str(value)
+
+
+def _authoritative_coordinate(row: Mapping[str, Any]) -> tuple[str, Any] | None:
+    for key in ("authoritative_coordinate", "public_q", "coordinate", "q"):
+        if key in row:
+            return key, _canonical_semantic_value(row[key])
+    return None
+
+
+def _worker_coordinate(row: Mapping[str, Any]) -> tuple[str, Any] | None:
+    for key in ("worker_coordinate", "actual_worker_coordinate", "worker_public_q"):
+        if key in row:
+            return key, _canonical_semantic_value(row[key])
+    return None
+
+
 def semantic_plan_fingerprint(rows: Sequence[Mapping[str, Any]], *, estimator_id: str, semantic_domain_id: str, spacing_id: str) -> str:
     payload = {
-        "schema": "trilatt_semantic_plan_fingerprint_v1",
+        "schema": "trilatt_semantic_plan_fingerprint_v2",
         "estimator_id": estimator_id,
         "semantic_domain_id": semantic_domain_id,
         "spacing_id": spacing_id,
         "rows": [
             {
                 "sample_id": row["sample_id"],
-                "grid_index": list(row["grid_index"]),
+                "sample_index": row.get("sample_index"),
+                "grid_index": list(row.get("grid_index", [])),
                 "fragment_index": row.get("fragment_index"),
                 "triangle_index": row.get("triangle_index"),
+                "topology_id": row.get("topology_id"),
+                "authoritative_coordinate": _authoritative_coordinate(row),
             }
             for row in sorted(rows, key=lambda item: str(item["sample_id"]))
         ],
@@ -101,8 +142,15 @@ class CampaignIdentity:
     plan_semantic_id: str
     expected_sample_ids: tuple[str, ...]
     raw_runtime_digest: str | None = None
+    expected_sample_indices: tuple[int, ...] | None = None
+    semantic_estimator_id: str = "UNKNOWN"
+    semantic_domain_id: str = "UNKNOWN"
+    semantic_spacing_id: str = "UNKNOWN"
 
     def as_dict(self) -> dict[str, Any]:
+        indices = self.expected_sample_indices
+        if indices is None:
+            indices = tuple(range(len(self.expected_sample_ids)))
         return {
             "execution_git_sha": self.execution_git_sha,
             "runner_sha256": self.runner_sha256,
@@ -110,6 +158,10 @@ class CampaignIdentity:
             "plan_semantic_id": self.plan_semantic_id,
             "expected_sample_ids": list(self.expected_sample_ids),
             "raw_runtime_digest": self.raw_runtime_digest,
+            "expected_sample_indices": list(indices),
+            "semantic_estimator_id": self.semantic_estimator_id,
+            "semantic_domain_id": self.semantic_domain_id,
+            "semantic_spacing_id": self.semantic_spacing_id,
         }
 
 
@@ -160,15 +212,25 @@ class CampaignRuntime:
         *,
         runner_path: Path,
         contract_path: Path,
-        remote_object_checker: Callable[[str], bool],
+        remote_object_checker: Callable[[str], bool] | None = None,
         local_object_checker: Callable[[str], bool] | None = None,
+        repository_path: Path | None = None,
+        remote_name: str = "origin",
+        remote_ref: str = "refs/heads/sandbox",
+        production_mode: bool | None = None,
     ) -> None:
         self.root = Path(root)
         self.identity = identity
         self.runner_path = Path(runner_path)
         self.contract_path = Path(contract_path)
         self.remote_object_checker = remote_object_checker
-        self.local_object_checker = local_object_checker or (lambda sha: bool(sha))
+        self.local_object_checker = local_object_checker
+        self.repository_path = Path(repository_path) if repository_path is not None else None
+        self.remote_name = remote_name
+        self.remote_ref = remote_ref
+        self.production_mode = bool(repository_path) if production_mode is None else production_mode
+        if self.production_mode and self.repository_path is None:
+            raise CampaignRuntimeError("PRODUCTION_REPOSITORY_REQUIRED")
         self.workers = self.root / "workers"
         self.checkpoint_path = self.root / "checkpoint.json"
         self.telemetry: dict[str, Any] = {
@@ -183,40 +245,162 @@ class CampaignRuntime:
         }
         self._preflight_report: dict[str, Any] | None = None
 
+    def _expected_index_map(self) -> dict[str, int]:
+        indices = self.identity.expected_sample_indices
+        if indices is None:
+            indices = tuple(range(len(self.identity.expected_sample_ids)))
+        if len(indices) != len(self.identity.expected_sample_ids):
+            raise CampaignRuntimeError("EXPECTED_SAMPLE_INDEX_COUNT_MISMATCH")
+        return dict(zip((str(value) for value in self.identity.expected_sample_ids), indices))
+
+    def _validate_plan_rows(self, rows: Sequence[Mapping[str, Any]]) -> dict[str, Mapping[str, Any]]:
+        expected = self._expected_index_map()
+        if len(rows) != len(expected):
+            raise CampaignRuntimeError("PLAN_ROW_COUNT_MISMATCH")
+        ids = [str(row.get("sample_id")) for row in rows]
+        if len(ids) != len(set(ids)):
+            raise CampaignRuntimeError("DUPLICATE_SAMPLE_ID")
+        indices = [row.get("sample_index") for row in rows]
+        if any(not isinstance(value, int) or isinstance(value, bool) for value in indices):
+            raise CampaignRuntimeError("INVALID_SAMPLE_INDEX")
+        if len(indices) != len(set(indices)):
+            raise CampaignRuntimeError("DUPLICATE_SAMPLE_INDEX")
+        if set(ids) != set(expected):
+            raise CampaignRuntimeError("SAMPLE_SET_MISMATCH")
+        mapping: dict[str, Mapping[str, Any]] = {}
+        for row, sample_id in zip(rows, ids):
+            if int(row["sample_index"]) != expected[sample_id]:
+                raise CampaignRuntimeError("SAMPLE_INDEX_MAPPING_MISMATCH")
+            declared = _authoritative_coordinate(row)
+            worker = _worker_coordinate(row)
+            if worker is not None and worker != declared:
+                raise CampaignRuntimeError("WORKER_COORDINATE_SEMANTIC_MISMATCH")
+            mapping[sample_id] = row
+        return mapping
+
+    def _computed_plan_semantic_id(self, rows: Sequence[Mapping[str, Any]]) -> str:
+        return semantic_plan_fingerprint(
+            rows,
+            estimator_id=self.identity.semantic_estimator_id,
+            semantic_domain_id=self.identity.semantic_domain_id,
+            spacing_id=self.identity.semantic_spacing_id,
+        )
+
+    def _git_output(self, args: Sequence[str]) -> str:
+        try:
+            completed = subprocess.run(
+                ["git", *args],
+                cwd=self.repository_path,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+        except (OSError, subprocess.SubprocessError) as exc:
+            raise CampaignPreflightError(f"GIT_COMMAND_FAILED:{args[0]}") from exc
+        return completed.stdout.strip()
+
+    def _derive_production_state(self, plan_rows: Sequence[Mapping[str, Any]] | None) -> dict[str, Any]:
+        if plan_rows is None:
+            raise CampaignPreflightError("PLAN_ROWS_REQUIRED_FOR_PRODUCTION_PREFLIGHT")
+        self._validate_plan_rows(plan_rows)
+        plan_id = self._computed_plan_semantic_id(plan_rows)
+        head = self._git_output(["rev-parse", "HEAD"])
+        self._git_output(["cat-file", "-e", f"{self.identity.execution_git_sha}^{{commit}}"])
+        dirty = bool(self._git_output(["status", "--porcelain", "--untracked-files=all"]))
+        remote_lines = self._git_output(["ls-remote", "--heads", self.remote_name, self.remote_ref]).splitlines()
+        if not remote_lines:
+            raise CampaignPreflightError("REMOTE_SANDBOX_REF_MISSING")
+        remote_head = remote_lines[0].split()[0]
+        self._git_output(["fetch", "--quiet", self.remote_name, self.remote_ref])
+        fetched_head = self._git_output(["rev-parse", "FETCH_HEAD"])
+        if fetched_head != remote_head:
+            raise CampaignPreflightError("REMOTE_HEAD_CHANGED_DURING_PREFLIGHT")
+        try:
+            subprocess.run(
+                ["git", "merge-base", "--is-ancestor", self.identity.execution_git_sha, remote_head],
+                cwd=self.repository_path,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+        except (OSError, subprocess.SubprocessError) as exc:
+            raise CampaignPreflightError("EXECUTION_SHA_NOT_REACHABLE_FROM_REMOTE") from exc
+        return {
+            "current_execution_sha": head,
+            "dirty": dirty,
+            "current_plan_semantic_id": plan_id,
+            "remote_head_sha": remote_head,
+            "remote_ancestry_verified": True,
+        }
+
     def preflight(
         self,
         *,
-        current_execution_sha: str,
-        dirty: bool,
-        current_plan_semantic_id: str,
+        current_execution_sha: str | None = None,
+        dirty: bool | None = None,
+        current_plan_semantic_id: str | None = None,
         remote_execution_object_verified: bool | None = None,
+        plan_rows: Sequence[Mapping[str, Any]] | None = None,
     ) -> dict[str, Any]:
         expected = self.identity
         failures: list[str] = []
-        if not self.local_object_checker(expected.execution_git_sha):
-            failures.append("LOCAL_EXECUTION_OBJECT_MISSING")
-        if not current_execution_sha or current_execution_sha != expected.execution_git_sha:
+        state: dict[str, Any] = {
+            "current_execution_sha": current_execution_sha,
+            "dirty": dirty,
+            "current_plan_semantic_id": current_plan_semantic_id,
+            "remote_head_sha": None,
+            "remote_ancestry_verified": False,
+        }
+        if self.production_mode:
+            try:
+                state = self._derive_production_state(plan_rows)
+            except CampaignPreflightError as exc:
+                failures.append(str(exc))
+        else:
+            if self.local_object_checker is None:
+                failures.append("LOCAL_OBJECT_VERIFIER_REQUIRED")
+            elif not self.local_object_checker(expected.execution_git_sha):
+                failures.append("LOCAL_EXECUTION_OBJECT_MISSING")
+            if not current_execution_sha or current_execution_sha != expected.execution_git_sha:
+                failures.append("EXECUTION_GIT_SHA_MISMATCH")
+            if dirty:
+                failures.append("EXECUTION_SOURCE_DIRTY")
+            if current_plan_semantic_id != expected.plan_semantic_id:
+                failures.append("PLAN_SEMANTIC_ID_MISMATCH")
+            if self.remote_object_checker is None:
+                failures.append("REMOTE_OBJECT_VERIFIER_REQUIRED")
+            elif not self.remote_object_checker(expected.execution_git_sha):
+                failures.append("REMOTE_EXECUTION_OBJECT_MISSING")
+        if state["current_execution_sha"] != expected.execution_git_sha:
             failures.append("EXECUTION_GIT_SHA_MISMATCH")
-        if dirty:
+        if state["dirty"]:
             failures.append("EXECUTION_SOURCE_DIRTY")
-        if current_plan_semantic_id != expected.plan_semantic_id:
+        if state["current_plan_semantic_id"] != expected.plan_semantic_id:
             failures.append("PLAN_SEMANTIC_ID_MISMATCH")
         if not self.runner_path.is_file() or sha256_file(self.runner_path) != expected.runner_sha256:
             failures.append("RUNNER_SHA256_MISMATCH")
         if not self.contract_path.is_file() or sha256_file(self.contract_path) != expected.scientific_contract_sha256:
             failures.append("SCIENTIFIC_CONTRACT_SHA256_MISMATCH")
-        remote_ok = (
-            bool(remote_execution_object_verified)
-            if remote_execution_object_verified is not None
-            else bool(self.remote_object_checker(expected.execution_git_sha))
+        remote_ok = state["remote_ancestry_verified"] if self.production_mode else (
+            self.remote_object_checker is not None and self.remote_object_checker(expected.execution_git_sha)
         )
-        if not remote_ok:
+        if self.production_mode and not remote_ok:
             failures.append("REMOTE_EXECUTION_OBJECT_MISSING")
         report = {
-            "status": "REMOTE_EXECUTION_OBJECT_VERIFIED" if not failures else "PREFLIGHT_REJECTED",
-            "failures": failures,
+            "status": "REMOTE_EXECUTION_OBJECT_VERIFIED" if self.production_mode and not failures else (
+                "TEST_VERIFIER_ACCEPTED" if not failures else "PREFLIGHT_REJECTED"
+            ),
+            "failures": sorted(set(failures)),
             "identity": expected.as_dict(),
-            "remote_execution_object_verified": remote_ok,
+            "execution_sha": state["current_execution_sha"],
+            "dirty": state["dirty"],
+            "plan_semantic_id": state["current_plan_semantic_id"],
+            "remote_name": self.remote_name,
+            "remote_ref": self.remote_ref,
+            "remote_head_sha": state["remote_head_sha"],
+            "remote_ancestry_verified": bool(state["remote_ancestry_verified"]),
+            "remote_execution_object_verified": bool(remote_ok),
+            "preflight_mode": "PRODUCTION_GIT" if self.production_mode else "TEST_VERIFIER",
             "worker_launch_authorized": not failures,
         }
         if failures:
@@ -272,7 +456,7 @@ class CampaignRuntime:
         return path
 
     def load_completed_artifacts(self, rows: Sequence[Mapping[str, Any]]) -> set[str]:
-        expected = {str(row["sample_id"]): int(row["sample_index"]) for row in rows}
+        expected = self._validate_plan_rows(rows)
         completed: set[str] = set()
         self.workers.mkdir(parents=True, exist_ok=True)
         for path in sorted(self.workers.glob("*.json")):
@@ -285,7 +469,11 @@ class CampaignRuntime:
             if sample_id not in expected:
                 self.telemetry["rejected_stale_artifact_count"] += 1
                 continue
-            self._validate_artifact(artifact, sample_id=sample_id, sample_index=expected[sample_id])
+            self._validate_artifact(
+                artifact,
+                sample_id=sample_id,
+                sample_index=int(expected[sample_id]["sample_index"]),
+            )
             if sample_id in completed:
                 raise ArtifactValidationError(f"DUPLICATE_SAMPLE:{sample_id}")
             completed.add(sample_id)
@@ -297,16 +485,19 @@ class CampaignRuntime:
         expected = sorted(self.identity.expected_sample_ids)
         if not set(completed).issubset(set(expected)):
             raise CheckpointValidationError("CHECKPOINT_HAS_UNKNOWN_SAMPLE")
+        generation = int(self.telemetry["checkpoint_generation_count"]) + 1
+        checkpoint_telemetry = dict(self.telemetry)
+        checkpoint_telemetry["checkpoint_generation_count"] = generation
         payload = {
             "schema": self.CHECKPOINT_SCHEMA,
             "identity": self.identity.as_dict(),
             "expected_sample_ids": expected,
             "completed_sample_ids": completed,
-            "telemetry": self.telemetry,
-            "generation": int(self.telemetry["checkpoint_generation_count"]) + 1,
+            "telemetry": checkpoint_telemetry,
+            "generation": generation,
         }
         atomic_json_write(self.checkpoint_path, payload)
-        self.telemetry["checkpoint_generation_count"] = payload["generation"]
+        self.telemetry.update(checkpoint_telemetry)
         return self.checkpoint_path
 
     def load_checkpoint(self) -> set[str]:
@@ -327,30 +518,47 @@ class CampaignRuntime:
             raise CheckpointValidationError("CHECKPOINT_COMPLETION_DUPLICATE")
         if not set(completed).issubset(set(self.identity.expected_sample_ids)):
             raise CheckpointValidationError("CHECKPOINT_UNKNOWN_SAMPLE")
-        self.telemetry.update(payload.get("telemetry", {}))
+        generation = payload.get("generation")
+        telemetry = payload.get("telemetry")
+        if isinstance(generation, bool) or not isinstance(generation, int) or generation < 1:
+            raise CheckpointValidationError("CHECKPOINT_GENERATION_INVALID")
+        if not isinstance(telemetry, dict):
+            raise CheckpointValidationError("CHECKPOINT_TELEMETRY_INVALID")
+        telemetry_generation = telemetry.get("checkpoint_generation_count")
+        if isinstance(telemetry_generation, bool) or telemetry_generation != generation:
+            raise CheckpointValidationError("CHECKPOINT_GENERATION_INCONSISTENT")
+        self.telemetry.update(telemetry)
         return set(completed)
 
     def run(self, rows: Sequence[Mapping[str, Any]], worker: Callable[[Mapping[str, Any]], Mapping[str, Any]]) -> dict[str, Any]:
         if self._preflight_report is None:
             raise CampaignPreflightError("PREFLIGHT_REQUIRED_BEFORE_WORKER")
-        rows_by_id = {str(row["sample_id"]): row for row in rows}
-        if set(rows_by_id) != set(self.identity.expected_sample_ids):
-            raise CampaignRuntimeError("SAMPLE_SET_MISMATCH")
+        self._validate_plan_rows(rows)
+        if self._computed_plan_semantic_id(rows) != self.identity.plan_semantic_id:
+            raise CampaignRuntimeError("PLAN_SEMANTIC_ID_MISMATCH")
         completed = self.load_checkpoint() | self.load_completed_artifacts(rows)
-        for sample_index, row in enumerate(rows):
+        for row in rows:
             sample_id = str(row["sample_id"])
             if sample_id in completed:
                 continue
             try:
                 result = worker(row)
-                self.publish_worker_artifact(sample_id=sample_id, sample_index=int(row.get("sample_index", sample_index)), result=result)
+                self.publish_worker_artifact(
+                    sample_id=sample_id,
+                    sample_index=int(row["sample_index"]),
+                    result=result,
+                )
             except Exception:
                 self.telemetry["worker_failure_count"] += 1
                 raise
             completed.add(sample_id)
             self.write_checkpoint(completed)
         self.telemetry["completed_sample_count"] = len(completed)
-        return {"status": "COMPLETE" if len(completed) == len(rows) else "INCOMPLETE", "completed_sample_ids": sorted(completed), "telemetry": self.telemetry}
+        return {
+            "status": "COMPLETE" if len(completed) == len(rows) else "INCOMPLETE",
+            "completed_sample_ids": sorted(completed),
+            "telemetry": self.telemetry,
+        }
 
 
 def run_worker_command(command: Sequence[str], *, timeout_seconds: float = 60.0) -> dict[str, Any]:
