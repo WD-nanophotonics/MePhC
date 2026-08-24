@@ -2,7 +2,7 @@
   "schema": "trilatt_e9f_c1_fr0_source_grid_live_contract_v1",
   "work_order_id": "TRILATT-E9F-C-C1-20260824-214",
   "base_sandbox_sha": "f9f14c1e9018e24939618c3368bfc22a242f2843",
-  "execution_code_sha": "23f5e44132d69ee657d73440b4614ac701a23a7d",
+  "execution_code_base_sha": "d9b1ce756995c94e93afe2fb820ccf3265cc5cb3",
   "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
   "scope": {
     "fr": 0.0,

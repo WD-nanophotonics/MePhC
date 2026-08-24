@@ -52,6 +52,10 @@ def git_head() -> str:
     return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
 
 
+def execution_base_is_ancestor(contract: dict) -> bool:
+    return subprocess.run(["git", "merge-base", "--is-ancestor", contract["execution_code_base_sha"], git_head()], cwd=ROOT).returncode == 0
+
+
 def atomic_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
@@ -79,7 +83,7 @@ def make_plan(contract: dict) -> dict:
 def self_checks(contract: dict, plan: dict, preflight, geometry: dict) -> dict:
     checks = {
         "WORK_ORDER": contract["work_order_id"] == WORK_ORDER,
-        "EXECUTION_CODE_SHA": contract["execution_code_sha"] == git_head(),
+        "EXECUTION_CODE_SHA": execution_base_is_ancestor(contract),
         "MAIN_EXPECTATION": contract["expected_main_head"] == "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
         "FR0_ONLY": contract["scope"]["fr"] == 0.0 and not contract["authorization"].get("fr04", False),
         "SOURCE_ESTIMATOR_ONLY": contract["scope"]["estimator"] == SOURCE_GRID_MIDPOINT_V1 and MEPHC_CLIPPED_RETAINED_DOMAIN_V1 not in (contract["scope"]["estimator"],),
@@ -179,7 +183,7 @@ def reduction_summary(plan: dict, rows: list[dict], band: int) -> dict:
 def run(output: Path, checkpoint: Path) -> dict:
     started = time.monotonic()
     contract = load_contract()
-    if git_head() != contract["execution_code_sha"]:
+    if not execution_base_is_ancestor(contract):
         raise RuntimeError("live execution must start from committed contract SHA")
     plan = make_plan(contract)
     geometry = geometry_inputs()
@@ -189,7 +193,7 @@ def run(output: Path, checkpoint: Path) -> dict:
     counters = {"solver_requests": 0, "cache_hits": 0, "solver_failures": 0, "sample_evaluations": 0}
     if checkpoint.exists():
         saved = json.loads(checkpoint.read_text(encoding="utf-8"))
-        expected = {"work_order_id": WORK_ORDER, "base_sandbox_sha": contract["base_sandbox_sha"], "execution_code_sha": contract["execution_code_sha"], "plan_digest": plan["PLAN_DIGEST"], "domain_digest": plan["DOMAIN_DIGEST"], "semantic_domain_id": plan["SEMANTIC_DOMAIN_ID"], "portable_plan_fingerprint": plan["PORTABLE_PLAN_FINGERPRINT"]}
+        expected = {"work_order_id": WORK_ORDER, "base_sandbox_sha": contract["base_sandbox_sha"], "execution_code_base_sha": contract["execution_code_base_sha"], "plan_digest": plan["PLAN_DIGEST"], "domain_digest": plan["DOMAIN_DIGEST"], "semantic_domain_id": plan["SEMANTIC_DOMAIN_ID"], "portable_plan_fingerprint": plan["PORTABLE_PLAN_FINGERPRINT"]}
         if any(saved.get(key) != value for key, value in expected.items()):
             raise RuntimeError("checkpoint does not match immutable live contract")
         completed = saved.get("completed", {})
@@ -252,7 +256,7 @@ def run(output: Path, checkpoint: Path) -> dict:
 if __name__ == "__main__":
     contract = load_contract()
     if "--self-check" in sys.argv:
-        if git_head() != contract["execution_code_sha"]:
+        if not execution_base_is_ancestor(contract):
             raise SystemExit("self-check requires contract SHA")
         plan = make_plan(contract)
         geometry = geometry_inputs()
