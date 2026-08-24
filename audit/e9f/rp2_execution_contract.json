@@ -1,0 +1,64 @@
+{
+  "schema": "trilatt_e9f_c1_rp2_execution_contract_v1",
+  "work_order_id": "TRILATT-E9F-C1-RP2-20260824-229",
+  "phase": "E9F.C1.RP2",
+  "stop_after": "E9F_C1_RP2_REPORT",
+  "policy_contract": {
+    "path": "audit/e9f/rp1_recovery_policy_contract.json",
+    "file_sha256": "75f2d32853ab7e0a5878c19a732f4ac91ef993c105a8000b87e4a8a6ed6d5145",
+    "canonical_semantic_sha256": "cfbe71ff9f648048901038823c25ffd358bb8a80394fe05d082a57957acfc84a"
+  },
+  "matrix": {
+    "logical_worker_key": "(source_sample_id,resolution)",
+    "source_sample_count": 6,
+    "resolutions": [64, 96],
+    "stencils": ["1/72", "1/144"],
+    "matrix_entry_count": 24,
+    "logical_worker_count": 12,
+    "diagnostic_only": true,
+    "optional_escalation": false
+  },
+  "solver": {
+    "num_bands": 6,
+    "polarization": "TE",
+    "representation": "mpb_live_energy_eh_v1",
+    "eigensolver_tolerance": 1e-7,
+    "deterministic": true,
+    "mesh_size": 3,
+    "rank1_bands_zero_based": [2, 3],
+    "rank2_pair_zero_based": [2, 3]
+  },
+  "raw_association": {
+    "probability_threshold": 0.5,
+    "margin_threshold": 0.05,
+    "assignment_margin_threshold": 0.05,
+    "complete_candidate_window": 6
+  },
+  "rank2_diagnostic_thresholds": {
+    "MIN_EXTERNAL_PAIR_GAP": 0.02,
+    "MIN_SIGMA": 0.9,
+    "MAX_PRINCIPAL_ANGLE": 0.45,
+    "MAX_PROJECTOR_DISTANCE": 0.3
+  },
+  "scientific_firewall": {
+    "l0_qualification_decision": false,
+    "l1_diagnostic_only": true,
+    "l1_reducer_admissible": false,
+    "l2_diagnostic_only": true,
+    "l3_threshold": false,
+    "rank1_recovery": false,
+    "band2_chern": false,
+    "three_band_sum": false,
+    "source_anchor_comparison": false,
+    "zero_fill": false,
+    "interpolation": false,
+    "renormalization": false
+  },
+  "sampling_identity": {
+    "nominal_q_field": "NOMINAL_Q",
+    "evaluated_q_field": "EVALUATED_Q",
+    "manifest_q_field": "MANIFEST_Q",
+    "cache_identity": "EVALUATED_Q plus complete physical provenance",
+    "quantization": "none"
+  }
+}
