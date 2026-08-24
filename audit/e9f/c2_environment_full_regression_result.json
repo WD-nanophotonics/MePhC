@@ -1,0 +1,84 @@
+{
+  "schema": "trilatt_e9f_b_c2_environment_full_regression_result_v1",
+  "work_order_id": "TRILATT-E9F-B-C2-20260824-209",
+  "base_sha": "7f4ed74a060b27dd9dc0de4b5d9bc3b518805345",
+  "code_change": "EVIDENCE_ONLY",
+  "production_code_changed": false,
+  "test_code_changed": false,
+  "dependency_complete_environment": "UNAVAILABLE",
+  "environment_candidates": [
+    {
+      "python_executable": "C:/Users/icywo/AppData/Local/Programs/Python/Python312/python.exe",
+      "python_version": "3.12.0",
+      "meep_import": "FAILED",
+      "scipy_import": "FAILED",
+      "shapely_import": "FAILED",
+      "pytest_import": "PASSED",
+      "meep_version": "UNAVAILABLE",
+      "scipy_version": "UNAVAILABLE",
+      "shapely_version": "UNAVAILABLE"
+    },
+    {
+      "python_executable": "C:/Users/icywo/AppData/Local/Programs/Python/Python313/python.exe",
+      "python_version": "3.13.2",
+      "meep_import": "FAILED",
+      "scipy_import": "FAILED",
+      "shapely_import": "FAILED",
+      "pytest_import": "FAILED",
+      "meep_version": "UNAVAILABLE",
+      "scipy_version": "UNAVAILABLE",
+      "shapely_version": "UNAVAILABLE"
+    },
+    {
+      "python_executable": "/usr/bin/python3",
+      "python_version": "3.14.4",
+      "meep_import": "FAILED",
+      "scipy_import": "FAILED",
+      "shapely_import": "FAILED",
+      "pytest_import": "FAILED",
+      "meep_version": "UNAVAILABLE",
+      "scipy_version": "UNAVAILABLE",
+      "shapely_version": "UNAVAILABLE"
+    }
+  ],
+  "formal_regression_gate": "NOT_RUN_DEPENDENCY_COMPLETE_ENVIRONMENT_UNAVAILABLE",
+  "compileall": "NOT_RUN_DEPENDENCY_GATE",
+  "focused_e9f_b_c1_tests": "NOT_RUN_DEPENDENCY_GATE",
+  "existing_valley_chern_tests": "NOT_RUN_DEPENDENCY_GATE",
+  "full_test_suite": "NOT_RUN_DEPENDENCY_GATE",
+  "public_api_reexports": "NOT_RUN_DEPENDENCY_GATE",
+  "c1_plan_digest_replay": "NOT_RUN_DEPENDENCY_GATE",
+  "c1_count_weight_parity": "NOT_RUN_DEPENDENCY_GATE",
+  "complete_synthetic_reduction": "NOT_RUN_DEPENDENCY_GATE",
+  "incomplete_synthetic_fail_closed": "NOT_RUN_DEPENDENCY_GATE",
+  "sealed_c1_reference_values": {
+    "fr=0": {
+      "source_count": 551,
+      "clipped_count": 752,
+      "source_weight_q2": 0.4251543209876543,
+      "clipped_weight_q2": 0.4171355694895034,
+      "source_plan_digest": "734493221730c0a6158ea3f58e31624e68c7be8aaae899488e1de2e2d7df5827",
+      "clipped_plan_digest": "a576fdff53342f8b3d4897b19ec5b2ada2db8dc34daeb390413740bac942c8b1"
+    },
+    "fr=0.4": {
+      "source_count": 641,
+      "clipped_count": 872,
+      "source_weight_q2": 0.49459876543209874,
+      "clipped_weight_q2": 0.48568148019904145,
+      "source_plan_digest": "23d101a390a780fefa235ad75a6c88e66f048efe0234948b63330708d08d809d",
+      "clipped_plan_digest": "65870e0c3a2933913a6d873e381915260be146be2e43a0e202a54578822a7b7c"
+    }
+  },
+  "source_tree_start_head": "7f4ed74a060b27dd9dc0de4b5d9bc3b518805345",
+  "source_tree_preexisting_user_changes_preserved": true,
+  "source_tree_immutable_during_validation": true,
+  "worktree_clean_before_validation": false,
+  "worktree_clean_blocker": "pre-existing unrelated user changes preserved per standing instructions",
+  "dependency_installation": false,
+  "new_mpb_solver_requests": 0,
+  "new_berry_calculation": "NONE",
+  "new_scientific_valley_chern_value": "NONE",
+  "main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "main_unchanged": true,
+  "overall": "FAIL_CLOSED_DEPENDENCY_COMPLETE_ENVIRONMENT_UNAVAILABLE"
+}
