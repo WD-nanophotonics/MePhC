@@ -16,10 +16,10 @@ def sha(path: Path) -> str: return hashlib.sha256(path.read_bytes()).hexdigest()
 def git(root: Path, *args: str) -> str: return subprocess.check_output(["git", *args], cwd=root, text=True).strip()
 def tail(data: bytes) -> str: return data[-65536:].decode(errors="replace")
 def run_prelive(root: Path) -> dict[str, Any]:
-    command = [sys.executable, "-m", "pytest", "-q", "tests/test_e9f_c1_rp2_c3_c2.py", "--disable-warnings"]
+    command = [sys.executable, "-m", "pytest", "-q", "tests/test_e9f_c1_rp2_c3_c2.py", "tests/test_e9f_c1_rp2_c3_c2_required_nodes.py", "--disable-warnings"]
     hardening.validate_process_review(json.loads((root / "audit/e9f/c3_c2_process_reliability_review.json").read_text()))
-    process = subprocess.run(command, cwd=root, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True); output = process.stdout + process.stderr; nodes = [line.strip() for line in output.splitlines() if "::" in line]
-    manifest = {"schema": "mephc_e9f_c1_rp2_c3_c2_prelive_manifest_v1", "work_order_id": scientific.WORK_ORDER, "pytest_exit_status": process.returncode, "pytest_node_count": len(nodes), "pytest_output_tail": output[-65536:], "placeholder_pass_scan": "PASSED" if "checks[" not in (root / "tests/test_e9f_c1_rp2_c3_c2.py").read_text() else "FAILED", "required_test_file": "tests/test_e9f_c1_rp2_c3_c2.py"}; atomic(root / "audit/e9f/c3_c2_prelive_manifest.json", manifest); 
+    collect = subprocess.run([*command, "--collect-only"], cwd=root, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True); nodes = [line.strip() for line in (collect.stdout + collect.stderr).splitlines() if "::" in line]; process = subprocess.run(command, cwd=root, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True); output = process.stdout + process.stderr
+    manifest = {"schema": "mephc_e9f_c1_rp2_c3_c2_prelive_manifest_v1", "work_order_id": scientific.WORK_ORDER, "pytest_exit_status": process.returncode, "pytest_node_ids": nodes, "pytest_node_count": len(nodes), "pytest_output_tail": output[-65536:], "placeholder_pass_scan": "PASSED" if "checks[" not in (root / "tests/test_e9f_c1_rp2_c3_c2.py").read_text() else "FAILED", "required_test_file": "tests/test_e9f_c1_rp2_c3_c2.py"}; atomic(root / "audit/e9f/c3_c2_prelive_manifest.json", manifest); 
     if process.returncode != 0: raise RuntimeError(f"C3_C2_PRELIVE_FAILED:{manifest}")
     return manifest
 def rss() -> int | None:
