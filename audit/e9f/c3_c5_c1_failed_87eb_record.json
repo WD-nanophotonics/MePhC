@@ -1,0 +1,20 @@
+{
+  "child_pid": 1025894,
+  "completed_payload_exists_before_failure": true,
+  "detail_availability": "FULL",
+  "exception_message": "Unable to allocate 11.4 GiB for an array with shape (27648, 27648) and data type complex128",
+  "exception_type": "MemoryError",
+  "failed_execution_sha": "87eb2678448fdf6db3f161a45484470ab5c8a2bd",
+  "failure_sidecar_sha256": "46496d035da95cf37d520389af49136ffcdd428eb3e4b3c37b762eb54308f345",
+  "failure_stage": "science_compute",
+  "native_solve_count": 0,
+  "parent_failure_sha256": "0bed6cbfd22b07301dc3e2a615cdea9359d83769a013266f3f9441b8743461a2",
+  "payload_reused_by_final": false,
+  "resolution": 96,
+  "schema": "mephc_e9f_c1_rp2_c3_c5_c1_failed_attempt_record_v1",
+  "scientific_payload_reuse_conclusion": "02b8_FINAL_MATRIX_REUSED_87eb_SCIENTIFIC_PAYLOAD=false",
+  "stderr_sha256": "7a0a12929042d57abaff5f326ebda5baf4ea6b1260620aaf3852612937fb7d24",
+  "stderr_tail_sha256": "7a0a12929042d57abaff5f326ebda5baf4ea6b1260620aaf3852612937fb7d24",
+  "work_order_id": "MEPHC-E9F-C1-RP2-C3-C5-C1-20260825-250",
+  "worker_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=96"
+}
