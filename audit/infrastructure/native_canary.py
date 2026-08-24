@@ -52,7 +52,7 @@ def run_parent_canary(root:Path,runtime_root:Path)->dict[str,Any]:
     sha=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip()
     runner=Path(__file__).resolve(); contract_path=root/"audit/e9f"/CONTRACT
     ident=CampaignIdentity(sha,sha256_file(runner),sha256_file(contract_path),
-        plan_id(rows,contract),IDS,(0,1,2),
+        plan_id(rows,contract),IDS,expected_sample_indices=(0,1,2),
         semantic_estimator_id=contract["identity"]["estimator_id"],
         semantic_domain_id=contract["identity"]["semantic_domain_id"],
         semantic_spacing_id=contract["identity"]["spacing_id"])
