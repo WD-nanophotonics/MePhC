@@ -1,0 +1,19 @@
+{
+  "schema": "mephc_e9f_c1_rp2_c3_c2_process_reliability_review_v1",
+  "work_order_id": "MEPHC-E9F-C1-RP2-C3-C2-20260825-242",
+  "phase": "E9F.C1.RP2.C3.C2",
+  "pipeline_health": "PIPELINE_REQUIRES_CORRECTIVE",
+  "incidents": [
+    {"incident_id": "REL-021", "priority": "P1", "CORRECTIVE_STATUS": "OPEN"},
+    {"incident_id": "REL-026", "priority": "P1", "CORRECTIVE_STATUS": "ROOT_CAUSE_IDENTIFIED"},
+    {"incident_id": "REL-035", "priority": "P2", "CORRECTIVE_STATUS": "CORRECTIVE_PENDING"},
+    {"incident_id": "REL-039", "priority": "P1", "CORRECTIVE_STATUS": "OPEN"},
+    {"incident_id": "REL-040", "priority": "P1", "CORRECTIVE_STATUS": "OPEN"},
+    {"incident_id": "REL-041", "priority": "P1", "CORRECTIVE_STATUS": "OPEN"},
+    {"incident_id": "REL-042", "priority": "P1", "CORRECTIVE_STATUS": "OPEN"},
+    {"incident_id": "REL-043", "priority": "P1", "CORRECTIVE_STATUS": "OPEN"}
+  ],
+  "p0_items": [],
+  "p1_items": ["REL-021", "REL-026", "REL-039", "REL-040", "REL-041", "REL-042", "REL-043"],
+  "p2_items": ["REL-035"]
+}

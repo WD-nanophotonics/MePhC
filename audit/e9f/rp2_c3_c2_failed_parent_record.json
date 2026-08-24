@@ -1,0 +1,19 @@
+{
+  "schema": "mephc_e9f_c1_rp2_c3_c2_failed_parent_record_v1",
+  "project_id": "MEPHC",
+  "work_order_id": "MEPHC-E9F-C1-RP2-C3-C1-20260825-240",
+  "failed_execution_sha": "2fb27d9394147f1215f93c153cb3d776af89e768",
+  "canary_worker_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=64",
+  "canary_child_pid": 839269,
+  "return_code": 1,
+  "direct_pid_gone": true,
+  "orphan_count": 0,
+  "stdout_sha256": "083f721363ced2b1e7faf45851e28cb2377a3d00c2ed887a2e94c4d0e9b08c0a",
+  "stderr_sha256": "668c7bd564c3eec111cac722cdb1e4738b8707668bbe4de72b9d5be83a817671",
+  "stderr_tail_available": false,
+  "exact_runtime_traceback_available": false,
+  "scientific_result_accepted": false,
+  "same_execution_retry": false,
+  "static_blocker": "PARTIAL_VERTEX_LIST_ENTERED_FOUR_VERTEX_DIAGNOSTIC",
+  "static_blocker_runtime_traceback_match_confirmed": false
+}

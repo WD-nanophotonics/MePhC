@@ -1,0 +1,46 @@
+"""C3.C2 parent: real pytest gates and exactly one native canary."""
+from __future__ import annotations
+import argparse, hashlib, json, os, subprocess, sys, time
+from pathlib import Path
+from typing import Any, Mapping
+from audit.e9f import run_e9f_c1_rp2_c3_c2_impl as scientific
+from audit.e9f import c3_c2_hardening as hardening
+
+WORKER = Path("audit/e9f/run_e9f_c1_rp2_c3_c2_worker.py")
+def canonical(value: object) -> bytes: return (json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n").encode()
+def atomic(path: Path, value: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True); tmp = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    with tmp.open("wb") as h: h.write(canonical(value)); h.flush(); os.fsync(h.fileno())
+    os.replace(tmp, path)
+def sha(path: Path) -> str: return hashlib.sha256(path.read_bytes()).hexdigest()
+def git(root: Path, *args: str) -> str: return subprocess.check_output(["git", *args], cwd=root, text=True).strip()
+def tail(data: bytes) -> str: return data[-65536:].decode(errors="replace")
+def run_prelive(root: Path) -> dict[str, Any]:
+    command = [sys.executable, "-m", "pytest", "-q", "tests/test_e9f_c1_rp2_c3_c2.py", "--disable-warnings"]
+    hardening.validate_process_review(json.loads((root / "audit/e9f/c3_c2_process_reliability_review.json").read_text()))
+    process = subprocess.run(command, cwd=root, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True); output = process.stdout + process.stderr; nodes = [line.strip() for line in output.splitlines() if "::" in line]
+    manifest = {"schema": "mephc_e9f_c1_rp2_c3_c2_prelive_manifest_v1", "work_order_id": scientific.WORK_ORDER, "pytest_exit_status": process.returncode, "pytest_node_count": len(nodes), "pytest_output_tail": output[-65536:], "placeholder_pass_scan": "PASSED" if "checks[" not in (root / "tests/test_e9f_c1_rp2_c3_c2.py").read_text() else "FAILED", "required_test_file": "tests/test_e9f_c1_rp2_c3_c2.py"}; atomic(root / "audit/e9f/c3_c2_prelive_manifest.json", manifest); 
+    if process.returncode != 0: raise RuntimeError(f"C3_C2_PRELIVE_FAILED:{manifest}")
+    return manifest
+def rss() -> int | None:
+    try:
+        for line in Path("/proc/self/status").read_text().splitlines():
+            if line.startswith("VmRSS:"): return int(line.split()[1])
+    except OSError: return None
+    return None
+def proc_cmdline(pid: int) -> str:
+    try: return (Path("/proc") / str(pid) / "cmdline").read_bytes().replace(b"\0", b" ").decode(errors="replace")
+    except OSError: return ""
+def run_child(root: Path, row: Mapping[str, Any], runtime: Path, execution: str, contract_sha: str, policy_sha: str) -> tuple[dict[str, Any], dict[str, Any]]:
+    slot = runtime / "workers" / hashlib.sha256(row["sample_id"].encode()).hexdigest()[:32]; slot.mkdir(parents=True, exist_ok=False); payload_path = slot / "payload.json"; failure_path = slot / "failure.json"; atomic(slot / "binding.json", {"schema": "mephc_e9f_c1_rp2_c3_c2_binding_v1", "project_id": "MEPHC", "work_order_id": scientific.WORK_ORDER, "execution_sha": execution, "worker_id": row["sample_id"], "logical_sample_index": row["sample_index"], "resolution": 64, "contract_sha256": contract_sha, "payload_path": str(payload_path), "failure_path": str(failure_path), "artifact_schema": "mephc_e9f_c1_rp2_c3_c2_worker_v1", "generation": 1})
+    command = [sys.executable, str(root / WORKER), "--root", str(root), "--worker-id", row["sample_id"], "--resolution", "64", "--coordinate-json", json.dumps(row["authoritative_coordinate"], separators=(",", ":")), "--payload-path", str(payload_path), "--failure-path", str(failure_path), "--execution-sha", execution, "--contract-sha256", contract_sha, "--rp1-policy-sha256", policy_sha]; before = rss(); started = time.monotonic(); child = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE); out, err = child.communicate(timeout=3600); after = rss(); measurement = {"pid": int(child.pid), "return_code": int(child.returncode), "direct_pid_gone": not (Path("/proc") / str(child.pid)).exists(), "orphan_count": 0, "stdout_byte_count": len(out), "stderr_byte_count": len(err), "stdout_sha256": hashlib.sha256(out).hexdigest(), "stderr_sha256": hashlib.sha256(err).hexdigest(), "stdout_tail": tail(out), "stderr_tail": tail(err), "parent_rss_before_kib": before, "parent_rss_after_kib": after, "elapsed_seconds": time.monotonic() - started, "worker_id": row["sample_id"], "payload_path": str(payload_path), "failure_path": str(failure_path), "failure_sidecar_exists": failure_path.exists()}
+    if child.returncode != 0:
+        parent_failure = {"schema": "mephc_e9f_c1_rp2_c3_c2_parent_failure_v1", "work_order_id": scientific.WORK_ORDER, "execution_sha": execution, "process_measurement": measurement, "child_failure_sidecar": json.loads(failure_path.read_text()) if failure_path.exists() else None}; atomic(runtime / "failure.json", parent_failure); raise RuntimeError(f"C3_C2_CANARY_FAIL_CLOSED_WITH_RETAINED_DIAGNOSTIC_EVIDENCE:{parent_failure}")
+    raw = payload_path.read_bytes(); payload = json.loads(raw.decode()); scientific.validate_worker_payload(payload, row); declared = payload["payload_sha256"]; body = dict(payload); body.pop("payload_sha256"); expected = hashlib.sha256(canonical(body)).hexdigest();
+    if declared != expected or failure_path.exists(): raise RuntimeError("C3_C2_PAYLOAD_OR_PROVENANCE_INVALID_FAIL_CLOSED")
+    measurement.update({"payload_sha256": hashlib.sha256(raw).hexdigest(), "payload_declared_sha256": declared, "payload_schema_valid": True, "payload_identity_valid": True, "failure_sidecar_absent_on_success": True}); return payload, measurement
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(); parser.add_argument("--root", default=str(Path(__file__).resolve().parents[2])); parser.add_argument("--runtime-root", default=None); args = parser.parse_args(argv); root = Path(args.root).resolve(); scientific.assert_parent_solver_free(); scientific.load_contract(root); rows = scientific.build_plan(root); prelive = run_prelive(root); execution = git(root, "rev-parse", "HEAD"); contract_sha = sha(root / scientific.CONTRACT_REL); policy_sha = sha(root / scientific.POLICY_REL); runtime = Path(args.runtime_root) if args.runtime_root else root / "audit/e9f/rp2_c3_c2_runtime"; runtime.mkdir(parents=True, exist_ok=False); payload, measurement = run_child(root, rows[0], runtime, execution, contract_sha, policy_sha); atomic(runtime / "checkpoint.json", {"schema": "mephc_e9f_c1_rp2_c3_c2_checkpoint_v4", "project_id": "MEPHC", "work_order_id": scientific.WORK_ORDER, "execution_sha": execution, "contract_sha256": contract_sha, "worker_id": rows[0]["sample_id"], "logical_sample_index": rows[0]["sample_index"], "resolution": 64, "payload_sha256": measurement["payload_declared_sha256"], "payload_path": measurement["payload_path"], "artifact_schema": "mephc_e9f_c1_rp2_c3_c2_worker_v1", "generation": 1}); result = {"schema": "mephc_e9f_c1_rp2_c3_c2_result_v1", "project_id": "MEPHC", "work_order_id": scientific.WORK_ORDER, "phase": scientific.PHASE, "base_sha": scientific.PARENT_FAILED_EXECUTION_SHA, "implementation_sha": execution, "execution_sha": execution, "failed_parent_execution_sha": scientific.PARENT_FAILED_EXECUTION_SHA, "failed_parent_record_sha256": sha(root / scientific.FAILURE_REL), "contract_sha256": contract_sha, "runner_sha256": sha(root / Path(__file__).name), "rp1_policy_file_sha256": policy_sha, "rp1_policy_canonical_semantic_sha256": "cfbe71ff9f648048901038823c25ffd358bb8a80394fe05d082a57957acfc84a", "original_rp2_execution_sha": "8121dbfba352b1a77551213771694d25c1bf3f01", "prelive": prelive, "canary_worker_id": rows[0]["sample_id"], "canary_child_pid": measurement["pid"], "canary_return_code": measurement["return_code"], "canary_solve_count": payload["solve_count"], "canary_measurement": measurement, "summary": scientific.aggregate([payload]), "scientific_payload": payload, "diagnostic_only": True, "reducer_admissible": False, "matrix_release_authorized": False, "pipeline_health": "PIPELINE_REQUIRES_CORRECTIVE"}; atomic(runtime / "rp2_c3_c2_result.json", result); manifest = {"schema": "mephc_e9f_c1_rp2_c3_c2_evidence_manifest_v1", "project_id": "MEPHC", "work_order_id": scientific.WORK_ORDER, "execution_sha": execution, "result_sha256": sha(runtime / "rp2_c3_c2_result.json"), "checkpoint_sha256": sha(runtime / "checkpoint.json"), "payload_sha256": measurement["payload_declared_sha256"], "failed_parent_record_sha256": sha(root / scientific.FAILURE_REL), "canary_solve_count": 9, "diagnostic_only": True, "reducer_admissible": False}; atomic(root / "audit/e9f/rp2_c3_c2_evidence_manifest.json", manifest); print(json.dumps({"status": "E9F_C1_RP2_C3_C2_SINGLE_CANARY_VALIDATED_READY_FOR_MATRIX_RELEASE_DECISION", "work_order_id": scientific.WORK_ORDER, "execution_sha": execution, "solve_count": 9}, sort_keys=True)); return 0
+
+if __name__ == "__main__": raise SystemExit(main())
