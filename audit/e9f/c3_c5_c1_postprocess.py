@@ -155,7 +155,7 @@ def delta_tables(payloads: Sequence[Mapping[str, Any]], rows: Sequence[Mapping[s
         raise ValueError("E9F_C1_RP2_C3_C5_C1_POSTPROCESS_COVERAGE_FAIL_CLOSED:delta_cardinality")
     old_ok = True
     for old in old_deltas:
-        sample = old["source_sample_id"]; branch = old["branch"]
+        sample = old["source_sample_id"]; branch = old["branch"].replace("_omega", "")
         old_stencil = next(item for item in stencil_rows if item["source_sample_id"] == sample and item["resolution"] == 64 and item["branch"] == branch)
         old_resolution = next(item for item in resolution_rows if item["source_sample_id"] == sample and item["stencil"] == "1/72" and item["branch"] == branch)
         old_ok &= abs(old_stencil["delta_signed"] - old["stencil_delta_signed"]) <= 1e-12 and abs(old_stencil["delta_abs"] - old["stencil_delta_abs"]) <= 1e-12 and abs(old_resolution["delta_signed"] - old["resolution_delta_signed"]) <= 1e-12 and abs(old_resolution["delta_abs"] - old["resolution_delta_abs"]) <= 1e-12

@@ -63,7 +63,7 @@ def test_safe_projector_dense_equivalence_and_no_dense_path():
 
 
 def test_replay_index_has_exact_108_keys_and_mutations_fail(source):
-    evidence = ROOT / "audit/e9f/rp2_evidence/workers"
+    evidence = SOURCE_RUNTIME.parent / "rp2_evidence/workers"
     if not evidence.exists():
         pytest.skip("immutable RP2 evidence is not mounted")
     result = pp.replay_coverage(source["payloads"], evidence)
