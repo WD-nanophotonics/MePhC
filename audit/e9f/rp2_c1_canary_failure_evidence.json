@@ -1,0 +1,51 @@
+{
+  "canary": {
+    "passed": false,
+    "resolution": 64,
+    "source_sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+    "stencils": [
+      "1/72",
+      "1/144"
+    ],
+    "worker_ids_started": [
+      "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=64"
+    ],
+    "workers_released": 0,
+    "workers_started": 1
+  },
+  "execution_git_sha": "591855350567b3a5cc70619654e396b506f14c2e",
+  "failure_class": "ADAPTER_OR_API_PRECONDITION_FAILURE",
+  "failure_code": "E9F_C1_RP2_C1_SELECTED_PAIR_REPRESENTATION_UNQUALIFIED_FAIL_CLOSED",
+  "failure_detail": "Selected [2,3] pair representation did not satisfy the mandated 1e-10 Gram gate; no tolerance relaxation, QR/Lowdin/state mixing, or full-six gate substitution was attempted.",
+  "immutable_inputs": {
+    "original_rp2_evidence_manifest_sha256": "e7d8bd3b343deff95865c73249245522ab0a07546f992ccd1e700a02ba49cdbf",
+    "rp1_policy_contract_sha256": "75f2d32853ab7e0a5878c19a732f4ac91ef993c105a8000b87e4a8a6ed6d5145"
+  },
+  "matrix_authorized": {
+    "logical_worker_count": 12,
+    "matrix_entry_count": 24,
+    "resolutions": [
+      64,
+      96
+    ],
+    "source_sample_count": 6,
+    "stencils": [
+      "1/72",
+      "1/144"
+    ]
+  },
+  "phase": "E9F.C1.RP2.C1",
+  "remote_sandbox_sha_observed": "591855350567b3a5cc70619654e396b506f14c2e",
+  "schema": "trilatt_e9f_c1_rp2_c1_canary_failure_evidence_v1",
+  "scientific_firewall": {
+    "band2_recovery_authorized": false,
+    "diagnostic_only": true,
+    "main_promotion_authorized": false,
+    "reducer_admissible": false,
+    "rp3_authorized": false,
+    "threshold_change_authorized": false
+  },
+  "status": "CANARY_FAILED_FAIL_CLOSED_NO_MATRIX_CONTINUATION",
+  "stop_after": "E9F_C1_RP2_C1_REPORT",
+  "work_order_id": "TRILATT-E9F-C1-RP2-C1-20260824-231"
+}
