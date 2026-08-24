@@ -9,8 +9,10 @@
     "tests/test_e9f_c1_d1_c1_geometry.py",
     "tests/test_campaign_runtime.py",
     "tests/validate_affine_r1_1.py",
-    "tests/validate_affine_r2.py"
+    "tests/validate_affine_r2.py",
+    "audit/e9f/c1_p1_provenance_manifest.json"
   ],
+  "self_hash_excluded": true,
   "checkpoint_identity": [
     "execution_git_sha",
     "runner_sha256",
