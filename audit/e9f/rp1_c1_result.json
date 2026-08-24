@@ -1,0 +1,70 @@
+{
+  "base_sandbox_sha": "dd0e4f9cc3c02338211203df27a546297210a560",
+  "bound_numerical_payload_digest": "99eecf6e8bef8204332952222cf46b1f35931528d828462f73e72b89d4e56e60",
+  "classification_11_6_unchanged": true,
+  "classification_8_3_unchanged": true,
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "final_sandbox_sha_pending": true,
+  "historical_affine_validator_limitation": "Historical affine validator remains blocked by the missing historical docs artifact; no /tmp symlink was created.",
+  "implementation_sha": "06f000a4fe573a78f105e116c48a249959bbffd2",
+  "l3_consistency_metric": "DELTA_PHASE_RANK1SUM_RANK2DET=abs(Arg(exp(i*(PHI_BAND2+PHI_BAND3-PHI_RANK2_DET))))",
+  "main_unchanged": true,
+  "manifest_real_git_diff_test": true,
+  "no_band2_recovery": true,
+  "no_berry_reducer": true,
+  "no_chern_calculation": true,
+  "no_mpb_solve": true,
+  "no_six_point_diagnostic": true,
+  "no_three_band_sum": true,
+  "no_threshold_change": true,
+  "numerical_payload_digest_unchanged": true,
+  "open_p0": [],
+  "open_p1": [],
+  "open_p2": [
+    "REL-022"
+  ],
+  "phase": "E9F.C1.RP1.C1",
+  "pipeline_health": "PIPELINE_HEALTHY_WITH_TECH_DEBT",
+  "policy_validator_mutation_gate": "passed",
+  "process_review_real_index_test": true,
+  "rank1_shadow_area_normalized": true,
+  "rank2_thresholds": {
+    "MAX_PRINCIPAL_ANGLE": 0.45,
+    "MAX_PROJECTOR_DISTANCE": 0.3,
+    "MIN_EXTERNAL_PAIR_GAP": 0.02,
+    "MIN_SIGMA": 0.9
+  },
+  "recovery_policy_schema": "trilatt_e9f_c1_rp1_recovery_policy_v1",
+  "rel_022_status": "PARTIALLY_CLOSED",
+  "rel_023_status": "CLOSED",
+  "rel_024_status": "CLOSED",
+  "rel_025_status": "CLOSED",
+  "rp2_fixed_resolutions": [
+    64,
+    96
+  ],
+  "rp2_fixed_sample_count": 6,
+  "rp2_fixed_sample_ids": [
+    "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-34;grid_j=16;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID"
+  ],
+  "rp2_fixed_stencils": [
+    "1/72",
+    "1/144"
+  ],
+  "rp2_optional_escalation_present": false,
+  "schema": "trilatt_e9f_c1_rp1_c1_result_v1",
+  "semantic_gate_summary": {
+    "execution_firewall_all_false": true,
+    "f1_hard_binding": true,
+    "fixed_rp2_matrix": true,
+    "real_artifact_integration_tests": true
+  },
+  "source_anchor_available_to_diagnostic_runner": false,
+  "status": "E9F_C1_RECOVERY_POLICY_SEMANTIC_GATE_HARDENED_READY_FOR_SIX_POINT_DIAGNOSTIC",
+  "work_order_id": "TRILATT-E9F-C1-RP1-C1-20260824-227"
+}
