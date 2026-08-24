@@ -1,0 +1,13 @@
+{
+  "failed_weight_removal": "FORBIDDEN",
+  "incomplete_integral": "INCOMPLETE_NOT_REPORTED_UNLESS_EXACT_SAMPLE_RECOVERY_IS_AUTHORIZED",
+  "live_berry_calculation": "NOT_PERFORMED_IN_C2",
+  "mephc_result_label": "MEPHC_CLIPPED_DOMAIN_VALLEY_INTEGRAL",
+  "missing_row": "FORBIDDEN",
+  "nan_as_zero": "FORBIDDEN",
+  "per_sample_band_cardinality": "exactly_one_of_QUALIFIED_REPORTED_or_NOT_REPORTED_WITH_REASON",
+  "schema": "trilatt_e9f_a_c2_future_status_policy_v1",
+  "silent_drop": "FORBIDDEN",
+  "source_result_label": "SOURCE_GRID_VALLEY_INTEGRAL",
+  "work_order_id": "TRILATT-E9F-A-C2-20260824-203"
+}
