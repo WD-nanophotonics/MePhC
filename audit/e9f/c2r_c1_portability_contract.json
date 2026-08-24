@@ -1,0 +1,32 @@
+{
+  "schema": "trilatt_e9f_b_c2r_c1_cross_environment_portability_contract_v1",
+  "work_order_id": "TRILATT-E9F-B-C2R-C1-20260824-212",
+  "base_sandbox_sha": "1e08ee00c39ff0ebccb7767820a09f976f9cdab5",
+  "raw_plan_digest": "exact runtime plan binding; historical values remain immutable and may differ across environments",
+  "semantic_domain_id": {
+    "source": "exact source-defined tokens, never raw trig-generated Cartesian floats",
+    "fr=0": {"FR": "0", "DELTA_K": "1/10", "DELTA_GAMMA": "1/10"},
+    "fr=0.4": {"FR": "2/5", "DELTA_K": "1/20", "DELTA_GAMMA": "13/100"}
+  },
+  "portable_plan_fingerprint": {
+    "payload": ["ESTIMATOR_ID", "SEMANTIC_DOMAIN_ID", "SOURCE_GRID_SPACING_ID", "sorted SAMPLE_ID", "GRID_INDEX", "FRAGMENT_INDEX", "TRIANGLE_INDEX"],
+    "raw_float_coordinates_excluded": true,
+    "raw_float_weights_excluded": true
+  },
+  "numeric_portability_tolerance": 1e-12,
+  "runtime_security_preserved": [
+    "exact PLAN_DIGEST binding",
+    "exact DOMAIN_DIGEST binding",
+    "exact PUBLIC_Q_HEX_FLOATS binding",
+    "exact WEIGHT_Q2 binding",
+    "cross-plan transplant rejection",
+    "fail-closed status semantics"
+  ],
+  "two_interpreter_probe": ["Windows Python 3.12.0", "WSL Miniconda mp Python 3.13.13"],
+  "live_science": {
+    "new_mpb_solver_requests": 0,
+    "new_berry_calculation": "NONE",
+    "new_scientific_valley_chern_value": "NONE",
+    "main_push": false
+  }
+}

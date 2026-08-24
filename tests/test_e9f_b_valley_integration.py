@@ -10,7 +10,10 @@ from mephc.valley_chern import (
     build_berry_row,
     build_integration_plan,
     build_source_bound_domain,
+    compare_plan_semantics,
+    portable_plan_fingerprint,
     reduce_supplied_berry_rows,
+    semantic_domain_id,
     validate_integration_plan,
 )
 
@@ -177,3 +180,34 @@ def test_legacy_fail_closed_guards_remain(bad):
         rows[0]["WEIGHT_Q2"] *= 0.5
     with pytest.raises(IntegrationPlanError):
         reduce_supplied_berry_rows(plan, rows, 1)
+
+
+def test_semantic_identity_and_portable_fingerprint_bind_topology_only():
+    domain_zero = build_source_bound_domain(0.0)
+    domain_four = build_source_bound_domain(0.4)
+    assert domain_zero.semantic_domain_id == semantic_domain_id("fr=0")
+    assert domain_four.semantic_domain_id == semantic_domain_id("fr=0.4")
+    assert domain_zero.semantic_domain_id != domain_four.semantic_domain_id
+    plan = _plan(0.4, MEPHC_CLIPPED_RETAINED_DOMAIN_V1)
+    assert plan["PORTABLE_PLAN_FINGERPRINT"] == portable_plan_fingerprint(plan)
+    for field, value in (("ESTIMATOR_ID", SOURCE_GRID_MIDPOINT_V1), ("SEMANTIC_DOMAIN_ID", "changed"), ("SOURCE_GRID_SPACING_ID", "1/18")):
+        mutated = copy.deepcopy(plan)
+        mutated[field] = value
+        assert portable_plan_fingerprint(mutated) != plan["PORTABLE_PLAN_FINGERPRINT"]
+    for field in ("SAMPLE_ID", "GRID_INDEX", "FRAGMENT_INDEX", "TRIANGLE_INDEX"):
+        mutated = copy.deepcopy(plan)
+        row = mutated["ROWS"][0]
+        if field == "SAMPLE_ID": row[field] = row[field] + ";mutated"
+        elif field == "GRID_INDEX": row[field] = (row[field][0] + 1, row[field][1])
+        else: row[field] = (row[field] or 0) + 1
+        assert portable_plan_fingerprint(mutated) != plan["PORTABLE_PLAN_FINGERPRINT"]
+
+
+def test_plan_semantic_comparison_accepts_same_plan_and_reports_identity_layers():
+    plan = _plan(0.4, MEPHC_CLIPPED_RETAINED_DOMAIN_V1)
+    result = compare_plan_semantics(plan, copy.deepcopy(plan))
+    assert result["raw_plan_digest_equal"]
+    assert result["portable_plan_fingerprint_equal"]
+    assert result["semantic_domain_id_equal"]
+    assert result["topology_equal"]
+    assert result["numerically_equivalent"]

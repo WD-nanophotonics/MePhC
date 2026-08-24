@@ -10,7 +10,14 @@ SOURCE_GRID_MIDPOINT_V1 = "SOURCE_GRID_MIDPOINT_V1"
 MEPHC_CLIPPED_RETAINED_DOMAIN_V1 = "MEPHC_CLIPPED_RETAINED_DOMAIN_V1"
 SOURCE_H = 1.0 / 36.0
 EPS = 1e-12
+SEMANTIC_DOMAIN_SCHEMA_V1 = "MEPHC_SEMANTIC_RETAINED_DOMAIN_V1"
+PORTABLE_PLAN_FINGERPRINT_SCHEMA_V1 = "MEPHC_PORTABLE_PLAN_FINGERPRINT_V1"
+SOURCE_GRID_SPACING_ID = "1/36"
 _ESTIMATORS = (SOURCE_GRID_MIDPOINT_V1, MEPHC_CLIPPED_RETAINED_DOMAIN_V1)
+_SEMANTIC_CASES = {
+    "fr=0": {"fr": "0", "delta_k": "1/10", "delta_gamma": "1/10"},
+    "fr=0.4": {"fr": "2/5", "delta_k": "1/20", "delta_gamma": "13/100"},
+}
 
 
 class IntegrationPlanError(ValueError):
@@ -21,6 +28,25 @@ def _digest(value):
     return hashlib.sha256(
         json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
     ).hexdigest()
+
+
+def _semantic_domain_payload(case):
+    tokens = _SEMANTIC_CASES.get(case)
+    if tokens is None: raise IntegrationPlanError("unsupported semantic domain case")
+    return {
+        "SCHEMA": SEMANTIC_DOMAIN_SCHEMA_V1,
+        "CASE": case,
+        "FR_RATIONAL": tokens["fr"],
+        "PUBLIC_VALLEY_K_PRIME": ["-2/3", "0"],
+        "OUTER_DOMAIN": {"CONSTRUCTION": "REGULAR_TRIANGLE_CENTERED_AT_K_PRIME", "RADIUS": "2/3", "SIDES": 3, "ROTATION": "PI/3", "SHRINK_DELTA_K": tokens["delta_k"]},
+        "EXCLUSIONS": {"CONSTRUCTION": "REGULAR_HEXAGON_AT_EACH_UNSHRUNK_TRIANGLE_VERTEX", "SIDES": 6, "ROTATION": "0", "RADIUS_DELTA_GAMMA": tokens["delta_gamma"]},
+        "GRID": {"SPACING": SOURCE_GRID_SPACING_ID, "CELL_RULE": "MIDPOINT_SQUARE"},
+        "RETAINED_DOMAIN_VERSION": MEPHC_CLIPPED_RETAINED_DOMAIN_V1,
+    }
+
+
+def semantic_domain_id(case):
+    return _digest(_semantic_domain_payload(case))
 
 
 def _area(poly):
@@ -149,6 +175,10 @@ class RetainedDomain:
         return _digest(self.to_dict())
 
     @property
+    def semantic_domain_id(self):
+        return semantic_domain_id(self.case)
+
+    @property
     def area_q2(self):
         return abs(_area(self.outer)) - sum(
             _intersection_area(self.outer, hole) for hole in self.exclusions
@@ -267,6 +297,23 @@ def _expected_total_weight(rows):
     )
 
 
+def _portable_plan_payload(plan):
+    return {
+        "SCHEMA": PORTABLE_PLAN_FINGERPRINT_SCHEMA_V1,
+        "ESTIMATOR_ID": plan.get("ESTIMATOR_ID"),
+        "SEMANTIC_DOMAIN_ID": plan.get("SEMANTIC_DOMAIN_ID"),
+        "SOURCE_GRID_SPACING_ID": plan.get("SOURCE_GRID_SPACING_ID"),
+        "ROWS": [
+            {"SAMPLE_ID": row["SAMPLE_ID"], "GRID_INDEX": tuple(row["GRID_INDEX"]), "FRAGMENT_INDEX": row.get("FRAGMENT_INDEX"), "TRIANGLE_INDEX": row.get("TRIANGLE_INDEX")}
+            for row in sorted(plan["ROWS"], key=lambda item: item["SAMPLE_ID"])
+        ],
+    }
+
+
+def portable_plan_fingerprint(plan):
+    return _digest(_portable_plan_payload(plan))
+
+
 def build_integration_plan(domain, estimator_id):
     if estimator_id not in _ESTIMATORS:
         raise IntegrationPlanError("unknown estimator")
@@ -349,11 +396,14 @@ def build_integration_plan(domain, estimator_id):
     plan = {
         "ESTIMATOR_ID": estimator_id,
         "DOMAIN_DIGEST": domain.digest,
+        "SEMANTIC_DOMAIN_ID": domain.semantic_domain_id,
+        "SOURCE_GRID_SPACING_ID": SOURCE_GRID_SPACING_ID,
         "ROWS": tuple(rows),
         "SAMPLE_COUNT": len(rows),
         "TOTAL_WEIGHT_Q2": _expected_total_weight(rows),
     }
     plan["PLAN_DIGEST"] = _digest(_canonical_plan(plan))
+    plan["PORTABLE_PLAN_FINGERPRINT"] = portable_plan_fingerprint(plan)
     validate_integration_plan(plan)
     return plan
 
@@ -383,6 +433,14 @@ def validate_integration_plan(plan):
         raise IntegrationPlanError("invalid plan")
     if not isinstance(domain_digest, str) or not domain_digest:
         raise IntegrationPlanError("DOMAIN_DIGEST_REQUIRED")
+    semantic_id = plan.get("SEMANTIC_DOMAIN_ID")
+    if not isinstance(semantic_id, str) or not semantic_id:
+        raise IntegrationPlanError("SEMANTIC_DOMAIN_ID_REQUIRED")
+    if plan.get("SOURCE_GRID_SPACING_ID") != SOURCE_GRID_SPACING_ID:
+        raise IntegrationPlanError("SOURCE_GRID_SPACING_ID_INVALID")
+    portable_fingerprint = plan.get("PORTABLE_PLAN_FINGERPRINT")
+    if not isinstance(portable_fingerprint, str) or portable_fingerprint != portable_plan_fingerprint(plan):
+        raise IntegrationPlanError("PORTABLE_PLAN_FINGERPRINT_TAMPERED")
     sample_ids = set()
     for row in rows:
         if not isinstance(row, dict):
@@ -414,6 +472,30 @@ def validate_integration_plan(plan):
     if not isinstance(plan_digest, str) or plan_digest != _digest(_canonical_plan(plan)):
         raise IntegrationPlanError("PLAN_DIGEST_TAMPERED")
     return True
+
+
+def compare_plan_semantics(plan_a, plan_b, tolerance=EPS):
+    validate_integration_plan(plan_a)
+    validate_integration_plan(plan_b)
+    rows_a = {row["SAMPLE_ID"]: row for row in plan_a["ROWS"]}
+    rows_b = {row["SAMPLE_ID"]: row for row in plan_b["ROWS"]}
+    sample_ids_match = set(rows_a) == set(rows_b)
+    topology_match = sample_ids_match and all(rows_a[s].get("GRID_INDEX") == rows_b[s].get("GRID_INDEX") and rows_a[s].get("FRAGMENT_INDEX") == rows_b[s].get("FRAGMENT_INDEX") and rows_a[s].get("TRIANGLE_INDEX") == rows_b[s].get("TRIANGLE_INDEX") for s in rows_a if s in rows_b)
+    max_q_difference = 0.0
+    max_weight_difference = 0.0
+    exact_public_q_hex = sample_ids_match
+    for sample_id in set(rows_a) & set(rows_b):
+        row_a, row_b = rows_a[sample_id], rows_b[sample_id]
+        q_a, q_b = tuple(map(float, row_a["PUBLIC_Q"])), tuple(map(float, row_b["PUBLIC_Q"]))
+        max_q_difference = max(max_q_difference, *(abs(a - b) for a, b in zip(q_a, q_b)))
+        max_weight_difference = max(max_weight_difference, abs(float(row_a["WEIGHT_Q2"]) - float(row_b["WEIGHT_Q2"])))
+        exact_public_q_hex = exact_public_q_hex and tuple(row_a["PUBLIC_Q_HEX_FLOATS"]) == tuple(row_b["PUBLIC_Q_HEX_FLOATS"])
+    same_estimator = plan_a["ESTIMATOR_ID"] == plan_b["ESTIMATOR_ID"]
+    same_semantic_domain = plan_a["SEMANTIC_DOMAIN_ID"] == plan_b["SEMANTIC_DOMAIN_ID"]
+    same_spacing = plan_a["SOURCE_GRID_SPACING_ID"] == plan_b["SOURCE_GRID_SPACING_ID"]
+    total_weight_difference = abs(float(plan_a["TOTAL_WEIGHT_Q2"]) - float(plan_b["TOTAL_WEIGHT_Q2"]))
+    numerical_equivalence = same_estimator and same_semantic_domain and same_spacing and sample_ids_match and topology_match and max_q_difference <= tolerance and max_weight_difference <= tolerance and total_weight_difference <= tolerance and (plan_a["ESTIMATOR_ID"] != SOURCE_GRID_MIDPOINT_V1 or exact_public_q_hex)
+    return {"raw_plan_digest_equal": plan_a["PLAN_DIGEST"] == plan_b["PLAN_DIGEST"], "raw_domain_digest_equal": plan_a["DOMAIN_DIGEST"] == plan_b["DOMAIN_DIGEST"], "semantic_domain_id_equal": same_semantic_domain, "portable_plan_fingerprint_equal": plan_a["PORTABLE_PLAN_FINGERPRINT"] == plan_b["PORTABLE_PLAN_FINGERPRINT"], "estimator_equal": same_estimator, "source_grid_spacing_equal": same_spacing, "sample_count_equal": plan_a["SAMPLE_COUNT"] == plan_b["SAMPLE_COUNT"], "sample_ids_equal": sample_ids_match, "topology_equal": topology_match, "source_public_q_hex_equal": exact_public_q_hex, "max_q_difference": max_q_difference, "max_weight_difference": max_weight_difference, "total_weight_difference": total_weight_difference, "numerically_equivalent": numerical_equivalence}
 
 
 def _require_exact_row_binding(plan, expected, row, band_id):
