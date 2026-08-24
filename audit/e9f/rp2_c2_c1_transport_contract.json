@@ -1,0 +1,28 @@
+{
+  "schema": "trilatt_e9f_c1_rp2_c2_c1_transport_contract_v1",
+  "work_order_id": "TRILATT-E9F-C1-RP2-C2-C1-20260825-234",
+  "phase": "E9F.C1.RP2.C2.C1",
+  "base_sandbox_sha": "4e757c9bd0169128ef3e98454d2a1d02c4d03a74",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "scientific_work_order_id": "TRILATT-E9F-C1-RP2-C2-20260824-233",
+  "scientific_phase": "E9F.C1.RP2.C2",
+  "scientific_contract_sha256": "f1656a023469f8596afab00faddcc5b6cefddfd919dbad7e8b68ed625df79e65",
+  "scientific_impl_git_blob_sha": "a4d66bb5174306d5b45d95fc0bcd64860a98ca47",
+  "payload_transport": "ATOMIC_FILE",
+  "stdout_used_as_payload": false,
+  "stderr_used_as_payload": false,
+  "primary_resolutions": [64, 96],
+  "solves_per_worker": 10,
+  "logical_workers": 2,
+  "total_native_solves": 20,
+  "stop_after": "E9F_C1_RP2_C2_C1_REPORT",
+  "return_transport": "CHAT_COURIER_ONLY",
+  "forbidden": {
+    "scientific_probe_change": true,
+    "production_mephc_change": true,
+    "agents_change": true,
+    "rp2_matrix_continuation": true,
+    "rp3": true,
+    "main_push": true
+  }
+}
