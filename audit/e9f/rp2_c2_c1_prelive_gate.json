@@ -1,0 +1,49 @@
+{
+  "schema": "trilatt_e9f_c1_rp2_c2_c1_prelive_gate_v1",
+  "work_order_id": "TRILATT-E9F-C1-RP2-C2-C1-20260825-234",
+  "phase": "E9F.C1.RP2.C2.C1",
+  "gate_commit": "231332958a3f549670dd111c69ce6813a56ed6b4",
+  "remote_sandbox_sha": "231332958a3f549670dd111c69ce6813a56ed6b4",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "native_solve_started": false,
+  "gate_status": "PASSED",
+  "test_results": {
+    "transport_and_c2_regression_pytest": "25 passed",
+    "real_provider_module_resolution": "passed",
+    "self_check": "passed",
+    "py_compile": "passed",
+    "git_diff_check": "passed"
+  },
+  "mandatory_gates": {
+    "AGENTS_MD_UNCHANGED": true,
+    "C2_SCIENTIFIC_IMPL_BLOB_FROZEN": true,
+    "C2_SCIENTIFIC_CONTRACT_FROZEN": true,
+    "REAL_PROVIDER_MODULE_RESOLUTION_TEST": "passed",
+    "HOSTILE_STDOUT_PAYLOAD_TEST": "passed",
+    "STDOUT_FALLBACK_FORBIDDEN_TEST": "passed",
+    "PAYLOAD_MISSING_TEST": "passed",
+    "PAYLOAD_MALFORMED_TEST": "passed",
+    "PAYLOAD_PARTIAL_TEMP_TEST": "passed",
+    "PAYLOAD_STALE_FILE_TEST": "passed",
+    "PAYLOAD_WRONG_WORKER_TEST": "passed",
+    "PAYLOAD_WRONG_RESOLUTION_TEST": "passed",
+    "PAYLOAD_WRONG_EXECUTION_SHA_TEST": "passed",
+    "PAYLOAD_WRONG_SCHEMA_TEST": "passed",
+    "PAYLOAD_WRONG_CONTRACT_TEST": "passed",
+    "PAYLOAD_NONFINITE_TEST": "passed",
+    "FAILURE_METRIC_RETAINED_BEFORE_PARENT_GATE": "passed",
+    "PARENT_NATIVE_IMPORT_ISOLATION_TEST": "passed",
+    "ORPHAN_FAKE_CHILD_TEST": "passed",
+    "PY_COMPILE": "passed",
+    "GIT_DIFF_CHECK": "passed"
+  },
+  "freeze": {
+    "scientific_impl_git_blob_sha": "a4d66bb5174306d5b45d95fc0bcd64860a98ca47",
+    "scientific_contract_sha256": "f1656a023469f8596afab00faddcc5b6cefddfd919dbad7e8b68ed625df79e65",
+    "transport_contract_sha256": "2564d2cc6334a73733d56ace33e626015d8d042b42930dc01a4b635685a463ee"
+  },
+  "payload_transport": "ATOMIC_FILE",
+  "stdout_used_as_payload": false,
+  "stderr_used_as_payload": false,
+  "stop_before": "NATIVE_MPB_R64_CANARY"
+}
