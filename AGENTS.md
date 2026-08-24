@@ -100,3 +100,20 @@ format after a request may have been submitted; preserve the existing request
 ID, request directory, destination, message body, and attachment during
 same-request recovery. New reports should follow the plain-text-first policy
 from the beginning.
+
+## Primary workspace and Courier project binding
+
+This repository is the primary scientific workspace for the current task.
+The canonical work root is `/home/icy/MePhC`; task-specific sandbox worktrees
+may be used only when explicitly named by the current work order and must still
+be treated as MePhC work, not as TriLatt work.
+
+The active Courier project identity for this workspace is `MEPHC`. New MePhC
+requests must use `PROJECT_ID=MEPHC` and a request directory under the MePhC
+project-owned outbox. Do not use `TRILATT` as the project identity, request
+namespace, Chat address binding, or default working directory for MePhC.
+
+`/home/icy/TriLatt` is a legacy auxiliary repository. Its files and historical
+requests are not part of the active MePhC work unless a future work order
+explicitly names TriLatt. Never infer the active workspace from a stale TriLatt
+request, attachment, branch, or address binding.
