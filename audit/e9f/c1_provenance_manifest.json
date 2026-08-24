@@ -1,0 +1,38 @@
+{
+  "schema": "trilatt_e9f_c1_provenance_manifest_v1",
+  "work_order_id": "TRILATT-E9F-C-C1-20260824-214",
+  "phase": "E9F.C.C1",
+  "calculation_code_git_sha": "ca56f6fe85ec0591747ec22eebff8bb9e2d1d7b9",
+  "runner_hardening_commit_sha": "86e478a76319bf502ea985585203a3a314e01b54",
+  "remote_base_sandbox_sha": "06459b9767200a7a8c53e56618509d0015fc1c24",
+  "result_artifact_commit_sha": "27213719ed0d7982a0e02042ae8428e170b0f73f",
+  "current_sandbox_sha_at_manifest_creation": "27213719ed0d7982a0e02042ae8428e170b0f73f",
+  "result_artifact": {
+    "path": "audit/e9f/c1_live_result.json",
+    "sha256": "123acc40c448b45cab0fbffffeeec4a879202c25f20cb6c5769041726fe8296c"
+  },
+  "checkpoint": {
+    "path": "audit/e9f/c1_live_checkpoint.json",
+    "retained": true,
+    "committed": false,
+    "sha256": "33d6f0a2eeacac23b71b302c0a2ddfbb1ba315d39a3db2cbf8ba72a55121ece2"
+  },
+  "contract_sha256": "2d770bc1525be8ca7a1722d855aa7f262767fe93ad7bfe905edfb1b0f62ed4da",
+  "plan_digest": "5be4a51552e6e8ba2b421157d6f757fd26469c203cf36b7e7773b91baaec526f",
+  "domain_digest": "cf7e0e17abba440754d80a85b7401e598363e1764cbb21d495a7cc97d9a3bc8f",
+  "semantic_domain_id": "468296519eb4d302a47cec8cf88c662020720190e127791331e2174d66063552",
+  "portable_plan_fingerprint": "40427bacf32beaf9e9fc6e7b6af4187edb783d36a749932adc42438745a814c6",
+  "main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "main_unchanged": true,
+  "scientific_scope": {
+    "fr": 0.0,
+    "estimator": "SOURCE_GRID_MIDPOINT_V1",
+    "sample_count": 551,
+    "resolution": 64,
+    "source_berry_stencil": "1/36",
+    "zero_based_bands": [0, 1, 2],
+    "thresholds_unchanged": true,
+    "model_unchanged": true
+  },
+  "result_status": "E9F_C1_FR0_SOURCE_GRID_INCOMPLETE_FAIL_CLOSED_READY_FOR_BLOCKER_DIAGNOSIS"
+}
