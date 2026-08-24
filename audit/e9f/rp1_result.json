@@ -1,0 +1,69 @@
+{
+  "base_sandbox_sha": "d320715aa26da8894f5d9f2c15abd02d98b9b2ea",
+  "bound_numerical_payload_digest": "99eecf6e8bef8204332952222cf46b1f35931528d828462f73e72b89d4e56e60",
+  "classification_11_6_unchanged": true,
+  "classification_8_3_unchanged": true,
+  "current_min_external_gap": 0.02,
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "final_sandbox_sha_pending": true,
+  "finite_stencil_class_count": 11,
+  "future_finite_stencil_scope": "all_551_source_grid_samples",
+  "historical_affine_validator_limitation": "Historical affine validator remains blocked by the missing historical docs artifact; no /tmp symlink was created.",
+  "immutable_source_artifact": "audit/e9f/c1_d1_c1_result.json",
+  "immutable_source_artifact_sha256": "489b22fe2865f527bafd2727ed91441f58f8c87e56bb6eb2ee04fb62a1829240",
+  "implementation_sha": "d184f20f3a73c8f7dff921da6985b4e867a33884",
+  "low_gap_diagnostic_ladder": [
+    "L0",
+    "L1",
+    "L2",
+    "L3"
+  ],
+  "low_gap_neighborhood_stencil_count": 3,
+  "main_unchanged": true,
+  "manifest_changed_path_set_match": true,
+  "no_band2_recovery": true,
+  "no_berry_calculation": true,
+  "no_chern_calculation": true,
+  "no_mpb_solve": true,
+  "no_three_band_sum": true,
+  "no_threshold_change": true,
+  "numerical_payload_digest_unchanged": true,
+  "open_p0": [],
+  "open_p1": [],
+  "open_p2": [
+    "REL-022"
+  ],
+  "outer_boundary_crossing_stencil_count": 8,
+  "phase": "E9F.C1.RP1",
+  "pipeline_health": "PIPELINE_HEALTHY_WITH_TECH_DEBT",
+  "policy_contract_summary": {
+    "decision_cases": [
+      "CASE_A",
+      "CASE_B",
+      "CASE_C",
+      "CASE_D"
+    ],
+    "diagnostic_only_never_reducer_input": true,
+    "future_stages": [
+      "RP2",
+      "RP3",
+      "RP4",
+      "RP5"
+    ]
+  },
+  "process_review_defect_index_complete": true,
+  "recovery_campaign_authorized": false,
+  "recovery_policy_schema": "trilatt_e9f_c1_rp1_recovery_policy_v1",
+  "reducer_authorized": false,
+  "rel_020_status": "CLOSED",
+  "rel_021_status": "CLOSED",
+  "rel_022_status": "PARTIALLY_CLOSED",
+  "schema": "trilatt_e9f_c1_rp1_result_v1",
+  "selected_finite_stencil": "1/144",
+  "selected_finite_stencil_future_policy": "F1_UNIFORM_BAND2_SOURCE_GRID_FINE_STENCIL",
+  "source_anchor_blind_during_qualification": true,
+  "status": "E9F_C1_RECOVERY_POLICY_PREREGISTERED_READY_FOR_SIX_POINT_DIAGNOSTIC",
+  "threshold_change_authorized": false,
+  "true_low_gap_class_count": 6,
+  "work_order_id": "TRILATT-E9F-C1-RP1-20260824-226"
+}

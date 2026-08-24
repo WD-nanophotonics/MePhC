@@ -1,0 +1,31 @@
+{
+  "base_sandbox_sha": "d320715aa26da8894f5d9f2c15abd02d98b9b2ea",
+  "bound_numerical_payload_digest": "99eecf6e8bef8204332952222cf46b1f35931528d828462f73e72b89d4e56e60",
+  "changed_files": [
+    "audit/e9f/rp1_policy.py",
+    "audit/e9f/rp1_recovery_policy_contract.json",
+    "tests/test_rp1_policy.py",
+    "audit/e9f/rp1_result.json",
+    "audit/e9f/rp1_process_reliability_review.json",
+    "audit/e9f/rp1_provenance_manifest.json"
+  ],
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "file_sha256": {
+    "audit/e9f/rp1_policy.py": "9b750c764c6fbd6e7219386097795ab4564c11db2ffe4dead4c8bb88f61070fd",
+    "audit/e9f/rp1_process_reliability_review.json": "d49e2b217331c6521841a10b801f8210c84445d080d884808a32e889a57d280c",
+    "audit/e9f/rp1_recovery_policy_contract.json": "7596ec78e86aa51a991c777fb642545ccfedbd3b622da02982d22bee70e3c9d3",
+    "audit/e9f/rp1_result.json": "2a5e8c414f7001a881667fd1e60a1b95f9b45a0a8ed295dbde7f51c92d510f78",
+    "tests/test_rp1_policy.py": "1b45729c2e8ee76edfe770a5cf6be4d756145d0d09c578f7ac540575a654bb0a"
+  },
+  "implementation_sha": "d184f20f3a73c8f7dff921da6985b4e867a33884",
+  "main_unchanged": true,
+  "manifest_changed_path_set_match": true,
+  "no_scientific_recovery": true,
+  "policy_schema": "trilatt_e9f_c1_rp1_recovery_policy_v1",
+  "rel_020_status": "CLOSED",
+  "rel_021_status": "CLOSED",
+  "rel_022_status": "PARTIALLY_CLOSED",
+  "schema": "trilatt_e9f_c1_rp1_provenance_manifest_v1",
+  "self_hash_excluded": true,
+  "work_order_id": "TRILATT-E9F-C1-RP1-20260824-226"
+}
