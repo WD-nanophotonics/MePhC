@@ -1,0 +1,274 @@
+{
+  "band_summaries": [
+    {
+      "absolute_difference_from_source_anchor": 0.005942029478455152,
+      "failed_samples": [],
+      "failed_weight_q2": 0.0,
+      "not_reported_sample_count": 0,
+      "paper_band": 1,
+      "qualified_sample_count": 551,
+      "qualified_weight_q2": 0.4251543209876543,
+      "result": {
+        "BAND_ID": 0,
+        "COMPLETE_STATUS": "COMPLETE",
+        "DOMAIN_DIGEST": "cf7e0e17abba440754d80a85b7401e598363e1764cbb21d495a7cc97d9a3bc8f",
+        "ESTIMATOR_ID": "SOURCE_GRID_MIDPOINT_V1",
+        "FLUX_Q": -0.5909836584041013,
+        "NORMALIZATION_ID": "PUBLIC_Q_OMEGA_OVER_2PI",
+        "NOT_REPORTED_SAMPLE_COUNT": 0,
+        "PLAN_DIGEST": "5be4a51552e6e8ba2b421157d6f757fd26469c203cf36b7e7773b91baaec526f",
+        "QUALIFIED_SAMPLE_COUNT": 551,
+        "SAMPLE_COUNT": 551,
+        "STATUS_DIGEST": "9b7d0a1997d5092a3ab1cfb361ffe65d374b6adbecae378bbe599a53b5b1cdec",
+        "TOTAL_WEIGHT_Q2": 0.4251543209876543,
+        "VALLEY_CHERN": -0.09405797052154485
+      },
+      "sign_counts_qualified": {
+        "negative": 401,
+        "positive": 150,
+        "zero": 0
+      },
+      "signed_difference_from_source_anchor": 0.005942029478455152,
+      "source_anchor": -0.1,
+      "total_sample_count": 551,
+      "zero_based_band": 0
+    },
+    {
+      "absolute_difference_from_source_anchor": 0.031308432470707914,
+      "failed_samples": [],
+      "failed_weight_q2": 0.0,
+      "not_reported_sample_count": 0,
+      "paper_band": 2,
+      "qualified_sample_count": 551,
+      "qualified_weight_q2": 0.4251543209876543,
+      "result": {
+        "BAND_ID": 1,
+        "COMPLETE_STATUS": "COMPLETE",
+        "DOMAIN_DIGEST": "cf7e0e17abba440754d80a85b7401e598363e1764cbb21d495a7cc97d9a3bc8f",
+        "ESTIMATOR_ID": "SOURCE_GRID_MIDPOINT_V1",
+        "FLUX_Q": 3.1962033829862007,
+        "NORMALIZATION_ID": "PUBLIC_Q_OMEGA_OVER_2PI",
+        "NOT_REPORTED_SAMPLE_COUNT": 0,
+        "PLAN_DIGEST": "5be4a51552e6e8ba2b421157d6f757fd26469c203cf36b7e7773b91baaec526f",
+        "QUALIFIED_SAMPLE_COUNT": 551,
+        "SAMPLE_COUNT": 551,
+        "STATUS_DIGEST": "d7413dc48351f95660378ab666d5687c7d37ec61fb1a94dbc479f7658acf4510",
+        "TOTAL_WEIGHT_Q2": 0.4251543209876543,
+        "VALLEY_CHERN": 0.5086915675292921
+      },
+      "sign_counts_qualified": {
+        "negative": 0,
+        "positive": 551,
+        "zero": 0
+      },
+      "signed_difference_from_source_anchor": -0.031308432470707914,
+      "source_anchor": 0.54,
+      "total_sample_count": 551,
+      "zero_based_band": 1
+    },
+    {
+      "absolute_difference_from_source_anchor": null,
+      "failed_samples": [
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-34;grid_j=-15;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-34;grid_j=-14;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-34;grid_j=14;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-34;grid_j=15;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-34;grid_j=16;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-33;grid_j=-16;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-33;grid_j=16;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-32;grid_j=-16;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-32;grid_j=16;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-6;grid_j=-1;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-6;grid_j=0;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-6;grid_j=1;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID"
+        },
+        {
+          "reason": "qualification_failed:external_gap,ordered_path,wilson,boundary,interior,finite_estimator",
+          "sample_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID"
+        }
+      ],
+      "failed_weight_q2": 0.013117283950617283,
+      "not_reported_sample_count": 17,
+      "paper_band": 3,
+      "qualified_sample_count": 534,
+      "qualified_weight_q2": 0.41203703703703703,
+      "result": {
+        "BAND_ID": 2,
+        "COMPLETE_STATUS": "INCOMPLETE_NOT_REPORTED",
+        "DOMAIN_DIGEST": "cf7e0e17abba440754d80a85b7401e598363e1764cbb21d495a7cc97d9a3bc8f",
+        "ESTIMATOR_ID": "SOURCE_GRID_MIDPOINT_V1",
+        "FAILURE_PROVENANCE": {
+          "sample_ids": [
+            "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-34;grid_j=-15;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-34;grid_j=-14;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-34;grid_j=14;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-34;grid_j=15;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-34;grid_j=16;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-33;grid_j=-16;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-33;grid_j=16;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-32;grid_j=-16;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-32;grid_j=16;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-6;grid_j=-1;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-6;grid_j=0;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-6;grid_j=1;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+            "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID"
+          ],
+          "status": "NOT_REPORTED_WITH_REASON"
+        },
+        "FLUX_Q": "NOT_EMITTED",
+        "NORMALIZATION_ID": "PUBLIC_Q_OMEGA_OVER_2PI",
+        "NOT_REPORTED_SAMPLE_COUNT": 17,
+        "PLAN_DIGEST": "5be4a51552e6e8ba2b421157d6f757fd26469c203cf36b7e7773b91baaec526f",
+        "QUALIFIED_SAMPLE_COUNT": 534,
+        "SAMPLE_COUNT": 551,
+        "STATUS_DIGEST": "8b2626ab1800f56cfdeec82dcc0a687004d8052a4b4cc553a1f6f0f1ae8667c4",
+        "TOTAL_WEIGHT_Q2": 0.4251543209876543,
+        "VALLEY_CHERN": "NOT_EMITTED"
+      },
+      "sign_counts_qualified": {
+        "negative": 523,
+        "positive": 11,
+        "zero": 0
+      },
+      "signed_difference_from_source_anchor": null,
+      "source_anchor": null,
+      "total_sample_count": 551,
+      "zero_based_band": 2
+    }
+  ],
+  "base_sandbox_sha": "f9f14c1e9018e24939618c3368bfc22a242f2843",
+  "calculation_code_git_sha": "ca56f6fe85ec0591747ec22eebff8bb9e2d1d7b9",
+  "contract_sha256": "2d770bc1525be8ca7a1722d855aa7f262767fe93ad7bfe905edfb1b0f62ed4da",
+  "first_three_band_sum": null,
+  "main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "main_unchanged": true,
+  "model": {
+    "deterministic": true,
+    "estimator": "SOURCE_GRID_MIDPOINT_V1",
+    "fr": 0.0,
+    "mesh_size": 3,
+    "num_bands": 6,
+    "paper_bands": [
+      1,
+      2,
+      3
+    ],
+    "polarization": "TE",
+    "representation": "mpb_energy_eh_v1",
+    "resolution": 64,
+    "solver_tolerance": 1e-07,
+    "zero_based_bands": [
+      0,
+      1,
+      2
+    ]
+  },
+  "new_scientific_campaign_scope": "fr=0 SOURCE_GRID bands 1-3 only",
+  "no_failed_weight_removal": true,
+  "no_posthoc_renormalization": true,
+  "no_zero_fill": true,
+  "plan": {
+    "domain_digest": "cf7e0e17abba440754d80a85b7401e598363e1764cbb21d495a7cc97d9a3bc8f",
+    "estimator_id": "SOURCE_GRID_MIDPOINT_V1",
+    "plan_digest": "5be4a51552e6e8ba2b421157d6f757fd26469c203cf36b7e7773b91baaec526f",
+    "portable_plan_fingerprint": "40427bacf32beaf9e9fc6e7b6af4187edb783d36a749932adc42438745a814c6",
+    "sample_count": 551,
+    "semantic_domain_id": "468296519eb4d302a47cec8cf88c662020720190e127791331e2174d66063552",
+    "source_grid_spacing_id": "1/36",
+    "total_weight_q2": 0.4251543209876543
+  },
+  "qualification": {
+    "authoritative_estimator": "WILSON_PHASE",
+    "max_principal_angle": 0.45,
+    "max_projector_distance": 0.3,
+    "min_external_gap": 0.02,
+    "min_singular_value": 0.9,
+    "normalization": "VALLEY_CHERN=FLUX_Q/(2*pi)",
+    "omega_formula": "-WILSON_PHASE/SIGNED_AREA",
+    "signed_area": "(1/36)^2"
+  },
+  "schema": "trilatt_e9f_c1_fr0_source_grid_live_result_v1",
+  "self_checks": {
+    "BANDS": true,
+    "EXECUTION_CODE_SHA": true,
+    "FR0_ONLY": true,
+    "GEOMETRY": true,
+    "KPRIME": true,
+    "MAIN_EXPECTATION": true,
+    "MAPPING": true,
+    "MODEL": true,
+    "NO_RENORMALIZATION": true,
+    "NO_ZERO_FILL": true,
+    "PLAN_COUNT": true,
+    "PLAN_SEMANTIC": true,
+    "PLAN_VALID": true,
+    "SOURCE_ESTIMATOR_ONLY": true,
+    "WORK_ORDER": true
+  },
+  "status": "E9F_C1_FR0_SOURCE_GRID_INCOMPLETE_FAIL_CLOSED_READY_FOR_BLOCKER_DIAGNOSIS",
+  "telemetry": {
+    "cache_hits": 5510,
+    "peak_rss_kib": 44536,
+    "sample_evaluations": 1653,
+    "solver_failures": 0,
+    "solver_requests": 2755,
+    "wall_time_seconds": 33.828525717995944
+  },
+  "upstream_seal": "E9F_B_PORTABLE_RETAINED_DOMAIN_INTEGRATION_CORE_VALIDATED",
+  "work_order_id": "TRILATT-E9F-C-C1-20260824-214"
+}
