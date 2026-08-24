@@ -1,0 +1,13 @@
+{
+  "schema": "trilatt_e9f_b_production_retained_domain_integration_contract_v1",
+  "work_order_id": "TRILATT-E9F-B-20260824-206",
+  "production_module": "mephc/valley_integration.py",
+  "public_api_reexport": "mephc/valley_chern.py",
+  "estimator_identities": ["SOURCE_GRID_MIDPOINT_V1", "MEPHC_CLIPPED_RETAINED_DOMAIN_V1"],
+  "solver_separation": "consume supplied Berry rows only; no MPB, eigensolver, Wilson loop, Berry calculation, recovery, or adaptive retry",
+  "status_cardinality": "exactly one terminal status per sample_id and band: QUALIFIED_REPORTED or NOT_REPORTED_WITH_REASON",
+  "incomplete_policy": "any NOT_REPORTED_WITH_REASON yields INCOMPLETE_NOT_REPORTED with FLUX_Q and VALLEY_CHERN not emitted",
+  "forbidden": ["mixed estimator", "missing row", "duplicate row", "NaN/Inf value", "zero fill", "silent drop", "failed-weight removal", "posthoc weight renormalization"],
+  "normalization": "FLUX_Q=sum(Omega_q*weight_q2); VALLEY_CHERN=FLUX_Q/(2*pi); no additional Jacobian",
+  "live_work": {"new_mpb_solver_requests": 0, "new_berry_calculation": "NONE", "new_scientific_valley_chern_value": "NONE", "main_push": false}
+}

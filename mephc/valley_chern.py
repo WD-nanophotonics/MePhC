@@ -346,3 +346,4 @@ def audit_from_c9_report(report, *, existing_controls=None, tr_evidence=None, pa
     })
     provenance = report.get("CONTROL_CLASSIFICATION_PROVENANCE", {})
     return build_valley_chern_audit(direct, flux_error_bound=bounds, upstream_seal=E7I1G_UPSTREAM_SEAL, c9_source_digest=source_digest, c9_provenance=provenance, control_status=controls, inversion_controls=existing_controls, tr_evidence=tr_evidence, tr_control_recovery=tr_control_recovery, paper_convention=paper_convention or inherited_paper_convention())
+from .valley_integration import (IntegrationPlanError, MEPHC_CLIPPED_RETAINED_DOMAIN_V1, RetainedDomain, SOURCE_GRID_MIDPOINT_V1, build_berry_row, build_integration_plan, build_source_bound_domain, reduce_supplied_berry_rows, validate_integration_plan)
