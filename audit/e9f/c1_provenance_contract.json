@@ -1,0 +1,56 @@
+{
+  "schema": "trilatt_e9f_b_c1_production_plan_row_provenance_contract_v1",
+  "work_order_id": "TRILATT-E9F-B-C1-20260824-207",
+  "base_sandbox_sha": "21fd90cdef2a753807f0f30376fbc7cd5a1e9e92",
+  "preserved_semantics": [
+    "SOURCE_GRID_MIDPOINT_V1",
+    "MEPHC_CLIPPED_RETAINED_DOMAIN_V1",
+    "fr=0",
+    "fr=0.4",
+    "weight=(1/36)^2 for source rows",
+    "VALLEY_CHERN=FLUX_Q/(2*pi)"
+  ],
+  "row_binding": [
+    "ESTIMATOR_ID",
+    "SAMPLE_ID",
+    "BAND_ID",
+    "PLAN_DIGEST",
+    "DOMAIN_DIGEST",
+    "PUBLIC_Q_HEX_FLOATS",
+    "WEIGHT_Q2",
+    "STATUS",
+    "OMEGA_Q only for QUALIFIED_REPORTED",
+    "REASON only for NOT_REPORTED_WITH_REASON"
+  ],
+  "plan_self_integrity": [
+    "recognized estimator",
+    "unique sample IDs",
+    "finite public coordinates",
+    "positive finite weights",
+    "row estimator equals plan estimator",
+    "row domain digest equals plan domain digest",
+    "sample count equals row count",
+    "total weight equals canonical row-weight sum",
+    "plan digest equals recomputed canonical row digest"
+  ],
+  "failed_row_semantics": {
+    "QUALIFIED_REPORTED": "finite OMEGA_Q required and REASON absent or null",
+    "NOT_REPORTED_WITH_REASON": "nonempty REASON required and OMEGA_Q forbidden"
+  },
+  "negative_tests": [
+    "cross-plan transplant",
+    "wrong plan digest",
+    "wrong domain digest",
+    "wrong public q hex floats",
+    "wrong weight",
+    "plan metadata tampering",
+    "plan row tampering",
+    "malformed terminal status payloads"
+  ],
+  "live_work": {
+    "new_mpb_solver_requests": 0,
+    "new_berry_calculation": "NONE",
+    "new_scientific_valley_chern_value": "NONE",
+    "main_push": false
+  }
+}
