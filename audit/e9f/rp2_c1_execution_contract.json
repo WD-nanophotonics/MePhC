@@ -1,0 +1,114 @@
+{
+  "base_sandbox_sha": "ea742a7f713255741de39eb2daec92813ee71917",
+  "canary": {
+    "resolution": 64,
+    "source_sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+    "stencils": [
+      "1/72",
+      "1/144"
+    ],
+    "stop_on_adapter_or_api_precondition_failure": true
+  },
+  "l0": {
+    "full_raw_frequency_count": 6,
+    "target_pair_zero_based": [
+      2,
+      3
+    ],
+    "zero_based_window": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "matrix": {
+    "diagnostic_only": true,
+    "logical_worker_count": 12,
+    "logical_worker_key": "(source_sample_id,resolution)",
+    "matrix_entry_count": 24,
+    "optional_escalation": false,
+    "resolutions": [
+      64,
+      96
+    ],
+    "source_sample_count": 6,
+    "stencils": [
+      "1/72",
+      "1/144"
+    ]
+  },
+  "original_rp2_execution_sha": "8121dbfba352b1a77551213771694d25c1bf3f01",
+  "phase": "E9F.C1.RP2.C1",
+  "policy_contract": {
+    "canonical_semantic_sha256": "cfbe71ff9f648048901038823c25ffd358bb8a80394fe05d082a57957acfc84a",
+    "file_sha256": "75f2d32853ab7e0a5878c19a732f4ac91ef993c105a8000b87e4a8a6ed6d5145",
+    "path": "audit/e9f/rp1_recovery_policy_contract.json"
+  },
+  "rank1_shadow": {
+    "diagnostic_only": true,
+    "min_singular_value": 1e-12,
+    "production_external_gap_context": 0.02,
+    "reducer_admissible": false,
+    "validation_tolerance": 1e-10
+  },
+  "rank2_diagnostic_thresholds": {
+    "MAX_PRINCIPAL_ANGLE": 0.45,
+    "MAX_PROJECTOR_DISTANCE": 0.3,
+    "MIN_EXTERNAL_PAIR_GAP": 0.02,
+    "MIN_SIGMA": 0.9
+  },
+  "raw_association": {
+    "assignment_margin_threshold": 0.05,
+    "candidate_window_zero_based": [
+      2,
+      3
+    ],
+    "margin_threshold": 0.05,
+    "probability_threshold": 0.5,
+    "validation_tolerance": 1e-10
+  },
+  "sampling_identity": {
+    "cache_identity": "EVALUATED_Q plus complete physical provenance",
+    "evaluated_q_field": "EVALUATED_Q",
+    "manifest_q_field": "MANIFEST_Q",
+    "nominal_q_field": "NOMINAL_Q",
+    "quantization": "none"
+  },
+  "schema": "trilatt_e9f_c1_rp2_c1_execution_contract_v1",
+  "scientific_firewall": {
+    "band2_chern": false,
+    "diagnostic_only": true,
+    "interpolation": false,
+    "l0_qualification_decision": false,
+    "l1_diagnostic_only": true,
+    "l1_reducer_admissible": false,
+    "l2_diagnostic_only": true,
+    "l3_threshold": false,
+    "main_promotion_authorized": false,
+    "rank1_recovery": false,
+    "renormalization": false,
+    "rp3_authorized": false,
+    "source_anchor_comparison": false,
+    "three_band_sum": false,
+    "zero_fill": false
+  },
+  "solver": {
+    "deterministic": true,
+    "eigensolver_tolerance": 1e-07,
+    "mesh_size": 3,
+    "num_bands": 6,
+    "polarization": "TE",
+    "rank1_bands_zero_based": [
+      2,
+      3
+    ],
+    "rank2_pair_zero_based": [
+      2,
+      3
+    ],
+    "representation": "mpb_live_energy_eh_v1"
+  },
+  "stop_after": "E9F_C1_RP2_C1_REPORT",
+  "work_order_id": "TRILATT-E9F-C1-RP2-C1-20260824-231"
+}
