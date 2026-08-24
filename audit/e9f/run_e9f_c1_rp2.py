@@ -1,6 +1,6 @@
 """Audited public entry point for the E9F.C1.RP2 implementation."""
 from __future__ import annotations
-import json
+import json, os, sys
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 from audit.e9f import run_e9f_c1_rp2_impl as _impl
@@ -45,10 +45,13 @@ def worker_command(root: Path, row: Mapping[str, Any]) -> list[str]:
     return [_impl.sys.executable, str(Path(__file__).resolve()), "--worker", "--root", str(root), "--worker-id", str(row["sample_id"]), "--resolution", str(row["resolution"]), "--coordinate-json", json.dumps(row["authoritative_coordinate"], separators=(",", ":"))]
 
 def main(argv: Sequence[str] | None = None) -> int:
+    args = list(sys.argv[1:] if argv is None else argv)
+    root = Path(args[args.index("--root") + 1]).resolve() if "--root" in args else Path(__file__).resolve().parents[2]
+    os.environ["PYTHONPATH"] = str(root) + os.pathsep + os.environ.get("PYTHONPATH", "")
     _impl.load_execution_contract = _clean_execution_contract
     _impl._rank1_level = _fixed_rank1_level
     _impl._path_diagnostic = _path_probe
     _impl.worker_command = worker_command
-    return _impl.main(argv)
+    return _impl.main(args)
 
 if __name__ == "__main__": raise SystemExit(main())
