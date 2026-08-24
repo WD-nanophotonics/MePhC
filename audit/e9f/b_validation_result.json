@@ -1,0 +1,64 @@
+{
+  "schema": "trilatt_e9f_b_production_retained_domain_validation_v1",
+  "work_order_id": "TRILATT-E9F-B-20260824-206",
+  "implementation_commit": "4e96a9e77858f6ce1b747673b91667c1389b9650",
+  "remote_sandbox": "4e96a9e77858f6ce1b747673b91667c1389b9650",
+  "remote_main": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "expected_main": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "contract_sha256": "2770ebb0633d64d146ed4095c70e904a77b5a711087486243bc319f717523477",
+  "production_files": [
+    "mephc/valley_integration.py",
+    "mephc/valley_chern.py"
+  ],
+  "cases": [
+    {
+      "fr": 0.0,
+      "source_sample_count": 551,
+      "clipped_sample_count": 752,
+      "source_total_weight_q2": 0.4251543209876543,
+      "clipped_total_weight_q2": 0.4171355694895034,
+      "source_plan_digest": "734493221730c0a6158ea3f58e31624e68c7be8aaae899488e1de2e2d7df5827",
+      "clipped_plan_digest": "a576fdff53342f8b3d4897b19ec5b2ada2db8dc34daeb390413740bac942c8b1",
+      "deterministic_rebuild": true
+    },
+    {
+      "fr": 0.4,
+      "source_sample_count": 641,
+      "clipped_sample_count": 872,
+      "source_total_weight_q2": 0.49459876543209874,
+      "clipped_total_weight_q2": 0.48568148019904145,
+      "source_plan_digest": "23d101a390a780fefa235ad75a6c88e66f048efe0234948b63330708d08d809d",
+      "clipped_plan_digest": "65870e0c3a2933913a6d873e381915260be146be2e43a0e202a54578822a7b7c",
+      "deterministic_rebuild": true
+    }
+  ],
+  "c2_c3_parity": {
+    "sample_counts": {
+      "fr=0.0": {
+        "source": 551,
+        "clipped": 752
+      },
+      "fr=0.4": {
+        "source": 641,
+        "clipped": 872
+      }
+    },
+    "source_weights": {
+      "fr=0.0": 0.4251543209876543,
+      "fr=0.4": 0.49459876543209874
+    },
+    "clipped_weights": {
+      "fr=0.0": 0.41713556948950337,
+      "fr=0.4": 0.48568148019904134
+    },
+    "matched": true
+  },
+  "synthetic_constant_field_normalization": "PASSED_IN_FOCUSED_TESTS",
+  "status_cardinality_fail_closed": "PASSED_IN_FOCUSED_TESTS",
+  "forbidden_input_modes_rejected": "PASSED_IN_FOCUSED_TESTS",
+  "new_mpb_solver_requests": 0,
+  "new_berry_calculation": "NONE",
+  "new_scientific_valley_chern_value": "NONE",
+  "main_push": false,
+  "overall": "PRODUCTION_RETAINED_DOMAIN_INTEGRATION_CORE_READY_FOR_SUPERVISOR_AUDIT"
+}
