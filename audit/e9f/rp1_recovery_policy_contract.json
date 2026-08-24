@@ -1,0 +1,389 @@
+{
+  "base_sandbox_sha": "d320715aa26da8894f5d9f2c15abd02d98b9b2ea",
+  "decision_tree": {
+    "CASE_A": {
+      "action": "RANK1_NOT_REPORTABLE; no rank-1 band2 reducer value",
+      "condition": "center gap becomes nonpositive, ordering crosses, or exact degeneracy appears"
+    },
+    "CASE_B": {
+      "action": "candidate evidence only; no automatic threshold change; later supervisor policy required",
+      "condition": "positive center gap, converged rank-1 shadows, externally isolated rank-2 pair, and rank1-sum/rank2-determinant consistency passes"
+    },
+    "CASE_C": {
+      "action": "only subspace physics reportable; single-band band2 valley-Chern remains incomplete",
+      "condition": "rank-1 shadows fail convergence but rank-2 pair is qualified"
+    },
+    "CASE_D": {
+      "action": "point unresolved; band2 source-grid integral remains incomplete",
+      "condition": "rank-2 pair fails external isolation"
+    },
+    "forbidden_actions": [
+      "zero-fill",
+      "dropped_weight",
+      "renormalization",
+      "interpolation_over_failed_samples"
+    ]
+  },
+  "execution_authorization": {
+    "band2_recovery_execution_authorized": false,
+    "berry_calculation_authorized": false,
+    "chern_calculation_authorized": false,
+    "live_mpb_authorized": false,
+    "main_push_authorized": false,
+    "scientific_sample_solves_authorized": false,
+    "three_band_aggregate_authorized": false,
+    "threshold_change_authorized": false
+  },
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "finite_stencil_policy": {
+    "alternatives": [
+      {
+        "estimator_scope": "all_551_band2_source_grid_samples",
+        "live_execution_in_rp1": false,
+        "policy_id": "F1_UNIFORM_BAND2_SOURCE_GRID_FINE_STENCIL",
+        "rationale": "Uniform estimator avoids post-hoc spatially adaptive mixing; historical D1 indicates the 11 finite-stencil artifact points become rank-1 qualified at this stencil.",
+        "selected": true,
+        "stencil": "1/144"
+      },
+      {
+        "estimator_scope": "all_551_band2_source_grid_samples",
+        "live_execution_in_rp1": false,
+        "policy_id": "F2_PREDECLARED_MIXED_STENCIL_ESTIMATOR",
+        "requirements": [
+          "mathematically explicit estimator",
+          "no post-hoc weights",
+          "validation that spatially varying stencil does not bias the integrated quantity"
+        ],
+        "selected": false,
+        "stencil": "predeclared mixed stencil only"
+      }
+    ],
+    "no_silent_mixing_of_11_fine_with_540_coarse": true,
+    "selected_future_policy": "F1_UNIFORM_BAND2_SOURCE_GRID_FINE_STENCIL"
+  },
+  "future_execution_stages": [
+    {
+      "action": "BOUNDED_SIX_POINT_LOW_GAP_DIAGNOSTIC",
+      "live_science_authorized": false,
+      "reducer": false,
+      "stage": "RP2"
+    },
+    {
+      "action": "SUPERVISOR_DECISION_ON_LOW_GAP_QUALIFICATION_POLICY",
+      "live_science_authorized": false,
+      "stage": "RP3"
+    },
+    {
+      "action": "UNIFORM_551_POINT_BAND2_RECOVERY_AT_SELECTED_ESTIMATOR",
+      "requires_supervisor_acceptance": true,
+      "stage": "RP4"
+    },
+    {
+      "action": "REDUCER_ONLY_AFTER_COMPLETE_551_OF_551_QUALIFICATION",
+      "requires_supervisor_acceptance": true,
+      "stage": "RP5"
+    }
+  ],
+  "immutable_inputs": {
+    "classification_counts": {
+      "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED": 11,
+      "TRUE_POINTWISE_LOW_GAP_BLOCKER": 6
+    },
+    "classification_subtype_counts": {
+      "LOW_GAP_NEIGHBORHOOD_STENCIL_WITHOUT_DOMAIN_CROSSING": 3,
+      "OUTER_BOUNDARY_CROSSING_STENCIL": 8
+    },
+    "failed_at_c1": 17,
+    "failed_sample_records": [
+      {
+        "center": [
+          -0.9444444444444444,
+          -0.4722222222222222
+        ],
+        "center_gap": 0.013482483999199102,
+        "classification": "TRUE_POINTWISE_LOW_GAP_BLOCKER",
+        "classification_subtype": null,
+        "sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+        "sample_index": 0
+      },
+      {
+        "center": [
+          -0.9444444444444444,
+          -0.4444444444444444
+        ],
+        "center_gap": 0.018428896349577062,
+        "classification": "TRUE_POINTWISE_LOW_GAP_BLOCKER",
+        "classification_subtype": null,
+        "sample_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+        "sample_index": 1
+      },
+      {
+        "center": [
+          -0.9444444444444444,
+          -0.4166666666666667
+        ],
+        "center_gap": 0.022867849291639708,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED",
+        "classification_subtype": "OUTER_BOUNDARY_CROSSING_STENCIL",
+        "sample_id": "fr=0;grid_i=-34;grid_j=-15;estimator=SOURCE_GRID",
+        "sample_index": 2
+      },
+      {
+        "center": [
+          -0.9444444444444444,
+          -0.3888888888888889
+        ],
+        "center_gap": 0.026662896741181552,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED",
+        "classification_subtype": "OUTER_BOUNDARY_CROSSING_STENCIL",
+        "sample_id": "fr=0;grid_i=-34;grid_j=-14;estimator=SOURCE_GRID",
+        "sample_index": 3
+      },
+      {
+        "center": [
+          -0.9444444444444444,
+          0.3888888888888889
+        ],
+        "center_gap": 0.026602782839760586,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED",
+        "classification_subtype": "OUTER_BOUNDARY_CROSSING_STENCIL",
+        "sample_id": "fr=0;grid_i=-34;grid_j=14;estimator=SOURCE_GRID",
+        "sample_index": 4
+      },
+      {
+        "center": [
+          -0.9444444444444444,
+          0.4166666666666667
+        ],
+        "center_gap": 0.022811473463883736,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED",
+        "classification_subtype": "OUTER_BOUNDARY_CROSSING_STENCIL",
+        "sample_id": "fr=0;grid_i=-34;grid_j=15;estimator=SOURCE_GRID",
+        "sample_index": 5
+      },
+      {
+        "center": [
+          -0.9444444444444444,
+          0.4444444444444444
+        ],
+        "center_gap": 0.01838056395569737,
+        "classification": "TRUE_POINTWISE_LOW_GAP_BLOCKER",
+        "classification_subtype": null,
+        "sample_id": "fr=0;grid_i=-34;grid_j=16;estimator=SOURCE_GRID",
+        "sample_index": 6
+      },
+      {
+        "center": [
+          -0.9444444444444444,
+          0.4722222222222222
+        ],
+        "center_gap": 0.013443428678322489,
+        "classification": "TRUE_POINTWISE_LOW_GAP_BLOCKER",
+        "classification_subtype": null,
+        "sample_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+        "sample_index": 7
+      },
+      {
+        "center": [
+          -0.9166666666666666,
+          -0.4444444444444444
+        ],
+        "center_gap": 0.023504458936813077,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED",
+        "classification_subtype": "LOW_GAP_NEIGHBORHOOD_STENCIL_WITHOUT_DOMAIN_CROSSING",
+        "sample_id": "fr=0;grid_i=-33;grid_j=-16;estimator=SOURCE_GRID",
+        "sample_index": 8
+      },
+      {
+        "center": [
+          -0.9166666666666666,
+          0.4444444444444444
+        ],
+        "center_gap": 0.02346111519155447,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED",
+        "classification_subtype": "LOW_GAP_NEIGHBORHOOD_STENCIL_WITHOUT_DOMAIN_CROSSING",
+        "sample_id": "fr=0;grid_i=-33;grid_j=16;estimator=SOURCE_GRID",
+        "sample_index": 9
+      },
+      {
+        "center": [
+          -0.8888888888888888,
+          -0.4444444444444444
+        ],
+        "center_gap": 0.025087425526166995,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED",
+        "classification_subtype": "OUTER_BOUNDARY_CROSSING_STENCIL",
+        "sample_id": "fr=0;grid_i=-32;grid_j=-16;estimator=SOURCE_GRID",
+        "sample_index": 10
+      },
+      {
+        "center": [
+          -0.8888888888888888,
+          0.4444444444444444
+        ],
+        "center_gap": 0.025049454193873943,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED",
+        "classification_subtype": "OUTER_BOUNDARY_CROSSING_STENCIL",
+        "sample_id": "fr=0;grid_i=-32;grid_j=16;estimator=SOURCE_GRID",
+        "sample_index": 11
+      },
+      {
+        "center": [
+          -0.16666666666666666,
+          -0.027777777777777776
+        ],
+        "center_gap": 0.021895409471319016,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED",
+        "classification_subtype": "OUTER_BOUNDARY_CROSSING_STENCIL",
+        "sample_id": "fr=0;grid_i=-6;grid_j=-1;estimator=SOURCE_GRID",
+        "sample_index": 12
+      },
+      {
+        "center": [
+          -0.16666666666666666,
+          0.0
+        ],
+        "center_gap": 0.02451886081845145,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED",
+        "classification_subtype": "LOW_GAP_NEIGHBORHOOD_STENCIL_WITHOUT_DOMAIN_CROSSING",
+        "sample_id": "fr=0;grid_i=-6;grid_j=0;estimator=SOURCE_GRID",
+        "sample_index": 13
+      },
+      {
+        "center": [
+          -0.16666666666666666,
+          0.027777777777777776
+        ],
+        "center_gap": 0.021912597073700024,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED",
+        "classification_subtype": "OUTER_BOUNDARY_CROSSING_STENCIL",
+        "sample_id": "fr=0;grid_i=-6;grid_j=1;estimator=SOURCE_GRID",
+        "sample_index": 14
+      },
+      {
+        "center": [
+          -0.1388888888888889,
+          0.0
+        ],
+        "center_gap": 0.016715192085324126,
+        "classification": "TRUE_POINTWISE_LOW_GAP_BLOCKER",
+        "classification_subtype": null,
+        "sample_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+        "sample_index": 15
+      },
+      {
+        "center": [
+          -0.1111111111111111,
+          0.0
+        ],
+        "center_gap": 0.010594785956050956,
+        "classification": "TRUE_POINTWISE_LOW_GAP_BLOCKER",
+        "classification_subtype": null,
+        "sample_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID",
+        "sample_index": 16
+      }
+    ],
+    "historical_d1_result_sha256": "201a044c7dd9a3b7c9fee02163aebb26e28503d8a810964b71a076f0c8746fae",
+    "numerical_payload_digest": "99eecf6e8bef8204332952222cf46b1f35931528d828462f73e72b89d4e56e60",
+    "qualified_at_c1": 534,
+    "source_artifact": "audit/e9f/c1_d1_c1_result.json",
+    "source_artifact_sha256": "489b22fe2865f527bafd2727ed91441f58f8c87e56bb6eb2ee04fb62a1829240",
+    "total_source_grid_samples": 551
+  },
+  "low_gap_policy": {
+    "blocker_count": 6,
+    "diagnostic_ladder": [
+      {
+        "level": "L0",
+        "name": "CENTER_SPECTRUM_CONFIRMATION",
+        "optional_higher_resolution": "one predeclared resolution only if needed",
+        "resolutions": [
+          64,
+          96
+        ],
+        "scope": "six true low-gap points",
+        "threshold_change": false
+      },
+      {
+        "diagnostic_only": true,
+        "level": "L1",
+        "name": "RANK1_SHADOW_PLAQUETTE_CONVERGENCE",
+        "optional_stencil": "1/288 only if prejustified",
+        "scope": "band2 and neighboring band3 separately",
+        "stencils": [
+          "1/72",
+          "1/144"
+        ]
+      },
+      {
+        "diagnostic_only": true,
+        "level": "L2",
+        "name": "RANK2_SUBSPACE_DIAGNOSTIC",
+        "requirements": [
+          "external isolation of rank-2 pair",
+          "singular-value/subspace qualification",
+          "rank-2 Wilson determinant phase"
+        ],
+        "scope": "[band2,band3] pair"
+      },
+      {
+        "comparison": "wrapped_phase(band2)+wrapped_phase(band3) versus arg(det(W_rank2))",
+        "diagnostic_only": true,
+        "failure_action": "rank-1 recovery remains fail-closed",
+        "level": "L3",
+        "name": "CONSISTENCY_TEST"
+      }
+    ],
+    "must_not_lower_threshold_to_qualify": true,
+    "required_distinction": [
+      "MATHEMATICAL_EXACT_DEGENERACY",
+      "POSITIVE_SMALL_GAP",
+      "NUMERICALLY_UNSTABLE_RANK1_STATE"
+    ]
+  },
+  "phase": "E9F.C1.RP1",
+  "provenance_requirements": {
+    "manifest_changed_files_must_equal_git_diff": true,
+    "manifest_path_must_be_in_changed_files": true,
+    "manifest_self_hash_may_be_excluded": true,
+    "process_review_defect_index_must_cover_all_incidents": true,
+    "rel_020_status": "CLOSED",
+    "rel_021_status": "CLOSED",
+    "rel_022_status": "PARTIALLY_CLOSED"
+  },
+  "reducer_firewall": {
+    "band2_result_status_until_complete": "INCOMPLETE_NOT_REPORTED",
+    "diagnostic_only_is_reducer_admissible": false,
+    "no_numeric_band2_chern_until_551_of_551_reducer_admissible": true,
+    "no_partial_flux_as_band2_result": true,
+    "no_three_band_sum": true
+  },
+  "schema": "trilatt_e9f_c1_rp1_recovery_policy_v1",
+  "scientific_boundaries": {
+    "classification_11_6_unchanged": true,
+    "classification_8_3_unchanged": true,
+    "no_band2_recovery": true,
+    "no_berry_calculation": true,
+    "no_chern_calculation": true,
+    "no_mpb_solve": true,
+    "no_three_band_sum": true,
+    "no_threshold_change": true,
+    "numerical_payload_digest_unchanged": true
+  },
+  "status": "E9F_C1_RECOVERY_POLICY_PREREGISTERED_READY_FOR_SIX_POINT_DIAGNOSTIC",
+  "threshold_governance": {
+    "current_min_external_gap": 0.02,
+    "future_change_requires_separate_preregistered_work_order": true,
+    "justification_requirements": [
+      "positive spectral gap evidence",
+      "resolution convergence",
+      "stencil convergence",
+      "gauge/order robustness",
+      "rank-2 consistency"
+    ],
+    "source_anchor_blind_during_qualification": true,
+    "source_anchor_must_not_select_policy": true,
+    "threshold_change_authorized": false
+  },
+  "work_order_id": "TRILATT-E9F-C1-RP1-20260824-226"
+}
