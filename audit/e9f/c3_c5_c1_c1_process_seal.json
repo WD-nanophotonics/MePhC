@@ -1,0 +1,274 @@
+{
+  "accepted_postprocess_sha256": "c79cc18b8a1ce19ddac59e30f13ebe2c1694effafbc7598be0aa7a62e50d817b",
+  "assignment_record_count": 96,
+  "association_edge_count": 96,
+  "base_sandbox_sha": "761c8cda69a7d3fc8c663e023f43bc10749852d6",
+  "canonical_replay_coverage_valid": true,
+  "chern_started": false,
+  "complete_entry_count": 24,
+  "conflicting_duplicate_key_count": 0,
+  "duplicate_key_count": 12,
+  "duplicate_record_excess_count": 12,
+  "failed_initial_attempt": {
+    "control_flow_inference_basis": "center solve plus four first-stencil vertex solves precede analyze_plaquette; traceback confirms first _gauge dense projector allocation",
+    "control_flow_inference_confidence": "HIGH",
+    "control_flow_inferred_completed_solves": 5,
+    "detail_availability": "FULL",
+    "exception_message": "Unable to allocate 11.4 GiB for an array with shape (27648, 27648) and data type complex128",
+    "exception_type": "MemoryError",
+    "failed_execution_sha": "87eb2678448fdf6db3f161a45484470ab5c8a2bd",
+    "failure_sidecar_sha256": "46496d035da95cf37d520389af49136ffcdd428eb3e4b3c37b762eb54308f345",
+    "failure_stage": "science_compute",
+    "measured_native_solve_count": "UNKNOWN",
+    "native_solve_count": 0,
+    "parent_failure_sha256": "0bed6cbfd22b07301dc3e2a615cdea9359d83769a013266f3f9441b8743461a2",
+    "payload_reused_by_final": false,
+    "resolution": 96,
+    "schema": "mephc_e9f_c1_c1_failed_attempt_record_v1",
+    "scientific_payload_reuse_conclusion": "C1_C1_FINAL_MATRIX_REUSED_87EB_SCIENTIFIC_PAYLOAD=false",
+    "sidecar_native_solve_count_raw": 0,
+    "sidecar_native_solve_count_semantics": "INITIAL_VALUE_NOT_UPDATED_ON_IN_FUNCTION_EXCEPTION",
+    "stderr_sha256": "7a0a12929042d57abaff5f326ebda5baf4ea6b1260620aaf3852612937fb7d24",
+    "stderr_tail_sha256": "7a0a12929042d57abaff5f326ebda5baf4ea6b1260620aaf3852612937fb7d24",
+    "traceback_confirms_dense_gauge_path": true,
+    "work_order_id": "MEPHC-E9F-C1-RP2-C3-C5-C1-C1-20260825-252",
+    "worker_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=96"
+  },
+  "failed_initial_execution_sha": "87eb2678448fdf6db3f161a45484470ab5c8a2bd",
+  "implementation_sha": "a75426be91ab03b297d89ccba05f8d00e394d786",
+  "mpb_execution_performed": false,
+  "native_solves_performed_by_s1": 0,
+  "open_p0": [],
+  "open_p1": [],
+  "open_p2": [],
+  "pipeline_health": "PIPELINE_HEALTHY_WITH_TECH_DEBT",
+  "prelive_attestation": {
+    "failed_count": 0,
+    "git_clean_after": true,
+    "git_clean_before": true,
+    "implementation_sha": "a75426be91ab03b297d89ccba05f8d00e394d786",
+    "native_execution_performed": false,
+    "passed_count": 47,
+    "pytest_exit_status": 0,
+    "pytest_node_count": 47,
+    "schema": "mephc_e9f_c1_c5_c1_c1_prelive_attestation_v1",
+    "skipped_count": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_tail": "",
+    "stdout_sha256": "0738a7adb3d90d6cb0ec6c904ec51408d8e64f4e7d8924f188d7db7a1e6f2330",
+    "stdout_tail": "...............................................                          [100%]\n47 passed in 0.53s\n",
+    "test_command": [
+      "/home/icy/miniconda3/envs/mp/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_e9f_c1_rp2_c3_c5_c1.py",
+      "tests/test_e9f_c1_rp2_c3_c5_c1_c1.py",
+      "--disable-warnings"
+    ],
+    "work_order_id": "MEPHC-E9F-C1-RP2-C3-C5-C1-C1-20260825-252"
+  },
+  "prelive_attestation_sha256": "bcb70bc9a8c9b6afc453a5a9dbadeaa2f90eb37edb96bc74a74f6f1c4f0d55b3",
+  "process_registry": {
+    "incidents": [
+      {
+        "incident_id": "REL-021",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-022",
+        "priority": "P2",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-023",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-024",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-025",
+        "priority": "P2",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-026",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-027",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-028",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-029",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-030",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-031",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-032",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-033",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-034",
+        "priority": "P2",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-035",
+        "priority": "P2",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-036",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-037",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-038",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-039",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-040",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-041",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-042",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-043",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-044",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-045",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-046",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-047",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-048",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-049",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-050",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-051",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-052",
+        "priority": "P1",
+        "status": "CLOSED"
+      },
+      {
+        "incident_id": "REL-053",
+        "priority": "P1",
+        "status": "CLOSED"
+      }
+    ],
+    "p0_items": [],
+    "p1_items": [],
+    "p2_items": [],
+    "pipeline_health": "PIPELINE_HEALTHY_WITH_TECH_DEBT",
+    "schema": "mephc_e9f_c1_c1_process_registry_v1",
+    "work_order_id": "MEPHC-E9F-C1-RP2-C3-C5-C1-C1-20260825-252"
+  },
+  "process_registry_sha256": "048cfafb342049547677397efe4572ccdeacd459a6084ce928619b3d315dd5c3",
+  "process_seal_approved": true,
+  "production_mephc_unchanged": true,
+  "raw_replay_record_count": 120,
+  "reducer_started": false,
+  "resolution_delta_count": 24,
+  "rp3_started": false,
+  "schema": "mephc_e9f_c1_rp2_c3_c5_c1_c1_process_seal_v1",
+  "scientific_disposition": {
+    "current_0p02_qualification_unchanged": true,
+    "no_convergence_verdict": true,
+    "rank1_recovered": false,
+    "rank2_pair_attribution_to_band2_or_band3": false,
+    "reducer_admissible": false
+  },
+  "source_checkpoint_sha256": "871b24983800d178f44d09b2220bcc179804e939f1f4c9163d84917ca5a8ca7d",
+  "source_manifest_sha256": "ca9d7fc2184371b1dcf5049a1a8bceaf613372bd69a2cd0449fbf25d4e919d01",
+  "source_matrix_binding_valid": true,
+  "source_matrix_entry_count": 24,
+  "source_payloads_immutable": true,
+  "source_result_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+  "source_science_execution_sha": "02b8fc343b3dd786769c42cfa8e44bd57add482d",
+  "source_total_native_solves": 108,
+  "stencil_delta_count": 24,
+  "tech_debt": "Historical failed execution has no directly measured completed-native-solve count; preserve raw 0 and measured UNKNOWN alongside inferred 5.",
+  "unique_replay_key_count": 108,
+  "work_order_id": "MEPHC-E9F-C1-RP2-C3-C5-C1-C1-S1-20260825-254"
+}

@@ -3,7 +3,7 @@
     {
       "incident_id": "REL-021",
       "priority": "P1",
-      "status": "OPEN"
+      "status": "CLOSED"
     },
     {
       "incident_id": "REL-022",
@@ -108,7 +108,7 @@
     {
       "incident_id": "REL-042",
       "priority": "P1",
-      "status": "OPEN"
+      "status": "CLOSED"
     },
     {
       "incident_id": "REL-043",
@@ -148,17 +148,17 @@
     {
       "incident_id": "REL-050",
       "priority": "P1",
-      "status": "OPEN"
+      "status": "CLOSED"
     },
     {
       "incident_id": "REL-051",
       "priority": "P1",
-      "status": "OPEN"
+      "status": "CLOSED"
     },
     {
       "incident_id": "REL-052",
       "priority": "P1",
-      "status": "OPEN"
+      "status": "CLOSED"
     },
     {
       "incident_id": "REL-053",
@@ -167,15 +167,9 @@
     }
   ],
   "p0_items": [],
-  "p1_items": [
-    "REL-021",
-    "REL-042",
-    "REL-050",
-    "REL-051",
-    "REL-052"
-  ],
+  "p1_items": [],
   "p2_items": [],
-  "pipeline_health": "PIPELINE_REQUIRES_CORRECTIVE",
+  "pipeline_health": "PIPELINE_HEALTHY_WITH_TECH_DEBT",
   "schema": "mephc_e9f_c1_c1_process_registry_v1",
   "work_order_id": "MEPHC-E9F-C1-RP2-C3-C5-C1-C1-20260825-252"
 }
