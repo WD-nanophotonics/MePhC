@@ -22,23 +22,18 @@ def _l3(rank1: Mapping[str, Any], rank3: Mapping[str, Any], rank2: Mapping[str, 
 
 def run_reaped_child(command, worker_id: str, *, timeout_seconds: float = 720.0):
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    try:
-        stdout, stderr = process.communicate(timeout=timeout_seconds)
+    try: stdout, stderr = process.communicate(timeout=timeout_seconds)
     except subprocess.TimeoutExpired as exc:
-        process.kill(); process.communicate()
-        raise CampaignRuntimeError(f"RP2_NATIVE_CHILD_TIMEOUT:{worker_id}") from exc
-    direct_pid_gone = not (Path("/proc") / str(process.pid)).exists()
-    orphan_pids = [pid for pid in _impl.scan_worker_processes(worker_id) if pid != process.pid]
+        process.kill(); process.communicate(); raise CampaignRuntimeError(f"RP2_NATIVE_CHILD_TIMEOUT:{worker_id}") from exc
+    direct_pid_gone = not (Path("/proc") / str(process.pid)).exists(); orphan_pids = [pid for pid in _impl.scan_worker_processes(worker_id) if pid != process.pid]
     measurement = {"worker_id": worker_id, "launched_pid": int(process.pid), "returncode": int(process.returncode), "direct_pid_gone": bool(direct_pid_gone), "orphan_pids": orphan_pids, "orphan_count": len(orphan_pids)}
     if not direct_pid_gone or orphan_pids: raise CampaignRuntimeError(f"RP2_NATIVE_ORPHAN_DETECTED:{measurement}")
     if process.returncode != 0: raise CampaignRuntimeError(f"RP2_NATIVE_CHILD_FAILED:{worker_id}:{process.returncode}:{stderr[-600:]}")
-    payload = None
     for line in reversed([line.strip() for line in stdout.splitlines() if line.strip()]):
-        try: candidate = json.loads(line)
+        try: value = json.loads(line)
         except json.JSONDecodeError: continue
-        if isinstance(candidate, dict): payload = candidate; break
-    if payload is None: raise CampaignRuntimeError(f"RP2_NATIVE_CHILD_JSON_INVALID:{worker_id}:{stderr[-600:]}")
-    return payload, measurement
+        if isinstance(value, dict): return value, measurement
+    raise CampaignRuntimeError(f"RP2_NATIVE_CHILD_JSON_INVALID:{worker_id}:{stderr[-600:]}")
 
 def _clean_execution_contract(root: Path) -> dict[str, Any]:
     value = json.loads(json.dumps(_ORIGINAL_LOAD_EXECUTION_CONTRACT(root)))
@@ -63,6 +58,7 @@ def worker_command(root: Path, row: Mapping[str, Any]) -> list[str]:
 def main(argv: Sequence[str] | None = None) -> int:
     args = list(sys.argv[1:] if argv is None else argv); root = Path(args[args.index("--root") + 1]).resolve() if "--root" in args else Path(__file__).resolve().parents[2]
     os.environ["PYTHONPATH"] = str(root) + os.pathsep + os.environ.get("PYTHONPATH", "")
+    _impl.CampaignRuntime.ARTIFACT_SCHEMA = "trilatt_e9f_c1_rp2_worker_v1"
     _impl.load_execution_contract = _clean_execution_contract; _impl._rank1_level = _fixed_rank1_level; _impl._path_diagnostic = _path_probe; _impl.worker_command = worker_command; _impl.run_reaped_child = run_reaped_child
     return _impl.main(args)
 
