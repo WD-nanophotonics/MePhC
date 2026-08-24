@@ -1,0 +1,9 @@
+{
+  "schema": "trilatt_e9f_a_c3_validation_contract_v1",
+  "work_order_id": "TRILATT-E9F-A-C3-20260824-204",
+  "preserved_c2": ["audit/e9f/c2_quadrature_contract.json", "audit/e9f/c2_retained_quadrature.py", "audit/e9f/c2_quadrature_validation.json", "audit/e9f/c2_future_status_policy.json"],
+  "independent_checks": ["recompute sample membership from source geometry", "replay per-cell weight conservation", "execute constant-field estimator fixtures", "execute deterministic plan rebuild", "execute fail-closed status-policy fixtures"],
+  "estimator_identities": {"source": "SOURCE_GRID_MIDPOINT_V1", "clipped": "MEPHC_CLIPPED_RETAINED_DOMAIN_V1"},
+  "status_policy": {"complete": "exactly one QUALIFIED_REPORTED row per positive-weight sample-band", "incomplete": "NOT_REPORTED_WITH_REASON yields INCOMPLETE_NOT_REPORTED", "fail_closed": ["missing row", "duplicate status", "NaN", "silent weight drop", "zero fill", "mixed estimator"]},
+  "live_work": {"new_mpb_solver_requests": 0, "new_berry_calculation": "NONE", "new_valley_chern_value": "NONE", "production_code_change": false}
+}
