@@ -1,11 +1,6 @@
 {
-  "checkpoint_audit": {
-    "all_payloads_valid": true,
-    "generation": 12,
-    "order_valid": true,
-    "worker_count": 12
-  },
-  "entries": [
+  "base_sandbox_sha": "02b8fc343b3dd786769c42cfa8e44bd57add482d",
+  "complete_entries": [
     {
       "BAND2": {
         "CURRENT_0P02_QUALIFICATION_CONTEXT": [
@@ -13515,8 +13510,7 @@
     "work_order_id": "MEPHC-E9F-C1-RP2-C3-C5-C1-20260825-250",
     "worker_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID::resolution=96"
   },
-  "no_native_execution": true,
-  "no_production_mephc_change": true,
+  "old_subset_reproduced": true,
   "prelive_attestation": {
     "collect_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "collect_stdout_sha256": "23bebc718b82d28ec77de7a66f803b1a4020a8ca113e9af6057f66f6b33785de",
@@ -13668,6 +13662,7 @@
     "stdout_tail": "........................................................................ [ 54%]\n...........................................................              [100%]\n131 passed in 0.99s\n",
     "work_order_id": "MEPHC-E9F-C1-RP2-C3-C5-C1-20260825-250"
   },
+  "prelive_attestation_sha256": "01af28f57b9cb433ba7430768346c4bcdb3a7f2467a8625424e49110ae1a571f",
   "process_registry": {
     "incidents": [
       {
@@ -13850,7 +13845,7 @@
     "schema": "mephc_e9f_c1_rp2_c3_c5_c1_process_registry_v1",
     "work_order_id": "MEPHC-E9F-C1-RP2-C3-C5-C1-20260825-250"
   },
-  "replay": {
+  "replay_coverage": {
     "coverage_valid": true,
     "expected_key_count": 108,
     "index_key_count": 108,
@@ -14074,22 +14069,33 @@
       "stencil": "1/144"
     }
   ],
-  "safe_projector": {
+  "resume_suffix_counts": {
+    "0": 12,
+    "12": 0,
+    "3": 9
+  },
+  "safe_projector_regression": {
     "dense_equivalence": true,
     "max_abs_error": 2.1316282072803006e-14,
     "no_dense_nxn": true,
     "rank2_production_qualification_path_unchanged": true
   },
   "schema": "mephc_e9f_c1_rp2_c3_c5_c1_matrix_postprocess_v1",
-  "source_checkpoint_sha256": "871b24983800d178f44d09b2220bcc179804e939f1f4c9163d84917ca5a8ca7d",
-  "source_contract_sha256": "9891baa53a52373a8f3ec1e218590e8bd839c54a20d87d6a4fbc2f5d6c7a8279",
+  "source": {
+    "c1_native_solves": 0,
+    "checkpoint_sha256": "871b24983800d178f44d09b2220bcc179804e939f1f4c9163d84917ca5a8ca7d",
+    "contract_sha256": "9891baa53a52373a8f3ec1e218590e8bd839c54a20d87d6a4fbc2f5d6c7a8279",
+    "generation": 12,
+    "manifest_sha256": "ca9d7fc2184371b1dcf5049a1a8bceaf613372bd69a2cd0449fbf25d4e919d01",
+    "matrix_entry_count": 24,
+    "ordered_worker_count": 12,
+    "policy_sha256": "75f2d32853ab7e0a5878c19a732f4ac91ef993c105a8000b87e4a8a6ed6d5145",
+    "result_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+    "total_native_solves": 108
+  },
   "source_execution_sha": "02b8fc343b3dd786769c42cfa8e44bd57add482d",
-  "source_manifest_sha256": "ca9d7fc2184371b1dcf5049a1a8bceaf613372bd69a2cd0449fbf25d4e919d01",
   "source_matrix_binding_valid": true,
-  "source_original_rp2_execution_sha": "8121dbfba352b1a77551213771694d25c1bf3f01",
-  "source_policy_sha256": "75f2d32853ab7e0a5878c19a732f4ac91ef993c105a8000b87e4a8a6ed6d5145",
-  "source_result_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
-  "status": "E9F_C1_RP2_C3_C5_C1_MATRIX_EVIDENCE_SEALED_READY_FOR_RP3_POLICY_DECISION",
+  "source_work_order_id": "MEPHC-E9F-C1-RP2-C3-C5-20260825-248",
   "stencil_deltas": [
     {
       "branch": "band2",
@@ -14309,19 +14315,15 @@
     }
   ],
   "summary": {
-    "complete_entry_record_count": 24,
+    "complete_entry_count": 24,
     "max_resolution_delta_abs_band2": 9.330145275271605,
     "max_resolution_delta_abs_band3": 11.225128520160046,
     "max_stencil_delta_abs_band2": 0.6675315204523358,
     "max_stencil_delta_abs_band3": 0.9107367631496448,
-    "native_solves_performed_by_c1": 0,
-    "old_delta_subset_reproduced": true,
+    "no_convergence_verdict": true,
     "pipeline_health": "PIPELINE_REQUIRES_CORRECTIVE",
-    "resolution_delta_record_count": 24,
-    "source_matrix_entry_count": 24,
-    "source_total_native_solves": 108,
-    "source_worker_count": 12,
-    "stencil_delta_record_count": 24
+    "resolution_delta_count": 24,
+    "stencil_delta_count": 24
   },
   "work_order_id": "MEPHC-E9F-C1-RP2-C3-C5-C1-20260825-250"
 }
