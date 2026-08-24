@@ -1,0 +1,55 @@
+{
+  "base_sandbox_sha": "56366cd302b6fa8a29a5670736de130a00d79a31",
+  "changed_files": [
+    "audit/infrastructure/campaign_runtime.py",
+    "tests/test_campaign_runtime.py",
+    "audit/e9f/c1_p1h_result.json",
+    "audit/e9f/c1_p1h_process_reliability_review.json",
+    "audit/e9f/c1_p1h_provenance_manifest.json"
+  ],
+  "checkpoint_identity": [
+    "execution_git_sha",
+    "runner_sha256",
+    "scientific_contract_sha256",
+    "plan_semantic_id",
+    "expected_sample_ids",
+    "expected_sample_indices",
+    "semantic_estimator_id",
+    "semantic_domain_id",
+    "semantic_spacing_id"
+  ],
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "fault_injection_matrix": [
+    "coordinate-only mutation",
+    "raw serialization-only mutation",
+    "topology mutation",
+    "duplicate sample id",
+    "duplicate sample index",
+    "worker-coordinate disagreement",
+    "fake local SHA",
+    "caller remote override",
+    "checkpoint generation reload",
+    "checkpoint inconsistency",
+    "existing transactional worker faults"
+  ],
+  "file_sha256": {
+    "audit/e9f/c1_p1h_process_reliability_review.json": "a44c4abea5f41b88865b090f310024ec54d0e7ba39e82b20d6c7ed7d5031d817",
+    "audit/e9f/c1_p1h_result.json": "5eb95df051212b1fc1b3beca8e123e275a3f895f70a320c115e224b29fe8528c",
+    "audit/infrastructure/campaign_runtime.py": "2ea63c2f872550bf56a19f10eb8f736aa25ffc310a2983448a158a775cfeb793",
+    "tests/test_campaign_runtime.py": "be2aaf39369afba1230efdb1d8117e72fff0f38f29b940670e3403b214e665aa"
+  },
+  "implementation_sha": "8ed5774bc3a8def5c74e047aef656852be575a89",
+  "main_unchanged": true,
+  "no_mpb_or_scientific_solve": true,
+  "remote_preflight_recorded": [
+    "REMOTE_NAME",
+    "REMOTE_REF",
+    "REMOTE_HEAD_SHA",
+    "EXECUTION_SHA",
+    "remote ancestry result"
+  ],
+  "schema": "trilatt_e9f_c1_p1h_provenance_manifest_v1",
+  "self_hash_excluded": true,
+  "semantic_plan_schema": "trilatt_semantic_plan_fingerprint_v2",
+  "work_order_id": "TRILATT-E9F-C1-P1H-20260824-222"
+}

@@ -1,0 +1,46 @@
+{
+  "base_sandbox_sha": "56366cd302b6fa8a29a5670736de130a00d79a31",
+  "checkpoint_generation_rule": "Persist generation and telemetry.checkpoint_generation_count identically; after reload next successful checkpoint is N+1; disagreement fails closed.",
+  "checkpoint_identity": [
+    "execution_git_sha",
+    "runner_sha256",
+    "scientific_contract_sha256",
+    "plan_semantic_id",
+    "expected_sample_ids",
+    "expected_sample_indices",
+    "semantic_estimator_id",
+    "semantic_domain_id",
+    "semantic_spacing_id"
+  ],
+  "classification_11_6_unchanged": true,
+  "classification_8_3_unchanged": true,
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "historical_validator_limitation": "Historical affine validator execution remains blocked by missing historical docs artifact in the isolated worktree; no /tmp symlink was created.",
+  "implementation_sha": "8ed5774bc3a8def5c74e047aef656852be575a89",
+  "main_unchanged": true,
+  "no_mpb_solve": true,
+  "no_scientific_sample_solve": true,
+  "numerical_payload_digest": "99eecf6e8bef8204332952222cf46b1f35931528d828462f73e72b89d4e56e60",
+  "old_d1_d1c1_p1_artifacts_immutable": true,
+  "open_p0": [],
+  "open_p1": [
+    "REL-005",
+    "REL-007"
+  ],
+  "open_p2": [],
+  "pipeline_health": "PIPELINE_HEALTHY_WITH_TECH_DEBT",
+  "plan_rules": [
+    "unique sample_id",
+    "unique sample_index",
+    "exact ID set",
+    "exact ID-to-index mapping",
+    "canonical authoritative coordinate binding",
+    "worker coordinate agreement before launch"
+  ],
+  "production_git_preflight_terminal": "REMOTE_EXECUTION_OBJECT_VERIFIED",
+  "schema": "trilatt_e9f_c1_p1h_result_v1",
+  "semantic_plan_id": "DERIVED_FROM_CANONICAL_SUPPLIED_PLAN_ROWS",
+  "semantic_plan_schema": "trilatt_semantic_plan_fingerprint_v2",
+  "test_results": "25 P1H runtime tests; 93 combined focused tests; py_compile passed; git diff --check passed",
+  "work_order_id": "TRILATT-E9F-C1-P1H-20260824-222"
+}
