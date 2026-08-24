@@ -1,0 +1,62 @@
+{
+  "schema": "trilatt_e9f_c1_rp2_c2_execution_failure_evidence_v1",
+  "work_order_id": "TRILATT-E9F-C1-RP2-C2-20260824-233",
+  "phase": "E9F.C1.RP2.C2",
+  "status": "EXECUTION_PAYLOAD_SERIALIZATION_FAILURE_FAIL_CLOSED",
+  "terminal": "E9F_C1_RP2_C2_REPORT",
+  "execution_git_sha": "0f08b676fd1d991c713171ad66505dd6616a0165",
+  "remote_sandbox_sha_observed": "0f08b676fd1d991c713171ad66505dd6616a0165",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "base_sandbox_sha": "99e37c05f9026e4fcd02eba6dc0060c6656b1b22",
+  "native_execution": {
+    "first_attempt": {
+      "native_solve_started": false,
+      "failure_class": "CHILD_IMPORT_PRECONDITION_FAILURE",
+      "failure_detail": "The child used an incorrect audit.e9f provider module path; this was corrected and committed before any native MPB solve."
+    },
+    "second_attempt": {
+      "native_solve_started": true,
+      "native_solver_activity_observed": true,
+      "failure_class": "PARENT_CHILD_PROTOCOL_FAILURE",
+      "failure_code": "RP2_C2_NATIVE_CHILD_JSON_INVALID",
+      "failure_detail": "The native child completed MPB solver activity, but provider diagnostics were emitted on stdout before the JSON payload. The parent applied json.loads to the complete mixed stdout and failed with JSONDecodeError: Extra data.",
+      "worker_artifact_published": false,
+      "runtime_artifact_count": 0,
+      "scientific_payload_collected": false
+    }
+  },
+  "source_freeze": {
+    "code_changed_after_first_native_solve": false,
+    "source_modification_after_first_native_solve_authorized": false,
+    "execution_sha_remained": "0f08b676fd1d991c713171ad66505dd6616a0165"
+  },
+  "scope_accounting": {
+    "primary_resolutions": [64, 96],
+    "primary_solves_per_resolution": 9,
+    "control_solves_per_resolution": 1,
+    "planned_total_solves": 20,
+    "validated_worker_count": 0,
+    "matrix_continuation": false
+  },
+  "scientific_firewall": {
+    "no_gram_metrics_claimed": true,
+    "no_association_metrics_claimed": true,
+    "no_berry_or_wilson": true,
+    "no_recovery": true,
+    "no_reducer": true,
+    "no_state_mixing": true,
+    "no_rp2_matrix_continuation": true,
+    "no_rp3": true,
+    "no_main_promotion": true,
+    "no_scientific_conclusion": true
+  },
+  "provenance": {
+    "contract_sha256": "f1656a023469f8596afab00faddcc5b6cefddfd919dbad7e8b68ed625df79e65",
+    "agents_md_exact_restore": true,
+    "agents_md_sha256": "e299656e8ba9e477ff7b9304bd54c9666ff91fea991073325138d2c134bac2a7",
+    "original_rp2_execution_sha": "8121dbfba352b1a77551213771694d25c1bf3f01",
+    "replay_tolerance": 1e-08
+  },
+  "stop_after": "E9F_C1_RP2_C2_REPORT",
+  "return_transport": "CHAT_COURIER_ONLY"
+}
