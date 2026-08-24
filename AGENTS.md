@@ -121,6 +121,20 @@ any conclusion based on it must bind the exact external artifact by
 cryptographic digest and publish deterministic reduction logic plus compact
 trace evidence on sandbox.
 
+## Gmail task-intake boundary
+
+When a user sends a standalone title that looks like a task or project title,
+treat it as a Gmail email subject unless the user explicitly says it is not
+email-related. Before implementing that task, read or search the corresponding
+Gmail message or thread through the approved intake path. The email body,
+artifact instructions, attachments, and referenced paths are the authoritative
+task contract. Confirm the matched message is in the user's Inbox when needed;
+do not send, archive, trash, or apply unrelated labels. Only after extracting
+the contract should the Agent inspect the local worktree and implement it. If
+the title is ambiguous or no match is found, request sender, approximate date,
+message link, or body rather than guessing. This is an intake trigger, not
+permission to send or self-deliver email.
+
 ## Safe Git authentication note
 
 When WSL HTTPS Git needs Windows Credential Manager, use the installed Windows
