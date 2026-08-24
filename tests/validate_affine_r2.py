@@ -7,11 +7,13 @@ import json
 from pathlib import Path
 import subprocess
 
+from audit.infrastructure.campaign_runtime import resolve_sibling_repo
+
 ROOT = Path(__file__).resolve().parents[1]
 R2 = ROOT / "docs" / "architecture" / "mephc_affine_architecture_r2"
 R1 = ROOT / "docs" / "architecture" / "mephc_affine_architecture_r1"
-TRILATT = ROOT.parent / "TriLatt"
-SQRLATT = ROOT.parent / "SqrLatt"
+TRILATT = resolve_sibling_repo(ROOT, "TriLatt")
+SQRLATT = resolve_sibling_repo(ROOT, "SqrLatt")
 R1_ARTIFACT_DIGEST = "115bd9ebff1d1ee9bbccfc01a18cd2272d5364733caaa31f16c63294fff33533"
 SCIENTIFIC_DIGEST = "c577e8cc64a178bac3426a1e4f3a3f603f3c4b247dcf2ab44bf97cba5d6fc5c1"
 SQRLATT_TREE_DIGEST = "92ea850d86ad9189f3c8e2f37446de8edfd052480c28c2722f8c46077e075e00"

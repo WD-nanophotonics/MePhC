@@ -97,3 +97,14 @@ def test_inside_outer_endpoints_cannot_be_outer_crossing():
 def test_crossing_direction_is_symmetric(seg):
     assert segment_crosses_outer_boundary(seg, OUTER)
     assert segment_leaves_outer_domain(seg, OUTER)
+
+
+def test_gamma_crossing_plaquette_cannot_be_fully_retained():
+    old = {
+        "side": 0.8,
+        "center": {"q": [0.5, 0.5], "retained_inside": True},
+        "vertices": [{"q": [0.2, 0.2]}, {"q": [0.8, 0.8]}, {"q": [0.8, 0.9]}, {"q": [0.2, 0.3]}],
+    }
+    result = corrected_side(old, OUTER, GAMMA)
+    assert result["plaquette_enters_gamma_exclusion"]
+    assert not result["plaquette_fully_retained"]

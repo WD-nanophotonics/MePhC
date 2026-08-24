@@ -37,7 +37,7 @@ def corrected_side(old,outer,exclusions):
  for i,a in enumerate(vs):
   b=vs[(i+1)%len(vs)]; s=(a,b)
   er.append({"from":list(a),"to":list(b),"segment_crosses_outer_boundary":crosses_outer(s,outer),"segment_leaves_outer_domain":leaves_outer(s,outer),"segment_enters_gamma_exclusion":enters_gamma(s,exclusions)})
- return {"side":float(old["side"]),"center":old["center"],"vertices":vr,"edges":er,"plaquette_crosses_outer_boundary":any(x["segment_crosses_outer_boundary"] for x in er),"plaquette_leaves_outer_domain":any(x["segment_leaves_outer_domain"] for x in er) or any(not x["outer_inside"] for x in vr),"plaquette_enters_gamma_exclusion":any(x["segment_enters_gamma_exclusion"] for x in er) or any(any(x["gamma_inside"]) for x in vr),"plaquette_fully_retained":all(x["retained_inside"] for x in vr) and not any(x["segment_leaves_outer_domain"] for x in er)}
+ return {"side":float(old["side"]),"center":old["center"],"vertices":vr,"edges":er,"plaquette_crosses_outer_boundary":any(x["segment_crosses_outer_boundary"] for x in er),"plaquette_leaves_outer_domain":any(x["segment_leaves_outer_domain"] for x in er) or any(not x["outer_inside"] for x in vr),"plaquette_enters_gamma_exclusion":any(x["segment_enters_gamma_exclusion"] for x in er) or any(any(x["gamma_inside"]) for x in vr),"plaquette_fully_retained":all(x["retained_inside"] for x in vr) and not any(x["segment_leaves_outer_domain"] for x in er) and not any(x["segment_enters_gamma_exclusion"] for x in er)}
 def num(item): return {"sample_index":item["sample_index"],"sample_id":item["sample_id"],"center":item["center"],"stencils":item["stencils"],"counters":item["counters"]}
 def gap(r):
  f=r["center_frequencies"]; return min(abs(float(f[2])-float(x)) for i,x in enumerate(f) if i!=2)
