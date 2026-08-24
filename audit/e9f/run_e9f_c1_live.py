@@ -157,6 +157,29 @@ def checkpoint_payload(contract: dict, plan: dict, completed: dict, counters: di
     }
 
 
+def run_isolated_sample(contract: dict, plan: dict, sample_index: int, output: Path) -> None:
+    """Evaluate one source sample in a fresh process."""
+    if sample_index < 0 or sample_index >= len(plan["ROWS"]):
+        raise ValueError("sample_index is outside the immutable source plan")
+    geometry = geometry_inputs()
+    preflight, lattice, solver_geometry, background = build_inputs(geometry)
+    self_checks(contract, plan, preflight, geometry)
+    provider = make_provider(RESOLUTION, lattice, solver_geometry, background)
+    cache: dict = {}
+    counters = {"solver_requests": 0, "cache_hits": 0, "solver_failures": 0, "sample_evaluations": 0}
+    plan_row = plan["ROWS"][sample_index]
+    bands = {}
+    for band in BANDS:
+        row, diagnostics = solve_sample(plan_row, plan, band, provider, preflight, cache, counters)
+        bands[str(band)] = {"row": row, "diagnostics": diagnostics}
+    atomic_json(output, {
+        "schema": "trilatt_e9f_c1_isolated_sample_v1",
+        "sample_index": sample_index,
+        "sample_id": plan_row["SAMPLE_ID"],
+        "bands": bands,
+        "counters": counters,
+    })
+
 def reduction_summary(plan: dict, rows: list[dict], band: int) -> dict:
     result = reduce_supplied_berry_rows(plan, rows, band)
     qualified = [row for row in rows if row["STATUS"] == "QUALIFIED_REPORTED"]
@@ -193,21 +216,28 @@ def run(output: Path, checkpoint: Path) -> dict:
             raise RuntimeError("checkpoint does not match immutable live contract")
         completed = saved.get("completed", {})
         counters.update(saved.get("counters", {}))
-    provider = make_provider(RESOLUTION, lattice, solver_geometry, background)
-    cache = {}
     rows_by_id = {row["SAMPLE_ID"]: row for row in plan["ROWS"]}
     for index, plan_row in enumerate(plan["ROWS"], start=1):
         sample_id = plan_row["SAMPLE_ID"]
         if sample_id in completed and all(str(band) in completed[sample_id]["bands"] for band in BANDS):
             continue
-        bands = {}
-        for band in BANDS:
-            row, diagnostics = solve_sample(plan_row, plan, band, provider, preflight, cache, counters)
-            bands[str(band)] = {"row": row, "diagnostics": diagnostics}
+        worker_output = checkpoint.with_name(f"{checkpoint.stem}.sample_{index - 1:04d}.json")
+        if worker_output.exists():
+            worker_output.unlink()
+        subprocess.run(
+            [sys.executable, str(Path(__file__).resolve()), "--worker", str(index - 1), "--worker-output", str(worker_output)],
+            cwd=ROOT,
+            check=True,
+        )
+        worker = json.loads(worker_output.read_text(encoding="utf-8"))
+        worker_output.unlink()
+        if worker.get("sample_index") != index - 1 or worker.get("sample_id") != sample_id:
+            raise RuntimeError("isolated sample returned a mismatched immutable plan identity")
+        bands = worker["bands"]
+        for key in counters:
+            counters[key] += int(worker["counters"].get(key, 0))
         completed[sample_id] = {"sample_id": sample_id, "public_q": list(plan_row["PUBLIC_Q"]), "bands": bands}
         atomic_json(checkpoint, checkpoint_payload(contract, plan, completed, counters))
-        cache.clear()
-        gc.collect()
         if index % 25 == 0 or index == len(plan["ROWS"]):
             print(json.dumps({"event": "sample_checkpoint", "completed": index, "total": len(plan["ROWS"]), "solver_requests": counters["solver_requests"], "cache_hits": counters["cache_hits"]}), flush=True)
     if set(completed) != set(rows_by_id):
@@ -252,7 +282,12 @@ def run(output: Path, checkpoint: Path) -> dict:
 
 if __name__ == "__main__":
     contract = load_contract()
-    if "--self-check" in sys.argv:
+    if "--worker" in sys.argv:
+        plan = make_plan(contract)
+        sample_index = int(sys.argv[sys.argv.index("--worker") + 1])
+        output = Path(sys.argv[sys.argv.index("--worker-output") + 1])
+        run_isolated_sample(contract, plan, sample_index, output)
+    elif "--self-check" in sys.argv:
         if not execution_base_is_ancestor(contract):
             raise SystemExit("self-check requires contract SHA")
         plan = make_plan(contract)
