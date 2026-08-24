@@ -1,0 +1,34 @@
+{
+  "schema": "trilatt_e9f_c1_d1_provenance_manifest_v1",
+  "work_order_id": "TRILATT-E9F-C-C1-D1-20260824-215",
+  "d1_status": "E9F_C1_BAND3_BLOCKER_DIAGNOSIS_MIXED_READY_FOR_SUPERVISOR_DECISION",
+  "d1_runner_git_sha": "682fba49bf32ee2a5d7d27af38c598287114ebaf",
+  "d1_runner_sha256": "98c60d40857a3cb94ab505d0a42aba7e7877421da1326fedc854e5c759c56496",
+  "d1_result_artifact": {
+    "path": "audit/e9f/c1_d1_result.json",
+    "sha256": "201a044c7dd9a3b7c9fee02163aebb26e28503d8a810964b71a076f0c8746fae"
+  },
+  "c1_execution_git_sha": "ca56f6fe85ec0591747ec22eebff8bb9e2d1d7b9",
+  "c1_runner_hardening_sha": "86e478a76319bf502ea985585203a3a314e01b54",
+  "c1_result_sha256": "123acc40c448b45cab0fbffffeeec4a879202c25f20cb6c5769041726fe8296c",
+  "c1_checkpoint_sha256": "33d6f0a2eeacac23b71b302c0a2ddfbb1ba315d39a3db2cbf8ba72a55121ece2",
+  "c1_contract_sha256": "2d770bc1525be8ca7a1722d855aa7f262767fe93ad7bfe905edfb1b0f62ed4da",
+  "remote_sandbox_base_sha": "06459b9767200a7a8c53e56618509d0015fc1c24",
+  "current_sandbox_sha_at_manifest_creation": "682fba49bf32ee2a5d7d27af38c598287114ebaf",
+  "main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "main_unchanged": true,
+  "scientific_scope_unchanged": true,
+  "diagnostic_scope": {
+    "failed_centers": 17,
+    "target_band_zero_based": 2,
+    "r64_stencils": ["1/36", "1/72", "1/144"],
+    "conditional_r96_stencil": "1/144",
+    "new_chern": false,
+    "c1_reducer_input": false
+  },
+  "classification_counts": {
+    "BOUNDARY_STENCIL_ARTIFACT_SUPPORTED": 11,
+    "TRUE_POINTWISE_LOW_GAP_BLOCKER": 6
+  },
+  "focused_tests": "53 passed"
+}
