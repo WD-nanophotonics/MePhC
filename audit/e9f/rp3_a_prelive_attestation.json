@@ -1,0 +1,24 @@
+{
+  "compileall_exit_status": 0,
+  "failed_count": 0,
+  "git_clean_after": true,
+  "git_clean_before": true,
+  "implementation_sha": "a835c37e00f29b8eb2f80367b88b4f5010312d0a",
+  "native_execution_performed": false,
+  "passed_count": 57,
+  "pytest_exit_status": 0,
+  "pytest_node_count": 57,
+  "schema": "mephc_e9f_c1_rp3_a_prelive_attestation_v1",
+  "skipped_count": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_tail": "",
+  "stdout_sha256": "cb461ef790206d0875ce4e135685889d4fa979983f67784c150e5f6c7cf47491",
+  "stdout_tail": ".........................................................                [100%]\n57 passed in 0.62s\n",
+  "tests": [
+    "tests/test_e9f_c1_rp3_a_r128.py",
+    "tests/test_e9f_c1_rp2_c3_c5_c1.py",
+    "tests/test_e9f_c1_rp2_c3_c5_c1_c1.py",
+    "tests/test_e9f_c1_rp2_c3_c5_c1_c1_s1.py"
+  ],
+  "work_order_id": "MEPHC-E9F-C1-RP3-A-20260825-256"
+}
