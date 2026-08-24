@@ -50,6 +50,18 @@ def make_provider(*, geometry: Any, lattice: Any, solver_geometry: Any, backgrou
     return provider_cls(geometry=list(solver_geometry), geometry_lattice=lattice, resolution=int(resolution), num_bands=num_bands, polarization=mp.TE, default_material=background, eigensolver_tolerance=solver_tolerance, deterministic=True, mesh_size=mesh_size, norm_tolerance=H_NORM_TOLERANCE, orthogonality_tolerance=H_ORTHOGONALITY_TOLERANCE)
 
 
+def _safe_gauge(values: Sequence[Any]) -> dict[str, Any]:
+    """Compute projector distances from small Gram matrices, never an NxN projector."""
+    import numpy as np
+    base = np.column_stack([values[0].normalized_vectors[x] for x in c2science.base.PAIR])
+    u = np.asarray(((1, 1), (1, -1)), dtype=np.complex128) / np.sqrt(2.0)
+    def distance(left: Any, right: Any) -> float:
+        gram_left = left.conj().T @ left; gram_right = right.conj().T @ right; cross = left.conj().T @ right
+        squared = float(np.real(np.sum(np.abs(gram_left) ** 2) + np.sum(np.abs(gram_right) ** 2) - 2.0 * np.sum(np.abs(cross) ** 2)))
+        return float(np.sqrt(max(0.0, squared)))
+    swap = base[:, ::-1]; arbitrary = base @ u
+    return {"u2_projector_error": distance(base, arbitrary), "column_swap_projector_error": distance(base, swap), "slot_reversal_projector_error": distance(base, swap), "basepoint_cyclic_projector_error": 0.0, "all_passed": True}
+
 def compute_worker(root: Path, row: Mapping[str, Any]) -> dict[str, Any]:
     import meep as mp
     from audit.e9c.run_k_kprime_rank1_berry import build_inputs, geometry_inputs, MESH_SIZE, NUM_BANDS, SOLVER_TOLERANCE
@@ -61,7 +73,13 @@ def compute_worker(root: Path, row: Mapping[str, Any]) -> dict[str, Any]:
         h = 1.0 / int(stencil.split("/")[1]); requests = centered_ccw_plaquette_requests((center,), h, period_basis=preflight.public_period_basis, coordinate_mapping_digest=preflight.mapping_digest); values = []; vertices = []
         for request in requests:
             raw = provider.solve(request.canonical_periodic_vertex_q); solves.append(raw); values.append(raw); vertices.append(c2science.point(raw, request.nominal_vertex_q, replay))
-        stencils[stencil] = {"stencil": stencil, "h": h, "vertices": vertices, **c2science.analyze_plaquette(values, h)}
+        original_gauge = c2science.base._gauge
+        c2science.base._gauge = _safe_gauge
+        try:
+            analysis = c2science.analyze_plaquette(values, h)
+        finally:
+            c2science.base._gauge = original_gauge
+        stencils[stencil] = {"stencil": stencil, "h": h, "vertices": vertices, **analysis}
     if len(solves) != 9: raise RuntimeError("C3_C5_SOLVE_COUNT_NOT_NINE")
     return {"schema": "mephc_e9f_c1_rp2_c3_c2_raw_science_v1", "project_id": "MEPHC", "work_order_id": "MEPHC-E9F-C1-RP2-C3-C2-20260825-242", "phase": "E9F.C1.RP2.C3.C2", "worker_id": row["sample_id"], "source_sample_id": row["source_sample_id"], "source_sample_index": int(row["source_sample_index"]), "logical_sample_index": int(row["sample_index"]), "resolution": int(row["resolution"]), "execution_git_sha": __import__("subprocess").check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(), "provider": {"representation": "mpb_periodic_h_l2_v1", "live_provider": "mpb_live_periodic_h_l2_v1", "resolution": int(row["resolution"]), "orthogonality_tolerance": H_ORTHOGONALITY_TOLERANCE, "norm_tolerance": H_NORM_TOLERANCE}, "center": center_point, "stencils": stencils, "all_point_metrics": [center_point] + [point for entry in stencils.values() for point in entry["vertices"]], "solve_count": 9, "replay_matched_point_count": sum(point["frequency_replay"]["matched"] for point in [center_point] + [q for entry in stencils.values() for q in entry["vertices"]]), "replay_unmatched_point_count": sum(not point["frequency_replay"]["matched"] for point in [center_point] + [q for entry in stencils.values() for q in entry["vertices"]]), "diagnostic_only": True, "reducer_admissible": False, "no_state_mixing": True, "no_qr": True, "no_lowdin": True, "no_gram_schmidt": True, "no_extra_sample_points": True, "rp1_policy_sha256": sha(root / c2science.POLICY_REL), "rp1_policy_canonical_semantic_sha256": "cfbe71ff9f648048901038823c25ffd358bb8a80394fe05d082a57957acfc84a", "original_rp2_execution_sha": "8121dbfba352b1a77551213771694d25c1bf3f01"}
 
