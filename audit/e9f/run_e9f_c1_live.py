@@ -16,14 +16,18 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from audit.e9c.run_k_kprime_rank1_berry import (
-    KPRIME_PUBLIC,
-    BANDS,
-    build_inputs,
-    geometry_inputs,
-    make_provider,
-    stencil_evidence,
-)
+BANDS = (0, 1, 2)
+
+
+def load_live_helpers() -> None:
+    """Load MPB/MPI-backed helpers only inside a dedicated child process."""
+    global build_inputs, geometry_inputs, make_provider, stencil_evidence
+    from audit.e9c.run_k_kprime_rank1_berry import (
+        build_inputs,
+        geometry_inputs,
+        make_provider,
+        stencil_evidence,
+    )
 from mephc.valley_integration import (
     MEPHC_CLIPPED_RETAINED_DOMAIN_V1,
     SOURCE_GRID_MIDPOINT_V1,
@@ -43,6 +47,7 @@ SOLVER_TOLERANCE = 1e-7
 MESH_SIZE = 3
 FIXED_SAMPLE_COUNT = 551
 KPRIME = (-2.0 / 3.0, 0.0)
+KPRIME_PUBLIC = KPRIME
 
 
 def file_sha(path: Path) -> str:
@@ -204,9 +209,12 @@ def run(output: Path, checkpoint: Path) -> dict:
     if not execution_base_is_ancestor(contract):
         raise RuntimeError("live execution must start from committed contract SHA")
     plan = make_plan(contract)
-    geometry = geometry_inputs()
-    preflight, lattice, solver_geometry, background = build_inputs(geometry)
-    checks = self_checks(contract, plan, preflight, geometry)
+    self_check_output = subprocess.check_output(
+        [sys.executable, str(Path(__file__).resolve()), "--self-check"],
+        cwd=ROOT,
+        text=True,
+    )
+    checks = json.loads(next(line for line in reversed(self_check_output.splitlines()) if line.startswith("{")))
     completed = {}
     counters = {"solver_requests": 0, "cache_hits": 0, "solver_failures": 0, "sample_evaluations": 0}
     if checkpoint.exists():
@@ -283,11 +291,13 @@ def run(output: Path, checkpoint: Path) -> dict:
 if __name__ == "__main__":
     contract = load_contract()
     if "--worker" in sys.argv:
+        load_live_helpers()
         plan = make_plan(contract)
         sample_index = int(sys.argv[sys.argv.index("--worker") + 1])
         output = Path(sys.argv[sys.argv.index("--worker-output") + 1])
         run_isolated_sample(contract, plan, sample_index, output)
     elif "--self-check" in sys.argv:
+        load_live_helpers()
         if not execution_base_is_ancestor(contract):
             raise SystemExit("self-check requires contract SHA")
         plan = make_plan(contract)
