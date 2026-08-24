@@ -103,15 +103,16 @@ def run_child(sid,index,coord,fault):
         from meep import mpb
         raise SystemExit(23)
     started=time.time()
-    import meep as mp
-    from meep import mpb
-    lattice=mp.Lattice(size=mp.Vector3(1,1))
-    geometry=[mp.Cylinder(0.2,material=mp.Medium(epsilon=12))]
-    k=mp.cartesian_to_reciprocal(mp.Vector3(float(coord[0]),float(coord[1])),lattice)
-    solver=mpb.ModeSolver(geometry=geometry,geometry_lattice=lattice,k_points=[k],
-        resolution=6,num_bands=2,default_material=mp.air,tolerance=1e-8,
-        deterministic=True,mesh_size=3)
-    with contextlib.redirect_stdout(sys.stderr): solver.run_parity(mp.TE,False)
+    with contextlib.redirect_stdout(sys.stderr):
+        import meep as mp
+        from meep import mpb
+        lattice=mp.Lattice(size=mp.Vector3(1,1))
+        geometry=[mp.Cylinder(0.2,material=mp.Medium(epsilon=12))]
+        k=mp.cartesian_to_reciprocal(mp.Vector3(float(coord[0]),float(coord[1])),lattice)
+        solver=mpb.ModeSolver(geometry=geometry,geometry_lattice=lattice,k_points=[k],
+            resolution=6,num_bands=2,default_material=mp.air,tolerance=1e-8,
+            deterministic=True,mesh_size=3)
+        solver.run_parity(mp.TE,False)
     freq=[float(x) for x in solver.all_freqs[0]]
     print(json.dumps({"schema":"trilatt_e9f_c1_nc1_child_v1","sample_id":sid,
         "sample_index":index,"pid":os.getpid(),"start_time":started,"end_time":time.time(),
