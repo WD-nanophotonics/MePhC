@@ -1,0 +1,61 @@
+{
+  "schema": "trilatt_e9f_c1_fr0_source_grid_live_contract_v1",
+  "work_order_id": "TRILATT-E9F-C-C1-20260824-214",
+  "base_sandbox_sha": "f9f14c1e9018e24939618c3368bfc22a242f2843",
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "scope": {
+    "fr": 0.0,
+    "estimator": "SOURCE_GRID_MIDPOINT_V1",
+    "paper_bands": [1, 2, 3],
+    "zero_based_bands": [0, 1, 2],
+    "resolution": 64,
+    "num_bands": 6,
+    "polarization": "TE",
+    "representation": "mpb_energy_eh_v1",
+    "solver_tolerance": 1e-7,
+    "mesh_size": 3,
+    "deterministic": true
+  },
+  "physical_model": {
+    "normalized_lattice_constant": 1.0,
+    "physical_lattice_constant_nm": 400.0,
+    "triangle_circumradius_over_a": 0.4,
+    "triangle_circumradius_nm": 160.0,
+    "physical_fill_fraction": 0.24,
+    "triangle_orientation_mod_120_degrees": 90.0,
+    "background_refractive_index": 2.65,
+    "background_epsilon": 7.0225,
+    "air_epsilon": 1.0,
+    "physical_vertices": [[0.0, 0.4], [-0.34641016151377546, -0.2], [0.34641016151377546, -0.2]]
+  },
+  "domain": {
+    "public_k_prime": [-0.6666666666666666, 0.0],
+    "delta_k": 0.1,
+    "delta_gamma": 0.1,
+    "grid_spacing": "1/36",
+    "sample_count": 551,
+    "stencil_side": "1/36",
+    "orientation": "POSITIVE_PUBLIC_CARTESIAN_QX_QY"
+  },
+  "qualification": {
+    "min_external_gap": 0.02,
+    "min_singular_value": 0.9,
+    "max_principal_angle": 0.45,
+    "max_projector_distance": 0.3,
+    "authoritative_estimator": "WILSON_PHASE",
+    "omega_formula": "-WILSON_PHASE/SIGNED_AREA",
+    "signed_area": "(1/36)^2",
+    "normalization": "VALLEY_CHERN=FLUX_Q/(2*pi)"
+  },
+  "status_policy": {
+    "terminal_statuses": ["QUALIFIED_REPORTED", "NOT_REPORTED_WITH_REASON"],
+    "zero_fill": false,
+    "failed_weight_removal": false,
+    "posthoc_renormalization": false,
+    "interpolation": false,
+    "substitution": false
+  },
+  "prohibited_scope": ["fr=0.4", "clipped_estimator", "adaptive_refinement", "full_bz_chern", "parameter_fitting", "posthoc_sign_flip", "production_code_change", "main_push"],
+  "source_anchors": {"band1": -0.1, "band2": 0.54, "band3": -0.43},
+  "authorization": {"live_mpb": true, "new_berry": true, "new_valley_chern": true, "production_code_change": false, "main_push": false}
+}
