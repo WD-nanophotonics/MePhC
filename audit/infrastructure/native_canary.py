@@ -67,7 +67,7 @@ def run_parent_canary(root:Path,runtime_root:Path)->dict[str,Any]:
             faults.append(inject_fault(row)); injected=True
             if rt._artifact_path(row["sample_id"]).exists(): raise CampaignRuntimeError("FAULT_ARTIFACT_EXISTS")
             raise RuntimeError("INJECTED_NATIVE_CHILD_FAILURE")
-        out=run_worker_command(child_command(row),timeout_seconds=120); validate_child(row,out); records.append(out); return out
+        out=run_worker_command(child_command(row),timeout_seconds=120); validate_child(row,out); records.append(dict(out)); out=dict(out); out["child_schema"]=out.pop("schema"); return out
     try: rt.run(rows,worker)
     except RuntimeError as exc:
         if str(exc)!="INJECTED_NATIVE_CHILD_FAILURE": raise
@@ -76,7 +76,7 @@ def run_parent_canary(root:Path,runtime_root:Path)->dict[str,Any]:
         raise CampaignRuntimeError("FAULT_RESUME_ARTIFACT_STATE_INVALID")
     resumed=make(); resumed.preflight(plan_rows=rows)
     def resume_worker(row):
-        out=run_worker_command(child_command(row),timeout_seconds=120); validate_child(row,out); records.append(out); return out
+        out=run_worker_command(child_command(row),timeout_seconds=120); validate_child(row,out); records.append(dict(out)); out=dict(out); out["child_schema"]=out.pop("schema"); return out
     done=resumed.run(rows,resume_worker); rss.append(current_rss_kib())
     if done["status"]!="COMPLETE" or len(records)!=3: raise CampaignRuntimeError("CANARY_RESUME_OR_COUNT_FAILED")
     vec=[r["frequency_vector"] for r in records]
