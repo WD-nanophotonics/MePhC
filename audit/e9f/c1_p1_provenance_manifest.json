@@ -1,0 +1,58 @@
+{
+  "base_sandbox_sha": "71617e5d1e714bd0b20dd63fa17b26cdbd3f6f8a",
+  "changed_files": [
+    "audit/e9f/c1_p1_result.json",
+    "audit/e9f/c1_p1_process_reliability_review.json",
+    "audit/e9f/run_e9f_c1_d1_c1.py",
+    "audit/infrastructure/__init__.py",
+    "audit/infrastructure/campaign_runtime.py",
+    "tests/test_e9f_c1_d1_c1_geometry.py",
+    "tests/test_campaign_runtime.py",
+    "tests/validate_affine_r1_1.py",
+    "tests/validate_affine_r2.py"
+  ],
+  "checkpoint_identity": [
+    "execution_git_sha",
+    "runner_sha256",
+    "scientific_contract_sha256",
+    "plan_semantic_id",
+    "expected_sample_ids"
+  ],
+  "expected_main_head": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "fault_injection_matrix": [
+    "wrong execution SHA",
+    "local missing object",
+    "remote missing object",
+    "dirty source",
+    "runner hash mismatch",
+    "contract hash mismatch",
+    "plan semantic mismatch",
+    "killed worker before publication",
+    "corrupt artifact",
+    "stale artifact",
+    "duplicate sample",
+    "wrong sample identity",
+    "corrupt checkpoint",
+    "checkpoint identity mismatch",
+    "interrupted resume"
+  ],
+  "file_sha256": {
+    "audit/e9f/c1_p1_process_reliability_review.json": "09e5600de9aad0792abd398fd12e55c175cc19842b52e34ca59d60345bc8fbb3",
+    "audit/e9f/c1_p1_result.json": "feebd8e62786d2f2ca5335db99dfcf28e2c0a9cdd604d5af707246e0f618e81b",
+    "audit/e9f/run_e9f_c1_d1_c1.py": "4029236feb9dfa784b12762e37b1ff8be7584e4176b1f10ea512b22c174e9edc",
+    "audit/infrastructure/__init__.py": "24756a98d90b713927e514aa81cabc23d9ae6647c0611013eab5fc267983b644",
+    "audit/infrastructure/campaign_runtime.py": "e8aebf32e2e19e12aa3145ddd47c92bd877c15868d9478cbb6ff3d6c8c812945",
+    "tests/test_campaign_runtime.py": "ea1b3fe2aac96f44ac48eb91e8f24d0596229916bdb47ba140955796a39039bd",
+    "tests/test_e9f_c1_d1_c1_geometry.py": "5139a6bf241bc9038dabfc38b02f822b01dcc4a41566dc08bb69f35f774e54a0",
+    "tests/validate_affine_r1_1.py": "9fda082845af7f1e51f6c64b78c171c67401a7b5dd06f740de241270192a7935",
+    "tests/validate_affine_r2.py": "6ea7c576966b78fcea893b15fe1f602f6e7b0122c90d8fa2ffc87bb1adf84d07"
+  },
+  "implementation_sha": "a68d68650d17dbb450bd07b69b3115ff2752e89c",
+  "main_unchanged": true,
+  "no_mpb_solves": true,
+  "no_production_science_core_change": true,
+  "p1_runtime_interface": "CampaignRuntime.preflight; publish_worker_artifact; load_completed_artifacts; write_checkpoint; load_checkpoint; run; run_worker_command",
+  "remote_preflight_terminal": "REMOTE_EXECUTION_OBJECT_VERIFIED",
+  "schema": "trilatt_e9f_c1_p1_provenance_manifest_v1",
+  "work_order_id": "TRILATT-E9F-C1-P1-20260824-221"
+}
