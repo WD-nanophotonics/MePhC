@@ -1,0 +1,32 @@
+{
+  "schema": "trilatt_e9f_c1_nc1_contract_v1",
+  "phase": "E9F.C1.NC1",
+  "purpose": "bounded native MPB lifecycle telemetry only",
+  "fixture": {
+    "lattice": "square_1x1",
+    "radius": 0.2,
+    "dielectric_epsilon": 12,
+    "background": "air",
+    "polarization": "TE",
+    "resolution": 6,
+    "num_bands": 2,
+    "eigensolver_tolerance": 1e-8,
+    "mesh_size": 3,
+    "k_point": [0.17, 0.23],
+    "max_abs_frequency_difference": 1e-8
+  },
+  "identity": {
+    "estimator_id": "NATIVE_MPB_LIFECYCLE_CANARY",
+    "semantic_domain_id": "E9F_C1_NC1_SQUARE_CYLINDER",
+    "spacing_id": "CANARY_SINGLE_COORDINATE"
+  },
+  "authorization": {
+    "mpb_worker": true,
+    "scientific_recovery": false,
+    "berry": false,
+    "chern": false,
+    "band2_recovery": false,
+    "three_band_sum": false,
+    "threshold_change": false
+  }
+}
