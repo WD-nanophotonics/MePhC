@@ -211,3 +211,38 @@ def test_plan_semantic_comparison_accepts_same_plan_and_reports_identity_layers(
     assert result["semantic_domain_id_equal"]
     assert result["topology_equal"]
     assert result["numerically_equivalent"]
+
+
+def test_portability_tolerance_cannot_be_relaxed_or_invalid():
+    plan = _plan(0.4, MEPHC_CLIPPED_RETAINED_DOMAIN_V1)
+    for bad_tolerance in (1e-11, -1.0, float("nan"), float("inf"), None):
+        with pytest.raises(IntegrationPlanError, match="PORTABILITY_TOLERANCE_INVALID"):
+            compare_plan_semantics(plan, plan, tolerance=bad_tolerance)
+    assert compare_plan_semantics(plan, copy.deepcopy(plan), tolerance=1e-12)["numerically_equivalent"]
+
+
+def test_semantic_domain_case_binding_rejects_coherent_wrong_identity():
+    plan = _plan(0.0)
+    mutated = copy.deepcopy(plan)
+    mutated["SEMANTIC_DOMAIN_ID"] = semantic_domain_id("fr=0.4")
+    mutated["PORTABLE_PLAN_FINGERPRINT"] = portable_plan_fingerprint(mutated)
+    with pytest.raises(IntegrationPlanError, match="SEMANTIC_DOMAIN_CASE_BINDING_INVALID"):
+        validate_integration_plan(mutated)
+
+
+def test_semantic_domain_case_binding_rejects_mixed_and_unsupported_rows():
+    plan = _plan(0.0)
+    mixed = copy.deepcopy(plan)
+    first = dict(mixed["ROWS"][0])
+    first["SAMPLE_ID"] = first["SAMPLE_ID"].replace("fr=0;", "fr=0.4;", 1)
+    mixed["ROWS"] = (first,) + tuple(mixed["ROWS"][1:])
+    mixed["PORTABLE_PLAN_FINGERPRINT"] = portable_plan_fingerprint(mixed)
+    with pytest.raises(IntegrationPlanError, match="SEMANTIC_CASE_MIXED_OR_MISSING"):
+        validate_integration_plan(mixed)
+    unsupported = copy.deepcopy(plan)
+    first = dict(unsupported["ROWS"][0])
+    first["SAMPLE_ID"] = first["SAMPLE_ID"].replace("fr=0;", "fr=1;", 1)
+    unsupported["ROWS"] = (first,) + tuple(unsupported["ROWS"][1:])
+    unsupported["PORTABLE_PLAN_FINGERPRINT"] = portable_plan_fingerprint(unsupported)
+    with pytest.raises(IntegrationPlanError, match="UNSUPPORTED_SEMANTIC_CASE"):
+        validate_integration_plan(unsupported)

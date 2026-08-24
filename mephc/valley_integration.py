@@ -10,6 +10,7 @@ SOURCE_GRID_MIDPOINT_V1 = "SOURCE_GRID_MIDPOINT_V1"
 MEPHC_CLIPPED_RETAINED_DOMAIN_V1 = "MEPHC_CLIPPED_RETAINED_DOMAIN_V1"
 SOURCE_H = 1.0 / 36.0
 EPS = 1e-12
+PORTABILITY_TOLERANCE = 1e-12
 SEMANTIC_DOMAIN_SCHEMA_V1 = "MEPHC_SEMANTIC_RETAINED_DOMAIN_V1"
 PORTABLE_PLAN_FINGERPRINT_SCHEMA_V1 = "MEPHC_PORTABLE_PLAN_FINGERPRINT_V1"
 SOURCE_GRID_SPACING_ID = "1/36"
@@ -47,6 +48,21 @@ def _semantic_domain_payload(case):
 
 def semantic_domain_id(case):
     return _digest(_semantic_domain_payload(case))
+
+
+def _semantic_case_from_rows(rows):
+    cases = set()
+    for row in rows:
+        sample_id = row.get("SAMPLE_ID") if isinstance(row, dict) else None
+        if not isinstance(sample_id, str) or ";" not in sample_id:
+            raise IntegrationPlanError("SEMANTIC_CASE_REQUIRED")
+        case = sample_id.split(";", 1)[0]
+        if case not in _SEMANTIC_CASES:
+            raise IntegrationPlanError("UNSUPPORTED_SEMANTIC_CASE")
+        cases.add(case)
+    if len(cases) != 1:
+        raise IntegrationPlanError("SEMANTIC_CASE_MIXED_OR_MISSING")
+    return next(iter(cases))
 
 
 def _area(poly):
@@ -438,6 +454,9 @@ def validate_integration_plan(plan):
         raise IntegrationPlanError("SEMANTIC_DOMAIN_ID_REQUIRED")
     if plan.get("SOURCE_GRID_SPACING_ID") != SOURCE_GRID_SPACING_ID:
         raise IntegrationPlanError("SOURCE_GRID_SPACING_ID_INVALID")
+    semantic_case = _semantic_case_from_rows(rows)
+    if semantic_id != semantic_domain_id(semantic_case):
+        raise IntegrationPlanError("SEMANTIC_DOMAIN_CASE_BINDING_INVALID")
     portable_fingerprint = plan.get("PORTABLE_PLAN_FINGERPRINT")
     if not isinstance(portable_fingerprint, str) or portable_fingerprint != portable_plan_fingerprint(plan):
         raise IntegrationPlanError("PORTABLE_PLAN_FINGERPRINT_TAMPERED")
@@ -474,7 +493,13 @@ def validate_integration_plan(plan):
     return True
 
 
-def compare_plan_semantics(plan_a, plan_b, tolerance=EPS):
+def compare_plan_semantics(plan_a, plan_b, tolerance=PORTABILITY_TOLERANCE):
+    try:
+        tolerance = float(tolerance)
+    except (TypeError, ValueError):
+        raise IntegrationPlanError("PORTABILITY_TOLERANCE_INVALID")
+    if not math.isfinite(tolerance) or tolerance < 0 or tolerance > PORTABILITY_TOLERANCE:
+        raise IntegrationPlanError("PORTABILITY_TOLERANCE_INVALID")
     validate_integration_plan(plan_a)
     validate_integration_plan(plan_b)
     rows_a = {row["SAMPLE_ID"]: row for row in plan_a["ROWS"]}
@@ -493,9 +518,11 @@ def compare_plan_semantics(plan_a, plan_b, tolerance=EPS):
     same_estimator = plan_a["ESTIMATOR_ID"] == plan_b["ESTIMATOR_ID"]
     same_semantic_domain = plan_a["SEMANTIC_DOMAIN_ID"] == plan_b["SEMANTIC_DOMAIN_ID"]
     same_spacing = plan_a["SOURCE_GRID_SPACING_ID"] == plan_b["SOURCE_GRID_SPACING_ID"]
+    sample_count_equal = plan_a["SAMPLE_COUNT"] == plan_b["SAMPLE_COUNT"]
+    portable_fingerprint_equal = plan_a["PORTABLE_PLAN_FINGERPRINT"] == plan_b["PORTABLE_PLAN_FINGERPRINT"]
     total_weight_difference = abs(float(plan_a["TOTAL_WEIGHT_Q2"]) - float(plan_b["TOTAL_WEIGHT_Q2"]))
-    numerical_equivalence = same_estimator and same_semantic_domain and same_spacing and sample_ids_match and topology_match and max_q_difference <= tolerance and max_weight_difference <= tolerance and total_weight_difference <= tolerance and (plan_a["ESTIMATOR_ID"] != SOURCE_GRID_MIDPOINT_V1 or exact_public_q_hex)
-    return {"raw_plan_digest_equal": plan_a["PLAN_DIGEST"] == plan_b["PLAN_DIGEST"], "raw_domain_digest_equal": plan_a["DOMAIN_DIGEST"] == plan_b["DOMAIN_DIGEST"], "semantic_domain_id_equal": same_semantic_domain, "portable_plan_fingerprint_equal": plan_a["PORTABLE_PLAN_FINGERPRINT"] == plan_b["PORTABLE_PLAN_FINGERPRINT"], "estimator_equal": same_estimator, "source_grid_spacing_equal": same_spacing, "sample_count_equal": plan_a["SAMPLE_COUNT"] == plan_b["SAMPLE_COUNT"], "sample_ids_equal": sample_ids_match, "topology_equal": topology_match, "source_public_q_hex_equal": exact_public_q_hex, "max_q_difference": max_q_difference, "max_weight_difference": max_weight_difference, "total_weight_difference": total_weight_difference, "numerically_equivalent": numerical_equivalence}
+    numerical_equivalence = (same_estimator and same_semantic_domain and same_spacing and sample_count_equal and sample_ids_match and topology_match and portable_fingerprint_equal and max_q_difference <= tolerance and max_weight_difference <= tolerance and total_weight_difference <= tolerance and (plan_a["ESTIMATOR_ID"] != SOURCE_GRID_MIDPOINT_V1 or exact_public_q_hex))
+    return {"raw_plan_digest_equal": plan_a["PLAN_DIGEST"] == plan_b["PLAN_DIGEST"], "raw_domain_digest_equal": plan_a["DOMAIN_DIGEST"] == plan_b["DOMAIN_DIGEST"], "semantic_domain_id_equal": same_semantic_domain, "portable_plan_fingerprint_equal": portable_fingerprint_equal, "estimator_equal": same_estimator, "source_grid_spacing_equal": same_spacing, "sample_count_equal": sample_count_equal, "sample_ids_equal": sample_ids_match, "topology_equal": topology_match, "source_public_q_hex_equal": exact_public_q_hex, "max_q_difference": max_q_difference, "max_weight_difference": max_weight_difference, "total_weight_difference": total_weight_difference, "numerically_equivalent": numerical_equivalence}
 
 
 def _require_exact_row_binding(plan, expected, row, band_id):
