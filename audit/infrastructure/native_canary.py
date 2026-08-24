@@ -127,4 +127,6 @@ def main():
     a=p.parse_args()
     if not a.child: p.error("use run_parent_canary from a parent orchestrator")
     run_child(a.sample_id,a.sample_index,json.loads(a.coordinate_json),a.inject_fault)
+    sys.stdout.flush()
+    os._exit(0)
 if __name__=="__main__": main()
