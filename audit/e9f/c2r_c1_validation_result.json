@@ -1,0 +1,77 @@
+{
+  "BASE_SANDBOX_SHA": "1e08ee00c39ff0ebccb7767820a09f976f9cdab5",
+  "IMPLEMENTATION_COMMIT": "dd215c6942ef3f4fa4e08927b412e27560ced59b",
+  "MAIN_UNCHANGED": true,
+  "NO_LIVE_SCIENCE": true,
+  "NO_MAIN_PUSH": true,
+  "WORK_ORDER_ID": "TRILATT-E9F-B-C2R-C1-20260824-212",
+  "changes": [
+    "stable rational-token semantic domain identity",
+    "portable topology-only plan fingerprint",
+    "cross-runtime numerical equivalence report with 1e-12 tolerance",
+    "tamper validation for new identity fields",
+    "unit coverage for identity mutation and comparison"
+  ],
+  "portability": {
+    "cases": {
+      "fr=0 MEPHC_CLIPPED_RETAINED_DOMAIN_V1": {
+        "max_q_difference": 2.220446049250313e-16,
+        "max_weight_difference": 2.7755575615628914e-17,
+        "numerically_equivalent": true,
+        "portable_fingerprint_equal": true,
+        "raw_plan_digest_equal": false,
+        "sample_ids_equal": true,
+        "semantic_domain_id_equal": true,
+        "topology_equal": true,
+        "total_weight_difference": 5.551115123125783e-17
+      },
+      "fr=0 SOURCE_GRID_MIDPOINT_V1": {
+        "max_q_difference": 0.0,
+        "max_weight_difference": 0.0,
+        "numerically_equivalent": true,
+        "portable_fingerprint_equal": true,
+        "raw_plan_digest_equal": false,
+        "sample_ids_equal": true,
+        "semantic_domain_id_equal": true,
+        "topology_equal": true,
+        "total_weight_difference": 0.0
+      },
+      "fr=0.4 MEPHC_CLIPPED_RETAINED_DOMAIN_V1": {
+        "max_q_difference": 2.220446049250313e-16,
+        "max_weight_difference": 5.551115123125783e-17,
+        "numerically_equivalent": true,
+        "portable_fingerprint_equal": true,
+        "raw_plan_digest_equal": false,
+        "sample_ids_equal": true,
+        "semantic_domain_id_equal": true,
+        "topology_equal": true,
+        "total_weight_difference": 1.1102230246251565e-16
+      },
+      "fr=0.4 SOURCE_GRID_MIDPOINT_V1": {
+        "max_q_difference": 0.0,
+        "max_weight_difference": 0.0,
+        "numerically_equivalent": true,
+        "portable_fingerprint_equal": true,
+        "raw_plan_digest_equal": false,
+        "sample_ids_equal": true,
+        "semantic_domain_id_equal": true,
+        "topology_equal": true,
+        "total_weight_difference": 0.0
+      }
+    },
+    "interpretation": "raw float-bound digest remains runtime provenance; portable fingerprint is semantic/topological identity",
+    "tolerance": 1e-12,
+    "windows_python": "3.12.0",
+    "wsl_python": "3.13.13 Miniconda mp"
+  },
+  "scope": "cross-environment plan identity separation and full non-scientific regression",
+  "tests": {
+    "existing_e7i1h_valley_chern": "19 passed",
+    "focused_e9f_b": "31 passed",
+    "full_suite_first_without_sibling_paths": "473 passed, 6 FileNotFoundError failures for hardcoded /tmp/TriLatt and /tmp/SqrLatt paths",
+    "full_suite_repeated": "478 passed, 1 pre-existing nondeterministic MPB live phase-invariant failure (different test)",
+    "full_suite_with_sibling_paths": "478 passed, 1 pre-existing nondeterministic MPB live phase-invariant failure",
+    "isolated_failed_test_rerun": "passed",
+    "windows_focused_e9f_b": "31 passed"
+  }
+}
