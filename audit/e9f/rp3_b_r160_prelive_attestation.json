@@ -1,0 +1,23 @@
+{
+  "schema":"mephc_e9f_c1_rp3_b_r160_prelive_attestation_v1",
+  "work_order_id":"MEPHC-E9F-C1-RP3-B-C1-20260825-264",
+  "implementation_sha":"7a109a237f72b5e000601f69503da3f1adefc515",
+  "pytest_node_count":31,
+  "pytest_passed_count":31,
+  "pytest_failed_count":0,
+  "pytest_skipped_count":0,
+  "compileall_exit_status":0,
+  "native_execution_performed":false,
+  "git_clean_before":true,
+  "git_clean_after":true,
+  "runner_sha256":"d2a1da31a4f4ace7bc4e06dd9ef20338ce8acbe8555b24ae8b92072291bed47e",
+  "runtime_sha256":"bfef316fff643a15774ebb8901ce815491079a2423c7322f26c71490f6ba9e56",
+  "worker_sha256":"79d01cf6ebf178dbd0feb4b1fe519ff29ebe975c098ce8fde3a9df8fa9ce9db6",
+  "contract_sha256":"07e559772fc19e2dbbe897a7ec22e0eb576c13058a5f3b1ed8e65e4c9a587b58c",
+  "reducer_sha256":"2074be7604c77115a5e1fde432f4766795be6a00ff9016640e61b17a8754f2e8",
+  "tests_sha256":"08dd82af028d895b50653ebbc6ab7f30fd155688c20acacb9c34d4e5052a5f70",
+  "r128_science_seal_sha256":"e06e3361593ac3d7564313d89dda139ff889f88863ac03c78c7ab673c727f00c",
+  "r128_execution_sha":"39b63b80bf42d48e5b256dd1a211f6bec2585cd4",
+  "r64_r96_source_checkpoint_sha256":"871b24983800d178f44d09b2220bcc179804e939f1f4c9163d84917ca5a8ca7d",
+  "main_sha":"5a4e9e839eff40f582c2404ff3eadd2bf8b676b5"
+}
