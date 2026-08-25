@@ -17,7 +17,7 @@ try {
   if(-not(Test-Path -LiteralPath $certificatePath -PathType Leaf)){ Fail 'PRELIVE_UNCOMMITTED' 'request certificate is unavailable' }
   $certificate=Get-Content -Raw -LiteralPath $certificatePath | ConvertFrom-Json
   if($certificate.project_id -ne 'MEPHC' -or -not $certificate.worktree -or -not $certificate.canonical_root){ Fail 'ROOT_MISMATCH' 'certificate does not bind a MePhC worktree' }
-  if(-not $certificate.worktree.StartsWith($certificate.canonical_root + '/',[System.StringComparison]::Ordinal) -or $certificate.canonical_root -ne '/home/icy/MePhC'){ Fail 'ROOT_MISMATCH' 'certificate worktree is outside canonical MePhC root' }
+  if(-not ($certificate.worktree -eq $certificate.canonical_root -or $certificate.worktree.StartsWith($certificate.canonical_root + '/',[System.StringComparison]::Ordinal)) -or $certificate.canonical_root -ne '/home/icy/MePhC'){ Fail 'ROOT_MISMATCH' 'certificate worktree is outside canonical MePhC root' }
   $separator=[string][char]92
   $wslPrefix=$separator + $separator + 'wsl.localhost' + $separator + 'Ubuntu'
   $expectedOutbox=$wslPrefix + $certificate.worktree.Replace('/',$separator) + $separator + '.relayctl' + $separator + 'outbox' + $separator
