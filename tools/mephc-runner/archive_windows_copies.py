@@ -182,13 +182,37 @@ class SplitWriter:
             self.handle = None
 
 
-def gzip_blob(source: Path, directory: Path, sha256: str) -> list[Path]:
-    writer = SplitWriter(directory, f"{sha256}.gz")
+class VerifyingReader:
+    def __init__(self, handle: BinaryIO, expected_bytes: int, expected_sha256: str):
+        self.handle = handle
+        self.expected_bytes = expected_bytes
+        self.expected_sha256 = expected_sha256
+        self.bytes_read = 0
+        self.digest = hashlib.sha256()
+
+    def read(self, size: int = -1) -> bytes:
+        data = self.handle.read(size)
+        self.bytes_read += len(data)
+        self.digest.update(data)
+        return data
+
+    def verify(self) -> None:
+        actual_sha256 = self.digest.hexdigest()
+        if self.bytes_read != self.expected_bytes or actual_sha256 != self.expected_sha256:
+            raise RuntimeError(
+                f"SOURCE_BYTE_MISMATCH:{self.bytes_read}:{actual_sha256}"
+            )
+
+
+def gzip_blob(source: Path, directory: Path, entry: dict[str, Any]) -> list[Path]:
+    writer = SplitWriter(directory, f"{entry['sha256']}.gz")
     try:
-        with gzip.GzipFile(filename="", mode="wb", fileobj=writer, mtime=0, compresslevel=6) as output:
-            with source.open("rb") as stream:
+        with source.open("rb") as handle:
+            stream = VerifyingReader(handle, entry["bytes"], entry["sha256"])
+            with gzip.GzipFile(filename="", mode="wb", fileobj=writer, mtime=0, compresslevel=6) as output:
                 for chunk in iter(lambda: stream.read(1024 * 1024), b""):
                     output.write(chunk)
+            stream.verify()
     finally:
         writer.close()
     return writer.parts
@@ -204,8 +228,10 @@ def tar_chunk(entries: list[dict[str, Any]], path: Path, roots: dict[str, Path])
                     info.size = entry["bytes"]
                     info.mode, info.uid, info.gid, info.mtime = 0o600, 0, 0, 0
                     info.uname = info.gname = ""
-                    with source.open("rb") as stream:
+                    with source.open("rb") as handle:
+                        stream = VerifyingReader(handle, entry["bytes"], entry["sha256"])
                         archive.addfile(info, stream)
+                        stream.verify()
 
 
 def payload_record(output: Path, path: Path) -> dict[str, Any]:
@@ -244,7 +270,7 @@ def create_archive(
     large = [entry for entry in unique.values() if entry["bytes"] >= BUNDLE_LIMIT]
     for entry in sorted(large, key=lambda item: item["sha256"]):
         source = safe_source(roots[entry["project_id"]], entry["original_path"])
-        parts = gzip_blob(source, blobs_dir, entry["sha256"])
+        parts = gzip_blob(source, blobs_dir, entry)
         records = [payload_record(output, path) for path in parts]
         payloads.extend(records)
         storage[entry["sha256"]] = {"format": "split-gzip", "parts": records}

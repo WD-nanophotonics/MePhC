@@ -3,6 +3,8 @@ import json
 from pathlib import Path
 import tarfile
 
+import pytest
+
 from tools.mephc_runner_loader import load_runner_module
 
 archive = load_runner_module("archive_windows_copies")
@@ -81,6 +83,24 @@ def test_archive_is_content_addressed_and_restorable(tmp_path):
     assert storage["format"] == "tar-gzip"
     with tarfile.open(output / storage["payload"]["path"], "r:gz") as handle:
         assert handle.extractfile(storage["member"]).read() == data
+
+
+def test_archive_rejects_source_drift_after_scan(tmp_path):
+    root = tmp_path / "source"
+    root.mkdir()
+    original = b"original"
+    path = root / "evidence"
+    path.write_bytes(original)
+    retention = tmp_path / "retention.json"
+    payload = report(root, [item("evidence", original)])
+    retention.write_text(json.dumps(payload), encoding="utf-8")
+    result = archive.scan(payload, {"TEST": root})
+    path.write_bytes(b"modified")
+    with pytest.raises(RuntimeError, match="SOURCE_BYTE_MISMATCH"):
+        archive.create_archive(
+            retention, "TEST-ARCHIVE-DRIFT", result,
+            roots={"TEST": root}, archive_root=tmp_path / "archives",
+        )
 
 
 def test_tool_has_no_deletion_primitives():
