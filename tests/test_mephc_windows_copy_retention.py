@@ -40,6 +40,9 @@ def test_archive_member_supports_legacy_and_content_addressed_schema():
     assert retention.archive_member({
         "storage": {"format": "tar-gzip", "member": "blobs/abc"}
     }) == "blobs/abc"
+    assert retention.archive_member({
+        "storage": {"format": "split-gzip", "parts": [{"path": "payload/part-000"}]}
+    }) == "parts:payload/part-000"
 
 
 def test_archive_member_missing_or_unknown_storage_fails_closed():

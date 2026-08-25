@@ -29,13 +29,21 @@ def archive_member(item: dict[str, Any]) -> str:
     if isinstance(legacy, str) and legacy:
         return legacy
     storage = item.get("storage")
+    if not isinstance(storage, dict):
+        raise RuntimeError("ARCHIVE_MEMBER_BINDING_MISSING")
     if (
-        isinstance(storage, dict)
-        and storage.get("format") in {"tar-gzip", "split-gzip"}
-        and isinstance(storage.get("member"), str)
-        and storage["member"]
+        storage.get("format") == "tar-gzip"
+        and isinstance(storage.get("member"), str) and storage["member"]
     ):
         return storage["member"]
+    if storage.get("format") == "split-gzip":
+        parts = storage.get("parts")
+        if isinstance(parts, list) and parts and all(
+            isinstance(part, dict)
+            and isinstance(part.get("path"), str) and part["path"]
+            for part in parts
+        ):
+            return "parts:" + ",".join(part["path"] for part in parts)
     raise RuntimeError("ARCHIVE_MEMBER_BINDING_MISSING")
 
 
