@@ -1,5 +1,7 @@
 {
   "artifact_id": "MEPHC-IGNORED-LEGACY-20260826-005420",
+  "archive_commit": "bc64dd94b856b562fb9484c99e6dad3eed42f969",
+  "archive_remote_ref": "origin/sandbox",
   "bytes_uncompressed": 1396577,
   "created_at": "2026-08-25T15:57:04.296831+00:00",
   "file_count": 219,
