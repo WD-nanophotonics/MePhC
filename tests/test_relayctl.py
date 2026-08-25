@@ -32,7 +32,7 @@ def test_e2e_request_is_plain_text(monkeypatch,tmp_path):
 
 def test_bridge_has_required_gates():
     text=(Path(__file__).parents[1]/'tools'/'mephc-courier.ps1').read_text(encoding='utf-8-sig')
-    for token in ('validate','run','queue_joined','queue_timeout','queue_recovery_required','courier_interrupted','COURIER_INTERRUPTED','COURIER_TIMEOUT_RECOVERY_REQUIRED','submission_count','alternate_browser_used','certificatePath','expectedOutbox','courier_build_id','courier_source_root','expectedCourierRoot'):
+    for token in ('validate','run','queue_joined','queue_timeout','queue_recovery_required','courier_interrupted','COURIER_INTERRUPTED','COURIER_TIMEOUT_RECOVERY_REQUIRED','submission_count','alternate_browser_used','certificatePath','expectedOutbox','courier_build_id','courier_source_root','expectedCourierRoot','message_sha256','events_sha256','bridge-attestation-send.json','bridge-attestation-recovery.json'):
         assert token in text
 
 def test_bridge_does_not_require_preflight_before_run():
