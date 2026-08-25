@@ -1,4 +1,4 @@
-﻿# Relay-supervised scientific workflow
+# Relay-supervised scientific workflow
 
 ## Mandatory runtime entry point
 
@@ -20,10 +20,7 @@ The relay lifecycle is stateful:
 1. Use the existing request directory and request ID when a request has
    already been submitted or may have been submitted. Never create a second
    request merely because the first local process ended unexpectedly.
-2. For a new request, use only validate -> preflight -> run. Continue from
-   chat_ready; do not use the Browser skill, Chrome control, Gmail directly,
-   or a second transport. Keep the calling process alive for at least the
-   configured workflow window plus 60 seconds (the default is 600 seconds).
+2. For a new request, invoke only scripts/relayctl courier --request-directory <request-dir>. The bridge performs Courier validation and the durable FIFO run internally; do not call validate, preflight, run, Browser, Chrome, Gmail, or a second transport yourself. Preflight is optional diagnostic output only and never authorizes a second request. Queue waiting is normal. Keep the calling process alive for at least queue_wait_seconds + 600 seconds of setup allowance + workflow_window_seconds + 60 seconds; with defaults this is 4,860 seconds (81 minutes). The 600-second workflow window starts only after request_submitted, so queue time and browser startup do not consume the Chat reply window.
 3. response_received is the only state that permits reading response.txt.
    Read it verbatim, treat the contained supervisor work order as the next
    authoritative task input, and continue automatically without asking for
@@ -40,6 +37,10 @@ The relay lifecycle is stateful:
    state. Never change the request body, attachment, request ID, destination,
    or profile during recovery. A late Chat reply is still valid automatic
    workflow input even if the first local invocation reported a timeout.
+   A single pre-browser courier_interrupted result is safe for one retry of the
+   same immutable request. If that same interruption repeats, stop retrying and
+   report an execution-host interruption; do not use nohup, setsid, a
+   background process, another browser, or another transport to evade it.
 6. chat_auth_required, chat_access_denied, chat_target_mismatch,
    configuration_error, and unrecoverable browser_error are hard stop
    states. Report the exact structured event and stop; do not change profiles,
@@ -67,12 +68,7 @@ relayctl courier --request-directory <request-dir>
 
 The public Courier CLI is invoked only by the controlled MePhC bridge. Agents must not call python -m chat_courier.cli, the Courier command file, Browser, Chrome, or Gmail directly.
 
-preflight must emit chat_ready before run. Never set
-CHAT_COURIER_PROFILE, AGENT_RELAY_CHATGPT_PROFILE, or
-CHAT_COURIER_PROFILE_DIRECTORY during ordinary Agent work; never point
-Courier at a user's normal Chrome user-data tree. A registered ChatGPT
-conversation must be reused exactly. Do not register a replacement URL merely
-because of an access or browser error.
+Do not use preflight to gate a run: it is read-only and may correctly report queue_waiting while another project owns the shared Courier browser. The single bridge command waits for its own FIFO turn. Never set CHAT_COURIER_PROFILE, AGENT_RELAY_CHATGPT_PROFILE, or CHAT_COURIER_PROFILE_DIRECTORY during ordinary Agent work; never point Courier at a user's normal Chrome user-data tree. A registered ChatGPT conversation must be reused exactly. Do not register a replacement URL merely because of an access or browser error.
 
 # Audit publication and promotion protocol
 

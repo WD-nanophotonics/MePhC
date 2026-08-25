@@ -5,7 +5,7 @@ import pytest
 from mephc import relayctl
 
 def test_failure_codes_are_fixed():
-    assert {'ROOT_MISMATCH','WORKTREE_NOT_WSL_NATIVE','INTERPRETER_MISMATCH','PRELIVE_UNCOMMITTED','SOURCE_BYTE_MISMATCH','COURIER_NOT_CHAT_READY','COURIER_TIMEOUT_RECOVERY_REQUIRED','COURIER_HARD_STOP'} <= relayctl.FAILURE_CODES
+    assert {'ROOT_MISMATCH','WORKTREE_NOT_WSL_NATIVE','INTERPRETER_MISMATCH','PRELIVE_UNCOMMITTED','SOURCE_BYTE_MISMATCH','COURIER_TIMEOUT_RECOVERY_REQUIRED','COURIER_QUEUE_TIMEOUT','COURIER_QUEUE_RECOVERY_REQUIRED','COURIER_INTERRUPTED','COURIER_HARD_STOP'} <= relayctl.FAILURE_CODES
 
 def test_trilatt_root_is_rejected(monkeypatch,tmp_path):
     monkeypatch.setattr(relayctl,'git',lambda *_: str(tmp_path/'TriLatt') if _[1:3]==('rev-parse','--show-toplevel') else '.git')
@@ -32,5 +32,12 @@ def test_e2e_request_is_plain_text(monkeypatch,tmp_path):
 
 def test_bridge_has_required_gates():
     text=(Path(__file__).parents[1]/'tools'/'mephc-courier.ps1').read_text(encoding='utf-8-sig')
-    for token in ('validate','preflight','chat_ready','run','COURIER_TIMEOUT_RECOVERY_REQUIRED','submission_count','alternate_browser_used','certificatePath','expectedOutbox'):
+    for token in ('validate','run','queue_joined','queue_timeout','queue_recovery_required','courier_interrupted','COURIER_INTERRUPTED','COURIER_TIMEOUT_RECOVERY_REQUIRED','submission_count','alternate_browser_used','certificatePath','expectedOutbox'):
         assert token in text
+
+def test_bridge_does_not_require_preflight_before_run():
+    text=(Path(__file__).parents[1]/'tools'/'mephc-courier.ps1').read_text(encoding='utf-8-sig')
+    assert '& $Courier validate $request' in text
+    assert '& $Courier run $request' in text
+    assert '& $Courier preflight $request' not in text
+    assert 'COURIER_NOT_CHAT_READY' not in text

@@ -1,0 +1,22 @@
+[Unit]
+Description=MePhC fail-closed WSL job worker
+After=local-fs.target
+
+[Service]
+Type=simple
+User=icy
+WorkingDirectory=/home/icy/MePhC
+ExecStart=/home/icy/miniconda3/envs/mp/bin/python /home/icy/MePhC/tools/mephc-runner/worker.py
+Restart=on-failure
+RestartSec=3
+KillMode=control-group
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/icy/MePhC/.relayctl
+
+[Install]
+WantedBy=multi-user.target

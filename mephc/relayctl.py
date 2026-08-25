@@ -8,7 +8,7 @@ from typing import Any
 CANONICAL_ROOT = Path("/home/icy/MePhC")
 REQUIRED_PYTHON = Path("/home/icy/miniconda3/envs/mp/bin/python")
 PROJECT_ID = "MEPHC"
-FAILURE_CODES = {"ROOT_MISMATCH", "WORKTREE_NOT_WSL_NATIVE", "INTERPRETER_MISMATCH", "PRELIVE_UNCOMMITTED", "SOURCE_BYTE_MISMATCH", "COURIER_NOT_CHAT_READY", "COURIER_TIMEOUT_RECOVERY_REQUIRED", "COURIER_HARD_STOP"}
+FAILURE_CODES = {"ROOT_MISMATCH", "WORKTREE_NOT_WSL_NATIVE", "INTERPRETER_MISMATCH", "PRELIVE_UNCOMMITTED", "SOURCE_BYTE_MISMATCH", "COURIER_TIMEOUT_RECOVERY_REQUIRED", "COURIER_QUEUE_TIMEOUT", "COURIER_QUEUE_RECOVERY_REQUIRED", "COURIER_INTERRUPTED", "COURIER_HARD_STOP"}
 class RelayFailure(RuntimeError):
     def __init__(self, code: str, detail: str): self.code, self.detail = code, detail; super().__init__(f"{code}: {detail}")
 def emit(event: str, **values: Any) -> None: print(json.dumps({"event": event, "ok": event not in FAILURE_CODES, **values}, sort_keys=True), flush=True)
