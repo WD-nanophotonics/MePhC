@@ -43,7 +43,7 @@ def remote_ref(root: Path, ref: str) -> str:
     return lines[0].split()[0]
 def require_python(root: Path) -> None:
     actual = Path(sys.executable).resolve()
-    if actual != REQUIRED_PYTHON or not REQUIRED_PYTHON.is_file(): raise RelayFailure("INTERPRETER_MISMATCH", f"actual={actual}; required={REQUIRED_PYTHON}")
+    if actual != REQUIRED_PYTHON.resolve() or not REQUIRED_PYTHON.is_file(): raise RelayFailure("INTERPRETER_MISMATCH", f"actual={actual}; required={REQUIRED_PYTHON}")
     if root.resolve() not in [Path(p).resolve() for p in os.environ.get("PYTHONPATH", "").split(os.pathsep) if p]: raise RelayFailure("INTERPRETER_MISMATCH", f"PYTHONPATH must include {root}")
 def load_certificate(root: Path, value: str) -> tuple[Path, dict[str, Any]]:
     path = Path(value) if Path(value).is_absolute() else runtime(root) / "certificates" / value; record = read_json(path)
