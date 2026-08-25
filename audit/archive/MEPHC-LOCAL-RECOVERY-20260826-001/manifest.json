@@ -1,7 +1,7 @@
 {
   "schema": "mephc-local-residue-archive-v1",
   "artifact_id": "MEPHC-LOCAL-RECOVERY-20260826-001",
-  "archive_commit": null,
+  "archive_commit": "c61a703bfffdcd48012caf01de9a181711db2d85",
   "archive_remote_ref": "origin/sandbox",
   "classification": "REMOTE_RETAINED_AUDIT_AFTER_PUBLICATION",
   "original_root": "/home/icy/MePhC-recovery",
