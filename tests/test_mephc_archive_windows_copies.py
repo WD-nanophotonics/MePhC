@@ -37,6 +37,12 @@ def test_scan_deduplicates_without_losing_references(tmp_path):
     assert result["rejected_count"] == 0
 
 
+def test_inspect_file_combines_hash_and_sensitive_scan(tmp_path):
+    path = tmp_path / "evidence"
+    path.write_bytes(b"access_token = hidden")
+    assert archive.inspect_file(path) == (hashlib.sha256(path.read_bytes()).hexdigest(), True)
+
+
 def test_scan_rejects_source_drift_and_secret(tmp_path):
     (tmp_path / "changed").write_bytes(b"changed")
     secret = b"access_token = hidden"

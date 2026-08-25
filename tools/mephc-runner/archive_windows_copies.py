@@ -47,6 +47,20 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def inspect_file(path: Path) -> tuple[str, bool]:
+    digest = hashlib.sha256()
+    overlap = b""
+    sensitive = False
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+            sample = overlap + chunk
+            if SENSITIVE_CONTENT.search(sample):
+                sensitive = True
+            overlap = sample[-128:]
+    return digest.hexdigest(), sensitive
+
+
 def safe_source(root: Path, relative: str) -> Path:
     pure = PurePosixPath(relative)
     if pure.is_absolute() or ".." in pure.parts:
@@ -60,14 +74,7 @@ def safe_source(root: Path, relative: str) -> Path:
 
 
 def sensitive_content(path: Path) -> bool:
-    overlap = b""
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            sample = overlap + chunk
-            if SENSITIVE_CONTENT.search(sample):
-                return True
-            overlap = sample[-128:]
-    return False
+    return inspect_file(path)[1]
 
 
 def candidate_entries(report: dict[str, Any], roots: dict[str, Path]) -> list[dict[str, Any]]:
@@ -102,7 +109,7 @@ def scan(report: dict[str, Any], roots: dict[str, Path] | None = None) -> dict[s
             rejected.append({**public, "reason": "NOT_REGULAR_FILE"})
             continue
         actual_bytes = source.stat().st_size
-        actual_sha256 = sha256_file(source)
+        actual_sha256, has_sensitive_content = inspect_file(source)
         if actual_bytes != entry["bytes"] or actual_sha256 != entry["sha256"]:
             rejected.append({
                 **public, "reason": "SOURCE_BYTE_MISMATCH",
@@ -110,7 +117,7 @@ def scan(report: dict[str, Any], roots: dict[str, Path] | None = None) -> dict[s
             })
         elif SENSITIVE_PATH.search(f"{entry['project_id']}/{entry['original_path']}"):
             rejected.append({**public, "reason": "SECRET_OR_CREDENTIAL_PATH"})
-        elif sensitive_content(source):
+        elif has_sensitive_content:
             rejected.append({**public, "reason": "SECRET_OR_CREDENTIAL_CONTENT"})
         else:
             accepted.append(public)
