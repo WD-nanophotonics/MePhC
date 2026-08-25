@@ -1,0 +1,9 @@
+{
+  "detail": "detailed",
+  "message_file": "message.txt",
+  "mode": "normal",
+  "project_id": "MEPHC",
+  "request_id": "MEPHC-E9F-C1-RP2-C3-C5-C1-CORRECTIVE-REPORT-20260825-251",
+  "version": 1,
+  "workflow_window_seconds": 600
+}
