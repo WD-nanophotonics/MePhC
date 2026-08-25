@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 set -euo pipefail
 ROOT=/home/icy/MePhC
 PYTHON=/home/icy/miniconda3/envs/mp/bin/python

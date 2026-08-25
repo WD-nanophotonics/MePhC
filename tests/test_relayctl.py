@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 import hashlib
 from pathlib import Path
 import pytest
@@ -20,7 +20,7 @@ def test_manifest_hashes_executable_source(monkeypatch,tmp_path):
     assert relayctl.source_manifest(tmp_path)=={'run.py':hashlib.sha256(b'x=1\n').hexdigest()}
 
 def test_source_drift_fails_closed(monkeypatch,tmp_path):
-    record={'kind':'prelive-attestation','project_id':'MEPHC','test_retuncode':0,'prelive_sha':'h','origin_main':'m','source_sha256':{'x.py':'old'}}
+    record={'kind':'prelive-attestation','project_id':'MEPHC','test_returncode':0,'prelive_sha':'h','origin_main':'m','source_sha256':{'x.py':'old'}}
     monkeypatch.setattr(relayctl,'worktree_root',lambda _=None:tmp_path); monkeypatch.setattr(relayctl,'require_python',lambda _:None); monkeypatch.setattr(relayctl,'clean',lambda _:None); monkeypatch.setattr(relayctl,'head',lambda _:'h'); monkeypatch.setattr(relayctl,'remote_ref',lambda *_:'m'); monkeypatch.setattr(relayctl,'read_json',lambda _:record); monkeypatch.setattr(relayctl,'source_manifest',lambda _:{'x.py':'new'})
     with pytest.raises(relayctl.RelayFailure,match='SOURCE_BYTE_MISMATCH'): relayctl.verify_prelive(tmp_path,'p.json')
 

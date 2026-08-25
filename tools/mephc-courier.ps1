@@ -1,4 +1,4 @@
-﻿[CmdletBinding()]
+[CmdletBinding()]
 param([Parameter(Mandatory=$true)][string]$RequestDirectory,[switch]$RecoveryOnly)
 $ErrorActionPreference='Stop'
 $MePhCRoot='\\wsl.localhost\Ubuntu\home\icy\MePhC'
