@@ -7,7 +7,7 @@ function Emit([string]$Event,[bool]$Ok,[hashtable]$Values=@{}) { @{event=$Event;
 function Fail([string]$Code,[string]$Detail) { Emit $Code $false @{detail=$Detail}; exit 2 }
 function Hash([string]$Path) { (Get-FileHash -Algorithm SHA256 -LiteralPath $Path).Hash.ToLowerInvariant() }
 try {
-  $request=(Resolve-Path -LiteralPath $RequestDirectory).Path
+  $request=(Resolve-Path -LiteralPath $RequestDirectory).ProviderPath
   $segments=$request.TrimEnd([char]92).Split([char]92)
   $outboxIndex=[Array]::IndexOf($segments,'outbox')
   if((-not $request.StartsWith($MePhCRoot,[System.StringComparison]::OrdinalIgnoreCase)) -or $outboxIndex -lt 1 -or $segments[$outboxIndex-1] -ne '.relayctl'){ Fail 'ROOT_MISMATCH' 'request is not inside a fixed native MePhC worktree outbox' }
