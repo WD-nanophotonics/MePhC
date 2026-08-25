@@ -32,5 +32,5 @@ def test_e2e_request_is_plain_text(monkeypatch,tmp_path):
 
 def test_bridge_has_required_gates():
     text=(Path(__file__).parents[1]/'tools'/'mephc-courier.ps1').read_text(encoding='utf-8-sig')
-    for token in ('validate','preflight','chat_ready','run','COURIER_TIMEOUT_RECOVERY_REQUIRED','submission_count','altenate_browser_used'):
+    for token in ('validate','preflight','chat_ready','run','COURIER_TIMEOUT_RECOVERY_REQUIRED','submission_count','alternate_browser_used','certificatePath','expectedOutbox'):
         assert token in text

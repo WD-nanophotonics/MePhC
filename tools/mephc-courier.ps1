@@ -8,14 +8,19 @@ function Fail([string]$Code,[string]$Detail) { Emit $Code $false @{detail=$Detai
 function Hash([string]$Path) { (Get-FileHash -Algorithm SHA256 -LiteralPath $Path).Hash.ToLowerInvariant() }
 try {
   $request=(Resolve-Path -LiteralPath $RequestDirectory).ProviderPath
-  $segments=$request.TrimEnd([char]92).Split([char]92)
-  $outboxIndex=[Array]::IndexOf($segments,'outbox')
-  if((-not $request.StartsWith($MePhCRoot,[System.StringComparison]::OrdinalIgnoreCase)) -or $outboxIndex -lt 1 -or $segments[$outboxIndex-1] -ne '.relayctl'){ Fail 'ROOT_MISMATCH' 'request is not inside a fixed native MePhC worktree outbox' }
-  if(-not(Test-Path -LiteralPath $Courier -PathType Leaf)){ Fail 'COURIER_HARD_STOP' 'approved Courier launcher is unavailable' }
-  $manifestPath=Join-Path $request 'request.json'; $manifest=Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
+  $manifestPath=Join-Path $request 'request.json'
+  $manifest=Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
   if($manifest.project_id -ne 'MEPHC'){ Fail 'ROOT_MISMATCH' 'only PROJECT_ID=MEPHC is accepted' }
   if($null -eq $manifest.attachments -or $manifest.attachments.Count -ne 0){ Fail 'ROOT_MISMATCH' 'bridge accepts plain-text requests only' }
-  if(-not $manifest.relay_certificate -or -not(Test-Path -LiteralPath $manifest.relay_certificate -PathType Leaf)){ Fail 'PRELIVE_UNCOMMITTED' 'request lacks relayctl certificate' }
+  if(-not $manifest.relay_certificate -or -not $manifest.relay_certificate.StartsWith('/home/icy/MePhC/')){ Fail 'PRELIVE_UNCOMMITTED' 'request lacks a native MePhC relayctl certificate path' }
+  $certificatePath='\\wsl.localhost\Ubuntu' + $manifest.relay_certificate.Replace('/','\')
+  if(-not(Test-Path -LiteralPath $certificatePath -PathType Leaf)){ Fail 'PRELIVE_UNCOMMITTED' 'request certificate is unavailable' }
+  $certificate=Get-Content -Raw -LiteralPath $certificatePath | ConvertFrom-Json
+  if($certificate.project_id -ne 'MEPHC' -or -not $certificate.worktree -or -not $certificate.canonical_root){ Fail 'ROOT_MISMATCH' 'certificate does not bind a MePhC worktree' }
+  if(-not $certificate.worktree.StartsWith($certificate.canonical_root + '/',[System.StringComparison]::Ordinal) -or $certificate.canonical_root -ne '/home/icy/MePhC'){ Fail 'ROOT_MISMATCH' 'certificate worktree is outside canonical MePhC root' }
+  $expectedOutbox='\\wsl.localhost\Ubuntu' + $certificate.worktree.Replace('/','\') + '\.relayctl\outbox\'
+  if(-not $request.StartsWith($expectedOutbox,[System.StringComparison]::OrdinalIgnoreCase)){ Fail 'ROOT_MISMATCH' 'request does not match its certified native worktree outbox' }
+  if(-not(Test-Path -LiteralPath $Courier -PathType Leaf)){ Fail 'COURIER_HARD_STOP' 'approved Courier launcher is unavailable' }
   $receiptPath=Join-Path $request 'receipt.json'
   if($RecoveryOnly){
     if(-not(Test-Path -LiteralPath $receiptPath -PathType Leaf)){ Fail 'COURIER_TIMEOUT_RECOVERY_REQUIRED' 'recovery requires existing same-request receipt' }
@@ -31,7 +36,7 @@ try {
   $receipt=if(Test-Path -LiteralPath $receiptPath){Get-Content -Raw -LiteralPath $receiptPath|ConvertFrom-Json}else{$null}
   $log=Join-Path $request 'events.jsonl'; $submissions=if(Test-Path -LiteralPath $log){@(Get-Content -LiteralPath $log|Where-Object {$_ -match '"event"\s*:\s*"request_submitted"'}).Count}else{0}
   $responsePath=Join-Path $request 'response.txt'
-  $attestation=@{version=1;project_id='MEPHC';request_id=$manifest.request_id;recovery_only=[bool]$RecoveryOnly;command_order=@('validate','preflight','run');chat_ready=[bool]($events|Where-Object {$_ -match '"event"\s*:\s*"chat_ready"'});submission_count=$submissions;attachments=@();request_sha256=Hash $manifestPath;receipt_state=if($receipt){$receipt.state}else{$null};response_sha256=if(Test-Path -LiteralPath $responsePath){Hash $responsePath}else{$null};courier_exit=$exitCode;altenate_browser_used=$false}
+  $attestation=@{version=1;project_id='MEPHC';request_id=$manifest.request_id;recovery_only=[bool]$RecoveryOnly;command_order=@('validate','preflight','run');chat_ready=[bool]($events|Where-Object {$_ -match '"event"\s*:\s*"chat_ready"'});submission_count=$submissions;attachments=@();request_sha256=Hash $manifestPath;receipt_state=if($receipt){$receipt.state}else{$null};response_sha256=if(Test-Path -LiteralPath $responsePath){Hash $responsePath}else{$null};courier_exit=$exitCode;alternate_browser_used=$false}
   $attestation|ConvertTo-Json -Depth 6|Set-Content -LiteralPath (Join-Path $request 'bridge-attestation.json') -Encoding utf8
   if($receipt -and $receipt.state -eq 'response_received'){Emit 'response_received' $true $attestation;exit 0}
   if($receipt -and $receipt.state -in @('response_timeout','waiting_for_response','submission_unconfirmed','response_protocol_error')){Emit 'COURIER_TIMEOUT_RECOVERY_REQUIRED' $false $attestation;exit 1}
