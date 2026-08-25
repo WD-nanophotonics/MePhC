@@ -4,7 +4,7 @@ $ErrorActionPreference='Stop'
 $SourceRoot=Split-Path -Parent $MyInvocation.MyCommand.Path
 $CanonicalWslSource='/home/icy/MePhC/tools/mephc-runner'
 $Runtime=Join-Path $env:LOCALAPPDATA 'MePhCRunner'
-$Files=@('worker.py','jobctl.py','mephc-runner.ps1','mephc-runner.service','README.md')
+$Files=@('worker.py','jobctl.py','mephc-runner.ps1','mephc-runner.cmd','mephc-runner.service','README.md')
 $Manifest=@()
 foreach($name in $Files) {
   $path=Join-Path $SourceRoot $name
@@ -18,7 +18,7 @@ if(-not $Install) {
 }
 
 New-Item -ItemType Directory -Path $Runtime -Force | Out-Null
-foreach($name in @('mephc-runner.ps1','README.md')) {
+foreach($name in @('mephc-runner.ps1','mephc-runner.cmd','README.md')) {
   Copy-Item -LiteralPath (Join-Path $SourceRoot $name) -Destination (Join-Path $Runtime $name) -Force
 }
 $Manifest|ConvertTo-Json -Depth 4|Set-Content -LiteralPath (Join-Path $Runtime 'install-manifest.json') -Encoding UTF8
@@ -27,7 +27,7 @@ $sourceWsl=(wsl.exe -d Ubuntu -- wslpath -a ($SourceRoot -replace '\\','/')).Tri
 if(-not $sourceWsl){throw 'cannot map bootstrap source directory into WSL'}
 if($sourceWsl -ne $CanonicalWslSource) {
   wsl.exe -d Ubuntu -u root -- install -d -o icy -g icy -m 0755 $CanonicalWslSource
-  foreach($name in @('worker.py','jobctl.py','mephc-runner.ps1','mephc-runner.service','bootstrap.ps1','README.md')) {
+  foreach($name in @('worker.py','jobctl.py','mephc-runner.ps1','mephc-runner.cmd','mephc-runner.service','bootstrap.ps1','README.md')) {
     wsl.exe -d Ubuntu -u root -- install -o icy -g icy -m 0644 "$sourceWsl/$name" "$CanonicalWslSource/$name"
     if($LASTEXITCODE -ne 0){throw "failed to install WSL source: $name"}
   }
@@ -59,6 +59,7 @@ if(-not $existing) {
   Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File',$launcher,'Broker') -WindowStyle Hidden
 }
 Start-Sleep -Seconds 3
-& $launcher Doctor
+$publicLauncher=Join-Path $Runtime 'mephc-runner.cmd'
+& $publicLauncher Doctor
 if($LASTEXITCODE -ne 0){throw 'cross-layer doctor failed'}
-Write-Output 'MEPHC_RUNNER_BOOTSTRAP_COMPLETE=true;STARTUP_MODE=startup_shortcut'
+Write-Output "MEPHC_RUNNER_BOOTSTRAP_COMPLETE=true;STARTUP_MODE=startup_shortcut;PUBLIC_LAUNCHER=$publicLauncher"

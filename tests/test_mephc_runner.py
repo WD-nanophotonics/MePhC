@@ -47,6 +47,25 @@ def test_windows_client_has_no_direct_courier_or_browser_invocation():
     assert "jobctl.py" in text
 
 
+def test_windows_cmd_is_fixed_execution_policy_boundary():
+    text = (SOURCE / "mephc-runner.cmd").read_text(encoding="utf-8")
+    lowered = text.lower()
+    assert "%systemroot%\\system32\\windowspowershell\\v1.0\\powershell.exe" in lowered
+    assert "-executionpolicy bypass" in lowered
+    assert "%mephc_runner_runtime%\\mephc-runner.ps1" in lowered
+    assert "wsl.exe" not in lowered
+    assert "courier" not in lowered
+    assert "browser" not in lowered
+    assert "endlocal & exit /b %mephc_runner_exit%" in lowered
+
+
+def test_bootstrap_installs_and_exercises_public_cmd():
+    text = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8")
+    assert "'mephc-runner.cmd'" in text
+    assert "$publicLauncher=Join-Path $Runtime 'mephc-runner.cmd'" in text
+    assert "& $publicLauncher Doctor" in text
+
+
 def test_project_mismatch_fails_closed(tmp_path):
     worker = load("runner_worker_project", "worker.py")
     job_id = "MEPHC-JOB-ABCDEFGH"
