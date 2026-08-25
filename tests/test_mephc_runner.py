@@ -193,6 +193,12 @@ def test_worker_duplicates_prelive_and_recovery_argument_gates():
     assert "PRELIVE_ARGUMENTS_INVALID" in text
     assert 'arguments[2] == "--recovery-only"' in text
 
+def test_project_registry_points_to_public_cmd_launcher():
+    registry = json.loads((SOURCE / "project-registry.json").read_text(encoding="utf-8"))
+    assert registry["active_project"] == "MEPHC"
+    assert registry["runtime"]["windows_launcher"].endswith("\\mephc-runner.cmd")
+    assert registry["repositories"][1]["role"] == "LEGACY_AUXILIARY_READ_ONLY"
+
 
 def test_worker_service_protects_home_and_only_opens_runtime():
     text = (SOURCE / "mephc-runner.service").read_text(encoding="utf-8")

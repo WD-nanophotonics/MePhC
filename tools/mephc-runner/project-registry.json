@@ -32,7 +32,7 @@
     }
   ],
   "runtime": {
-    "windows_launcher": "C:\\Users\\icywo\\AppData\\Local\\MePhCRunner\\mephc-runner.ps1",
+    "windows_launcher": "C:\\Users\\icywo\\AppData\\Local\\MePhCRunner\\mephc-runner.cmd",
     "wsl_service": "mephc-runner.service",
     "job_root": "/home/icy/MePhC/.relayctl/runner/jobs",
     "allowed_operations": ["doctor", "worktree", "prelive", "native", "publish", "courier"]
