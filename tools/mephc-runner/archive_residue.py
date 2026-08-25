@@ -7,7 +7,9 @@ from pathlib import Path, PurePosixPath
 
 MEPHC_ROOT = Path("/home/icy/MePhC")
 REPOSITORY_ROOTS = {
+    "MEPHC": MEPHC_ROOT,
     "TRILATT": Path("/home/icy/TriLatt"),
+    "SQRLATT": Path("/home/icy/SqrLatt"),
     "GMAILCOURIER": Path("/mnt/c/Users/icywo/PycharmProjects/GmailCourier"),
 }
 SENSITIVE_PATH = re.compile(
