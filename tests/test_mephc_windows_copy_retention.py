@@ -34,6 +34,24 @@ def test_archive_sha_promotes_exact_bytes():
     assert result["retained_in_archive_artifacts"] == bindings
 
 
+def test_archive_member_supports_legacy_and_content_addressed_schema():
+    retention = load_retention()
+    assert retention.archive_member({"archive_member": "legacy/member"}) == "legacy/member"
+    assert retention.archive_member({
+        "storage": {"format": "tar-gzip", "member": "blobs/abc"}
+    }) == "blobs/abc"
+
+
+def test_archive_member_missing_or_unknown_storage_fails_closed():
+    retention = load_retention()
+    with __import__("pytest").raises(RuntimeError, match="ARCHIVE_MEMBER_BINDING_MISSING"):
+        retention.archive_member({})
+    with __import__("pytest").raises(RuntimeError, match="ARCHIVE_MEMBER_BINDING_MISSING"):
+        retention.archive_member({
+            "storage": {"format": "unknown", "member": "blobs/abc"}
+        })
+
+
 def test_remote_head_eol_materialization_is_disposable():
     retention = load_retention()
     result = retention.reclassify(record(), {}, {"source.py"}, set(), True)

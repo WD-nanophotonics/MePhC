@@ -24,6 +24,21 @@ def git(repo: Path, *arguments: str) -> subprocess.CompletedProcess[str]:
     )
 
 
+def archive_member(item: dict[str, Any]) -> str:
+    legacy = item.get("archive_member")
+    if isinstance(legacy, str) and legacy:
+        return legacy
+    storage = item.get("storage")
+    if (
+        isinstance(storage, dict)
+        and storage.get("format") in {"tar-gzip", "split-gzip"}
+        and isinstance(storage.get("member"), str)
+        and storage["member"]
+    ):
+        return storage["member"]
+    raise RuntimeError("ARCHIVE_MEMBER_BINDING_MISSING")
+
+
 def latest_inventory() -> Path:
     candidates = list(INVENTORY_ROOT.glob("windows-copy-inventory-*.json"))
     if not candidates:
@@ -49,7 +64,7 @@ def archive_sha_index() -> dict[str, list[dict[str, str]]]:
             index.setdefault(sha256, []).append({
                 "artifact_id": manifest["artifact_id"],
                 "archive_commit": commit,
-                "archive_member": item["archive_member"],
+                "archive_member": archive_member(item),
             })
     return index
 
