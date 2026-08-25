@@ -1,0 +1,36 @@
+﻿from __future__ import annotations
+import hashlib
+from pathlib import Path
+import pytest
+from mephc import relayctl
+
+def test_failure_codes_are_fixed():
+    assert {'ROOT_MISMATCH','WORKTREE_NOT_WSL_NATIVE','INTERPRETER_MISMATCH','PRELIVE_UNCOMMITTED','SOURCE_BYTE_MISMATCH','COURIER_NOT_CHAT_READY','COURIER_TIMEOUT_RECOVERY_REQUIRED','COURIER_HARD_STOP'} <= relayctl.FAILURE_CODES
+
+def test_trilatt_root_is_rejected(monkeypatch,tmp_path):
+    monkeypatch.setattr(relayctl,'git',lambda *_: str(tmp_path/'TriLatt') if _[1:3]==('rev-parse','--show-toplevel') else '.git')
+    with pytest.raises(relayctl.RelayFailure,match='ROOT_MISMATCH'): relayctl.worktree_root(tmp_path)
+
+def test_wrong_interpreter_is_rejected(monkeypatch,tmp_path):
+    monkeypatch.setattr(relayctl.sys,'executable',str(tmp_path/'python')); monkeypatch.setenv('PYTHONPATH',str(tmp_path))
+    with pytest.raises(relayctl.RelayFailure,match='INTERPRETER_MISMATCH'): relayctl.require_python(tmp_path)
+
+def test_manifest_hashes_executable_source(monkeypatch,tmp_path):
+    (tmp_path/'run.py').write_text('x=1\n'); monkeypatch.setattr(relayctl,'git',lambda *_:'run.py')
+    assert relayctl.source_manifest(tmp_path)=={'run.py':hashlib.sha256(b'x=1\n').hexdigest()}
+
+def test_source_drift_fails_closed(monkeypatch,tmp_path):
+    record={'kind':'prelive-attestation','project_id':'MEPHC','test_retuncode':0,'prelive_sha':'h','origin_main':'m','source_sha256':{'x.py':'old'}}
+    monkeypatch.setattr(relayctl,'worktree_root',lambda _=None:tmp_path); monkeypatch.setattr(relayctl,'require_python',lambda _:None); monkeypatch.setattr(relayctl,'clean',lambda _:None); monkeypatch.setattr(relayctl,'head',lambda _:'h'); monkeypatch.setattr(relayctl,'remote_ref',lambda *_:'m'); monkeypatch.setattr(relayctl,'read_json',lambda _:record); monkeypatch.setattr(relayctl,'source_manifest',lambda _:{'x.py':'new'})
+    with pytest.raises(relayctl.RelayFailure,match='SOURCE_BYTE_MISMATCH'): relayctl.verify_prelive(tmp_path,'p.json')
+
+def test_e2e_request_is_plain_text(monkeypatch,tmp_path):
+    cert=tmp_path/'cert.json'; cert.write_text('{}')
+    monkeypatch.setattr(relayctl,'worktree_root',lambda _=None:tmp_path); monkeypatch.setattr(relayctl,'load_certificate',lambda *_:(cert,{}))
+    request=relayctl.create_e2e(tmp_path,str(cert)); manifest=relayctl.read_json(request/'request.json')
+    assert manifest['project_id']=='MEPHC' and manifest['attachments']==[] and manifest['relay_certificate']==str(cert)
+
+def test_bridge_has_required_gates():
+    text=(Path(__file__).parents[1]/'tools'/'mephc-courier.ps1').read_text(encoding='utf-8-sig')
+    for token in ('validate','preflight','chat_ready','run','COURIER_TIMEOUT_RECOVERY_REQUIRED','submission_count','altenate_browser_used'):
+        assert token in text

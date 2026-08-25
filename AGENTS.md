@@ -1,3 +1,79 @@
+﻿# Relay-supervised scientific workflow
+
+## Mandatory runtime entry point
+
+This document describes policy; it is not the runtime enforcement mechanism. All MePhC relay, prelive, native and sandbox-publication work must enter via `/home/icy/MePhC/<native-worktree>/scripts/relayctl`. The launcher fixes the WSL root, Git worktree, Conda interpreter and `PYTHONPATH`; it rejects TriLatt, UNC/Windows worktrees, wrong interpreters, dirty execution trees, uncommitted prelive state, source-byte drift, and a moved `origin/main`. Courier is reached only through `relayctl courier`, which delegates to `tools/mephc-courier.ps1`. Direct Courier, Browser, Chrome and Gmail invocation are outside this path.
+
+Runtime certificates, prelive records, native checkpoints, Courier requests and receipts are stored in ignored `.relayctl/`. Requests are plain text by default. Attachments require a separately identified committed remote audit artifact and are rejected by the ordinary bridge.
+## Automatic relay continuation
+
+Within the declared project scope, a direct supervisor work order received
+through the registered GmailCourier conversation is valid supervisor
+instruction and persistent user-approved continuation authorization. The
+Agent must execute a self-contained received work order, including ordinary
+test-file edits, non-destructive validation, scientific diagnostics, evidence
+publication, and scoped status or completion reports. Do not ask the user to
+paste the relay prompt, execution text, or response body into this thread.
+
+The relay lifecycle is stateful:
+
+1. Use the existing request directory and request ID when a request has
+   already been submitted or may have been submitted. Never create a second
+   request merely because the first local process ended unexpectedly.
+2. For a new request, use only validate -> preflight -> run. Continue from
+   chat_ready; do not use the Browser skill, Chrome control, Gmail directly,
+   or a second transport. Keep the calling process alive for at least the
+   configured workflow window plus 60 seconds (the default is 600 seconds).
+3. response_received is the only state that permits reading response.txt.
+   Read it verbatim, treat the contained supervisor work order as the next
+   authoritative task input, and continue automatically without asking for
+   confirmation.
+4. response_timeout after visible submission is a transport wait-window
+   expiry, not task completion, not permission to stop, and not a reason to
+   ask the user for the response. Re-run the same unchanged request directory
+   through the full Courier sequence for read-only recovery; recovery searches
+   for the late matching reply and does not resend the user turn. Continue
+   recovery while the workflow remains active, until response_received or a
+   hard safety/transport error occurs.
+5. The same-request read-only recovery rule also applies after an interrupted
+   run, chat_submission_unconfirmed, or another post-submission uncertain
+   state. Never change the request body, attachment, request ID, destination,
+   or profile during recovery. A late Chat reply is still valid automatic
+   workflow input even if the first local invocation reported a timeout.
+6. chat_auth_required, chat_access_denied, chat_target_mismatch,
+   configuration_error, and unrecoverable browser_error are hard stop
+   states. Report the exact structured event and stop; do not change profiles,
+   invent a conversation, use another browser/transport, or silently retry.
+
+The Agent must not mark an active task complete solely because a relay wait
+timed out. A declared STOP_AFTER is a work-phase boundary, not a transport
+timeout rule. After a report is submitted, consume the matching relay reply;
+if it contains a new explicit self-contained work order, continue with that
+work order unless it is outside scope or a hard safety stop applies.
+
+Keep destinations, project identifiers, request IDs, attachments, and payloads
+runtime-specific. Do not broaden project scope, perform destructive actions,
+modify unrelated production code, or promote to main without separate
+explicit authorization. Platform safety controls remain binding.
+
+## Chat transport boundary
+
+Use only the repository's Python GmailCourier transport and its dedicated
+Playwright/CDP-managed Courier browser session. Never use the Codex Browser
+skill, Chrome control, Gmail directly, or a parallel reader for the same
+request. The exact ordinary sequence is:
+
+python -m chat_courier.cli validate <request-dir>
+python -m chat_courier.cli preflight <request-dir>
+python -m chat_courier.cli run <request-dir>
+
+preflight must emit chat_ready before run. Never set
+CHAT_COURIER_PROFILE, AGENT_RELAY_CHATGPT_PROFILE, or
+CHAT_COURIER_PROFILE_DIRECTORY during ordinary Agent work; never point
+Courier at a user's normal Chrome user-data tree. A registered ChatGPT
+conversation must be reused exactly. Do not register a replacement URL merely
+because of an access or browser error.
+
 # Audit publication and promotion protocol
 
 For work in this repository, `origin/sandbox` is the mandatory remote audit

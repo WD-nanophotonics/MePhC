@@ -1,0 +1,9 @@
+﻿#!/usr/bin/env bash
+set -euo pipefail
+ROOT=/home/icy/MePhC
+PYTHON=/home/icy/miniconda3/envs/mp/bin/python
+CURRENT=$(pwd -P)
+if [ "$CURRENT" != "$ROOT" ] && [[ "$CURRENT/" != "$ROOT"/* ]]; then printf '%s\n' '{"event":"ROOT_MISMATCH","ok":false}' >&2; exit 2; fi
+if [ ! -x "$PYTHON" ]; then printf '%s\n' '{"event":"INTERPRETER_MISMATCH","ok":false}' >&2; exit 2; fi
+export PYTHONPATH="$(git rev-parse --show-toplevel)"
+exec "$PYTHON" -m mephc.relayctl "$@"
