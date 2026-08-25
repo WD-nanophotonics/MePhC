@@ -102,10 +102,26 @@ def test_final_rp3_a_c1_process_seal_is_closed_and_bound():
     registry = json.loads((ROOT / "audit/e9f/rp3_a_c1_process_reliability_registry.json").read_text())
     rp3.validate_rp3_a_c1_process_registry(registry, closed=True)
     assert seal["source_r128_execution_sha"] == EXECUTION
+    assert seal["item_generation_exact_prefix_binding"] is True
     assert seal["process_registry_count"] == 34
     assert seal["process_registry_all_closed"] is True
     assert seal["rel_052_status"] == "CLOSED"
     assert seal["rel_054_status"] == "CLOSED"
     assert seal["native_solves_performed_by_c1"] == 0
-    assert seal["pytest_node_count"] == 81
+    assert seal["pytest_node_count"] == 82
     assert seal["pytest_failed_count"] == 0
+
+
+def test_item_generation_is_exact_prefix_position():
+    checkpoint, rows = make_checkpoint(3)
+    checkpoint["completed_workers"][0]["item_generation"] = 99
+    with pytest.raises(ValueError):
+        rp3.resume_suffix(checkpoint=checkpoint, root=ROOT, rows=rows, orphan_scan=lambda ids: [])
+    checkpoint, rows = make_checkpoint(3)
+    checkpoint["completed_workers"][0]["item_generation"], checkpoint["completed_workers"][1]["item_generation"] = 2, 1
+    with pytest.raises(ValueError):
+        rp3.resume_suffix(checkpoint=checkpoint, root=ROOT, rows=rows, orphan_scan=lambda ids: [])
+    checkpoint, rows = make_checkpoint(3)
+    checkpoint["completed_workers"][1]["item_generation"] = 1
+    with pytest.raises(ValueError):
+        rp3.resume_suffix(checkpoint=checkpoint, root=ROOT, rows=rows, orphan_scan=lambda ids: [])

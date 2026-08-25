@@ -85,12 +85,12 @@ def scan_rp3_orphans(worker_ids: Sequence[str]) -> list[int]:
     return sorted(set(found))
 
 
-def _validate_checkpoint_item(item: Mapping[str, Any], row: Mapping[str, Any], checkpoint: Mapping[str, Any], *, root: Path) -> None:
+def _validate_checkpoint_item(item: Mapping[str, Any], row: Mapping[str, Any], checkpoint: Mapping[str, Any], *, root: Path, expected_generation: int) -> None:
     required = ("worker_id", "source_sample_id", "logical_sample_index", "resolution", "payload_path", "payload_file_sha256", "payload_body_sha256", "execution_sha", "contract_sha256", "policy_sha256", "item_generation", "terminal_payload_status")
     if any(key not in item for key in required):
         raise ValueError("RP3_A_CHECKPOINT_ITEM_FIELDS_FAIL_CLOSED")
     expected = {"worker_id": row["sample_id"], "source_sample_id": row["source_sample_id"], "logical_sample_index": row["sample_index"], "resolution": RESOLUTION, "execution_sha": checkpoint["execution_sha"], "contract_sha256": checkpoint["contract_sha256"], "policy_sha256": checkpoint["rp1_policy_file_sha256"]}
-    if any(item.get(key) != value for key, value in expected.items()) or item.get("item_generation") < 1 or item.get("terminal_payload_status") != "COMPLETE":
+    if any(item.get(key) != value for key, value in expected.items()) or item.get("item_generation") != expected_generation or item.get("terminal_payload_status") != "COMPLETE":
         raise ValueError("RP3_A_CHECKPOINT_ITEM_IDENTITY_FAIL_CLOSED")
     path = Path(item["payload_path"])
     if not path.is_file() or sha(path) != item["payload_file_sha256"]:
@@ -117,8 +117,8 @@ def validate_checkpoint(checkpoint: Mapping[str, Any], *, root: Path, rows: Sequ
     if [item.get("worker_id") for item in completed] != order[:len(completed)]:
         raise ValueError("RP3_A_CHECKPOINT_EXACT_PREFIX_FAIL_CLOSED")
     by_id = {row["sample_id"]: row for row in rows}
-    for item in completed:
-        _validate_checkpoint_item(item, by_id[item["worker_id"]], checkpoint, root=root)
+    for position, item in enumerate(completed, 1):
+        _validate_checkpoint_item(item, by_id[item["worker_id"]], checkpoint, root=root, expected_generation=position)
 
 
 def resume_suffix(*, checkpoint: Mapping[str, Any], root: Path, rows: Sequence[Mapping[str, Any]], orphan_scan: Any = None) -> list[dict[str, Any]]:
