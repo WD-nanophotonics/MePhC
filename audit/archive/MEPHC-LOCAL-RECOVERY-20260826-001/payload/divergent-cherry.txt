@@ -1,0 +1,4 @@
+- a73bea37870700fe8732041ed18f0148c8e0b46a Document automatic relay recovery workflow
+- bb80649e43ce3362985154734c256fb23e2876f9 Preserve Gmail task intake boundary
++ ff30176ae6785387747ef18dd5807d6d63ebdaa2 Document persistent relay artifact handoff policy
+- 1d9a9170ec4f74c80c2e37b0b1f5a121a4449366 Bind active workflow to MePhC workspace

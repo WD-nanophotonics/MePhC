@@ -1,0 +1,18 @@
+{
+  "schema": "mephc-local-residue-archive-v1",
+  "artifact_id": "MEPHC-LOCAL-RECOVERY-20260826-001",
+  "archive_commit": null,
+  "archive_remote_ref": "origin/sandbox",
+  "classification": "REMOTE_RETAINED_AUDIT_AFTER_PUBLICATION",
+  "original_root": "/home/icy/MePhC-recovery",
+  "payload_file_count": 5,
+  "payload_bytes": 5218806,
+  "files": [
+    {"path": "payload/divergent-cherry.txt", "archive_member": "payload/divergent-cherry.txt", "original_path": "/home/icy/MePhC-recovery/divergent-cherry.txt", "bytes": 341, "sha256": "e8ecfefe3e8f2fb6716ebd9d9e1690046492094e7178c88fc1be33bce1695bf3"},
+    {"path": "payload/divergent-commit-log.txt", "archive_member": "payload/divergent-commit-log.txt", "original_path": "/home/icy/MePhC-recovery/divergent-commit-log.txt", "bytes": 1312, "sha256": "e8e7deaa70dd39c8c8c0c66962c906253ab5651734fbc781055b6d6375d8e1af"},
+    {"path": "payload/divergent-name-status.diff", "archive_member": "payload/divergent-name-status.diff", "original_path": "/home/icy/MePhC-recovery/divergent-name-status.diff", "bytes": 12, "sha256": "ecd40a1e4fc0e154dfd1e9ab3b9895ca3822fd2b62f4037792a272deda00cb89"},
+    {"path": "payload/local-sandbox-divergence-20260825-1d9a9170.bundle", "archive_member": "payload/local-sandbox-divergence-20260825-1d9a9170.bundle", "original_path": "/home/icy/MePhC-recovery/local-sandbox-divergence-20260825-1d9a9170.bundle", "bytes": 5216849, "sha256": "514f312e368de9dc2d8abcbac7d7867294b635270931c8ef0a47ecc3f681b7c2"},
+    {"path": "payload/pre-reset-identities.txt", "archive_member": "payload/pre-reset-identities.txt", "original_path": "/home/icy/MePhC-recovery/pre-reset-identities.txt", "bytes": 292, "sha256": "68ad34194e0ba2b041e8808746ae44b05be56b942188d1f44d102df7fbc2e556"}
+  ],
+  "recovery_head": "1d9a9170ec4f74c80c2e37b0b1f5a121a4449366"
+}
