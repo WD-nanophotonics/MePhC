@@ -175,6 +175,24 @@ def test_courier_e2e_creation_argument_is_exact():
     with pytest.raises(SystemExit):
         jobctl.validate_arguments("courier", ["--create-e2e", "--certificate", "x"])
 
+def test_prelive_rejects_pytest_options():
+    jobctl = load("runner_jobctl_prelive_options", "jobctl.py")
+    with pytest.raises(SystemExit, match="invalid prelive test target"):
+        jobctl.validate_arguments("prelive", ["--help"])
+
+def test_courier_explicit_read_only_recovery_is_typed(tmp_path, monkeypatch):
+    jobctl = load("runner_jobctl_read_only_recovery", "jobctl.py")
+    monkeypatch.setattr(jobctl, "ROOT", tmp_path)
+    request = tmp_path / ".relayctl" / "outbox" / "MEPHC-E2E"
+    jobctl.validate_arguments("courier", ["--request-directory", str(request), "--recovery-only"])
+    with pytest.raises(SystemExit):
+        jobctl.validate_arguments("courier", ["--recovery-only", str(request)])
+
+def test_worker_duplicates_prelive_and_recovery_argument_gates():
+    text = (SOURCE / "worker.py").read_text(encoding="utf-8")
+    assert "PRELIVE_ARGUMENTS_INVALID" in text
+    assert 'arguments[2] == "--recovery-only"' in text
+
 
 def test_worker_service_protects_home_and_only_opens_runtime():
     text = (SOURCE / "mephc-runner.service").read_text(encoding="utf-8")

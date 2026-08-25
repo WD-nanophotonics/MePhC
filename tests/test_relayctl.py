@@ -32,7 +32,7 @@ def test_e2e_request_is_plain_text(monkeypatch,tmp_path):
 
 def test_bridge_has_required_gates():
     text=(Path(__file__).parents[1]/'tools'/'mephc-courier.ps1').read_text(encoding='utf-8-sig')
-    for token in ('validate','run','queue_joined','queue_timeout','queue_recovery_required','courier_interrupted','COURIER_INTERRUPTED','COURIER_TIMEOUT_RECOVERY_REQUIRED','submission_count','alternate_browser_used','certificatePath','expectedOutbox'):
+    for token in ('validate','run','queue_joined','queue_timeout','queue_recovery_required','courier_interrupted','COURIER_INTERRUPTED','COURIER_TIMEOUT_RECOVERY_REQUIRED','submission_count','alternate_browser_used','certificatePath','expectedOutbox','courier_build_id','courier_source_root','expectedCourierRoot'):
         assert token in text
 
 def test_bridge_does_not_require_preflight_before_run():
@@ -54,3 +54,16 @@ def test_courier_fails_closed_when_windows_powershell_is_missing(monkeypatch,tmp
     with pytest.raises(relayctl.RelayFailure) as excinfo:
         relayctl.courier(tmp_path,str(request),False)
     assert excinfo.value.code == 'COURIER_HARD_STOP'
+
+def test_prelive_targets_reject_options_and_escape(tmp_path):
+    tests = tmp_path/'tests'
+    tests.mkdir()
+    (tests/'test_ok.py').write_text('def test_ok(): pass\n')
+    assert relayctl.prelive_test_targets(tmp_path,['tests/test_ok.py']) == ['tests/test_ok.py']
+    for invalid in ('--help','../test.py','tests/missing.py'):
+        with pytest.raises(relayctl.RelayFailure,match='PRELIVE_UNCOMMITTED'):
+            relayctl.prelive_test_targets(tmp_path,[invalid])
+
+def test_default_prelive_targets_include_runner_infrastructure():
+    targets = relayctl.prelive_test_targets(Path(__file__).parents[1],[])
+    assert 'tests/test_relayctl.py' in targets and 'tests/test_mephc_runner.py' in targets

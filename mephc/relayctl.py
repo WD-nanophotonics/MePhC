@@ -54,10 +54,25 @@ def doctor(root: Path) -> Path:
     root = worktree_root(root); require_python(root)
     record = {"version": 1, "kind": "runtime-certificate", "project_id": PROJECT_ID, "certificate_id": f"doctor-{uuid.uuid4().hex}", "created_at": int(time.time()), "canonical_root": str(CANONICAL_ROOT), "worktree": str(root), "head": head(root), "python": str(Path(sys.executable).resolve()), "pythonpath": os.environ["PYTHONPATH"], "origin_main": remote_ref(root, "refs/heads/main"), "origin_sandbox": remote_ref(root, "refs/heads/sandbox"), "courier_request_root": str(runtime(root) / "outbox"), "dependencies": {n: __import__(n).__version__ for n in ("numpy", "scipy", "shapely")}}
     return write_json(runtime(root) / "certificates" / f"{record['certificate_id']}.json", record)
+def prelive_test_targets(root: Path, tests: list[str]) -> list[str]:
+    targets = tests or [
+        "tests/test_relayctl.py",
+        *(str(path.relative_to(root)) for path in sorted((root / "tests").glob("test_mephc_*.py"))),
+    ]
+    targets = list(dict.fromkeys(targets))
+    for target in targets:
+        file_part = target.split("::", 1)[0]
+        if target.startswith("-") or not file_part:
+            raise RelayFailure("PRELIVE_UNCOMMITTED", f"invalid prelive test target: {target}")
+        path = (root / file_part).resolve()
+        try: path.relative_to((root / "tests").resolve())
+        except ValueError as exc: raise RelayFailure("PRELIVE_UNCOMMITTED", f"test target outside tests/: {target}") from exc
+        if not path.is_file(): raise RelayFailure("PRELIVE_UNCOMMITTED", f"test target missing: {target}")
+    return targets
 def prelive(root: Path, certificate: str, tests: list[str]) -> Path:
     root = worktree_root(root); require_python(root); clean(root); certificate_path, cert = load_certificate(root, certificate)
     if cert.get("head") != head(root): raise RelayFailure("PRELIVE_UNCOMMITTED", "doctor certificate HEAD differs")
-    command = [str(REQUIRED_PYTHON), "-m", "pytest", *(tests or ["tests/test_relayctl.py"])]; result = subprocess.run(command, cwd=root, text=True, capture_output=True, env={**os.environ, "PYTHONPATH": str(root)})
+    command = [str(REQUIRED_PYTHON), "-m", "pytest", *prelive_test_targets(root, tests)]; result = subprocess.run(command, cwd=root, text=True, capture_output=True, env={**os.environ, "PYTHONPATH": str(root)})
     record = {"version": 1, "kind": "prelive-attestation", "project_id": PROJECT_ID, "prelive_id": f"prelive-{uuid.uuid4().hex}", "created_at": int(time.time()), "certificate": str(certificate_path), "prelive_sha": head(root), "origin_main": cert["origin_main"], "source_sha256": source_manifest(root), "tests": command, "test_returncode": result.returncode, "test_stdout_sha256": hashlib.sha256(result.stdout.encode()).hexdigest(), "test_stderr_sha256": hashlib.sha256(result.stderr.encode()).hexdigest()}
     path = write_json(runtime(root) / "prelive" / f"{record['prelive_id']}.json", record)
     if result.returncode: raise RelayFailure("PRELIVE_UNCOMMITTED", f"tests failed: {path}")

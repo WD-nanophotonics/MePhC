@@ -33,11 +33,24 @@ try {
   $events=New-Object System.Collections.Generic.List[string]
   & $Courier validate $request 2>&1 | ForEach-Object {$line=$_.ToString();$events.Add($line);$line}
   if($LASTEXITCODE -ne 0){Fail 'COURIER_HARD_STOP' 'Courier validation failed'}
+  $courierMetadata=$null
+  foreach($eventLine in $events){
+    try{
+      $candidate=$eventLine|ConvertFrom-Json -ErrorAction Stop
+      if($candidate.courier_build_id -and $candidate.courier_source_root){$courierMetadata=$candidate;break}
+    }catch{}
+  }
+  $expectedCourierRoot='C:\Users\icywo\PycharmProjects\GmailCourier'
+  if($null -eq $courierMetadata){Fail 'COURIER_HARD_STOP' 'Courier did not emit build/source identity during validation'}
+  if($courierMetadata.courier_source_root -ne $expectedCourierRoot){Fail 'COURIER_HARD_STOP' "unexpected Courier source root: $($courierMetadata.courier_source_root)"}
+  if($courierMetadata.courier_build_id -notmatch '^[0-9a-f]{16}$'){Fail 'COURIER_HARD_STOP' "invalid Courier build id: $($courierMetadata.courier_build_id)"}
   & $Courier run $request 2>&1 | ForEach-Object {$line=$_.ToString();$events.Add($line);$line}; $exitCode=$LASTEXITCODE
   $receipt=if(Test-Path -LiteralPath $receiptPath){Get-Content -Raw -LiteralPath $receiptPath|ConvertFrom-Json}else{$null}
   $log=Join-Path $request 'events.jsonl'; $submissions=if(Test-Path -LiteralPath $log){@(Get-Content -LiteralPath $log|Where-Object {$_ -match '"event"\s*:\s*"request_submitted"'}).Count}else{0}
   $responsePath=Join-Path $request 'response.txt'
   $attestation=@{version=1;project_id='MEPHC';request_id=$manifest.request_id;recovery_only=[bool]$RecoveryOnly;command_order=@('validate','run');queue_joined=[bool]($events|Where-Object {$_ -match '"event"\s*:\s*"queue_(joined|waiting|turn_acquired|recovery_started)"'});submission_count=$submissions;attachments=@();request_sha256=Hash $manifestPath;receipt_state=if($receipt){$receipt.state}else{$null};response_sha256=if(Test-Path -LiteralPath $responsePath){Hash $responsePath}else{$null};courier_exit=$exitCode;alternate_browser_used=$false}
+  $attestation.courier_source_root=$courierMetadata.courier_source_root
+  $attestation.courier_build_id=$courierMetadata.courier_build_id
   $attestation|ConvertTo-Json -Depth 6|Set-Content -LiteralPath (Join-Path $request 'bridge-attestation.json') -Encoding utf8
   if($receipt -and $receipt.state -eq 'response_received'){Emit 'response_received' $true $attestation;exit 0}
   if($receipt -and $receipt.state -in @('response_timeout','waiting_for_response','submission_unconfirmed','response_protocol_error')){Emit 'COURIER_TIMEOUT_RECOVERY_REQUIRED' $false $attestation;exit 1}

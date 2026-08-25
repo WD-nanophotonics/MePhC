@@ -160,6 +160,14 @@ def validate(job_dir: Path) -> tuple[dict[str, Any], str]:
         raise Rejected("ARGUMENTS_INVALID", "control characters forbidden")
     if any(value.lower() in FORBIDDEN_FLAGS for value in arguments):
         raise Rejected("ARGUMENT_OVERRIDE_FORBIDDEN", repr(arguments))
+    if job["operation"] == "prelive":
+        for target in arguments:
+            file_part = target.split("::", 1)[0]
+            relative = Path(file_part)
+            if (target.startswith("-") or relative.is_absolute() or ".." in relative.parts
+                    or relative.parts[:1] != ("tests",) or relative.suffix != ".py"
+                    or not (ROOT / relative).is_file()):
+                raise Rejected("PRELIVE_ARGUMENTS_INVALID", target)
     expected = hashlib.sha256(canonical(job)).hexdigest()
     if job.get("payload_sha256") != expected:
         raise Rejected("PAYLOAD_SHA256_MISMATCH", f"expected={expected}")
@@ -176,7 +184,9 @@ def validate(job_dir: Path) -> tuple[dict[str, Any], str]:
     if job["operation"] == "courier":
         if arguments == ["--create-e2e"]:
             pass
-        elif len(arguments) != 2 or arguments[0] != "--request-directory":
+        elif not ((len(arguments) == 2 and arguments[0] == "--request-directory")
+                  or (len(arguments) == 3 and arguments[0] == "--request-directory"
+                      and arguments[2] == "--recovery-only")):
             raise Rejected("COURIER_ARGUMENTS_INVALID", repr(arguments))
         else:
             request_dir = inside(Path(arguments[1]), ROOT / ".relayctl" / "outbox", "COURIER_REQUEST_OUTSIDE_OUTBOX")

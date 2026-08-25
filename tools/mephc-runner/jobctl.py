@@ -66,11 +66,21 @@ def latest_certificate_sha256() -> str:
 def validate_arguments(operation: str, arguments: list[str]) -> None:
     if operation == "doctor" and arguments:
         raise SystemExit("doctor accepts no relayctl arguments")
+    if operation == "prelive":
+        for target in arguments:
+            file_part = target.split("::", 1)[0]
+            relative = Path(file_part)
+            if (target.startswith("-") or relative.is_absolute() or ".." in relative.parts
+                    or relative.parts[:1] != ("tests",) or relative.suffix != ".py"
+                    or not (ROOT / relative).is_file()):
+                raise SystemExit(f"invalid prelive test target: {target}")
     if operation == "courier":
         if arguments == ["--create-e2e"]:
             return
-        if len(arguments) != 2 or arguments[0] != "--request-directory":
-            raise SystemExit("courier requires exactly --request-directory <MePhC outbox path>")
+        ordinary = len(arguments) == 2 and arguments[0] == "--request-directory"
+        recovery = len(arguments) == 3 and arguments[0] == "--request-directory" and arguments[2] == "--recovery-only"
+        if not (ordinary or recovery):
+            raise SystemExit("courier requires --request-directory <MePhC outbox path> [--recovery-only]")
         request = Path(arguments[1]).resolve(strict=False)
         try:
             request.relative_to((ROOT / ".relayctl" / "outbox").resolve())
