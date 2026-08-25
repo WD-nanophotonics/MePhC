@@ -1,0 +1,1547 @@
+{
+  "artifact_id": "MEPHC-IGNORED-LEGACY-20260826-005420",
+  "bytes_uncompressed": 1396577,
+  "created_at": "2026-08-25T15:57:04.296831+00:00",
+  "file_count": 219,
+  "files": [
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/home/agentrelay.toml",
+      "bytes": 734,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/home/agentrelay.toml",
+      "project_id": "GMAILCOURIER",
+      "sha256": "98e28c6074f25c7147c78a42e8489364b572f91e684d21c6b9907af22b1d7912"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/handoff_obligations/5fa58349-31a7-4734-86f6-88569f8cb051.json",
+      "bytes": 3698,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/handoff_obligations/5fa58349-31a7-4734-86f6-88569f8cb051.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "170f6a914816845dd40d7453eae6a0f8880aa7991f40b77c3fa57893299e3d25"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/handoffs/5fa58349-31a7-4734-86f6-88569f8cb051.json",
+      "bytes": 563,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/handoffs/5fa58349-31a7-4734-86f6-88569f8cb051.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "3cce0a9fc728167e5a04df846a554ebef4849b5bf0add003f219a7cc5cdbfe57"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-C197BE3D947C4B76AF63FFFF957D8D3F/STEP-0001/manifest.json",
+      "bytes": 536,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-C197BE3D947C4B76AF63FFFF957D8D3F/STEP-0001/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "643ada214fda0c0c2f923199444d4e5d38f280cecae911fc0f941388bdf95491"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-C197BE3D947C4B76AF63FFFF957D8D3F/STEP-0001/message.txt",
+      "bytes": 554,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-C197BE3D947C4B76AF63FFFF957D8D3F/STEP-0001/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "98474851b5570cc65be101c09ec738347bcc95ce134e3c5fb7a9a24a825bfefa"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/ledger/events.jsonl",
+      "bytes": 4133,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/ledger/events.jsonl",
+      "project_id": "GMAILCOURIER",
+      "sha256": "7de1f39312ccfcdee595ad7e33136f056ca82ae2238176c8db8193f8fc8978df"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/state.json",
+      "bytes": 445,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/state.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "c92c78d029c505db737fa8ff93a8d86cf3f9aca88cd44b3c150aed67a35c45e7"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-C197BE3D947C4B76AF63FFFF957D8D3F-after-0001.json",
+      "bytes": 3487,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-C197BE3D947C4B76AF63FFFF957D8D3F-after-0001.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "467ac0ce8e25cc237eb39b0a33a6e16ca30bd1a29473864bf06fcc97d1b7ac19"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-C197BE3D947C4B76AF63FFFF957D8D3F-after-0001.lock",
+      "bytes": 69,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-C197BE3D947C4B76AF63FFFF957D8D3F-after-0001.lock",
+      "project_id": "GMAILCOURIER",
+      "sha256": "962131685b9f87a061f8780df424fc22f3badf3f9921a56df6dedf0c17abe788"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/home/agentrelay.toml",
+      "bytes": 742,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/home/agentrelay.toml",
+      "project_id": "GMAILCOURIER",
+      "sha256": "bd93f87fe5607480c5b2ca37815b675375c40155550f8e93dabe3d42a5b3efec"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/handoff_obligations/9b962a7e-707b-40e7-8e48-1520d7aa48d0.json",
+      "bytes": 3707,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/handoff_obligations/9b962a7e-707b-40e7-8e48-1520d7aa48d0.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "8910089585bca8f12e1ff455b8759bb3131c55daacc64751adecf761edb1c7b4"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/handoffs/9b962a7e-707b-40e7-8e48-1520d7aa48d0.json",
+      "bytes": 563,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/handoffs/9b962a7e-707b-40e7-8e48-1520d7aa48d0.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "c6bc7b7a7df14fa4c7b9bc7d0e4489aad22318807822b6e2cc1d06e8dcce6095"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/inbox/RUN-MANAGED-SELF-HOSTED-RELAY-B051E8B88DE7469EB3C31AE7FCB077DA/STEP-0001/manifest.json",
+      "bytes": 544,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/inbox/RUN-MANAGED-SELF-HOSTED-RELAY-B051E8B88DE7469EB3C31AE7FCB077DA/STEP-0001/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "a06a730c22b2d02b16e71474fb8276231170316e7525659c062dc65e54f7bbb9"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/inbox/RUN-MANAGED-SELF-HOSTED-RELAY-B051E8B88DE7469EB3C31AE7FCB077DA/STEP-0001/message.txt",
+      "bytes": 550,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/inbox/RUN-MANAGED-SELF-HOSTED-RELAY-B051E8B88DE7469EB3C31AE7FCB077DA/STEP-0001/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "631fa42c2ff113d22e03b04b435da8050e70570e89af23586c18c8402efbbc18"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/ledger/events.jsonl",
+      "bytes": 4196,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/ledger/events.jsonl",
+      "project_id": "GMAILCOURIER",
+      "sha256": "823be125c291c0123ca63a6339db7a3ba66f1983957fba6c58ce5ae7c3086b61"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/state.json",
+      "bytes": 461,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/state.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "f2701f2fb9b173d8182d6c2d89a131586012b1427508654e6e2d5256fcf520a9"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/watchdogs/RUN-MANAGED-SELF-HOSTED-RELAY-B051E8B88DE7469EB3C31AE7FCB077DA-after-0001.json",
+      "bytes": 3492,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/watchdogs/RUN-MANAGED-SELF-HOSTED-RELAY-B051E8B88DE7469EB3C31AE7FCB077DA-after-0001.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "653cc3068010353bd7dbaef63ea874dd65293ff8de58a8e8978eebe029cd7ec1"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/watchdogs/RUN-MANAGED-SELF-HOSTED-RELAY-B051E8B88DE7469EB3C31AE7FCB077DA-after-0001.lock",
+      "bytes": 69,
+      "original_path": ".agentrelay-live-cert/1a9f3053d6264d28a4f2d4458f1f3478/self-hosted-relay/storage/watchdogs/RUN-MANAGED-SELF-HOSTED-RELAY-B051E8B88DE7469EB3C31AE7FCB077DA-after-0001.lock",
+      "project_id": "GMAILCOURIER",
+      "sha256": "1d43bf04d1125f31850f18329529d43b4c580e796d2b1c71d0d590e388278a7d"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/home/agentrelay.toml",
+      "bytes": 656,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/home/agentrelay.toml",
+      "project_id": "GMAILCOURIER",
+      "sha256": "9f8d07e68540d8cb6db72a984d094d91b25cdbb174bc5c081b66828922f7e508"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/handoff_obligations/43230e05-3610-4273-87cd-a936d989158c.json",
+      "bytes": 3696,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/handoff_obligations/43230e05-3610-4273-87cd-a936d989158c.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "2b87a172f0c84fc5a60cc6023175cb90fcd708300b89d6bc334417c395731239"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/handoffs/43230e05-3610-4273-87cd-a936d989158c.json",
+      "bytes": 563,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/handoffs/43230e05-3610-4273-87cd-a936d989158c.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "23d8a3b76996ea3123a3c13e2d53faca9cb5a48484a80dfaed920665381da327"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-B895640EBDE44985B752376944FBF582/STEP-0001/manifest.json",
+      "bytes": 536,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-B895640EBDE44985B752376944FBF582/STEP-0001/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "f09d867c79cf112359272fa2138ec42757b5c9e0f5f8f373bd3648a1807bb8d4"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-B895640EBDE44985B752376944FBF582/STEP-0001/message.txt",
+      "bytes": 554,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-B895640EBDE44985B752376944FBF582/STEP-0001/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "be27c5d2107f9c0f79fb62841965c6b0af3bd412f984817dda083a91abcc3426"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/ledger/events.jsonl",
+      "bytes": 7308,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/ledger/events.jsonl",
+      "project_id": "GMAILCOURIER",
+      "sha256": "99d3cd4bdcf46f2ac2a7765b16dce10ac107fe401ae310ae991741d0f9045dbb"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/state.json",
+      "bytes": 445,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/state.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "9a1afe2e4be32a5471a1e7984f1ec4e52bfc4b342c7f005eacf9576c233d90d4"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-B895640EBDE44985B752376944FBF582-after-0001.json",
+      "bytes": 1289,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-B895640EBDE44985B752376944FBF582-after-0001.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "b076cb07eb4d67429962c6421044117784f9d3d3a5965f2d7ac51116ac026079"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-B895640EBDE44985B752376944FBF582-after-0001.lock",
+      "bytes": 68,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-B895640EBDE44985B752376944FBF582-after-0001.lock",
+      "project_id": "GMAILCOURIER",
+      "sha256": "f2ef84cc60f1a492e39c50190add0f5fa0ebacaf0295995a070bac9689a271ab"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/watchdogs/tmprsudx_po",
+      "bytes": 1289,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/mechanics/storage/watchdogs/tmprsudx_po",
+      "project_id": "GMAILCOURIER",
+      "sha256": "91f9291906210f4bcda14eef7ae33a3b4ac74fa20bbcbfc065ac4e0557ce094b"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/home/agentrelay.toml",
+      "bytes": 656,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/home/agentrelay.toml",
+      "project_id": "GMAILCOURIER",
+      "sha256": "67567b87b99d6561950aa5c6ba2af0c6e7976a1050ec61722e94152399dc4b17"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/handoff_obligations/2c8dfb5d-6b03-47b6-bdb8-1a046dde04ec.json",
+      "bytes": 4009,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/handoff_obligations/2c8dfb5d-6b03-47b6-bdb8-1a046dde04ec.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "a9715ccfa8b3acccf5251f1b00b887eeae2bbb00500fefb7f2ec2e839b9c9841"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/handoffs/2c8dfb5d-6b03-47b6-bdb8-1a046dde04ec.json",
+      "bytes": 563,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/handoffs/2c8dfb5d-6b03-47b6-bdb8-1a046dde04ec.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "789a524bfdd443224b0ad118f919e19486c2c88f10e8982a886a03c89ca9be7d"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/inbox/RUN-MANAGED-SELF-HOSTED-RELAY-12B2F92BCDCD48539AD9F2AF22213ECC/STEP-0001/manifest.json",
+      "bytes": 544,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/inbox/RUN-MANAGED-SELF-HOSTED-RELAY-12B2F92BCDCD48539AD9F2AF22213ECC/STEP-0001/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "6ab987e480e04120cc123c2b870ec6ba626d891a61825dc89597c5c1a2f38d07"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/inbox/RUN-MANAGED-SELF-HOSTED-RELAY-12B2F92BCDCD48539AD9F2AF22213ECC/STEP-0001/message.txt",
+      "bytes": 550,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/inbox/RUN-MANAGED-SELF-HOSTED-RELAY-12B2F92BCDCD48539AD9F2AF22213ECC/STEP-0001/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "47c83e1363589fef97e5e3ab40e65bab0347563644c75a3d4d47e73d36734a41"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/ledger/events.jsonl",
+      "bytes": 7506,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/ledger/events.jsonl",
+      "project_id": "GMAILCOURIER",
+      "sha256": "452fd5d4ef485a85a1ee0c0f55457a13247e348c55945677ded659142875b558"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/state.json",
+      "bytes": 461,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/state.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "4fbacd8aa2d776bc8c51bb87210c3ef2ee02416cf2cd9ae46e969d97b903243d"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/watchdogs/RUN-MANAGED-SELF-HOSTED-RELAY-12B2F92BCDCD48539AD9F2AF22213ECC-after-0001.json",
+      "bytes": 1297,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/watchdogs/RUN-MANAGED-SELF-HOSTED-RELAY-12B2F92BCDCD48539AD9F2AF22213ECC-after-0001.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "2069dcabd774a0f619cab9f6f1890e5c5581b4131ba04d3617fd72974756c77d"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/watchdogs/RUN-MANAGED-SELF-HOSTED-RELAY-12B2F92BCDCD48539AD9F2AF22213ECC-after-0001.lock",
+      "bytes": 69,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/watchdogs/RUN-MANAGED-SELF-HOSTED-RELAY-12B2F92BCDCD48539AD9F2AF22213ECC-after-0001.lock",
+      "project_id": "GMAILCOURIER",
+      "sha256": "391ce84c40708bc6201eb4801d07eab565d5ef4a3ae24c60206b20006d983b25"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/watchdogs/tmp05wn91k6",
+      "bytes": 1297,
+      "original_path": ".agentrelay-live-cert/1bb70b63647a4be4b07a9136c436f730/self-hosted-relay/storage/watchdogs/tmp05wn91k6",
+      "project_id": "GMAILCOURIER",
+      "sha256": "15c3440d7e56b9e5f0159bad8f2975ece55e8504dd766327642b0568ece0ce66"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/22f22ba4ac39472287c27f3e2deba32c/mechanics/home/agentrelay.toml",
+      "bytes": 734,
+      "original_path": ".agentrelay-live-cert/22f22ba4ac39472287c27f3e2deba32c/mechanics/home/agentrelay.toml",
+      "project_id": "GMAILCOURIER",
+      "sha256": "a39d24f19a1f02633f1790362630e3a06d28a1f43f482331facf34aab45434be"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/22f22ba4ac39472287c27f3e2deba32c/mechanics/storage/handoff_obligations/8cbcd00d-4524-418a-8b31-8f149c740f42.json",
+      "bytes": 8234,
+      "original_path": ".agentrelay-live-cert/22f22ba4ac39472287c27f3e2deba32c/mechanics/storage/handoff_obligations/8cbcd00d-4524-418a-8b31-8f149c740f42.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "afcbf66e49ba505806b739c997dfbb4df4804b5b581e5bacf177d671ce817fd7"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/22f22ba4ac39472287c27f3e2deba32c/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-EA05BD582DD54758A028B395AC71BF71/STEP-0001/manifest.json",
+      "bytes": 536,
+      "original_path": ".agentrelay-live-cert/22f22ba4ac39472287c27f3e2deba32c/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-EA05BD582DD54758A028B395AC71BF71/STEP-0001/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "e1feec3fa92174c766d3bdbdb123a2cb03040a9fbf38d2351710fc23403b8058"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/22f22ba4ac39472287c27f3e2deba32c/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-EA05BD582DD54758A028B395AC71BF71/STEP-0001/message.txt",
+      "bytes": 554,
+      "original_path": ".agentrelay-live-cert/22f22ba4ac39472287c27f3e2deba32c/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-EA05BD582DD54758A028B395AC71BF71/STEP-0001/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "2ba322fe124c5eff3f2164ebe3d63663461045cab2d58d4954108d65e3fd38af"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/22f22ba4ac39472287c27f3e2deba32c/mechanics/storage/ledger/events.jsonl",
+      "bytes": 1426,
+      "original_path": ".agentrelay-live-cert/22f22ba4ac39472287c27f3e2deba32c/mechanics/storage/ledger/events.jsonl",
+      "project_id": "GMAILCOURIER",
+      "sha256": "a50a54bdc7ea632263894246bfd9c97c5f5653a58f2b8035a5011cc5e7c015ef"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/22f22ba4ac39472287c27f3e2deba32c/mechanics/storage/state.json",
+      "bytes": 1494,
+      "original_path": ".agentrelay-live-cert/22f22ba4ac39472287c27f3e2deba32c/mechanics/storage/state.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "45579112d80242cf483ade6c93137394105818c7edcb9744bcc739e7c284bb6f"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/402c55c573604514a88ef8842c83d2a4/mechanics/home/agentrelay.toml",
+      "bytes": 734,
+      "original_path": ".agentrelay-live-cert/402c55c573604514a88ef8842c83d2a4/mechanics/home/agentrelay.toml",
+      "project_id": "GMAILCOURIER",
+      "sha256": "4fada22224929b742f3e584f26eeec5da0975b7da4bcba2120c3f8c88db075df"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/402c55c573604514a88ef8842c83d2a4/mechanics/storage/handoff_obligations/caff7c37-226e-4718-92eb-067213209f31.json",
+      "bytes": 3663,
+      "original_path": ".agentrelay-live-cert/402c55c573604514a88ef8842c83d2a4/mechanics/storage/handoff_obligations/caff7c37-226e-4718-92eb-067213209f31.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "a990f8f5e73bf3ccebd2cdb54a180e210558389b87f43fac2a352f410973a0af"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/402c55c573604514a88ef8842c83d2a4/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-00C6F9EDA08F46EF9F421CF59953D866/STEP-0001/manifest.json",
+      "bytes": 536,
+      "original_path": ".agentrelay-live-cert/402c55c573604514a88ef8842c83d2a4/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-00C6F9EDA08F46EF9F421CF59953D866/STEP-0001/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "0220be3770fe7d061d794c1058e672dfca53d68e1eb402fa741ab7fd65047068"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/402c55c573604514a88ef8842c83d2a4/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-00C6F9EDA08F46EF9F421CF59953D866/STEP-0001/message.txt",
+      "bytes": 554,
+      "original_path": ".agentrelay-live-cert/402c55c573604514a88ef8842c83d2a4/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-00C6F9EDA08F46EF9F421CF59953D866/STEP-0001/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "576d7c7c05f0be2db5088f51edd4ab3d39bea1cc72815054356b8d1912f8ade7"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/402c55c573604514a88ef8842c83d2a4/mechanics/storage/ledger/events.jsonl",
+      "bytes": 1404,
+      "original_path": ".agentrelay-live-cert/402c55c573604514a88ef8842c83d2a4/mechanics/storage/ledger/events.jsonl",
+      "project_id": "GMAILCOURIER",
+      "sha256": "37ab4e276f9eb9a9b7c2fc95369f7d605cc4fe6f20bafc5995075f1545038996"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/402c55c573604514a88ef8842c83d2a4/mechanics/storage/state.json",
+      "bytes": 467,
+      "original_path": ".agentrelay-live-cert/402c55c573604514a88ef8842c83d2a4/mechanics/storage/state.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "42aa7202573215f5563149311f613e980bcea04fab412c60cbed3af4d0523434"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/home/agentrelay.toml",
+      "bytes": 656,
+      "original_path": ".agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/home/agentrelay.toml",
+      "project_id": "GMAILCOURIER",
+      "sha256": "9c6f97562984b534a49cb2ebb647ddde93efa2ce17be856a151d00b41c516ed4"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/handoff_obligations/2ad7b106-c4e0-49a0-b64d-ffd52219a9cc.json",
+      "bytes": 3677,
+      "original_path": ".agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/handoff_obligations/2ad7b106-c4e0-49a0-b64d-ffd52219a9cc.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "1c2aea9aa496b335a6298d98a8fb1f4580bcf77378b3a032f1de8a2dc1f02e61"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/handoffs/2ad7b106-c4e0-49a0-b64d-ffd52219a9cc.json",
+      "bytes": 563,
+      "original_path": ".agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/handoffs/2ad7b106-c4e0-49a0-b64d-ffd52219a9cc.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "01a304dbab2ee0ba63ffc27e6033187352dfd5ae216abbea2805ccfa4141c582"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-42272D6CE69347899A6884B5DA2E573C/STEP-0001/manifest.json",
+      "bytes": 536,
+      "original_path": ".agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-42272D6CE69347899A6884B5DA2E573C/STEP-0001/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "8d35c918a3eb850992473d774f201a9a2cc84ee98559aae291b61de9d0a66205"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-42272D6CE69347899A6884B5DA2E573C/STEP-0001/message.txt",
+      "bytes": 554,
+      "original_path": ".agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-42272D6CE69347899A6884B5DA2E573C/STEP-0001/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "5000c1ecc8590311964a0272c3e713ee34453dbfa2883250badf792c78e73905"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/ledger/events.jsonl",
+      "bytes": 7449,
+      "original_path": ".agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/ledger/events.jsonl",
+      "project_id": "GMAILCOURIER",
+      "sha256": "9f49f714783091ad23938aab00c7104f2967ad2372322462c0bd2e0589ed1e31"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/state.json",
+      "bytes": 445,
+      "original_path": ".agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/state.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "78ecf630ee49f44db4a3a575e7e527dbd05aeda32227aaa3fdd2ed2ae2fc40e0"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-42272D6CE69347899A6884B5DA2E573C-after-0001.json",
+      "bytes": 1290,
+      "original_path": ".agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-42272D6CE69347899A6884B5DA2E573C-after-0001.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "3d1ab404fe6e4ee2cd6d5688d0d052805f2df49b0ed5e04f6e22ef27ea6cc177"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-42272D6CE69347899A6884B5DA2E573C-after-0001.lock",
+      "bytes": 69,
+      "original_path": ".agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-42272D6CE69347899A6884B5DA2E573C-after-0001.lock",
+      "project_id": "GMAILCOURIER",
+      "sha256": "aa8326ff9b50c1942b447f21feb3d85f78cb463e94d1c5313e25000473a75ea2"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/watchdogs/tmpdkdaloyi",
+      "bytes": 1290,
+      "original_path": ".agentrelay-live-cert/b4ce3f9cc1054ffa8743e51080cb04e4/mechanics/storage/watchdogs/tmpdkdaloyi",
+      "project_id": "GMAILCOURIER",
+      "sha256": "74e6e21650614c9b1e53dbe2a36c8a4196778343cfe6e2deee7db72863a68987"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/home/agentrelay.toml",
+      "bytes": 656,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/home/agentrelay.toml",
+      "project_id": "GMAILCOURIER",
+      "sha256": "87511933a9e4b4e45de5b9e02de764594ef10060a52d3c32ff1a683845ab4de6"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/handoff_obligations/0962bb50-1f33-4af1-b575-915219a7d867.json",
+      "bytes": 3697,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/handoff_obligations/0962bb50-1f33-4af1-b575-915219a7d867.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "2d4dd7466bbb1648e8f84ed818706f4c0e08517260ea5d9c022d78ce86a3b9de"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/handoffs/0962bb50-1f33-4af1-b575-915219a7d867.json",
+      "bytes": 563,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/handoffs/0962bb50-1f33-4af1-b575-915219a7d867.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "14690d3034f8c55cf85ca19d5463bf11a3ea07b4c41e3281a55b23586112839c"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-6D2635A7B21E4C8F8D4B2FC52BF4BFCD/STEP-0001/manifest.json",
+      "bytes": 536,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-6D2635A7B21E4C8F8D4B2FC52BF4BFCD/STEP-0001/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "d2b3b9737159ad07059b04c6aeaf1dd67d4070455c4c4814da4fd136ea596476"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-6D2635A7B21E4C8F8D4B2FC52BF4BFCD/STEP-0001/message.txt",
+      "bytes": 554,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/inbox/RUN-MANAGED-MECHANICS-6D2635A7B21E4C8F8D4B2FC52BF4BFCD/STEP-0001/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "8e32a2a0f7f98baa24ef48569b4356443229a79e8dcb9e8677a3ef7bec0abbbf"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/ledger/events.jsonl",
+      "bytes": 7173,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/ledger/events.jsonl",
+      "project_id": "GMAILCOURIER",
+      "sha256": "9ee23490d3083eeada74eda3d305eb033caaa7578e7be26b1a99d3e51a6dba52"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/state.json",
+      "bytes": 445,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/state.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "31a9ad4559528c504261be8323d977b259b38223af16ac71531092014994d7f7"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-6D2635A7B21E4C8F8D4B2FC52BF4BFCD-after-0001.json",
+      "bytes": 1290,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-6D2635A7B21E4C8F8D4B2FC52BF4BFCD-after-0001.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "d2401ced9ed4f6d42a4881681739f725b3f15bdcafca8d32fa43f9591e54b1cc"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-6D2635A7B21E4C8F8D4B2FC52BF4BFCD-after-0001.lock",
+      "bytes": 69,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/watchdogs/RUN-MANAGED-MECHANICS-6D2635A7B21E4C8F8D4B2FC52BF4BFCD-after-0001.lock",
+      "project_id": "GMAILCOURIER",
+      "sha256": "a4b3bb9b7b8689d6cc4e2715f0b30c83f3673b0f1350aabc123f44c10f12a0a5"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/watchdogs/tmpjxsxkvgh",
+      "bytes": 1290,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/mechanics/storage/watchdogs/tmpjxsxkvgh",
+      "project_id": "GMAILCOURIER",
+      "sha256": "a7cc377e8d5e7ded4850eebf89fc382b3b46a52a83b33b9672f66526d4490af3"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/home/agentrelay.toml",
+      "bytes": 656,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/home/agentrelay.toml",
+      "project_id": "GMAILCOURIER",
+      "sha256": "f50a48e69dce8a3132fcfe957d534787b82b9cc64fa735ea072a724a81b5f1e1"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/handoff_obligations/3bfda673-b958-40eb-9753-03759dbbe675.json",
+      "bytes": 3879,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/handoff_obligations/3bfda673-b958-40eb-9753-03759dbbe675.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "993229ec01991588eb9511da52fe3dd1c34f7561e5805f5df6ce43ec986c4f89"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/handoffs/3bfda673-b958-40eb-9753-03759dbbe675.json",
+      "bytes": 563,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/handoffs/3bfda673-b958-40eb-9753-03759dbbe675.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "1c66c84b6aec12f7e72fa048e6f80caecc46ccbecfd75a36a126a2b0b0bb8c0e"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/inbox/RUN-MANAGED-SELF-HOSTED-RELAY-9E9D672DC85C48ED9C562BFAE27B8D27/STEP-0001/manifest.json",
+      "bytes": 544,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/inbox/RUN-MANAGED-SELF-HOSTED-RELAY-9E9D672DC85C48ED9C562BFAE27B8D27/STEP-0001/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "2d0cb584f8336a886a06b559983c7382aed554b502de28f8a27b98fee1b8b3b9"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/inbox/RUN-MANAGED-SELF-HOSTED-RELAY-9E9D672DC85C48ED9C562BFAE27B8D27/STEP-0001/message.txt",
+      "bytes": 550,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/inbox/RUN-MANAGED-SELF-HOSTED-RELAY-9E9D672DC85C48ED9C562BFAE27B8D27/STEP-0001/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "d3f32da80ed67b3c1e9813d2bbe7ea61cad40d738c8ae51e04ae11d118eb29d4"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/ledger/events.jsonl",
+      "bytes": 7370,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/ledger/events.jsonl",
+      "project_id": "GMAILCOURIER",
+      "sha256": "40886f045568e0947942f6542c2ca600745ee897f291332d936fac54ea12dc75"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/state.json",
+      "bytes": 461,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/state.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "484a4685503edb639de3d3008428f92a8a8d53a7b2a9b1209d1eb3249f484128"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/watchdogs/RUN-MANAGED-SELF-HOSTED-RELAY-9E9D672DC85C48ED9C562BFAE27B8D27-after-0001.json",
+      "bytes": 1297,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/watchdogs/RUN-MANAGED-SELF-HOSTED-RELAY-9E9D672DC85C48ED9C562BFAE27B8D27-after-0001.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "14db93c8395382e4b4b24c6c6e575ef17b85e9fc3bc741fd9adde31bf9857970"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/watchdogs/RUN-MANAGED-SELF-HOSTED-RELAY-9E9D672DC85C48ED9C562BFAE27B8D27-after-0001.lock",
+      "bytes": 69,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/watchdogs/RUN-MANAGED-SELF-HOSTED-RELAY-9E9D672DC85C48ED9C562BFAE27B8D27-after-0001.lock",
+      "project_id": "GMAILCOURIER",
+      "sha256": "3afdf46d67610dbb718a2fe8fc9442ca78d50ac48c440e7e7cb485d17294987a"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/watchdogs/tmplrim4xvu",
+      "bytes": 1297,
+      "original_path": ".agentrelay-live-cert/d7f54ee736c549ffa8cdb94e31f6ee83/self-hosted-relay/storage/watchdogs/tmplrim4xvu",
+      "project_id": "GMAILCOURIER",
+      "sha256": "8535d723899d88222fdef5d495714ec3d8d9c7f1c3104b0f7a136a3b1f43fe60"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/home-relay/agentrelay.toml",
+      "bytes": 642,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/home-relay/agentrelay.toml",
+      "project_id": "GMAILCOURIER",
+      "sha256": "c27dd371b94c0f3c1b8521a5dc2785050aba8b76988c5aea9f4b6629b9102033"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/home/agentrelay.toml",
+      "bytes": 651,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/home/agentrelay.toml",
+      "project_id": "GMAILCOURIER",
+      "sha256": "e81e048023620611a11f019e212bf065d00293574728ee9f84726aad45f84221"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/2fb07f89-0125-49ab-b207-ad77683ad687.json",
+      "bytes": 3127,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/2fb07f89-0125-49ab-b207-ad77683ad687.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "054c84824ae8df4e513f18de07c77de45aaf27ce8bc18beaa819d6989142b3f6"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/355d32c9-9aa1-488f-96ba-524c85970219.json",
+      "bytes": 24338,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/355d32c9-9aa1-488f-96ba-524c85970219.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "bf59a11f04427bffa4f93106283ff5dc2cc77a8a82965252307646a83b12ea5c"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/483399d2-bd52-486c-82bb-414749d49b6a.json",
+      "bytes": 4734,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/483399d2-bd52-486c-82bb-414749d49b6a.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "8e1fcfb28eb2147be968cbd9277fe97306de704faa21d6a9850fcf3fbc2f7251"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/9ae13a1d-7dd7-4b0e-8476-293cb6ff5f64.json",
+      "bytes": 4300,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/9ae13a1d-7dd7-4b0e-8476-293cb6ff5f64.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "f081122c0770d0db8e5f79b5f22c805efc024e4bdad1c2cb33b5162700313a81"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/dd96345a-16c1-4b84-abe4-75092d0d9364.json",
+      "bytes": 4013,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/dd96345a-16c1-4b84-abe4-75092d0d9364.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "81405470770e024e39fb409e6c4f4074fbb75062df34d129dd4a2083714ff0db"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/de725f1c-941a-46d2-bc42-10abe23a5627.json",
+      "bytes": 8328,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/de725f1c-941a-46d2-bc42-10abe23a5627.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "674e61a91aa49446bc8e0bfafc56ea225d2a06f4360b33525e5c13808072c64c"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/ec9e2014-1211-4f8e-aa2d-07866c0454bd.json",
+      "bytes": 4062,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/ec9e2014-1211-4f8e-aa2d-07866c0454bd.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "30afd54dab26a9c9ddc83b8529ae289d898252ee236ed36fbec97bc1a890aa04"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/fe01649e-9ca2-4145-a4e0-1ec291906778.json",
+      "bytes": 4864,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/fe01649e-9ca2-4145-a4e0-1ec291906778.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "1d9dc3dca02918c905a7cd651a088b4dffe296d0896058522f37799d0227cfc5"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/ffd25a12-0fae-441e-b19b-550246820c55.json",
+      "bytes": 4970,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoff_obligations/ffd25a12-0fae-441e-b19b-550246820c55.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "6091adee9ee60b5ae3a8eb2c7402b36eb517472caebbbed09a3a0e10bf4cc3b2"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoffs/483399d2-bd52-486c-82bb-414749d49b6a.json",
+      "bytes": 563,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoffs/483399d2-bd52-486c-82bb-414749d49b6a.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "7d7023bafff32739bad27333c0f610755ccfa77ae3ecabd0a175fbc8d64efe6b"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoffs/9ae13a1d-7dd7-4b0e-8476-293cb6ff5f64.json",
+      "bytes": 563,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoffs/9ae13a1d-7dd7-4b0e-8476-293cb6ff5f64.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "0f3c44aeaa179fbe6eb3e76d859623dd4c10ba2823abfbd67e2f5370bc446da5"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoffs/dd96345a-16c1-4b84-abe4-75092d0d9364.json",
+      "bytes": 563,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoffs/dd96345a-16c1-4b84-abe4-75092d0d9364.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "6757bf77b4dbcf30f509a1b406823f44f00353d15a1286ac776e1b102b73f35f"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoffs/ec9e2014-1211-4f8e-aa2d-07866c0454bd.json",
+      "bytes": 563,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoffs/ec9e2014-1211-4f8e-aa2d-07866c0454bd.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "b11580dcdb3774154fc293e5c60019c71367448ea892a94cd62f523cdbac1a66"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoffs/fe01649e-9ca2-4145-a4e0-1ec291906778.json",
+      "bytes": 563,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoffs/fe01649e-9ca2-4145-a4e0-1ec291906778.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "9f090afe771ff3f73db74f655461b76f33aaf44fb7b0d5d409c498e67a92621d"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoffs/ffd25a12-0fae-441e-b19b-550246820c55.json",
+      "bytes": 563,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/handoffs/ffd25a12-0fae-441e-b19b-550246820c55.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "30e9d17d74a96ff3882c07258e872918c4feb5152f1575eacc116f71226248d6"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0001/manifest.json",
+      "bytes": 504,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0001/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "84ca85228b16bfb18ac08f61253f9631c9588d80bd0864cc3acefc6e0cbefd5a"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0001/message.txt",
+      "bytes": 495,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0001/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "9ed9c512c533de353e5bc3889c7d063c664807d8172d8e5c2d1276c662edb0f1"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0002/manifest.json",
+      "bytes": 528,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0002/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "8c51a8a3386a139e826799c1efcd43c8ed0fd4b4b778db0de0df05a65b1a7a3f"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0002/message.txt",
+      "bytes": 1295,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0002/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "6147fc7eba34c68a59c08623363d746c7fd68d66164482ae4bda96df86ee824d"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0003/manifest.json",
+      "bytes": 528,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0003/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "204e7a56052cf2c550677aa844713463a94d06bf24f3a23705edef4a0010bd80"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0003/message.txt",
+      "bytes": 2127,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0003/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "1ac5625ddd4000e3a669447c0d16d86724792ba6ac094b68cae0fec3aaec6fee"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0004/manifest.json",
+      "bytes": 528,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0004/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "4a5801a663de61da095973f59fbf0a9de34dd87c7969676ab376e98db896cc9b"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0004/message.txt",
+      "bytes": 2607,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0004/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "38571a568228f70dfd3f95bef2343348ac5a4f2a874b328bfedf31bf4a4f129b"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0005/manifest.json",
+      "bytes": 528,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0005/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "6ef9a253c87d8426b1b7a7f89f15220b17f8330bbb96a23f14dfec2878dc2194"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0005/message.txt",
+      "bytes": 3591,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0005/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "12b6a5d2ffdf2f702dd47d6df9c072da3a7588666f8a84f502eda39233c4618e"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0006/manifest.json",
+      "bytes": 528,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0006/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "216816c374da0997d7899fe443024ad236d3a51cb7536badea778599964bbfc4"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0006/message.txt",
+      "bytes": 4959,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0006/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "8f979ce64ac07f2f0faad87960ae3f264ed58fed60ad66f9a8e13073efa1c164"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0007/manifest.json",
+      "bytes": 528,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0007/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "03bc9036b2096e8285350b17bbe37c3767d21306cde02fead848b22e903c5c7d"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0007/message.txt",
+      "bytes": 2152,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0007/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "249ffb54fe86c7391c889d3bd1d10feac8573b336f828d27892fe5a2edb46a2f"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0008/manifest.json",
+      "bytes": 528,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0008/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "2c0aae531c0052d8e5f5ebc2eaad31bd9d0212ef8f8ba10d7e3cfa110c60c798"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0008/message.txt",
+      "bytes": 4017,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0008/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "3c9264f704e6f04ab3392597f11726767389ac8357c8a301b923a1ec6fdb21cf"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0009/manifest.json",
+      "bytes": 528,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0009/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "2f08a488f4539a6762d229b701602fe3c8162d0a800a0e0542c912892ffc5040"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0009/message.txt",
+      "bytes": 3510,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/inbox/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC/STEP-0009/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "0e56a913bdca7ee47bf7741955b5022d8051e2f136326f3ffd30ab2698e4c21a"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/ledger/events.jsonl",
+      "bytes": 90562,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/ledger/events.jsonl",
+      "project_id": "GMAILCOURIER",
+      "sha256": "d507fd4a2fdc86ada1f69390d33cf33d133cac47e8d3b9fbd9d1cfd08269b067"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/state.json",
+      "bytes": 5950,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/state.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "6b8a2e8793975c85c5b12e6b6d66d4b5cc222b41ff2270c83cc0a479ca0854ed"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0001.json",
+      "bytes": 1290,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0001.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "71c54e0440c29f6868eccbe36d2fc22c7a0274b2045548549c0ce3d293b52b95"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0001.lock",
+      "bytes": 69,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0001.lock",
+      "project_id": "GMAILCOURIER",
+      "sha256": "2e7af6539e4eb07160100b5f963ee94bfd72fd43dc5fb0bd582ae1e38ce91dcf"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0002.json",
+      "bytes": 1290,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0002.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "c87a4a4c4ca2a7923b87694e003cc249328cc2f812aad861c2f03c525d96aebe"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0002.lock",
+      "bytes": 69,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0002.lock",
+      "project_id": "GMAILCOURIER",
+      "sha256": "cc72985be177b28ae7ede0846f345ed3e4b6ef61467604218ebfe96399f67d79"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0003.json",
+      "bytes": 1290,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0003.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "00c62c560dd7d374bcd7e64f39b4a9f8a9a1932400ff6a6528b8ad2772f6d8d1"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0003.lock",
+      "bytes": 69,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0003.lock",
+      "project_id": "GMAILCOURIER",
+      "sha256": "c3b09f51d5b65e5c57f85be3f065590362a451f4e8777dcc5e676612b3371bc9"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0004.json",
+      "bytes": 1289,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0004.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "fb9dfa3fdcb84869fd217524dd739944c8029cdf60d515720d6eea36df23a993"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0004.lock",
+      "bytes": 68,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0004.lock",
+      "project_id": "GMAILCOURIER",
+      "sha256": "3b6649f5c5c33a94705cd45d3060224eb2479757bd400498ac15a9717f343af8"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0005.json",
+      "bytes": 1287,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0005.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "cc21e298cef22ffe7767185412d2cefc2253c22135b7c38402dfe1d0ec9f7741"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0005.lock",
+      "bytes": 69,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0005.lock",
+      "project_id": "GMAILCOURIER",
+      "sha256": "2116672432f7adb63e45134241a33cc19ccbefb82a02fdec8b5d46ff784b1c67"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0006.json",
+      "bytes": 1293,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0006.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "3d7e88aeb2be8dfc9e8d9517c71e83a21dd2b3177bfe20e831cd7bcb175559c3"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0006.lock",
+      "bytes": 67,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0006.lock",
+      "project_id": "GMAILCOURIER",
+      "sha256": "c0f3f09607f84b5f2f8ee8fa3d89e6a8da622c53cecc0eca5f49d4bbdb156267"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0007.json",
+      "bytes": 1289,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0007.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "280de6aebd9820c24699b17b4e299c684d0ad673874fa22773aad6b6f33bf3d4"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0007.lock",
+      "bytes": 68,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0007.lock",
+      "project_id": "GMAILCOURIER",
+      "sha256": "b590af69bc9f7fd53c5f87480c6858e5fe78cc4fd6237e2633d53cbdad251c8c"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0008.json",
+      "bytes": 1730,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0008.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "2578e2d7e82ce647fad6d8db76538737cefe1e60c7353ee4a88d8175257dec37"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0008.lock",
+      "bytes": 68,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/RUN-CONTROL-HARDENING-F37A1EBA0289416C9164819605491BAC-after-0008.lock",
+      "project_id": "GMAILCOURIER",
+      "sha256": "50a70bed4aec03b38ec9dbd3d973ea5e1c7f4e82e9f6bd90fbd8a3953fb89bc9"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmp3xiu2mmr",
+      "bytes": 1289,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmp3xiu2mmr",
+      "project_id": "GMAILCOURIER",
+      "sha256": "7c95cbedc66a78cb2e200c1a40ba68917158e125250d97dc83c0c209367dd67c"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmp5yc0ur6c",
+      "bytes": 1293,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmp5yc0ur6c",
+      "project_id": "GMAILCOURIER",
+      "sha256": "e2f8b7518b38694c43869be93cf1e22f3b120f42a9b2005f5c6d57561f95e729"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmpbx0p4mui",
+      "bytes": 1287,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmpbx0p4mui",
+      "project_id": "GMAILCOURIER",
+      "sha256": "13d842fb012e8111087897eb777838a358c85db09e2ba33d1105b63544b281ae"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmpev5nfp_f",
+      "bytes": 1289,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmpev5nfp_f",
+      "project_id": "GMAILCOURIER",
+      "sha256": "b2e3de4be2b2f9f641c7d9a3e98ace3a6f6e1f41195b29f3c4d3345809c3500f"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmpgfg7drlt",
+      "bytes": 1290,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmpgfg7drlt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "beb5d706f38a2e9f45742bd54f1f8a1fe89d9660b98570b51a5e49d56684b5f8"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmphtxboczw",
+      "bytes": 1260,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmphtxboczw",
+      "project_id": "GMAILCOURIER",
+      "sha256": "e5ad55ff593421f56b97344729e7b4a6fde7c12db978edda1ff1388b136f7bdf"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmpmgyoy4iu",
+      "bytes": 1290,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmpmgyoy4iu",
+      "project_id": "GMAILCOURIER",
+      "sha256": "33b8fe61eef570fc3f80ac86f88c0d72a587893550d4c59295a4aff970b7ef92"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmpmiafu9nf",
+      "bytes": 1289,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmpmiafu9nf",
+      "project_id": "GMAILCOURIER",
+      "sha256": "261a590ebca1db27ba0f75ed94d3f50f9842cc885437a99a641bf0b8665457ce"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmpqbeuzyw8",
+      "bytes": 1730,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmpqbeuzyw8",
+      "project_id": "GMAILCOURIER",
+      "sha256": "6d91817c78f35ba1fb465b385a91e17ae8e089e6bc6bee8daaa3c66ce3fb1e34"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmprkkxnq16",
+      "bytes": 1289,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmprkkxnq16",
+      "project_id": "GMAILCOURIER",
+      "sha256": "2959e54fe77645e22704f27d0e4ec94bea2021520d0da7ea0dd0044fa43cea1f"
+    },
+    {
+      "archive_member": "GMAILCOURIER/.agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmpxtnx8v3g",
+      "bytes": 1290,
+      "original_path": ".agentrelay-live-cert/two-turn-a0ea70afa40b4972b6d0a8368afbad4d/storage/watchdogs/tmpxtnx8v3g",
+      "project_id": "GMAILCOURIER",
+      "sha256": "65f539ff179c3cf809c0b30d4d6703fa39d878233f7f7622b666cbd3c6bcb914"
+    },
+    {
+      "archive_member": "GMAILCOURIER/chat_courier.egg-info/PKG-INFO",
+      "bytes": 5675,
+      "original_path": "chat_courier.egg-info/PKG-INFO",
+      "project_id": "GMAILCOURIER",
+      "sha256": "5593e951a08b0332c513162a6ea1212b040e1c3160a2b4111c4900d9d3ed8fc2"
+    },
+    {
+      "archive_member": "GMAILCOURIER/chat_courier.egg-info/SOURCES.txt",
+      "bytes": 556,
+      "original_path": "chat_courier.egg-info/SOURCES.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "11bd39a8cd4b7f82f6bd8f5df8ed1f01dec02c306de27ae2ea2bdcdd52f51326"
+    },
+    {
+      "archive_member": "GMAILCOURIER/chat_courier.egg-info/dependency_links.txt",
+      "bytes": 1,
+      "original_path": "chat_courier.egg-info/dependency_links.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "archive_member": "GMAILCOURIER/chat_courier.egg-info/entry_points.txt",
+      "bytes": 55,
+      "original_path": "chat_courier.egg-info/entry_points.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "01bc1ad4b63cb1e5aebebe3490ee9bf4ced78868333fd7d179c85fac9d1609fc"
+    },
+    {
+      "archive_member": "GMAILCOURIER/chat_courier.egg-info/requires.txt",
+      "bytes": 17,
+      "original_path": "chat_courier.egg-info/requires.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "8beca70a9ae3d83c416a891c3386f30d9443bdd8d7529ee3958c9c29f48b9ae7"
+    },
+    {
+      "archive_member": "GMAILCOURIER/chat_courier.egg-info/top_level.txt",
+      "bytes": 13,
+      "original_path": "chat_courier.egg-info/top_level.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "6525c3f931ff6f1dc304133d34f472051d43b5ea8d2bb431435359af31fb2955"
+    },
+    {
+      "archive_member": "GMAILCOURIER/data/projects/gmail-courier/inbox/RUN-20260816-PHASE2/STEP-0001/attachments/AgentRelay_Phase2_Core_Task.md",
+      "bytes": 23017,
+      "original_path": "data/projects/gmail-courier/inbox/RUN-20260816-PHASE2/STEP-0001/attachments/AgentRelay_Phase2_Core_Task.md",
+      "project_id": "GMAILCOURIER",
+      "sha256": "c93affb2ec9335ccf6524560a58bd9af219e2b09c87fe0f854df2bbf2e1dfbd1"
+    },
+    {
+      "archive_member": "GMAILCOURIER/data/projects/gmail-courier/inbox/RUN-20260816-PHASE2/STEP-0001/attachments/AgentRelay_Phase2_Silent_Background_Contract.md",
+      "bytes": 6891,
+      "original_path": "data/projects/gmail-courier/inbox/RUN-20260816-PHASE2/STEP-0001/attachments/AgentRelay_Phase2_Silent_Background_Contract.md",
+      "project_id": "GMAILCOURIER",
+      "sha256": "655d0fa4f338b3f4eb6e97b9915df89b40f0cce5ed3fef519e8eb62031298399"
+    },
+    {
+      "archive_member": "GMAILCOURIER/data/projects/gmail-courier/inbox/RUN-20260816-PHASE2/STEP-0001/manifest.json",
+      "bytes": 832,
+      "original_path": "data/projects/gmail-courier/inbox/RUN-20260816-PHASE2/STEP-0001/manifest.json",
+      "project_id": "GMAILCOURIER",
+      "sha256": "b18f36521106f20b2de026f65866964e0d9c51892891fe1d2ba96886dadb2610"
+    },
+    {
+      "archive_member": "GMAILCOURIER/data/projects/gmail-courier/inbox/RUN-20260816-PHASE2/STEP-0001/message.txt",
+      "bytes": 176,
+      "original_path": "data/projects/gmail-courier/inbox/RUN-20260816-PHASE2/STEP-0001/message.txt",
+      "project_id": "GMAILCOURIER",
+      "sha256": "6ede01c953a70048f9ef9982a48613f63a40b9fee628803041a57bf744247c22"
+    },
+    {
+      "archive_member": "MEPHC/legacy/band.py",
+      "bytes": 43,
+      "original_path": "legacy/band.py",
+      "project_id": "MEPHC",
+      "sha256": "ddcbb9099ed59a8c31b8a897ef8d6b36787b89a9119be5b49f526065d84df122"
+    },
+    {
+      "archive_member": "MEPHC/legacy/boundary_search.py",
+      "bytes": 2090,
+      "original_path": "legacy/boundary_search.py",
+      "project_id": "MEPHC",
+      "sha256": "e488f30c52f231b851baf5e04abe1d6434f07369d231ca37bd5fa4ae9e984ba2"
+    },
+    {
+      "archive_member": "MEPHC/legacy/config.py",
+      "bytes": 248,
+      "original_path": "legacy/config.py",
+      "project_id": "MEPHC",
+      "sha256": "f948e9ed4d21ca2039d85dfc6a319e2b1f43692385228bd6cf56ed373405db16"
+    },
+    {
+      "archive_member": "MEPHC/legacy/data_handler.py",
+      "bytes": 17051,
+      "original_path": "legacy/data_handler.py",
+      "project_id": "MEPHC",
+      "sha256": "42de454e21fae19f1d65980773ed354ce48303222bff545c159dedcc2a60b5c3"
+    },
+    {
+      "archive_member": "MEPHC/legacy/meep_lattice.py",
+      "bytes": 277,
+      "original_path": "legacy/meep_lattice.py",
+      "project_id": "MEPHC",
+      "sha256": "4ee0908661de1612cfa451dd248e5fd000dbaccd7b8e40096397bdb9bc72c5c1"
+    },
+    {
+      "archive_member": "MEPHC/legacy/trinkets.py",
+      "bytes": 12698,
+      "original_path": "legacy/trinkets.py",
+      "project_id": "MEPHC",
+      "sha256": "bae6c827ba94a9ef89f296f078c2244951024ca41f8ede2b238c4206ffc2e56c"
+    },
+    {
+      "archive_member": "SQRLATT/.mephc_staging/mephc/band.py",
+      "bytes": 14476,
+      "original_path": ".mephc_staging/mephc/band.py",
+      "project_id": "SQRLATT",
+      "sha256": "4f1c7cfddf2a7c692dbfbd0a757ecc359b5d454fe3822c71afac033e7d427b1a"
+    },
+    {
+      "archive_member": "SQRLATT/.mephc_staging/mephc/preview.py",
+      "bytes": 4248,
+      "original_path": ".mephc_staging/mephc/preview.py",
+      "project_id": "SQRLATT",
+      "sha256": "47fb63dc66377d5abf60785033e0f9ad2b5335d0b6c86a5c0dcf9cc2fcc7b17f"
+    },
+    {
+      "archive_member": "SQRLATT/.mephc_staging/mephc/records.py",
+      "bytes": 7672,
+      "original_path": ".mephc_staging/mephc/records.py",
+      "project_id": "SQRLATT",
+      "sha256": "75e7f1c3eda26fb3b86ee93b1d61880d22165b2a8e87319261dd75821eab67bd"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/band_nb1_gxm_20260717-174507.pkl",
+      "bytes": 982,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/band_nb1_gxm_20260717-174507.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "4f6bd3b11661a97765ec65ef9e301caf59c08663b4f7a6f19d403d29cd1ba55a"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/band_nb2_gxm_20260717-173419.pkl",
+      "bytes": 1214,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/band_nb2_gxm_20260717-173419.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "6a7706332b83e95b0896546c37977db1baa9fe76aada59796848cfa783061cac"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/band_nb3_gxm_20260717-173806.pkl",
+      "bytes": 1983,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/band_nb3_gxm_20260717-173806.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "31782dc0aff59a566d6f1e21c32b355265d6fe04fff844a5734e63f62b728285"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/band_nb3_gxm_20260717-175605.pkl",
+      "bytes": 1983,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/band_nb3_gxm_20260717-175605.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "fc1e0d7d338d3a15dee39ee61fea93225d7a2c12a7f80af3406d1ac176259935"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/bc_b1_n3_step0p02_20260717-173431.pkl",
+      "bytes": 764,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/bc_b1_n3_step0p02_20260717-173431.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "60c858139eecb8297a26a149a885fcc729c69d5fef5fd5cfeafb824489ad98c8"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/bc_b1_n3_step0p02_20260717-174507.pkl",
+      "bytes": 764,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/bc_b1_n3_step0p02_20260717-174507.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "fd6161a8700041676a9b4598ab2af86e081555444d90658e675bda5200946f8c"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/efs_b1_n3_20260717-173425.pkl",
+      "bytes": 1107,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/efs_b1_n3_20260717-173425.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "8696a11a8c3cad9f99f3e412888785a1ec5ac15f178bd81b53ec5ece1f5c8de5"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/efs_b1_n3_20260717-174506.pkl",
+      "bytes": 1107,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D100_NEFF2p7/efs_b1_n3_20260717-174506.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "5ff94c77667e072229e9e2f09e4ebf8ae9c6b70766b029842aaa7c520bf004c4"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb1_gxm.pkl",
+      "bytes": 1010,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb1_gxm.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "2f0788a0f597e4729381f2de2619935b57dda032b307faf81bed91a9dac49bdd"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb2_gxm_20260717-182224.pkl",
+      "bytes": 1177,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb2_gxm_20260717-182224.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "1f91cdd4f83d91a36cc24d287ee0a0165bbaae7572f0c03d3d7fd93cb4727762"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb3_gxm.pkl",
+      "bytes": 3877,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb3_gxm.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "6c5aeff88ec14e0aadafc638247e61cfb37948b2c2273772438fd93fabe5952b"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb3_gxm_20260717-175628.pkl",
+      "bytes": 1983,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb3_gxm_20260717-175628.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "e32d876bbb895d9758e0e21a26a5ff7b40b762079a87dfe886416585baa1a0c3"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb3_gxm_20260717-175701.pkl",
+      "bytes": 3063,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb3_gxm_20260717-175701.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "a1412c3bafa1335ea692cbde670fd22af015f8e422f8f8bfa9d7bfabab953bad"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb3_gxm_20260717-182612.pkl",
+      "bytes": 3877,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb3_gxm_20260717-182612.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "019ced9de6d2253927b775311a0fb1d9e697bb7d790328957964195939c4b404"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb3_gxm_20260717-182716.pkl",
+      "bytes": 3877,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb3_gxm_20260717-182716.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "732a2c7e3a49b8701003581303fb9f6a90477d5ebfa09ca751689d9891a7eed4"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb3_gxm_20260717-190012.pkl",
+      "bytes": 3877,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb3_gxm_20260717-190012.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "3d25a84910996ada5806e47a0503a6510c9349898dbe4c0e713cc6e607679f32"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_b1_n12_step0p02_20260717-180053.pkl",
+      "bytes": 4010,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_b1_n12_step0p02_20260717-180053.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "a8a3cd9789598bbe9465bf6de9eb20a4d8e64333e3fcecbf3eebdb9dc5d6870a"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_ext0p5_step0p031.pkl",
+      "bytes": 787,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_ext0p5_step0p031.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "cdf9bd5342e15f1ec32a283fba1f6584c64e19b5972d5a4b8b0ad9fd3f631b7e"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_ext1_c4_step0p021.pkl",
+      "bytes": 1331,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_ext1_c4_step0p021.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "9f4d8f8ee4782b886055aba18634dc4d7c2f7afcdfc5d87304421410796ef588"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_ext1_c4_step0p023.pkl",
+      "bytes": 1331,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_ext1_c4_step0p023.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "840d39c69591b8d23b2ae54e21edc82900d328fee276db5e865485baf9c51586"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_ext1_c4q_step0p024.pkl",
+      "bytes": 1500,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_ext1_c4q_step0p024.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "7f005e2646f19513bb432605f388ac2bf3eb35342a5bfc6963632f305186fac9"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_ext1_c4q_step0p025.pkl",
+      "bytes": 1500,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_ext1_c4q_step0p025.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "47b631ba9a52d39182de83bed279b786fcd638719a8459d84e2b5f6ee4846864"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_ext1_raw_step0p022.pkl",
+      "bytes": 837,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_ext1_raw_step0p022.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "9e4e78a03cb3ea976a633ae4530c2a652b10e2143e0ebf35663a965adc8ce387"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_ext1_step0p031.pkl",
+      "bytes": 787,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_ext1_step0p031.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "2ba5d0c044fe1088d5d66b77ef691cc7bd93ec94346599165dff3956435f9d6c"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_step0p03.pkl",
+      "bytes": 764,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_step0p03.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "db6d73f58d3f3e36700db7c3ba622d3578e2b897e9dc7653adbcc5e7a04f4c8c"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_step0p04.pkl",
+      "bytes": 764,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_step0p04.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "349674cf520a219fb1ce5419b44d2b2bf1c46e16cd721e6f167c19c514d5f71a"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_step0p047.pkl",
+      "bytes": 764,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb1_n3_step0p047.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "40215c11858e7987fdbc9949e2579957b2d760db74acaec6ab1dc7d103f36932"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb2_n3_ext1_step0p02.pkl",
+      "bytes": 859,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb2_n3_ext1_step0p02.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "882d0bb09930f8d284f2a52290e731bc3fe405ef6bfa922272ed148c5ad028d8"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb2_n3_step0p02.pkl",
+      "bytes": 836,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb2_n3_step0p02.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "3f3a087a25ee25876ae3985d0bfa253d9a95f4a7b7ce722c7610e0ef5a3f3ee1"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n12_step0p02_20260717-185930.pkl",
+      "bytes": 6314,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n12_step0p02_20260717-185930.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "d7715865b690be70e799ba7c7f85ed56210b16a16a0fcc74b04cbdbc33e7fe5d"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_ext1_c4_step0p0005.pkl",
+      "bytes": 60576,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_ext1_c4_step0p0005.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "3ad19cd0981ac5aa3b49e728af903c6d55e3625d61714fe877794bdb6129ca15"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_ext1_c4q_step0p0005.pkl",
+      "bytes": 112106,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_ext1_c4q_step0p0005.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "d9c1567b38b26cb53dc4db71a98d6355aad324b42002a1f17512bef00807e75c"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_ext1_step0p01.pkl",
+      "bytes": 23619,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_ext1_step0p01.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "5e04173c3e0a8af8bfaf68f429b88341808aee350ef871bd62e3408426c9b1dd"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_step0p01.pkl",
+      "bytes": 23596,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_step0p01.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "08020ee348000bd66db67f42bb1f1264b4a91e0402eb40a5cf2beda79214b2fd"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_step0p01_20260717-193753.pkl",
+      "bytes": 23596,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_step0p01_20260717-193753.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "b76fe07e0058d2c351c341f09adc6bc7de058c9cbefc8c42cd2389830c3d3856"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n3_step0p02_20260717-182239.pkl",
+      "bytes": 908,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n3_step0p02_20260717-182239.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "79b9c33eb43bf154e79bd4f0a491ace5d4502e646b971e8408d9b5a10037550c"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/efs_b1_n3.pkl",
+      "bytes": 1107,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/efs_b1_n3.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "173dbbce040d2a5b11945e1e1f9ff0fc7ff27e0fcdaa7ede48cabf38e02d6791"
+    },
+    {
+      "archive_member": "SQRLATT/data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/efs_b2_n3_20260717-182239.pkl",
+      "bytes": 1251,
+      "original_path": "data/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/efs_b2_n3_20260717-182239.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "a616b4d9b8d92c56341d4c1576c49cd749b717808e295d8b32b534a86e8a3fb4"
+    },
+    {
+      "archive_member": "SQRLATT/data/_tmp/band_latest.pkl",
+      "bytes": 3877,
+      "original_path": "data/_tmp/band_latest.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "6c5aeff88ec14e0aadafc638247e61cfb37948b2c2273772438fd93fabe5952b"
+    },
+    {
+      "archive_member": "SQRLATT/data/_tmp/bc_latest.pkl",
+      "bytes": 112106,
+      "original_path": "data/_tmp/bc_latest.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "d9c1567b38b26cb53dc4db71a98d6355aad324b42002a1f17512bef00807e75c"
+    },
+    {
+      "archive_member": "SQRLATT/data/_tmp/efs_latest.pkl",
+      "bytes": 1107,
+      "original_path": "data/_tmp/efs_latest.pkl",
+      "project_id": "SQRLATT",
+      "sha256": "173dbbce040d2a5b11945e1e1f9ff0fc7ff27e0fcdaa7ede48cabf38e02d6791"
+    },
+    {
+      "archive_member": "SQRLATT/diagnostics/c4_bc/diagnose_c4_failure.py",
+      "bytes": 9480,
+      "original_path": "diagnostics/c4_bc/diagnose_c4_failure.py",
+      "project_id": "SQRLATT",
+      "sha256": "30827032202221121c678e07404756fb42625a9dc1768dd617e400c0a6785f11"
+    },
+    {
+      "archive_member": "SQRLATT/diagnostics/c4_bc/diagnose_c4_symmetry.py",
+      "bytes": 1716,
+      "original_path": "diagnostics/c4_bc/diagnose_c4_symmetry.py",
+      "project_id": "SQRLATT",
+      "sha256": "cb28a8a90405b489ca86963a0841736947e2ba5ff35c25f8e1295477327fe2c4"
+    },
+    {
+      "archive_member": "SQRLATT/image/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb3_gxm.png",
+      "bytes": 70911,
+      "original_path": "image/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/band_nb3_gxm.png",
+      "project_id": "SQRLATT",
+      "sha256": "a238a7316b9f7dce5f6b8e85c93d1fd487f6ba3ce081d50b869c9cf89b61b9a6"
+    },
+    {
+      "archive_member": "SQRLATT/image/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_ext1_c4q_step0p0005_b1.png",
+      "bytes": 43660,
+      "original_path": "image/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_ext1_c4q_step0p0005_b1.png",
+      "project_id": "SQRLATT",
+      "sha256": "882bd9a6506fc7f4f3f504002f82fbb119988a073c586c8d1c613d95c681cb2a"
+    },
+    {
+      "archive_member": "SQRLATT/image/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_ext1_c4q_step0p0005_b2.png",
+      "bytes": 46365,
+      "original_path": "image/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_ext1_c4q_step0p0005_b2.png",
+      "project_id": "SQRLATT",
+      "sha256": "4a071882ed1c58bf413d0356a9456eb21a2fd09d2c64332acd557590ae0e00bc"
+    },
+    {
+      "archive_member": "SQRLATT/image/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_ext1_c4q_step0p0005_b3.png",
+      "bytes": 56949,
+      "original_path": "image/SQR_LATT_SQR_HOLE_A400_D200_NEFF2p7/bc_nb3_n24_ext1_c4q_step0p0005_b3.png",
+      "project_id": "SQRLATT",
+      "sha256": "01026e9126485298deef4bc98a1e570800333c19223419bcb2350b219a571981"
+    },
+    {
+      "archive_member": "TRILATT/data/_tmp/band_latest.pkl",
+      "bytes": 4018,
+      "original_path": "data/_tmp/band_latest.pkl",
+      "project_id": "TRILATT",
+      "sha256": "bdb76839122a102f0d2fa071778bc78e163fbf388c58c8449a3c87d581472720"
+    },
+    {
+      "archive_member": "TRILATT/data/a400_r120-110_n3-3_t0-60_neff2p7_h100/band_nb3_gkm.pkl",
+      "bytes": 4018,
+      "original_path": "data/a400_r120-110_n3-3_t0-60_neff2p7_h100/band_nb3_gkm.pkl",
+      "project_id": "TRILATT",
+      "sha256": "bdb76839122a102f0d2fa071778bc78e163fbf388c58c8449a3c87d581472720"
+    },
+    {
+      "archive_member": "TRILATT/data/a400_r74-72_n16-16_t0-60_neff2p7_h100/band_nb3_gkm.pkl",
+      "bytes": 3204,
+      "original_path": "data/a400_r74-72_n16-16_t0-60_neff2p7_h100/band_nb3_gkm.pkl",
+      "project_id": "TRILATT",
+      "sha256": "243b35d7bd3a6459c6f47f5eb7d574e531c523af2af38c0e91c82155cc6ec36f"
+    },
+    {
+      "archive_member": "TRILATT/data/a400_r75-65_n3-3_t0-60_neff2p7_h100/band_nb3_gkm.pkl",
+      "bytes": 3202,
+      "original_path": "data/a400_r75-65_n3-3_t0-60_neff2p7_h100/band_nb3_gkm.pkl",
+      "project_id": "TRILATT",
+      "sha256": "639ced7e5f707d4b44de645f9976180edfe48ba745c7f36e657922bb61999ac0"
+    },
+    {
+      "archive_member": "TRILATT/data/a400_r77-69_n16-16_t0-60_neff2p7_h100/band_nb3_gkm.pkl",
+      "bytes": 3204,
+      "original_path": "data/a400_r77-69_n16-16_t0-60_neff2p7_h100/band_nb3_gkm.pkl",
+      "project_id": "TRILATT",
+      "sha256": "8094e4e18930d0611d2665b8775ef37dba6610d8cf9b5e41b995644a2f9cf231"
+    },
+    {
+      "archive_member": "TRILATT/image/a400_r120-110_n3-3_t0-60_neff2p7_h100/band_nb3_gkm.png",
+      "bytes": 71504,
+      "original_path": "image/a400_r120-110_n3-3_t0-60_neff2p7_h100/band_nb3_gkm.png",
+      "project_id": "TRILATT",
+      "sha256": "3bd78a4051afdce44dcf1213a6153692c13e946bd83a71ed6b6a9cb291e09552"
+    },
+    {
+      "archive_member": "TRILATT/image/a400_r74-72_n16-16_t0-60_neff2p7_h100/band_nb3_gkm.png",
+      "bytes": 71482,
+      "original_path": "image/a400_r74-72_n16-16_t0-60_neff2p7_h100/band_nb3_gkm.png",
+      "project_id": "TRILATT",
+      "sha256": "ecce7ef1eeb6b23fc6981bd3cb29236f11d26ddbc30a4a884daaeee3951c5c7e"
+    },
+    {
+      "archive_member": "TRILATT/image/a400_r75-65_n3-3_t0-60_neff2p7_h100/band_nb3_gkm.png",
+      "bytes": 69757,
+      "original_path": "image/a400_r75-65_n3-3_t0-60_neff2p7_h100/band_nb3_gkm.png",
+      "project_id": "TRILATT",
+      "sha256": "9bd39f37ec1e78effcbc838989b2a2a12505166b4e13c110ed0149de95109d64"
+    },
+    {
+      "archive_member": "TRILATT/image/a400_r77-69_n16-16_t0-60_neff2p7_h100/band_nb3_gkm.png",
+      "bytes": 71169,
+      "original_path": "image/a400_r77-69_n16-16_t0-60_neff2p7_h100/band_nb3_gkm.png",
+      "project_id": "TRILATT",
+      "sha256": "f33f674466bcb6973f8fa94420040896a8a82155b174cbfe6643ec2042cd40f8"
+    }
+  ],
+  "payload": "payload.tar.gz",
+  "payload_sha256": "cda2438ab7a939de38fc1fb62bfe009c468bcf9464093d131006c007dec68330",
+  "recovery": "Extract payload.tar.gz from the producing Git commit and verify every member.",
+  "retention_report": "/home/icy/MePhC/.relayctl/inventory/retention-20260826-005420.json",
+  "retention_report_sha256": "a4ebbd90c7f81449ae35c02994992dea1a8c1817c36f3b8d00fa3e9f0817c95d",
+  "schema": "mephc-residue-archive-v1"
+}
