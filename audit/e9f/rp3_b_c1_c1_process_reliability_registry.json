@@ -1,0 +1,211 @@
+{
+  "schema": "mephc_e9f_c1_rp3_b_c1_c1_process_reliability_registry_v1",
+  "work_order_id": "MEPHC-E9F-C1-RP3-B-C1-C1-20260825-266",
+  "pipeline_health": "PIPELINE_HEALTHY_WITH_TECH_DEBT",
+  "prior_corrective_open_ids": [
+    "REL-021",
+    "REL-053",
+    "REL-056"
+  ],
+  "incidents": [
+    {
+      "incident_id": "REL-021",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-022",
+      "priority": "P2",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-023",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-024",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-025",
+      "priority": "P2",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-026",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-027",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-028",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-029",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-030",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-031",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-032",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-033",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-034",
+      "priority": "P2",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-035",
+      "priority": "P2",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-036",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-037",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-038",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-039",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-040",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-041",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-042",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-043",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-044",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-045",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-046",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-047",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-048",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-049",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-050",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-051",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-052",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-053",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-054",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-055",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-056",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-057",
+      "priority": "P1",
+      "status": "CLOSED"
+    }
+  ],
+  "p0_items": [],
+  "p1_items": [],
+  "p2_items": [
+    "REL-022",
+    "REL-025",
+    "REL-034",
+    "REL-035"
+  ],
+  "closure_evidence": {
+    "REL-021": "Registry covers REL-021..REL-057 and report separates full-work-order versus final-commit changed files.",
+    "REL-053": "Corrected provenance binds actual implementation ancestor bdac4e40e38a50a4121933933e2f81f0241fe3a9.",
+    "REL-056": "Distinct provider-construction interception test passes with resolution 160 and negative mismatch."
+  },
+  "process_registry_all_closed": true
+}

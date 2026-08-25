@@ -1,4 +1,4 @@
-import json
+﻿import json
 from pathlib import Path
 import pytest
 from audit.e9f import rp3_b_r160_runtime as rp3
@@ -104,3 +104,16 @@ def test_required_source_guards_and_firewalls():
     tree=ast.parse((ROOT/"audit/e9f/rp3_b_r160_runner.py").read_text())
     literals=[n.value for n in ast.walk(tree) if isinstance(n,ast.Constant)]
     assert 160 in literals and 128 not in literals and 192 not in literals
+def test_actual_provider_constructor_receives_authoritative_resolution():
+    from audit.e9f import c3_c5_runtime as runtime
+    seen={}
+    class FakeProvider:
+        def __init__(self, **kwargs):
+            seen.update(kwargs)
+    class FakeMP:
+        TE="TE"
+    value=runtime.make_provider(geometry=[],lattice="L",solver_geometry=[],background="B",resolution=160,mp=FakeMP,provider_cls=FakeProvider,num_bands=6,mesh_size=8,solver_tolerance=1e-9)
+    assert isinstance(value,FakeProvider) and seen["resolution"]==160
+    with pytest.raises(AssertionError):
+        assert seen["resolution"]==128
+

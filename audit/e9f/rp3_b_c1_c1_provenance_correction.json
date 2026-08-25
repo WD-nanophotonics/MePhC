@@ -1,0 +1,18 @@
+{
+  "schema":"mephc_e9f_c1_rp3_b_c1_c1_provenance_correction_v1",
+  "historical_execution_sha":"6fe10738d639f0f72987d0612442010339f719d9",
+  "historical_prelive_attestation_file_sha256":"6bc1f9f3f92e6fefeac3b86273e94ad8c017962fbd5a0a13caf8bbe88df88a26",
+  "historical_recorded_implementation_sha":"bdac4e40e38a50a4121933e2f81f0241fe3a9",
+  "verified_actual_implementation_sha":"bdac4e40e38a50a4121933933e2f81f0241fe3a9",
+  "implementation_sha_correction":"malformed_short_value_to_full_commit_sha",
+  "actual_implementation_is_ancestor_of_execution":true,
+  "execution_contains_implementation":true,
+  "execution_contains_prelive_attestation":true,
+  "source_byte_bindings_verified":true,
+  "native_rerun_performed_in_corrective":false,
+  "authoritative_science_frozen":true,
+  "authoritative_raw_result_sha256":"5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+  "authoritative_raw_manifest_sha256":"307360273e86a5ee8cc83b8eb01a87d2ccd9f6a8815e7f2612fb7decdf8888b1",
+  "authoritative_raw_checkpoint_sha256":"17b1967b75177e63c9026b548a984f507033ba7f90e0d8a22e403d19cfcfeb0a",
+  "authoritative_compact_trace_sha256":"26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487"
+}
