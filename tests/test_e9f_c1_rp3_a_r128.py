@@ -56,7 +56,7 @@ def test_r128_replay_policy_is_not_applicable():
 
 def test_checkpoint_empty_and_fail_closed_mutations(tmp_path):
     rows = rp3.build_plan(ROOT)
-    checkpoint = rp3.construct_checkpoint(completed=[], execution_sha="e"*40, contract_sha256="c"*64, policy_sha256="p"*64)
+    checkpoint = rp3.construct_checkpoint(completed=[], rows=rows, execution_sha="e"*40, contract_sha256="c"*64, policy_sha256="p"*64)
     rp3.validate_checkpoint(checkpoint, root=ROOT, rows=rows)
     bad = copy.deepcopy(checkpoint)
     bad["generation"] = 1

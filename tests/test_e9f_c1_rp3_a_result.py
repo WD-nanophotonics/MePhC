@@ -1,6 +1,7 @@
 ﻿import json
 from pathlib import Path
 from audit.e9f import c3_c5_c1_postprocess as c1
+from audit.e9f import rp3_a_r128_runtime as rp3
 
 ROOT = Path(__file__).resolve().parents[1]
 TRACE = ROOT / "audit/e9f/rp3_a_r128_compact_trace.json"
@@ -31,3 +32,14 @@ def test_r128_trace_is_diagnostic_only_and_no_reducer():
     trace = json.loads(TRACE.read_text())
     assert trace["diagnostic_only"] is True
     assert trace["reducer_admissible"] is False
+
+
+def test_published_resume_checkpoint_has_full_prefix_binding():
+    checkpoint = json.loads((ROOT / "audit/e9f/rp3_a_r128_resume_checkpoint.json").read_text())
+    rows = rp3.build_plan(ROOT)
+    rp3.validate_checkpoint(checkpoint, root=ROOT, rows=rows, orphan_scan=lambda ids: [])
+    assert checkpoint["generation"] == 6
+    assert len(checkpoint["completed_workers"]) == 6
+    assert rp3.resume_suffix(checkpoint=checkpoint, root=ROOT, rows=rows, orphan_scan=lambda ids: []) == []
+    required = {"worker_id","source_sample_id","logical_sample_index","resolution","payload_path","payload_file_sha256","payload_body_sha256","execution_sha","contract_sha256","policy_sha256","item_generation","terminal_payload_status"}
+    assert all(required <= set(item) for item in checkpoint["completed_workers"])

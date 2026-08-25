@@ -86,17 +86,30 @@ def execute(root: Path, runtime_root: Path) -> dict[str, Any]:
     execution = git(root, "rev-parse", "HEAD")
     contract_sha = c35.sha(root / CONTRACT)
     policy_sha = c35.sha(root / "audit/e9f/rp1_recovery_policy_contract.json")
-    runtime_root.mkdir(parents=True, exist_ok=False)
-    order = [next(row for row in rows if row["source_sample_id"] == CANARY)] + [row for row in rows if row["source_sample_id"] != CANARY]
-    payloads = []
-    measurements = []
-    completed = []
+    by_id = {row["sample_id"]: row for row in rows}
+    canonical_order = [by_id[worker_id] for worker_id in rp3.execution_order(rows)]
+    if runtime_root.exists():
+        checkpoint_path = runtime_root / "matrix_checkpoint.json"
+        if not checkpoint_path.is_file():
+            raise RuntimeError("RP3_A_RESUME_CHECKPOINT_MISSING_FAIL_CLOSED")
+        checkpoint = json.loads(checkpoint_path.read_text())
+        rp3.validate_checkpoint(checkpoint, root=root, rows=rows)
+        order = rp3.resume_suffix(checkpoint=checkpoint, root=root, rows=rows)
+        completed = [dict(item) for item in checkpoint["completed_workers"]]
+        payloads = [json.loads(Path(item["payload_path"]).read_text()) for item in completed]
+        measurements = []
+    else:
+        runtime_root.mkdir(parents=True, exist_ok=False)
+        order = canonical_order
+        payloads = []
+        measurements = []
+        completed = []
     for row in order:
         payload, measurement = run_child(root, row, runtime_root, execution, contract_sha, policy_sha)
         payloads.append(payload)
         measurements.append(measurement)
-        completed.append({"worker_id": row["sample_id"], "resolution": 128, "payload_path": measurement["payload_path"], "payload_file_sha256": measurement["payload_file_sha256"], "payload_body_sha256": measurement["payload_body_sha256"]})
-        checkpoint = rp3.construct_checkpoint(completed=completed, execution_sha=execution, contract_sha256=contract_sha, policy_sha256=policy_sha)
+        completed.append({"worker_id": row["sample_id"], "source_sample_id": row["source_sample_id"], "logical_sample_index": row["sample_index"], "resolution": 128, "payload_path": measurement["payload_path"], "payload_file_sha256": measurement["payload_file_sha256"], "payload_body_sha256": measurement["payload_body_sha256"], "execution_sha": execution, "contract_sha256": contract_sha, "policy_sha256": policy_sha, "item_generation": len(completed) + 1, "terminal_payload_status": "COMPLETE"})
+        checkpoint = rp3.construct_checkpoint(completed=completed, rows=rows, execution_sha=execution, contract_sha256=contract_sha, policy_sha256=policy_sha)
         rp3.validate_checkpoint(checkpoint, root=root, rows=rows)
         c35.atomic_write(runtime_root / "matrix_checkpoint.json", checkpoint)
     convergence, spectral = rp3.convergence_rows(root=root, payloads=payloads)
