@@ -7,6 +7,7 @@ from typing import Any
 
 CANONICAL_ROOT = Path("/home/icy/MePhC")
 REQUIRED_PYTHON = Path("/home/icy/miniconda3/envs/mp/bin/python")
+WINDOWS_POWERSHELL = Path("/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
 PROJECT_ID = "MEPHC"
 FAILURE_CODES = {"ROOT_MISMATCH", "WORKTREE_NOT_WSL_NATIVE", "INTERPRETER_MISMATCH", "PRELIVE_UNCOMMITTED", "SOURCE_BYTE_MISMATCH", "COURIER_TIMEOUT_RECOVERY_REQUIRED", "COURIER_QUEUE_TIMEOUT", "COURIER_QUEUE_RECOVERY_REQUIRED", "COURIER_INTERRUPTED", "COURIER_HARD_STOP"}
 class RelayFailure(RuntimeError):
@@ -85,9 +86,11 @@ def create_e2e(root: Path, certificate: str) -> Path:
     write_json(directory / "request.json", {"version": 1, "project_id": PROJECT_ID, "request_id": request_id, "message_file": "message.txt", "attachments": [], "workflow_window_seconds": 600, "task_difficulty": "normal", "instruction_level": "normal", "relay_certificate": str(certificate_path), "e2e": True}); return directory
 def courier(root: Path, request_dir: str, recovery: bool) -> int:
     root = worktree_root(root); require_python(root); request = Path(request_dir).resolve()
+    if not WINDOWS_POWERSHELL.is_file():
+        raise RelayFailure("COURIER_HARD_STOP", f"Windows PowerShell missing: {WINDOWS_POWERSHELL}")
     if runtime(root) / "outbox" not in request.parents: raise RelayFailure("ROOT_MISMATCH", "request must be inside .relayctl/outbox")
     bridge = "\\\\wsl.localhost\\Ubuntu" + str(root / "tools" / "mephc-courier.ps1").replace("/", chr(92))
-    command = ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", bridge, "-RequestDirectory", "\\\\wsl.localhost\\Ubuntu" + str(request).replace("/", chr(92))]
+    command = [str(WINDOWS_POWERSHELL), "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", bridge, "-RequestDirectory", "\\\\wsl.localhost\\Ubuntu" + str(request).replace("/", chr(92))]
     if recovery: command.append("-RecoveryOnly")
     return subprocess.run(command, cwd=root).returncode
 def main(argv: list[str] | None = None) -> int:

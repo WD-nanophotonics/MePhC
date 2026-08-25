@@ -41,3 +41,16 @@ def test_bridge_does_not_require_preflight_before_run():
     assert '& $Courier run $request' in text
     assert '& $Courier preflight $request' not in text
     assert 'COURIER_NOT_CHAT_READY' not in text
+
+def test_windows_powershell_path_is_fixed():
+    assert relayctl.WINDOWS_POWERSHELL == Path('/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe')
+
+def test_courier_fails_closed_when_windows_powershell_is_missing(monkeypatch,tmp_path):
+    request = tmp_path/'.relayctl'/'outbox'/'MEPHC-TEST'
+    request.mkdir(parents=True)
+    monkeypatch.setattr(relayctl,'worktree_root',lambda _=None:tmp_path)
+    monkeypatch.setattr(relayctl,'require_python',lambda _:None)
+    monkeypatch.setattr(relayctl,'WINDOWS_POWERSHELL',tmp_path/'missing-powershell.exe')
+    with pytest.raises(relayctl.RelayFailure) as excinfo:
+        relayctl.courier(tmp_path,str(request),False)
+    assert excinfo.value.code == 'COURIER_HARD_STOP'
