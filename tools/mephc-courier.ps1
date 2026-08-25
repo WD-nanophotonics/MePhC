@@ -29,6 +29,7 @@ try {
     $prior=(Get-Content -Raw -LiteralPath $receiptPath | ConvertFrom-Json).state
     if($prior -notin @('request_submitted','waiting_for_response','submission_unconfirmed','response_timeout','response_protocol_error','response_received')){ Fail 'COURIER_TIMEOUT_RECOVERY_REQUIRED' "not recoverable: $prior" }
   }
+  Set-Location 'C:/Users/icywo/PycharmProjects/GmailCourier/scripts'
   $events=New-Object System.Collections.Generic.List[string]
   & $Courier validate $request 2>&1 | ForEach-Object {$line=$_.ToString();$events.Add($line);$line}
   if($LASTEXITCODE -ne 0){Fail 'COURIER_HARD_STOP' 'Courier validation failed'}
