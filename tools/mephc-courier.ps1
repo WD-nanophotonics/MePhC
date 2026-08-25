@@ -43,4 +43,4 @@ try {
   if($receipt -and $receipt.state -eq 'response_received'){Emit 'response_received' $true $attestation;exit 0}
   if($receipt -and $receipt.state -in @('response_timeout','waiting_for_response','submission_unconfirmed','response_protocol_error')){Emit 'COURIER_TIMEOUT_RECOVERY_REQUIRED' $false $attestation;exit 1}
   Emit 'COURIER_HARD_STOP' $false $attestation;exit 1
-}catch{Fail 'COURIER_HARD_STOP' $_.Exception.Message}
+}catch{Fail 'COURIER_HARD_STOP' ($_.Exception.GetType().FullName + ': ' + $_.Exception.Message + '; stack=' + $_.ScriptStackTrace)}

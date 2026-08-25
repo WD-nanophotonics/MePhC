@@ -86,7 +86,8 @@ def create_e2e(root: Path, certificate: str) -> Path:
 def courier(root: Path, request_dir: str, recovery: bool) -> int:
     root = worktree_root(root); require_python(root); request = Path(request_dir).resolve()
     if runtime(root) / "outbox" not in request.parents: raise RelayFailure("ROOT_MISMATCH", "request must be inside .relayctl/outbox")
-    command = ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(root / "tools" / "mephc-courier.ps1"), "-RequestDirectory", "\\\\wsl.localhost\\Ubuntu" + str(request).replace("/", chr(92))]
+    bridge = "\\\\wsl.localhost\\Ubuntu" + str(root / "tools" / "mephc-courier.ps1").replace("/", chr(92))
+    command = ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", bridge, "-RequestDirectory", "\\\\wsl.localhost\\Ubuntu" + str(request).replace("/", chr(92))]
     if recovery: command.append("-RecoveryOnly")
     return subprocess.run(command, cwd=root).returncode
 def main(argv: list[str] | None = None) -> int:
