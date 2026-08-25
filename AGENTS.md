@@ -63,9 +63,9 @@ Playwright/CDP-managed Courier browser session. Never use the Codex Browser
 skill, Chrome control, Gmail directly, or a parallel reader for the same
 request. The exact ordinary sequence is:
 
-python -m chat_courier.cli validate <request-dir>
-python -m chat_courier.cli preflight <request-dir>
-python -m chat_courier.cli run <request-dir>
+relayctl courier --request-directory <request-dir>
+
+The public Courier CLI is invoked only by the controlled MePhC bridge. Agents must not call python -m chat_courier.cli, the Courier command file, Browser, Chrome, or Gmail directly.
 
 preflight must emit chat_ready before run. Never set
 CHAT_COURIER_PROFILE, AGENT_RELAY_CHATGPT_PROFILE, or
