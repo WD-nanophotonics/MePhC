@@ -1,0 +1,23 @@
+{
+  "authorized_native_solve_count": 54,
+  "base_sandbox_sha": "a3925e136d37fafa4689119ab0963d9b2711306d",
+  "canary_source_sample_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+  "diagnostic_only": true,
+  "native_solves_per_worker": 9,
+  "no_new_q_centers": true,
+  "phase": "E9F.C1.RP3.B",
+  "reducer_admissible": false,
+  "replay_policy": "NOT_APPLICABLE_R160_ORIGINAL_RP2_HAS_NO_R160_KEY",
+  "resolution": 160,
+  "rp3_chern_authorized": false,
+  "rp3_reducer_authorized": false,
+  "runner_relative_path": "audit/e9f/rp3_b_r160_runner.py",
+  "schema": "mephc_e9f_c1_rp3_b_r160_execution_contract_v1",
+  "stencils": [
+    "1/72",
+    "1/144"
+  ],
+  "work_order_id": "MEPHC-E9F-C1-RP3-B-20260825-262",
+  "worker_count": 6,
+  "worker_relative_path": "audit/e9f/rp3_b_r160_worker.py"
+}
