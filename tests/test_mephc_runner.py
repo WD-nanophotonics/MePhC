@@ -66,6 +66,40 @@ def test_bootstrap_installs_and_exercises_public_cmd():
     assert "& $publicLauncher Doctor" in text
 
 
+def test_prelive_command_resolves_unique_certificate_sha(tmp_path, monkeypatch):
+    worker = load("runner_worker_certificate", "worker.py")
+    data = b'{"project_id":"MEPHC"}\n'
+    certificate = tmp_path / "doctor.json"
+    certificate.write_bytes(data)
+    monkeypatch.setattr(worker, "CERTIFICATES", tmp_path)
+    digest = hashlib.sha256(data).hexdigest()
+    command = worker.command_for({
+        "operation": "prelive",
+        "certificate_sha256": digest,
+        "arguments": ["tests/test_relayctl.py"],
+    })
+    assert command == [
+        str(worker.RELAYCTL), "prelive", "--certificate", str(certificate.resolve()),
+        "tests/test_relayctl.py",
+    ]
+
+
+def test_duplicate_certificate_sha_fails_closed(tmp_path, monkeypatch):
+    worker = load("runner_worker_duplicate_certificate", "worker.py")
+    data = b"same"
+    (tmp_path / "a.json").write_bytes(data)
+    (tmp_path / "b.json").write_bytes(data)
+    monkeypatch.setattr(worker, "CERTIFICATES", tmp_path)
+    with pytest.raises(worker.Rejected, match="matches=2") as error:
+        worker.certificate_path(hashlib.sha256(data).hexdigest())
+    assert error.value.code == "CERTIFICATE_INVALID"
+
+
+def test_certificate_override_is_forbidden():
+    worker = load("runner_worker_certificate_override", "worker.py")
+    assert "--certificate" in worker.FORBIDDEN_FLAGS
+
+
 def test_project_mismatch_fails_closed(tmp_path):
     worker = load("runner_worker_project", "worker.py")
     job_id = "MEPHC-JOB-ABCDEFGH"

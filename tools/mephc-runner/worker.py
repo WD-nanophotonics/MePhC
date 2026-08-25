@@ -26,7 +26,7 @@ JOB_ID = re.compile(r"^MEPHC-JOB-[A-Z0-9][A-Z0-9._-]{7,119}$")
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
 SHA64 = re.compile(r"^[0-9a-f]{64}$")
 RECOVERABLE = {"response_timeout", "courier_interrupted", "chat_submission_unconfirmed", "submission_state_uncertain"}
-FORBIDDEN_FLAGS = {"--root", "--python", "--pythonpath", "--project-id", "--courier-root", "--profile", "--chat-url"}
+FORBIDDEN_FLAGS = {"--root", "--python", "--pythonpath", "--project-id", "--courier-root", "--profile", "--chat-url", "--certificate"}
 
 
 class Rejected(RuntimeError):
@@ -92,16 +92,29 @@ def git(*arguments: str) -> str:
     return completed.stdout.strip()
 
 
-def certificate_present(digest: str) -> bool:
+def certificate_path(digest: str) -> Path:
+    matches: list[Path] = []
     if not CERTIFICATES.is_dir():
-        return False
-    for path in CERTIFICATES.glob("*.json"):
+        raise Rejected("CERTIFICATE_INVALID", "certificate directory missing")
+    for path in sorted(CERTIFICATES.glob("*.json")):
         try:
-            if hashlib.sha256(path.read_bytes()).hexdigest() == digest:
-                return True
+            if (
+                path.is_file() and not path.is_symlink()
+                and hashlib.sha256(path.read_bytes()).hexdigest() == digest
+            ):
+                matches.append(path.resolve())
         except OSError:
             continue
-    return False
+    if len(matches) != 1:
+        raise Rejected("CERTIFICATE_INVALID", f"certificate SHA matches={len(matches)}")
+    return matches[0]
+
+
+def command_for(job: dict[str, Any]) -> list[str]:
+    if job["operation"] == "prelive":
+        return [str(RELAYCTL), "prelive", "--certificate",
+                str(certificate_path(job["certificate_sha256"])), *job["arguments"]]
+    return [str(RELAYCTL), job["operation"], *job["arguments"]]
 
 
 def inside(path: Path, parent: Path, code: str) -> Path:
@@ -152,8 +165,10 @@ def validate(job_dir: Path) -> tuple[dict[str, Any], str]:
     if job["operation"] == "doctor":
         if arguments or certificate != "":
             raise Rejected("DOCTOR_JOB_INVALID", "doctor accepts no arguments or certificate")
-    elif not isinstance(certificate, str) or not SHA64.fullmatch(certificate) or not certificate_present(certificate):
+    elif not isinstance(certificate, str) or not SHA64.fullmatch(certificate):
         raise Rejected("CERTIFICATE_INVALID", repr(certificate))
+    else:
+        certificate_path(certificate)
 
     if job["operation"] == "courier":
         if len(arguments) != 2 or arguments[0] != "--request-directory":
@@ -210,7 +225,7 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
         attempt = previous_attempt + 1
         state(job_dir, "running", attempt=attempt, operation=job["operation"], recovery=recovery)
         event(job_dir, "runner_job_started", attempt=attempt, operation=job["operation"], recovery=recovery, job_sha256=immutable_sha)
-        command = [str(RELAYCTL), job["operation"], *job["arguments"]]
+        command = command_for(job)
         environment = {
             "HOME": "/home/icy",
             "LANG": "C.UTF-8",
