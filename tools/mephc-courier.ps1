@@ -18,7 +18,9 @@ try {
   $certificate=Get-Content -Raw -LiteralPath $certificatePath | ConvertFrom-Json
   if($certificate.project_id -ne 'MEPHC' -or -not $certificate.worktree -or -not $certificate.canonical_root){ Fail 'ROOT_MISMATCH' 'certificate does not bind a MePhC worktree' }
   if(-not $certificate.worktree.StartsWith($certificate.canonical_root + '/',[System.StringComparison]::Ordinal) -or $certificate.canonical_root -ne '/home/icy/MePhC'){ Fail 'ROOT_MISMATCH' 'certificate worktree is outside canonical MePhC root' }
-  $expectedOutbox='\\wsl.localhost\Ubuntu' + $certificate.worktree.Replace('/','\') + '\.relayctl\outbox\'
+  $separator=[string][char]92
+  $wslPrefix=$separator + $separator + 'wsl.localhost' + $separator + 'Ubuntu'
+  $expectedOutbox=$wslPrefix + $certificate.worktree.Replace('/',$separator) + $separator + '.relayctl' + $separator + 'outbox' + $separator
   if(-not $request.StartsWith($expectedOutbox,[System.StringComparison]::OrdinalIgnoreCase)){ Fail 'ROOT_MISMATCH' 'request does not match its certified native worktree outbox' }
   if(-not(Test-Path -LiteralPath $Courier -PathType Leaf)){ Fail 'COURIER_HARD_STOP' 'approved Courier launcher is unavailable' }
   $receiptPath=Join-Path $request 'receipt.json'
