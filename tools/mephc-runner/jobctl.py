@@ -67,6 +67,8 @@ def validate_arguments(operation: str, arguments: list[str]) -> None:
     if operation == "doctor" and arguments:
         raise SystemExit("doctor accepts no relayctl arguments")
     if operation == "courier":
+        if arguments == ["--create-e2e"]:
+            return
         if len(arguments) != 2 or arguments[0] != "--request-directory":
             raise SystemExit("courier requires exactly --request-directory <MePhC outbox path>")
         request = Path(arguments[1]).resolve(strict=False)

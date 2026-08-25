@@ -100,6 +100,21 @@ def test_certificate_override_is_forbidden():
     assert "--certificate" in worker.FORBIDDEN_FLAGS
 
 
+def test_courier_e2e_creation_is_typed_and_certificate_bound(tmp_path, monkeypatch):
+    worker = load("runner_worker_e2e", "worker.py")
+    data = b"certificate"
+    certificate = tmp_path / "doctor.json"
+    certificate.write_bytes(data)
+    monkeypatch.setattr(worker, "CERTIFICATES", tmp_path)
+    job = {"operation": "courier", "arguments": ["--create-e2e"],
+           "certificate_sha256": hashlib.sha256(data).hexdigest()}
+    assert worker.command_for(job) == [
+        str(worker.RELAYCTL), "courier", "--create-e2e", "--certificate",
+        str(certificate.resolve()),
+    ]
+    assert worker.receipt_state(job) is None
+
+
 def test_project_mismatch_fails_closed(tmp_path):
     worker = load("runner_worker_project", "worker.py")
     job_id = "MEPHC-JOB-ABCDEFGH"
@@ -152,6 +167,13 @@ def test_courier_path_must_be_mephc_outbox():
     jobctl = load("runner_jobctl_courier", "jobctl.py")
     with pytest.raises(SystemExit, match="outside"):
         jobctl.validate_arguments("courier", ["--request-directory", "/home/icy/TriLatt/outbox/request"])
+
+
+def test_courier_e2e_creation_argument_is_exact():
+    jobctl = load("runner_jobctl_e2e", "jobctl.py")
+    jobctl.validate_arguments("courier", ["--create-e2e"])
+    with pytest.raises(SystemExit):
+        jobctl.validate_arguments("courier", ["--create-e2e", "--certificate", "x"])
 
 
 def test_worker_service_protects_home_and_only_opens_runtime():

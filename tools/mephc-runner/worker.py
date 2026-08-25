@@ -114,6 +114,9 @@ def command_for(job: dict[str, Any]) -> list[str]:
     if job["operation"] == "prelive":
         return [str(RELAYCTL), "prelive", "--certificate",
                 str(certificate_path(job["certificate_sha256"])), *job["arguments"]]
+    if job["operation"] == "courier" and job["arguments"] == ["--create-e2e"]:
+        return [str(RELAYCTL), "courier", "--create-e2e", "--certificate",
+                str(certificate_path(job["certificate_sha256"]))]
     return [str(RELAYCTL), job["operation"], *job["arguments"]]
 
 
@@ -171,12 +174,15 @@ def validate(job_dir: Path) -> tuple[dict[str, Any], str]:
         certificate_path(certificate)
 
     if job["operation"] == "courier":
-        if len(arguments) != 2 or arguments[0] != "--request-directory":
+        if arguments == ["--create-e2e"]:
+            pass
+        elif len(arguments) != 2 or arguments[0] != "--request-directory":
             raise Rejected("COURIER_ARGUMENTS_INVALID", repr(arguments))
-        request_dir = inside(Path(arguments[1]), ROOT / ".relayctl" / "outbox", "COURIER_REQUEST_OUTSIDE_OUTBOX")
-        request = read_object(request_dir / "request.json")
-        if request.get("project_id") != "MEPHC":
-            raise Rejected("PROJECT_MISMATCH", f"request={request_dir}")
+        else:
+            request_dir = inside(Path(arguments[1]), ROOT / ".relayctl" / "outbox", "COURIER_REQUEST_OUTSIDE_OUTBOX")
+            request = read_object(request_dir / "request.json")
+            if request.get("project_id") != "MEPHC":
+                raise Rejected("PROJECT_MISMATCH", f"request={request_dir}")
 
     if Path(sys.executable).resolve() != PYTHON.resolve():
         raise Rejected("INTERPRETER_MISMATCH", sys.executable)
@@ -190,6 +196,8 @@ def validate(job_dir: Path) -> tuple[dict[str, Any], str]:
 
 def receipt_state(job: dict[str, Any]) -> str | None:
     if job["operation"] != "courier":
+        return None
+    if job["arguments"] == ["--create-e2e"]:
         return None
     path = Path(job["arguments"][1]) / "receipt.json"
     if not path.is_file():
