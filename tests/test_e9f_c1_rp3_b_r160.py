@@ -4,14 +4,17 @@ import pytest
 from audit.e9f import rp3_b_r160_runtime as rp3
 
 ROOT=Path(__file__).resolve().parents[1]
-RUNTIME=Path("/home/icy/MePhC/.rp3-b-r160-runtime-20260825")
+RUNTIME=Path(__import__("os").environ.get("MEPHC_RP3_B_R160_RUNTIME", "/tmp/mephc-rp3-b-r160-runtime"))
 TRACE=ROOT/"audit/e9f/rp3_b_r160_compact_trace.json"
 
 def raw():
     return json.loads((RUNTIME/"rp3_b_r160_result.json").read_text())
 
 def checkpoint():
-    return json.loads((RUNTIME/"matrix_checkpoint.json").read_text())
+    value = json.loads((RUNTIME/"matrix_checkpoint.json").read_text())
+    for item in value["completed_workers"]:
+        item["payload_path"] = str(RUNTIME / "workers" / Path(item["payload_path"]).parent.name / "payload.json")
+    return value
 
 def test_contract_and_plan_are_fixed_six_r160():
     c=json.loads((ROOT/"audit/e9f/rp3_b_r160_execution_contract.json").read_text())
@@ -117,3 +120,79 @@ def test_actual_provider_constructor_receives_authoritative_resolution():
     with pytest.raises(AssertionError):
         assert seen["resolution"]==128
 
+
+def _stub_compute_worker_imports(monkeypatch):
+    import sys
+    import types
+
+    meep = types.ModuleType("meep")
+    meep.TE = "TE"
+    inputs = types.ModuleType("audit.e9c.run_k_kprime_rank1_berry")
+    inputs.geometry_inputs = lambda: "geometry"
+    inputs.build_inputs = lambda geometry: ("preflight", "lattice", ["solver-geometry"], "background")
+    inputs.MESH_SIZE = 8
+    inputs.NUM_BANDS = 6
+    inputs.SOLVER_TOLERANCE = 1e-9
+    provider = types.ModuleType("mephc.mpb_spectral_provider")
+    provider.MPBLiveSpectralProvider = object
+    valley = types.ModuleType("mephc.valley_benchmark")
+    valley.centered_ccw_plaquette_requests = lambda *args, **kwargs: []
+    monkeypatch.setitem(sys.modules, "meep", meep)
+    monkeypatch.setitem(sys.modules, "audit.e9c.run_k_kprime_rank1_berry", inputs)
+    monkeypatch.setitem(sys.modules, "mephc.mpb_spectral_provider", provider)
+    monkeypatch.setitem(sys.modules, "mephc.valley_benchmark", valley)
+
+
+def test_compute_worker_provider_construction_positive_is_solver_free(monkeypatch):
+    from audit.e9f import c3_c5_runtime as runtime
+    _stub_compute_worker_imports(monkeypatch)
+    row = next(item for item in rp3.build_plan(ROOT) if item["resolution"] == 160)
+    captured = {}
+    native_solves = []
+
+    class ConstructorSentinel(RuntimeError):
+        pass
+
+    def intercepted_make_provider(**kwargs):
+        captured.update(kwargs)
+        raise ConstructorSentinel("constructor captured before provider.solve")
+
+    monkeypatch.setattr(runtime, "make_provider", intercepted_make_provider)
+    with pytest.raises(ConstructorSentinel, match="constructor captured"):
+        runtime.compute_worker(ROOT, row)
+    assert captured["resolution"] == 160
+    assert native_solves == []
+
+
+def test_compute_worker_provider_construction_negative_mismatch_fails_closed(monkeypatch):
+    from audit.e9f import c3_c5_runtime as runtime
+    _stub_compute_worker_imports(monkeypatch)
+    row = dict(next(item for item in rp3.build_plan(ROOT) if item["resolution"] == 160))
+    row["resolution"] = 128
+    native_solves = []
+
+    def intercepted_make_provider(**kwargs):
+        if kwargs["resolution"] != 160:
+            raise ValueError("RP3_B_PROVIDER_CONSTRUCTION_RESOLUTION_MISMATCH")
+        raise AssertionError("mismatched condition was not enforced")
+
+    monkeypatch.setattr(runtime, "make_provider", intercepted_make_provider)
+    with pytest.raises(ValueError, match="PROVIDER_CONSTRUCTION_RESOLUTION_MISMATCH"):
+        runtime.compute_worker(ROOT, row)
+    assert native_solves == []
+
+@pytest.fixture(scope="session", autouse=True)
+def _ensure_frozen_r160_runtime(tmp_path_factory):
+    global RUNTIME
+    if RUNTIME.is_dir():
+        return
+    archive = ROOT / "audit/infrastructure/local_replica_archive/20260825/local_unretained_residue_20260825.tar.gz"
+    assert archive.is_file()
+    import tarfile
+    target = tmp_path_factory.mktemp("rp3_b_r160_archive")
+    with tarfile.open(archive, "r:gz") as handle:
+        members = [member for member in handle.getmembers() if member.name.startswith(".rp3-b-r160-runtime-20260825/")]
+        assert members
+        handle.extractall(target, filter="data")
+    RUNTIME = target / ".rp3-b-r160-runtime-20260825"
+    assert RUNTIME.is_dir()

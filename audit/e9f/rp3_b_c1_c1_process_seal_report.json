@@ -1,0 +1,41 @@
+﻿{
+    "schema":  "mephc_e9f_c1_rp3_b_c1_c1_process_seal_report_v1",
+    "work_order_id":  "MEPHC-E9F-C1-RP3-B-C1-C1-C1-20260825-268",
+    "action":  "COMPLETE_PROVIDER_CONSTRUCTION_FAIL_CLOSED_REGRESSION_AND_RESEAL_PROCESS_REGISTRY",
+    "base_sandbox_sha":  "48aa99e23d43b985574ad1bc63cc9c440d216581",
+    "expected_main_sha":  "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+    "authoritative_execution_sha":  "6fe10738d639f0f72987d0612442010339f719d9",
+    "actual_implementation_sha":  "bdac4e40e38a50a4121933933e2f81f0241fe3a9",
+    "historical_prelive_attestation_sha256":  "6bc1f9f3f92e6fefeac3b86273e94ad8c017962fbd5a0a13caf8bbe88df88a26",
+    "provenance_correction_sha256":  "f1e387a4f869c48ffbe0e7e6a72c490d2fa51f52b560c0236cc5afdd333db7a5",
+    "full_work_order_changed_files":  [
+                                          "tests/test_e9f_c1_rp3_b_r160.py",
+                                          "audit/e9f/rp3_b_c1_c1_process_reliability_registry.json",
+                                          "audit/e9f/rp3_b_c1_c1_process_science_seal.json",
+                                          "audit/e9f/rp3_b_c1_c1_process_seal_report.json"
+                                      ],
+    "final_commit_changed_files":  [
+                                       "audit/e9f/rp3_b_c1_c1_process_science_seal.json",
+                                       "audit/e9f/rp3_b_c1_c1_process_seal_report.json"
+                                   ],
+    "targeted_test_command":  "conda run -n mp python -m pytest -q tests/test_e9f_c1_rp3_b_r160.py",
+    "pytest_node_count":  34,
+    "pytest_passed_count":  34,
+    "pytest_failed_count":  0,
+    "pytest_skipped_count":  0,
+    "provider_construction_positive":  "intercepted c3_c5_runtime.compute_worker make_provider path; captured resolution=160 before provider.solve/native",
+    "provider_construction_negative":  "same path with resolution=128; explicit PROVIDER_CONSTRUCTION_RESOLUTION_MISMATCH fail-closed before provider.solve/native",
+    "corrective_native_solves":  0,
+    "mpb_execution":  false,
+    "native_execution":  false,
+    "rank1_recovered":  false,
+    "reducer_admissible":  false,
+    "current_0p02_qualification_unchanged":  true,
+    "pipeline_health":  "PIPELINE_HEALTHY_WITH_TECH_DEBT",
+    "historical_unknown_debt":  "87eb native-solve status remains UNKNOWN",
+    "science_artifacts_unchanged":  true,
+    "attachments":  [
+
+                    ],
+    "alternate_browser_used":  false
+}
