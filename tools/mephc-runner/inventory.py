@@ -38,10 +38,12 @@ def run(repo: Path, *arguments: str) -> subprocess.CompletedProcess[str]:
     )
 
 
-def classify(relative_path: str, tracked: bool) -> str:
+def classify(relative_path: str, tracked: bool, project_id: str | None = None) -> str:
     if tracked:
         return "CANONICAL_SOURCE"
     path = Path(relative_path)
+    if project_id == "MEPHC" and path.parts and path.parts[0] == ".relayctl":
+        return "INSTALLED_REBUILDABLE_RUNTIME"
     if any(SECRET_NAME.search(part) for part in path.parts):
         return "SECRET_OR_CREDENTIAL"
     if any(part in DISPOSABLE_PARTS for part in path.parts) or path.suffix.lower() in DISPOSABLE_SUFFIXES:
@@ -49,13 +51,13 @@ def classify(relative_path: str, tracked: bool) -> str:
     return "AMBIGUOUS_FAIL_CLOSED"
 
 
-def file_record(repo: Path, status: str, relative_path: str) -> dict[str, Any]:
-    tracked = not status.startswith("??")
+def file_record(project_id: str, repo: Path, status: str, relative_path: str) -> dict[str, Any]:
+    tracked = status not in {"??", "!!"}
     path = repo / relative_path
     record: dict[str, Any] = {
         "path": relative_path,
         "status": status,
-        "classification": classify(relative_path, tracked),
+        "classification": classify(relative_path, tracked, project_id),
     }
     try:
         stat = path.lstat()
@@ -69,7 +71,7 @@ def file_record(repo: Path, status: str, relative_path: str) -> dict[str, Any]:
     return record
 
 
-def status_records(repo: Path) -> list[dict[str, Any]]:
+def status_records(project_id: str, repo: Path) -> list[dict[str, Any]]:
     completed = run(repo, "status", "--porcelain=v1", "-z", "--untracked-files=all")
     if completed.returncode:
         return [{"classification": "AMBIGUOUS_FAIL_CLOSED", "error": completed.stderr.strip(), "path": "", "status": "GIT_ERROR"}]
@@ -85,7 +87,16 @@ def status_records(repo: Path) -> list[dict[str, Any]]:
         relative_path = field[3:]
         if status[0] in {"R", "C"} and index < len(fields):
             index += 1
-        records.append(file_record(repo, status, relative_path))
+        records.append(file_record(project_id, repo, status, relative_path))
+    known = {record["path"] for record in records}
+    ignored = run(repo, "ls-files", "-z", "--others", "-i", "--exclude-standard")
+    if ignored.returncode:
+        records.append({"classification": "AMBIGUOUS_FAIL_CLOSED",
+                        "error": ignored.stderr.strip(), "path": "", "status": "GIT_IGNORED_ERROR"})
+    else:
+        for relative_path in ignored.stdout.split("\0"):
+            if relative_path and relative_path not in known:
+                records.append(file_record(project_id, repo, "!!", relative_path))
     return records
 
 
@@ -94,7 +105,7 @@ def repository_record(project_id: str, repo: Path) -> dict[str, Any]:
     branch = run(repo, "branch", "--show-current")
     remotes = run(repo, "remote", "-v")
     worktrees = run(repo, "worktree", "list", "--porcelain")
-    residues = status_records(repo)
+    residues = status_records(project_id, repo)
     counts: dict[str, int] = {}
     for residue in residues:
         key = residue["classification"]
