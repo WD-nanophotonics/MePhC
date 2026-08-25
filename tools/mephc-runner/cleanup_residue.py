@@ -30,6 +30,14 @@ def safe_path(root: Path, relative: str) -> Path:
         raise RuntimeError(f"UNSAFE_CLEANUP_PATH:{relative}")
     return path
 
+def tracked_paths(root: Path) -> set[str]:
+    completed = subprocess.run(
+        ["git", "-C", str(root), "ls-files", "-z"],
+        check=True, stdout=subprocess.PIPE)
+    return {item.decode("utf-8", "surrogateescape")
+            for item in completed.stdout.split(b"\0") if item}
+
+
 def verify_archive_commit(commit: str, manifest_path: Path, manifest: dict) -> None:
     subprocess.run(
         ["git", "-C", str(MEPHC_ROOT), "merge-base", "--is-ancestor", commit, "origin/sandbox"],
@@ -41,7 +49,7 @@ def verify_archive_commit(commit: str, manifest_path: Path, manifest: dict) -> N
     if hashlib.sha256(payload).hexdigest() != manifest["payload_sha256"]:
         raise RuntimeError("REMOTE_ARCHIVE_HASH_MISMATCH")
 
-def build_plan(report: dict, manifest: dict, roots: dict[str, Path]) -> dict:
+def build_plan(report: dict, manifest: dict, roots: dict[str, Path], include_disposable: bool = False) -> dict:
     archived = {
         (item["project_id"], item["original_path"]): item
         for item in manifest.get("files", [])
@@ -64,6 +72,8 @@ def build_plan(report: dict, manifest: dict, roots: dict[str, Path]) -> dict:
                     reason = "ARCHIVED_IN_AUDIT_ARTIFACT"
                 else:
                     unresolved.append({"project_id": project, "path": residue.get("path")})
+            elif classification == "DISPOSABLE_GENERATED" and include_disposable:
+                reason = "DISPOSABLE_GENERATED"
             if reason:
                 source = safe_path(roots[project], residue["path"])
                 entries.append({
@@ -80,16 +90,20 @@ def build_plan(report: dict, manifest: dict, roots: dict[str, Path]) -> dict:
         "bytes": sum(item["bytes"] for item in entries),
     }
 
-def verify_entries(plan: dict, roots: dict[str, Path]) -> None:
+def verify_entries(plan: dict, roots: dict[str, Path], reject_tracked: bool = False) -> None:
+    tracked = ({project: tracked_paths(root) for project, root in roots.items()}
+               if reject_tracked else {})
     for entry in plan["entries"]:
+        if reject_tracked and entry["path"] in tracked[entry["project_id"]]:
+            raise RuntimeError(f"CLEANUP_TARGET_BECAME_TRACKED:{entry['project_id']}:{entry['path']}")
         path = safe_path(roots[entry["project_id"]], entry["path"])
         if not path.is_file() or path.is_symlink():
             raise RuntimeError(f"CLEANUP_TARGET_NOT_REGULAR:{entry['project_id']}:{entry['path']}")
         if path.stat().st_size != entry["bytes"] or sha256_file(path) != entry["sha256"]:
             raise RuntimeError(f"SOURCE_BYTE_MISMATCH:{entry['project_id']}:{entry['path']}")
 
-def remove_entries(plan: dict, roots: dict[str, Path]) -> dict:
-    verify_entries(plan, roots)
+def remove_entries(plan: dict, roots: dict[str, Path], reject_tracked: bool = False) -> dict:
+    verify_entries(plan, roots, reject_tracked=reject_tracked)
     parents = set()
     for entry in plan["entries"]:
         root = roots[entry["project_id"]].resolve()
@@ -128,6 +142,7 @@ def main() -> int:
     plan_cmd.add_argument("--retention-report", type=Path, required=True)
     plan_cmd.add_argument("--archive-manifest", type=Path, required=True)
     plan_cmd.add_argument("--archive-commit", required=True)
+    plan_cmd.add_argument("--include-disposable", action="store_true")
     execute_cmd = sub.add_parser("execute")
     execute_cmd.add_argument("--plan", type=Path, required=True)
     execute_cmd.add_argument("--authorization-sha256", required=True)
@@ -136,11 +151,11 @@ def main() -> int:
         report = json.loads(args.retention_report.read_text(encoding="utf-8"))
         manifest = json.loads(args.archive_manifest.read_text(encoding="utf-8"))
         verify_archive_commit(args.archive_commit, args.archive_manifest, manifest)
-        plan = build_plan(report, manifest, ROOTS)
+        plan = build_plan(report, manifest, ROOTS, include_disposable=args.include_disposable)
         plan.update({"archive_artifact_id": manifest["artifact_id"],
                      "archive_commit": args.archive_commit,
                      "archive_payload_sha256": manifest["payload_sha256"]})
-        verify_entries(plan, ROOTS)
+        verify_entries(plan, ROOTS, reject_tracked=True)
         path = write_json("cleanup-plan", plan)
         print(path)
         print(sha256_file(path))
@@ -148,7 +163,7 @@ def main() -> int:
         if sha256_file(args.plan) != args.authorization_sha256:
             raise RuntimeError("CLEANUP_PLAN_AUTHORIZATION_MISMATCH")
         plan = json.loads(args.plan.read_text(encoding="utf-8"))
-        receipt = remove_entries(plan, ROOTS)
+        receipt = remove_entries(plan, ROOTS, reject_tracked=True)
         receipt.update({"plan": str(args.plan), "plan_sha256": args.authorization_sha256,
                         "archive_commit": plan["archive_commit"]})
         print(write_json("cleanup-receipt", receipt))
