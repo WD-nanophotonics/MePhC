@@ -1,0 +1,74 @@
+{
+  "completed_artifacts": {
+    "native_canary_0": {
+      "sample_index": 0,
+      "schema": "trilatt_campaign_worker_artifact_v1",
+      "sha256": "9f0e7c4e3818eb175065fc357882d6fdca958400d4af1738d5bcee3edf75512a"
+    },
+    "native_canary_1": {
+      "sample_index": 1,
+      "schema": "trilatt_campaign_worker_artifact_v1",
+      "sha256": "3c63888d14e6f439a997aa5b9008fe5acd5fc75f07d574beddd17d2de98cd020"
+    },
+    "native_canary_2": {
+      "sample_index": 2,
+      "schema": "trilatt_campaign_worker_artifact_v1",
+      "sha256": "eb3dbdd73fcaa1a45c96f07cc482cdf71f492a5b5b190c136bcdc0e40462c582"
+    }
+  },
+  "completed_sample_ids": [
+    "native_canary_0",
+    "native_canary_1",
+    "native_canary_2"
+  ],
+  "expected_sample_ids": [
+    "native_canary_0",
+    "native_canary_1",
+    "native_canary_2"
+  ],
+  "generation": 3,
+  "identity": {
+    "execution_git_sha": "d761d6ea58e5703bef77f60a3788cf95bbe171e4",
+    "expected_sample_ids": [
+      "native_canary_0",
+      "native_canary_1",
+      "native_canary_2"
+    ],
+    "expected_sample_indices": [
+      0,
+      1,
+      2
+    ],
+    "plan_semantic_id": "c610cab0d9e93d5577cc41cd2c6b371c80e4214306eaa787560bfa89dd3a4cc9",
+    "raw_runtime_digest": null,
+    "runner_sha256": "d38a6647cc3b6a79b6da73cccaef3f139e9d4448be5aec68033f0b470a0c0e4a",
+    "scientific_contract_sha256": "bf9762b2d7af2961a9ac66bd0a0f24e9a7eb14940ab5dee1d55413f733310ae4",
+    "semantic_domain_id": "E9F_C1_NC1_SQUARE_CYLINDER",
+    "semantic_estimator_id": "NATIVE_MPB_LIFECYCLE_CANARY",
+    "semantic_spacing_id": "CANARY_SINGLE_COORDINATE"
+  },
+  "schema": "trilatt_campaign_checkpoint_v2",
+  "telemetry": {
+    "checkpoint_generation_count": 3,
+    "completed_sample_count": 3,
+    "peak_rss_kib": 23144,
+    "rejected_stale_artifact_count": 0,
+    "retry_count": 0,
+    "rss_available": true,
+    "worker_exit_status": [
+      {
+        "sample_id": "native_canary_0",
+        "status": 0
+      },
+      {
+        "sample_id": "native_canary_1",
+        "status": 0
+      },
+      {
+        "sample_id": "native_canary_2",
+        "status": 0
+      }
+    ],
+    "worker_failure_count": 0
+  }
+}

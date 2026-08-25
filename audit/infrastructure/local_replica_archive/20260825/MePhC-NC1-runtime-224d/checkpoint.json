@@ -1,0 +1,58 @@
+{
+  "completed_artifacts": {
+    "native_canary_0": {
+      "sample_index": 0,
+      "schema": "trilatt_campaign_worker_artifact_v1",
+      "sha256": "ea876fed42e41289122852dd59fa1f81403e7045965460ba7c57be75e0fd4b32"
+    }
+  },
+  "completed_sample_ids": [
+    "native_canary_0"
+  ],
+  "expected_sample_ids": [
+    "native_canary_0",
+    "native_canary_1",
+    "native_canary_2"
+  ],
+  "generation": 1,
+  "identity": {
+    "execution_git_sha": "de470833ac7ffa46eed6eeb6097ba8beaf7603ec",
+    "expected_sample_ids": [
+      "native_canary_0",
+      "native_canary_1",
+      "native_canary_2"
+    ],
+    "expected_sample_indices": [
+      0,
+      1,
+      2
+    ],
+    "plan_semantic_id": "c610cab0d9e93d5577cc41cd2c6b371c80e4214306eaa787560bfa89dd3a4cc9",
+    "raw_runtime_digest": [
+      0,
+      1,
+      2
+    ],
+    "runner_sha256": "3b26b59ac50b5be2606b9e714fd32fba884f0bb302b77f8bc223bfe0be10decd",
+    "scientific_contract_sha256": "bf9762b2d7af2961a9ac66bd0a0f24e9a7eb14940ab5dee1d55413f733310ae4",
+    "semantic_domain_id": "E9F_C1_NC1_SQUARE_CYLINDER",
+    "semantic_estimator_id": "NATIVE_MPB_LIFECYCLE_CANARY",
+    "semantic_spacing_id": "CANARY_SINGLE_COORDINATE"
+  },
+  "schema": "trilatt_campaign_checkpoint_v2",
+  "telemetry": {
+    "checkpoint_generation_count": 1,
+    "completed_sample_count": 0,
+    "peak_rss_kib": 24208,
+    "rejected_stale_artifact_count": 0,
+    "retry_count": 0,
+    "rss_available": true,
+    "worker_exit_status": [
+      {
+        "sample_id": "native_canary_0",
+        "status": 0
+      }
+    ],
+    "worker_failure_count": 0
+  }
+}

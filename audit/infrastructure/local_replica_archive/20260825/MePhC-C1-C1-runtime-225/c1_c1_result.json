@@ -1,0 +1,338 @@
+{
+  "canary_contract_sha256": "bf9762b2d7af2961a9ac66bd0a0f24e9a7eb14940ab5dee1d55413f733310ae4",
+  "execution_git_sha": "d761d6ea58e5703bef77f60a3788cf95bbe171e4",
+  "final_checkpoint_completed_artifact_count": 3,
+  "final_checkpoint_completed_sample_count": 3,
+  "final_checkpoint_generation": 3,
+  "main_unchanged": true,
+  "native_injected_failure_count": 1,
+  "native_reproducibility_max_abs_diff": 0.0,
+  "native_reproducibility_tolerance": 1e-08,
+  "native_successful_worker_count": 3,
+  "no_band2_recovery": true,
+  "no_berry_calculation": true,
+  "no_chern_calculation": true,
+  "no_three_band_sum": true,
+  "no_threshold_change": true,
+  "orphan_native_child_count": 0,
+  "orphan_native_child_counts_by_stage": {
+    "parent_a_exit": {
+      "orphan_count": 0,
+      "orphan_pids": []
+    },
+    "parent_a_native_canary_0": {
+      "direct_pid_gone": true,
+      "launched_pid": 573,
+      "orphan_count": 0,
+      "orphan_pids": [],
+      "sample_id": "native_canary_0"
+    },
+    "parent_b_exit": {
+      "orphan_count": 0,
+      "orphan_pids": []
+    },
+    "parent_b_native_canary_1": {
+      "direct_pid_gone": true,
+      "launched_pid": 615,
+      "orphan_count": 0,
+      "orphan_pids": [],
+      "sample_id": "native_canary_1"
+    },
+    "parent_b_native_canary_2": {
+      "direct_pid_gone": true,
+      "launched_pid": 627,
+      "orphan_count": 0,
+      "orphan_pids": [],
+      "sample_id": "native_canary_2"
+    }
+  },
+  "parent_a_exit_code": 0,
+  "parent_a_pid": 555,
+  "parent_a_rss_series_kib": [
+    23144
+  ],
+  "parent_a_summary": {
+    "checkpoint_generation": 1,
+    "faults": [],
+    "orphan_measurements": [
+      {
+        "direct_pid_gone": true,
+        "launched_pid": 573,
+        "orphan_count": 0,
+        "orphan_pids": [],
+        "sample_id": "native_canary_0"
+      }
+    ],
+    "parent_exit_code": 0,
+    "parent_native_import_free": true,
+    "parent_pid": 555,
+    "preflight": {
+      "dirty": false,
+      "execution_sha": "d761d6ea58e5703bef77f60a3788cf95bbe171e4",
+      "failures": [],
+      "identity": {
+        "execution_git_sha": "d761d6ea58e5703bef77f60a3788cf95bbe171e4",
+        "expected_sample_ids": [
+          "native_canary_0",
+          "native_canary_1",
+          "native_canary_2"
+        ],
+        "expected_sample_indices": [
+          0,
+          1,
+          2
+        ],
+        "plan_semantic_id": "c610cab0d9e93d5577cc41cd2c6b371c80e4214306eaa787560bfa89dd3a4cc9",
+        "raw_runtime_digest": null,
+        "runner_sha256": "d38a6647cc3b6a79b6da73cccaef3f139e9d4448be5aec68033f0b470a0c0e4a",
+        "scientific_contract_sha256": "bf9762b2d7af2961a9ac66bd0a0f24e9a7eb14940ab5dee1d55413f733310ae4",
+        "semantic_domain_id": "E9F_C1_NC1_SQUARE_CYLINDER",
+        "semantic_estimator_id": "NATIVE_MPB_LIFECYCLE_CANARY",
+        "semantic_spacing_id": "CANARY_SINGLE_COORDINATE"
+      },
+      "plan_semantic_id": "c610cab0d9e93d5577cc41cd2c6b371c80e4214306eaa787560bfa89dd3a4cc9",
+      "preflight_mode": "PRODUCTION_GIT",
+      "remote_ancestry_verified": true,
+      "remote_execution_object_verified": true,
+      "remote_head_sha": "d761d6ea58e5703bef77f60a3788cf95bbe171e4",
+      "remote_name": "origin",
+      "remote_ref": "refs/heads/sandbox",
+      "status": "REMOTE_EXECUTION_OBJECT_VERIFIED",
+      "worker_launch_authorized": true
+    },
+    "records": [
+      {
+        "WORKER_COORDINATE_USED": [
+          0.17,
+          0.23
+        ],
+        "end_time": 1787568241.3548386,
+        "exit_code": 0,
+        "frequency_digest": "870e413ea970f3d7694ba1a1cb2620d9304773dd6e54211a8e11ce68defbeb05",
+        "frequency_vector": [
+          0.2528502400256474,
+          0.5763668090782799
+        ],
+        "native_import_confirmed": true,
+        "peak_rss_kib": 138144,
+        "pid": 573,
+        "sample_id": "native_canary_0",
+        "sample_index": 0,
+        "schema": "trilatt_e9f_c1_nc1_child_v1",
+        "start_time": 1787568239.8041198
+      }
+    ],
+    "rss_series_kib": [
+      23144
+    ],
+    "sample0_artifact_sha": "9f0e7c4e3818eb175065fc357882d6fdca958400d4af1738d5bcee3edf75512a",
+    "stage": "A",
+    "worker_pids": [
+      573
+    ]
+  },
+  "parent_b_exit_code": 0,
+  "parent_b_pid": 585,
+  "parent_b_rss_series_kib": [
+    23144
+  ],
+  "parent_b_summary": {
+    "checkpoint_completed_sample_count": 3,
+    "checkpoint_generation": 3,
+    "faults": [
+      {
+        "returncode": 23,
+        "stderr_tail": ""
+      }
+    ],
+    "orphan_measurements": [
+      {
+        "direct_pid_gone": true,
+        "launched_pid": 603,
+        "orphan_count": 0,
+        "orphan_pids": [],
+        "sample_id": "native_canary_1"
+      },
+      {
+        "direct_pid_gone": true,
+        "launched_pid": 615,
+        "orphan_count": 0,
+        "orphan_pids": [],
+        "sample_id": "native_canary_1"
+      },
+      {
+        "direct_pid_gone": true,
+        "launched_pid": 627,
+        "orphan_count": 0,
+        "orphan_pids": [],
+        "sample_id": "native_canary_2"
+      }
+    ],
+    "parent_exit_code": 0,
+    "parent_native_import_free": true,
+    "parent_pid": 585,
+    "preflight": {
+      "dirty": false,
+      "execution_sha": "d761d6ea58e5703bef77f60a3788cf95bbe171e4",
+      "failures": [],
+      "identity": {
+        "execution_git_sha": "d761d6ea58e5703bef77f60a3788cf95bbe171e4",
+        "expected_sample_ids": [
+          "native_canary_0",
+          "native_canary_1",
+          "native_canary_2"
+        ],
+        "expected_sample_indices": [
+          0,
+          1,
+          2
+        ],
+        "plan_semantic_id": "c610cab0d9e93d5577cc41cd2c6b371c80e4214306eaa787560bfa89dd3a4cc9",
+        "raw_runtime_digest": null,
+        "runner_sha256": "d38a6647cc3b6a79b6da73cccaef3f139e9d4448be5aec68033f0b470a0c0e4a",
+        "scientific_contract_sha256": "bf9762b2d7af2961a9ac66bd0a0f24e9a7eb14940ab5dee1d55413f733310ae4",
+        "semantic_domain_id": "E9F_C1_NC1_SQUARE_CYLINDER",
+        "semantic_estimator_id": "NATIVE_MPB_LIFECYCLE_CANARY",
+        "semantic_spacing_id": "CANARY_SINGLE_COORDINATE"
+      },
+      "plan_semantic_id": "c610cab0d9e93d5577cc41cd2c6b371c80e4214306eaa787560bfa89dd3a4cc9",
+      "preflight_mode": "PRODUCTION_GIT",
+      "remote_ancestry_verified": true,
+      "remote_execution_object_verified": true,
+      "remote_head_sha": "d761d6ea58e5703bef77f60a3788cf95bbe171e4",
+      "remote_name": "origin",
+      "remote_ref": "refs/heads/sandbox",
+      "status": "REMOTE_EXECUTION_OBJECT_VERIFIED",
+      "worker_launch_authorized": true
+    },
+    "records": [
+      {
+        "WORKER_COORDINATE_USED": [
+          0.17,
+          0.23
+        ],
+        "end_time": 1787568243.8309531,
+        "exit_code": 0,
+        "frequency_digest": "870e413ea970f3d7694ba1a1cb2620d9304773dd6e54211a8e11ce68defbeb05",
+        "frequency_vector": [
+          0.2528502400256474,
+          0.5763668090782799
+        ],
+        "native_import_confirmed": true,
+        "peak_rss_kib": 137512,
+        "pid": 615,
+        "sample_id": "native_canary_1",
+        "sample_index": 1,
+        "schema": "trilatt_e9f_c1_nc1_child_v1",
+        "start_time": 1787568243.3198082
+      },
+      {
+        "WORKER_COORDINATE_USED": [
+          0.17,
+          0.23
+        ],
+        "end_time": 1787568244.5337532,
+        "exit_code": 0,
+        "frequency_digest": "870e413ea970f3d7694ba1a1cb2620d9304773dd6e54211a8e11ce68defbeb05",
+        "frequency_vector": [
+          0.2528502400256474,
+          0.5763668090782799
+        ],
+        "native_import_confirmed": true,
+        "peak_rss_kib": 137956,
+        "pid": 627,
+        "sample_id": "native_canary_2",
+        "sample_index": 2,
+        "schema": "trilatt_e9f_c1_nc1_child_v1",
+        "start_time": 1787568243.9837596
+      }
+    ],
+    "resumed_status": "COMPLETE",
+    "rss_series_kib": [
+      23144
+    ],
+    "sample0_artifact_sha_after_restart": "9f0e7c4e3818eb175065fc357882d6fdca958400d4af1738d5bcee3edf75512a",
+    "sample0_artifact_sha_before_restart": "9f0e7c4e3818eb175065fc357882d6fdca958400d4af1738d5bcee3edf75512a",
+    "sample0_recomputed": false,
+    "sample0_worker_pid_count": 0,
+    "stage": "B",
+    "worker_pids": [
+      615,
+      627
+    ]
+  },
+  "parent_controller_pid_a": 555,
+  "parent_controller_pid_b": 585,
+  "parent_process_restart_confirmed": true,
+  "phase": "E9F.C1.NC1.C1",
+  "plan_semantic_id": "c610cab0d9e93d5577cc41cd2c6b371c80e4214306eaa787560bfa89dd3a4cc9",
+  "records": [
+    {
+      "WORKER_COORDINATE_USED": [
+        0.17,
+        0.23
+      ],
+      "end_time": 1787568241.3548386,
+      "exit_code": 0,
+      "frequency_digest": "870e413ea970f3d7694ba1a1cb2620d9304773dd6e54211a8e11ce68defbeb05",
+      "frequency_vector": [
+        0.2528502400256474,
+        0.5763668090782799
+      ],
+      "native_import_confirmed": true,
+      "peak_rss_kib": 138144,
+      "pid": 573,
+      "sample_id": "native_canary_0",
+      "sample_index": 0,
+      "schema": "trilatt_e9f_c1_nc1_child_v1",
+      "start_time": 1787568239.8041198
+    },
+    {
+      "WORKER_COORDINATE_USED": [
+        0.17,
+        0.23
+      ],
+      "end_time": 1787568243.8309531,
+      "exit_code": 0,
+      "frequency_digest": "870e413ea970f3d7694ba1a1cb2620d9304773dd6e54211a8e11ce68defbeb05",
+      "frequency_vector": [
+        0.2528502400256474,
+        0.5763668090782799
+      ],
+      "native_import_confirmed": true,
+      "peak_rss_kib": 137512,
+      "pid": 615,
+      "sample_id": "native_canary_1",
+      "sample_index": 1,
+      "schema": "trilatt_e9f_c1_nc1_child_v1",
+      "start_time": 1787568243.3198082
+    },
+    {
+      "WORKER_COORDINATE_USED": [
+        0.17,
+        0.23
+      ],
+      "end_time": 1787568244.5337532,
+      "exit_code": 0,
+      "frequency_digest": "870e413ea970f3d7694ba1a1cb2620d9304773dd6e54211a8e11ce68defbeb05",
+      "frequency_vector": [
+        0.2528502400256474,
+        0.5763668090782799
+      ],
+      "native_import_confirmed": true,
+      "peak_rss_kib": 137956,
+      "pid": 627,
+      "sample_id": "native_canary_2",
+      "sample_index": 2,
+      "schema": "trilatt_e9f_c1_nc1_child_v1",
+      "start_time": 1787568243.9837596
+    }
+  ],
+  "runner_sha256": "d38a6647cc3b6a79b6da73cccaef3f139e9d4448be5aec68033f0b470a0c0e4a",
+  "sample0_artifact_sha_after_restart": "9f0e7c4e3818eb175065fc357882d6fdca958400d4af1738d5bcee3edf75512a",
+  "sample0_artifact_sha_before_restart": "9f0e7c4e3818eb175065fc357882d6fdca958400d4af1738d5bcee3edf75512a",
+  "sample0_recomputed": false,
+  "sample0_worker_pid_count": 0,
+  "schema": "trilatt_e9f_c1_nc1_c1_result_v1",
+  "status": "E9F_C1_NATIVE_PROCESS_BOUNDARY_VALIDATED_READY_FOR_RECOVERY_POLICY_DESIGN"
+}

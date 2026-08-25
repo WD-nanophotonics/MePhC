@@ -1,0 +1,130 @@
+{
+  "canary_contract_sha256": "bf9762b2d7af2961a9ac66bd0a0f24e9a7eb14940ab5dee1d55413f733310ae4",
+  "execution_git_sha": "8fb3af5eed59bcdfea70c9d89c0d7646230bc2ec",
+  "fault_records": [
+    {
+      "returncode": 23,
+      "stderr_tail": ""
+    }
+  ],
+  "injected_failure_count": 1,
+  "native_reproducibility_max_abs_diff": 2.0039525594484076e-14,
+  "no_band2_recovery": true,
+  "no_berry_calculation": true,
+  "no_chern_calculation": true,
+  "no_three_band_sum": true,
+  "no_threshold_change": true,
+  "orphan_native_child_count": 0,
+  "parent_restart_resume": "passed",
+  "parent_rss_series_kib": [
+    23612,
+    23612,
+    23612
+  ],
+  "plan_semantic_id": "c610cab0d9e93d5577cc41cd2c6b371c80e4214306eaa787560bfa89dd3a4cc9",
+  "real_origin_preflight": {
+    "dirty": false,
+    "execution_sha": "8fb3af5eed59bcdfea70c9d89c0d7646230bc2ec",
+    "failures": [],
+    "identity": {
+      "execution_git_sha": "8fb3af5eed59bcdfea70c9d89c0d7646230bc2ec",
+      "expected_sample_ids": [
+        "native_canary_0",
+        "native_canary_1",
+        "native_canary_2"
+      ],
+      "expected_sample_indices": [
+        0,
+        1,
+        2
+      ],
+      "plan_semantic_id": "c610cab0d9e93d5577cc41cd2c6b371c80e4214306eaa787560bfa89dd3a4cc9",
+      "raw_runtime_digest": null,
+      "runner_sha256": "d38a6647cc3b6a79b6da73cccaef3f139e9d4448be5aec68033f0b470a0c0e4a",
+      "scientific_contract_sha256": "bf9762b2d7af2961a9ac66bd0a0f24e9a7eb14940ab5dee1d55413f733310ae4",
+      "semantic_domain_id": "E9F_C1_NC1_SQUARE_CYLINDER",
+      "semantic_estimator_id": "NATIVE_MPB_LIFECYCLE_CANARY",
+      "semantic_spacing_id": "CANARY_SINGLE_COORDINATE"
+    },
+    "plan_semantic_id": "c610cab0d9e93d5577cc41cd2c6b371c80e4214306eaa787560bfa89dd3a4cc9",
+    "preflight_mode": "PRODUCTION_GIT",
+    "remote_ancestry_verified": true,
+    "remote_execution_object_verified": true,
+    "remote_head_sha": "8fb3af5eed59bcdfea70c9d89c0d7646230bc2ec",
+    "remote_name": "origin",
+    "remote_ref": "refs/heads/sandbox",
+    "status": "REMOTE_EXECUTION_OBJECT_VERIFIED",
+    "worker_launch_authorized": true
+  },
+  "records": [
+    {
+      "WORKER_COORDINATE_USED": [
+        0.17,
+        0.23
+      ],
+      "end_time": 1787565995.7839708,
+      "exit_code": 0,
+      "frequency_digest": "311a7223715ff305efae459e27417f2c4433ddcfc2d356bcaa2a6311a92bf667",
+      "frequency_vector": [
+        0.25285024002562734,
+        0.57636680907827
+      ],
+      "native_import_confirmed": true,
+      "peak_rss_kib": 137636,
+      "pid": 602,
+      "sample_id": "native_canary_0",
+      "sample_index": 0,
+      "schema": "trilatt_e9f_c1_nc1_child_v1",
+      "start_time": 1787565993.618456
+    },
+    {
+      "WORKER_COORDINATE_USED": [
+        0.17,
+        0.23
+      ],
+      "end_time": 1787565998.4790027,
+      "exit_code": 0,
+      "frequency_digest": "870e413ea970f3d7694ba1a1cb2620d9304773dd6e54211a8e11ce68defbeb05",
+      "frequency_vector": [
+        0.2528502400256474,
+        0.5763668090782799
+      ],
+      "native_import_confirmed": true,
+      "peak_rss_kib": 137680,
+      "pid": 642,
+      "sample_id": "native_canary_1",
+      "sample_index": 1,
+      "schema": "trilatt_e9f_c1_nc1_child_v1",
+      "start_time": 1787565997.9480925
+    },
+    {
+      "WORKER_COORDINATE_USED": [
+        0.17,
+        0.23
+      ],
+      "end_time": 1787565999.0642438,
+      "exit_code": 0,
+      "frequency_digest": "870e413ea970f3d7694ba1a1cb2620d9304773dd6e54211a8e11ce68defbeb05",
+      "frequency_vector": [
+        0.2528502400256474,
+        0.5763668090782799
+      ],
+      "native_import_confirmed": true,
+      "peak_rss_kib": 137756,
+      "pid": 654,
+      "sample_id": "native_canary_2",
+      "sample_index": 2,
+      "schema": "trilatt_e9f_c1_nc1_child_v1",
+      "start_time": 1787565998.5777714
+    }
+  ],
+  "reproducibility_tolerance": 1e-08,
+  "runner_sha256": "d38a6647cc3b6a79b6da73cccaef3f139e9d4448be5aec68033f0b470a0c0e4a",
+  "schema": "trilatt_e9f_c1_nc1_result_v1",
+  "successful_worker_count": 3,
+  "worker_artifact_sha256": {
+    "native_canary_0": "6486c8cffa64504aeea6224e34b0213f4a330d17ead6befd04cace7b9eab3582",
+    "native_canary_1": "3ad4416e69d962671e16d5b8a47f304d11a4705c1f957c92b912f1dc14bb4b5c",
+    "native_canary_2": "277424dc24f887f38a8fdf78b38a2097bcec17d4843f91357d728ef95c7a0c41"
+  }
+}
