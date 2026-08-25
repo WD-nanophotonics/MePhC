@@ -1,0 +1,21 @@
+{
+    "kind":  "mephc-relayctl-e2e-attestation",
+    "project_id":  "MEPHC",
+    "request_id":  "MEPHC-WORKFLOW-E2E-20260825-105238-3db426b2",
+    "request_sha256":  "f9711654c4ce06e36305fce3f5fbe6e6c8be4e74285f36d91cb6fbc6c676c71c",
+    "response_sha256":  "4f525f9abf4685df64a9b833dc7fbe1d3699c32021b7d9e94965d9a61a622f46",
+    "receipt_state":  "response_received",
+    "command_order":  [
+                          "validate",
+                          "preflight",
+                          "run"
+                      ],
+    "chat_ready":  true,
+    "submission_count":  1,
+    "attachments":  [
+
+                    ],
+    "alternate_browser_used":  false,
+    "recovery_only":  true,
+    "result":  "plain-text E2E receipt consumed; no new work order"
+}

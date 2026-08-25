@@ -1,0 +1,48 @@
+{
+    "kind":  "mephc-local-replica-retention",
+    "project_id":  "MEPHC",
+    "policy":  "Retain audit history only as commits on origin/sandbox; do not retain historical worktree copies locally.",
+    "primary_worktree":  {
+                             "path":  "/home/icy/MePhC",
+                             "action":  "retain",
+                             "reason":  "current user-owned dirty scientific worktree"
+                         },
+    "remote_sandbox_verified":  "40b60e46ce8b1e6af453e425ea81dada95724e14",
+    "detached_worktrees_to_retire":  [
+                                         "/home/icy/MePhC-C1-214",
+                                         "/home/icy/MePhC-C1-214-clean",
+                                         "/home/icy/MePhC-C1-214-rp2-c1",
+                                         "/home/icy/MePhC-C1-214-rp2-c1-pub",
+                                         "/home/icy/MePhC-C1-214-rp2-clean2",
+                                         "/home/icy/MePhC-C1-214-rp2-clean3",
+                                         "/home/icy/MePhC-C1-214-rp2-clean4",
+                                         "/home/icy/MePhC-NC1-clean",
+                                         "/home/icy/MePhC/.c3-c1-prelive",
+                                         "/home/icy/MePhC/.c3-c1-run-20260825",
+                                         "/home/icy/MePhC/.c3-c1-run2-20260825",
+                                         "/home/icy/MePhC/.c3-c2-live",
+                                         "/home/icy/MePhC/.c3-c3-live",
+                                         "/home/icy/MePhC/.c3-c4-live",
+                                         "/home/icy/MePhC/.c3-c5-c1-attest",
+                                         "/home/icy/MePhC/.c3-c5-c1-c1-attest",
+                                         "/home/icy/MePhC/.c3-c5-c1-live",
+                                         "/home/icy/MePhC/.c3-c5-c1-live2",
+                                         "/home/icy/MePhC/.c3-c5-c1-live3",
+                                         "/home/icy/MePhC/.c3-c5-c1-live4",
+                                         "/home/icy/MePhC/.c3-c5-c1-s1-attest",
+                                         "/home/icy/MePhC/.c3-c5-live",
+                                         "/home/icy/MePhC/.c3-c5-live2",
+                                         "/home/icy/MePhC/.c3-rp3-a-exec",
+                                         "/home/icy/MePhC/.c3-rp3-a-prelive",
+                                         "/home/icy/MePhC/.c3-rp3-b-c1c1",
+                                         "/home/icy/MePhC/.c3-rp3-b-clean",
+                                         "/home/icy/MePhC/.c3-rp3-b-exec",
+                                         "/home/icy/MePhC/.c3-run-wsl-20260825"
+                                     ],
+    "active_relayctl_worktree":  {
+                                     "path":  "/home/icy/MePhC/.relayctl-dev",
+                                     "action":  "retire after this record is committed and pushed",
+                                     "evidence":  "relayctl_e2e_20260825.json"
+                                 },
+    "safety_rule":  "Do not remove a dirty worktree or an object not reachable from verified origin/sandbox."
+}
