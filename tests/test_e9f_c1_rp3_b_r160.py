@@ -72,3 +72,35 @@ def test_no_dense_projector_allocation_path_is_retained():
     text=(ROOT/"audit/e9f/rp3_b_r160_runtime.py").read_text()
     worker=(ROOT/"audit/e9f/rp3_b_r160_worker.py").read_text()
     assert "compute_worker" in worker and "small" not in text.lower() or "dense" not in worker.lower()
+
+@pytest.mark.parametrize("mutation",["duplicate_worker","out_of_order","skipped_prefix","wrong_logical","wrong_resolution","wrong_execution","wrong_contract","wrong_policy","wrong_top_generation","item_generation_99","duplicate_generation","permuted_generation","missing_payload","file_hash","body_hash","payload_identity","provider_resolution","orphan"])
+def test_required_adversarial_mutations_fail_closed(mutation):
+    rows=rp3.build_plan(ROOT); cp=checkpoint()
+    if mutation=="duplicate_worker": cp["completed_workers"][1]["worker_id"]=cp["completed_workers"][0]["worker_id"]
+    elif mutation=="out_of_order": cp["completed_workers"][0],cp["completed_workers"][1]=cp["completed_workers"][1],cp["completed_workers"][0]
+    elif mutation=="skipped_prefix": cp["completed_workers"][0]["worker_id"]=cp["completed_workers"][2]["worker_id"]
+    elif mutation=="wrong_logical": cp["completed_workers"][0]["logical_sample_index"]=99
+    elif mutation=="wrong_resolution" or mutation=="provider_resolution": cp["completed_workers"][0]["resolution"]=128
+    elif mutation=="wrong_execution": cp["completed_workers"][0]["execution_sha"]="bad"
+    elif mutation=="wrong_contract": cp["completed_workers"][0]["contract_sha256"]="bad"
+    elif mutation=="wrong_policy": cp["completed_workers"][0]["policy_sha256"]="bad"
+    elif mutation=="wrong_top_generation": cp["generation"]=5
+    elif mutation=="item_generation_99": cp["completed_workers"][0]["item_generation"]=99
+    elif mutation=="duplicate_generation": cp["completed_workers"][1]["item_generation"]=1
+    elif mutation=="permuted_generation": cp["completed_workers"][0]["item_generation"],cp["completed_workers"][1]["item_generation"]=2,1
+    elif mutation=="missing_payload": cp["completed_workers"][0]["payload_path"]="/missing"
+    elif mutation=="file_hash": cp["completed_workers"][0]["payload_file_sha256"]="bad"
+    elif mutation=="body_hash": cp["completed_workers"][0]["payload_body_sha256"]="bad"
+    elif mutation=="payload_identity": cp["completed_workers"][0]["source_sample_id"]="bad"
+    with pytest.raises((ValueError,FileNotFoundError,KeyError)):
+        rp3.validate_checkpoint(cp,root=ROOT,rows=rows,orphan_scan=(lambda ids: [1234]) if mutation=="orphan" else (lambda ids: []))
+
+def test_required_source_guards_and_firewalls():
+    import inspect
+    from audit.e9f import c3_c5_runtime as c35
+    src=inspect.getsource(c35.compute_worker)
+    assert "dense" not in src.lower() or "small" in src.lower()
+    import ast
+    tree=ast.parse((ROOT/"audit/e9f/rp3_b_r160_runner.py").read_text())
+    literals=[n.value for n in ast.walk(tree) if isinstance(n,ast.Constant)]
+    assert 160 in literals and 128 not in literals and 192 not in literals
