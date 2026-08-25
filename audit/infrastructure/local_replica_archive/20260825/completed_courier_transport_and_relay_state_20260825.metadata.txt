@@ -1,0 +1,9 @@
+ARCHIVE_CLASS=COMPLETED_RECOVERED_COURIER_AND_EPHEMERAL_RELAY_STATE
+ORIGINAL_ROOT=/home/icy/MePhC
+ARCHIVE_PATH=audit/infrastructure/local_replica_archive/20260825/completed_courier_transport_and_relay_state_20260825.tar.gz
+MANIFEST_PATH=audit/infrastructure/local_replica_archive/20260825/completed_courier_transport_and_relay_state_20260825.SHA256SUMS.txt
+FILE_COUNT=83
+BYTE_COUNT=1069654
+ALL_COURIER_REQUESTS=response_received
+ACTIVE_REQUESTS=NONE
+SCIENCE_INTERPRETATION=NONE
