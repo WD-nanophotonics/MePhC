@@ -58,6 +58,25 @@ def test_secret_or_unknown_classification_is_rejected():
         planner.build_plan(retention, manifest, "e" * 40)
 
 
+def test_runtime_package_missing_sha_is_recomputed_exactly(tmp_path, monkeypatch):
+    data = b"package code"
+    source = tmp_path / "Lib/site-packages/library/token.py"
+    source.parent.mkdir(parents=True)
+    source.write_bytes(data)
+    retention, manifest = fixture("DISPOSABLE_GENERATED")
+    item = retention["copy_roots"][0]["files"][0]
+    item.update({
+        "path": "Lib/site-packages/library/token.py",
+        "bytes": len(data),
+        "disposable_reason": "REBUILDABLE_RUNTIME_PACKAGE_CODE",
+    })
+    item.pop("sha256")
+    retention["copy_roots"][0]["path"] = str(tmp_path)
+    monkeypatch.setitem(planner.COPY_ROOTS, "AGENTRELAY", tmp_path)
+    plan = planner.build_plan(retention, manifest, "e" * 40)
+    assert plan["copy_root_files"][0]["sha256"] == planner.hashlib.sha256(data).hexdigest()
+
+
 def test_planner_has_no_delete_primitive():
     text = Path(planner.__file__).read_text(encoding="utf-8")
     for forbidden in (".unlink(", "rmtree(", "remove(", "git clean", "git reset"):

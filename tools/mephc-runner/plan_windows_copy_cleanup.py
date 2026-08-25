@@ -43,6 +43,28 @@ def canonical_sha256(value: dict[str, Any]) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
+def deletion_sha256(item: dict[str, Any], root: Path) -> str:
+    claimed = item.get("sha256")
+    if claimed:
+        return claimed
+    if item.get("disposable_reason") != "REBUILDABLE_RUNTIME_PACKAGE_CODE":
+        raise RuntimeError(f"DELETE_SHA_MISSING:{item['path']}")
+    relative = Path(item["path"])
+    if relative.is_absolute() or ".." in relative.parts:
+        raise RuntimeError(f"UNSAFE_DELETE_PATH:{item['path']}")
+    source = root.joinpath(relative)
+    resolved_root, resolved_source = root.resolve(), source.resolve()
+    if resolved_root not in resolved_source.parents or not source.is_file() or source.is_symlink():
+        raise RuntimeError(f"UNSAFE_DELETE_PATH:{item['path']}")
+    if source.stat().st_size != item["bytes"]:
+        raise RuntimeError(f"DELETE_SIZE_MISMATCH:{item['path']}")
+    digest = hashlib.sha256()
+    with source.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def archive_index(manifest: dict[str, Any]) -> dict[tuple[str, str, str], dict[str, Any]]:
     result = {}
     for item in manifest["files"]:
@@ -92,14 +114,13 @@ def build_plan(
                 }
             else:
                 raise RuntimeError(f"UNSAFE_CLASSIFICATION:{project_id}:{relative}:{classification}")
-            if not item.get("sha256"):
-                raise RuntimeError(f"DELETE_SHA_MISSING:{project_id}:{relative}")
+            sha256 = deletion_sha256(item, expected_root)
             delete_files.append({
                 "project_id": project_id,
                 "root": str(expected_root),
                 "path": relative,
                 "bytes": item["bytes"],
-                "sha256": item["sha256"],
+                "sha256": sha256,
                 "classification": classification,
                 "retention_basis": retention_basis,
             })
