@@ -1,4 +1,4 @@
-﻿{
+{
     "schema":  "mephc_e9f_c1_rp3_b_c1_c1_process_science_seal_v1",
     "work_order_id":  "MEPHC-E9F-C1-RP3-B-C1-C1-C1-20260825-268",
     "authoritative_execution_sha":  "6fe10738d639f0f72987d0612442010339f719d9",
@@ -30,7 +30,7 @@
     "current_0p02_qualification_unchanged":  true,
     "production_mephc_unchanged":  true,
     "agents_unchanged":  true,
-    "process_seal_report_sha256":  "0441552a5207deb8596d3559180ff763021bfe0fa97d8aca6517621508dc13fb",
+    "process_seal_report_sha256":  "114ca369152fb03eb143304069e2e9c1d9af4ac7d84c71e8108f9e8a5a781114",
     "historical_prelive_attestation_sha256":  "6bc1f9f3f92e6fefeac3b86273e94ad8c017962fbd5a0a13caf8bbe88df88a26",
     "provider_construction_interception_path":  "audit.e9f.c3_c5_runtime.compute_worker -\u003e make_provider",
     "provider_construction_positive_resolution":  160,

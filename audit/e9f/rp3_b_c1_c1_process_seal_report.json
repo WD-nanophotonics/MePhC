@@ -1,4 +1,4 @@
-﻿{
+{
     "schema":  "mephc_e9f_c1_rp3_b_c1_c1_process_seal_report_v1",
     "work_order_id":  "MEPHC-E9F-C1-RP3-B-C1-C1-C1-20260825-268",
     "action":  "COMPLETE_PROVIDER_CONSTRUCTION_FAIL_CLOSED_REGRESSION_AND_RESEAL_PROCESS_REGISTRY",
@@ -37,5 +37,7 @@
     "attachments":  [
 
                     ],
-    "alternate_browser_used":  false
+    "alternate_browser_used":  false,
+    "implementation_publication_sha":  "79008db",
+    "prior_seal_commit_sha":  "b64fdb64f910fb6a94d901e079e4400ee07093fd"
 }
