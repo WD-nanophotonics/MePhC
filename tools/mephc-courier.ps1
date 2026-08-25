@@ -21,7 +21,7 @@ try {
   $separator=[string][char]92
   $wslPrefix=$separator + $separator + 'wsl.localhost' + $separator + 'Ubuntu'
   $expectedOutbox=$wslPrefix + $certificate.worktree.Replace('/',$separator) + $separator + '.relayctl' + $separator + 'outbox' + $separator
-  if(-not $request.StartsWith($expectedOutbox,[System.StringComparison]::OrdinalIgnoreCase)){ Fail 'ROOT_MISMATCH' 'request does not match its certified native worktree outbox' }
+  if(-not $request.StartsWith($expectedOutbox,[System.StringComparison]::OrdinalIgnoreCase)){ Emit 'ROOT_MISMATCH' $false @{request=$request;expected_outbox=$expectedOutbox}; exit 2 }
   if(-not(Test-Path -LiteralPath $Courier -PathType Leaf)){ Fail 'COURIER_HARD_STOP' 'approved Courier launcher is unavailable' }
   $receiptPath=Join-Path $request 'receipt.json'
   if($RecoveryOnly){
