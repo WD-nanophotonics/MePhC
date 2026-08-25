@@ -8,7 +8,7 @@ function Fail([string]$Code,[string]$Detail) { Emit $Code $false @{detail=$Detai
 function Hash([string]$Path) { (Get-FileHash -Algorithm SHA256 -LiteralPath $Path).Hash.ToLowerInvariant() }
 try {
   $request=(Resolve-Path -LiteralPath $RequestDirectory).Path
-  if(-not $request.StartsWith($MePhCRoot+'\',[System.StringComparison]::OrdinalIgnoreCase) -or $request -notmatch '\\.relayctl\\outbox\\'){ Fail 'ROOT_MISMATCH' 'request is not inside a fixed native MePhC worktree outbox' }
+  if((-not $request.StartsWith($MePhCRoot+'\',[System.StringComparison]::OrdinalIgnoreCase)) -or (-not $request.Contains('.relayctl\outbox\'))){ Fail 'ROOT_MISMATCH' 'request is not inside a fixed native MePhC worktree outbox' }
   if(-not(Test-Path -LiteralPath $Courier -PathType Leaf)){ Fail 'COURIER_HARD_STOP' 'approved Courier launcher is unavailable' }
   $manifestPath=Join-Path $request 'request.json'; $manifest=Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
   if($manifest.project_id -ne 'MEPHC'){ Fail 'ROOT_MISMATCH' 'only PROJECT_ID=MEPHC is accepted' }
