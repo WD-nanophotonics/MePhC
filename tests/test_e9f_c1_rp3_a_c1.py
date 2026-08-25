@@ -107,5 +107,5 @@ def test_final_rp3_a_c1_process_seal_is_closed_and_bound():
     assert seal["rel_052_status"] == "CLOSED"
     assert seal["rel_054_status"] == "CLOSED"
     assert seal["native_solves_performed_by_c1"] == 0
-    assert seal["pytest_node_count"] == 80
+    assert seal["pytest_node_count"] == 81
     assert seal["pytest_failed_count"] == 0
