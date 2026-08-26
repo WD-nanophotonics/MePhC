@@ -1,0 +1,71 @@
+{
+  "schema": "mephc-e9f-c1-rp4-b-c1-science-seal-finalization-v1",
+  "work_order_id": "MEPHC-E9F-C1-RP4-B-C1-20260826-275",
+  "base_sandbox_sha": "56a55c8a814131a1bbd05f9fc5aefcf3afd74982",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "scientific_endpoint_finalized": true,
+  "source_bound_band2_close_incomplete_under_current_contract": true,
+  "band2_numeric_chern_forbidden": true,
+  "composite_subspace_observable_not_used_in_source_reproduction": true,
+  "non_equivalent_to_source_bound_band2": true,
+  "r192_required_before_current_science_decision": false,
+  "current_0p02_qualification_unchanged": true,
+  "actual_committed_publication_sha": "56a55c8a814131a1bbd05f9fc5aefcf3afd74982",
+  "old_publication_state_classification": "historical pre-publication state: rp4_b_e9f_c1_science_seal_report.json pending_sandbox_publication field predates actual commit 56a55c8a814131a1bbd05f9fc5aefcf3afd74982",
+  "endpoint": {
+    "band0": "REPORTED:-0.09405797052154485:551/551",
+    "band1": "REPORTED:+0.5086915675292921:551/551",
+    "band2": "INCOMPLETE_NOT_REPORTED:534/551:17_FAILED:NO_NUMERIC_CHERN"
+  },
+  "execution": {
+    "native_solves": 0,
+    "mpb_execution": false
+  },
+  "path_bound_artifacts": {
+    "rp4_b_science_seal": {
+      "path": "audit/e9f/rp4_b_e9f_c1_science_seal.json",
+      "sha256": "a2dfcc69ccab3cca316c31271a55ec9ccf96a82f2607ee5d5c77a218ef990a2d"
+    },
+    "rp4_b_science_seal_report": {
+      "path": "audit/e9f/rp4_b_e9f_c1_science_seal_report.json",
+      "sha256": "43a970ee81431680c0cff04176727c5fae48cbdbe7ec76fcca006443a5999e78"
+    },
+    "rp4_a_evidence_matrix": {
+      "path": "audit/e9f/rp4_a_existing_evidence_matrix.json",
+      "sha256": "8124da6ad077d0b6049bbe36d430d654cea77bcf3e855956e74fa81065d2e78c"
+    },
+    "rp4_a_science_decision": {
+      "path": "audit/e9f/rp4_a_science_decision.json",
+      "sha256": "a540f30984c889ab6e46d5bda4cffc715e40416bb46cbe55a056c6112f5f7c8c"
+    },
+    "r160_compact_trace": {
+      "path": "audit/e9f/rp3_b_r160_compact_trace.json",
+      "sha256": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487"
+    },
+    "r128_compact_trace": {
+      "path": "audit/e9f/rp3_a_r128_compact_trace.json",
+      "sha256": "898cb798fb39228aba786582972b11df17c00c7c3a63124e55716b4b2f5ccef7"
+    },
+    "historical_process_seal": {
+      "path": "audit/e9f/rp3_b_c1_c1_process_science_seal.json",
+      "sha256": "b8467246fa4e90a3af38f1e5f0ac8ffd483ea36695e1077c09f0543cabff0d2c"
+    },
+    "actual_reliability_registry": {
+      "path": "audit/e9f/rp3_b_c1_c1_process_reliability_registry.json",
+      "sha256": "9f1dcf010e4fdf35967317f952177d3aaa3d3931e6c8237b443ad450b1d2d22e"
+    },
+    "provenance_correction": {
+      "path": "audit/e9f/rp4_b_c1_provenance_correction.json",
+      "sha256": "4cb5319a4faba71f5e8bc158d81ec67a67376a7c14b4cc9fe42235a64c4fced1"
+    },
+    "new_process_reliability_registry": {
+      "path": "audit/e9f/rp4_b_c1_process_reliability_registry.json",
+      "sha256": "fc1d48e38c7db1f618dd0934ca954bafcac464a1309c70bf792bcf9c2f27822c"
+    }
+  },
+  "immutable_r160": {
+    "result_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+    "manifest_sha256": "307360273e86a5ee8cc83b8eb01a87d2ccd9f6a8815e7f2612fb7decdf8888b1",
+    "checkpoint_sha256": "17b1967b75177e63c9026b548a984f507033ba7f90e0d8a22e403d19cfcfeb0a"
+  }
+}

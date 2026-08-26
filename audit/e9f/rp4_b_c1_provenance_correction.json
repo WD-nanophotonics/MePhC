@@ -1,0 +1,20 @@
+{
+  "schema": "mephc-e9f-c1-rp4-b-c1-provenance-correction-v1",
+  "incident_id": "REL-058",
+  "work_order_id": "MEPHC-E9F-C1-RP4-B-C1-20260826-275",
+  "base_sandbox_sha": "56a55c8a814131a1bbd05f9fc5aefcf3afd74982",
+  "historical_process_seal_path": "audit/e9f/rp3_b_c1_c1_process_science_seal.json",
+  "historical_process_seal_raw_sha256": "b8467246fa4e90a3af38f1e5f0ac8ffd483ea36695e1077c09f0543cabff0d2c",
+  "historical_embedded_registry_sha256": "9f1dcfce4e4fdf35967317f952177d3aaa3d3931e6c8237b443ad450b1d2d22e",
+  "actual_registry_path": "audit/e9f/rp3_b_c1_c1_process_reliability_registry.json",
+  "actual_registry_sha256": "9f1dcf010e4fdf35967317f952177d3aaa3d3931e6c8237b443ad450b1d2d22e",
+  "mismatch": true,
+  "scientific_result_impact": "NONE",
+  "native_execution_required": false,
+  "historical_artifact_rewritten": false,
+  "correction_reason": "REL-058 post-hoc immutable provenance correction: historical process seal embedded a stale or incorrect reliability-registry SHA256; the actual committed registry bytes are retained and bound without changing historical evidence.",
+  "execution": {
+    "native_solves": 0,
+    "mpb_execution": false
+  }
+}

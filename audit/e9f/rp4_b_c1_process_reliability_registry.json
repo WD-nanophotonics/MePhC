@@ -1,0 +1,222 @@
+{
+  "schema": "mephc-e9f-c1-rp4-b-c1-process-reliability-registry-v1",
+  "work_order_id": "MEPHC-E9F-C1-RP4-B-C1-20260826-275",
+  "base_sandbox_sha": "56a55c8a814131a1bbd05f9fc5aefcf3afd74982",
+  "pipeline_health": "PIPELINE_HEALTHY_WITH_TECH_DEBT",
+  "historical_registry": {
+    "path": "audit/e9f/rp3_b_c1_c1_process_reliability_registry.json",
+    "sha256": "9f1dcf010e4fdf35967317f952177d3aaa3d3931e6c8237b443ad450b1d2d22e"
+  },
+  "incidents": [
+    {
+      "incident_id": "REL-021",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-022",
+      "priority": "P2",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-023",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-024",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-025",
+      "priority": "P2",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-026",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-027",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-028",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-029",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-030",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-031",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-032",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-033",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-034",
+      "priority": "P2",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-035",
+      "priority": "P2",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-036",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-037",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-038",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-039",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-040",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-041",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-042",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-043",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-044",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-045",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-046",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-047",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-048",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-049",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-050",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-051",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-052",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-053",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-054",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-055",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-056",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-057",
+      "priority": "P1",
+      "status": "CLOSED"
+    },
+    {
+      "incident_id": "REL-058",
+      "priority": "P1",
+      "status": "CLOSED"
+    }
+  ],
+  "p2_items": [
+    "REL-022",
+    "REL-025",
+    "REL-034",
+    "REL-035"
+  ],
+  "closure_evidence": {
+    "REL-058": {
+      "provenance_correction_path": "audit/e9f/rp4_b_c1_provenance_correction.json",
+      "cross_artifact_test": "tests/test_rp4_b_c1_science_seal_finalization.py",
+      "historical_artifact_rewritten": false
+    }
+  },
+  "process_registry_all_closed": true,
+  "retained_technical_debt": [
+    {
+      "item": "historical 87eb native-solve-count",
+      "status": "UNKNOWN"
+    }
+  ]
+}
