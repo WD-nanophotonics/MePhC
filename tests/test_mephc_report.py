@@ -49,3 +49,9 @@ def test_report_creates_one_request_and_reuses_it_for_timeout_recovery(tmp_path,
     (request_dir / "receipt.json").write_text('{"state":"response_timeout"}\n', encoding="utf-8")
     mcp.report(args)
     assert calls[-1][1][-1] == "--recovery-only"
+
+
+def test_agents_directs_new_reports_to_typed_report_constructor():
+    agents = (Path(__file__).parents[1] / "AGENTS.md").read_text(encoding="utf-8")
+    assert "mephc_report(work_order_id, message_utf8)" in agents
+    assert "never create a request directory" in agents

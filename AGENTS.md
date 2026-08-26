@@ -7,7 +7,7 @@ Every Agent starts with `mephc_capabilities -> mephc_doctor -> mephc_resume`. Em
 
 ## Mandatory Agent-facing entry point
 
-This policy is enforced by the MePhC Runner. At task start and after context recovery, Agents must call `mephc_capabilities`. All Agent-facing operations must use the typed connector: `mephc_doctor` for certification; `mephc_change` for exact declared UTF-8 changes; `mephc_submit` for typed worktree, prelive, native, publish, and courier jobs; and `mephc_status`, `mephc_wait`, or `mephc_recover` for durable observation and recovery.
+This policy is enforced by the MePhC Runner. At task start and after context recovery, Agents must call `mephc_capabilities`. All Agent-facing operations must use the typed connector: `mephc_doctor` for certification; `mephc_change` for exact declared UTF-8 changes; `mephc_submit` for typed worktree, prelive, native, publish, and existing-request Courier jobs; `mephc_report` to create or reuse the only report request for the active work order; and `mephc_status`, `mephc_wait`, or `mephc_recover` for durable observation and recovery.
 
 The connector fixes `canonical_root=/home/icy/MePhC`, `project_id=MEPHC`, Git state, Conda Python, `PYTHONPATH`, and installed broker/worker builds. It rejects TriLatt, UNC or Windows execution roots, wrong interpreters, dirty execution trees, uncommitted prelive state, source-byte drift, moved `origin/main`, duplicate claims, and unsafe Courier recovery.
 
@@ -29,7 +29,7 @@ The relay lifecycle is stateful:
 1. Use the existing request directory and request ID when a request has
    already been submitted or may have been submitted. Never create a second
    request merely because the first local process ended unexpectedly.
-2. For a new request, invoke only `mephc_submit(operation="courier", arguments=["--request-directory", "<request-dir>"])`. The Runner performs validation and the durable FIFO run internally; do not call validate, preflight, run, Browser, Chrome, Gmail, `relayctl`, or a second transport. Queue waiting is normal. Observe with `mephc_wait` or `mephc_status`; a client wait timeout never kills the worker or authorizes resend. The reply window starts only after request_submitted.
+2. To report a completed active work order, invoke only `mephc_report(work_order_id, message_utf8)`. It constructs or reuses the sole certificate-bound, attachment-free MePhC request and returns its Courier job; never create a request directory, `request.json`, `message.txt`, certificate path, destination, or idempotency key yourself. For an already-created request, invoke only `mephc_submit(operation="courier", arguments=["--request-directory", "<existing-request-dir>"])` or the typed recovery action. The Runner performs validation and the durable FIFO run internally; do not call validate, preflight, run, Browser, Chrome, Gmail, `relayctl`, or a second transport. Queue waiting is normal. Observe with `mephc_wait` or `mephc_status`; a client wait timeout never kills the worker or authorizes resend. The reply window starts only after request_submitted.
 3. response_received is the only state that permits reading response.txt.
    Read it verbatim, treat the contained supervisor work order as the next
    authoritative task input, and continue automatically without asking for
@@ -73,7 +73,8 @@ Playwright/CDP-managed Courier browser session. Never use the Codex Browser
 skill, Chrome control, Gmail directly, or a parallel reader for the same
 request. The exact ordinary Agent-facing sequence is:
 
-mephc_submit(operation="courier", arguments=["--request-directory", "<request-dir>"])
+mephc_report(work_order_id, message_utf8) for a new completion or status report
+mephc_submit(operation="courier", arguments=["--request-directory", "<existing-request-dir>"]) only for an already-created immutable request
 mephc_wait(job_id) or mephc_status(job_id)
 mephc_recover(job_id) only when the persisted receipt requires recovery
 
