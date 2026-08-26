@@ -1,0 +1,41 @@
+{
+  "schema": "mephc_e9f_c1_rp4_a_existing_evidence_matrix_v1",
+  "work_order_id": "MEPHC-E9F-C1-RP4-A-20260826-273",
+  "solver_free": true,
+  "native_solve_count": 0,
+  "authoritative_inputs": {
+    "r160_execution_sha": "6fe10738d639f0f72987d0612442010339f719d9",
+    "r160_result_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+    "r160_manifest_sha256": "307360273e86a5ee8cc83b8eb01a87d2ccd9f6a8815e7f2612fb7decdf8888b1",
+    "r160_checkpoint_sha256": "17b1967b75177e63c9026b548a984f507033ba7f90e0d8a22e403d19cfcfeb0a",
+    "r160_compact_trace_sha256": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487",
+    "r128_compact_trace_sha256": "898cb798fb39228aba786582972b11df17c00c7c3a63124e55716b4b2f5ccef7"
+  },
+  "source_bound_individual_band_outcomes": [
+    {"zero_based_band":0,"qualified":"551/551","chern":-0.09405797052154485,"status":"REPORTED"},
+    {"zero_based_band":1,"qualified":"551/551","chern":0.5086915675292921,"status":"REPORTED"},
+    {"zero_based_band":2,"qualified":"534/551","status":"INCOMPLETE_NOT_REPORTED","numeric_chern_forbidden":true}
+  ],
+  "original_17_band2_failures": {
+    "finite_stencil_recoverable_centers":11,
+    "persistent_true_low_gap_centers":[[-34,-17],[-34,-16],[-34,16],[-34,17],[-5,0],[-4,0]]
+  },
+  "concept_separation": {"integration_grid_spacing":"source estimator sampling","local_plaquette_stencil":"Berry-curvature local finite stencil","solver_spatial_resolution":"independent numerical-resolution diagnostic"},
+  "persistent_center_evidence": {
+    "available_resolutions":["R64","R96","R128","R160"],
+    "external_spectral_gaps":"present in accepted compact traces; all six remain below the frozen 0.02 qualification contract at the source-bound band2 decision point",
+    "rank1_shadow":"not recovered",
+    "rank2_qualification":"does not supply an individual-band2 identity",
+    "H_representation_conditioning":"must remain distinct from spectral isolation and identity continuity",
+    "association_identity_continuity":"accepted association evidence is not a gauge-invariant rank1 splitting through the low-gap region",
+    "curvature_behavior":"R160 has 22/24 contracting branch-stencil rows: band3 12/12, band2 10/12; (-4,0) is the dominant band2 noncontraction, (-5,0) contracts slowly; L0 spectral changes are modest"
+  },
+  "observable_analysis": {
+    "G1_rank1_individual_band2":{"gauge_invariant_when":"isolated rank1 projector is defined continuously","required_isolation":"source 0.02 external-gap qualification","represents":"source-bound individual band2","current_status":"incomplete"},
+    "G2_rank2_trace_band2_plus_band3":{"gauge_invariant_when":"isolated rank2 subspace projector is defined","required_isolation":"rank2 subspace isolated from complement","represents":"non-Abelian trace curvature of composite subspace","equals_source_bound_band2":false},
+    "G3_mixed_rank":{"gauge_invariant_when":"only after a separately contracted gauge-invariant gluing/splitting construction","represents":"a new observable, not source band2","equals_source_bound_band2":false}
+  },
+  "rank2_assignment_prohibition":"Tr(F) for rank2 band2+band3 cannot be assigned to individual band2 without an additional gauge-invariant splitting.",
+  "threshold_0p02_epistemic_status":["SOURCE_MANDATED","HISTORICAL_ENGINEERING_POLICY"],
+  "threshold_validation_requirements":["solver-resolution convergence","overlap conditioning","association ambiguity controls","curvature convergence","exact/avoided-degeneracy controls","gauge invariance","solver-order invariance","fail-closed endpoint behavior"]
+}

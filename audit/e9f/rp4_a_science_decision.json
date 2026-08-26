@@ -1,0 +1,21 @@
+{
+  "schema": "mephc_e9f_c1_rp4_a_science_decision_v1",
+  "work_order_id": "MEPHC-E9F-C1-RP4-A-20260826-273",
+  "base_sandbox_sha": "eedf2cfe4e9618cb334c7b066ac5be711cbef55e",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "solver_free": true,
+  "native_solve_count": 0,
+  "mpb_execution": false,
+  "primary_decision": "SOURCE_BOUND_BAND2_CLOSE_INCOMPLETE_UNDER_CURRENT_CONTRACT",
+  "secondary_recommendation": "QUALIFICATION_POLICY_VALIDATION_REQUIRED_BEFORE_MORE_NATIVE_SOLVES",
+  "E9F_C1_SCIENTIFIC_SEAL_RECOMMENDED": true,
+  "sealed_endpoint": {"band0":"numeric report","band1":"numeric report","band2":"incomplete/no numeric report","faithfully_implements_source_contract":true},
+  "forbidden_for_incomplete_band2":["zero_fill","dropping_failed_cells","missing_weight_removal","renormalization","extrapolated_replacement","rank1_shadow_replacement","rank2_replacement","mixed_rank_replacement","numeric_chern_estimate"],
+  "R192_CAN_CHANGE_CURRENT_REDUCER_ADMISSIBILITY": false,
+  "R192_CAN_DIAGNOSE_CURVATURE_CONVERGENCE": true,
+  "R192_REQUIRED_BEFORE_CURRENT_SCIENCE_DECISION": false,
+  "future_targeted_diagnostic":{"authorized_now":false,"primary_candidate":[-4,0],"secondary_candidate":[-5,0],"condition":"only after separate qualification-policy review; no full six-point R192 sweep under frozen 0.02 merely for smoother curvature"},
+  "composite_future_observable":{"recommended_now":false,"may_be_contracted_separately":true,"distinct_question":"gauge-invariant topology of the isolated band2+band3 subspace","NON_EQUIVALENT_TO_SOURCE_BOUND_BAND2":true},
+  "existing_evidence_interpretation":{"spectral_isolation":"fails source qualification at six persistent centers","state_identity_stability":"association evidence does not cure absent rank1 qualification","curvature_convergence":"generally improves at R160 but cannot alter current reducer admissibility"},
+  "tests_required":["authoritative input hashes","schema completeness","six-center identity","unique primary decision","forbidden-operation firewalls","zero native/MPB execution"]
+}
