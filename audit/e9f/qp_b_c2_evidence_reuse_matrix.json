@@ -348,5 +348,151 @@
     "gauge_phase_invariance": {
       "requires_additional_native_solves": false
     }
+  },
+  "reuse_policy": {
+    "authoritative_requires": [
+      "exact_sample_identity",
+      "corrected_E9_fr0_geometry",
+      "zero_based_band2",
+      "H_only_representation",
+      "matching_resolution",
+      "both_stencil_curvature_values",
+      "source_artifact_hash_and_provenance",
+      "no_execution_provenance_rejection",
+      "supervisor_accepted_numerical_result",
+      "deterministic_solver_free_SRD"
+    ],
+    "old_srd_fields_not_required": true,
+    "identity_and_invariance_audited_separately": true
+  },
+  "numeric_metrics": {
+    "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID": {
+      "1/72": {
+        "omega_R96": 11.027321294673,
+        "omega_R128": 12.362050217926027,
+        "omega_R160": 12.075208816095294,
+        "step_96_128": 0.11413123456815047,
+        "step_128_160": 0.023475742629842006,
+        "resolution_contraction_pass": true
+      },
+      "1/144": {
+        "omega_R96": 10.928453376491488,
+        "omega_R128": 12.260269194351656,
+        "omega_R160": 11.975152597624897,
+        "step_96_128": 0.11486754510011311,
+        "step_128_160": 0.02352891558265766,
+        "resolution_contraction_pass": true
+      },
+      "stencil_srd_R128": 0.008267379028770097,
+      "stencil_srd_R160": 0.008320558410678842,
+      "stencil_contraction_pass": false,
+      "final_resolution_metric": 0.02352891558265766,
+      "final_stencil_metric": 0.008320558410678842
+    },
+    "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID": {
+      "1/72": {
+        "omega_R96": 20.636581555451606,
+        "omega_R128": 22.04147298923415,
+        "omega_R160": 21.3971676898652,
+        "step_96_128": 0.06583671391635545,
+        "step_128_160": 0.02966507649853609,
+        "resolution_contraction_pass": true
+      },
+      "1/144": {
+        "omega_R96": 20.41032410861742,
+        "omega_R128": 21.818492132193178,
+        "omega_R160": 21.176245773539236,
+        "step_96_128": 0.06669228024511291,
+        "step_128_160": 0.029875579661031618,
+        "resolution_contraction_pass": true
+      },
+      "stencil_srd_R128": 0.010167853824034989,
+      "stencil_srd_R160": 0.010378398082449504,
+      "stencil_contraction_pass": false,
+      "final_resolution_metric": 0.029875579661031618,
+      "final_stencil_metric": 0.010378398082449504
+    },
+    "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID": {
+      "1/72": {
+        "omega_R96": 20.636376506736138,
+        "omega_R128": 22.041866569911253,
+        "omega_R160": 21.446102517952244,
+        "step_96_128": 0.06586447622274165,
+        "step_128_160": 0.027399028487870812,
+        "resolution_contraction_pass": true
+      },
+      "1/144": {
+        "omega_R96": 20.410083904740056,
+        "omega_R128": 21.814956558531435,
+        "omega_R160": 21.227857256498627,
+        "step_96_128": 0.06654215784652126,
+        "step_128_160": 0.02727978261624706,
+        "resolution_contraction_pass": true
+      },
+      "stencil_srd_R128": 0.010347763252950214,
+      "stencil_srd_R160": 0.010228498250789562,
+      "stencil_contraction_pass": true,
+      "final_resolution_metric": 0.027399028487870812,
+      "final_stencil_metric": 0.010228498250789562
+    },
+    "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID": {
+      "1/72": {
+        "omega_R96": 11.610796606880273,
+        "omega_R128": 12.720279065783556,
+        "omega_R160": 13.66150784395793,
+        "step_96_128": 0.0911988005651387,
+        "step_128_160": 0.07135443716489306,
+        "resolution_contraction_pass": true
+      },
+      "1/144": {
+        "omega_R96": 11.404880579372856,
+        "omega_R128": 12.512652866808313,
+        "omega_R160": 13.440203614955463,
+        "step_96_128": 0.09263265293874455,
+        "step_128_160": 0.07147966535390117,
+        "resolution_contraction_pass": true
+      },
+      "stencil_srd_R128": 0.01645676368722451,
+      "stencil_srd_R160": 0.016331384041038684,
+      "stencil_contraction_pass": true,
+      "final_resolution_metric": 0.07147966535390117,
+      "final_stencil_metric": 0.016331384041038684
+    },
+    "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID": {
+      "1/72": {
+        "omega_R96": 25.470814292786024,
+        "omega_R128": 26.18351895891319,
+        "omega_R160": 28.19701002177443,
+        "step_96_128": 0.027595154995199607,
+        "step_128_160": 0.07405191161624415,
+        "resolution_contraction_pass": false
+      },
+      "1/144": {
+        "omega_R96": 24.977060907022878,
+        "omega_R128": 25.70524996886018,
+        "omega_R160": 27.68815370168087,
+        "step_96_128": 0.028735432510983126,
+        "step_128_160": 0.07427523238848048,
+        "resolution_contraction_pass": false
+      },
+      "stencil_srd_R128": 0.018434393412521975,
+      "stencil_srd_R160": 0.01821078390721402,
+      "stencil_contraction_pass": true,
+      "final_resolution_metric": 0.07427523238848048,
+      "final_stencil_metric": 0.01821078390721402
+    }
+  },
+  "identity_invariance_audit": {
+    "numeric_curvature_reusable": true,
+    "identity_evidence_complete": false,
+    "invariance_evidence_complete": false,
+    "missing_gate_evidence": [
+      "FINITE_DATA_EXPLICIT_PAIR_BINDING",
+      "NONZERO_NORM_EXPLICIT_PAIR_BINDING",
+      "H_REPRESENTATION_QUALIFIED_FOR_SOURCE_BAND2",
+      "FORWARD_REVERSE_CONSISTENT",
+      "SOLVER_ORDER_INVARIANT"
+    ],
+    "minimal_future_work": "Extract or recompute the missing gate evidence solver-free from retained solved vectors where available; no native solve is intrinsically required by the gate audit."
   }
 }
