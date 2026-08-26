@@ -1,0 +1,323 @@
+{
+  "schema": "mephc-e9f-c2-qp-b-source-specific-gap-ladder-v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-20260826-277",
+  "base_sandbox_sha": "fdc43feb96c0124ca2d79b569d3521f34b2c70d8",
+  "threshold": 0.02,
+  "membership_rules": {
+    "ABOVE_POLICY": "external_gap >= 0.03",
+    "NEAR_POLICY": "0.018 <= external_gap <= 0.022",
+    "BELOW_POLICY": "external_gap < 0.018"
+  },
+  "bins": {
+    "ABOVE_POLICY": {
+      "status": "EMPTY_BIN",
+      "reason": "No retained committed E9F.C1 candidate with complete sample provenance and external gap >=0.03 was recovered in QP.B; do not fabricate one.",
+      "minimal_later_discovery": "a separately authorized source-grid evidence inventory must first locate exactly two committed-or-new above-policy controls before native validation execution."
+    },
+    "NEAR_POLICY": {
+      "count": 2,
+      "samples": [
+        {
+          "sample_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+          "grid_i": -34,
+          "grid_j": -16,
+          "public_q_coordinate": [
+            -0.9444444444444444,
+            -0.4444444444444444
+          ],
+          "gap": 0.018428896349577062,
+          "zero_based_band": 2,
+          "gap_regime": "NEAR_POLICY",
+          "gap_source_artifact": "audit/e9f/c1_d1_c1_result.json",
+          "gap_source_sha256": "489b22fe2865f527bafd2727ed91441f58f8c87e56bb6eb2ee04fb62a1829240",
+          "existing_resolution": "R64/R96/R128/R160",
+          "existing_local_stencils": [
+            "1/72",
+            "1/144"
+          ],
+          "existing_rank1_qualification_status": "NOT_QUALIFIED_UNDER_FROZEN_0P02",
+          "existing_rank1_shadow_status": "DIAGNOSTIC_ONLY_NOT_REDUCER_ADMISSIBLE",
+          "existing_rank2_status": "UNKNOWN_IN_RETAINED_EVIDENCE",
+          "existing_association_status": "UNKNOWN_IN_RETAINED_EVIDENCE"
+        },
+        {
+          "sample_id": "fr=0;grid_i=-6;grid_j=-1;estimator=SOURCE_GRID",
+          "grid_i": -6,
+          "grid_j": -1,
+          "public_q_coordinate": [
+            -0.16666666666666666,
+            -0.027777777777777776
+          ],
+          "gap": 0.021895409471319016,
+          "zero_based_band": 2,
+          "gap_regime": "NEAR_POLICY",
+          "gap_source_artifact": "audit/e9f/c1_d1_c1_result.json",
+          "gap_source_sha256": "489b22fe2865f527bafd2727ed91441f58f8c87e56bb6eb2ee04fb62a1829240",
+          "existing_resolution": "R64",
+          "existing_local_stencils": [
+            "1/72",
+            "1/144"
+          ],
+          "existing_rank1_qualification_status": "NOT_QUALIFIED_UNDER_FROZEN_0P02",
+          "existing_rank1_shadow_status": "DIAGNOSTIC_ONLY_NOT_REDUCER_ADMISSIBLE",
+          "existing_rank2_status": "UNKNOWN_IN_RETAINED_EVIDENCE",
+          "existing_association_status": "UNKNOWN_IN_RETAINED_EVIDENCE"
+        }
+      ]
+    },
+    "BELOW_POLICY": {
+      "count": 4,
+      "samples": [
+        {
+          "sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+          "grid_i": -34,
+          "grid_j": -17,
+          "public_q_coordinate": [
+            -0.9444444444444444,
+            -0.4722222222222222
+          ],
+          "gap": 0.013482483999199102,
+          "zero_based_band": 2,
+          "gap_regime": "BELOW_POLICY",
+          "gap_source_artifact": "audit/e9f/c1_d1_c1_result.json",
+          "gap_source_sha256": "489b22fe2865f527bafd2727ed91441f58f8c87e56bb6eb2ee04fb62a1829240",
+          "existing_resolution": "R64/R96/R128/R160",
+          "existing_local_stencils": [
+            "1/72",
+            "1/144"
+          ],
+          "existing_rank1_qualification_status": "NOT_QUALIFIED_UNDER_FROZEN_0P02",
+          "existing_rank1_shadow_status": "DIAGNOSTIC_ONLY_NOT_REDUCER_ADMISSIBLE",
+          "existing_rank2_status": "UNKNOWN_IN_RETAINED_EVIDENCE",
+          "existing_association_status": "UNKNOWN_IN_RETAINED_EVIDENCE"
+        },
+        {
+          "sample_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+          "grid_i": -34,
+          "grid_j": 17,
+          "public_q_coordinate": [
+            -0.9444444444444444,
+            0.4722222222222222
+          ],
+          "gap": 0.013443428678322489,
+          "zero_based_band": 2,
+          "gap_regime": "BELOW_POLICY",
+          "gap_source_artifact": "audit/e9f/c1_d1_c1_result.json",
+          "gap_source_sha256": "489b22fe2865f527bafd2727ed91441f58f8c87e56bb6eb2ee04fb62a1829240",
+          "existing_resolution": "R64/R96/R128/R160",
+          "existing_local_stencils": [
+            "1/72",
+            "1/144"
+          ],
+          "existing_rank1_qualification_status": "NOT_QUALIFIED_UNDER_FROZEN_0P02",
+          "existing_rank1_shadow_status": "DIAGNOSTIC_ONLY_NOT_REDUCER_ADMISSIBLE",
+          "existing_rank2_status": "UNKNOWN_IN_RETAINED_EVIDENCE",
+          "existing_association_status": "UNKNOWN_IN_RETAINED_EVIDENCE"
+        },
+        {
+          "sample_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+          "grid_i": -5,
+          "grid_j": 0,
+          "public_q_coordinate": [
+            -0.1388888888888889,
+            0
+          ],
+          "gap": 0.016715192085324126,
+          "zero_based_band": 2,
+          "gap_regime": "BELOW_POLICY",
+          "gap_source_artifact": "audit/e9f/c1_d1_c1_result.json",
+          "gap_source_sha256": "489b22fe2865f527bafd2727ed91441f58f8c87e56bb6eb2ee04fb62a1829240",
+          "existing_resolution": "R64",
+          "existing_local_stencils": [
+            "1/72",
+            "1/144"
+          ],
+          "existing_rank1_qualification_status": "NOT_QUALIFIED_UNDER_FROZEN_0P02",
+          "existing_rank1_shadow_status": "DIAGNOSTIC_ONLY_NOT_REDUCER_ADMISSIBLE",
+          "existing_rank2_status": "UNKNOWN_IN_RETAINED_EVIDENCE",
+          "existing_association_status": "UNKNOWN_IN_RETAINED_EVIDENCE"
+        },
+        {
+          "sample_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID",
+          "grid_i": -4,
+          "grid_j": 0,
+          "public_q_coordinate": [
+            -0.1111111111111111,
+            0
+          ],
+          "gap": 0.010594785956050956,
+          "zero_based_band": 2,
+          "gap_regime": "BELOW_POLICY",
+          "gap_source_artifact": "audit/e9f/c1_d1_c1_result.json",
+          "gap_source_sha256": "489b22fe2865f527bafd2727ed91441f58f8c87e56bb6eb2ee04fb62a1829240",
+          "existing_resolution": "R64/R96/R128/R160",
+          "existing_local_stencils": [
+            "1/72",
+            "1/144"
+          ],
+          "existing_rank1_qualification_status": "NOT_QUALIFIED_UNDER_FROZEN_0P02",
+          "existing_rank1_shadow_status": "DIAGNOSTIC_ONLY_NOT_REDUCER_ADMISSIBLE",
+          "existing_rank2_status": "UNKNOWN_IN_RETAINED_EVIDENCE",
+          "existing_association_status": "UNKNOWN_IN_RETAINED_EVIDENCE"
+        }
+      ]
+    }
+  },
+  "persistent_low_gap_population": [
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+      "grid_i": -34,
+      "grid_j": -17,
+      "public_q_coordinate": [
+        -0.9444444444444444,
+        -0.4722222222222222
+      ],
+      "gap": 0.013482483999199102,
+      "gap_source_artifact": "audit/e9f/c1_d1_c1_result.json",
+      "gap_source_sha256": "489b22fe2865f527bafd2727ed91441f58f8c87e56bb6eb2ee04fb62a1829240",
+      "classification": "TRUE_POINTWISE_LOW_GAP_BLOCKER"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+      "grid_i": -34,
+      "grid_j": -16,
+      "public_q_coordinate": [
+        -0.9444444444444444,
+        -0.4444444444444444
+      ],
+      "gap": 0.018428896349577062,
+      "gap_source_artifact": "audit/e9f/c1_d1_c1_result.json",
+      "gap_source_sha256": "489b22fe2865f527bafd2727ed91441f58f8c87e56bb6eb2ee04fb62a1829240",
+      "classification": "TRUE_POINTWISE_LOW_GAP_BLOCKER"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=16;estimator=SOURCE_GRID",
+      "grid_i": -34,
+      "grid_j": 16,
+      "public_q_coordinate": [
+        -0.9444444444444444,
+        0.4444444444444444
+      ],
+      "gap": 0.01838056395569737,
+      "gap_source_artifact": "audit/e9f/c1_d1_c1_result.json",
+      "gap_source_sha256": "489b22fe2865f527bafd2727ed91441f58f8c87e56bb6eb2ee04fb62a1829240",
+      "classification": "TRUE_POINTWISE_LOW_GAP_BLOCKER"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+      "grid_i": -34,
+      "grid_j": 17,
+      "public_q_coordinate": [
+        -0.9444444444444444,
+        0.4722222222222222
+      ],
+      "gap": 0.013443428678322489,
+      "gap_source_artifact": "audit/e9f/c1_d1_c1_result.json",
+      "gap_source_sha256": "489b22fe2865f527bafd2727ed91441f58f8c87e56bb6eb2ee04fb62a1829240",
+      "classification": "TRUE_POINTWISE_LOW_GAP_BLOCKER"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+      "grid_i": -5,
+      "grid_j": 0,
+      "public_q_coordinate": [
+        -0.1388888888888889,
+        0
+      ],
+      "gap": 0.016715192085324126,
+      "gap_source_artifact": "audit/e9f/c1_d1_c1_result.json",
+      "gap_source_sha256": "489b22fe2865f527bafd2727ed91441f58f8c87e56bb6eb2ee04fb62a1829240",
+      "classification": "TRUE_POINTWISE_LOW_GAP_BLOCKER"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID",
+      "grid_i": -4,
+      "grid_j": 0,
+      "public_q_coordinate": [
+        -0.1111111111111111,
+        0
+      ],
+      "gap": 0.010594785956050956,
+      "gap_source_artifact": "audit/e9f/c1_d1_c1_result.json",
+      "gap_source_sha256": "489b22fe2865f527bafd2727ed91441f58f8c87e56bb6eb2ee04fb62a1829240",
+      "classification": "TRUE_POINTWISE_LOW_GAP_BLOCKER"
+    }
+  ],
+  "finite_stencil_recoverable_identities": {
+    "status": "RECONSTRUCTED_FROM_RETAINED_D1_C1_EVIDENCE",
+    "count": 11,
+    "source_artifact": "audit/e9f/c1_d1_c1_result.json",
+    "source_sha256": "489b22fe2865f527bafd2727ed91441f58f8c87e56bb6eb2ee04fb62a1829240",
+    "items": [
+      {
+        "grid": "-34,-15",
+        "gap": 0.022867849291639708,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED"
+      },
+      {
+        "grid": "-34,-14",
+        "gap": 0.026662896741181552,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED"
+      },
+      {
+        "grid": "-34,14",
+        "gap": 0.026602782839760586,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED"
+      },
+      {
+        "grid": "-34,15",
+        "gap": 0.022811473463883736,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED"
+      },
+      {
+        "grid": "-33,-16",
+        "gap": 0.023504458936813077,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED"
+      },
+      {
+        "grid": "-33,16",
+        "gap": 0.02346111519155447,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED"
+      },
+      {
+        "grid": "-32,-16",
+        "gap": 0.025087425526166995,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED"
+      },
+      {
+        "grid": "-32,16",
+        "gap": 0.025049454193873943,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED"
+      },
+      {
+        "grid": "-6,-1",
+        "gap": 0.021895409471319016,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED"
+      },
+      {
+        "grid": "-6,0",
+        "gap": 0.02451886081845145,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED"
+      },
+      {
+        "grid": "-6,1",
+        "gap": 0.021912597073700024,
+        "classification": "FINITE_STENCIL_QUALIFICATION_ARTIFACT_SUPPORTED"
+      }
+    ]
+  },
+  "selected_sample_ids": [
+    "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-6;grid_j=-1;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID"
+  ],
+  "selection_rationale": "Gap-regime coverage and diagnostic diversity only; no selection uses large Berry curvature.",
+  "mandatory_assessments": [
+    "(-4,0) included",
+    "(-5,0) included",
+    "outer persistent centers (-34,-17) and (-34,+17) included"
+  ]
+}

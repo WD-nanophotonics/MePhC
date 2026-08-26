@@ -1,0 +1,15 @@
+{
+  "schema": "mephc-e9f-c2-qp-b-science-decision-v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-20260826-277",
+  "base_sandbox_sha": "fdc43feb96c0124ca2d79b569d3521f34b2c70d8",
+  "primary_decision": "PREREGISTRATION_INCOMPLETE_MORE_EXISTING_EVIDENCE_RECOVERY_REQUIRED",
+  "reason": "ABOVE_POLICY is EMPTY_BIN in retained authoritative evidence; no information-efficient complete source-specific native validation set may be executed until exact above-policy controls are recovered or separately preregistered.",
+  "threshold_remains": 0.02,
+  "endpoint_frozen": true,
+  "execution": {
+    "native_solves": 0,
+    "mpb_execution": false,
+    "threshold_change": false
+  },
+  "pipeline_health": "PIPELINE_HEALTHY_WITH_TECH_DEBT"
+}

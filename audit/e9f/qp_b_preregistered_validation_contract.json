@@ -1,0 +1,90 @@
+{
+  "schema": "mephc-e9f-c2-qp-b-preregistered-validation-contract-v1",
+  "status": "DRAFT_ONLY_NOT_EXECUTED",
+  "goal": "GOAL_2_SOURCE_REPRODUCTION_SPECIFIC_EXCEPTION_OR_ALTERNATIVE_THRESHOLD",
+  "goal_1_authorized": false,
+  "goal_2_does_not_establish_goal_1": true,
+  "locked_samples": [
+    "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-6;grid_j=-1;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID"
+  ],
+  "resolution_ladder": [
+    "R96",
+    "R128",
+    "R160"
+  ],
+  "r192_escalation_rule": "R192 may be proposed only for one preregistered sample that passes every non-resolution identity/invariance gate yet remains curvature-INCONCLUSIVE through R160; full-set R192 is prohibited.",
+  "identity_gates": [
+    "FINITE_DATA",
+    "NONZERO_NORM",
+    "H_REPRESENTATION_QUALIFIED",
+    "ASSOCIATION_UNAMBIGUOUS",
+    "OVERLAP_QUALIFIED",
+    "PRINCIPAL_ANGLE_QUALIFIED",
+    "PROJECTOR_DISTANCE_QUALIFIED",
+    "FORWARD_REVERSE_CONSISTENT",
+    "GAUGE_INVARIANT",
+    "SOLVER_ORDER_INVARIANT"
+  ],
+  "measurements": [
+    "external spectral gap",
+    "selected-band frequencies",
+    "rank1 overlap singular values",
+    "principal angle",
+    "projector distance",
+    "association ambiguity state",
+    "forward association",
+    "reverse association where applicable",
+    "solver-order permutation result",
+    "gauge-phase invariance result",
+    "rank1 Berry curvature at 1/72 and 1/144",
+    "H-representation orthogonality",
+    "H normalization",
+    "solve count",
+    "provider resolution",
+    "native process lifecycle",
+    "orphan count"
+  ],
+  "curvature_convergence": {
+    "metrics": [
+      "delta_R96_R128",
+      "delta_R128_R160",
+      "contraction_ratio=abs(delta_R128_R160)/abs(delta_R96_R128)"
+    ],
+    "zero_denominator": "If abs(delta_R96_R128) is below a predeclared numerical floor, report ratio UNDEFINED and classify by absolute deltas; never infer PASS from sign agreement.",
+    "terminal_behavior": {
+      "PASS": "both stencils meet predeclared absolute-delta and contraction requirements",
+      "INCONCLUSIVE": "identity gates pass but resolution evidence does not decide curvature convergence",
+      "FAIL": "a material identity, invariance, or curvature criterion fails"
+    },
+    "known_exceptions": "(-4,0) prior noncontraction and (-5,0) slow contraction remain criteria stressors; criteria may not be relaxed for them."
+  },
+  "local_stencil_consistency": "Compare 1/72 and 1/144 at every valid sample without changing the integration-grid estimator.",
+  "controls": {
+    "existing_solver_free": "reuse E3C avoided-crossing and exact-degeneracy semantic controls",
+    "later_native": "must preregister model and expected fail-closed behavior before execution"
+  },
+  "decision_function": "For hypothetical g_candidate<0.02, GOAL_2 evidence exists only if every newly admitted preregistered sample passes every identity, invariance, and convergence gate. One material failure fails closed.",
+  "sample_terminal_states": [
+    "VALID_QUALIFIED_AND_CONVERGED",
+    "VALID_IDENTITY_STABLE_CURVATURE_INCONCLUSIVE",
+    "VALID_IDENTITY_OR_INVARIANCE_FAIL",
+    "TRUE_OR_EFFECTIVE_RANK1_ISOLATION_FAIL",
+    "INFRASTRUCTURE_INVALID_NOT_INTERPRETED"
+  ],
+  "global_outcomes": [
+    "NO_EVIDENCE_TO_RELAX_0P02",
+    "EVIDENCE_SUPPORTS_TESTING_A_LOWER_CANDIDATE_THRESHOLD",
+    "POINT_DEPENDENT_BEHAVIOR_PREVENTS_SINGLE_E9_THRESHOLD",
+    "INSUFFICIENT_EVIDENCE_REQUIRES_TARGETED_ESCALATION"
+  ],
+  "execution": {
+    "native_solves": 0,
+    "mpb_execution": false,
+    "threshold_change": false
+  }
+}

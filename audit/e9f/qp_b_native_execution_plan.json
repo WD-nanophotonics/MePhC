@@ -1,0 +1,28 @@
+{
+  "schema": "mephc-e9f-c2-qp-b-native-execution-plan-v1",
+  "status": "PREREGISTERED_NOT_AUTHORIZED_FOR_EXECUTION",
+  "selected_sample_count": 6,
+  "base_native_solve_budget": {
+    "formula": "6 selected samples * 3 resolutions (R96,R128,R160) * 2 local stencils",
+    "count": 36
+  },
+  "optional_r192_escalation_budget": {
+    "formula": "at most one eligible inconclusive sample * R192 * 2 local stencils",
+    "count": 2
+  },
+  "control_solve_budget": {
+    "count": 0,
+    "reason": "use existing solver-free E3C semantic controls; any native control requires separate preregistration"
+  },
+  "total_max_authorizable_budget": 38,
+  "above_policy_gap_discovery_budget": "UNAUTHORIZED_AND_UNCOUNTED until an exact ABOVE_POLICY candidate inventory exists",
+  "provider_and_lifecycle_requirements": [
+    "canonical provider resolution",
+    "record native process lifecycle",
+    "record orphan count"
+  ],
+  "execution": {
+    "native_solves": 0,
+    "mpb_execution": false
+  }
+}
