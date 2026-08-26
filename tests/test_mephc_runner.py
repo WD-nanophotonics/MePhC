@@ -272,6 +272,7 @@ def test_connector_and_install_are_typed_and_versioned():
     broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
     assert "/opt/mephc-runner/versions/$BuildId" in bootstrap
     assert "/opt/mephc-runner/current/jobctl.py" in broker
+    assert "$previousOutput.Count -gt 0" in bootstrap
     assert "systemd-run" in broker and "--no-block" in broker
     assert "ReadWritePaths=/home/icy/MePhC" not in (SOURCE / "mephc-runner.service").read_text().splitlines()
 

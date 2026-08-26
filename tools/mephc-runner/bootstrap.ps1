@@ -22,7 +22,8 @@ if(-not $sourceWsl){throw 'cannot map bootstrap source directory into WSL'}
 $sha=[Security.Cryptography.SHA256]::Create()
 $BuildId=([BitConverter]::ToString($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes((($Manifest.sha256)-join ''))))).Replace('-','').ToLowerInvariant().Substring(0,16)
 $versionWsl="/opt/mephc-runner/versions/$BuildId"
-$previous=(wsl.exe -d Ubuntu -u root -- readlink -f /opt/mephc-runner/current 2>$null).Trim()
+$previousOutput=@(wsl.exe -d Ubuntu -u root -- readlink -f /opt/mephc-runner/current 2>$null)
+$previous=if($previousOutput.Count -gt 0){(($previousOutput)-join '').Trim()}else{''}
 try {
   wsl.exe -d Ubuntu -u root -- install -d -o root -g root -m 0555 $versionWsl
   foreach($name in @('worker.py','jobctl.py','materializer.py','materialize_client.py','mcp_server.py','native-recipes.json')) {
