@@ -16,12 +16,15 @@ import time
 from typing import Any
 
 ROOT = Path("/home/icy/MePhC")
+INSTALL_ROOT = Path(__file__).resolve().parent
 PYTHON = Path("/home/icy/miniconda3/envs/mp/bin/python")
 RELAYCTL = ROOT / "scripts" / "relayctl"
 RUNTIME = ROOT / ".relayctl" / "runner"
 JOBS = RUNTIME / "jobs"
 CERTIFICATES = ROOT / ".relayctl" / "certificates"
-OPERATIONS = {"doctor", "worktree", "prelive", "native", "publish", "courier"}
+NATIVE_RECIPES = INSTALL_ROOT / "native-recipes.json"
+MATERIALIZE_CLIENT = INSTALL_ROOT / "materialize_client.py"
+OPERATIONS = {"doctor", "worktree", "prelive", "native", "publish", "courier", "change"}
 JOB_ID = re.compile(r"^MEPHC-JOB-[A-Z0-9][A-Z0-9._-]{7,119}$")
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
 SHA64 = re.compile(r"^[0-9a-f]{64}$")
@@ -108,15 +111,37 @@ def certificate_path(digest: str) -> Path:
     if len(matches) != 1:
         raise Rejected("CERTIFICATE_INVALID", f"certificate SHA matches={len(matches)}")
     return matches[0]
+def verify_courier_binding(job: dict[str, Any]) -> None:
+    binding = job.get("courier_binding"); request_dir = Path(job["arguments"][1]); request_path = request_dir / "request.json"; request = read_object(request_path)
+    message = request_dir / request.get("message_file", ""); certificate = Path(request.get("relay_certificate", ""))
+    actual = {"request_id":str(request.get("request_id", "")), "request_sha256":hashlib.sha256(request_path.read_bytes()).hexdigest(), "message_sha256":hashlib.sha256(message.read_bytes()).hexdigest(), "certificate_sha256":hashlib.sha256(certificate.read_bytes()).hexdigest()}
+    if binding != actual or request.get("attachments") != []:
+        raise Rejected("COURIER_REQUEST_MUTATED", f"expected={binding} actual={actual}")
 
 
-def command_for(job: dict[str, Any]) -> list[str]:
+def recovery_arguments(job: dict[str, Any], attempt: int) -> list[str]:
+    arguments = list(job["arguments"]); receipt = read_object(Path(arguments[1]) / "receipt.json"); value = receipt.get("state")
+    if value == "courier_interrupted" and receipt.get("interruption_stage") == "pre_browser":
+        if attempt > 2:
+            raise Rejected("COURIER_PRE_BROWSER_RETRY_EXHAUSTED", job["job_id"])
+        return arguments
+    submitted = {"request_submitted", "waiting_for_response", "submission_unconfirmed", "chat_submission_unconfirmed", "submission_state_uncertain", "response_timeout", "response_protocol_error", "response_received"}
+    if value in submitted:
+        return arguments if arguments[-1:] == ["--recovery-only"] else [*arguments, "--recovery-only"]
+    raise Rejected("COURIER_RECOVERY_NOT_ALLOWED", repr(value))
+
+
+
+
+def command_for(job: dict[str, Any], recovery: bool = False, attempt: int = 1) -> list[str]:
     if job["operation"] == "prelive":
         return [str(RELAYCTL), "prelive", "--certificate",
                 str(certificate_path(job["certificate_sha256"])), *job["arguments"]]
     if job["operation"] == "courier" and job["arguments"] in (["--create-e2e"], ["--create-status"]):
         return [str(RELAYCTL), "courier", job["arguments"][0], "--certificate",
                 str(certificate_path(job["certificate_sha256"]))]
+    if job["operation"] == "change":
+        return [str(PYTHON), str(MATERIALIZE_CLIENT), str(JOBS / job["job_id"])]
     return [str(RELAYCTL), job["operation"], *job["arguments"]]
 
 
@@ -129,6 +154,8 @@ def inside(path: Path, parent: Path, code: str) -> Path:
     return resolved
 
 
+    if job["operation"] == "courier" and recovery:
+        return [str(RELAYCTL), "courier", *recovery_arguments(job, attempt)]
 def validate(job_dir: Path) -> tuple[dict[str, Any], str]:
     if not (job_dir / "READY").is_file():
         raise Rejected("JOB_NOT_READY", str(job_dir))
@@ -139,6 +166,8 @@ def validate(job_dir: Path) -> tuple[dict[str, Any], str]:
         "schema", "job_id", "project_id", "operation", "arguments", "expected_root",
         "expected_head", "certificate_sha256", "created_at", "payload_sha256",
     }
+    if job.get("operation") == "change":
+        required.add("change")
     if set(job) != required or job.get("schema") != "mephc-runner-job-v1":
         raise Rejected("JOB_SCHEMA_MISMATCH", f"keys={sorted(job)}")
     if not isinstance(job.get("job_id"), str) or not JOB_ID.fullmatch(job["job_id"]):
@@ -151,6 +180,8 @@ def validate(job_dir: Path) -> tuple[dict[str, Any], str]:
         raise Rejected("OPERATION_NOT_ALLOWED", repr(job.get("operation")))
     if job.get("expected_root") != str(ROOT):
         raise Rejected("ROOT_MISMATCH", repr(job.get("expected_root")))
+    if job.get("operation") == "courier" and job.get("arguments", [])[:1] == ["--request-directory"]:
+        required.add("courier_binding")
     if not isinstance(job.get("expected_head"), str) or not SHA40.fullmatch(job["expected_head"]):
         raise Rejected("EXPECTED_HEAD_INVALID", repr(job.get("expected_head")))
     arguments = job.get("arguments")
@@ -181,6 +212,14 @@ def validate(job_dir: Path) -> tuple[dict[str, Any], str]:
     else:
         certificate_path(certificate)
 
+    if job["operation"] == "change" and (arguments or not isinstance(job.get("change"), dict)):
+        raise Rejected("CHANGE_JOB_INVALID", "typed change payload required")
+    if job["operation"] == "native":
+        if len(arguments) != 2 or arguments[0] != "--recipe":
+            raise Rejected("NATIVE_RECIPE_INVALID", repr(arguments))
+        if arguments[1] not in read_object(NATIVE_RECIPES).get("recipes", {}):
+            raise Rejected("NATIVE_RECIPE_INVALID", arguments[1])
+
     if job["operation"] == "courier":
         if arguments in (["--create-e2e"], ["--create-status"]):
             pass
@@ -193,6 +232,7 @@ def validate(job_dir: Path) -> tuple[dict[str, Any], str]:
             request = read_object(request_dir / "request.json")
             if request.get("project_id") != "MEPHC":
                 raise Rejected("PROJECT_MISMATCH", f"request={request_dir}")
+            verify_courier_binding(job)
 
     if Path(sys.executable).resolve() != PYTHON.resolve():
         raise Rejected("INTERPRETER_MISMATCH", sys.executable)
@@ -243,7 +283,7 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
         attempt = previous_attempt + 1
         state(job_dir, "running", attempt=attempt, operation=job["operation"], recovery=recovery)
         event(job_dir, "runner_job_started", attempt=attempt, operation=job["operation"], recovery=recovery, job_sha256=immutable_sha)
-        command = command_for(job)
+        command = command_for(job, recovery=recovery, attempt=attempt)
         environment = {
             "HOME": "/home/icy",
             "LANG": "C.UTF-8",
@@ -266,6 +306,8 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
             )
         if hashlib.sha256((job_dir / "job.json").read_bytes()).hexdigest() != immutable_sha:
             raise Rejected("JOB_MUTATED_AFTER_CLAIM", str(job_dir / "job.json"))
+        if job["operation"] == "courier" and job["arguments"][:1] == ["--request-directory"]:
+            verify_courier_binding(job)
         courier_state = receipt_state(job)
         if completed.returncode == 0:
             state(job_dir, "succeeded", attempt=attempt, operation=job["operation"], return_code=0, receipt_state=courier_state)
@@ -294,6 +336,10 @@ def repair_interrupted() -> None:
             if old_state.get("state") != "running":
                 continue
             job = read_object(job_dir / "job.json")
+            if job.get("operation") == "change":
+                state(job_dir, "recovery_required", attempt=old_state.get("attempt", 1), operation="change", error_code="CHANGE_TRANSACTION_RECOVERY_REQUIRED")
+                event(job_dir, "runner_interrupted_state_repaired", next_state="recovery_required", error_code="CHANGE_TRANSACTION_RECOVERY_REQUIRED")
+                continue
             next_state = "recovery_required" if job.get("operation") == "courier" else "failed"
             code = "WORKER_RESTART_RECOVERY_REQUIRED" if next_state == "recovery_required" else "WORKER_RESTARTED"
             state(job_dir, next_state, attempt=old_state.get("attempt", 1), error_code=code)
@@ -303,11 +349,15 @@ def repair_interrupted() -> None:
 
 
 def heartbeat() -> None:
+    sources = (Path(__file__), INSTALL_ROOT / "jobctl.py", INSTALL_ROOT / "materializer.py")
+    build_id = hashlib.sha256(b"".join(path.read_bytes() for path in sources)).hexdigest()[:16]
     atomic_json(RUNTIME / "heartbeat.json", {
         "schema": "mephc-runner-heartbeat-v1",
         "pid": os.getpid(),
         "root": str(ROOT),
         "python": sys.executable,
+        "head": git("rev-parse", "HEAD"),
+        "worker_build_id": build_id,
         "updated_at": now(),
     })
 

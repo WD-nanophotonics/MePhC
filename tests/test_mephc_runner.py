@@ -29,7 +29,7 @@ def test_job_payload_hash_excludes_only_hash_field():
 
 def test_operation_allowlist_is_exact():
     worker = load("runner_worker_allowlist", "worker.py")
-    assert worker.OPERATIONS == {"doctor", "worktree", "prelive", "native", "publish", "courier"}
+    assert worker.OPERATIONS == {"doctor", "worktree", "prelive", "native", "publish", "courier", "change"}
     assert "shell" not in worker.OPERATIONS
 
 
@@ -212,3 +212,76 @@ def test_worker_service_protects_home_and_only_opens_runtime():
     text = (SOURCE / "mephc-runner.service").read_text(encoding="utf-8")
     assert "ProtectHome=read-only" in text
     assert "ReadWritePaths=/home/icy/MePhC/.relayctl" in text
+
+
+def test_change_is_typed_and_native_arbitrary_argv_is_rejected():
+    jobctl = load("runner_jobctl_change_gate", "jobctl.py")
+    with pytest.raises(SystemExit, match="typed JSON"):
+        jobctl.validate_arguments("change", [])
+    with pytest.raises(SystemExit, match="--recipe"):
+        jobctl.validate_arguments("native", ["python", "script.py"])
+    with pytest.raises(SystemExit, match="not registered"):
+        jobctl.validate_arguments("native", ["--recipe", "unknown"])
+
+
+def test_materializer_rejects_traversal_and_symlink(tmp_path, monkeypatch):
+    materializer = load("runner_materializer_paths", "materializer.py")
+    monkeypatch.setattr(materializer, "ROOT", tmp_path)
+    with pytest.raises(materializer.Failure) as error:
+        materializer.safe_path("../outside")
+    assert error.value.code == "CHANGE_PATH_INVALID"
+    (tmp_path / "tests").mkdir()
+    (tmp_path / "tests" / "link").symlink_to(tmp_path / "elsewhere")
+    with pytest.raises(materializer.Failure) as error:
+        materializer.safe_path("tests/link/file.py")
+    assert error.value.code == "CHANGE_SYMLINK_FORBIDDEN"
+
+
+def test_courier_binding_detects_message_mutation(tmp_path):
+    worker = load("runner_worker_courier_binding", "worker.py")
+    certificate = tmp_path / "certificate.json"; certificate.write_text("{}\n")
+    message = tmp_path / "message.txt"; message.write_text("original\n")
+    request = tmp_path / "request.json"
+    request.write_text(json.dumps({"project_id":"MEPHC","request_id":"MEPHC-TEST","message_file":"message.txt","relay_certificate":str(certificate),"attachments":[]}) + "\n")
+    binding = {"request_id":"MEPHC-TEST","request_sha256":hashlib.sha256(request.read_bytes()).hexdigest(),"message_sha256":hashlib.sha256(message.read_bytes()).hexdigest(),"certificate_sha256":hashlib.sha256(certificate.read_bytes()).hexdigest()}
+    job = {"arguments":["--request-directory",str(tmp_path)],"courier_binding":binding}
+    worker.verify_courier_binding(job)
+    message.write_text("mutated\n")
+    with pytest.raises(worker.Rejected) as error:
+        worker.verify_courier_binding(job)
+    assert error.value.code == "COURIER_REQUEST_MUTATED"
+
+
+def test_courier_recovery_forces_read_only_and_limits_prebrowser(tmp_path):
+    worker = load("runner_worker_recovery_mode", "worker.py")
+    job = {"job_id":"MEPHC-JOB-ABCDEFGH","arguments":["--request-directory",str(tmp_path)]}
+    (tmp_path / "receipt.json").write_text(json.dumps({"state":"response_timeout"}))
+    assert worker.recovery_arguments(job, 2)[-1] == "--recovery-only"
+    (tmp_path / "receipt.json").write_text(json.dumps({"state":"courier_interrupted","interruption_stage":"pre_browser"}))
+    assert worker.recovery_arguments(job, 2) == job["arguments"]
+    with pytest.raises(worker.Rejected) as error:
+        worker.recovery_arguments(job, 3)
+    assert error.value.code == "COURIER_PRE_BROWSER_RETRY_EXHAUSTED"
+
+
+def test_connector_and_install_are_typed_and_versioned():
+    mcp = load("runner_mcp_server", "mcp_server.py")
+    names = {item["name"] for item in mcp.TOOLS}
+    assert names == {"mephc_capabilities","mephc_doctor","mephc_change","mephc_submit","mephc_status","mephc_wait","mephc_recover"}
+    bootstrap = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8-sig")
+    broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
+    assert "/opt/mephc-runner/versions/$BuildId" in bootstrap
+    assert "/opt/mephc-runner/current/jobctl.py" in broker
+    assert "systemd-run" in broker and "--no-block" in broker
+    assert "ReadWritePaths=/home/icy/MePhC" not in (SOURCE / "mephc-runner.service").read_text().splitlines()
+
+
+def test_health_is_fail_closed_and_capabilities_are_context_complete():
+    broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
+    assert "BROKER_HEARTBEAT_STALE" in broker
+    assert "WORKER_HEARTBEAT_STALE" in broker
+    assert "if($ok){exit 0}else{exit 2}" in broker
+    jobctl = load("runner_jobctl_capabilities", "jobctl.py")
+    value = jobctl.capabilities()
+    assert value["canonical_root"] == "/home/icy/MePhC"
+    assert value["arbitrary_shell"] is False and value["direct_browser"] is False

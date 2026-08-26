@@ -1,0 +1,8 @@
+{
+  "mcpServers":{
+    "mephc":{
+      "command":"C:\\Users\\icywo\\AppData\\Local\\MePhCRunner\\mephc-connector.cmd",
+      "args":[]
+    }
+  }
+}

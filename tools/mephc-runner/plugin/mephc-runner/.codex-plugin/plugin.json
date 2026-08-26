@@ -1,0 +1,20 @@
+{
+  "name":"mephc-runner",
+  "version":"2.0.0",
+  "description":"Typed fail-closed MePhC Windows-WSL execution connector.",
+  "author":{"name":"WD Nanophotonics","url":"https://github.com/WD-nanophotonics"},
+  "homepage":"https://github.com/WD-nanophotonics/MePhC",
+  "repository":"https://github.com/WD-nanophotonics/MePhC",
+  "license":"MIT",
+  "keywords":["mephc","wsl","runner","scientific-workflow"],
+  "mcpServers":"./.mcp.json",
+  "interface":{
+    "displayName":"MePhC Runner",
+    "shortDescription":"Typed Windows-WSL jobs for MePhC",
+    "longDescription":"Fail-closed access to MePhC doctor, exact transactional changes, jobs, recovery, publication, and Courier.",
+    "developerName":"WD Nanophotonics",
+    "category":"Developer Tools",
+    "capabilities":["Interactive","Write"],
+    "defaultPrompt":["Check MePhC capabilities and doctor status."]
+  }
+}
