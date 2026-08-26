@@ -65,7 +65,7 @@ def reply(identifier, result=None, error=None):
 
 def main():
     for line in sys.stdin:
-        request = {}
+        request={}
         try:
             request = json.loads(line.lstrip("\ufeff"))
             method = request.get("method")
