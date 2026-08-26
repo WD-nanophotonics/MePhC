@@ -11,6 +11,8 @@ This policy is enforced by the MePhC Runner. At task start and after context rec
 
 The connector fixes `canonical_root=/home/icy/MePhC`, `project_id=MEPHC`, Git state, Conda Python, `PYTHONPATH`, and installed broker/worker builds. It rejects TriLatt, UNC or Windows execution roots, wrong interpreters, dirty execution trees, uncommitted prelive state, source-byte drift, moved `origin/main`, duplicate claims, and unsafe Courier recovery.
 
+For `mephc_change`, provide only declared UTF-8 file content and a non-empty `tests` array of repository-relative `tests/*.py` paths (optionally with a pytest `::` selector). Never pass `python ...`, `python -m ...`, shell syntax, or `audit/` paths as tests. A newly declared `tests/*.py` file is valid in the same transaction and is run only after materialization. The Runner, not the Agent, binds preimage/postimage hashes and `origin/main`.
+
 `scripts/relayctl` and `tools/mephc-courier.ps1` are internal Runner implementation details, not Agent launchers. Agents must not invoke them, arbitrary shell/Python, Courier, Browser, Chrome, or Gmail directly. Runtime evidence remains in ignored `.relayctl/`. Requests are plain text by default; attachments require separately identified committed remote audit artifacts.
 ## Automatic relay continuation
 
