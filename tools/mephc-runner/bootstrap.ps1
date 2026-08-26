@@ -4,7 +4,7 @@ $ErrorActionPreference='Stop'
 $SourceRoot=Split-Path -Parent $MyInvocation.MyCommand.Path
 $CanonicalWslSource='/home/icy/MePhC/tools/mephc-runner'
 $Runtime=Join-Path $env:LOCALAPPDATA 'MePhCRunner'
-$Files=@('worker.py','jobctl.py','workflow.py','materializer.py','materialize_client.py','mcp_server.py','native-recipes.json','mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-runner.service','README.md')
+$Files=@('worker.py','jobctl.py','workflow.py','workflow_resume.py','materializer.py','materialize_client.py','mcp_server.py','native-recipes.json','mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-runner.service','README.md')
 $Manifest=@()
 foreach($name in $Files) {
   $path=Join-Path $SourceRoot $name
@@ -24,6 +24,11 @@ $BuildId=([BitConverter]::ToString($sha.ComputeHash([Text.Encoding]::UTF8.GetByt
 $versionWsl="/opt/mephc-runner/versions/$BuildId"
 $previousOutput=@(wsl.exe -d Ubuntu -u root -- readlink -f /opt/mephc-runner/current 2>$null)
 $previous=if($previousOutput.Count -gt 0){(($previousOutput)-join '').Trim()}else{''}
+$previousCurrent=Join-Path $Runtime 'current.json'
+$previousWindowsVersion=''
+if(Test-Path -LiteralPath $previousCurrent -PathType Leaf){
+  try {$previousWindowsVersion=([json](Get-Content -LiteralPath $previousCurrent -Raw)).version_path}catch{$previousWindowsVersion=''}
+}
 try {
   wsl.exe -d Ubuntu -u root -- install -d -o root -g root -m 0555 $versionWsl
   foreach($name in $Files) {
@@ -47,7 +52,7 @@ $versionWin=Join-Path (Join-Path $Runtime 'versions') $BuildId
 New-Item -ItemType Directory -Path $versionWin -Force | Out-Null
 foreach($name in @('mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','README.md')){Copy-Item -LiteralPath (Join-Path $SourceRoot $name) -Destination (Join-Path $versionWin $name) -Force; Copy-Item -LiteralPath (Join-Path $SourceRoot $name) -Destination (Join-Path $Runtime $name) -Force}
 $Manifest|ConvertTo-Json -Depth 4|Set-Content -LiteralPath (Join-Path $versionWin 'install-manifest.json') -Encoding UTF8
-@{schema='mephc-runner-current-v1';build_id=$BuildId;version_path=$versionWin;installed_at=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Compress|Set-Content -LiteralPath (Join-Path $Runtime 'current.json') -Encoding UTF8
+@{schema='mephc-runner-current-v1';build_id=$BuildId;version_path=$versionWin;installed_at=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Compress|Set-Content -LiteralPath $previousCurrent -Encoding UTF8
 Copy-Item -LiteralPath (Join-Path $versionWin 'install-manifest.json') -Destination (Join-Path $Runtime 'install-manifest.json') -Force
 
 Start-Sleep -Seconds 2
@@ -85,4 +90,3 @@ try {
   throw
 }
 Write-Output "MEPHC_RUNNER_BOOTSTRAP_COMPLETE=true;BUILD_ID=$BuildId;STARTUP_MODE=startup_shortcut;PUBLIC_LAUNCHER=$publicLauncher"
-
