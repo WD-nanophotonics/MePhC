@@ -169,6 +169,8 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
     }
     if job.get("operation") == "change":
         required.add("change")
+    if job.get("operation") == "courier" and job.get("arguments", [])[:1] == ["--request-directory"]:
+        required.add("courier_binding")
     if set(job) != required or job.get("schema") != "mephc-runner-job-v1":
         raise Rejected("JOB_SCHEMA_MISMATCH", f"keys={sorted(job)}")
     if not isinstance(job.get("job_id"), str) or not JOB_ID.fullmatch(job["job_id"]):
@@ -181,8 +183,6 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
         raise Rejected("OPERATION_NOT_ALLOWED", repr(job.get("operation")))
     if job.get("expected_root") != str(ROOT):
         raise Rejected("ROOT_MISMATCH", repr(job.get("expected_root")))
-    if job.get("operation") == "courier" and job.get("arguments", [])[:1] == ["--request-directory"]:
-        required.add("courier_binding")
     if not isinstance(job.get("expected_head"), str) or not SHA40.fullmatch(job["expected_head"]):
         raise Rejected("EXPECTED_HEAD_INVALID", repr(job.get("expected_head")))
     arguments = job.get("arguments")

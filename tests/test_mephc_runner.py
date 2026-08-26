@@ -348,3 +348,10 @@ def test_health_binds_build_main_and_unresolved_jobs():
     assert "MAIN_MOVED" in broker
     assert '"origin_main"' in worker
     assert "foreach($name in $Files)" in bootstrap
+
+
+def test_courier_binding_is_required_before_schema_comparison():
+    text = (SOURCE / "worker.py").read_text(encoding="utf-8")
+    binding = text.index('required.add("courier_binding")')
+    comparison = text.index("if set(job) != required")
+    assert binding < comparison
