@@ -421,3 +421,12 @@ def test_broker_uses_existing_parent_for_new_declared_directories():
     broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
     assert "while($parent -and -not(Test-Path" in broker
     assert "MePhC\\'+$parent.Replace" in broker
+
+
+def test_attachment_e2e_factory_is_typed_and_artifact_bound():
+    relayctl = (SOURCE.parents[1] / "mephc" / "relayctl.py").read_text(encoding="utf-8")
+    jobctl = (SOURCE / "jobctl.py").read_text(encoding="utf-8")
+    worker = (SOURCE / "worker.py").read_text(encoding="utf-8")
+    assert "create_attachment_e2e" in relayctl
+    assert "MEPHC-ATTACHMENT-E2E-fixture.txt" in relayctl
+    assert "--create-attachment-e2e" in jobctl and "--create-attachment-e2e" in worker

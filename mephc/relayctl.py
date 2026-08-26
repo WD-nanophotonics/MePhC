@@ -1,6 +1,6 @@
 """Machine-enforced MePhC relay entry point."""
 from __future__ import annotations
-import argparse, hashlib, json, os
+import argparse, hashlib, json, os, shutil
 from pathlib import Path
 import subprocess, sys, time, uuid
 from typing import Any
@@ -99,6 +99,25 @@ def create_e2e(root: Path, certificate: str) -> Path:
     root = worktree_root(root); certificate_path, _ = load_certificate(root, certificate); request_id = f"MEPHC-WORKFLOW-E2E-{time.strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:8]}"; directory = runtime(root) / "outbox" / request_id; directory.mkdir(parents=True)
     (directory / "message.txt").write_text("MePhC workflow transport E2E validation only. No science, native execution, attachments, file changes, or new work order. Reply with a short plain-text receipt acknowledgement.\n", encoding="utf-8")
     write_json(directory / "request.json", {"version": 1, "project_id": PROJECT_ID, "request_id": request_id, "message_file": "message.txt", "attachments": [], "workflow_window_seconds": 600, "task_difficulty": "normal", "instruction_level": "normal", "relay_certificate": str(certificate_path), "e2e": True}); return directory
+def create_attachment_e2e(root: Path, certificate: str) -> Path:
+    root = worktree_root(root)
+    certificate_path, _ = load_certificate(root, certificate)
+    artifact = root / "audit" / "attachments" / "MEPHC-ATTACHMENT-E2E-fixture.txt"
+    relative_artifact = artifact.relative_to(root).as_posix()
+    if not artifact.is_file() or artifact.is_symlink() or git(root, "ls-files", "--error-unmatch", relative_artifact) != relative_artifact:
+        raise RelayFailure("ROOT_MISMATCH", "controlled E2E attachment artifact is unavailable or untracked")
+    request_id = f"MEPHC-ATTACHMENT-E2E-{time.strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:8]}"
+    directory = runtime(root) / "outbox" / request_id
+    directory.mkdir(parents=True)
+    target_root = directory / "attachments"
+    target_root.mkdir()
+    target = target_root / artifact.name
+    shutil.copyfile(artifact, target)
+    evidence = {"path": f"attachments/{artifact.name}", "size_bytes": target.stat().st_size, "sha256": sha256(target)}
+    write_json(directory / "attachment-attestation.json", {"schema": "chat-courier-attachments-v1", "project_id": PROJECT_ID, "request_id": request_id, "attachments": [evidence], "count": 1, "total_bytes": evidence["size_bytes"], "source_artifact": {"path": relative_artifact, "sha256": sha256(artifact)}})
+    (directory / "message.txt").write_text(f"MePhC controlled direct-attachment E2E validation only. Attachment artifact={relative_artifact}; SHA256={evidence['sha256']}. No science, native execution, file changes, or new work order. Reply with a short plain-text receipt acknowledgement.\n", encoding="utf-8")
+    write_json(directory / "request.json", {"version": 1, "project_id": PROJECT_ID, "request_id": request_id, "message_file": "message.txt", "attachments": [evidence["path"]], "workflow_window_seconds": 600, "task_difficulty": "normal", "instruction_level": "normal", "relay_certificate": str(certificate_path), "attachment_e2e": True})
+    return directory
 def create_status(root: Path, certificate: str) -> Path:
     root = worktree_root(root); certificate_path, _ = load_certificate(root, certificate); request_id = f"MEPHC-WORKFLOW-STATUS-{time.strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:8]}"; directory = runtime(root) / "outbox" / request_id; directory.mkdir(parents=True)
     message = f"MePhC relay-supervised workflow status report. PROJECT_ID=MEPHC. Infrastructure cleanup, persistent Windows-WSL runner validation, and a real plain-text Courier E2E round trip are complete. Current sandbox HEAD={head(root)}; origin/main={remote_ref(root, 'refs/heads/main')}. No scientific or native execution was performed in this status request, and there are no attachments. Please reply with the next self-contained plain-text transactional or scientific work order.\n"
@@ -118,7 +137,7 @@ def main(argv: list[str] | None = None) -> int:
     pre = sub.add_parser("prelive"); pre.add_argument("--certificate", required=True); pre.add_argument("tests", nargs="*")
     nat = sub.add_parser("native"); nat.add_argument("--prelive", required=True); nat.add_argument("native_command", nargs=argparse.REMAINDER)
     pub = sub.add_parser("publish"); pub.add_argument("--prelive", required=True); pub.add_argument("--push", action="store_true")
-    cou = sub.add_parser("courier"); cou.add_argument("--request-directory"); cou.add_argument("--recovery-only", action="store_true"); cou.add_argument("--create-e2e", action="store_true"); cou.add_argument("--create-status", action="store_true"); cou.add_argument("--certificate")
+    cou = sub.add_parser("courier"); cou.add_argument("--request-directory"); cou.add_argument("--recovery-only", action="store_true"); cou.add_argument("--create-e2e", action="store_true"); cou.add_argument("--create-attachment-e2e", action="store_true"); cou.add_argument("--create-status", action="store_true"); cou.add_argument("--certificate")
     args = parser.parse_args(argv)
     try:
         root = worktree_root()
@@ -130,6 +149,9 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "courier" and args.create_e2e:
             if not args.certificate: raise RelayFailure("PRELIVE_UNCOMMITTED", "--certificate required")
             result = create_e2e(root, args.certificate)
+        elif args.command == "courier" and args.create_attachment_e2e:
+            if not args.certificate: raise RelayFailure("PRELIVE_UNCOMMITTED", "--certificate required")
+            result = create_attachment_e2e(root, args.certificate)
         elif args.command == "courier" and args.create_status:
             if not args.certificate: raise RelayFailure("PRELIVE_UNCOMMITTED", "--certificate required")
             result = create_status(root, args.certificate)

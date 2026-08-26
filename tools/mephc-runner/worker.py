@@ -141,7 +141,7 @@ def command_for(job: dict[str, Any], recovery: bool = False, attempt: int = 1) -
     if job["operation"] == "courier":
         if recovery:
             return [str(RELAYCTL), "courier", *recovery_arguments(job, attempt)]
-        if job["arguments"] in (["--create-e2e"], ["--create-status"]):
+        if job["arguments"] in (["--create-e2e"], ["--create-attachment-e2e"], ["--create-status"]):
             return [str(RELAYCTL), "courier", job["arguments"][0], "--certificate",
                     str(certificate_path(job["certificate_sha256"]))]
     if job["operation"] == "change":
@@ -222,7 +222,7 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
             raise Rejected("NATIVE_RECIPE_INVALID", arguments[1])
 
     if job["operation"] == "courier":
-        if arguments in (["--create-e2e"], ["--create-status"]):
+        if arguments in (["--create-e2e"], ["--create-attachment-e2e"], ["--create-status"]):
             pass
         elif not ((len(arguments) == 2 and arguments[0] == "--request-directory")
                   or (len(arguments) == 3 and arguments[0] == "--request-directory"
