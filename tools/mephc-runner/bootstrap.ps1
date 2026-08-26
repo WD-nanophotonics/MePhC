@@ -4,7 +4,7 @@ $ErrorActionPreference='Stop'
 $SourceRoot=Split-Path -Parent $MyInvocation.MyCommand.Path
 $CanonicalWslSource='/home/icy/MePhC/tools/mephc-runner'
 $Runtime=Join-Path $env:LOCALAPPDATA 'MePhCRunner'
-$Files=@('worker.py','jobctl.py','workflow.py','workflow_resume.py','materializer.py','materialize_client.py','mcp_server.py','native-recipes.json','mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-runner.service','README.md')
+$Files=@('worker.py','jobctl.py','workflow.py','workflow_resume.py','materializer.py','materialize_client.py','mcp_server.py','native-recipes.json','mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-connector.ps1','mephc-runner.service','README.md')
 $Manifest=@()
 foreach($name in $Files) {
   $path=Join-Path $SourceRoot $name
@@ -50,7 +50,7 @@ try {
 New-Item -ItemType Directory -Path $Runtime -Force | Out-Null
 $versionWin=Join-Path (Join-Path $Runtime 'versions') $BuildId
 New-Item -ItemType Directory -Path $versionWin -Force | Out-Null
-foreach($name in @('mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','README.md')){Copy-Item -LiteralPath (Join-Path $SourceRoot $name) -Destination (Join-Path $versionWin $name) -Force; Copy-Item -LiteralPath (Join-Path $SourceRoot $name) -Destination (Join-Path $Runtime $name) -Force}
+foreach($name in @('mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-connector.ps1','README.md')){Copy-Item -LiteralPath (Join-Path $SourceRoot $name) -Destination (Join-Path $versionWin $name) -Force; Copy-Item -LiteralPath (Join-Path $SourceRoot $name) -Destination (Join-Path $Runtime $name) -Force}
 $Manifest|ConvertTo-Json -Depth 4|Set-Content -LiteralPath (Join-Path $versionWin 'install-manifest.json') -Encoding UTF8
 @{schema='mephc-runner-current-v1';build_id=$BuildId;version_path=$versionWin;installed_at=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Compress|Set-Content -LiteralPath $previousCurrent -Encoding UTF8
 Copy-Item -LiteralPath (Join-Path $versionWin 'install-manifest.json') -Destination (Join-Path $Runtime 'install-manifest.json') -Force
