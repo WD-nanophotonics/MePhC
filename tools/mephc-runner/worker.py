@@ -353,14 +353,16 @@ def repair_interrupted() -> None:
 
 
 def heartbeat() -> None:
-    sources = (Path(__file__), INSTALL_ROOT / "jobctl.py", INSTALL_ROOT / "materializer.py")
-    build_id = hashlib.sha256(b"".join(path.read_bytes() for path in sources)).hexdigest()[:16]
+    names = ("worker.py","jobctl.py","materializer.py","materialize_client.py","mcp_server.py","native-recipes.json","mephc-runner.ps1","mephc-runner.cmd","mephc-connector.cmd","mephc-runner.service","README.md")
+    source_hashes = "".join(hashlib.sha256((INSTALL_ROOT / name).read_bytes()).hexdigest() for name in names)
+    build_id = hashlib.sha256(source_hashes.encode("ascii")).hexdigest()[:16]
     atomic_json(RUNTIME / "heartbeat.json", {
         "schema": "mephc-runner-heartbeat-v1",
         "pid": os.getpid(),
         "root": str(ROOT),
         "python": sys.executable,
         "head": git("rev-parse", "HEAD"),
+        "origin_main": git("rev-parse", "origin/main"),
         "worker_build_id": build_id,
         "updated_at": now(),
     })

@@ -337,3 +337,14 @@ def test_attested_failed_change_has_narrow_recovery_path():
     worker = (SOURCE / "worker.py").read_text(encoding="utf-8")
     assert "change-attestation.json" in jobctl
     assert "change_attested" in worker
+
+
+def test_health_binds_build_main_and_unresolved_jobs():
+    broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
+    worker = (SOURCE / "worker.py").read_text(encoding="utf-8")
+    bootstrap = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8-sig")
+    assert "RUNNER_BUILD_MISMATCH" in broker
+    assert "UNRESOLVED_RUNNER_JOB" in broker
+    assert "MAIN_MOVED" in broker
+    assert '"origin_main"' in worker
+    assert "foreach($name in $Files)" in bootstrap

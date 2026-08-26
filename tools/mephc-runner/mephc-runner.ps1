@@ -73,7 +73,8 @@ if($Command -eq 'Broker') {
   while($true) {
     $ok=$true
     try { Ensure-Worker; Dispatch-ChangeJobs } catch { $ok=$false }
-    @{schema='mephc-windows-broker-heartbeat-v1';updated_at=[DateTime]::UtcNow.ToString('o');pid=$PID;worker_ok=$ok;distro=$Distro}|ConvertTo-Json -Compress|Set-Content -LiteralPath $Heartbeat -Encoding UTF8
+    $current=if(Test-Path -LiteralPath (Join-Path $Runtime 'current.json')){Get-Content -Raw -LiteralPath (Join-Path $Runtime 'current.json')|ConvertFrom-Json}else{$null}
+    @{schema='mephc-windows-broker-heartbeat-v1';updated_at=[DateTime]::UtcNow.ToString('o');pid=$PID;worker_ok=$ok;distro=$Distro;broker_build_id=$current.build_id}|ConvertTo-Json -Compress|Set-Content -LiteralPath $Heartbeat -Encoding UTF8
     Start-Sleep -Seconds 10
   }
 }
@@ -91,6 +92,10 @@ if($Command -eq 'Health') {
   if($null -eq $workerRecord){$errors.Add('WORKER_HEARTBEAT_MISSING')}elseif(($now-[DateTime]::Parse($workerRecord.updated_at).ToUniversalTime()).TotalSeconds -gt 15){$errors.Add('WORKER_HEARTBEAT_STALE')}
   if($workerRecord.root -ne '/home/icy/MePhC'){$errors.Add('ROOT_MISMATCH')}
   if($workerRecord.python -ne $Python){$errors.Add('INTERPRETER_MISMATCH')}
+  if($workerRecord.origin_main -ne '5a4e9e839eff40f582c2404ff3eadd2bf8b676b5'){$errors.Add('MAIN_MOVED')}
+  if($brokerRecord.broker_build_id -ne $workerRecord.worker_build_id){$errors.Add('RUNNER_BUILD_MISMATCH')}
+  $unresolved=Get-ChildItem -LiteralPath '\\wsl.localhost\Ubuntu\home\icy\MePhC\.relayctl\runner\jobs' -Directory -ErrorAction SilentlyContinue|Where-Object {$s=Join-Path $_.FullName 'state.json'; if(Test-Path -LiteralPath $s){$v=Get-Content -Raw -LiteralPath $s|ConvertFrom-Json; $v.state -in @('running','recovery_required')}else{$false}}
+  if($unresolved){$errors.Add('UNRESOLVED_RUNNER_JOB')}
   $ok=($errors.Count -eq 0)
   $nextAction=if($ok){'none'}else{'inspect_or_restart_runner'}
   @{schema='mephc-runner-health-v2';ok=$ok;errors=@($errors);broker=$brokerRecord;worker=$workerRecord;retry_allowed=$false;safe_next_action=$nextAction}|ConvertTo-Json -Depth 5 -Compress

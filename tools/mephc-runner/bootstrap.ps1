@@ -26,7 +26,7 @@ $previousOutput=@(wsl.exe -d Ubuntu -u root -- readlink -f /opt/mephc-runner/cur
 $previous=if($previousOutput.Count -gt 0){(($previousOutput)-join '').Trim()}else{''}
 try {
   wsl.exe -d Ubuntu -u root -- install -d -o root -g root -m 0555 $versionWsl
-  foreach($name in @('worker.py','jobctl.py','materializer.py','materialize_client.py','mcp_server.py','native-recipes.json')) {
+  foreach($name in $Files) {
     wsl.exe -d Ubuntu -u root -- install -o root -g root -m 0555 "$sourceWsl/$name" "$versionWsl/$name"
     if($LASTEXITCODE -ne 0){throw "failed version install: $name"}
   }
