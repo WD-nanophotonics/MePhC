@@ -1,0 +1,145 @@
+{
+  "schema": "mephc-e9f-c1-rp4-b-science-seal-v1",
+  "phase": "E9F.C1.RP4.B",
+  "work_order_id": "MEPHC-E9F-C1-RP4-B-20260826-274",
+  "work_order_source_response_sha256": "795dbf32f4bad2b7755be4c58176c12b95b53f9861ed492450f6ae55722894a9",
+  "base_sandbox_sha": "f4ae9a30d91dc2fa7448180a05558522590ea0be",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "endpoint_decision": "SOURCE_BOUND_BAND2_CLOSE_INCOMPLETE_UNDER_CURRENT_CONTRACT",
+  "source_contract": {
+    "estimator": "frozen_source_grid_estimator",
+    "qualification": "frozen_individual_rank1_qualification_contract",
+    "current_0p02_threshold_unchanged": true,
+    "threshold_reconsideration": "requires_separate_future_qualification_policy_validation_work_order"
+  },
+  "bands": {
+    "band0": {
+      "status": "reported",
+      "chern": -0.09405797052154485,
+      "qualified": "551/551"
+    },
+    "band1": {
+      "status": "reported",
+      "chern": 0.5086915675292921,
+      "qualified": "551/551"
+    },
+    "band2": {
+      "status": "incomplete_not_reported",
+      "qualified": "534/551",
+      "failed": 17,
+      "numeric_chern_forbidden": true,
+      "failure_accounting": {
+        "total_failed_centers": 17,
+        "finite_stencil_recoverable_diagnostic_centers": 11,
+        "persistent_true_low_gap_centers": 6,
+        "persistent_centers": [
+          [
+            -34,
+            -17
+          ],
+          [
+            -34,
+            -16
+          ],
+          [
+            -34,
+            16
+          ],
+          [
+            -34,
+            17
+          ],
+          [
+            -5,
+            0
+          ],
+          [
+            -4,
+            0
+          ]
+        ]
+      }
+    }
+  },
+  "diagnostic_interpretation": {
+    "narrower_local_berry_plaquette_stencil": "diagnostic_only; does not retroactively alter the frozen source estimator or current reported Chern values",
+    "persistent_band2_centers": "outside frozen individual-rank1 qualification contract; prevent an individual band2 reducer result",
+    "convergence": {
+      "branch_stencil_rows_contract": "22/24",
+      "band3_contracts": "12/12",
+      "band2_contracts": "10/12",
+      "dominant_exception": "(-4,0) band2 nonconvergent/nonuniform",
+      "slowly_contracting": "(-5,0) band2",
+      "l0_spectral_changes": "modest"
+    },
+    "composite_subspace": {
+      "observable": "rank2 Tr(F) for band2+band3",
+      "gauge_invariant": true,
+      "non_equivalent_to_source_bound_band2": true,
+      "not_used_in_source_reproduction": true,
+      "individual_band2_assignment": "requires additional gauge-invariant splitting"
+    }
+  },
+  "r192": {
+    "can_change_current_reducer_admissibility": false,
+    "can_diagnose_curvature_convergence": true,
+    "required_before_current_science_decision": false
+  },
+  "forbidden_for_incomplete_band2": [
+    "zero fill",
+    "dropping failed cells",
+    "missing-weight removal",
+    "renormalization",
+    "extrapolated replacement",
+    "rank1-shadow replacement",
+    "rank2 replacement",
+    "mixed-rank replacement",
+    "numeric Chern estimate"
+  ],
+  "execution": {
+    "native_solves": 0,
+    "mpb_execution": false,
+    "reducer_execution": false,
+    "new_chern_execution": false,
+    "production_mephc_change": false,
+    "main_promotion": false
+  },
+  "frozen_artifacts": {
+    "rp4_a_existing_evidence_matrix": {
+      "path": "audit/e9f/rp4_a_existing_evidence_matrix.json",
+      "sha256": "8124da6ad077d0b6049bbe36d430d654cea77bcf3e855956e74fa81065d2e78c"
+    },
+    "rp4_a_science_decision": {
+      "path": "audit/e9f/rp4_a_science_decision.json",
+      "sha256": "a540f30984c889ab6e46d5bda4cffc715e40416bb46cbe55a056c6112f5f7c8c"
+    },
+    "r160_result": {
+      "immutable_id": "AUTHORITATIVE_R160_RESULT_SHA256",
+      "sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da"
+    },
+    "r160_manifest": {
+      "immutable_id": "AUTHORITATIVE_R160_MANIFEST_SHA256",
+      "sha256": "307360273e86a5ee8cc83b8eb01a87d2ccd9f6a8815e7f2612fb7decdf8888b1"
+    },
+    "r160_checkpoint": {
+      "immutable_id": "AUTHORITATIVE_R160_CHECKPOINT_SHA256",
+      "sha256": "17b1967b75177e63c9026b548a984f507033ba7f90e0d8a22e403d19cfcfeb0a"
+    },
+    "r160_compact_trace": {
+      "path": "audit/e9f/rp3_b_r160_compact_trace.json",
+      "sha256": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487"
+    },
+    "r128_compact_trace": {
+      "path": "audit/e9f/rp3_a_r128_compact_trace.json",
+      "sha256": "898cb798fb39228aba786582972b11df17c00c7c3a63124e55716b4b2f5ccef7"
+    },
+    "current_process_science_seal": {
+      "path": "audit/e9f/rp3_b_c1_c1_process_science_seal.json",
+      "sha256": "b8467246fa4e90a3af38f1e5f0ac8ffd483ea36695e1077c09f0543cabff0d2c"
+    },
+    "current_process_reliability_registry": {
+      "path": "audit/e9f/rp3_b_c1_c1_process_reliability_registry.json",
+      "sha256": "9f1dcf010e4fdf35967317f952177d3aaa3d3931e6c8237b443ad450b1d2d22e"
+    }
+  }
+}
