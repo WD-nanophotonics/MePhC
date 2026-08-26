@@ -2,6 +2,7 @@
 """Typed stdio MCP server for the MePhC persistent runner."""
 from __future__ import annotations
 import contextlib
+import workflow
 import hashlib
 import io
 import json
@@ -19,7 +20,7 @@ READ_ROOT_FILES = {"AGENTS.md", "pyproject.toml"}
 
 
 def advertised_tools():
-    return [*TOOLS, *READONLY_TOOLS, *RELEASE_TOOLS]
+    return [*TOOLS, *READONLY_TOOLS, *REPORT_TOOLS, *RELEASE_TOOLS]
 
 
 def _relative(value: object) -> Path:
@@ -108,6 +109,10 @@ TOOLS = [
     {"name": "mephc_recover", "description": "Request the only state-approved recovery for an existing job.", "inputSchema": {"type": "object", "required": ["job_id"], "properties": {"job_id": {"type": "string"}}, "additionalProperties": False}},
 ]
 
+REPORT_TOOLS = [
+    {"name": "mephc_report", "description": "Create or safely reuse one plain-text report request bound to the active work order, then return its Courier job. Agents cannot create outbox files, choose destinations, or attach local files.", "inputSchema": {"type": "object", "required": ["work_order_id", "message_utf8"], "properties": {"work_order_id": {"type": "string"}, "message_utf8": {"type": "string"}}, "additionalProperties": False}},
+]
+
 READONLY_TOOLS = [
     {"name": "mephc_inspect", "description": "Read only tracked UTF-8 MePhC source or audit evidence, or list a controlled tracked directory. Rejects runtime, Git internals, symlinks, credentials, path traversal, and untracked files.", "inputSchema": {"type": "object", "required": ["operation", "path"], "properties": {"operation": {"type": "string", "enum": ["list", "read"]}, "path": {"type": "string"}, "offset": {"type": "integer", "minimum": 0}, "max_bytes": {"type": "integer", "minimum": 1, "maximum": 65536}}, "additionalProperties": False}},
 ]
@@ -115,6 +120,61 @@ READONLY_TOOLS = [
 RELEASE_TOOLS = [
     {"name": "mephc_publish", "description": "Publish the current clean HEAD to origin/sandbox using only the newest passing prelive attestation bound to that exact HEAD. No path or attestation name is accepted from the agent.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
 ]
+
+
+def _report_certificate() -> tuple[Path, str]:
+    candidates = sorted(jobctl.CERTIFICATES.glob("*.json"), key=lambda path: path.stat().st_mtime_ns, reverse=True)
+    if not candidates:
+        raise ValueError("REPORT_CERTIFICATE_MISSING")
+    path = candidates[0]
+    return path, hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def report(args: dict) -> dict:
+    if not isinstance(args, dict) or set(args) != {"work_order_id", "message_utf8"}:
+        raise ValueError("REPORT_SCHEMA_INVALID")
+    work_order_id, message = args["work_order_id"], args["message_utf8"]
+    active = workflow.active()
+    if not isinstance(work_order_id, str) or not active or active.get("active_work_order_id") != work_order_id:
+        raise ValueError("REPORT_WORK_ORDER_INVALID")
+    if not isinstance(message, str) or not message.strip() or "\x00" in message or len(message.encode("utf-8")) > 16384:
+        raise ValueError("REPORT_MESSAGE_INVALID")
+    content = message.encode("utf-8")
+    key = hashlib.sha256((work_order_id + "\x00").encode("utf-8") + content).hexdigest()
+    request_dir = workflow.OUTBOX / f"MEPHC-REPORT-{key[:24]}"
+    certificate, certificate_sha256 = _report_certificate()
+    if not request_dir.is_dir():
+        request_dir.mkdir(parents=True, mode=0o700)
+        (request_dir / "message.txt").write_bytes(content)
+        request = {
+            "version": 1, "project_id": "MEPHC", "request_id": request_dir.name, "message_file": "message.txt",
+            "attachments": [], "workflow_window_seconds": 600, "task_difficulty": "normal",
+            "instruction_level": "normal", "relay_certificate": str(certificate), "report_request": True,
+            "work_order_id": work_order_id, "report_idempotency_key": key,
+        }
+        temporary = request_dir / ".request.json.tmp"
+        temporary.write_text(json.dumps(request, sort_keys=True) + "\n", encoding="utf-8")
+        temporary.replace(request_dir / "request.json")
+    else:
+        try:
+            request = json.loads((request_dir / "request.json").read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise ValueError("REPORT_REQUEST_STATE_INVALID") from exc
+        if request.get("report_idempotency_key") != key or request.get("attachments") != []:
+            raise ValueError("REPORT_REQUEST_STATE_INVALID")
+    receipt = request_dir / "receipt.json"
+    recovery = False
+    if receipt.is_file():
+        try:
+            state = json.loads(receipt.read_text(encoding="utf-8")).get("state")
+        except (OSError, json.JSONDecodeError):
+            state = None
+        recovery = state in {"request_submitted", "waiting_for_response", "submission_unconfirmed", "chat_submission_unconfirmed", "submission_state_uncertain", "response_timeout", "response_protocol_error"}
+    arguments = ["--request-directory", str(request_dir)]
+    if recovery:
+        arguments.append("--recovery-only")
+    directory = jobctl.submit("courier", arguments, certificate_sha256)
+    return {"job_id": directory.name, "state": "ready", "request_id": request_dir.name, "safe_next_tool": "mephc_wait"}
 
 
 def publish_latest_prelive():
@@ -174,6 +234,8 @@ def invoke(name, args):
         return value
     if name == "mephc_inspect":
         return inspect(args)
+    if name == "mephc_report":
+        return report(args)
     if name == "mephc_publish":
         return publish_latest_prelive()
     if name == "mephc_resume":
