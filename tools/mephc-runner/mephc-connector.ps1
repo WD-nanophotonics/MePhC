@@ -12,16 +12,18 @@ function Start-McpChild {
   $info.UseShellExecute=$false
   $info.RedirectStandardInput=$true
   $info.RedirectStandardOutput=$true
-  $info.RedirectStandardError=$true
+  $info.RedirectStandardError=$false
   $info.CreateNoWindow=$true
   $child=[Diagnostics.Process]::new()
   $child.StartInfo=$info
-  $child.add_OutputDataReceived({param($sender,$eventArgs) if($null -ne $eventArgs.Data){[Console]::Out.WriteLine($eventArgs.Data);[Console]::Out.Flush()}})
-  $child.add_ErrorDataReceived({param($sender,$eventArgs) if($null -ne $eventArgs.Data){[Console]::Error.WriteLine($eventArgs.Data);[Console]::Error.Flush()}})
   if(-not $child.Start()){throw 'MCP_CHILD_START_FAILED'}
-  $child.BeginOutputReadLine()
-  $child.BeginErrorReadLine()
   return $child
+}
+
+function Emit-ChildRestartError([string]$Line) {
+  $identifier=$null
+  try {$identifier=($Line|ConvertFrom-Json).id} catch {}
+  @{jsonrpc='2.0';id=$identifier;error=@{code=-32001;message='MCP_CHILD_EXITED_AFTER_REQUEST: child restarted; inspect durable state before any non-idempotent retry'}}|ConvertTo-Json -Compress
 }
 
 $child=$null
@@ -34,6 +36,16 @@ try {
     }
     $child.StandardInput.WriteLine($line)
     $child.StandardInput.Flush()
+    $response=$child.StandardOutput.ReadLine()
+    if($null -eq $response) {
+      [Console]::Out.WriteLine((Emit-ChildRestartError $line))
+      [Console]::Out.Flush()
+      $child.Dispose()
+      $child=Start-McpChild
+      continue
+    }
+    [Console]::Out.WriteLine($response)
+    [Console]::Out.Flush()
   }
 } finally {
   if($null -ne $child) {
