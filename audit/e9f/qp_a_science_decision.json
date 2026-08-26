@@ -1,0 +1,33 @@
+{
+  "schema": "mephc-e9f-c2-qp-a-science-decision-v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-A-20260826-276",
+  "base_sandbox_sha": "0ca25f7661f8136d8ae4b87d0d7ba9856dd73dfb",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "primary_next_step_classification": "THRESHOLD_VALIDATION_CONTRACT_SHOULD_BE_EXECUTED",
+  "epistemic_classification": {
+    "SOURCE_MANDATED_PROVEN": false,
+    "PROJECT_SOURCE_REPRODUCTION_POLICY": true,
+    "MATHEMATICALLY_REQUIRED_EXACT_0P02": false,
+    "EMPIRICALLY_VALIDATED_SAFETY_MARGIN": false,
+    "HISTORICAL_ENGINEERING_POLICY": true
+  },
+  "more_native_solves_useful_before_policy_contract": false,
+  "full_six_point_r192_justified_before_policy_contract": false,
+  "targeted_minus4_0_r192_justified_before_policy_contract": false,
+  "targeted_minus5_0_r192_justified_before_policy_contract": false,
+  "reasons": "Additional resolution can diagnose curvature behavior but cannot validate or revise an unproven qualification-policy cutoff. A pre-registered threshold-validation bundle is required first.",
+  "frozen_endpoint": {
+    "band0": "REPORTED:-0.09405797052154485:551/551",
+    "band1": "REPORTED:+0.5086915675292921:551/551",
+    "band2": "INCOMPLETE_NOT_REPORTED:534/551:17_FAILED:NO_NUMERIC_CHERN",
+    "threshold": 0.02
+  },
+  "composite_band2_band3_authorized": false,
+  "execution": {
+    "native_solves": 0,
+    "mpb_execution": false,
+    "reducer_execution": false,
+    "chern_execution": false,
+    "threshold_change": false
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "schema": "mephc-e9f-c2-qp-a-threshold-provenance-v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-A-20260826-276",
+  "base_sandbox_sha": "0ca25f7661f8136d8ae4b87d0d7ba9856dd73dfb",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "threshold": 0.02,
+  "earliest_gate_concept": {
+    "commit": "a2db95637e42b745b4f32d4995bd4932bfdf6fda",
+    "path": "mephc/spectral_association.py",
+    "field": "SubspaceQualificationThresholds.min_external_gap",
+    "role": "earliest recoverable external-isolation gate concept; caller-supplied and no exact 0.02 value"
+  },
+  "earliest_numeric_origin": {
+    "commit": "f4929282b6efd300517010398054ad90fae16ca5",
+    "path": "audit/e9c/human_reference_berry_contract.json",
+    "field": "qualification.min_external_gap=0.02",
+    "role": "earliest recoverable numerical 0.02 external-gap qualification field"
+  },
+  "e9f_contract_origin": {
+    "commit": "06f000a4fe573a78f105e116c48a249959bbffd2",
+    "path": "audit/e9f/rp1_recovery_policy_contract.json",
+    "field": "l2_exact_contract.thresholds.MIN_EXTERNAL_PAIR_GAP=0.02 and threshold_governance.current_min_external_gap=0.02",
+    "role": "E9F project policy is contract-bound; source anchor is explicitly blind during qualification"
+  },
+  "classification": {
+    "SOURCE_MANDATED_PROVEN": false,
+    "PROJECT_SOURCE_REPRODUCTION_POLICY": true,
+    "MATHEMATICALLY_REQUIRED_EXACT_0P02": false,
+    "EMPIRICALLY_VALIDATED_SAFETY_MARGIN": false,
+    "HISTORICAL_ENGINEERING_POLICY": true
+  },
+  "classification_evidence": {
+    "source_mandated": "No committed primary-source quotation, transcription, source-contract artifact, or exact source-derived numerical rule requiring 0.02 was found. RP1 instead records source_anchor_blind_during_qualification=true and no_source_paper_target_values=true.",
+    "project_policy": "RP1 freezes 0.02 in threshold_governance and requires a separate preregistered work order for any change.",
+    "mathematics": "An isolated continuous rank1 spectral projector qualitatively requires positive separation; no committed theorem establishes a universal finite gap of exactly 0.02.",
+    "empirical": "Existing avoided-crossing and exact-degeneracy controls exercise fail-closed semantics, but no committed controlled gap ladder spanning above/near/below 0.02 calibrates a quantitative safety margin.",
+    "historical_engineering": "0.02 propagates from E9C qualification through E9F RP1/RP2/C3 contracts and current R160 qualification context."
+  },
+  "semantic_roles": {
+    "external_spectral_gap": "minimum separation from excluded bands for individual rank1 isolation",
+    "pair_subspace_isolation": "MIN_EXTERNAL_PAIR_GAP for the rank2 pair; distinct from individual rank1 attribution",
+    "overlap_continuity": "minimum singular value 0.9; not spectral isolation",
+    "principal_angle_projector_distance": "max principal angle 0.45 and projector distance 0.3; continuity diagnostics not a gap rule",
+    "local_berry_stencil": "finite local plaquette step; stencil recovery is diagnostic only",
+    "solver_spatial_resolution": "R64/R96/R128/R160; resolution alone is not a threshold justification"
+  },
+  "existing_diagnostics": {
+    "persistent_low_gap_centers": [
+      [
+        -34,
+        -17
+      ],
+      [
+        -34,
+        -16
+      ],
+      [
+        -34,
+        16
+      ],
+      [
+        -34,
+        17
+      ],
+      [
+        -5,
+        0
+      ],
+      [
+        -4,
+        0
+      ]
+    ],
+    "finite_stencil_recoverable_count": 11,
+    "interpretation": "R64/R96/R128/R160 compact traces distinguish persistent low-gap behavior from finite-stencil recovery, but do not constitute a controlled 0.02 threshold calibration."
+  },
+  "evidence_paths": [
+    "mephc/spectral_association.py",
+    "audit/e9c/human_reference_berry_contract.json",
+    "audit/e9f/rp1_recovery_policy_contract.json",
+    "audit/e9f/rp3_b_r160_compact_trace.json",
+    "audit/e9f/rp4_a_existing_evidence_matrix.json",
+    "audit/e9f/rp1_policy.py",
+    "audit/e9f/rp3_b_r160_compact_trace.json",
+    "audit/e9f/c3_c5_c1_matrix_postprocess.json",
+    "audit/e9f/rp4_a_science_decision.json",
+    "tests/test_e3c_spectral_association_validation.py"
+  ]
+}

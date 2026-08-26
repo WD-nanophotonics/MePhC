@@ -1,0 +1,49 @@
+{
+  "schema": "mephc-e9f-c2-qp-a-threshold-validation-contract-draft-v1",
+  "status": "DRAFT_ONLY_NOT_EXECUTED",
+  "threshold_under_review": 0.02,
+  "selects_new_threshold": false,
+  "goals": {
+    "GOAL_1": "validate a generally safe MePhC rank1 isolation threshold",
+    "GOAL_2": "validate a source-reproduction-specific exception or alternative threshold for this E9 model",
+    "non_implication": "GOAL_2 success does not establish GOAL_1"
+  },
+  "controlled_gap_ladder": {
+    "required_regions": [
+      "safely_above_0.02",
+      "near_0.02",
+      "below_0.02"
+    ],
+    "controls": [
+      "exact-degeneracy fail-closed",
+      "avoided-crossing",
+      "solver-resolution convergence",
+      "local-stencil convergence",
+      "rank1 overlap singular values",
+      "principal angles and projector distances",
+      "association ambiguity",
+      "gauge-phase invariance",
+      "solver band-order permutation invariance",
+      "forward/reverse path consistency where applicable",
+      "Berry-curvature convergence",
+      "integration-weight preservation",
+      "no missing-cell renormalization"
+    ]
+  },
+  "candidate_acceptance_logic": "A candidate cannot be accepted merely because frequencies and identities look smooth. It must satisfy the entire validation bundle at every required control point with explicit admissibility and failure criteria.",
+  "failure_criteria": [
+    "any exact-degeneracy control not fail-closed",
+    "association ambiguity",
+    "insufficient external spectral isolation",
+    "nonconvergent curvature",
+    "gauge or solver-order dependence",
+    "missing-cell renormalization",
+    "integration-weight change",
+    "unresolved path inconsistency"
+  ],
+  "execution": {
+    "native_solves": 0,
+    "mpb_execution": false,
+    "threshold_change": false
+  }
+}
