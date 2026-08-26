@@ -408,3 +408,10 @@ def test_materializer_permits_a_new_declared_test_path(tmp_path, monkeypatch):
     with pytest.raises(materializer.Failure) as error:
         materializer.tests(["audit/test_new_contract.py"], {"audit/test_new_contract.py"})
     assert error.value.code == "CHANGE_TESTS_INVALID"
+
+
+def test_bridge_requires_bound_attachment_attestation():
+    bridge = (SOURCE.parents[1] / "tools" / "mephc-courier.ps1").read_text(encoding="utf-8-sig")
+    assert "chat-courier-attachments-v1" in bridge
+    assert "attachment attestation is required" in bridge
+    assert "10485760" in bridge and "20971520" in bridge
