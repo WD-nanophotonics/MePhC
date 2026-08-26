@@ -24,6 +24,7 @@ JOBS = RUNTIME / "jobs"
 CERTIFICATES = ROOT / ".relayctl" / "certificates"
 NATIVE_RECIPES = INSTALL_ROOT / "native-recipes.json"
 MATERIALIZE_CLIENT = INSTALL_ROOT / "materialize_client.py"
+MATERIALIZER = INSTALL_ROOT / "materializer.py"
 OPERATIONS = {"doctor", "worktree", "prelive", "native", "publish", "courier", "change"}
 JOB_ID = re.compile(r"^MEPHC-JOB-[A-Z0-9][A-Z0-9._-]{7,119}$")
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
@@ -137,14 +138,16 @@ def command_for(job: dict[str, Any], recovery: bool = False, attempt: int = 1) -
     if job["operation"] == "prelive":
         return [str(RELAYCTL), "prelive", "--certificate",
                 str(certificate_path(job["certificate_sha256"])), *job["arguments"]]
-    if job["operation"] == "courier" and job["arguments"] in (["--create-e2e"], ["--create-status"]):
-        return [str(RELAYCTL), "courier", job["arguments"][0], "--certificate",
-                str(certificate_path(job["certificate_sha256"]))]
+    if job["operation"] == "courier":
+        if recovery:
+            return [str(RELAYCTL), "courier", *recovery_arguments(job, attempt)]
+        if job["arguments"] in (["--create-e2e"], ["--create-status"]):
+            return [str(RELAYCTL), "courier", job["arguments"][0], "--certificate",
+                    str(certificate_path(job["certificate_sha256"]))]
     if job["operation"] == "change":
-        return [str(PYTHON), str(MATERIALIZE_CLIENT), str(JOBS / job["job_id"])]
+        mode = "recover" if recovery else "transact"
+        return [str(PYTHON), str(MATERIALIZE_CLIENT), mode, str(JOBS / job["job_id"])]
     return [str(RELAYCTL), job["operation"], *job["arguments"]]
-
-
 def inside(path: Path, parent: Path, code: str) -> Path:
     resolved = path.resolve(strict=False)
     try:
@@ -154,9 +157,7 @@ def inside(path: Path, parent: Path, code: str) -> Path:
     return resolved
 
 
-    if job["operation"] == "courier" and recovery:
-        return [str(RELAYCTL), "courier", *recovery_arguments(job, attempt)]
-def validate(job_dir: Path) -> tuple[dict[str, Any], str]:
+def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str]:
     if not (job_dir / "READY").is_file():
         raise Rejected("JOB_NOT_READY", str(job_dir))
     raw = (job_dir / "job.json").read_bytes()
@@ -239,7 +240,7 @@ def validate(job_dir: Path) -> tuple[dict[str, Any], str]:
     if git("rev-parse", "--show-toplevel") != str(ROOT):
         raise Rejected("ROOT_MISMATCH", git("rev-parse", "--show-toplevel"))
     actual_head = git("rev-parse", "HEAD")
-    if actual_head != job["expected_head"]:
+    if actual_head != job["expected_head"] and not (recovery and job["operation"] == "change"):
         raise Rejected("HEAD_MOVED", f"expected={job['expected_head']} actual={actual_head}")
     return job, raw_sha
 
@@ -262,12 +263,12 @@ def receipt_state(job: dict[str, Any]) -> str | None:
 
 def execute(job_dir: Path, recovery: bool = False) -> None:
     try:
-        job, immutable_sha = validate(job_dir)
+        job, immutable_sha = validate(job_dir, recovery=recovery)
         claim = job_dir / "CLAIMED"
         previous_attempt = 0
         if recovery:
             old_state = read_object(job_dir / "state.json")
-            if job["operation"] != "courier" or old_state.get("state") != "recovery_required":
+            if job["operation"] not in {"courier", "change"} or old_state.get("state") != "recovery_required":
                 raise Rejected("RECOVERY_NOT_ALLOWED", repr(old_state))
             previous_attempt = int(old_state.get("attempt", 1))
             (job_dir / "RECOVER").unlink(missing_ok=True)

@@ -28,8 +28,11 @@ function Dispatch-ChangeJobs {
   if(-not(Test-Path -LiteralPath $jobsRoot -PathType Container)){return}
   foreach($directory in Get-ChildItem -LiteralPath $jobsRoot -Directory) {
     $ready=Join-Path $directory.FullName 'MATERIALIZE_READY'
-    $dispatched=Join-Path $directory.FullName 'MATERIALIZE_DISPATCHED'
-    if(-not(Test-Path -LiteralPath $ready -PathType Leaf) -or (Test-Path -LiteralPath $dispatched)){continue}
+    $recoverReady=Join-Path $directory.FullName 'MATERIALIZE_RECOVER_READY'
+    $mode=if(Test-Path -LiteralPath $recoverReady -PathType Leaf){'recover'}elseif(Test-Path -LiteralPath $ready -PathType Leaf){'transact'}else{$null}
+    if($null -eq $mode){continue}
+    $dispatched=Join-Path $directory.FullName (if($mode -eq 'recover'){'MATERIALIZE_RECOVER_DISPATCHED'}else{'MATERIALIZE_DISPATCHED'})
+    if(Test-Path -LiteralPath $dispatched){continue}
     try {
       $job=Get-Content -Raw -LiteralPath (Join-Path $directory.FullName 'job.json')|ConvertFrom-Json
       if($job.operation -ne 'change' -or $job.project_id -ne 'MEPHC'){throw 'CHANGE_JOB_INVALID'}
@@ -51,7 +54,7 @@ function Dispatch-ChangeJobs {
       $unitArgs=@('-d',$Distro,'-u','root','--','systemd-run','--no-block','--collect','--working-directory=/home/icy/MePhC',"--unit=$unit",'--property=Type=exec','--property=User=icy','--property=NoNewPrivileges=yes','--property=ProtectSystem=strict','--property=ProtectHome=read-only','--property=PrivateTmp=yes')
       foreach($path in $writePaths){$unitArgs += "--property=ReadWritePaths=$path"}
       $jobWsl="/home/icy/MePhC/.relayctl/runner/jobs/$($job.job_id)"
-      $unitArgs += @($Python,'/opt/mephc-runner/current/materializer.py','transact',$jobWsl)
+      $unitArgs += @($Python,'/opt/mephc-runner/current/materializer.py',$mode,$jobWsl)
       & "$env:SystemRoot\System32\wsl.exe" @unitArgs | Out-Null
       if($LASTEXITCODE -ne 0){throw 'CHANGE_TRANSIENT_UNIT_START_FAILED'}
       [IO.File]::WriteAllText($dispatched,([DateTime]::UtcNow.ToString('o')+"`n"),[Text.UTF8Encoding]::new($false))

@@ -102,9 +102,18 @@ def recover(job_dir:Path)->int:
     journal_path=job_dir/"change-journal.json"
     if not journal_path.is_file(): return 2
     journal=json.loads(journal_path.read_text()); actual=git("rev-parse","HEAD")
-    if journal.get("phase")=="committed" and actual==journal.get("final_commit") and not git("status","--porcelain","--untracked-files=all"): return 0
+    final=journal.get("final_commit")
+    if journal.get("phase")=="committed" and isinstance(final,str):
+        ancestor=run("/usr/bin/git","merge-base","--is-ancestor",final,actual,check=False)
+        if ancestor.returncode==0 and not git("status","--porcelain","--untracked-files=all"): return 0
     if actual==journal.get("expected_head"): restore(job_dir); return 3
     return 2
+def recover_transaction(job_dir:Path)->int:
+    state_path=job_dir/"materializer-recovery-state.json"
+    result=recover(job_dir)
+    if result==0: write_json(state_path,{"state":"succeeded","recovery":"committed_verified"}); return 0
+    if result==3: write_json(state_path,{"state":"failed","error_code":"CHANGE_ROLLED_BACK","recovery":"rollback_complete"}); return 1
+    write_json(state_path,{"state":"failed","error_code":"CHANGE_RECOVERY_UNRESOLVED"}); return 2
 def transact(job_dir:Path)->int:
     state_path=job_dir/"materializer-state.json"; write_json(state_path,{"state":"running"})
     try:
@@ -121,7 +130,7 @@ def transact(job_dir:Path)->int:
 def main()->int:
     parser=argparse.ArgumentParser(); parser.add_argument("mode",choices=("apply","recover","transact")); parser.add_argument("job_directory"); args=parser.parse_args()
     try:
-        if args.mode=="recover": return recover(Path(args.job_directory))
+        if args.mode=="recover": return recover_transaction(Path(args.job_directory))
         if args.mode=="transact": return transact(Path(args.job_directory))
         value=apply(Path(args.job_directory)); print(json.dumps({"event":"change_committed",**value},sort_keys=True)); return 0
     except Failure as exc: print(json.dumps({"event":"change_failed","error_code":exc.code,"detail":exc.detail},sort_keys=True)); return 2

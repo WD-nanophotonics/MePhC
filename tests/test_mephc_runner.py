@@ -301,3 +301,19 @@ def test_mcp_server_initializes_request_and_tolerates_utf8_bom():
 def test_change_transient_unit_has_canonical_working_directory():
     text = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
     assert "'--working-directory=/home/icy/MePhC'" in text
+
+
+def test_change_and_courier_recovery_are_reachable_and_typed():
+    worker = (SOURCE / "worker.py").read_text(encoding="utf-8")
+    client = (SOURCE / "materialize_client.py").read_text(encoding="utf-8")
+    broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
+    assert 'if job["operation"] == "courier":' in worker
+    assert 'mode = "recover" if recovery else "transact"' in worker
+    assert 'job["operation"] not in {"courier", "change"}' in worker
+    assert '"MATERIALIZE_RECOVER"' in client
+    assert "MATERIALIZE_RECOVER_READY" in broker
+
+def test_change_recovery_accepts_committed_ancestor():
+    text = (SOURCE / "materializer.py").read_text(encoding="utf-8")
+    assert '"merge-base","--is-ancestor"' in text
+    assert "CHANGE_ROLLED_BACK" in text
