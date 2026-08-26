@@ -8,12 +8,12 @@ $Server='/opt/mephc-runner/current/mcp_server.py'
 function Start-McpChild {
   $info=[Diagnostics.ProcessStartInfo]::new()
   $info.FileName=(Join-Path $env:SystemRoot 'System32\wsl.exe')
+  $info.Arguments="-d $Distro -- $Python $Server"
   $info.UseShellExecute=$false
   $info.RedirectStandardInput=$true
   $info.RedirectStandardOutput=$true
   $info.RedirectStandardError=$true
   $info.CreateNoWindow=$true
-  foreach($argument in @('-d',$Distro,'--',$Python,$Server)){[void]$info.ArgumentList.Add($argument)}
   $child=[Diagnostics.Process]::new()
   $child.StartInfo=$info
   $child.add_OutputDataReceived({param($sender,$eventArgs) if($null -ne $eventArgs.Data){[Console]::Out.WriteLine($eventArgs.Data);[Console]::Out.Flush()}})
