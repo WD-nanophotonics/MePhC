@@ -261,6 +261,19 @@ def receipt_state(job: dict[str, Any]) -> str | None:
     return value if isinstance(value, str) else None
 
 
+def failure_detail(job_dir: Path) -> str:
+    """Return a bounded, structured-safe diagnostic for a failed child process."""
+    log = job_dir / "process.log"
+    if not log.is_file():
+        return "PROCESS_LOG_UNAVAILABLE"
+    try:
+        lines = log.read_text(encoding="utf-8", errors="replace").splitlines()
+    except OSError:
+        return "PROCESS_LOG_UNREADABLE"
+    tail = "\n".join(lines[-24:]).strip()
+    return tail[-2000:] if tail else "PROCESS_LOG_EMPTY"
+
+
 def execute(job_dir: Path, recovery: bool = False) -> None:
     try:
         job, immutable_sha = validate(job_dir, recovery=recovery)
@@ -320,8 +333,9 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
             state(job_dir, "recovery_required", attempt=attempt, operation="courier", return_code=completed.returncode, receipt_state=courier_state)
             event(job_dir, "runner_recovery_required", return_code=completed.returncode, receipt_state=courier_state)
         else:
-            state(job_dir, "failed", attempt=attempt, operation=job["operation"], return_code=completed.returncode, receipt_state=courier_state)
-            event(job_dir, "runner_job_failed", return_code=completed.returncode, receipt_state=courier_state)
+            detail = failure_detail(job_dir)
+            state(job_dir, "failed", attempt=attempt, operation=job["operation"], return_code=completed.returncode, receipt_state=courier_state, detail=detail, error_code="CHILD_PROCESS_FAILED")
+            event(job_dir, "runner_job_failed", return_code=completed.returncode, receipt_state=courier_state, error_code="CHILD_PROCESS_FAILED")
     except Rejected as exc:
         state(job_dir, "failed", error_code=exc.code, detail=exc.detail)
         event(job_dir, "runner_job_rejected", error_code=exc.code, detail=exc.detail)
