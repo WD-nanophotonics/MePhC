@@ -1,8 +1,14 @@
 {
-  "mcpServers":{
-    "mephc":{
-      "command":"C:\\Users\\icywo\\AppData\\Local\\MePhCRunner\\mephc-connector.cmd",
-      "args":[]
+  "mcpServers": {
+    "mephc": {
+      "command": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "C:\\Users\\icywo\\AppData\\Local\\MePhCRunner\\mephc-connector.ps1"
+      ]
     }
   }
 }
