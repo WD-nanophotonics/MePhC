@@ -309,7 +309,7 @@ def test_change_and_courier_recovery_are_reachable_and_typed():
     broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
     assert 'if job["operation"] == "courier":' in worker
     assert 'mode = "recover" if recovery else "transact"' in worker
-    assert 'job["operation"] not in {"courier", "change"}' in worker
+    assert 'job["operation"] in {"courier", "change"}' in worker
     assert '"MATERIALIZE_RECOVER"' in client
     assert "MATERIALIZE_RECOVER_READY" in broker
 
@@ -330,3 +330,10 @@ def test_bootstrap_restarts_broker_and_fixes_parent_cwd():
     assert "foreach($process in @($existing)){Stop-Process" in text
     assert "Push-Location $Runtime" in text
     assert "-WorkingDirectory $Runtime" in text
+
+
+def test_attested_failed_change_has_narrow_recovery_path():
+    jobctl = (SOURCE / "jobctl.py").read_text(encoding="utf-8")
+    worker = (SOURCE / "worker.py").read_text(encoding="utf-8")
+    assert "change-attestation.json" in jobctl
+    assert "change_attested" in worker

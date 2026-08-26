@@ -268,7 +268,10 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
         previous_attempt = 0
         if recovery:
             old_state = read_object(job_dir / "state.json")
-            if job["operation"] not in {"courier", "change"} or old_state.get("state") != "recovery_required":
+            change_attested = (job["operation"] == "change" and old_state.get("state") == "failed"
+                               and (job_dir / "change-attestation.json").is_file()
+                               and (job_dir / "change-journal.json").is_file())
+            if not (old_state.get("state") == "recovery_required" and job["operation"] in {"courier", "change"}) and not change_attested:
                 raise Rejected("RECOVERY_NOT_ALLOWED", repr(old_state))
             previous_attempt = int(old_state.get("attempt", 1))
             (job_dir / "RECOVER").unlink(missing_ok=True)

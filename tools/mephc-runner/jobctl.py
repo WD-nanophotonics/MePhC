@@ -234,6 +234,17 @@ def retention_plan() -> dict[str, Any]:
     return {"schema":"mephc-runner-retention-plan-v1", "read_only":True, "entries":entries}
 
 
+def request_recovery(job_id: str) -> None:
+    value=read_state(job_id); directory=JOBS/job_id
+    permitted=value.get("state")=="recovery_required"
+    if value.get("state")=="failed":
+        try: job=json.loads((directory/"job.json").read_text(encoding="utf-8"))
+        except Exception: job={}
+        permitted=(job.get("operation")=="change" and (directory/"change-attestation.json").is_file()
+                   and (directory/"change-journal.json").is_file())
+    if not permitted: raise SystemExit(f"job is not recoverable: {value.get('state')}")
+    atomic_write(directory/"RECOVER",(time.strftime("%Y-%m-%dT%H:%M:%SZ",time.gmtime())+"\n").encode("ascii"))
+    emit("runner_recovery_requested",job_id=job_id)
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="mephc-runner")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -250,9 +261,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "status": emit("runner_job_status", job_id=args.job_id, **read_state(args.job_id)); return 0
     if args.command == "wait": return wait(args.job_id, args.timeout)
     if args.command == "recover":
-        value = read_state(args.job_id)
-        if value.get("state") != "recovery_required": raise SystemExit(f"job is not recovery_required: {value.get('state')}")
-        marker = JOBS / args.job_id / "RECOVER"; atomic_write(marker, (time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()) + "\n").encode("ascii")); emit("runner_recovery_requested", job_id=args.job_id); return 0
+        request_recovery(args.job_id); return 0
     if args.command == "change": submit_change(json.load(sys.stdin)); return 0
     if args.command == "capabilities": emit("runner_capabilities", **capabilities()); return 0
     if args.command == "retention-plan": emit("runner_retention_plan", **retention_plan()); return 0

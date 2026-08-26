@@ -29,9 +29,7 @@ def invoke(name,args):
     if name=="mephc_status": return jobctl.read_state(args["job_id"])
     if name=="mephc_wait": return captured(lambda:jobctl.wait(args["job_id"],args.get("timeout",4860)))
     if name=="mephc_recover":
-        value=jobctl.read_state(args["job_id"])
-        if value.get("state")!="recovery_required": raise ValueError(f"job is not recovery_required: {value.get('state')}")
-        marker=jobctl.JOBS/args["job_id"]/"RECOVER"; jobctl.atomic_write(marker,b"mcp-recovery-request\n"); return {"job_id":args["job_id"],"state":"recovery_requested"}
+        jobctl.request_recovery(args["job_id"]); return {"job_id":args["job_id"],"state":"recovery_requested"}
     raise ValueError(f"unknown tool: {name}")
 def reply(identifier,result=None,error=None):
     value={"jsonrpc":"2.0","id":identifier}
