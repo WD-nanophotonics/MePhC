@@ -30,6 +30,17 @@ def test_e2e_request_is_plain_text(monkeypatch,tmp_path):
     request=relayctl.create_e2e(tmp_path,str(cert)); manifest=relayctl.read_json(request/'request.json')
     assert manifest['project_id']=='MEPHC' and manifest['attachments']==[] and manifest['relay_certificate']==str(cert)
 
+def test_status_request_is_plain_text_and_contains_no_work_order(monkeypatch,tmp_path):
+    cert=tmp_path/'cert.json'; cert.write_text('{}')
+    monkeypatch.setattr(relayctl,'worktree_root',lambda _=None:tmp_path)
+    monkeypatch.setattr(relayctl,'load_certificate',lambda *_:(cert,{}))
+    monkeypatch.setattr(relayctl,'head',lambda _:'a'*40)
+    monkeypatch.setattr(relayctl,'remote_ref',lambda *_:'b'*40)
+    request=relayctl.create_status(tmp_path,str(cert)); manifest=relayctl.read_json(request/'request.json')
+    message=(request/'message.txt').read_text()
+    assert manifest['status_request'] and manifest['attachments']==[] and request.name.startswith('MEPHC-WORKFLOW-STATUS-')
+    assert 'No scientific or native execution was performed' in message
+
 def test_bridge_has_required_gates():
     text=(Path(__file__).parents[1]/'tools'/'mephc-courier.ps1').read_text(encoding='utf-8-sig')
     for token in ('validate','run','queue_joined','queue_timeout','queue_recovery_required','courier_interrupted','COURIER_INTERRUPTED','COURIER_TIMEOUT_RECOVERY_REQUIRED','submission_count','alternate_browser_used','certificatePath','expectedOutbox','courier_build_id','courier_source_root','expectedCourierRoot','message_sha256','events_sha256','bridge-attestation-send.json','bridge-attestation-recovery.json'):

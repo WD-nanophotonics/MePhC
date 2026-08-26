@@ -75,7 +75,7 @@ def validate_arguments(operation: str, arguments: list[str]) -> None:
                     or not (ROOT / relative).is_file()):
                 raise SystemExit(f"invalid prelive test target: {target}")
     if operation == "courier":
-        if arguments == ["--create-e2e"]:
+        if arguments in (["--create-e2e"], ["--create-status"]):
             return
         ordinary = len(arguments) == 2 and arguments[0] == "--request-directory"
         recovery = len(arguments) == 3 and arguments[0] == "--request-directory" and arguments[2] == "--recovery-only"

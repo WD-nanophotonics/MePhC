@@ -99,6 +99,11 @@ def create_e2e(root: Path, certificate: str) -> Path:
     root = worktree_root(root); certificate_path, _ = load_certificate(root, certificate); request_id = f"MEPHC-WORKFLOW-E2E-{time.strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:8]}"; directory = runtime(root) / "outbox" / request_id; directory.mkdir(parents=True)
     (directory / "message.txt").write_text("MePhC workflow transport E2E validation only. No science, native execution, attachments, file changes, or new work order. Reply with a short plain-text receipt acknowledgement.\n", encoding="utf-8")
     write_json(directory / "request.json", {"version": 1, "project_id": PROJECT_ID, "request_id": request_id, "message_file": "message.txt", "attachments": [], "workflow_window_seconds": 600, "task_difficulty": "normal", "instruction_level": "normal", "relay_certificate": str(certificate_path), "e2e": True}); return directory
+def create_status(root: Path, certificate: str) -> Path:
+    root = worktree_root(root); certificate_path, _ = load_certificate(root, certificate); request_id = f"MEPHC-WORKFLOW-STATUS-{time.strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:8]}"; directory = runtime(root) / "outbox" / request_id; directory.mkdir(parents=True)
+    message = f"MePhC relay-supervised workflow status report. PROJECT_ID=MEPHC. Infrastructure cleanup, persistent Windows-WSL runner validation, and a real plain-text Courier E2E round trip are complete. Current sandbox HEAD={head(root)}; origin/main={remote_ref(root, 'refs/heads/main')}. No scientific or native execution was performed in this status request, and there are no attachments. Please reply with the next self-contained plain-text transactional or scientific work order.\n"
+    (directory / "message.txt").write_text(message, encoding="utf-8")
+    write_json(directory / "request.json", {"version": 1, "project_id": PROJECT_ID, "request_id": request_id, "message_file": "message.txt", "attachments": [], "workflow_window_seconds": 600, "task_difficulty": "normal", "instruction_level": "normal", "relay_certificate": str(certificate_path), "status_request": True}); return directory
 def courier(root: Path, request_dir: str, recovery: bool) -> int:
     root = worktree_root(root); require_python(root); request = Path(request_dir).resolve()
     if not WINDOWS_POWERSHELL.is_file():
@@ -113,7 +118,7 @@ def main(argv: list[str] | None = None) -> int:
     pre = sub.add_parser("prelive"); pre.add_argument("--certificate", required=True); pre.add_argument("tests", nargs="*")
     nat = sub.add_parser("native"); nat.add_argument("--prelive", required=True); nat.add_argument("native_command", nargs=argparse.REMAINDER)
     pub = sub.add_parser("publish"); pub.add_argument("--prelive", required=True); pub.add_argument("--push", action="store_true")
-    cou = sub.add_parser("courier"); cou.add_argument("--request-directory"); cou.add_argument("--recovery-only", action="store_true"); cou.add_argument("--create-e2e", action="store_true"); cou.add_argument("--certificate")
+    cou = sub.add_parser("courier"); cou.add_argument("--request-directory"); cou.add_argument("--recovery-only", action="store_true"); cou.add_argument("--create-e2e", action="store_true"); cou.add_argument("--create-status", action="store_true"); cou.add_argument("--certificate")
     args = parser.parse_args(argv)
     try:
         root = worktree_root()
@@ -125,6 +130,9 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "courier" and args.create_e2e:
             if not args.certificate: raise RelayFailure("PRELIVE_UNCOMMITTED", "--certificate required")
             result = create_e2e(root, args.certificate)
+        elif args.command == "courier" and args.create_status:
+            if not args.certificate: raise RelayFailure("PRELIVE_UNCOMMITTED", "--certificate required")
+            result = create_status(root, args.certificate)
         elif args.command == "courier" and args.request_directory: return courier(root, args.request_directory, args.recovery_only)
         else: raise RelayFailure("ROOT_MISMATCH", "invalid command arguments")
         emit("relayctl_complete", result=str(result)); return 0

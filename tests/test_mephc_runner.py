@@ -175,6 +175,14 @@ def test_courier_e2e_creation_argument_is_exact():
     with pytest.raises(SystemExit):
         jobctl.validate_arguments("courier", ["--create-e2e", "--certificate", "x"])
 
+def test_courier_status_creation_argument_is_exact(tmp_path, monkeypatch):
+    jobctl = load("runner_jobctl_status", "jobctl.py")
+    worker = load("runner_worker_status", "worker.py")
+    jobctl.validate_arguments("courier", ["--create-status"])
+    with pytest.raises(SystemExit):
+        jobctl.validate_arguments("courier", ["--create-status", "extra"])
+    assert worker.receipt_state({"operation":"courier","arguments":["--create-status"]}) is None
+
 def test_prelive_rejects_pytest_options():
     jobctl = load("runner_jobctl_prelive_options", "jobctl.py")
     with pytest.raises(SystemExit, match="invalid prelive test target"):

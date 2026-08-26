@@ -114,8 +114,8 @@ def command_for(job: dict[str, Any]) -> list[str]:
     if job["operation"] == "prelive":
         return [str(RELAYCTL), "prelive", "--certificate",
                 str(certificate_path(job["certificate_sha256"])), *job["arguments"]]
-    if job["operation"] == "courier" and job["arguments"] == ["--create-e2e"]:
-        return [str(RELAYCTL), "courier", "--create-e2e", "--certificate",
+    if job["operation"] == "courier" and job["arguments"] in (["--create-e2e"], ["--create-status"]):
+        return [str(RELAYCTL), "courier", job["arguments"][0], "--certificate",
                 str(certificate_path(job["certificate_sha256"]))]
     return [str(RELAYCTL), job["operation"], *job["arguments"]]
 
@@ -182,7 +182,7 @@ def validate(job_dir: Path) -> tuple[dict[str, Any], str]:
         certificate_path(certificate)
 
     if job["operation"] == "courier":
-        if arguments == ["--create-e2e"]:
+        if arguments in (["--create-e2e"], ["--create-status"]):
             pass
         elif not ((len(arguments) == 2 and arguments[0] == "--request-directory")
                   or (len(arguments) == 3 and arguments[0] == "--request-directory"
@@ -207,7 +207,7 @@ def validate(job_dir: Path) -> tuple[dict[str, Any], str]:
 def receipt_state(job: dict[str, Any]) -> str | None:
     if job["operation"] != "courier":
         return None
-    if job["arguments"] == ["--create-e2e"]:
+    if job["arguments"] in (["--create-e2e"], ["--create-status"]):
         return None
     path = Path(job["arguments"][1]) / "receipt.json"
     if not path.is_file():
