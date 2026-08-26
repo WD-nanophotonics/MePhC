@@ -94,6 +94,14 @@ if($Command -eq 'Health') {
   if($workerRecord.python -ne $Python){$errors.Add('INTERPRETER_MISMATCH')}
   if($workerRecord.origin_main -ne '5a4e9e839eff40f582c2404ff3eadd2bf8b676b5'){$errors.Add('MAIN_MOVED')}
   if($brokerRecord.broker_build_id -ne $workerRecord.worker_build_id){$errors.Add('RUNNER_BUILD_MISMATCH')}
+  $manifestPath=Join-Path $Runtime 'install-manifest.json'
+  if(-not(Test-Path -LiteralPath $manifestPath -PathType Leaf)){$errors.Add('WINDOWS_INSTALL_MANIFEST_MISSING')}else{
+    $manifest=Get-Content -Raw -LiteralPath $manifestPath|ConvertFrom-Json
+    foreach($entry in $manifest|Where-Object {$_.name -in @('mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','README.md')}){
+      $installed=Join-Path $Runtime $entry.name
+      if(-not(Test-Path -LiteralPath $installed -PathType Leaf) -or (Get-FileHash -Algorithm SHA256 -LiteralPath $installed).Hash.ToLowerInvariant() -ne $entry.sha256){$errors.Add('WINDOWS_INSTALL_DRIFT');break}
+    }
+  }
   $unresolved=Get-ChildItem -LiteralPath '\\wsl.localhost\Ubuntu\home\icy\MePhC\.relayctl\runner\jobs' -Directory -ErrorAction SilentlyContinue|Where-Object {$s=Join-Path $_.FullName 'state.json'; if(Test-Path -LiteralPath $s){$v=Get-Content -Raw -LiteralPath $s|ConvertFrom-Json; $v.state -in @('running','recovery_required')}else{$false}}
   if($unresolved){$errors.Add('UNRESOLVED_RUNNER_JOB')}
   $ok=($errors.Count -eq 0)

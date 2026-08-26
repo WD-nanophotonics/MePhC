@@ -355,3 +355,15 @@ def test_courier_binding_is_required_before_schema_comparison():
     binding = text.index('required.add("courier_binding")')
     comparison = text.index("if set(job) != required")
     assert binding < comparison
+
+
+def test_bootstrap_final_doctor_is_inside_rollback_scope():
+    text = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8-sig")
+    doctor = text.index("cross-layer doctor failed")
+    restore = text.index("restored_at", doctor)
+    assert restore > doctor
+
+def test_health_detects_windows_install_drift():
+    text = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
+    assert "WINDOWS_INSTALL_MANIFEST_MISSING" in text
+    assert "WINDOWS_INSTALL_DRIFT" in text
