@@ -15,6 +15,10 @@ import sys
 import time
 from typing import Any
 
+INSTALL_ROOT = Path(__file__).resolve().parent
+if str(INSTALL_ROOT) not in sys.path: sys.path.insert(0, str(INSTALL_ROOT))
+import workflow
+
 ROOT = Path("/home/icy/MePhC")
 INSTALL_ROOT = Path(__file__).resolve().parent
 RUNTIME = ROOT / ".relayctl" / "runner"
@@ -215,13 +219,16 @@ def wait(job_id: str, timeout: int) -> int:
 
 
 def capabilities() -> dict[str, Any]:
-    active = []
+    active=[];orphaned=[]
     for directory in sorted(JOBS.iterdir()) if JOBS.is_dir() else []:
-        if directory.is_dir():
-            value = read_state(directory.name)
-            if value.get("state") not in TERMINAL:
-                active.append({"job_id": directory.name, "state": value.get("state"), "safe_next_action": "status_or_wait"})
-    return {"schema":"mephc-runner-capabilities-v1", "project_id":"MEPHC", "canonical_root":str(ROOT), "operations":sorted(OPERATIONS), "arbitrary_shell":False, "direct_browser":False, "active_jobs":active, "head":git_head()}
+        if not directory.is_dir():continue
+        value=read_state(directory.name);name=value.get("state")
+        if name=="unknown":orphaned.append(directory.name)
+        elif name not in TERMINAL:active.append({"job_id":directory.name,"state":name,"safe_next_action":"status_or_wait"})
+    return {"schema":"mephc-runner-capabilities-v2","project_id":"MEPHC","canonical_root":str(ROOT),"operations":sorted(OPERATIONS|{"resume"}),"arbitrary_shell":False,"direct_browser":False,"active_jobs":active,"orphaned_job_count":len(orphaned),"head":git_head(),**workflow.view(),"safe_next_tool":"mephc_resume" if not active else "mephc_status_or_wait"}
+def resume() -> dict[str, Any]:
+    value=workflow.active()
+    return value if value else {"workflow_state":"idle_unconfirmed","error_code":"STATUS_REQUEST_REQUIRED","retry_allowed":False,"safe_next_tool":"mephc_report"}
 
 
 def retention_plan() -> dict[str, Any]:
@@ -270,3 +277,4 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

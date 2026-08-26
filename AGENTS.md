@@ -1,5 +1,10 @@
 # Relay-supervised scientific workflow
 
+## Zero-idle typed startup
+
+Every Agent starts with `mephc_capabilities -> mephc_doctor -> mephc_resume`. Empty `active_jobs` is not completion. Never ask the user for a work order because local state appears idle, and never hand-create `.relayctl/outbox` files.
+
+
 ## Mandatory Agent-facing entry point
 
 This policy is enforced by the MePhC Runner. At task start and after context recovery, Agents must call `mephc_capabilities`. All Agent-facing operations must use the typed connector: `mephc_doctor` for certification; `mephc_change` for exact declared UTF-8 changes; `mephc_submit` for typed worktree, prelive, native, publish, and courier jobs; and `mephc_status`, `mephc_wait`, or `mephc_recover` for durable observation and recovery.
@@ -193,3 +198,4 @@ namespace, Chat address binding, or default working directory for MePhC.
 requests are not part of the active MePhC work unless a future work order
 explicitly names TriLatt. Never infer the active workspace from a stale TriLatt
 request, attachment, branch, or address binding.
+

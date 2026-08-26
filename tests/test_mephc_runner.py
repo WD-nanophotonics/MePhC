@@ -284,7 +284,7 @@ def test_courier_recovery_forces_read_only_and_limits_prebrowser(tmp_path):
 def test_connector_and_install_are_typed_and_versioned():
     mcp = load("runner_mcp_server", "mcp_server.py")
     names = {item["name"] for item in mcp.TOOLS}
-    assert names == {"mephc_capabilities","mephc_doctor","mephc_change","mephc_submit","mephc_status","mephc_wait","mephc_recover"}
+    assert names == {"mephc_capabilities","mephc_doctor","mephc_resume","mephc_change","mephc_submit","mephc_status","mephc_wait","mephc_recover"}
     bootstrap = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8-sig")
     broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
     assert "/opt/mephc-runner/versions/$BuildId" in bootstrap
@@ -390,3 +390,7 @@ def test_bootstrap_has_no_collapsed_generated_line():
     lines = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8-sig").splitlines()
     assert max(map(len, lines)) < 500
     assert any(line.strip().startswith("$launcher=Join-Path") for line in lines)
+
+
+def test_workflow_migrates_rp4b(tmp_path,monkeypatch):
+ workflow=load("runner_workflow","workflow.py");runtime=tmp_path/"runner";request=tmp_path/"request";request.mkdir();(request/"response.txt").write_text("NEXT_WORK_ORDER_ID=MEPHC-E9F-C1-RP4-B-20260826-274\\n");monkeypatch.setattr(workflow,"RUNTIME",runtime);monkeypatch.setattr(workflow,"LEDGER",runtime/"ledger.json");monkeypatch.setattr(workflow,"KNOWN",request);assert workflow.active()["active_work_order_id"]=="MEPHC-E9F-C1-RP4-B-20260826-274"
