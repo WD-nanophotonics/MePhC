@@ -17,4 +17,3 @@ def test_rp4_a_unique_decision_and_no_execution():
     assert DECISION["native_solve_count"]==0 and DECISION["mpb_execution"] is False
     assert DECISION["R192_CAN_CHANGE_CURRENT_REDUCER_ADMISSIBILITY"] is False
     assert "rank2_replacement" in DECISION["forbidden_for_incomplete_band2"]
-
