@@ -4,7 +4,7 @@ $ErrorActionPreference='Stop'
 $SourceRoot=Split-Path -Parent $MyInvocation.MyCommand.Path
 $CanonicalWslSource='/home/icy/MePhC/tools/mephc-runner'
 $Runtime=Join-Path $env:LOCALAPPDATA 'MePhCRunner'
-$Files=@('worker.py','jobctl.py','materializer.py','materialize_client.py','mcp_server.py','native-recipes.json','mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-runner.service','README.md')
+$Files=@('worker.py','jobctl.py','workflow.py','materializer.py','materialize_client.py','mcp_server.py','native-recipes.json','mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-runner.service','README.md')
 $Manifest=@()
 foreach($name in $Files) {
   $path=Join-Path $SourceRoot $name
@@ -85,3 +85,4 @@ try {
   throw
 }
 Write-Output "MEPHC_RUNNER_BOOTSTRAP_COMPLETE=true;BUILD_ID=$BuildId;STARTUP_MODE=startup_shortcut;PUBLIC_LAUNCHER=$publicLauncher"
+
