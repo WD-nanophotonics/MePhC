@@ -2,7 +2,6 @@
 """Typed stdio MCP server for the MePhC persistent runner."""
 from __future__ import annotations
 import contextlib
-import workflow
 import hashlib
 import io
 import json
@@ -12,6 +11,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import jobctl
+import workflow
 import workflow_resume
 
 ROOT = Path("/home/icy/MePhC")
