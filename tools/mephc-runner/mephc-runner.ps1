@@ -48,7 +48,7 @@ function Dispatch-ChangeJobs {
         [void]$writePaths.Add("/home/icy/MePhC/$parent")
       }
       $unit=('mephc-materialize-'+$job.job_id.ToLowerInvariant())
-      $unitArgs=@('-d',$Distro,'-u','root','--','systemd-run','--no-block','--collect',"--unit=$unit",'--property=Type=exec','--property=User=icy','--property=NoNewPrivileges=yes','--property=ProtectSystem=strict','--property=ProtectHome=read-only','--property=PrivateTmp=yes')
+      $unitArgs=@('-d',$Distro,'-u','root','--','systemd-run','--no-block','--collect','--working-directory=/home/icy/MePhC',"--unit=$unit",'--property=Type=exec','--property=User=icy','--property=NoNewPrivileges=yes','--property=ProtectSystem=strict','--property=ProtectHome=read-only','--property=PrivateTmp=yes')
       foreach($path in $writePaths){$unitArgs += "--property=ReadWritePaths=$path"}
       $jobWsl="/home/icy/MePhC/.relayctl/runner/jobs/$($job.job_id)"
       $unitArgs += @($Python,'/opt/mephc-runner/current/materializer.py','transact',$jobWsl)

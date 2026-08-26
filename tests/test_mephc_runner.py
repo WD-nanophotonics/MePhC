@@ -296,3 +296,8 @@ def test_mcp_server_initializes_request_and_tolerates_utf8_bom():
     text = (SOURCE / "mcp_server.py").read_text(encoding="utf-8")
     assert "request={}" in text
     assert 'line.lstrip("\\ufeff")' in text
+
+
+def test_change_transient_unit_has_canonical_working_directory():
+    text = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
+    assert "'--working-directory=/home/icy/MePhC'" in text
