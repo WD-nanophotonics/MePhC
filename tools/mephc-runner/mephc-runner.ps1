@@ -31,7 +31,8 @@ function Dispatch-ChangeJobs {
     $recoverReady=Join-Path $directory.FullName 'MATERIALIZE_RECOVER_READY'
     $mode=if(Test-Path -LiteralPath $recoverReady -PathType Leaf){'recover'}elseif(Test-Path -LiteralPath $ready -PathType Leaf){'transact'}else{$null}
     if($null -eq $mode){continue}
-    $dispatched=Join-Path $directory.FullName (if($mode -eq 'recover'){'MATERIALIZE_RECOVER_DISPATCHED'}else{'MATERIALIZE_DISPATCHED'})
+    $dispatchName=if($mode -eq 'recover'){'MATERIALIZE_RECOVER_DISPATCHED'}else{'MATERIALIZE_DISPATCHED'}
+    $dispatched=Join-Path $directory.FullName $dispatchName
     if(Test-Path -LiteralPath $dispatched){continue}
     try {
       $job=Get-Content -Raw -LiteralPath (Join-Path $directory.FullName 'job.json')|ConvertFrom-Json
@@ -60,7 +61,8 @@ function Dispatch-ChangeJobs {
       [IO.File]::WriteAllText($dispatched,([DateTime]::UtcNow.ToString('o')+"`n"),[Text.UTF8Encoding]::new($false))
     } catch {
       $state=@{state='failed';error_code='CHANGE_BROKER_DISPATCH_FAILED';detail=$_.Exception.Message}|ConvertTo-Json -Compress
-      [IO.File]::WriteAllText((Join-Path $directory.FullName 'materializer-state.json'),$state,[Text.UTF8Encoding]::new($false))
+      $stateName=if($mode -eq 'recover'){'materializer-recovery-state.json'}else{'materializer-state.json'}
+      [IO.File]::WriteAllText((Join-Path $directory.FullName $stateName),$state,[Text.UTF8Encoding]::new($false))
     }
   }
 }
@@ -85,6 +87,7 @@ if($Command -eq 'Health') {
   $workerRecord=if(Test-Path -LiteralPath $worker){[IO.File]::ReadAllText($worker)|ConvertFrom-Json}else{$null}
   $now=[DateTime]::UtcNow
   if($null -eq $brokerRecord){$errors.Add('BROKER_HEARTBEAT_MISSING')}elseif(($now-[DateTime]::Parse($brokerRecord.updated_at).ToUniversalTime()).TotalSeconds -gt 15){$errors.Add('BROKER_HEARTBEAT_STALE')}
+  if($null -ne $brokerRecord -and $brokerRecord.worker_ok -ne $true){$errors.Add('BROKER_WORKER_CHECK_FAILED')}
   if($null -eq $workerRecord){$errors.Add('WORKER_HEARTBEAT_MISSING')}elseif(($now-[DateTime]::Parse($workerRecord.updated_at).ToUniversalTime()).TotalSeconds -gt 15){$errors.Add('WORKER_HEARTBEAT_STALE')}
   if($workerRecord.root -ne '/home/icy/MePhC'){$errors.Add('ROOT_MISMATCH')}
   if($workerRecord.python -ne $Python){$errors.Add('INTERPRETER_MISMATCH')}

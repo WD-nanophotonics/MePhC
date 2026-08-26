@@ -65,12 +65,12 @@ $shortcut.Save()
 if(-not(Test-Path -LiteralPath $shortcutPath -PathType Leaf)){throw 'failed to install user startup shortcut'}
 @{schema='mephc-runner-startup-v1';mode='startup_shortcut';path=$shortcutPath;installed_at=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Compress|Set-Content -LiteralPath (Join-Path $Runtime 'startup.json') -Encoding UTF8
 
-$existing=Get-CimInstance Win32_Process -Filter "Name='powershell.exe'"|Where-Object {$_.CommandLine -like '*MePhCRunner*mephc-runner.ps1*Broker*'}
-if(-not $existing) {
-  Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File',$launcher,'Broker') -WindowStyle Hidden
-}
+$existing=Get-CimInstance Win32_Process -Filter "Name='powershell.exe'"|Where-Object {$_.CommandLine -like '*MePhCRunner*mephc-runner.ps1*Broker*' -and $_.CommandLine -notlike '*Get-CimInstance*'}
+foreach($process in @($existing)){Stop-Process -Id $process.ProcessId -Force}
+Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File',$launcher,'Broker') -WorkingDirectory $Runtime -WindowStyle Hidden
 Start-Sleep -Seconds 3
 $publicLauncher=Join-Path $Runtime 'mephc-runner.cmd'
-& $publicLauncher Doctor
-if($LASTEXITCODE -ne 0){throw 'cross-layer doctor failed'}
+Push-Location $Runtime
+try { & $publicLauncher Doctor; $doctorExit=$LASTEXITCODE } finally { Pop-Location }
+if($doctorExit -ne 0){throw 'cross-layer doctor failed'}
 Write-Output "MEPHC_RUNNER_BOOTSTRAP_COMPLETE=true;BUILD_ID=$BuildId;STARTUP_MODE=startup_shortcut;PUBLIC_LAUNCHER=$publicLauncher"

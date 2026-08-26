@@ -317,3 +317,16 @@ def test_change_recovery_accepts_committed_ancestor():
     text = (SOURCE / "materializer.py").read_text(encoding="utf-8")
     assert '"merge-base","--is-ancestor"' in text
     assert "CHANGE_ROLLED_BACK" in text
+
+
+def test_broker_recovery_dispatch_and_health_fail_closed():
+    broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
+    assert "$dispatchName=if(" in broker
+    assert "materializer-recovery-state.json" in broker
+    assert "BROKER_WORKER_CHECK_FAILED" in broker
+
+def test_bootstrap_restarts_broker_and_fixes_parent_cwd():
+    text = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8-sig")
+    assert "foreach($process in @($existing)){Stop-Process" in text
+    assert "Push-Location $Runtime" in text
+    assert "-WorkingDirectory $Runtime" in text
