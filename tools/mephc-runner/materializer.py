@@ -122,8 +122,8 @@ def main()->int:
     parser=argparse.ArgumentParser(); parser.add_argument("mode",choices=("apply","recover","transact")); parser.add_argument("job_directory"); args=parser.parse_args()
     try:
         if args.mode=="recover": return recover(Path(args.job_directory))
-        value=apply(Path(args.job_directory)); print(json.dumps({"event":"change_committed",**value},sort_keys=True)); return 0
         if args.mode=="transact": return transact(Path(args.job_directory))
+        value=apply(Path(args.job_directory)); print(json.dumps({"event":"change_committed",**value},sort_keys=True)); return 0
     except Failure as exc: print(json.dumps({"event":"change_failed","error_code":exc.code,"detail":exc.detail},sort_keys=True)); return 2
     except Exception as exc: print(json.dumps({"event":"change_failed","error_code":"CHANGE_INTERNAL_ERROR","detail":repr(exc)},sort_keys=True)); return 2
 if __name__=="__main__": raise SystemExit(main())

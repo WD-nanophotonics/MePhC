@@ -40,8 +40,9 @@ def reply(identifier,result=None,error=None):
     print(json.dumps(value,separators=(",",":"),ensure_ascii=False),flush=True)
 def main():
     for line in sys.stdin:
+        request={}
         try:
-            request=json.loads(line); method=request.get("method"); identifier=request.get("id")
+            request=json.loads(line.lstrip("\ufeff")); method=request.get("method"); identifier=request.get("id")
             if method=="initialize": reply(identifier,{"protocolVersion":request.get("params",{}).get("protocolVersion","2025-03-26"),"capabilities":{"tools":{}},"serverInfo":{"name":"mephc-runner","version":"2.0.0"}})
             elif method=="ping": reply(identifier,{})
             elif method=="tools/list": reply(identifier,{"tools":TOOLS})

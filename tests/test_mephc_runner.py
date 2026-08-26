@@ -286,3 +286,13 @@ def test_health_is_fail_closed_and_capabilities_are_context_complete():
     value = jobctl.capabilities()
     assert value["canonical_root"] == "/home/icy/MePhC"
     assert value["arbitrary_shell"] is False and value["direct_browser"] is False
+
+
+def test_materializer_main_dispatches_transact_before_apply():
+    text = (SOURCE / "materializer.py").read_text(encoding="utf-8")
+    assert text.index('if args.mode=="transact"') < text.index('value=apply(Path(args.job_directory))')
+
+def test_mcp_server_initializes_request_and_tolerates_utf8_bom():
+    text = (SOURCE / "mcp_server.py").read_text(encoding="utf-8")
+    assert "request={}" in text
+    assert 'line.lstrip("\\ufeff")' in text
