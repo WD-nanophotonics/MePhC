@@ -367,3 +367,9 @@ def test_health_detects_windows_install_drift():
     text = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
     assert "WINDOWS_INSTALL_MANIFEST_MISSING" in text
     assert "WINDOWS_INSTALL_DRIFT" in text
+
+
+def test_bootstrap_has_no_collapsed_generated_line():
+    lines = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8-sig").splitlines()
+    assert max(map(len, lines)) < 500
+    assert any(line.strip().startswith("$launcher=Join-Path") for line in lines)

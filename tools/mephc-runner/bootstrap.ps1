@@ -53,7 +53,27 @@ Copy-Item -LiteralPath (Join-Path $versionWin 'install-manifest.json') -Destinat
 Start-Sleep -Seconds 2
 
 try {
-  $launcher=Join-Path $Runtime 'mephc-runner.ps1'   $startup=[Environment]::GetFolderPath('Startup')   $shortcutPath=Join-Path $startup 'MePhCRunnerBroker.lnk'   $shell=New-Object -ComObject WScript.Shell   $shortcut=$shell.CreateShortcut($shortcutPath)   $shortcut.TargetPath='powershell.exe'   $shortcut.Arguments="-NoProfile -ExecutionPolicy Bypass -File `"$launcher`" Broker"   $shortcut.WorkingDirectory=$Runtime   $shortcut.WindowStyle=7   $shortcut.Save()   if(-not(Test-Path -LiteralPath $shortcutPath -PathType Leaf)){throw 'failed to install user startup shortcut'}   @{schema='mephc-runner-startup-v1';mode='startup_shortcut';path=$shortcutPath;installed_at=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Compress|Set-Content -LiteralPath (Join-Path $Runtime 'startup.json') -Encoding UTF8      $existing=Get-CimInstance Win32_Process -Filter "Name='powershell.exe'"|Where-Object {$_.CommandLine -like '*MePhCRunner*mephc-runner.ps1*Broker*' -and $_.CommandLine -notlike '*Get-CimInstance*'}   foreach($process in @($existing)){Stop-Process -Id $process.ProcessId -Force}   Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File',$launcher,'Broker') -WorkingDirectory $Runtime -WindowStyle Hidden   Start-Sleep -Seconds 3   $publicLauncher=Join-Path $Runtime 'mephc-runner.cmd'   Push-Location $Runtime   try { & $publicLauncher Doctor; $doctorExit=$LASTEXITCODE } finally { Pop-Location }   if($doctorExit -ne 0){throw 'cross-layer doctor failed'}   
+  $launcher=Join-Path $Runtime 'mephc-runner.ps1'
+  $startup=[Environment]::GetFolderPath('Startup')
+  $shortcutPath=Join-Path $startup 'MePhCRunnerBroker.lnk'
+  $shell=New-Object -ComObject WScript.Shell
+  $shortcut=$shell.CreateShortcut($shortcutPath)
+  $shortcut.TargetPath='powershell.exe'
+  $shortcut.Arguments="-NoProfile -ExecutionPolicy Bypass -File `"$launcher`" Broker"
+  $shortcut.WorkingDirectory=$Runtime
+  $shortcut.WindowStyle=7
+  $shortcut.Save()
+  if(-not(Test-Path -LiteralPath $shortcutPath -PathType Leaf)){throw 'failed to install user startup shortcut'}
+  @{schema='mephc-runner-startup-v1';mode='startup_shortcut';path=$shortcutPath;installed_at=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Compress|Set-Content -LiteralPath (Join-Path $Runtime 'startup.json') -Encoding UTF8
+
+  $existing=Get-CimInstance Win32_Process -Filter "Name='powershell.exe'"|Where-Object {$_.CommandLine -like '*MePhCRunner*mephc-runner.ps1*Broker*' -and $_.CommandLine -notlike '*Get-CimInstance*'}
+  foreach($process in @($existing)){Stop-Process -Id $process.ProcessId -Force}
+  Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File',$launcher,'Broker') -WorkingDirectory $Runtime -WindowStyle Hidden
+  Start-Sleep -Seconds 3
+  $publicLauncher=Join-Path $Runtime 'mephc-runner.cmd'
+  Push-Location $Runtime
+  try { & $publicLauncher Doctor; $doctorExit=$LASTEXITCODE } finally { Pop-Location }
+  if($doctorExit -ne 0){throw 'cross-layer doctor failed'}
 } catch {
   if($previous){wsl.exe -d Ubuntu -u root -- ln -sfn $previous /opt/mephc-runner/current}
   wsl.exe -d Ubuntu -u root -- systemctl restart mephc-runner.service
