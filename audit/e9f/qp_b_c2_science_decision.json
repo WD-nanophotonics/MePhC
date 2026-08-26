@@ -1,0 +1,32 @@
+{
+  "schema": "mephc_e9f_c2_qp_b_c2_science_decision_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-20260826-279",
+  "source_response_sha256": "524ccd296dbae53c88661b4e3839c6eacebb1e812a6944130ac08c46452a9102",
+  "base_sandbox_sha": "9ee6d52fe6b7ef851d4b696a0d8b6f3a2ecf47a9",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "primary_decision": "CONTROL_REFERENCED_CRITERIA_READY_BUT_EVIDENCE_REUSE_AUDIT_REQUIRES_CORRECTIVE",
+  "unique_primary_decision": true,
+  "control_baseline_status": "INVALID",
+  "global_validation_outcome": "INSUFFICIENT_EVIDENCE_REQUIRES_TARGETED_ESCALATION",
+  "lower_threshold_evidence_claimed": false,
+  "current_0p02_threshold_unchanged": true,
+  "threshold_change": false,
+  "evidence_reuse": {
+    "total_pairs": 24,
+    "reusable_authoritative": 15,
+    "context_only": 0,
+    "missing": 9,
+    "fresh_required": 9,
+    "numeric_curvature_reusable": true,
+    "identity_evidence_complete": false,
+    "invariance_evidence_complete": false
+  },
+  "additional_native_solves_required_by_invariance_gates": false,
+  "pipeline_health": "PIPELINE_HEALTHY_WITH_TECH_DEBT",
+  "native_solves": 0,
+  "mpb_execution": false,
+  "reducer_execution": false,
+  "chern_execution": false,
+  "production_mephc_change": false,
+  "main_promotion": false
+}

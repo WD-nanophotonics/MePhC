@@ -1,0 +1,98 @@
+{
+  "schema": "mephc_e9f_c2_qp_b_c2_control_referenced_curvature_contract_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-20260826-279",
+  "source_response_sha256": "524ccd296dbae53c88661b4e3839c6eacebb1e812a6944130ac08c46452a9102",
+  "base_sandbox_sha": "9ee6d52fe6b7ef851d4b696a0d8b6f3a2ecf47a9",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "frozen_inputs": {
+    "threshold": 0.02,
+    "locked_sample_count": 8,
+    "locked_sample_identity_unchanged": true,
+    "authoritative_numerical_artifacts_unchanged": true
+  },
+  "srd_rule": {
+    "definition": "SRD(a,b)=0 if a==0 and b==0; otherwise 2*abs(a-b)/(abs(a)+abs(b))",
+    "range": [
+      0,
+      2
+    ],
+    "scale_free": true,
+    "sign_agreement_required": false,
+    "sign_reversal_automatic_pass": false,
+    "additive_denominator_floor": null
+  },
+  "resolution_rule": {
+    "stencils": [
+      "1/72",
+      "1/144"
+    ],
+    "step_96_128": "SRD(Omega_R96[h],Omega_R128[h])",
+    "step_128_160": "SRD(Omega_R128[h],Omega_R160[h])",
+    "contraction": "STEP_128_160[h] < STEP_96_128[h]",
+    "exact_zero_case": "both steps exactly zero => pass and EXACT_STABLE",
+    "equal_nonzero_steps_pass": false
+  },
+  "stencil_rule": {
+    "srd_R128": "SRD(Omega_R128_1over72,Omega_R128_1over144)",
+    "srd_R160": "SRD(Omega_R160_1over72,Omega_R160_1over144)",
+    "contraction": "STENCIL_SRD_R160 < STENCIL_SRD_R128",
+    "exact_zero_case": "both zero => pass"
+  },
+  "final_metrics": {
+    "resolution": "max(STEP_128_160[1/72],STEP_128_160[1/144])",
+    "stencil": "STENCIL_SRD_R160"
+  },
+  "identity_gate_thresholds": {
+    "min_overlap_singular_value": 0.9,
+    "max_principal_angle": 0.45,
+    "max_projector_distance": 0.3,
+    "h_orthogonality_tolerance": 1e-10,
+    "h_normalization_tolerance": 1e-14,
+    "other_tolerances": "preserve existing boolean/exact semantics; invent none"
+  },
+  "calibration_controls": [
+    "fr=0;grid_i=-10;grid_j=-3;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-34;grid_j=9;estimator=SOURCE_GRID"
+  ],
+  "policy_challenge_samples": [
+    "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID"
+  ],
+  "stencil_diagnostic_sample": "fr=0;grid_i=-6;grid_j=-1;estimator=SOURCE_GRID",
+  "control_baseline": {
+    "status": "INVALID",
+    "global_validation_outcome": "INSUFFICIENT_EVIDENCE_REQUIRES_TARGETED_ESCALATION",
+    "control_envelope_resolution": null,
+    "control_envelope_stencil": null,
+    "lower_threshold_evidence_claimed": false
+  },
+  "r192_escalation": {
+    "maximum_sample_count": 1,
+    "full_set_prohibited": true,
+    "step_160_192": "SRD(Omega_R160[h],Omega_R192[h])",
+    "both_stencils_must_contract": true
+  },
+  "lower_candidate_rule": {
+    "candidate_must_be_less_than": 0.02,
+    "all_admitted_samples_must_pass": true,
+    "material_failure_fails_closed": true,
+    "full_source_grid_validation_required_before_threshold_change": true
+  },
+  "source_artifact_sha256": {
+    "audit/e9f/qp_b_c1_completed_gap_ladder.json": "3297bcc234e9bb9f7d2712f8d14e1094982474f87978191b7fd99b153dbb24a8",
+    "audit/e9f/qp_b_c1_completed_validation_contract.json": "357882e4793e16052f9b40566dc6c593eb980ed0420f0fd1ebde9d4e5b916e62",
+    "audit/e9f/qp_b_c1_science_decision.json": "9c4d632467ac46286f6c8aa5e9911839763ab227e86db22d43e52bcad73ed564",
+    "audit/e9f/rp3_a_r128_compact_trace.json": "898cb798fb39228aba786582972b11df17c00c7c3a63124e55716b4b2f5ccef7",
+    "audit/e9f/rp3_b_r160_compact_trace.json": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487"
+  },
+  "execution": {
+    "native_solves": 0,
+    "mpb_execution": false,
+    "threshold_change": false,
+    "production_mephc_change": false,
+    "main_promotion": false
+  }
+}
