@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import sys
+import types
 from pathlib import Path
 
 SOURCE = Path(__file__).parents[1] / "tools" / "mephc-runner"
@@ -57,6 +59,105 @@ def test_workflow_ignores_unreceived_or_wrong_project_response(tmp_path, monkeyp
     assert workflow.active() is None
 
 
+def _load_resume(jobctl, workflow):
+    previous_jobctl = sys.modules.get("jobctl")
+    previous_workflow = sys.modules.get("workflow")
+    sys.modules["jobctl"] = jobctl
+    sys.modules["workflow"] = workflow
+    try:
+        return load("runner_workflow_resume_isolated", "workflow_resume.py")
+    finally:
+        if previous_jobctl is None:
+            sys.modules.pop("jobctl", None)
+        else:
+            sys.modules["jobctl"] = previous_jobctl
+        if previous_workflow is None:
+            sys.modules.pop("workflow", None)
+        else:
+            sys.modules["workflow"] = previous_workflow
+
+
+def _write_job(jobs: Path, job_id: str) -> None:
+    directory = jobs / job_id
+    directory.mkdir(parents=True)
+    (directory / "job.json").write_text(json.dumps({"operation": "courier"}))
+
+
+def test_resume_creates_one_status_request_then_reuses_its_running_dispatch(tmp_path):
+    outbox = tmp_path / "outbox"
+    jobs = tmp_path / "jobs"
+    calls: list[list[str]] = []
+    states: dict[str, str] = {}
+
+    def submit(operation, arguments, certificate):
+        assert operation == "courier" and certificate is None
+        calls.append(arguments)
+        if arguments == ["--create-status"]:
+            directory = outbox / "MEPHC-STATUS-ONLY"
+            directory.mkdir(parents=True)
+            (directory / "request.json").write_text(json.dumps({
+                "project_id": "MEPHC",
+                "status_request": True,
+                "attachments": [],
+            }))
+            _write_job(jobs, "creation")
+            states["creation"] = "succeeded"
+            return types.SimpleNamespace(name="creation")
+        _write_job(jobs, "dispatch")
+        states["dispatch"] = "running"
+        return types.SimpleNamespace(name="dispatch")
+
+    jobctl = types.SimpleNamespace(
+        JOBS=jobs,
+        submit=submit,
+        read_state=lambda job_id: {"state": states[job_id]},
+    )
+    workflow = types.SimpleNamespace(OUTBOX=outbox, active=lambda: None)
+    resume = _load_resume(jobctl, workflow)
+
+    first = resume.resume()
+    second = resume.resume()
+
+    assert first["workflow_state"] == "awaiting_supervisor"
+    assert first["pending_job_id"] == "dispatch"
+    assert second["workflow_state"] == "awaiting_supervisor"
+    assert second["pending_job_id"] == "dispatch"
+    assert calls == [
+        ["--create-status"],
+        ["--request-directory", str(outbox / "MEPHC-STATUS-ONLY")],
+    ]
+
+
+def test_resume_uses_recovery_only_for_submitted_status_request(tmp_path):
+    outbox = tmp_path / "outbox"
+    directory = outbox / "MEPHC-STATUS-TIMEOUT"
+    directory.mkdir(parents=True)
+    (directory / "request.json").write_text(json.dumps({
+        "project_id": "MEPHC",
+        "status_request": True,
+        "attachments": [],
+    }))
+    (directory / "receipt.json").write_text(json.dumps({"state": "response_timeout"}))
+    calls: list[list[str]] = []
+
+    def submit(operation, arguments, certificate):
+        calls.append(arguments)
+        return types.SimpleNamespace(name="dispatch")
+
+    jobctl = types.SimpleNamespace(JOBS=tmp_path / "jobs", submit=submit, read_state=lambda job_id: {})
+    workflow = types.SimpleNamespace(OUTBOX=outbox, active=lambda: None)
+    resume = _load_resume(jobctl, workflow)
+
+    value = resume.resume()
+
+    assert value["pending_job_id"] == "dispatch"
+    assert calls == [[
+        "--request-directory",
+        str(directory),
+        "--recovery-only",
+    ]]
+
+
 def test_resume_is_zero_idle_and_never_returns_status_request_required():
     text = (SOURCE / "workflow_resume.py").read_text(encoding="utf-8")
     server = (SOURCE / "mcp_server.py").read_text(encoding="utf-8")
@@ -69,7 +170,7 @@ def test_resume_is_zero_idle_and_never_returns_status_request_required():
 def test_resume_reuses_pending_status_before_creating_another():
     text = (SOURCE / "workflow_resume.py").read_text(encoding="utf-8")
     assert "request = _pending_status()" in text
-    assert 'if request is None:' in text
+    assert "if request is None:" in text
     assert 'dispatch = jobctl.submit("courier", _request_arguments(request), None)' in text
 
 
