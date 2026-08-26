@@ -1,0 +1,22 @@
+{
+  "schema": "mephc_e9f_c2_qp_b_c1_native_budget_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C1-20260826-278",
+  "base_sandbox_sha": "b1b506a7dc2831f16111be468f621a14f869510c",
+  "source_execution_contract_path": "audit/e9f/rp3_b_r160_execution_contract.json",
+  "source_compact_trace_path": "audit/e9f/rp3_b_r160_compact_trace.json",
+  "source_compact_trace_sha256": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487",
+  "recovered_provider_solve_semantics": "one shared center plus four 1/72 vertices plus four 1/144 vertices",
+  "NATIVE_SOLVES_PER_SAMPLE_PER_RESOLUTION": 9,
+  "BASE_SAMPLE_COUNT": 8,
+  "BASE_RESOLUTION_COUNT": 3,
+  "BASE_NATIVE_SOLVE_BUDGET": 216,
+  "OPTIONAL_R192_MAX_SAMPLE_COUNT": 1,
+  "OPTIONAL_R192_NATIVE_SOLVE_BUDGET": 9,
+  "SEMANTIC_SOLVER_FREE_CONTROL_COUNT": 1,
+  "NATIVE_CONTROL_SOLVE_BUDGET": 0,
+  "TOTAL_MAX_NATIVE_SOLVE_BUDGET": 225,
+  "PRIOR_QP_B_BUDGET_FORMULA_CORRECT": false,
+  "prior_formula": "6 samples * 3 resolutions * 2 logical stencils = 36",
+  "correction": "logical stencil entries do not equal provider.solve calls; historical R160 contract/trace records 9 calls per sample per resolution",
+  "execution_authorized": false
+}

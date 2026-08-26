@@ -1,0 +1,43 @@
+{
+  "schema": "mephc_e9f_c2_qp_b_c1_science_decision_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C1-20260826-278",
+  "base_sandbox_sha": "b1b506a7dc2831f16111be468f621a14f869510c",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "above_policy_recovery_status": "RECOVERED_FROM_EXISTING_HASH_BOUND_EVIDENCE",
+  "above_policy_candidate_count": 505,
+  "selected_above_policy_sample_ids": [
+    "fr=0;grid_i=-10;grid_j=-3;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-34;grid_j=9;estimator=SOURCE_GRID"
+  ],
+  "completed_locked_sample_count": 8,
+  "curvature_numeric_criteria_status": "INSUFFICIENT_BASIS",
+  "native_solves_per_sample_per_resolution": 9,
+  "base_native_solve_budget": 216,
+  "optional_r192_native_solve_budget": 9,
+  "total_max_native_solve_budget": 225,
+  "prior_qp_b_budget_formula_correct": false,
+  "primary_decision": "PREREGISTRATION_BLOCKED_BY_CURVATURE_CRITERIA_BASIS",
+  "decision_reason": "two non-duplicate, hash-bound above-policy controls were recovered, but no retained source-authoritative numerical curvature acceptance thresholds exist; native validation remains blocked",
+  "native_solves": 0,
+  "mpb_execution": false,
+  "threshold_change": false,
+  "reducer_execution": false,
+  "chern_execution": false,
+  "endpoint_unchanged": true,
+  "prior_qpa_artifact_sha256": {
+    "audit/e9f/qp_a_threshold_provenance.json": "d939afe54db52bbd8b77ad8729af5682c55598bc9c891adb8d29c2ee3b38b039",
+    "audit/e9f/qp_a_threshold_validation_contract_draft.json": "d14ffacd9d3028d0191e6bdc44cbf017f6cc48d10231707e1f845801897b7c33",
+    "audit/e9f/qp_a_science_decision.json": "567979649bd780f589a02712cabc1e9d53697ed7fea0e3b2180d0407aabbfcf5"
+  },
+  "prior_qpb_artifact_sha256": {
+    "audit/e9f/qp_b_source_specific_gap_ladder.json": "df62744cac947d50fae95bfb16217132c39836d3f0c9bb10b3fb108047cb7be7",
+    "audit/e9f/qp_b_preregistered_validation_contract.json": "c6b2b8a7d3410bb09e5afd89a74b079c9840e918a740c763793f05af67780715",
+    "audit/e9f/qp_b_native_execution_plan.json": "8fc991ffd4b9b6949643249ac6e94fbe54723e1a67805601ca54d80e1b1c61d3",
+    "audit/e9f/qp_b_science_decision.json": "688ce07196cd355ab576baf37ad44fa18ae9719460cb585fcc01c711a80adf13"
+  },
+  "c1_source_artifact_sha256": {
+    "contract": "2d770bc1525be8ca7a1722d855aa7f262767fe93ad7bfe905edfb1b0f62ed4da",
+    "result": "123acc40c448b45cab0fbffffeeec4a879202c25f20cb6c5769041726fe8296c",
+    "checkpoint": "33d6f0a2eeacac23b71b302c0a2ddfbb1ba315d39a3db2cbf8ba72a55121ece2"
+  }
+}
