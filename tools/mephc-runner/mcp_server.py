@@ -2,14 +2,100 @@
 """Typed stdio MCP server for the MePhC persistent runner."""
 from __future__ import annotations
 import contextlib
+import hashlib
 import io
 import json
+import subprocess
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import jobctl
 import workflow_resume
+
+ROOT = Path("/home/icy/MePhC")
+READ_ROOTS = {"audit", "mephc", "scripts", "tests", "tools"}
+READ_ROOT_FILES = {"AGENTS.md", "pyproject.toml"}
+
+
+def advertised_tools():
+    return [*TOOLS, *READONLY_TOOLS]
+
+
+def _relative(value: object) -> Path:
+    if not isinstance(value, str) or not value or "\x00" in value:
+        raise ValueError("INSPECT_PATH_INVALID")
+    relative = Path(value)
+    if relative.is_absolute() or ".." in relative.parts or relative.parts[:1] in {(".relayctl",), (".git",)}:
+        raise ValueError("INSPECT_PATH_FORBIDDEN")
+    if len(relative.parts) == 1 and relative.name in READ_ROOT_FILES:
+        return relative
+    if not relative.parts or relative.parts[0] not in READ_ROOTS:
+        raise ValueError("INSPECT_PATH_FORBIDDEN")
+    return relative
+
+
+def _target(relative: Path) -> Path:
+    target = ROOT / relative
+    try:
+        target.resolve(strict=False).relative_to(ROOT.resolve())
+    except ValueError as exc:
+        raise ValueError("INSPECT_PATH_FORBIDDEN") from exc
+    for part in (target, *target.parents):
+        if part.is_symlink():
+            raise ValueError("INSPECT_SYMLINK_FORBIDDEN")
+        if part == ROOT:
+            break
+    return target
+
+
+def _git_files(relative: Path) -> list[str]:
+    result = subprocess.run(
+        ["/usr/bin/git", "-C", str(ROOT), "ls-files", "-z", "--", relative.as_posix()],
+        text=False, capture_output=True, check=False,
+    )
+    if result.returncode:
+        raise ValueError("INSPECT_GIT_CHECK_FAILED")
+    return [value.decode("utf-8") for value in result.stdout.split(b"\0") if value]
+
+
+def inspect(args: dict) -> dict:
+    if not isinstance(args, dict) or set(args) - {"operation", "path", "offset", "max_bytes"}:
+        raise ValueError("INSPECT_SCHEMA_INVALID")
+    operation = args.get("operation")
+    relative = _relative(args.get("path"))
+    target = _target(relative)
+    tracked = _git_files(relative)
+    if operation == "list":
+        if not target.is_dir():
+            raise ValueError("INSPECT_NOT_DIRECTORY")
+        prefix = relative.as_posix().rstrip("/") + "/"
+        entries = sorted({value[len(prefix):].split("/", 1)[0] for value in tracked if value.startswith(prefix)})
+        limit = args.get("max_bytes", 200)
+        if not isinstance(limit, int) or not 1 <= limit <= 65536:
+            raise ValueError("INSPECT_LIMIT_INVALID")
+        return {"operation": "list", "path": relative.as_posix(), "entries": entries[:limit], "total_entries": len(entries), "truncated": len(entries) > limit}
+    if operation != "read":
+        raise ValueError("INSPECT_OPERATION_INVALID")
+    if not target.is_file() or target.is_symlink() or relative.as_posix() not in tracked:
+        raise ValueError("INSPECT_TRACKED_FILE_REQUIRED")
+    offset = args.get("offset", 0)
+    limit = args.get("max_bytes", 16384)
+    if not isinstance(offset, int) or offset < 0 or not isinstance(limit, int) or not 1 <= limit <= 65536:
+        raise ValueError("INSPECT_LIMIT_INVALID")
+    raw = target.read_bytes()
+    if len(raw) > 8 * 1024 * 1024 or offset > len(raw):
+        raise ValueError("INSPECT_SIZE_OR_OFFSET_INVALID")
+    end = min(len(raw), offset + limit)
+    while True:
+        try:
+            content = raw[offset:end].decode("utf-8")
+            break
+        except UnicodeDecodeError as exc:
+            if exc.start == 0:
+                raise ValueError("INSPECT_OFFSET_NOT_UTF8_BOUNDARY") from exc
+            end = offset + exc.start
+    return {"operation": "read", "path": relative.as_posix(), "sha256": hashlib.sha256(raw).hexdigest(), "size_bytes": len(raw), "offset": offset, "next_offset": end if end < len(raw) else None, "content_utf8": content}
 
 TOOLS = [
     {"name": "mephc_capabilities", "description": "Return canonical MePhC runner capabilities, the discovered current workflow state, and active durable jobs.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
@@ -22,6 +108,10 @@ TOOLS = [
     {"name": "mephc_recover", "description": "Request the only state-approved recovery for an existing job.", "inputSchema": {"type": "object", "required": ["job_id"], "properties": {"job_id": {"type": "string"}}, "additionalProperties": False}},
 ]
 
+READONLY_TOOLS = [
+    {"name": "mephc_inspect", "description": "Read only tracked UTF-8 MePhC source or audit evidence, or list a controlled tracked directory. Rejects runtime, Git internals, symlinks, credentials, path traversal, and untracked files.", "inputSchema": {"type": "object", "required": ["operation", "path"], "properties": {"operation": {"type": "string", "enum": ["list", "read"]}, "path": {"type": "string"}, "offset": {"type": "integer", "minimum": 0}, "max_bytes": {"type": "integer", "minimum": 1, "maximum": 65536}}, "additionalProperties": False}},
+]
+
 
 def captured(call):
     stream = io.StringIO()
@@ -32,7 +122,11 @@ def captured(call):
 
 def invoke(name, args):
     if name == "mephc_capabilities":
-        return jobctl.capabilities()
+        value = jobctl.capabilities()
+        value["read_only_evidence"] = {"tool": "mephc_inspect", "operations": ["list", "read"], "tracked_only": True}
+        return value
+    if name == "mephc_inspect":
+        return inspect(args)
     if name == "mephc_resume":
         return workflow_resume.resume()
     if name == "mephc_doctor":
@@ -71,11 +165,11 @@ def main():
             method = request.get("method")
             identifier = request.get("id")
             if method == "initialize":
-                reply(identifier, {"protocolVersion": request.get("params", {}).get("protocolVersion", "2025-03-26"), "capabilities": {"tools": {}}, "serverInfo": {"name": "mephc-runner", "version": "2.1.0"}})
+                reply(identifier, {"protocolVersion": request.get("params", {}).get("protocolVersion", "2025-03-26"), "capabilities": {"tools": {}}, "serverInfo": {"name": "mephc-runner", "version": "2.2.0"}})
             elif method == "ping":
                 reply(identifier, {})
             elif method == "tools/list":
-                reply(identifier, {"tools": TOOLS})
+                reply(identifier, {"tools": advertised_tools()})
             elif method == "tools/call":
                 params = request.get("params", {})
                 value = invoke(params.get("name"), params.get("arguments") or {})
