@@ -142,6 +142,30 @@ def captured(call):
     return {"return_code": result if isinstance(result, int) else 0, "events": [json.loads(line) for line in stream.getvalue().splitlines() if line.strip()]}
 
 
+def invoke_captured(name, args):
+    """Keep internal runner events out of the JSON-RPC transport stream."""
+    stream = io.StringIO()
+    with contextlib.redirect_stdout(stream):
+        value = invoke(name, args)
+    events = []
+    other_output = []
+    for line in stream.getvalue().splitlines():
+        if not line.strip():
+            continue
+        try:
+            events.append(json.loads(line))
+        except json.JSONDecodeError:
+            other_output.append(line)
+    if not events and not other_output:
+        return value
+    result = dict(value) if isinstance(value, dict) else {"value": value}
+    if events:
+        result["runner_events"] = events
+    if other_output:
+        result["runner_stdout"] = other_output
+    return result
+
+
 def invoke(name, args):
     if name == "mephc_capabilities":
         value = jobctl.capabilities()
@@ -197,7 +221,7 @@ def main():
                 reply(identifier, {"tools": advertised_tools()})
             elif method == "tools/call":
                 params = request.get("params", {})
-                value = invoke(params.get("name"), params.get("arguments") or {})
+                value = invoke_captured(params.get("name"), params.get("arguments") or {})
                 reply(identifier, {"content": [{"type": "text", "text": json.dumps(value, sort_keys=True, ensure_ascii=False)}], "isError": False})
             elif identifier is not None:
                 reply(identifier, error=f"unsupported method: {method}")
