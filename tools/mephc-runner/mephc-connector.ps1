@@ -38,7 +38,7 @@ try {
 } finally {
   if($null -ne $child) {
     try {$child.StandardInput.Close()} catch {}
-    if(-not $child.HasExited){$child.Kill($true)}
+    if(-not $child.HasExited){$child.Kill()}
     $child.Dispose()
   }
 }
