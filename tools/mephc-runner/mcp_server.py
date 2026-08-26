@@ -19,7 +19,7 @@ READ_ROOT_FILES = {"AGENTS.md", "pyproject.toml"}
 
 
 def advertised_tools():
-    return [*TOOLS, *READONLY_TOOLS]
+    return [*TOOLS, *READONLY_TOOLS, *RELEASE_TOOLS]
 
 
 def _relative(value: object) -> Path:
@@ -112,6 +112,28 @@ READONLY_TOOLS = [
     {"name": "mephc_inspect", "description": "Read only tracked UTF-8 MePhC source or audit evidence, or list a controlled tracked directory. Rejects runtime, Git internals, symlinks, credentials, path traversal, and untracked files.", "inputSchema": {"type": "object", "required": ["operation", "path"], "properties": {"operation": {"type": "string", "enum": ["list", "read"]}, "path": {"type": "string"}, "offset": {"type": "integer", "minimum": 0}, "max_bytes": {"type": "integer", "minimum": 1, "maximum": 65536}}, "additionalProperties": False}},
 ]
 
+RELEASE_TOOLS = [
+    {"name": "mephc_publish", "description": "Publish the current clean HEAD to origin/sandbox using only the newest passing prelive attestation bound to that exact HEAD. No path or attestation name is accepted from the agent.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
+]
+
+
+def publish_latest_prelive():
+    candidates = []
+    for path in (ROOT / ".relayctl" / "prelive").glob("prelive-*.json"):
+        try:
+            record = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+            continue
+        if (record.get("kind") == "prelive-attestation"
+                and record.get("test_returncode") == 0
+                and record.get("prelive_sha") == jobctl.git_head()):
+            candidates.append(path)
+    if not candidates:
+        raise RuntimeError("PUBLISH_PRELIVE_NOT_FOUND_FOR_CURRENT_HEAD")
+    path = max(candidates, key=lambda value: value.stat().st_mtime_ns)
+    directory = jobctl.submit("publish", ["--prelive", path.name, "--push"], None)
+    return {"job_id": directory.name, "state": "ready", "prelive_id": path.name, "safe_next_tool": "mephc_wait"}
+
 
 def captured(call):
     stream = io.StringIO()
@@ -124,9 +146,12 @@ def invoke(name, args):
     if name == "mephc_capabilities":
         value = jobctl.capabilities()
         value["read_only_evidence"] = {"tool": "mephc_inspect", "operations": ["list", "read"], "tracked_only": True}
+        value["release_protocol"] = {"publish_tool": "mephc_publish", "agent_supplies_prelive_path": False}
         return value
     if name == "mephc_inspect":
         return inspect(args)
+    if name == "mephc_publish":
+        return publish_latest_prelive()
     if name == "mephc_resume":
         return workflow_resume.resume()
     if name == "mephc_doctor":
@@ -165,7 +190,7 @@ def main():
             method = request.get("method")
             identifier = request.get("id")
             if method == "initialize":
-                reply(identifier, {"protocolVersion": request.get("params", {}).get("protocolVersion", "2025-03-26"), "capabilities": {"tools": {}}, "serverInfo": {"name": "mephc-runner", "version": "2.2.0"}})
+                reply(identifier, {"protocolVersion": request.get("params", {}).get("protocolVersion", "2025-03-26"), "capabilities": {"tools": {}}, "serverInfo": {"name": "mephc-runner", "version": "2.3.0"}})
             elif method == "ping":
                 reply(identifier, {})
             elif method == "tools/list":
