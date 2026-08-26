@@ -158,37 +158,61 @@ def submit(operation: str, arguments: list[str], certificate_sha256: str | None)
     atomic_write(job_dir / "READY", (record["payload_sha256"] + "\n").encode("ascii"))
     emit("runner_job_submitted", job_id=job_id, job_directory=str(job_dir), payload_sha256=record["payload_sha256"])
     return job_dir
+def git_ref(ref: str) -> str:
+    completed = subprocess.run(["/usr/bin/git", "-C", str(ROOT), "rev-parse", ref], text=True, encoding="utf-8", stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    if completed.returncode:
+        raise SystemExit(f"cannot resolve MePhC {ref}: {completed.stderr.strip()}")
+    return completed.stdout.strip()
+
+
+def change_path(value: object) -> Path:
+    if not isinstance(value, str) or not value or "\x00" in value:
+        raise SystemExit("change path is invalid")
+    relative = Path(value)
+    if relative.is_absolute() or ".." in relative.parts or relative.parts[:1] == (".relayctl",):
+        raise SystemExit("change path is outside the controlled source root")
+    target = ROOT / relative
+    if target.is_symlink():
+        raise SystemExit("change symlink is forbidden")
+    return target
+
+
 def submit_change(change: dict[str, Any]) -> Path:
-    required = {"expected_main", "files", "tests", "commit_message"}
-    if not isinstance(change, dict) or set(change) != required:
+    if not isinstance(change, dict) or set(change) != {"files", "tests", "commit_message"}:
         raise SystemExit("change payload schema mismatch")
-    if not re.fullmatch(r"[0-9a-f]{40}", str(change.get("expected_main", ""))):
-        raise SystemExit("expected_main must be a Git SHA")
     files = change.get("files")
     if not isinstance(files, list) or not files:
         raise SystemExit("change files must be non-empty")
-    keys = {"path", "expected_preimage_sha256", "expected_postimage_sha256", "content_utf8"}
+    records: list[dict[str, str]] = []
     for item in files:
-        if not isinstance(item, dict) or set(item) != keys:
+        if not isinstance(item, dict) or set(item) != {"path", "content_utf8"}:
             raise SystemExit("invalid change file record")
-        if item["expected_preimage_sha256"] != "MISSING" and not SHA64.fullmatch(str(item["expected_preimage_sha256"])):
-            raise SystemExit("invalid preimage SHA")
-        if not SHA64.fullmatch(str(item["expected_postimage_sha256"])):
-            raise SystemExit("invalid postimage SHA")
+        target = change_path(item["path"])
+        content = item["content_utf8"]
+        if not isinstance(content, str):
+            raise SystemExit("change content must be UTF-8 text")
+        try:
+            encoded = content.encode("utf-8")
+        except UnicodeEncodeError as exc:
+            raise SystemExit("change content is not UTF-8") from exc
+        if target.exists() and not target.is_file():
+            raise SystemExit("change target must be a regular file")
+        records.append({"path": item["path"], "expected_preimage_sha256": hashlib.sha256(target.read_bytes()).hexdigest() if target.exists() else "MISSING", "expected_postimage_sha256": hashlib.sha256(encoded).hexdigest(), "content_utf8": content})
+    tests = change.get("tests")
+    if not isinstance(tests, list) or not tests or not all(isinstance(value, str) for value in tests):
+        raise SystemExit("change tests must be non-empty")
+    if not isinstance(change.get("commit_message"), str) or not change["commit_message"].strip():
+        raise SystemExit("change commit message is required")
+    materialized = {"expected_main": git_ref("origin/main"), "files": records, "tests": tests, "commit_message": change["commit_message"]}
     job_id = f"MEPHC-JOB-{time.strftime('%Y%m%d-%H%M%S')}-{secrets.token_hex(6).upper()}"
     job_dir = JOBS / job_id
     job_dir.mkdir(parents=True, exist_ok=False, mode=0o700)
-    record = {"schema":"mephc-runner-job-v1", "job_id":job_id, "project_id":"MEPHC",
-              "operation":"change", "arguments":[], "expected_root":str(ROOT),
-              "expected_head":git_head(), "certificate_sha256":latest_certificate_sha256(),
-              "created_at":time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "change":change}
+    record = {"schema":"mephc-runner-job-v1", "job_id":job_id, "project_id":"MEPHC", "operation":"change", "arguments":[], "expected_root":str(ROOT), "expected_head":git_head(), "certificate_sha256":latest_certificate_sha256(), "created_at":time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "change":materialized}
     record["payload_sha256"] = hashlib.sha256(canonical(record)).hexdigest()
     atomic_write(job_dir / "job.json", (json.dumps(record, sort_keys=True, indent=2, ensure_ascii=False) + "\n").encode("utf-8"))
     atomic_write(job_dir / "READY", (record["payload_sha256"] + "\n").encode("ascii"))
     emit("runner_job_submitted", job_id=job_id, job_directory=str(job_dir), payload_sha256=record["payload_sha256"])
     return job_dir
-
-
 
 
 def read_state(job_id: str) -> dict[str, Any]:
