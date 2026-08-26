@@ -45,6 +45,7 @@ function Dispatch-ChangeJobs {
       foreach($file in $job.change.files) {
         $relative=[string]$file.path
         if(-not $relative -or $relative.Contains('\') -or $relative.StartsWith('/') -or $relative -match '(^|/)\.\.(/|$)'){throw "CHANGE_PATH_INVALID:$relative"}
+        if($relative -eq 'AGENTS.md'){[void]$writePaths.Add('/home/icy/MePhC/AGENTS.md');continue}
         $top=$relative.Split('/')[0]
         if($top -notin $allowed){throw "CHANGE_PATH_NOT_ALLOWED:$relative"}
         $parent=[IO.Path]::GetDirectoryName($relative.Replace('/','\')).Replace('\','/')

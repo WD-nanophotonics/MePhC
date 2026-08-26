@@ -214,6 +214,13 @@ def test_worker_service_protects_home_and_only_opens_runtime():
     assert "ReadWritePaths=/home/icy/MePhC/.relayctl" in text
 
 
+def test_broker_allows_only_the_exact_root_agents_policy_file():
+    broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
+    assert "if($relative -eq 'AGENTS.md')" in broker
+    assert "/home/icy/MePhC/AGENTS.md" in broker
+    assert "'AGENTS.md'" not in broker.split("$allowed=@(", 1)[1].split(")", 1)[0]
+
+
 def test_change_is_typed_and_native_arbitrary_argv_is_rejected():
     jobctl = load("runner_jobctl_change_gate", "jobctl.py")
     with pytest.raises(SystemExit, match="typed JSON"):
