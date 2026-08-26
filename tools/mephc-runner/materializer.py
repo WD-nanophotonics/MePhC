@@ -30,12 +30,12 @@ def safe_path(value:str)->Path:
         cursor/=part
         if cursor.is_symlink(): raise Failure("CHANGE_SYMLINK_FORBIDDEN",value)
     return cursor
-def tests(values:Any)->list[str]:
+def tests(values:Any,planned:set[str])->list[str]:
     if not isinstance(values,list) or not values: raise Failure("CHANGE_TESTS_INVALID","non-empty test list required")
     for value in values:
-        if not isinstance(value,str) or value.startswith("-"): raise Failure("CHANGE_TESTS_INVALID",repr(value))
+        if not isinstance(value,str) or value.startswith("-") or value.startswith("python"): raise Failure("CHANGE_TESTS_INVALID",repr(value))
         part=value.split("::",1)[0]; path=safe_path(part)
-        if PurePosixPath(part).parts[:1] != ("tests",) or path.suffix != ".py" or not path.is_file(): raise Failure("CHANGE_TESTS_INVALID",value)
+        if PurePosixPath(part).parts[:1] != ("tests",) or path.suffix != ".py" or (not path.is_file() and part not in planned): raise Failure("CHANGE_TESTS_INVALID",value)
     return values
 def load(job_dir:Path)->tuple[dict[str,Any],list[dict[str,Any]],list[str]]:
     job=json.loads((job_dir/"job.json").read_text(encoding="utf-8")); unsigned={k:v for k,v in job.items() if k!="payload_sha256"}
@@ -56,7 +56,7 @@ def load(job_dir:Path)->tuple[dict[str,Any],list[dict[str,Any]],list[str]]:
         normalized.append({**item,"absolute":path,"data":data})
     message=change.get("commit_message")
     if not isinstance(message,str) or not message.strip() or "\n" in message or len(message)>120: raise Failure("CHANGE_COMMIT_MESSAGE_INVALID",repr(message))
-    return job,normalized,tests(change.get("tests"))
+    return job,normalized,tests(change.get("tests"),{item["path"] for item in normalized})
 def baseline(job:dict[str,Any],files:list[dict[str,Any]])->None:
     if Path.cwd().resolve()!=ROOT or Path(sys.executable).resolve()!=PYTHON.resolve(): raise Failure("CHANGE_RUNTIME_MISMATCH",f"cwd={Path.cwd()} python={sys.executable}")
     if git("rev-parse","HEAD")!=job["expected_head"]: raise Failure("HEAD_MOVED",job["expected_head"])
@@ -91,6 +91,8 @@ def apply(job_dir:Path)->dict[str,Any]:
     job,files,target_tests=load(job_dir); baseline(job,files); backup(job_dir,files); journal=job_dir/"change-journal.json"; write_json(journal,{"phase":"backed_up","expected_head":job["expected_head"]})
     try:
         for item in files: atomic(item["absolute"],item["data"])
+        for target in target_tests:
+            if not safe_path(target.split("::",1)[0]).is_file(): raise Failure("CHANGE_TESTS_INVALID",target)
         write_json(journal,{"phase":"written","expected_head":job["expected_head"]})
         expected_paths={item["path"] for item in files}
         if changed()!=expected_paths: raise Failure("CHANGE_UNEXPECTED_DIFF",repr(sorted(changed())))

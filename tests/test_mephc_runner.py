@@ -399,3 +399,12 @@ def test_workflow_migrates_rp4b(tmp_path,monkeypatch):
 def test_bootstrap_installs_workflow_module():
     assert "'workflow.py'" in (SOURCE/"bootstrap.ps1").read_text(encoding="utf-8-sig")
     assert (SOURCE/"workflow.py").is_file()
+
+
+def test_materializer_permits_a_new_declared_test_path(tmp_path, monkeypatch):
+    materializer = load("runner_materializer_new_test", "materializer.py")
+    monkeypatch.setattr(materializer, "ROOT", tmp_path)
+    assert materializer.tests(["tests/test_new_contract.py"], {"tests/test_new_contract.py"}) == ["tests/test_new_contract.py"]
+    with pytest.raises(materializer.Failure) as error:
+        materializer.tests(["audit/test_new_contract.py"], {"audit/test_new_contract.py"})
+    assert error.value.code == "CHANGE_TESTS_INVALID"
