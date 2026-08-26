@@ -1,10 +1,12 @@
 # Relay-supervised scientific workflow
 
-## Mandatory runtime entry point
+## Mandatory Agent-facing entry point
 
-This document describes policy; it is not the runtime enforcement mechanism. All MePhC relay, prelive, native and sandbox-publication work must enter via `/home/icy/MePhC/<native-worktree>/scripts/relayctl`. The launcher fixes the WSL root, Git worktree, Conda interpreter and `PYTHONPATH`; it rejects TriLatt, UNC/Windows worktrees, wrong interpreters, dirty execution trees, uncommitted prelive state, source-byte drift, and a moved `origin/main`. Courier is reached only through `relayctl courier`, which delegates to `tools/mephc-courier.ps1`. Direct Courier, Browser, Chrome and Gmail invocation are outside this path.
+This policy is enforced by the MePhC Runner. At task start and after context recovery, Agents must call `mephc_capabilities`. All Agent-facing operations must use the typed connector: `mephc_doctor` for certification; `mephc_change` for exact declared UTF-8 changes; `mephc_submit` for typed worktree, prelive, native, publish, and courier jobs; and `mephc_status`, `mephc_wait`, or `mephc_recover` for durable observation and recovery.
 
-Runtime certificates, prelive records, native checkpoints, Courier requests and receipts are stored in ignored `.relayctl/`. Requests are plain text by default. Attachments require a separately identified committed remote audit artifact and are rejected by the ordinary bridge.
+The connector fixes `canonical_root=/home/icy/MePhC`, `project_id=MEPHC`, Git state, Conda Python, `PYTHONPATH`, and installed broker/worker builds. It rejects TriLatt, UNC or Windows execution roots, wrong interpreters, dirty execution trees, uncommitted prelive state, source-byte drift, moved `origin/main`, duplicate claims, and unsafe Courier recovery.
+
+`scripts/relayctl` and `tools/mephc-courier.ps1` are internal Runner implementation details, not Agent launchers. Agents must not invoke them, arbitrary shell/Python, Courier, Browser, Chrome, or Gmail directly. Runtime evidence remains in ignored `.relayctl/`. Requests are plain text by default; attachments require separately identified committed remote audit artifacts.
 ## Automatic relay continuation
 
 Within the declared project scope, a direct supervisor work order received
@@ -20,7 +22,7 @@ The relay lifecycle is stateful:
 1. Use the existing request directory and request ID when a request has
    already been submitted or may have been submitted. Never create a second
    request merely because the first local process ended unexpectedly.
-2. For a new request, invoke only scripts/relayctl courier --request-directory <request-dir>. The bridge performs Courier validation and the durable FIFO run internally; do not call validate, preflight, run, Browser, Chrome, Gmail, or a second transport yourself. Preflight is optional diagnostic output only and never authorizes a second request. Queue waiting is normal. Keep the calling process alive for at least queue_wait_seconds + 600 seconds of setup allowance + workflow_window_seconds + 60 seconds; with defaults this is 4,860 seconds (81 minutes). The 600-second workflow window starts only after request_submitted, so queue time and browser startup do not consume the Chat reply window.
+2. For a new request, invoke only `mephc_submit(operation="courier", arguments=["--request-directory", "<request-dir>"])`. The Runner performs validation and the durable FIFO run internally; do not call validate, preflight, run, Browser, Chrome, Gmail, `relayctl`, or a second transport. Queue waiting is normal. Observe with `mephc_wait` or `mephc_status`; a client wait timeout never kills the worker or authorizes resend. The reply window starts only after request_submitted.
 3. response_received is the only state that permits reading response.txt.
    Read it verbatim, treat the contained supervisor work order as the next
    authoritative task input, and continue automatically without asking for
@@ -62,11 +64,13 @@ explicit authorization. Platform safety controls remain binding.
 Use only the repository's Python GmailCourier transport and its dedicated
 Playwright/CDP-managed Courier browser session. Never use the Codex Browser
 skill, Chrome control, Gmail directly, or a parallel reader for the same
-request. The exact ordinary sequence is:
+request. The exact ordinary Agent-facing sequence is:
 
-relayctl courier --request-directory <request-dir>
+mephc_submit(operation="courier", arguments=["--request-directory", "<request-dir>"])
+mephc_wait(job_id) or mephc_status(job_id)
+mephc_recover(job_id) only when the persisted receipt requires recovery
 
-The public Courier CLI is invoked only by the controlled MePhC bridge. Agents must not call python -m chat_courier.cli, the Courier command file, Browser, Chrome, or Gmail directly.
+The public Courier CLI is invoked only by the controlled Runner bridge. Agents must not call `scripts/relayctl`, `python -m chat_courier.cli`, Courier commands, Browser, Chrome, or Gmail directly.
 
 Do not use preflight to gate a run: it is read-only and may correctly report queue_waiting while another project owns the shared Courier browser. The single bridge command waits for its own FIFO turn. Never set CHAT_COURIER_PROFILE, AGENT_RELAY_CHATGPT_PROFILE, or CHAT_COURIER_PROFILE_DIRECTORY during ordinary Agent work; never point Courier at a user's normal Chrome user-data tree. A registered ChatGPT conversation must be reused exactly. Do not register a replacement URL merely because of an access or browser error.
 
