@@ -263,6 +263,16 @@ def receipt_state(job: dict[str, Any]) -> str | None:
 
 def failure_detail(job_dir: Path) -> str:
     """Return a bounded, structured-safe diagnostic for a failed child process."""
+    materializer_state = job_dir / "materializer-state.json"
+    if materializer_state.is_file():
+        try:
+            record = read_object(materializer_state)
+            code = record.get("error_code")
+            detail = record.get("detail")
+            if isinstance(code, str):
+                return f"{code}: {detail}"[-2000:] if isinstance(detail, str) else code
+        except Rejected:
+            return "MATERIALIZER_STATE_INVALID"
     log = job_dir / "process.log"
     if not log.is_file():
         return "PROCESS_LOG_UNAVAILABLE"
