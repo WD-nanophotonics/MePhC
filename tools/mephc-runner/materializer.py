@@ -14,7 +14,11 @@ def run(*args:str,check:bool=True)->subprocess.CompletedProcess[str]:
     return value
 def git(*args:str)->str: return run("/usr/bin/git",*args).stdout.strip()
 def atomic(path:Path,data:bytes)->None:
-    path.parent.mkdir(parents=True,exist_ok=True); temporary=path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    path.parent.mkdir(parents=True,exist_ok=True)
+    if path==ROOT/"AGENTS.md" and path.is_file():
+        with path.open("wb") as handle: handle.write(data); handle.flush(); os.fsync(handle.fileno())
+        return
+    temporary=path.with_name(f".{path.name}.{os.getpid()}.tmp")
     with temporary.open("xb") as handle: handle.write(data); handle.flush(); os.fsync(handle.fileno())
     os.replace(temporary,path)
 def write_json(path:Path,value:dict[str,Any])->None: atomic(path,(json.dumps(value,sort_keys=True,indent=2)+"\n").encode())

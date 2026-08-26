@@ -214,6 +214,16 @@ def test_worker_service_protects_home_and_only_opens_runtime():
     assert "ReadWritePaths=/home/icy/MePhC/.relayctl" in text
 
 
+def test_materializer_writes_exact_root_agents_policy_without_sibling_temp(tmp_path, monkeypatch):
+    materializer = load("runner_materializer_agents_write", "materializer.py")
+    monkeypatch.setattr(materializer, "ROOT", tmp_path)
+    agents = tmp_path / "AGENTS.md"
+    agents.write_bytes(b"before")
+    materializer.atomic(agents, b"after")
+    assert agents.read_bytes() == b"after"
+    assert list(tmp_path.iterdir()) == [agents]
+
+
 def test_broker_allows_only_the_exact_root_agents_policy_file():
     broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
     assert "if($relative -eq 'AGENTS.md')" in broker
