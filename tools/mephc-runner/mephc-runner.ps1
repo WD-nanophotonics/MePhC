@@ -50,6 +50,8 @@ function Dispatch-ChangeJobs {
         if($top -notin $allowed){throw "CHANGE_PATH_NOT_ALLOWED:$relative"}
         $parent=[IO.Path]::GetDirectoryName($relative.Replace('/','\')).Replace('\','/')
         if(-not $parent){$parent=$top}
+        while($parent -and -not(Test-Path -LiteralPath ('\\wsl.localhost\Ubuntu\home\icy\MePhC\'+$parent.Replace('/','\')) -PathType Container)){$parent=[IO.Path]::GetDirectoryName($parent.Replace('/','\')).Replace('\','/')}
+        if(-not $parent){$parent=$top}
         [void]$writePaths.Add("/home/icy/MePhC/$parent")
       }
       $unit=('mephc-materialize-'+$job.job_id.ToLowerInvariant())

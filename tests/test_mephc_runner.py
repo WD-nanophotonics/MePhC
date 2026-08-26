@@ -415,3 +415,9 @@ def test_bridge_requires_bound_attachment_attestation():
     assert "chat-courier-attachments-v1" in bridge
     assert "attachment attestation is required" in bridge
     assert "10485760" in bridge and "20971520" in bridge
+
+
+def test_broker_uses_existing_parent_for_new_declared_directories():
+    broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
+    assert "while($parent -and -not(Test-Path" in broker
+    assert "MePhC\\'+$parent.Replace" in broker
