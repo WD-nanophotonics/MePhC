@@ -106,6 +106,8 @@ def test_publish_fails_closed_when_remote_main_moves(monkeypatch, tmp_path):
 
 
 def test_prelive_failure_is_specific_and_persists_bounded_diagnostic(monkeypatch, tmp_path):
+    state_root = tmp_path / "state"
+    monkeypatch.setattr(relayctl, "STATE_ROOT", state_root)
     tests = tmp_path / "tests"
     tests.mkdir()
     (tests / "test_fail.py").write_text("def test_fail(): pass\n")
@@ -122,7 +124,7 @@ def test_prelive_failure_is_specific_and_persists_bounded_diagnostic(monkeypatch
         relayctl.prelive(tmp_path, str(certificate), ["tests/test_fail.py"])
     assert error.value.code == "PRELIVE_TEST_FAILED"
     assert "summary=" in error.value.detail
-    attestation = next((tmp_path / ".relayctl" / "prelive").glob("*.json"))
+    attestation = next((relayctl.runtime(tmp_path) / "prelive").glob("*.json"))
     record = relayctl.read_json(attestation)
     assert record["test_returncode"] == 1
     assert len(record["test_stdout_tail"]) == 2000
