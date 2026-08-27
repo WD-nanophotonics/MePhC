@@ -14,3 +14,13 @@ def test_connector_uses_persistent_windows_stdio_proxy():
     assert "mephc-connector.ps1" in command
     assert "'mephc-connector.ps1'" in bootstrap
     assert "mcp_server.py" not in command
+
+
+def test_connector_does_not_wait_for_notification_response():
+    source = (ROOT / "mephc-connector.ps1").read_text(encoding="utf-8-sig")
+    forward = source.index("$child.StandardInput.WriteLine($line)")
+    notification_guard = source.index("if(-not $expectsResponse){continue}")
+    response_read = source.index("$response=$child.StandardOutput.ReadLine()")
+
+    assert forward < notification_guard < response_read
+    assert "$request.PSObject.Properties.Name -contains 'id'" in source

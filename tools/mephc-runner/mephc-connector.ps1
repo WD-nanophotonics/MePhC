@@ -78,6 +78,15 @@ try {
     }
     $child.StandardInput.WriteLine($line)
     $child.StandardInput.Flush()
+    $expectsResponse=$true
+    try {
+      $request=$line|ConvertFrom-Json
+      $expectsResponse=($request.PSObject.Properties.Name -contains 'id') -and $null -ne $request.id
+    } catch {
+      # Invalid JSON still receives the backend's structured parse-error reply.
+      $expectsResponse=$true
+    }
+    if(-not $expectsResponse){continue}
     $response=$child.StandardOutput.ReadLine()
     if($null -eq $response) {
       [Console]::Out.WriteLine((Emit-ChildRestartError $line))
