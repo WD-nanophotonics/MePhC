@@ -195,7 +195,7 @@ def transport_canary(args: dict) -> dict:
         (request_dir / "message.txt").write_text(message, encoding="utf-8", newline="\n")
         request = {"version": 1, "project_id": "MEPHC", "request_id": request_dir.name,
                    "message_file": "message.txt", "attachments": [], "workflow_window_seconds": 600,
-                   "task_difficulty": "low", "instruction_level": "low",
+                   "task_difficulty": "normal", "instruction_level": "low",
                    "relay_certificate": str(certificate), "transport_canary": True,
                    "transport_canary_idempotency_key": build_binding}
         temporary = request_dir / ".request.json.tmp"
