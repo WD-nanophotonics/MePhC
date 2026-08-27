@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import os
 from pathlib import Path
 import re
@@ -32,8 +33,8 @@ def patch(config: Path, python: Path, shim: Path, apply: bool) -> dict:
     for name in TARGETS:
         after = remove_table(after, name)
     table = ("[mcp_servers.mephc_windows_shadow]\n"
-             f"command = {str(python)!r}\n"
-             f"args = [{str(shim)!r}]\n"
+             f"command = {json.dumps(str(python))}\n"
+             f"args = [{json.dumps(str(shim))}]\n"
              "enabled = true\n")
     after = after.rstrip() + "\n\n" + table
     result = {"changed": before != after, "before_sha256": hashlib.sha256(before.encode()).hexdigest(),

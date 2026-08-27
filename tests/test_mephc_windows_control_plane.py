@@ -81,6 +81,8 @@ def test_config_patch_changes_only_owned_tables(tmp_path):
     assert Path(result["backup"]).is_file()
     parsed = tomllib.loads(after)
     assert parsed["mcp_servers"]["mephc_windows_shadow"]["enabled"] is True
+    assert parsed["mcp_servers"]["mephc_windows_shadow"]["command"] == r"C:\Python\python.exe"
+    assert parsed["mcp_servers"]["mephc_windows_shadow"]["args"] == [r"C:\runtime\shim.py"]
 
 
 def test_state_migration_is_byte_exact_and_keeps_orphan(tmp_path, monkeypatch):
