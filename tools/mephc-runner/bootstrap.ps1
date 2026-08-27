@@ -2,9 +2,9 @@
 param([switch]$Install)
 $ErrorActionPreference='Stop'
 $SourceRoot=Split-Path -Parent $MyInvocation.MyCommand.Path
-$CanonicalWslSource='/home/icy/MePhC/tools/mephc-runner'
 $Runtime=Join-Path $env:LOCALAPPDATA 'MePhCRunner'
-$Files=@('worker.py','jobctl.py','workflow.py','workflow_resume.py','materializer.py','materialize_client.py','mcp_server.py','native-recipes.json','mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-connector.ps1','mephc-runner.service','README.md')
+$Python='/home/icy/miniconda3/envs/mp/bin/python'
+$Files=@('worker.py','jobctl.py','workflow.py','workflow_resume.py','runtime_config.py','checkout_manager.py','migrate_state.py','windows_materializer.py','materialize_client.py','mcp_server.py','native-recipes.json','mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-connector.ps1','mephc-runner.service','README.md')
 $Manifest=@()
 foreach($name in $Files) {
   $path=Join-Path $SourceRoot $name
@@ -30,6 +30,9 @@ if(Test-Path -LiteralPath $previousCurrent -PathType Leaf){
   try {$previousWindowsVersion=([json](Get-Content -LiteralPath $previousCurrent -Raw)).version_path}catch{$previousWindowsVersion=''}
 }
 try {
+  wsl.exe -d Ubuntu -u root -- systemctl stop mephc-runner.service
+  wsl.exe -d Ubuntu -- $Python "$sourceWsl/migrate_state.py" --apply
+  if($LASTEXITCODE -ne 0){throw 'durable state migration failed'}
   wsl.exe -d Ubuntu -u root -- install -d -o root -g root -m 0555 $versionWsl
   foreach($name in $Files) {
     wsl.exe -d Ubuntu -u root -- install -o root -g root -m 0555 "$sourceWsl/$name" "$versionWsl/$name"
@@ -50,7 +53,7 @@ try {
 New-Item -ItemType Directory -Path $Runtime -Force | Out-Null
 $versionWin=Join-Path (Join-Path $Runtime 'versions') $BuildId
 New-Item -ItemType Directory -Path $versionWin -Force | Out-Null
-foreach($name in @('mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-connector.ps1','README.md')){Copy-Item -LiteralPath (Join-Path $SourceRoot $name) -Destination (Join-Path $versionWin $name) -Force; Copy-Item -LiteralPath (Join-Path $SourceRoot $name) -Destination (Join-Path $Runtime $name) -Force}
+foreach($name in @('mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-connector.ps1','windows_materializer.py','README.md')){Copy-Item -LiteralPath (Join-Path $SourceRoot $name) -Destination (Join-Path $versionWin $name) -Force; Copy-Item -LiteralPath (Join-Path $SourceRoot $name) -Destination (Join-Path $Runtime $name) -Force}
 $Manifest|ConvertTo-Json -Depth 4|Set-Content -LiteralPath (Join-Path $versionWin 'install-manifest.json') -Encoding UTF8
 @{schema='mephc-runner-current-v1';build_id=$BuildId;version_path=$versionWin;installed_at=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Compress|Set-Content -LiteralPath $previousCurrent -Encoding UTF8
 Copy-Item -LiteralPath (Join-Path $versionWin 'install-manifest.json') -Destination (Join-Path $Runtime 'install-manifest.json') -Force
@@ -83,7 +86,7 @@ try {
   if($previous){wsl.exe -d Ubuntu -u root -- ln -sfn $previous /opt/mephc-runner/current}
   wsl.exe -d Ubuntu -u root -- systemctl restart mephc-runner.service
   if($previousWindowsVersion -and (Test-Path -LiteralPath $previousWindowsVersion -PathType Container)){
-    foreach($name in @('mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','README.md')){Copy-Item -LiteralPath (Join-Path $previousWindowsVersion $name) -Destination (Join-Path $Runtime $name) -Force}
+    foreach($name in @('mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-connector.ps1','windows_materializer.py','README.md')){if(Test-Path -LiteralPath (Join-Path $previousWindowsVersion $name)){Copy-Item -LiteralPath (Join-Path $previousWindowsVersion $name) -Destination (Join-Path $Runtime $name) -Force}}
     Copy-Item -LiteralPath (Join-Path $previousWindowsVersion 'install-manifest.json') -Destination (Join-Path $Runtime 'install-manifest.json') -Force
     @{schema='mephc-runner-current-v1';build_id=(Split-Path -Leaf $previousWindowsVersion);version_path=$previousWindowsVersion;restored_at=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Compress|Set-Content -LiteralPath $previousCurrent -Encoding UTF8
   }

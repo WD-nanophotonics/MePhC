@@ -5,7 +5,7 @@ After=local-fs.target
 [Service]
 Type=simple
 User=icy
-WorkingDirectory=/home/icy/MePhC
+WorkingDirectory=/home/icy/.local/state/mephc-runner/MEPHC/runner
 ExecStart=/home/icy/miniconda3/envs/mp/bin/python /opt/mephc-runner/current/worker.py
 Restart=on-failure
 RestartSec=3
@@ -16,7 +16,7 @@ NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=read-only
-ReadWritePaths=/home/icy/MePhC/.relayctl
+ReadWritePaths=/home/icy/.local/state/mephc-runner/MEPHC /home/icy/.cache/mephc-runner
 
 [Install]
 WantedBy=multi-user.target

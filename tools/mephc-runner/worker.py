@@ -3,7 +3,14 @@
 
 from __future__ import annotations
 
-import fcntl
+try:
+    import fcntl
+except ModuleNotFoundError:  # Import-only support for Windows infrastructure tests.
+    class _Fcntl:
+        LOCK_EX = LOCK_NB = 0
+        @staticmethod
+        def flock(*_args): return None
+    fcntl = _Fcntl()
 import hashlib
 import json
 import os
@@ -15,13 +22,17 @@ import threading
 import time
 from typing import Any
 
-ROOT = Path("/home/icy/MePhC")
 INSTALL_ROOT = Path(__file__).resolve().parent
-PYTHON = Path("/home/icy/miniconda3/envs/mp/bin/python")
+if str(INSTALL_ROOT) not in sys.path: sys.path.insert(0, str(INSTALL_ROOT))
+import checkout_manager
+import runtime_config as config
+
+ROOT = config.CONTROL_ROOT
+PYTHON = config.PYTHON
 RELAYCTL = ROOT / "scripts" / "relayctl"
-RUNTIME = ROOT / ".relayctl" / "runner"
+RUNTIME = config.RUNTIME
 JOBS = RUNTIME / "jobs"
-CERTIFICATES = ROOT / ".relayctl" / "certificates"
+CERTIFICATES = config.CERTIFICATES
 NATIVE_RECIPES = INSTALL_ROOT / "native-recipes.json"
 MATERIALIZE_CLIENT = INSTALL_ROOT / "materialize_client.py"
 MATERIALIZER = INSTALL_ROOT / "materializer.py"
@@ -82,9 +93,9 @@ def read_object(path: Path) -> dict[str, Any]:
     return value
 
 
-def git(*arguments: str) -> str:
+def git(*arguments: str, root: Path | None = None) -> str:
     completed = subprocess.run(
-        ["/usr/bin/git", "-C", str(ROOT), *arguments],
+        ["/usr/bin/git", "-C", str(root or ROOT), *arguments],
         text=True,
         encoding="utf-8",
         stdout=subprocess.PIPE,
@@ -134,20 +145,22 @@ def recovery_arguments(job: dict[str, Any], attempt: int) -> list[str]:
 
 
 
-def command_for(job: dict[str, Any], recovery: bool = False, attempt: int = 1) -> list[str]:
+def command_for(job: dict[str, Any], execution_root: Path | None = None, recovery: bool = False, attempt: int = 1) -> list[str]:
+    execution_root = execution_root or ROOT
+    relayctl = execution_root / "scripts" / "relayctl"
     if job["operation"] == "prelive":
-        return [str(RELAYCTL), "prelive", "--certificate",
+        return [str(relayctl), "prelive", "--certificate",
                 str(certificate_path(job["certificate_sha256"])), *job["arguments"]]
     if job["operation"] == "courier":
         if recovery:
-            return [str(RELAYCTL), "courier", *recovery_arguments(job, attempt)]
+            return [str(relayctl), "courier", *recovery_arguments(job, attempt)]
         if job["arguments"] in (["--create-e2e"], ["--create-attachment-e2e"], ["--create-status"]):
-            return [str(RELAYCTL), "courier", job["arguments"][0], "--certificate",
+            return [str(relayctl), "courier", job["arguments"][0], "--certificate",
                     str(certificate_path(job["certificate_sha256"]))]
     if job["operation"] == "change":
         mode = "recover" if recovery else "transact"
         return [str(PYTHON), str(MATERIALIZE_CLIENT), mode, str(JOBS / job["job_id"])]
-    return [str(RELAYCTL), job["operation"], *job["arguments"]]
+    return [str(relayctl), job["operation"], *job["arguments"]]
 def inside(path: Path, parent: Path, code: str) -> Path:
     resolved = path.resolve(strict=False)
     try:
@@ -157,21 +170,23 @@ def inside(path: Path, parent: Path, code: str) -> Path:
     return resolved
 
 
-def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str]:
+def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str, Path]:
     if not (job_dir / "READY").is_file():
         raise Rejected("JOB_NOT_READY", str(job_dir))
     raw = (job_dir / "job.json").read_bytes()
     raw_sha = hashlib.sha256(raw).hexdigest()
     job = read_object(job_dir / "job.json")
-    required = {
-        "schema", "job_id", "project_id", "operation", "arguments", "expected_root",
-        "expected_head", "certificate_sha256", "created_at", "payload_sha256",
-    }
+    v2 = job.get("schema") == "mephc-runner-job-v2"
+    required = ({"schema", "job_id", "project_id", "operation", "arguments",
+                 "expected_control_root", "source_commit", "expected_origin_main", "state_epoch",
+                 "certificate_sha256", "created_at", "payload_sha256"} if v2 else {
+                 "schema", "job_id", "project_id", "operation", "arguments", "expected_root",
+                 "expected_head", "certificate_sha256", "created_at", "payload_sha256"})
     if job.get("operation") == "change":
         required.add("change")
     if job.get("operation") == "courier" and job.get("arguments", [])[:1] == ["--request-directory"]:
         required.add("courier_binding")
-    if set(job) != required or job.get("schema") != "mephc-runner-job-v1":
+    if set(job) != required or job.get("schema") not in {"mephc-runner-job-v1", "mephc-runner-job-v2"}:
         raise Rejected("JOB_SCHEMA_MISMATCH", f"keys={sorted(job)}")
     if not isinstance(job.get("job_id"), str) or not JOB_ID.fullmatch(job["job_id"]):
         raise Rejected("JOB_ID_INVALID", repr(job.get("job_id")))
@@ -181,10 +196,29 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
         raise Rejected("PROJECT_MISMATCH", repr(job.get("project_id")))
     if job.get("operation") not in OPERATIONS:
         raise Rejected("OPERATION_NOT_ALLOWED", repr(job.get("operation")))
-    if job.get("expected_root") != str(ROOT):
-        raise Rejected("ROOT_MISMATCH", repr(job.get("expected_root")))
-    if not isinstance(job.get("expected_head"), str) or not SHA40.fullmatch(job["expected_head"]):
-        raise Rejected("EXPECTED_HEAD_INVALID", repr(job.get("expected_head")))
+    expected = hashlib.sha256(canonical(job)).hexdigest()
+    if job.get("payload_sha256") != expected:
+        raise Rejected("PAYLOAD_SHA256_MISMATCH", f"expected={expected}")
+    if v2:
+        if job.get("expected_control_root") != config.CONTROL_ROOT_WINDOWS:
+            raise Rejected("CONTROL_ROOT_MISMATCH", repr(job.get("expected_control_root")))
+        if job.get("expected_origin_main") != config.EXPECTED_ORIGIN_MAIN:
+            raise Rejected("MAIN_MOVED", repr(job.get("expected_origin_main")))
+        if job.get("state_epoch") != config.state_epoch():
+            raise Rejected("STATE_EPOCH_MISMATCH", repr(job.get("state_epoch")))
+        if not isinstance(job.get("source_commit"), str) or not SHA40.fullmatch(job["source_commit"]):
+            raise Rejected("SOURCE_COMMIT_INVALID", repr(job.get("source_commit")))
+        try:
+            execution_root = checkout_manager.ensure(job["source_commit"])
+        except checkout_manager.CheckoutError as exc:
+            raise Rejected("EXECUTION_CHECKOUT_INVALID", str(exc)) from exc
+    else:
+        legacy_root = Path("/home/icy/MePhC")
+        if job.get("expected_root") != str(legacy_root):
+            raise Rejected("ROOT_MISMATCH", repr(job.get("expected_root")))
+        if not isinstance(job.get("expected_head"), str) or not SHA40.fullmatch(job["expected_head"]):
+            raise Rejected("EXPECTED_HEAD_INVALID", repr(job.get("expected_head")))
+        execution_root = legacy_root
     arguments = job.get("arguments")
     if not isinstance(arguments, list) or not all(isinstance(value, str) for value in arguments):
         raise Rejected("ARGUMENTS_INVALID", "array of strings required")
@@ -198,11 +232,10 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
             relative = Path(file_part)
             if (target.startswith("-") or relative.is_absolute() or ".." in relative.parts
                     or relative.parts[:1] != ("tests",) or relative.suffix != ".py"
-                    or not (ROOT / relative).is_file()):
+                    or not (execution_root / relative).is_file()):
                 raise Rejected("PRELIVE_ARGUMENTS_INVALID", target)
-    expected = hashlib.sha256(canonical(job)).hexdigest()
-    if job.get("payload_sha256") != expected:
-        raise Rejected("PAYLOAD_SHA256_MISMATCH", f"expected={expected}")
+    if not v2 and not recovery:
+        raise Rejected("LEGACY_JOB_RECOVERY_ONLY", job.get("job_id", ""))
 
     certificate = job.get("certificate_sha256")
     if job["operation"] == "doctor":
@@ -229,7 +262,8 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
                       and arguments[2] == "--recovery-only")):
             raise Rejected("COURIER_ARGUMENTS_INVALID", repr(arguments))
         else:
-            request_dir = inside(Path(arguments[1]), ROOT / ".relayctl" / "outbox", "COURIER_REQUEST_OUTSIDE_OUTBOX")
+            outbox = config.OUTBOX if v2 else Path("/home/icy/MePhC/.relayctl/outbox")
+            request_dir = inside(Path(arguments[1]), outbox, "COURIER_REQUEST_OUTSIDE_OUTBOX")
             request = read_object(request_dir / "request.json")
             if request.get("project_id") != "MEPHC":
                 raise Rejected("PROJECT_MISMATCH", f"request={request_dir}")
@@ -237,12 +271,11 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
 
     if Path(sys.executable).resolve() != PYTHON.resolve():
         raise Rejected("INTERPRETER_MISMATCH", sys.executable)
-    if git("rev-parse", "--show-toplevel") != str(ROOT):
-        raise Rejected("ROOT_MISMATCH", git("rev-parse", "--show-toplevel"))
-    actual_head = git("rev-parse", "HEAD")
-    if actual_head != job["expected_head"] and not (recovery and job["operation"] == "change"):
-        raise Rejected("HEAD_MOVED", f"expected={job['expected_head']} actual={actual_head}")
-    return job, raw_sha
+    actual_head = git("rev-parse", "HEAD", root=execution_root)
+    expected_head = job["source_commit"] if v2 else job["expected_head"]
+    if actual_head != expected_head and not (recovery and job["operation"] == "change"):
+        raise Rejected("HEAD_MOVED", f"expected={expected_head} actual={actual_head}")
+    return job, raw_sha, execution_root
 
 
 def receipt_state(job: dict[str, Any]) -> str | None:
@@ -286,7 +319,7 @@ def failure_detail(job_dir: Path) -> str:
 
 def execute(job_dir: Path, recovery: bool = False) -> None:
     try:
-        job, immutable_sha = validate(job_dir, recovery=recovery)
+        job, immutable_sha, execution_root = validate(job_dir, recovery=recovery)
         claim = job_dir / "CLAIMED"
         previous_attempt = 0
         if recovery:
@@ -310,13 +343,17 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
         attempt = previous_attempt + 1
         state(job_dir, "running", attempt=attempt, operation=job["operation"], recovery=recovery)
         event(job_dir, "runner_job_started", attempt=attempt, operation=job["operation"], recovery=recovery, job_sha256=immutable_sha)
-        command = command_for(job, recovery=recovery, attempt=attempt)
+        command = command_for(job, execution_root, recovery=recovery, attempt=attempt)
         environment = {
             "HOME": "/home/icy",
             "LANG": "C.UTF-8",
             "LC_ALL": "C.UTF-8",
             "PATH": "/home/icy/miniconda3/envs/mp/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-            "PYTHONPATH": str(ROOT),
+            "PYTHONPATH": str(execution_root),
+            "MEPHC_CONTROL_ROOT_WSL": str(config.CONTROL_ROOT),
+            "MEPHC_STATE_ROOT": str(config.STATE_ROOT),
+            "MEPHC_EXECUTION_ROOT": str(config.CHECKOUTS),
+            "MEPHC_GIT_CACHE": str(config.GIT_CACHE),
             "MEPHC_RUNNER_JOB_ID": job["job_id"],
             "PYTHONDONTWRITEBYTECODE": "1",
             "PYTEST_ADDOPTS": "-p no:cacheprovider",
@@ -324,7 +361,7 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
         with (job_dir / "process.log").open("a", encoding="utf-8", newline="\n") as log:
             completed = subprocess.run(
                 command,
-                cwd=ROOT,
+                cwd=execution_root,
                 env=environment,
                 stdin=subprocess.DEVNULL,
                 stdout=log,
@@ -377,16 +414,22 @@ def repair_interrupted() -> None:
 
 
 def heartbeat() -> None:
-    names = ("worker.py","jobctl.py","workflow.py","materializer.py","materialize_client.py","mcp_server.py","native-recipes.json","mephc-runner.ps1","mephc-runner.cmd","mephc-connector.cmd","mephc-runner.service","README.md")
+    names = ("worker.py","jobctl.py","workflow.py","runtime_config.py","checkout_manager.py",
+             "windows_materializer.py","migrate_state.py","materialize_client.py","mcp_server.py",
+             "native-recipes.json","mephc-runner.ps1","mephc-runner.cmd","mephc-connector.cmd",
+             "mephc-runner.service","README.md")
     source_hashes = "".join(hashlib.sha256((INSTALL_ROOT / name).read_bytes()).hexdigest() for name in names)
     build_id = hashlib.sha256(source_hashes.encode("ascii")).hexdigest()[:16]
     atomic_json(RUNTIME / "heartbeat.json", {
         "schema": "mephc-runner-heartbeat-v1",
         "pid": os.getpid(),
-        "root": str(ROOT),
+        "control_root": config.CONTROL_ROOT_WINDOWS,
+        "state_root": str(config.STATE_ROOT),
+        "execution_root_policy": str(config.CHECKOUTS / "<commit-sha>"),
         "python": sys.executable,
-        "head": git("rev-parse", "HEAD"),
-        "origin_main": git("rev-parse", "origin/main"),
+        "source_head": checkout_manager.source_head(),
+        "origin_main": checkout_manager.source_origin_main(),
+        "state_epoch": config.state_epoch(),
         "worker_build_id": build_id,
         "updated_at": now(),
     })
@@ -399,7 +442,7 @@ def heartbeat_loop() -> None:
 
 
 def main() -> int:
-    if Path.cwd().resolve() != ROOT:
+    if Path.cwd().resolve() != RUNTIME:
         print(json.dumps({"event": "runner_start_failed", "error_code": "ROOT_MISMATCH"}))
         return 2
     if Path(sys.executable).resolve() != PYTHON.resolve():

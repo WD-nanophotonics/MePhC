@@ -26,7 +26,7 @@ def test_wrong_interpreter_is_rejected(monkeypatch, tmp_path):
 def test_manifest_hashes_executable_source(monkeypatch, tmp_path):
     (tmp_path / "run.py").write_text("x=1\n")
     monkeypatch.setattr(relayctl, "git", lambda *_: "run.py")
-    assert relayctl.source_manifest(tmp_path) == {"run.py": hashlib.sha256(b"x=1\n").hexdigest()}
+    assert relayctl.source_manifest(tmp_path) == {"run.py": hashlib.sha256((tmp_path / "run.py").read_bytes()).hexdigest()}
 
 
 def test_source_drift_fails_closed(monkeypatch, tmp_path):

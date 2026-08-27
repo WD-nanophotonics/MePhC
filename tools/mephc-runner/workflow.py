@@ -1,16 +1,27 @@
 from __future__ import annotations
-import fcntl
+try:
+    import fcntl
+except ModuleNotFoundError:  # Import-only support for Windows infrastructure tests.
+    class _Fcntl:
+        LOCK_EX = 0
+        @staticmethod
+        def flock(*_args): return None
+    fcntl = _Fcntl()
 import hashlib
 import json
 import os
 import re
 import time
 from pathlib import Path
+import sys
 
-ROOT = Path("/home/icy/MePhC")
-RUNTIME = ROOT / ".relayctl" / "runner"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import runtime_config as config
+
+ROOT = config.CONTROL_ROOT
+RUNTIME = config.RUNTIME
 LEDGER = RUNTIME / "workflow-ledger.json"
-OUTBOX = ROOT / ".relayctl" / "outbox"
+OUTBOX = config.OUTBOX
 # Compatibility injection point for migration tests only. Production discovery
 # never assigns it and therefore accepts only receipt-bound outbox responses.
 KNOWN: Path | None = None
@@ -73,7 +84,8 @@ def discover() -> dict | None:
     candidates = [candidate for path in OUTBOX.rglob("response.txt") if (candidate := _candidate(path))]
     if not candidates:
         return None
-    return max(candidates, key=lambda item: (Path(item["active_response_path"]).stat().st_mtime_ns, item["active_response_path"]))
+    return max(candidates, key=lambda item: (Path(item["active_response_path"]).stat().st_mtime_ns,
+                                             item["active_work_order_id"], item["active_response_path"]))
 
 
 def ensure() -> dict:

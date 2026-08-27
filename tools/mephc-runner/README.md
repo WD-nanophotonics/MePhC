@@ -1,9 +1,11 @@
 # MePhC runner
 
 This package is the machine-enforced Windows-control/WSL-work boundary for
-MePhC. The WSL worker accepts immutable JSON jobs from
-`/home/icy/MePhC/.relayctl/runner/jobs` and invokes only
-`/home/icy/MePhC/scripts/relayctl`.
+MePhC. The Windows source/control root is
+`C:\Users\icywo\PycharmProjects\MePhC-Windows`. The WSL worker accepts
+immutable JSON jobs from `/home/icy/.local/state/mephc-runner/MEPHC/runner/jobs`
+and executes an exact commit only from a detached clean ext4 checkout under
+`/home/icy/.cache/mephc-runner/checkouts/<commit-sha>`.
 
 The public operations are `doctor`, `worktree`, `prelive`, `native`, `publish`,
 and `courier`. Arbitrary executables, roots, interpreters, project identities,
@@ -13,6 +15,7 @@ The only public Windows entry point is
 `%LOCALAPPDATA%\MePhCRunner\mephc-runner.cmd`. It supplies the fixed
 PowerShell execution-policy boundary and delegates to the typed client.
 
-Runtime state is ignored under `.relayctl/runner`. Source belongs on
-`origin/sandbox`; the installed systemd unit is only a reproducible runtime
-copy bound to the source SHA-256 recorded by bootstrap.
+Runtime state and Git object caches are outside every checkout. New jobs use
+schema v2 and bind the exact Windows root, source commit, cached `origin/main`,
+and state epoch. Legacy v1 jobs remain inspectable and recovery-only. Source
+belongs on `origin/sandbox`; this migration never moves `main` or pushes.

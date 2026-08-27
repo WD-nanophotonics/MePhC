@@ -13,14 +13,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import jobctl
 import workflow
 import workflow_resume
+import runtime_config as config
 
-ROOT = Path("/home/icy/MePhC")
+ROOT = config.CONTROL_ROOT
 READ_ROOTS = {"audit", "mephc", "scripts", "tests", "tools"}
 READ_ROOT_FILES = {"AGENTS.md", "pyproject.toml"}
 
 
 def advertised_tools():
-    return [*TOOLS, *READONLY_TOOLS, *REPORT_TOOLS, *RELEASE_TOOLS]
+    return [*TOOLS, *READONLY_TOOLS, *REPORT_TOOLS, *RELEASE_TOOLS, *CANARY_TOOLS]
 
 
 def _relative(value: object) -> Path:
@@ -121,6 +122,10 @@ RELEASE_TOOLS = [
     {"name": "mephc_publish", "description": "Publish the current clean HEAD to origin/sandbox using only the newest passing prelive attestation bound to that exact HEAD. No path or attestation name is accepted from the agent.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
 ]
 
+CANARY_TOOLS = [
+    {"name": "mephc_transport_canary", "description": "Create or reuse the single build-bound, attachment-free infrastructure transport canary. It does not alter the active scientific work order.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
+]
+
 
 def _report_certificate() -> tuple[Path, str]:
     candidates = sorted(jobctl.CERTIFICATES.glob("*.json"), key=lambda path: path.stat().st_mtime_ns, reverse=True)
@@ -177,9 +182,51 @@ def report(args: dict) -> dict:
     return {"job_id": directory.name, "state": "ready", "request_id": request_dir.name, "safe_next_tool": "mephc_wait"}
 
 
+def transport_canary(args: dict) -> dict:
+    if args:
+        raise ValueError("TRANSPORT_CANARY_ACCEPTS_NO_ARGUMENTS")
+    certificate, certificate_sha256 = _report_certificate()
+    build_binding = hashlib.sha256((config.state_epoch() + "\x00" + jobctl.git_head()).encode("ascii")).hexdigest()
+    request_dir = workflow.OUTBOX / f"MEPHC-INFRA-CANARY-{build_binding[:24].upper()}"
+    message = ("MEPHC infrastructure transport canary. No scientific task or content. "
+               f"CANARY_BINDING={build_binding}\nReply exactly: MEPHC_TRANSPORT_CANARY_OK={build_binding}\n")
+    if not request_dir.exists():
+        request_dir.mkdir(parents=True, mode=0o700)
+        (request_dir / "message.txt").write_text(message, encoding="utf-8", newline="\n")
+        request = {"version": 1, "project_id": "MEPHC", "request_id": request_dir.name,
+                   "message_file": "message.txt", "attachments": [], "workflow_window_seconds": 600,
+                   "task_difficulty": "low", "instruction_level": "low",
+                   "relay_certificate": str(certificate), "transport_canary": True,
+                   "transport_canary_idempotency_key": build_binding}
+        temporary = request_dir / ".request.json.tmp"
+        temporary.write_text(json.dumps(request, sort_keys=True) + "\n", encoding="utf-8")
+        temporary.replace(request_dir / "request.json")
+    else:
+        request = json.loads((request_dir / "request.json").read_text(encoding="utf-8"))
+        if (request.get("transport_canary_idempotency_key") != build_binding
+                or request.get("attachments") != []
+                or (request_dir / "message.txt").read_text(encoding="utf-8") != message):
+            raise ValueError("TRANSPORT_CANARY_STATE_INVALID")
+    receipt = request_dir / "receipt.json"
+    arguments = ["--request-directory", str(request_dir)]
+    if receipt.is_file():
+        receipt_state = json.loads(receipt.read_text(encoding="utf-8")).get("state")
+        if receipt_state == "response_received":
+            return {"request_id": request_dir.name, "state": "response_received", "reused": True}
+        if receipt_state in {"request_submitted", "waiting_for_response", "submission_unconfirmed",
+                             "chat_submission_unconfirmed", "submission_state_uncertain", "response_timeout",
+                             "response_protocol_error"}:
+            arguments.append("--recovery-only")
+        else:
+            raise ValueError("TRANSPORT_CANARY_HARD_STOP")
+    directory = jobctl.submit("courier", arguments, certificate_sha256)
+    return {"job_id": directory.name, "request_id": request_dir.name, "state": "ready",
+            "safe_next_tool": "mephc_wait", "idempotency_key": build_binding}
+
+
 def publish_latest_prelive():
     candidates = []
-    for path in (ROOT / ".relayctl" / "prelive").glob("prelive-*.json"):
+    for path in (config.STATE_ROOT / "prelive").glob("prelive-*.json"):
         try:
             record = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, UnicodeDecodeError, json.JSONDecodeError):
@@ -236,6 +283,8 @@ def invoke(name, args):
         return inspect(args)
     if name == "mephc_report":
         return report(args)
+    if name == "mephc_transport_canary":
+        return transport_canary(args)
     if name == "mephc_publish":
         return publish_latest_prelive()
     if name == "mephc_resume":
@@ -276,7 +325,7 @@ def main():
             method = request.get("method")
             identifier = request.get("id")
             if method == "initialize":
-                reply(identifier, {"protocolVersion": request.get("params", {}).get("protocolVersion", "2025-03-26"), "capabilities": {"tools": {}}, "serverInfo": {"name": "mephc-runner", "version": "2.3.0"}})
+                reply(identifier, {"protocolVersion": request.get("params", {}).get("protocolVersion", "2025-03-26"), "capabilities": {"tools": {}}, "serverInfo": {"name": "mephc-runner", "version": "3.0.0"}})
             elif method == "ping":
                 reply(identifier, {})
             elif method == "tools/list":

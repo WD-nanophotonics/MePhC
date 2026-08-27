@@ -2,13 +2,15 @@
 """Queue client used by the read-only worker to request materialization."""
 import hashlib, json, os, sys, time
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import runtime_config as config
 def atomic(path:Path,data:bytes)->None:
     temporary=path.with_name(f".{path.name}.{os.getpid()}.tmp")
     with temporary.open("xb") as handle: handle.write(data); handle.flush(); os.fsync(handle.fileno())
     os.replace(temporary,path)
 def main()->int:
     if len(sys.argv)!=3 or sys.argv[1] not in {"transact","recover"}: return 2
-    mode=sys.argv[1]; job=Path(sys.argv[2]).resolve(); jobs=Path("/home/icy/MePhC/.relayctl/runner/jobs").resolve()
+    mode=sys.argv[1]; job=Path(sys.argv[2]).resolve(); jobs=config.JOBS.resolve()
     try: job.relative_to(jobs)
     except ValueError: return 2
     raw=(job/"job.json").read_bytes(); marker={"schema":"mephc-materialize-request-v1","job_sha256":hashlib.sha256(raw).hexdigest(),"mode":mode}

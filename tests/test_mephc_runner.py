@@ -211,7 +211,7 @@ def test_project_registry_points_to_public_cmd_launcher():
 def test_worker_service_protects_home_and_only_opens_runtime():
     text = (SOURCE / "mephc-runner.service").read_text(encoding="utf-8")
     assert "ProtectHome=read-only" in text
-    assert "ReadWritePaths=/home/icy/MePhC/.relayctl" in text
+    assert "ReadWritePaths=/home/icy/.local/state/mephc-runner/MEPHC /home/icy/.cache/mephc-runner" in text
 
 
 def test_materializer_writes_exact_root_agents_policy_without_sibling_temp(tmp_path, monkeypatch):
@@ -226,9 +226,10 @@ def test_materializer_writes_exact_root_agents_policy_without_sibling_temp(tmp_p
 
 def test_broker_allows_only_the_exact_root_agents_policy_file():
     broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
-    assert "if($relative -eq 'AGENTS.md')" in broker
-    assert "/home/icy/MePhC/AGENTS.md" in broker
-    assert "'AGENTS.md'" not in broker.split("$allowed=@(", 1)[1].split(")", 1)[0]
+    materializer = (SOURCE / "windows_materializer.py").read_text(encoding="utf-8")
+    assert 'value != "AGENTS.md"' in materializer
+    assert 'pure.parts[0] in {".git", ".relayctl"}' in materializer
+    assert "$ControlRoot='C:\\Users\\icywo\\PycharmProjects\\MePhC-Windows'" in broker
 
 
 def test_change_is_typed_and_native_arbitrary_argv_is_rejected():
@@ -248,7 +249,10 @@ def test_materializer_rejects_traversal_and_symlink(tmp_path, monkeypatch):
         materializer.safe_path("../outside")
     assert error.value.code == "CHANGE_PATH_INVALID"
     (tmp_path / "tests").mkdir()
-    (tmp_path / "tests" / "link").symlink_to(tmp_path / "elsewhere")
+    try:
+        (tmp_path / "tests" / "link").symlink_to(tmp_path / "elsewhere")
+    except OSError:
+        pytest.skip("Windows symlink privilege unavailable")
     with pytest.raises(materializer.Failure) as error:
         materializer.safe_path("tests/link/file.py")
     assert error.value.code == "CHANGE_SYMLINK_FORBIDDEN"
@@ -290,18 +294,23 @@ def test_connector_and_install_are_typed_and_versioned():
     assert "/opt/mephc-runner/versions/$BuildId" in bootstrap
     assert "/opt/mephc-runner/current/jobctl.py" in broker
     assert "$previousOutput.Count -gt 0" in bootstrap
-    assert "systemd-run" in broker and "--no-block" in broker
+    assert "windows_materializer.py" in broker and "Start-Process" in broker
     assert "ReadWritePaths=/home/icy/MePhC" not in (SOURCE / "mephc-runner.service").read_text().splitlines()
 
 
-def test_health_is_fail_closed_and_capabilities_are_context_complete():
+def test_health_is_fail_closed_and_capabilities_are_context_complete(tmp_path, monkeypatch):
     broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
     assert "BROKER_HEARTBEAT_STALE" in broker
     assert "WORKER_HEARTBEAT_STALE" in broker
     assert "if($ok){exit 0}else{exit 2}" in broker
     jobctl = load("runner_jobctl_capabilities", "jobctl.py")
+    monkeypatch.setattr(jobctl, "JOBS", tmp_path / "jobs")
+    monkeypatch.setattr(jobctl.workflow, "RUNTIME", tmp_path / "runner")
+    monkeypatch.setattr(jobctl.workflow, "LEDGER", tmp_path / "runner" / "ledger.json")
+    monkeypatch.setattr(jobctl.workflow, "OUTBOX", tmp_path / "outbox")
     value = jobctl.capabilities()
-    assert value["canonical_root"] == "/home/icy/MePhC"
+    assert value["control_root"] == r"C:\Users\icywo\PycharmProjects\MePhC-Windows"
+    assert value["execution_root_policy"].endswith("<commit-sha>")
     assert value["arbitrary_shell"] is False and value["direct_browser"] is False
 
 
@@ -317,7 +326,7 @@ def test_mcp_server_initializes_request_and_tolerates_utf8_bom():
 
 def test_change_transient_unit_has_canonical_working_directory():
     text = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
-    assert "'--working-directory=/home/icy/MePhC'" in text
+    assert "-WorkingDirectory $ControlRoot" in text
 
 
 def test_change_and_courier_recovery_are_reachable_and_typed():
@@ -419,8 +428,9 @@ def test_bridge_requires_bound_attachment_attestation():
 
 def test_broker_uses_existing_parent_for_new_declared_directories():
     broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
-    assert "while($parent -and -not(Test-Path" in broker
-    assert "MePhC\\'+$parent.Replace" in broker
+    materializer = (SOURCE / "windows_materializer.py").read_text(encoding="utf-8")
+    assert "target.parent.mkdir(parents=True, exist_ok=True)" in materializer
+    assert "ALLOWED_TOP" in materializer
 
 
 def test_attachment_e2e_factory_is_typed_and_artifact_bound():

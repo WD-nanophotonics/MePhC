@@ -5,7 +5,9 @@ from pathlib import Path
 import subprocess, sys, time, uuid
 from typing import Any
 
-CANONICAL_ROOT = Path("/home/icy/MePhC")
+CONTROL_ROOT = Path(os.environ.get("MEPHC_CONTROL_ROOT_WSL", "/mnt/c/Users/icywo/PycharmProjects/MePhC-Windows"))
+EXECUTION_ROOT = Path(os.environ.get("MEPHC_EXECUTION_ROOT", "/home/icy/.cache/mephc-runner/checkouts"))
+STATE_ROOT = Path(os.environ.get("MEPHC_STATE_ROOT", "/home/icy/.local/state/mephc-runner/MEPHC"))
 REQUIRED_PYTHON = Path("/home/icy/miniconda3/envs/mp/bin/python")
 WINDOWS_POWERSHELL = Path("/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
 PROJECT_ID = "MEPHC"
@@ -37,19 +39,20 @@ def worktree_root(start: Path | None = None) -> Path:
     start = (start or Path.cwd()).resolve()
     top = Path(git(start, "rev-parse", "--show-toplevel")).resolve()
     git_dir = git(top, "rev-parse", "--git-dir")
-    if top != CANONICAL_ROOT and CANONICAL_ROOT not in top.parents:
-        raise RelayFailure("ROOT_MISMATCH", f"worktree={top}; root={CANONICAL_ROOT}")
+    if EXECUTION_ROOT not in top.parents:
+        raise RelayFailure("ROOT_MISMATCH", f"worktree={top}; execution_root={EXECUTION_ROOT}")
     if not str(top).startswith("/home/icy/") or "\\" in str(top):
         raise RelayFailure("WORKTREE_NOT_WSL_NATIVE", f"worktree={top}")
     directory = (top / git_dir).resolve() if not Path(git_dir).is_absolute() else Path(git_dir).resolve()
-    if not str(directory).startswith(str(CANONICAL_ROOT / ".git")):
+    expected_git_root = Path(os.environ.get("MEPHC_GIT_CACHE", "/home/icy/.cache/mephc-runner/MEPHC.git"))
+    if expected_git_root != directory and expected_git_root not in directory.parents:
         raise RelayFailure("WORKTREE_NOT_WSL_NATIVE", f"git_dir={directory}")
     return top
 
 
 def runtime(root: Path) -> Path:
-    path = root / ".relayctl"
-    path.mkdir(exist_ok=True)
+    path = STATE_ROOT if os.name != "nt" else root / ".relayctl"
+    path.mkdir(parents=True, exist_ok=True)
     return path
 
 
@@ -91,11 +94,11 @@ def head(root: Path) -> str:
 
 
 def remote_ref(root: Path, ref: str) -> str:
-    result = run("git", "ls-remote", "origin", ref, cwd=root, check=False)
-    lines = result.stdout.strip().splitlines()
-    if result.returncode or not lines:
-        raise RelayFailure("ROOT_MISMATCH", f"cannot resolve origin {ref}: {result.stderr.strip()}")
-    return lines[0].split()[0]
+    tracking = "origin/" + ref.rsplit("/", 1)[-1]
+    try:
+        return git(root, "rev-parse", tracking)
+    except RelayFailure as exc:
+        raise RelayFailure("ROOT_MISMATCH", f"cannot resolve cached {tracking}") from exc
 
 
 def require_python(root: Path) -> None:
@@ -121,7 +124,7 @@ def doctor(root: Path) -> Path:
     record = {
         "version": 1, "kind": "runtime-certificate", "project_id": PROJECT_ID,
         "certificate_id": f"doctor-{uuid.uuid4().hex}", "created_at": int(time.time()),
-        "canonical_root": str(CANONICAL_ROOT), "worktree": str(root), "head": head(root),
+        "control_root": str(CONTROL_ROOT), "worktree": str(root), "head": head(root),
         "python": str(Path(sys.executable).resolve()), "pythonpath": os.environ["PYTHONPATH"],
         "origin_main": remote_ref(root, "refs/heads/main"),
         "origin_sandbox": remote_ref(root, "refs/heads/sandbox"),
@@ -134,7 +137,7 @@ def doctor(root: Path) -> Path:
 def prelive_test_targets(root: Path, tests: list[str]) -> list[str]:
     targets = tests or [
         "tests/test_relayctl.py",
-        *(str(path.relative_to(root)) for path in sorted((root / "tests").glob("test_mephc_*.py"))),
+        *(path.relative_to(root).as_posix() for path in sorted((root / "tests").glob("test_mephc_*.py"))),
     ]
     targets = list(dict.fromkeys(targets))
     for target in targets:
@@ -293,7 +296,7 @@ def courier(root: Path, request_dir: str, recovery: bool) -> int:
     if not WINDOWS_POWERSHELL.is_file():
         raise RelayFailure("COURIER_HARD_STOP", f"Windows PowerShell missing: {WINDOWS_POWERSHELL}")
     if runtime(root) / "outbox" not in request.parents:
-        raise RelayFailure("ROOT_MISMATCH", "request must be inside .relayctl/outbox")
+        raise RelayFailure("ROOT_MISMATCH", "request must be inside the durable MePhC outbox")
     bridge = "\\\\wsl.localhost\\Ubuntu" + str(root / "tools" / "mephc-courier.ps1").replace("/", chr(92))
     command = [str(WINDOWS_POWERSHELL), "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", bridge, "-RequestDirectory", "\\\\wsl.localhost\\Ubuntu" + str(request).replace("/", chr(92))]
     if recovery:

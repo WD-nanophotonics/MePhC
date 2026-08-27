@@ -9,11 +9,11 @@ Every Agent starts with `mephc_capabilities -> mephc_doctor -> mephc_resume`. Em
 
 This policy is enforced by the MePhC Runner. At task start and after context recovery, Agents must call `mephc_capabilities`. All Agent-facing operations must use the typed connector: `mephc_doctor` for certification; `mephc_change` for exact declared UTF-8 changes; `mephc_submit` for typed worktree, prelive, native, publish, and existing-request Courier jobs; `mephc_report` to create or reuse the only report request for the active work order; and `mephc_status`, `mephc_wait`, or `mephc_recover` for durable observation and recovery.
 
-The connector fixes `canonical_root=/home/icy/MePhC`, `project_id=MEPHC`, Git state, Conda Python, `PYTHONPATH`, and installed broker/worker builds. It rejects TriLatt, UNC or Windows execution roots, wrong interpreters, dirty execution trees, uncommitted prelive state, source-byte drift, moved `origin/main`, duplicate claims, and unsafe Courier recovery.
+The connector fixes `control_root=C:\Users\icywo\PycharmProjects\MePhC-Windows`, `state_root=/home/icy/.local/state/mephc-runner/MEPHC`, `project_id=MEPHC`, Git state, Conda Python, `PYTHONPATH`, and installed broker/worker builds. WSL execution occurs only in detached, clean, commit-bound ext4 checkouts below `/home/icy/.cache/mephc-runner/checkouts`. It rejects TriLatt, UNC control roots, subdirectories, Windows execution roots, wrong interpreters, dirty execution trees, uncommitted prelive state, source-byte drift, moved `origin/main`, stale state epochs, duplicate claims, and unsafe Courier recovery.
 
 For `mephc_change`, provide only declared UTF-8 file content and a non-empty `tests` array of repository-relative `tests/*.py` paths (optionally with a pytest `::` selector). Never pass `python ...`, `python -m ...`, shell syntax, or `audit/` paths as tests. A newly declared `tests/*.py` file is valid in the same transaction and is run only after materialization. The Runner, not the Agent, binds preimage/postimage hashes and `origin/main`.
 
-`scripts/relayctl` and `tools/mephc-courier.ps1` are internal Runner implementation details, not Agent launchers. Agents must not invoke them, arbitrary shell/Python, Courier, Browser, Chrome, or Gmail directly. Runtime evidence remains in ignored `.relayctl/`. Requests are plain text by default; attachments require separately identified committed remote audit artifacts.
+`scripts/relayctl` and `tools/mephc-courier.ps1` are internal Runner implementation details, not Agent launchers. Agents must not invoke them, arbitrary shell/Python, Courier, Browser, Chrome, or Gmail directly. Runtime evidence lives outside Git in `/home/icy/.local/state/mephc-runner/MEPHC`; never create or copy `.relayctl` into the Windows control repository. Requests are plain text by default; attachments require separately identified committed remote audit artifacts.
 ## Automatic relay continuation
 
 Within the declared project scope, a direct supervisor work order received
@@ -187,10 +187,12 @@ from the beginning.
 
 ## Primary workspace and Courier project binding
 
-This repository is the primary scientific workspace for the current task.
-The canonical work root is `/home/icy/MePhC`; task-specific sandbox worktrees
-may be used only when explicitly named by the current work order and must still
-be treated as MePhC work, not as TriLatt work.
+This repository is the canonical source and Codex control workspace. Its exact
+Windows root is `C:\Users\icywo\PycharmProjects\MePhC-Windows`. The old
+`/home/icy/MePhC` repository is a frozen rollback source and must not be edited.
+Linux-native tests and numerical work run only in disposable SHA-bound WSL
+checkouts below `/home/icy/.cache/mephc-runner/checkouts`; those checkouts are
+never source-of-truth workspaces.
 
 The active Courier project identity for this workspace is `MEPHC`. New MePhC
 requests must use `PROJECT_ID=MEPHC` and a request directory under the MePhC
