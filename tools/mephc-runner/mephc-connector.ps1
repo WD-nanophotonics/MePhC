@@ -14,7 +14,7 @@ function Read-BoundedJson([string]$Path) {
   try { return [IO.File]::ReadAllText($Path)|ConvertFrom-Json } catch { return $null }
 }
 
-function Test-BrokerFresh([Nullable[DateTime]]$MinimumUtc=$null) {
+function Test-BrokerFresh([Nullable[DateTime]]$MinimumUtc=$null,[Nullable[int]]$PreviousSupervisorPid=$null) {
   $heartbeat=Read-BoundedJson (Join-Path $Runtime 'broker-heartbeat.json')
   $current=Read-BoundedJson (Join-Path $Runtime 'current.json')
   if($null -eq $heartbeat -or $null -eq $current){return $false}
@@ -23,6 +23,7 @@ function Test-BrokerFresh([Nullable[DateTime]]$MinimumUtc=$null) {
     $age=([DateTime]::UtcNow-$heartbeatUtc).TotalSeconds
   }catch{return $false}
   if($null -ne $MinimumUtc -and $heartbeatUtc -lt $MinimumUtc.Value){return $false}
+  if($null -ne $PreviousSupervisorPid -and [int]$heartbeat.supervisor_pid -eq $PreviousSupervisorPid.Value){return $false}
   return $age -le 15 -and $heartbeat.worker_ok -eq $true -and $heartbeat.broker_build_id -eq $current.build_id
 }
 
@@ -30,13 +31,17 @@ function Ensure-Broker {
   $task=Get-ScheduledTask -TaskName $TaskName -ErrorAction Stop
   $minimumUtc=$null
   if($task.State -in @('Running','Queued') -and (Test-BrokerFresh)){return}
+  $previous=Read-BoundedJson (Join-Path $Runtime 'broker-heartbeat.json')
+  $previousSupervisorPid=if($null -ne $previous -and $null -ne $previous.supervisor_pid){[Nullable[int]]([int]$previous.supervisor_pid)}else{$null}
   if($task.State -notin @('Running','Queued')){
     $minimumUtc=[DateTime]::UtcNow
-    Start-ScheduledTask -TaskName $TaskName
   }
   for($index=0;$index -lt 20;$index++){
+    $task=Get-ScheduledTask -TaskName $TaskName -ErrorAction Stop
+    if($task.State -notin @('Running','Queued') -and $index % 4 -eq 0){Start-ScheduledTask -TaskName $TaskName}
     Start-Sleep -Milliseconds 500
-    if(Test-BrokerFresh $minimumUtc){return}
+    $task=Get-ScheduledTask -TaskName $TaskName -ErrorAction Stop
+    if($task.State -in @('Running','Queued') -and (Test-BrokerFresh $minimumUtc $previousSupervisorPid)){return}
   }
   throw 'BROKER_HEARTBEAT_UNAVAILABLE'
 }

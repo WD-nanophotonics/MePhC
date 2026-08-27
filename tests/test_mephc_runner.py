@@ -522,6 +522,9 @@ def test_connector_self_heals_stopped_broker_after_admission():
     assert "function Ensure-Broker" in connector and "Start-ScheduledTask" in connector
     assert "BROKER_HEARTBEAT_UNAVAILABLE" in connector and "broker_build_id" in connector
     assert "$heartbeatUtc -lt $MinimumUtc.Value" in connector
+    assert "$heartbeat.supervisor_pid -eq $PreviousSupervisorPid.Value" in connector
+    assert "$task.State -in @('Running','Queued') -and (Test-BrokerFresh" in connector
+    assert "$index % 4 -eq 0" in connector
     assert "if($task.State -notin @('Running','Queued'))" in connector
     assert connector.index("Ensure-Broker") < connector.index("$child=Start-McpChild")
 
