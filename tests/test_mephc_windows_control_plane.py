@@ -97,6 +97,14 @@ def test_admission_disconnect_policy_retries_only_read_only_tools():
     assert "backend_restarted_for_read_only" in source
 
 
+def test_admission_backend_is_the_windows_connector_not_direct_wsl():
+    source = (ADMISSION / "mephc_admission.py").read_text(encoding="utf-8")
+    assert '"MePhCRunner" / "mephc-connector.ps1"' in source
+    start = source.split("def start_backend", 1)[1].split("def tool_name", 1)[0]
+    assert "POWERSHELL" in start and "BACKEND" in start
+    assert "wsl.exe" not in source and "/opt/mephc-runner/current/mcp_server.py" not in source
+
+
 def test_config_patch_changes_only_owned_tables(tmp_path):
     module = load("windows_config_patch", ADMISSION / "config_patch.py")
     config = tmp_path / "config.toml"

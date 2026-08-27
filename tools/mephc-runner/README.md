@@ -39,6 +39,9 @@ and broker heartbeats are fresh, mutually build-bound, and healthy; an old
 successful certificate cannot conceal a stale runtime.
 Task Scheduler executes `python.exe windows_broker.py` directly so its restart
 policy supervises the actual broker PID rather than a transient shell wrapper.
+The admission shim launches only the installed Windows connector; it never
+starts the WSL MCP server directly, so every admitted session passes through
+the same broker-health gate.
 
 The only public Windows entry point is
 `%LOCALAPPDATA%\MePhCRunner\mephc-runner.cmd`. It supplies the fixed

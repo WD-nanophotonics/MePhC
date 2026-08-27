@@ -11,9 +11,9 @@ import secrets
 from typing import Any
 
 ALLOWED_ROOT = Path(r"C:\Users\icywo\PycharmProjects\MePhC-Windows")
-WSL = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "System32" / "wsl.exe"
-BACKEND = ["-d", "Ubuntu", "--", "/home/icy/miniconda3/envs/mp/bin/python",
-           "/opt/mephc-runner/current/mcp_server.py"]
+POWERSHELL = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "System32" / "WindowsPowerShell" / "v1.0" / "powershell.exe"
+CONNECTOR = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "MePhCRunner" / "mephc-connector.ps1"
+BACKEND = ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(CONNECTOR)]
 TOOL_NAMES = ("mephc_capabilities", "mephc_doctor", "mephc_resume", "mephc_change",
               "mephc_validate", "mephc_submit", "mephc_status", "mephc_wait", "mephc_recover",
               "mephc_inspect", "mephc_report", "mephc_publish", "mephc_transport_canary")
@@ -80,7 +80,7 @@ def rejected_loop(reason: str) -> int:
 
 
 def start_backend() -> subprocess.Popen[str]:
-    return subprocess.Popen([str(WSL), *BACKEND], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+    return subprocess.Popen([str(POWERSHELL), *BACKEND], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE, text=True, encoding="utf-8", bufsize=1)
 
 
