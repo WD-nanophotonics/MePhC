@@ -599,12 +599,13 @@ def runner_build_id() -> str:
 def runtime_source_matches() -> bool:
     try:
         manifest = json.loads((config.WINDOWS_RUNTIME_WSL / "install-manifest.json").read_text(encoding="utf-8-sig"))
+        current = json.loads((config.WINDOWS_RUNTIME_WSL / "current.json").read_text(encoding="utf-8-sig"))
         expected = {item["name"]: item["sha256"] for item in manifest if isinstance(item, dict)}
-        if not expected:
+        if not expected or current.get("source_commit") != checkout_manager.source_head():
             return False
         for name, digest in expected.items():
-            source = config.CONTROL_ROOT / "tools" / "mephc-runner" / name
-            if not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != digest:
+            installed = INSTALL_ROOT / name
+            if not installed.is_file() or hashlib.sha256(installed.read_bytes()).hexdigest() != digest:
                 return False
         return True
     except (OSError, KeyError, TypeError, json.JSONDecodeError):

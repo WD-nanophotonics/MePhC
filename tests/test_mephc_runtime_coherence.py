@@ -143,6 +143,8 @@ def test_worker_skips_terminal_unclaimed_ready_and_rebuilds_index():
     source = (RUNNER / "worker.py").read_text(encoding="utf-8")
     assert "active_index.rebuild(JOBS)" in source
     assert 'existing not in {"succeeded", "failed", "recovery_required"}' in source
+    assert "installed = INSTALL_ROOT / name" in source
+    assert 'current.get("source_commit") != checkout_manager.source_head()' in source
 
 
 def test_stale_ready_reconciliation_never_executes_and_preserves_current_job(tmp_path, monkeypatch):
