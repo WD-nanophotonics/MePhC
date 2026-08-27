@@ -38,6 +38,23 @@ def unresolved_jobs(root: Path) -> list[str]:
 
 
 def migrate(apply: bool) -> dict:
+    if config.STATE_ROOT.exists():
+        epoch_file = config.STATE_ROOT / "runner" / "state-epoch"
+        receipt_file = config.STATE_ROOT / "runner" / "migration-receipt.json"
+        if not epoch_file.is_file() or not receipt_file.is_file():
+            raise RuntimeError("STATE_ROOT_EXISTS_WITHOUT_MIGRATION_RECEIPT")
+        receipt = json.loads(receipt_file.read_text(encoding="utf-8"))
+        before = manifest(LEGACY) if LEGACY.is_dir() else {}
+        if receipt.get("legacy") != str(LEGACY):
+            raise RuntimeError("STATE_MIGRATION_RECEIPT_MISMATCH")
+        if LEGACY.is_dir() and receipt.get("file_count") != len(before):
+            raise RuntimeError("STATE_MIGRATION_RECEIPT_MISMATCH")
+        return {"schema": "mephc-state-migration-v1", "legacy": str(LEGACY),
+                "legacy_present": LEGACY.is_dir(), "state_root": str(config.STATE_ROOT),
+                "file_count": receipt.get("file_count"), "active_jobs": [], "apply": apply,
+                "reused": True, "state_epoch": epoch_file.read_text(encoding="ascii").strip()}
+    if not LEGACY.is_dir():
+        raise RuntimeError("LEGACY_STATE_MISSING_BEFORE_INITIAL_MIGRATION")
     before = manifest(LEGACY)
     active = unresolved_jobs(LEGACY)
     result = {"schema": "mephc-state-migration-v1", "legacy": str(LEGACY),
@@ -47,17 +64,6 @@ def migrate(apply: bool) -> dict:
         return result
     if active:
         raise RuntimeError("ACTIVE_JOBS_PRESENT")
-    if config.STATE_ROOT.exists():
-        epoch_file = config.STATE_ROOT / "runner" / "state-epoch"
-        receipt_file = config.STATE_ROOT / "runner" / "migration-receipt.json"
-        if not epoch_file.is_file() or not receipt_file.is_file():
-            raise RuntimeError("STATE_ROOT_EXISTS_WITHOUT_MIGRATION_RECEIPT")
-        receipt = json.loads(receipt_file.read_text(encoding="utf-8"))
-        if receipt.get("legacy") != str(LEGACY) or receipt.get("file_count") != len(before):
-            raise RuntimeError("STATE_MIGRATION_RECEIPT_MISMATCH")
-        result["reused"] = True
-        result["state_epoch"] = epoch_file.read_text(encoding="ascii").strip()
-        return result
     staging = config.STATE_ROOT.with_name(config.STATE_ROOT.name + ".staging-" + uuid.uuid4().hex)
     staging.parent.mkdir(parents=True, exist_ok=True)
     shutil.copytree(LEGACY, staging, symlinks=False)

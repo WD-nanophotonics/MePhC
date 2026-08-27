@@ -205,7 +205,9 @@ def test_project_registry_points_to_public_cmd_launcher():
     registry = json.loads((SOURCE / "project-registry.json").read_text(encoding="utf-8"))
     assert registry["active_project"] == "MEPHC"
     assert registry["runtime"]["windows_launcher"].endswith("\\mephc-runner.cmd")
-    assert registry["repositories"][1]["role"] == "LEGACY_AUXILIARY_READ_ONLY"
+    assert registry["repositories"][0]["role"] == "WINDOWS_CANONICAL_SOURCE"
+    assert registry["repositories"][1]["role"] == "USER_EDITABLE_WSL_DOWNSTREAM"
+    assert registry["runtime"]["job_root"].startswith("/home/icy/.local/state/")
 
 
 def test_worker_service_protects_home_and_only_opens_runtime():
@@ -296,6 +298,11 @@ def test_connector_and_install_are_typed_and_versioned():
     assert "$previousOutput.Count -gt 0" in bootstrap
     assert "windows_materializer.py" in broker and "Start-Process" in broker
     assert "ReadWritePaths=/home/icy/MePhC" not in (SOURCE / "mephc-runner.service").read_text().splitlines()
+
+
+def test_legacy_v1_recovery_fails_closed_after_archive():
+    text = (SOURCE / "worker.py").read_text(encoding="utf-8")
+    assert "LEGACY_ARCHIVED_RECOVERY_UNAVAILABLE" in text
 
 
 def test_health_is_fail_closed_and_capabilities_are_context_complete(tmp_path, monkeypatch):

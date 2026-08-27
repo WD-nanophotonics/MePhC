@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([ValidateSet('Audit','Install')][string]$Mode='Audit')
+param([ValidateSet('Audit','Install','Finalize')][string]$Mode='Audit')
 $ErrorActionPreference='Stop'
 $source=Split-Path -Parent $MyInvocation.MyCommand.Path
 $runtime=Join-Path $env:LOCALAPPDATA 'MePhCRunner\admission'
@@ -9,10 +9,12 @@ $codex=Get-Command codex -ErrorAction Stop
 if($codex.CommandType -notin @('Application','ExternalScript')){throw "CODEX_LAUNCHER_UNSUPPORTED:$($codex.CommandType)"}
 $python=(Get-Command python.exe -ErrorAction Stop).Source
 $shim=Join-Path $runtime 'mephc_admission.py'
-if($Mode -eq 'Install'){
+if($Mode -in @('Install','Finalize')){
   New-Item -ItemType Directory -Path $runtime -Force|Out-Null
   Copy-Item -LiteralPath (Join-Path $source 'mephc_admission.py') -Destination $shim -Force
-  & $python (Join-Path $source 'config_patch.py') --config $config --python $python --shim $shim --apply
+  $patchArguments=@((Join-Path $source 'config_patch.py'),'--config',$config,'--python',$python,'--shim',$shim,'--apply')
+  if($Mode -eq 'Finalize'){$patchArguments += '--finalize'}
+  & $python @patchArguments
   if($LASTEXITCODE -ne 0){throw 'CONFIG_PATCH_FAILED'}
 } else {
   & $python (Join-Path $source 'config_patch.py') --config $config --python $python --shim $shim

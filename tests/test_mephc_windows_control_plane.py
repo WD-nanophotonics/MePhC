@@ -94,16 +94,69 @@ def test_config_patch_changes_only_owned_tables(tmp_path):
     assert result["changed"] is True
     assert "[mcp_servers.keep_me]" in after and "command = 'keep'" in after
     assert "mephc_native_admission_probe" in after
-    assert after.count("[mcp_servers.mephc_windows_shadow]") == 1
+    assert after.count("[mcp_servers.mephc]") == 1
     assert Path(result["backup"]).is_file()
     parsed = tomllib.loads(after)
-    assert parsed["mcp_servers"]["mephc_windows_shadow"]["enabled"] is True
-    assert parsed["mcp_servers"]["mephc_windows_shadow"]["command"] == r"C:\Python\python.exe"
-    assert parsed["mcp_servers"]["mephc_windows_shadow"]["args"] == [r"C:\runtime\shim.py"]
+    assert parsed["mcp_servers"]["mephc"]["enabled"] is True
+    assert parsed["mcp_servers"]["mephc"]["command"] == r"C:\Python\python.exe"
+    assert parsed["mcp_servers"]["mephc"]["args"] == [r"C:\runtime\shim.py"]
     assert parsed["mcp_servers"]["mephc_native"]["enabled"] is False
     assert parsed["mcp_servers"]["mephc_admission_probe"]["enabled"] is False
     assert parsed["mcp_servers"]["mephc_native_admission_probe"]["enabled"] is False
     assert parsed["plugins"]["mephc-runner@personal"]["enabled"] is False
+
+
+def test_config_finalize_removes_only_retired_owned_tables(tmp_path):
+    module = load("windows_config_finalize", ADMISSION / "config_patch.py")
+    config = tmp_path / "config.toml"
+    config.write_text(
+        "[mcp_servers.keep_me]\ncommand = 'keep'\n\n"
+        "[mcp_servers.mephc_windows_shadow]\ncommand = 'shadow'\nenabled = false\n\n"
+        "[mcp_servers.mephc_windows_shadow.env]\nTOKEN = 'retired'\n\n"
+        "[plugins.\"mephc-runner@personal\"]\nenabled = false\n",
+        encoding="utf-8",
+    )
+    module.patch(config, Path("C:/Python/python.exe"), Path("C:/runtime/shim.py"), True, True)
+    parsed = tomllib.loads(config.read_text(encoding="utf-8"))
+    assert parsed["mcp_servers"]["keep_me"]["command"] == "keep"
+    assert "mephc_windows_shadow" not in parsed["mcp_servers"]
+    assert parsed["mcp_servers"]["mephc"]["enabled"] is True
+    assert "plugins" not in parsed
+
+
+def test_human_runtime_is_strict_and_preserves_project_cwd(monkeypatch, tmp_path):
+    module = load("windows_user_runtime", RUNNER / "user_runtime.py")
+    root = tmp_path / "control"
+    checkout = tmp_path / "checkouts" / ("a" * 40)
+    project = tmp_path / "TriLatt"
+    for path in (root, checkout, project):
+        path.mkdir(parents=True)
+    monkeypatch.setattr(module.config, "CONTROL_ROOT", root)
+    monkeypatch.setattr(module.config, "CHECKOUTS", checkout.parent)
+    monkeypatch.setattr(module.config, "STATE_ROOT", tmp_path / "state")
+    monkeypatch.setattr(module.config, "EXPECTED_ORIGIN_MAIN", "b" * 40)
+    replies = {("symbolic-ref", "--quiet", "--short", "HEAD"): "sandbox",
+               ("status", "--porcelain", "--untracked-files=all"): "",
+               ("rev-parse", "origin/main"): "b" * 40,
+               ("rev-parse", "HEAD"): "a" * 40}
+    monkeypatch.setattr(module, "git", lambda *args: replies[args])
+    monkeypatch.setattr(module.checkout_manager, "ensure", lambda _commit: checkout)
+    monkeypatch.setattr(module, "CURRENT_LINK", tmp_path / "share" / "current")
+    assert module.source_commit() == "a" * 40
+    linked = True
+    try:
+        assert module.sync() == checkout.resolve()
+    except OSError as exc:
+        if getattr(exc, "winerror", None) != 1314:
+            raise
+        linked = False
+    if linked:
+        assert module.CURRENT_LINK.resolve() == checkout.resolve()
+    monkeypatch.setattr(module.subprocess, "run", lambda *_a, **_kw: type("R", (), {"returncode": 0, "stdout": "ext4\n"})())
+    assert module.project_path(str(project)) == project.resolve()
+    monkeypatch.setenv("MEPHC_RUNNER_JOB_ID", "job")
+    with pytest.raises(module.RuntimeFailure, match="BYPASS"):
+        module.sync()
 
 
 def test_state_migration_is_byte_exact_and_keeps_orphan(tmp_path, monkeypatch):
@@ -123,6 +176,20 @@ def test_state_migration_is_byte_exact_and_keeps_orphan(tmp_path, monkeypatch):
     assert module.unresolved_jobs(destination) == []
     (destination / "runner" / "jobs" / "MEPHC-JOB-NEW").mkdir()
     assert module.migrate(True)["reused"] is True
+
+
+def test_state_migration_remains_reusable_after_legacy_archive(tmp_path, monkeypatch):
+    module = load("windows_state_migration_archived", RUNNER / "migrate_state.py")
+    legacy, destination = tmp_path / "legacy", tmp_path / "state"
+    legacy.mkdir()
+    monkeypatch.setattr(module, "LEGACY", legacy)
+    monkeypatch.setattr(module.config, "STATE_ROOT", destination)
+    first = module.migrate(True)
+    legacy.rmdir()
+    reused = module.migrate(True)
+    assert reused["reused"] is True
+    assert reused["legacy_present"] is False
+    assert reused["state_epoch"] == first["state_epoch"]
 
 
 def test_new_jobs_bind_control_commit_main_and_epoch(tmp_path, monkeypatch):
@@ -187,3 +254,5 @@ def test_worker_and_bootstrap_bind_the_same_build_files():
                  "windows_materializer.py", "mephc-connector.ps1"):
         assert f'"{name}"' in worker
         assert f"'{name}'" in bootstrap
+    assert "'user_runtime.py'" in bootstrap
+    assert "'home_cleanup.py'" in bootstrap

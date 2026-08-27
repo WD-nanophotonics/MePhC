@@ -11,6 +11,11 @@ This policy is enforced by the MePhC Runner. At task start and after context rec
 
 The connector fixes `control_root=C:\Users\icywo\PycharmProjects\MePhC-Windows`, `state_root=/home/icy/.local/state/mephc-runner/MEPHC`, `project_id=MEPHC`, Git state, Conda Python, `PYTHONPATH`, and installed broker/worker builds. WSL execution occurs only in detached, clean, commit-bound ext4 checkouts below `/home/icy/.cache/mephc-runner/checkouts`. It rejects TriLatt, UNC control roots, subdirectories, Windows execution roots, wrong interpreters, dirty execution trees, uncommitted prelive state, source-byte drift, moved `origin/main`, stale state epochs, duplicate claims, and unsafe Courier recovery.
 
+The sole production MCP server name is `mephc`; `mephc_windows_shadow`, native,
+and probe names are migration-only and must remain disabled. The human-only
+`mephc-runtime sync|path|run` command is for interactive downstream WSL work
+and must never be used by an Agent to bypass this typed connector.
+
 For `mephc_change`, provide only declared UTF-8 file content and a non-empty `tests` array of repository-relative `tests/*.py` paths (optionally with a pytest `::` selector). Never pass `python ...`, `python -m ...`, shell syntax, or `audit/` paths as tests. A newly declared `tests/*.py` file is valid in the same transaction and is run only after materialization. The Runner, not the Agent, binds preimage/postimage hashes and `origin/main`.
 
 `scripts/relayctl` and `tools/mephc-courier.ps1` are internal Runner implementation details, not Agent launchers. Agents must not invoke them, arbitrary shell/Python, Courier, Browser, Chrome, or Gmail directly. Runtime evidence lives outside Git in `/home/icy/.local/state/mephc-runner/MEPHC`; never create or copy `.relayctl` into the Windows control repository. Requests are plain text by default; attachments require separately identified committed remote audit artifacts.
@@ -189,7 +194,9 @@ from the beginning.
 
 This repository is the canonical source and Codex control workspace. Its exact
 Windows root is `C:\Users\icywo\PycharmProjects\MePhC-Windows`. The old
-`/home/icy/MePhC` repository is a frozen rollback source and must not be edited.
+`/home/icy/MePhC` repository is a frozen rollback source until its verified
+hidden archive is created; after retirement it must not be recreated as an
+editable or canonical source.
 Linux-native tests and numerical work run only in disposable SHA-bound WSL
 checkouts below `/home/icy/.cache/mephc-runner/checkouts`; those checkouts are
 never source-of-truth workspaces.
@@ -203,4 +210,8 @@ namespace, Chat address binding, or default working directory for MePhC.
 requests are not part of the active MePhC work unless a future work order
 explicitly names TriLatt. Never infer the active workspace from a stale TriLatt
 request, attachment, branch, or address binding.
+
+TriLatt and SqrLatt remain independently editable WSL downstream projects for
+human use. Their project-relative outputs belong in those downstream projects.
+This does not make either repository part of an Agent's MePhC work-order scope.
 

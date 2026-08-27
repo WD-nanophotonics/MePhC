@@ -214,6 +214,8 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
             raise Rejected("EXECUTION_CHECKOUT_INVALID", str(exc)) from exc
     else:
         legacy_root = Path("/home/icy/MePhC")
+        if not (legacy_root / ".git").is_dir():
+            raise Rejected("LEGACY_ARCHIVED_RECOVERY_UNAVAILABLE", job.get("job_id", ""))
         if job.get("expected_root") != str(legacy_root):
             raise Rejected("ROOT_MISMATCH", repr(job.get("expected_root")))
         if not isinstance(job.get("expected_head"), str) or not SHA40.fullmatch(job["expected_head"]):
@@ -416,7 +418,7 @@ def repair_interrupted() -> None:
 
 def heartbeat() -> None:
     names = ("worker.py","jobctl.py","workflow.py","workflow_resume.py","runtime_config.py",
-             "checkout_manager.py","migrate_state.py","windows_materializer.py",
+             "checkout_manager.py","user_runtime.py","home_cleanup.py","migrate_state.py","windows_materializer.py",
              "materialize_client.py","mcp_server.py","native-recipes.json","mephc-runner.ps1",
              "mephc-runner.cmd","mephc-connector.cmd","mephc-connector.ps1",
              "mephc-runner.service","README.md")

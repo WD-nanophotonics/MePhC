@@ -4,24 +4,24 @@
   "repositories": [
     {
       "project_id": "MEPHC",
-      "role": "ACTIVE_SCIENTIFIC_WORKSPACE",
-      "canonical_path": "/home/icy/MePhC",
+      "role": "WINDOWS_CANONICAL_SOURCE",
+      "canonical_path": "C:\\Users\\icywo\\PycharmProjects\\MePhC-Windows",
       "remote": "https://github.com/WD-nanophotonics/MePhC.git",
       "execution": "MEPHC_RUNNER_ONLY"
     },
     {
       "project_id": "TRILATT",
-      "role": "LEGACY_AUXILIARY_READ_ONLY",
+      "role": "USER_EDITABLE_WSL_DOWNSTREAM",
       "canonical_path": "/home/icy/TriLatt",
       "remote": "https://github.com/WD-nanophotonics/MePhC-TriLatt.git",
-      "execution": "DISABLED_BY_DEFAULT"
+      "execution": "HUMAN_DIRECT_OR_SEPARATELY_AUTHORIZED"
     },
     {
       "project_id": "SQRLATT",
-      "role": "LEGACY_AUXILIARY_READ_ONLY",
+      "role": "USER_EDITABLE_WSL_DOWNSTREAM",
       "canonical_path": "/home/icy/SqrLatt",
       "remote": "https://github.com/WD-nanophotonics/MePhC-SqrLatt.git",
-      "execution": "DISABLED_BY_DEFAULT"
+      "execution": "HUMAN_DIRECT_OR_SEPARATELY_AUTHORIZED"
     },
     {
       "project_id": "GMAILCOURIER",
@@ -34,7 +34,8 @@
   "runtime": {
     "windows_launcher": "C:\\Users\\icywo\\AppData\\Local\\MePhCRunner\\mephc-runner.cmd",
     "wsl_service": "mephc-runner.service",
-    "job_root": "/home/icy/MePhC/.relayctl/runner/jobs",
+    "job_root": "/home/icy/.local/state/mephc-runner/MEPHC/runner/jobs",
+    "human_runtime": "/home/icy/.local/bin/mephc-runtime",
     "allowed_operations": ["doctor", "worktree", "prelive", "native", "publish", "courier"]
   }
 }
