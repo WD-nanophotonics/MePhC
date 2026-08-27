@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import ast
 import importlib.util
 import json
 from pathlib import Path
@@ -201,3 +202,13 @@ def test_lifecycle_schema_and_admission_replay_boundary_are_fixed():
     assert "mephc_runtime_attest" in admission_module.READ_ONLY_TOOLS
     assert "mephc_runtime_reload" not in admission_module.READ_ONLY_TOOLS
     assert "mephc_runtime_activate" not in admission_module.READ_ONLY_TOOLS
+
+
+def test_bootstrap_and_worker_share_one_ordered_build_manifest():
+    bootstrap = (RUNNER / "bootstrap.ps1").read_text(encoding="utf-8")
+    worker = (RUNNER / "worker.py").read_text(encoding="utf-8")
+    powershell_block = bootstrap.split("$Files=@(", 1)[1].split("\n)", 1)[0]
+    powershell_names = __import__("re").findall(r"'([^']+)'", powershell_block)
+    function = worker.split("def runner_build_id()", 1)[1].split("def runtime_source_matches", 1)[0]
+    tuple_source = function.split("names =", 1)[1].split("\n    source_hashes", 1)[0].strip()
+    assert powershell_names == list(ast.literal_eval(tuple_source))
