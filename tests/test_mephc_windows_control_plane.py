@@ -69,6 +69,14 @@ def test_scope_rejection_does_not_start_wsl(monkeypatch):
     assert called is False
 
 
+def test_stdio_notifications_are_forwarded_without_waiting_for_response():
+    text = (ADMISSION / "mephc_admission.py").read_text(encoding="utf-8")
+    forward = text.index('if request.get("id") is None:')
+    read = text.index("response = child.stdout.readline()")
+    assert forward < read
+    assert 'audit("notification_forwarded"' in text
+
+
 def test_config_patch_changes_only_owned_tables(tmp_path):
     module = load("windows_config_patch", ADMISSION / "config_patch.py")
     config = tmp_path / "config.toml"

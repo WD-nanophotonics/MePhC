@@ -90,6 +90,9 @@ def proxy() -> int:
             audit("client_request", method=request.get("method"))
             child.stdin.write(json.dumps(request, separators=(",", ":"), ensure_ascii=False) + "\n")
             child.stdin.flush()
+            if request.get("id") is None:
+                audit("notification_forwarded", method=request.get("method"))
+                continue
             response = child.stdout.readline()
             if not response:
                 detail = child.stderr.readline().strip()[:500] if child.stderr is not None else ""
