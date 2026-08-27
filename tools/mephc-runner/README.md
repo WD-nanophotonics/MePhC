@@ -37,6 +37,8 @@ checks the build-bound heartbeat and starts a stopped broker task before it
 launches the WSL MCP child. Doctor results are reused only while current worker
 and broker heartbeats are fresh, mutually build-bound, and healthy; an old
 successful certificate cannot conceal a stale runtime.
+Task Scheduler executes `python.exe windows_broker.py` directly so its restart
+policy supervises the actual broker PID rather than a transient shell wrapper.
 
 The only public Windows entry point is
 `%LOCALAPPDATA%\MePhCRunner\mephc-runner.cmd`. It supplies the fixed

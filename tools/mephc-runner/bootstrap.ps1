@@ -106,7 +106,9 @@ Start-Sleep -Seconds 2
 try {
   $launcher=Join-Path $Runtime 'mephc-runner.ps1'
   $taskName='MePhCRunnerBroker'
-  $taskAction=New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$launcher`" Broker" -WorkingDirectory $Runtime
+  $windowsPython=(Get-Command python.exe -ErrorAction Stop).Source
+  $brokerScript=Join-Path $Runtime 'windows_broker.py'
+  $taskAction=New-ScheduledTaskAction -Execute $windowsPython -Argument "`"$brokerScript`"" -WorkingDirectory $Runtime
   $taskTrigger=New-ScheduledTaskTrigger -AtLogOn -User $env:USERNAME
   $taskSettings=New-ScheduledTaskSettingsSet -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -DontStopOnIdleEnd -StartWhenAvailable -Hidden
   Register-ScheduledTask -TaskName $taskName -Action $taskAction -Trigger $taskTrigger -Settings $taskSettings -Description 'MePhC durable Windows broker' -Force | Out-Null

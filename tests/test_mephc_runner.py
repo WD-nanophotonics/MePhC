@@ -367,6 +367,9 @@ def test_bootstrap_restarts_broker_and_fixes_parent_cwd():
     assert "Push-Location $Runtime" in text
     assert "-WorkingDirectory $Runtime" in text
     assert "Register-ScheduledTask" in text and "RestartCount 999" in text
+    assert "New-ScheduledTaskAction -Execute $windowsPython" in text
+    assert "$brokerScript=Join-Path $Runtime 'windows_broker.py'" in text
+    assert "-ExecutionPolicy Bypass -File" not in text
     assert "-AllowStartIfOnBatteries" in text and "-DontStopIfGoingOnBatteries" in text
     assert "-DontStopOnIdleEnd" in text and "-StartWhenAvailable" in text
     assert "return (($_.CommandLine" in text
