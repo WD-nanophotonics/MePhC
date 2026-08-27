@@ -62,6 +62,7 @@ def test_scope_rejection_does_not_start_wsl(monkeypatch):
         called = True
         raise AssertionError("child started")
     monkeypatch.setattr(admission.subprocess, "Popen", forbidden)
+    monkeypatch.setattr(admission, "audit", lambda *_args, **_kwargs: None)
     monkeypatch.setattr(admission, "inherited_cwd", lambda: (_ for _ in ()).throw(PermissionError("ADMISSION_SCOPE_MISMATCH")))
     monkeypatch.setattr(admission.sys, "stdin", iter(()))
     assert admission.main() == 0

@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import time
 from typing import Any
 
 ALLOWED_ROOT = Path(r"C:\Users\icywo\PycharmProjects\MePhC-Windows")
@@ -15,6 +16,16 @@ BACKEND = ["-d", "Ubuntu", "--", "/home/icy/miniconda3/envs/mp/bin/python",
 TOOL_NAMES = ("mephc_capabilities", "mephc_doctor", "mephc_resume", "mephc_change",
               "mephc_submit", "mephc_status", "mephc_wait", "mephc_recover",
               "mephc_inspect", "mephc_report", "mephc_publish", "mephc_transport_canary")
+AUDIT_LOG = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "MePhCRunner" / "admission" / "launch-audit.jsonl"
+
+
+def audit(event: str, **fields: Any) -> None:
+    try:
+        AUDIT_LOG.parent.mkdir(parents=True, exist_ok=True)
+        with AUDIT_LOG.open("a", encoding="utf-8", newline="\n") as handle:
+            handle.write(json.dumps({"event": event, "time": int(time.time()), **fields}, sort_keys=True) + "\n")
+    except OSError:
+        pass
 
 
 def inherited_cwd() -> Path:
@@ -64,8 +75,13 @@ def rejected_loop(reason: str) -> int:
 
 
 def proxy() -> int:
-    child = subprocess.Popen([str(WSL), *BACKEND], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                             stderr=subprocess.DEVNULL, text=True, encoding="utf-8", bufsize=1)
+    audit("admission_authorized", cwd=os.getcwd())
+    try:
+        child = subprocess.Popen([str(WSL), *BACKEND], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE, text=True, encoding="utf-8", bufsize=1)
+    except OSError as exc:
+        audit("backend_start_failed", error=type(exc).__name__)
+        return rejected_loop("BACKEND_START_FAILED")
     assert child.stdin is not None and child.stdout is not None
     for line in sys.stdin:
         request: dict[str, Any] = {}
@@ -75,6 +91,8 @@ def proxy() -> int:
             child.stdin.flush()
             response = child.stdout.readline()
             if not response:
+                detail = child.stderr.readline().strip()[:500] if child.stderr is not None else ""
+                audit("backend_disconnected", return_code=child.poll(), detail=detail)
                 if request.get("id") is not None:
                     reply(request.get("id"), error="DURABLE_JOB_RECOVERY_REQUIRED")
                 return 3
@@ -93,10 +111,10 @@ def main() -> int:
     try:
         inherited_cwd()
     except (OSError, PermissionError) as exc:
+        audit("admission_rejected", cwd=os.getcwd(), reason=str(exc))
         return rejected_loop(str(exc))
     return proxy()
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
