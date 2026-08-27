@@ -147,7 +147,7 @@ def environment_certificate_status(source_commit: str | None = None, requested_s
     expected = {
         "project_id": "MEPHC", "runner_build": attestation.get("worker_build"),
         "state_epoch": config.state_epoch(), "control_root": config.CONTROL_ROOT_WINDOWS,
-        "state_root": str(config.STATE_ROOT), "python": str(config.PYTHON),
+        "state_root": str(config.STATE_ROOT), "python": str(config.PYTHON.resolve()),
         "origin_main": config.EXPECTED_ORIGIN_MAIN,
     }
     environment_mismatches: list[str] = []

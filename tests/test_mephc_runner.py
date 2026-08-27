@@ -540,7 +540,7 @@ def test_v2_environment_certificate_selection_crosses_source_head(monkeypatch, t
         "version": 2, "kind": "environment-certificate", "project_id": "MEPHC",
         "runner_build": "b" * 16, "state_epoch": "epoch-1",
         "control_root": jobctl.config.CONTROL_ROOT_WINDOWS, "state_root": str(jobctl.config.STATE_ROOT),
-        "python": str(jobctl.config.PYTHON), "origin_main": jobctl.config.EXPECTED_ORIGIN_MAIN,
+        "python": str(jobctl.config.PYTHON.resolve()), "origin_main": jobctl.config.EXPECTED_ORIGIN_MAIN,
         "head": "1" * 40, "live_health_fresh": True,
         "worker_health_fresh_at_issue": True, "broker_health_fresh_at_issue": True,
     }
