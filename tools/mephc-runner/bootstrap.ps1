@@ -138,7 +138,11 @@ try {
     return (($_.CommandLine -like '*MePhCRunner*mephc-runner.ps1*Broker*' -or $_.CommandLine -like '*MePhCRunner*windows_broker.py*') -and $_.ProcessId -ne $PID -and $_.CommandLine -notlike '*Get-CimInstance*')
   }
   foreach($process in @($existing)){
-    & "$env:SystemRoot\System32\taskkill.exe" /PID ([string]$process.ProcessId) /T /F 2>$null | Out-Null
+    $savedErrorActionPreference=$ErrorActionPreference
+    try {
+      $ErrorActionPreference='SilentlyContinue'
+      & "$env:SystemRoot\System32\taskkill.exe" /PID ([string]$process.ProcessId) /T /F 2>$null | Out-Null
+    } finally {$ErrorActionPreference=$savedErrorActionPreference}
   }
   Start-Sleep -Seconds 1
   if((Get-ScheduledTask -TaskName $taskName).State -in @('Running','Queued')){throw 'scheduled broker did not stop cleanly'}
