@@ -152,6 +152,46 @@ def test_config_finalize_removes_only_retired_owned_tables(tmp_path):
     assert "plugins" not in parsed
 
 
+def test_project_scoped_config_removes_global_server_and_pins_canonical_cwd(tmp_path):
+    module = load("windows_project_config_patch", ADMISSION / "config_patch.py")
+    user = tmp_path / "user" / "config.toml"
+    project = tmp_path / "project" / ".codex" / "config.toml"
+    user.parent.mkdir()
+    project.parent.mkdir(parents=True)
+    user.write_text(
+        "model = 'keep'\n\n[mcp_servers.mephc]\ncommand = 'old'\nenabled = true\n",
+        encoding="utf-8",
+    )
+    project.write_text("sandbox_mode = 'workspace-write'\n", encoding="utf-8")
+    root = tmp_path / "project"
+    result = module.patch_project_scoped(
+        user, project, Path("C:/Python/python.exe"), Path("C:/runtime/shim.py"), root, True
+    )
+    user_parsed = tomllib.loads(user.read_text(encoding="utf-8"))
+    project_parsed = tomllib.loads(project.read_text(encoding="utf-8"))
+    assert user_parsed == {"model": "keep"}
+    server = project_parsed["mcp_servers"]["mephc"]
+    assert server == {
+        "command": r"C:\Python\python.exe",
+        "args": [r"C:\runtime\shim.py"],
+        "cwd": str(root),
+        "enabled": True,
+        "startup_timeout_sec": 60,
+        "tool_timeout_sec": 1800,
+    }
+    assert result["changed"] is True and len(result["backups"]) == 2
+
+
+def test_windows_process_launches_are_consoleless():
+    admission = (ADMISSION / "mephc_admission.py").read_text(encoding="utf-8")
+    lifecycle = (ADMISSION / "runtime_lifecycle.py").read_text(encoding="utf-8")
+    bootstrap = (RUNNER / "bootstrap.ps1").read_text(encoding="utf-8")
+    assert "creationflags=NO_WINDOW" in admission
+    assert "creationflags=NO_WINDOW" in lifecycle
+    assert "New-ScheduledTaskAction -Execute $windowsPythonw" in bootstrap
+    assert "PYTHONW_LAUNCHER_MISSING" in bootstrap
+
+
 def test_human_runtime_is_strict_and_preserves_project_cwd(monkeypatch, tmp_path):
     module = load("windows_user_runtime", RUNNER / "user_runtime.py")
     root = tmp_path / "control"

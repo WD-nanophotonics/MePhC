@@ -137,8 +137,10 @@ try {
   $launcher=Join-Path $Runtime 'mephc-runner.ps1'
   $taskName='MePhCRunnerBroker'
   $windowsPython=(Get-Command python.exe -ErrorAction Stop).Source
+  $windowsPythonw=Join-Path (Split-Path -Parent $windowsPython) 'pythonw.exe'
+  if(-not(Test-Path -LiteralPath $windowsPythonw -PathType Leaf)){throw 'PYTHONW_LAUNCHER_MISSING'}
   $brokerScript=Join-Path $Runtime 'windows_broker.py'
-  $taskAction=New-ScheduledTaskAction -Execute $windowsPython -Argument "`"$brokerScript`"" -WorkingDirectory $Runtime
+  $taskAction=New-ScheduledTaskAction -Execute $windowsPythonw -Argument "`"$brokerScript`"" -WorkingDirectory $Runtime
   $taskTrigger=New-ScheduledTaskTrigger -AtLogOn -User $env:USERNAME
   $taskSettings=New-ScheduledTaskSettingsSet -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -DontStopOnIdleEnd -StartWhenAvailable -Hidden
   Register-ScheduledTask -TaskName $taskName -Action $taskAction -Trigger $taskTrigger -Settings $taskSettings -Description 'MePhC durable Windows broker' -Force | Out-Null

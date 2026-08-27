@@ -24,6 +24,7 @@ WINDOWS_RUNTIME_FILES = (
     "mephc-runner.ps1", "mephc-runner.cmd", "mephc-connector.cmd", "mephc-connector.ps1",
     "windows_materializer.py", "windows_broker.py", "README.md", "install-manifest.json",
 )
+NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
 
 class LifecycleError(RuntimeError):
@@ -41,7 +42,7 @@ def _run(argv: list[str], *, cwd: Path = CONTROL_ROOT, timeout: int = 300) -> su
     try:
         return subprocess.run(argv, cwd=cwd, text=True, encoding="utf-8", errors="replace",
                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=timeout,
-                              env=environment)
+                              env=environment, creationflags=NO_WINDOW)
     except (OSError, subprocess.TimeoutExpired) as exc:
         raise LifecycleError("RUNTIME_LIFECYCLE_PROCESS_FAILED", type(exc).__name__) from exc
 
@@ -172,9 +173,11 @@ def _snapshot() -> dict[str, Any]:
     codex_home = Path(os.environ.get("CODEX_HOME", str(Path.home() / ".codex")))
     config = codex_home / "config.toml"
     if config.is_file(): shutil.copy2(config, root / "config.toml")
+    project_config = CONTROL_ROOT / ".codex" / "config.toml"
+    if project_config.is_file(): shutil.copy2(project_config, root / "project-config.toml")
     _atomic_json(root / "snapshot.json", {"schema":"mephc-runtime-activation-snapshot-v1",
                                            "current":current, "created_at":time.time()})
-    return {"root":root, "current":current, "config":config}
+    return {"root":root, "current":current, "config":config, "project_config":project_config}
 
 
 def _restore(snapshot: dict[str, Any]) -> None:
@@ -198,6 +201,10 @@ def _restore(snapshot: dict[str, Any]) -> None:
             if source.is_file(): shutil.copy2(source, admission / source.name)
     config_backup = root / "config.toml"
     if config_backup.is_file(): shutil.copy2(config_backup, snapshot["config"])
+    project_config_backup = root / "project-config.toml"
+    if project_config_backup.is_file():
+        snapshot["project_config"].parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(project_config_backup, snapshot["project_config"])
     worker = _run(["wsl.exe", "-d", "Ubuntu", "-u", "root", "--", "systemctl", "restart",
                    "mephc-runner.service"], timeout=60)
     try: _restart_broker()

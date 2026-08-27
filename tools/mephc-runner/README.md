@@ -43,16 +43,24 @@ and restores the prior Windows, WSL, admission and config snapshot if install
 or post-install attestation fails.
 
 The scheduled broker is configured to remain available on battery power and
-when the machine leaves idle state. After cwd admission, the Windows connector
+when the machine leaves idle state. It uses the consoleless `pythonw.exe`
+launcher, and every admission-owned child uses `CREATE_NO_WINDOW`, so runtime
+supervision cannot steal desktop focus. After cwd admission, the Windows connector
 checks the build-bound heartbeat and starts a stopped broker task before it
 launches the WSL MCP child. Doctor results are reused only while current worker
 and broker heartbeats are fresh, mutually build-bound, and healthy; an old
 successful certificate cannot conceal a stale runtime.
-Task Scheduler executes `python.exe windows_broker.py` directly so its restart
+Task Scheduler executes `pythonw.exe windows_broker.py` directly so its restart
 policy supervises the actual broker PID rather than a transient shell wrapper.
 The admission shim launches only the installed Windows connector; it never
 starts the WSL MCP server directly, so every admitted session passes through
 the same broker-health gate.
+
+The sole `mephc` MCP table is project-scoped in the trusted canonical
+`.codex/config.toml`, with its `cwd` fixed to the exact Windows control root.
+The installer atomically removes the former user-global table. This prevents
+Desktop application-directory startup probes from disabling the server while
+keeping MePhC tools absent from unrelated projects.
 
 The only public Windows entry point is
 `%LOCALAPPDATA%\MePhCRunner\mephc-runner.cmd`. It supplies the fixed

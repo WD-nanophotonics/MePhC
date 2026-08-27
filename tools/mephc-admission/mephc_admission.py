@@ -28,6 +28,7 @@ READ_ONLY_TOOLS = {"mephc_capabilities", "mephc_inspect", "mephc_retention_inspe
 LOCAL_LIFECYCLE_TOOLS = {"mephc_runtime_reload": "reload", "mephc_runtime_activate": "activate"}
 LIFECYCLE = Path(__file__).resolve().parent / "runtime_lifecycle.py"
 LOADED_ADMISSION_MODULE_HASH = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
 
 def audit(event: str, **fields: Any) -> None:
@@ -97,7 +98,8 @@ def start_backend() -> subprocess.Popen[str]:
         if name not in inherited: inherited.append(name)
     environment["WSLENV"] = ":".join(inherited)
     return subprocess.Popen([str(POWERSHELL), *BACKEND], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE, text=True, encoding="utf-8", bufsize=1, env=environment)
+                            stderr=subprocess.PIPE, text=True, encoding="utf-8", bufsize=1, env=environment,
+                            creationflags=NO_WINDOW)
 
 
 def installed_build() -> str | None:
@@ -111,7 +113,8 @@ def installed_build() -> str | None:
 def local_lifecycle(name: str) -> dict[str, Any]:
     result = subprocess.run([sys.executable, str(LIFECYCLE), LOCAL_LIFECYCLE_TOOLS[name]],
                             stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                            text=True, encoding="utf-8", errors="replace", timeout=1800, check=False)
+                            text=True, encoding="utf-8", errors="replace", timeout=1800, check=False,
+                            creationflags=NO_WINDOW)
     try:
         value = json.loads(result.stdout.splitlines()[-1])
     except (IndexError, json.JSONDecodeError):

@@ -100,13 +100,97 @@ def patch(config: Path, python: Path, shim: Path, apply: bool, finalize: bool = 
     return result
 
 
+def _render_user_config(before: str, finalize: bool) -> str:
+    after = remove_table(before, CANONICAL)
+    for table_name in LEGACY_TABLES:
+        after = remove_table(after, table_name) if finalize else set_enabled(after, table_name, False)
+    return after.rstrip() + ("\n" if after.strip() else "")
+
+
+def _render_project_config(before: str, python: Path, shim: Path, cwd: Path) -> str:
+    after = remove_table(before, CANONICAL)
+    table = ("[mcp_servers.mephc]\n"
+             f"command = {json.dumps(str(python))}\n"
+             f"args = [{json.dumps(str(shim))}]\n"
+             f"cwd = {json.dumps(str(cwd))}\n"
+             "enabled = true\n"
+             "startup_timeout_sec = 60\n"
+             "tool_timeout_sec = 1800\n")
+    return after.rstrip() + ("\n\n" if after.strip() else "") + table
+
+
+def _write_atomic(path: Path, text: str) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    temporary.write_text(text, encoding="utf-8", newline="\n")
+    return temporary
+
+
+def patch_project_scoped(user_config: Path, project_config: Path, python: Path, shim: Path,
+                         cwd: Path, apply: bool, finalize: bool = False) -> dict:
+    """Move the owned server atomically from user config to one trusted project config."""
+    user_before = user_config.read_text(encoding="utf-8-sig") if user_config.exists() else ""
+    project_before = project_config.read_text(encoding="utf-8-sig") if project_config.exists() else ""
+    user_after = _render_user_config(user_before, finalize)
+    project_after = _render_project_config(project_before, python, shim, cwd)
+    user_parsed = tomllib.loads(user_before) if user_before.strip() else {}
+    project_parsed = tomllib.loads(project_before) if project_before.strip() else {}
+    if without_owned(user_parsed) != without_owned(tomllib.loads(user_after) if user_after.strip() else {}):
+        raise RuntimeError("UNRELATED_USER_CONFIG_DRIFT")
+    if without_owned(project_parsed) != without_owned(tomllib.loads(project_after)):
+        raise RuntimeError("UNRELATED_PROJECT_CONFIG_DRIFT")
+    result = {
+        "changed": user_before != user_after or project_before != project_after,
+        "user_before_sha256": hashlib.sha256(user_before.encode()).hexdigest(),
+        "user_after_sha256": hashlib.sha256(user_after.encode()).hexdigest(),
+        "project_before_sha256": hashlib.sha256(project_before.encode()).hexdigest(),
+        "project_after_sha256": hashlib.sha256(project_after.encode()).hexdigest(),
+        "user_config": str(user_config), "project_config": str(project_config),
+    }
+    if not apply or not result["changed"]:
+        return result
+    stamp = time.strftime("%Y%m%d-%H%M%S")
+    backups: list[tuple[Path, Path | None]] = []
+    temporaries: list[Path] = []
+    try:
+        for path in (user_config, project_config):
+            backup = path.with_name(path.name + ".mephc-backup-" + stamp) if path.exists() else None
+            if backup is not None:
+                shutil.copy2(path, backup)
+            backups.append((path, backup))
+        temporaries = [_write_atomic(user_config, user_after), _write_atomic(project_config, project_after)]
+        os.replace(temporaries[0], user_config)
+        os.replace(temporaries[1], project_config)
+    except Exception:
+        for path, backup in backups:
+            if backup is not None and backup.exists():
+                shutil.copy2(backup, path)
+            elif backup is None and path.exists():
+                path.unlink()
+        raise
+    finally:
+        for temporary in temporaries:
+            if temporary.exists():
+                temporary.unlink()
+    result["backups"] = [str(backup) for _, backup in backups if backup is not None]
+    return result
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, required=True)
+    parser.add_argument("--project-config", type=Path)
+    parser.add_argument("--cwd", type=Path)
     parser.add_argument("--python", type=Path, required=True)
     parser.add_argument("--shim", type=Path, required=True)
     parser.add_argument("--apply", action="store_true")
     parser.add_argument("--finalize", action="store_true",
                         help="remove disabled legacy MePhC tables after restart acceptance")
     args = parser.parse_args()
-    print(patch(args.config, args.python, args.shim, args.apply, args.finalize))
+    if args.project_config is not None:
+        if args.cwd is None:
+            parser.error("--cwd is required with --project-config")
+        print(patch_project_scoped(args.config, args.project_config, args.python, args.shim,
+                                   args.cwd, args.apply, args.finalize))
+    else:
+        print(patch(args.config, args.python, args.shim, args.apply, args.finalize))

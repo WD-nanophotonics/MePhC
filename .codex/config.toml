@@ -1,0 +1,7 @@
+[mcp_servers.mephc]
+command = "C:\\Users\\icywo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+args = ["C:\\Users\\icywo\\AppData\\Local\\MePhCRunner\\admission\\mephc_admission.py"]
+cwd = "C:\\Users\\icywo\\PycharmProjects\\MePhC-Windows"
+enabled = true
+startup_timeout_sec = 60
+tool_timeout_sec = 1800

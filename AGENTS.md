@@ -28,6 +28,11 @@ and probe names are migration-only and must remain disabled. The human-only
 `mephc-runtime sync|path|run` command is for interactive downstream WSL work
 and must never be used by an Agent to bypass this typed connector.
 
+The `mephc` server registration is project-scoped in the trusted canonical
+`.codex/config.toml`, not user-global. Its configured `cwd` is the exact control
+root, and all admission-owned Windows child processes are consoleless. Do not
+move the table back to the user-global config or replace its fixed working root.
+
 Host-local retained evidence is available only through the hash-bound typed
 pair `mephc_retention_search` and `mephc_retention_inspect`. Search bindings
 must be exact `RETENTION_ID + SHA256` pairs stated in the active work order;
