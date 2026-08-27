@@ -98,6 +98,8 @@ def test_state_migration_is_byte_exact_and_keeps_orphan(tmp_path, monkeypatch):
     assert (destination / "runner" / "jobs" / "MEPHC-JOB-ORPHANED" / "job.json").read_bytes() == b'{"legacy":true}\n'
     assert (destination / "outbox" / "request" / "receipt.json").read_bytes() == b"receipt\x00bytes"
     assert module.unresolved_jobs(destination) == []
+    (destination / "runner" / "jobs" / "MEPHC-JOB-NEW").mkdir()
+    assert module.migrate(True)["reused"] is True
 
 
 def test_new_jobs_bind_control_commit_main_and_epoch(tmp_path, monkeypatch):
