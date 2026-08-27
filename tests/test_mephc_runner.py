@@ -321,6 +321,21 @@ def test_health_is_fail_closed_and_capabilities_are_context_complete(tmp_path, m
     assert value["control_root"] == r"C:\Users\icywo\PycharmProjects\MePhC-Windows"
     assert value["execution_root_policy"].endswith("<commit-sha>")
     assert value["arbitrary_shell"] is False and value["direct_browser"] is False
+    assert "retention_worker_reload" in value["operations"]
+
+
+def test_capabilities_routes_missing_environment_certificate_to_doctor(tmp_path, monkeypatch):
+    jobctl = load("runner_jobctl_certificate_next", "jobctl.py")
+    jobs = tmp_path / "jobs"; jobs.mkdir()
+    monkeypatch.setattr(jobctl, "JOBS", jobs)
+    monkeypatch.setattr(jobctl, "git_head", lambda: "a" * 40)
+    monkeypatch.setattr(jobctl.runtime_attestation, "attest", lambda: {
+        "coherent":True, "safe_next_tool":"mephc_doctor"})
+    monkeypatch.setattr(jobctl, "environment_certificate_status", lambda *_: {
+        "valid":False, "safe_next_tool":"mephc_doctor", "error_code":"ENVIRONMENT_CERTIFICATE_REQUIRED"})
+    monkeypatch.setattr(jobctl.workflow, "view", lambda: {"workflow_state":"available"})
+    value = jobctl.capabilities()
+    assert value["safe_next_tool"] == "mephc_doctor"
 
 
 def test_materializer_main_dispatches_transact_before_apply():

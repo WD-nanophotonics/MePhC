@@ -643,7 +643,7 @@ def capabilities() -> dict[str, Any]:
             "admission_scope":{"kind":"exact_inherited_windows_cwd","root":config.CONTROL_ROOT_WINDOWS},
             "state_epoch":config.state_epoch(),"operations":sorted(OPERATIONS|{
                 "resume","transport_canary","validate","runtime_attest","runtime_reload",
-                "runtime_activate","work_order_preflight"}),
+                "runtime_activate","retention_worker_reload","work_order_preflight"}),
             "inspect_limits":{"default_bytes":16384,"max_bytes":65536},
             "retention_interface":{"search_deadline_seconds":config.RETENTION_SEARCH_TIMEOUT_SECONDS,
                                    "page_limit":200,"page_max_bytes":65536,
@@ -654,6 +654,7 @@ def capabilities() -> dict[str, Any]:
             "orphaned_job_count":len(orphaned),"latent_active_job_count":len(latent),
             "stale_active_index_count":stale_index,**workflow.view(),
             "safe_next_tool":attestation["safe_next_tool"] if not attestation["coherent"] else
+                             certificate_status["safe_next_tool"] if not certificate_status["valid"] else
                              "mephc_resume" if not active else "mephc_status_or_wait"}
 
 
@@ -695,6 +696,7 @@ def work_order_preflight() -> dict[str, Any]:
                 "safe_next_tool":"mephc_resume","retry_allowed":False}
     available = {
         "retention.search", "retention.inspect", "runtime.attest", "runtime.reload", "runtime.activate",
+        "runtime.retention_worker_reload",
         "source.change", "source.validate", "sandbox.publish", "workflow.report", "job.status", "job.recover",
     }
     required = set(contract["required_capabilities"])

@@ -140,7 +140,7 @@ LIFECYCLE_TOOLS = [
     {"name": "mephc_runtime_reload", "description": "Reload only the installed fixed MePhC broker/worker runtime. Admission handles this tool; it accepts no arguments.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
     {"name": "mephc_runtime_activate", "description": "Strictly gate, test, install and activate the exact published infrastructure build. Admission handles this tool; it accepts no arguments.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
     {"name": "mephc_work_order_preflight", "description": "Compare the active machine work-order contract with typed capabilities, policy and live runtime attestation.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
-    {"name": "mephc_retention_worker_reload", "description": "Reload and attest only the fixed MePhC retention-execution worker role. Accepts no arguments.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
+    {"name": "mephc_retention_worker_reload", "description": "Restart and attest the fixed shared durable MePhC worker with retention capability. Accepts no arguments.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
 ]
 
 REPORT_TOOLS = [
