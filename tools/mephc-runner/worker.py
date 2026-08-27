@@ -414,9 +414,10 @@ def repair_interrupted() -> None:
 
 
 def heartbeat() -> None:
-    names = ("worker.py","jobctl.py","workflow.py","runtime_config.py","checkout_manager.py",
-             "windows_materializer.py","migrate_state.py","materialize_client.py","mcp_server.py",
-             "native-recipes.json","mephc-runner.ps1","mephc-runner.cmd","mephc-connector.cmd",
+    names = ("worker.py","jobctl.py","workflow.py","workflow_resume.py","runtime_config.py",
+             "checkout_manager.py","migrate_state.py","windows_materializer.py",
+             "materialize_client.py","mcp_server.py","native-recipes.json","mephc-runner.ps1",
+             "mephc-runner.cmd","mephc-connector.cmd","mephc-connector.ps1",
              "mephc-runner.service","README.md")
     source_hashes = "".join(hashlib.sha256((INSTALL_ROOT / name).read_bytes()).hexdigest() for name in names)
     build_id = hashlib.sha256(source_hashes.encode("ascii")).hexdigest()[:16]

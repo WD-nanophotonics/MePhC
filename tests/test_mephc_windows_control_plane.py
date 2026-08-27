@@ -155,3 +155,12 @@ def test_execution_cache_carries_audited_remote_tracking_refs():
     text = (RUNNER / "checkout_manager.py").read_text(encoding="utf-8")
     assert "refs/remotes/origin/main:refs/remotes/origin/main" in text
     assert "refs/remotes/origin/sandbox:refs/remotes/origin/sandbox" in text
+
+
+def test_worker_and_bootstrap_bind_the_same_build_files():
+    worker = (RUNNER / "worker.py").read_text(encoding="utf-8")
+    bootstrap = (RUNNER / "bootstrap.ps1").read_text(encoding="utf-8-sig")
+    for name in ("workflow_resume.py", "runtime_config.py", "checkout_manager.py", "migrate_state.py",
+                 "windows_materializer.py", "mephc-connector.ps1"):
+        assert f'"{name}"' in worker
+        assert f"'{name}'" in bootstrap
