@@ -154,6 +154,7 @@ def test_worker_skips_terminal_unclaimed_ready_and_rebuilds_index():
     assert "installed = INSTALL_ROOT / name" in source
     assert '"show", f"{source_head}:tools/mephc-runner/{name}"' in source
     assert "hashlib.sha256(source.stdout).hexdigest() != digest" in source
+    assert '"source_commit": checkout_manager.source_head()' in source
 
 
 def test_runtime_source_match_uses_committed_blob_not_worktree_line_endings(monkeypatch, tmp_path):

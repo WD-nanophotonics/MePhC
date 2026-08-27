@@ -681,6 +681,7 @@ def heartbeat() -> None:
         "execution_root_policy": str(config.CHECKOUTS / "<commit-sha>"),
         "python": sys.executable,
         "source_head": checkout_manager.source_head(),
+        "source_commit": checkout_manager.source_head(),
         "origin_main": checkout_manager.source_origin_main(),
         "state_epoch": config.state_epoch(),
         "worker_build_id": build_id,
