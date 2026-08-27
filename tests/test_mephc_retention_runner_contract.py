@@ -93,5 +93,4 @@ def test_prefixed_retention_id_binds_to_matching_sha256():
     )
     assert jobctl._retention_allowlist(text) == {
         "RP3_C3C5_R96_AUTHORITATIVE_RESULT": digest,
-        "AUTHORITATIVE_R96_RESULT": digest,
     }
