@@ -145,6 +145,7 @@ def test_stale_ready_reconciliation_never_executes_and_preserves_current_job(tmp
     old = jobs / "MEPHC-JOB-OLD"; old.mkdir(parents=True)
     (old / "READY").write_text("ready\n", encoding="ascii")
     (old / "job.json").write_text(json.dumps({"operation":"retention_search", "source_commit":"1" * 40}))
+    (old / "state.json").write_text(json.dumps({"state":"running", "phase":"worker_started"}))
     current = jobs / "MEPHC-JOB-CURRENT"; current.mkdir()
     (current / "READY").write_text("ready\n", encoding="ascii")
     (current / "job.json").write_text(json.dumps({"operation":"prelive", "source_commit":"2" * 40}))

@@ -45,7 +45,7 @@ def inventory(target_source_commit: str) -> dict[str, Any]:
             state_path = directory / "state.json"
             state = _read(state_path).get("state") if state_path.is_file() else "ready"
             if state in FINAL: continue
-            if state in {"running", "recovery_required", "recovery_requested"}:
+            if state in {"recovery_required", "recovery_requested"}:
                 blockers.append({"job_id":directory.name, "state":state, "operation":job.get("operation")})
                 continue
             item = {"job_id":directory.name, "operation":job.get("operation"),
