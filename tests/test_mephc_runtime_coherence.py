@@ -246,6 +246,8 @@ def test_lifecycle_failure_detail_is_redacted_and_broker_restart_waits():
     assert str(module.CONTROL_ROOT) not in detail and str(module.RUNTIME) not in detail
     source = (ADMISSION / "runtime_lifecycle.py").read_text(encoding="utf-8")
     assert "for($i=0;$i -lt 20;$i++)" in source
+    assert 'environment["PSModulePath"]' in source
+    assert "System32/WindowsPowerShell/v1.0/Modules" in source
 
 
 def test_lifecycle_schema_and_admission_replay_boundary_are_fixed():

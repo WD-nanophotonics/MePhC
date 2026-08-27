@@ -33,11 +33,15 @@ class LifecycleError(RuntimeError):
 
 
 def _run(argv: list[str], *, cwd: Path = CONTROL_ROOT, timeout: int = 300) -> subprocess.CompletedProcess[str]:
+    environment = {**os.environ, "GIT_TERMINAL_PROMPT": "0", "GIT_EDITOR": "true",
+                   "GIT_CONFIG_NOSYSTEM": "1"}
+    if argv and Path(argv[0]).name.lower() == "powershell.exe":
+        environment["PSModulePath"] = str(Path(os.environ.get("SystemRoot", r"C:\Windows")) /
+                                           "System32/WindowsPowerShell/v1.0/Modules")
     try:
         return subprocess.run(argv, cwd=cwd, text=True, encoding="utf-8", errors="replace",
                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=timeout,
-                              env={**os.environ, "GIT_TERMINAL_PROMPT": "0", "GIT_EDITOR": "true",
-                                   "GIT_CONFIG_NOSYSTEM": "1"})
+                              env=environment)
     except (OSError, subprocess.TimeoutExpired) as exc:
         raise LifecycleError("RUNTIME_LIFECYCLE_PROCESS_FAILED", type(exc).__name__) from exc
 
