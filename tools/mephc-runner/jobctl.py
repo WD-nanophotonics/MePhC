@@ -541,7 +541,7 @@ def wait(job_id: str, timeout: int) -> int:
 
 
 def capabilities() -> dict[str, Any]:
-    active=[];orphaned=[]
+    active=[];orphaned=[];seen=set()
     for job_id, value in sorted(active_index.read(JOBS.parent).items()):
         name=value.get("state")
         if name == "unknown":
@@ -550,6 +550,9 @@ def capabilities() -> dict[str, Any]:
         active.append({"job_id":job_id,"state":name,
                        "operation":value.get("operation"),
                        "safe_next_action":"recover" if name=="recovery_required" else "status_or_wait"})
+        seen.add(job_id)
+    latent = latent_active_jobs(seen)
+    active.extend(latent)
     head = git_head()
     attestation = runtime_attestation.attest()
     return {"schema":"mephc-runner-capabilities-v4","project_id":"MEPHC",
@@ -566,9 +569,35 @@ def capabilities() -> dict[str, Any]:
                                    "archive_formats":["tar","tar.gz","tgz","git-bundle"]},
             "runtime_attestation":attestation,
             "arbitrary_shell":False,"direct_browser":False,"active_jobs":active,
-            "orphaned_job_count":len(orphaned),**workflow.view(),
+            "orphaned_job_count":len(orphaned),"latent_active_job_count":len(latent),**workflow.view(),
             "safe_next_tool":attestation["safe_next_tool"] if not attestation["coherent"] else
                              "mephc_resume" if not active else "mephc_status_or_wait"}
+
+
+def latent_active_jobs(indexed: set[str] | None = None) -> list[dict[str, Any]]:
+    indexed = indexed or set()
+    result: list[dict[str, Any]] = []
+    for directory in sorted(JOBS.iterdir()) if JOBS.is_dir() else []:
+        if not directory.is_dir() or directory.name in indexed:
+            continue
+        try:
+            value = read_basic_state(directory.name)
+            state_name = value.get("state")
+            ready = (directory / "READY").is_file()
+            if state_name not in {"ready", "running", "recovery_required", "recovery_requested"} and not (
+                    ready and state_name not in TERMINAL):
+                continue
+            operation = None
+            job_path = directory / "job.json"
+            if job_path.is_file() and job_path.stat().st_size <= 4 * 1024 * 1024:
+                operation = json.loads(job_path.read_text(encoding="utf-8")).get("operation")
+            result.append({"job_id":directory.name,"state":state_name,"operation":operation,
+                           "latent_index_entry":True,
+                           "safe_next_action":"recover" if state_name=="recovery_required" else "status_or_wait"})
+        except (OSError, TypeError, json.JSONDecodeError):
+            result.append({"job_id":directory.name,"state":"unknown","operation":None,
+                           "latent_index_entry":True,"safe_next_action":"status"})
+    return result
 
 
 def work_order_preflight() -> dict[str, Any]:

@@ -92,6 +92,10 @@ def start_backend() -> subprocess.Popen[str]:
     environment = dict(os.environ)
     environment["MEPHC_ADMISSION_MODULE_HASH"] = LOADED_ADMISSION_MODULE_HASH
     environment["MEPHC_ADMISSION_BUILD"] = LOADED_ADMISSION_MODULE_HASH[:16]
+    inherited = [item for item in environment.get("WSLENV", "").split(":") if item]
+    for name in ("MEPHC_ADMISSION_MODULE_HASH", "MEPHC_ADMISSION_BUILD"):
+        if name not in inherited: inherited.append(name)
+    environment["WSLENV"] = ":".join(inherited)
     return subprocess.Popen([str(POWERSHELL), *BACKEND], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE, text=True, encoding="utf-8", bufsize=1, env=environment)
 

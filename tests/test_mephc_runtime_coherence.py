@@ -92,6 +92,11 @@ def test_attestation_detects_loaded_worker_and_source_staleness(tmp_path, monkey
     build, source, worker_hash, mcp_hash = "build-1", "1" * 40, "a" * 64, "b" * 64
     (windows / "current.json").write_text(json.dumps({"build_id":build, "source_commit":source}))
     (windows / "install-manifest.json").write_text(json.dumps([{"name":"worker.py", "sha256":worker_hash}]))
+    admission_hash = __import__("hashlib").sha256(
+        (ROOT / "tools/mephc-admission/mephc_admission.py").read_bytes()).hexdigest()
+    (windows / "admission").mkdir()
+    (windows / "admission/current.json").write_text(json.dumps({
+        "source_commit":source, "admission_sha256":admission_hash}))
     (state / "heartbeat.json").write_text(json.dumps({"updated_at":now, "worker_build_id":build,
         "loaded_worker_module_hash":worker_hash, "expected_mcp_bundle_hash":mcp_hash,
         "runtime_source_matches":True}))
@@ -102,6 +107,8 @@ def test_attestation_detects_loaded_worker_and_source_staleness(tmp_path, monkey
     monkeypatch.setattr(module.config, "BROKER_HEARTBEAT", broker)
     monkeypatch.setattr(module.config, "state_epoch", lambda: "epoch-1")
     monkeypatch.setattr(module, "_source_head", lambda: source)
+    monkeypatch.setenv("MEPHC_ADMISSION_MODULE_HASH", admission_hash)
+    monkeypatch.setenv("MEPHC_ADMISSION_BUILD", admission_hash[:16])
     module.set_loaded_mcp_hash(mcp_hash)
     assert module.attest()["coherent"] is True
     heartbeat = json.loads((state / "heartbeat.json").read_text())
@@ -118,6 +125,18 @@ def test_attestation_detects_loaded_worker_and_source_staleness(tmp_path, monkey
     stale_source = module.attest()
     assert "SOURCE_HEAD_NOT_INSTALLED" in stale_source["mismatches"]
     assert stale_source["safe_next_tool"] == "mephc_runtime_activate"
+
+
+def test_capabilities_finds_ready_job_missing_from_active_index(tmp_path, monkeypatch):
+    module = load("coherence_latent_jobs", RUNNER / "jobctl.py")
+    jobs = tmp_path / "jobs"
+    latent = jobs / "MEPHC-JOB-LATENT"
+    latent.mkdir(parents=True)
+    (latent / "READY").write_text("ready\n", encoding="ascii")
+    (latent / "job.json").write_text(json.dumps({"operation":"retention_search"}), encoding="utf-8")
+    monkeypatch.setattr(module, "JOBS", jobs)
+    assert module.latent_active_jobs() == [{"job_id":"MEPHC-JOB-LATENT", "state":"ready",
+        "operation":"retention_search", "latent_index_entry":True, "safe_next_action":"status_or_wait"}]
 
 
 def test_central_job_semantics_are_non_retrying_and_layered():
@@ -202,6 +221,7 @@ def test_lifecycle_schema_and_admission_replay_boundary_are_fixed():
     assert "mephc_runtime_attest" in admission_module.READ_ONLY_TOOLS
     assert "mephc_runtime_reload" not in admission_module.READ_ONLY_TOOLS
     assert "mephc_runtime_activate" not in admission_module.READ_ONLY_TOOLS
+    assert 'environment["WSLENV"] = ":".join(inherited)' in admission
 
 
 def test_bootstrap_and_worker_share_one_ordered_build_manifest():

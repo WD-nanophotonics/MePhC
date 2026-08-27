@@ -70,6 +70,8 @@ def attest() -> dict[str, Any]:
     admission_build = os.environ.get("MEPHC_ADMISSION_BUILD") or (admission_hash[:16] if admission_hash else None)
     admission_current = _json(config.WINDOWS_RUNTIME_WSL / "admission/current.json") or {}
     mismatches: list[str] = []
+    if CURRENT_MCP_BUNDLE_HASH and not admission_hash:
+        mismatches.append("ADMISSION_ATTESTATION_MISSING")
     if not _fresh(worker): mismatches.append("WORKER_HEARTBEAT_STALE")
     if not _fresh(broker): mismatches.append("BROKER_HEARTBEAT_STALE")
     if not worker or worker.get("worker_build_id") != build: mismatches.append("WORKER_BUILD_MISMATCH")
@@ -89,6 +91,8 @@ def attest() -> dict[str, Any]:
                 mismatches.append("ADMISSION_SOURCE_MISMATCH")
         except OSError:
             mismatches.append("ADMISSION_SOURCE_UNAVAILABLE")
+        if admission_current.get("source_commit") != current.get("source_commit"):
+            mismatches.append("ADMISSION_SOURCE_COMMIT_MISMATCH")
     source = _source_head()
     installed_source = current.get("source_commit")
     if source != installed_source:
