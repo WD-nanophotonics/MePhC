@@ -198,6 +198,23 @@ def inside(path: Path, parent: Path, code: str) -> Path:
     return resolved
 
 
+def expected_head_for_job(job: dict[str, Any], modern: bool) -> str:
+    key = "source_commit" if modern else "expected_head"
+    if key not in job:
+        raise Rejected("RUNNER_CONTRACT_EXPECTED_HEAD_MISSING", key)
+    value = job.get(key)
+    if not isinstance(value, str) or not SHA40.fullmatch(value):
+        raise Rejected("RUNNER_CONTRACT_EXPECTED_HEAD_INVALID", key)
+    return value
+
+
+def verify_expected_head(job: dict[str, Any], actual_head: str, modern: bool) -> str:
+    expected_head = expected_head_for_job(job, modern)
+    if actual_head != expected_head:
+        raise Rejected("HEAD_MOVED", f"expected={expected_head} actual={actual_head}")
+    return expected_head
+
+
 def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str, Path]:
     if not (job_dir / "READY").is_file():
         raise Rejected("JOB_NOT_READY", str(job_dir))
@@ -207,6 +224,7 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
     v2 = job.get("schema") == "mephc-runner-job-v2"
     v3 = job.get("schema") == "mephc-runner-job-v3"
     modern = v2 or v3
+    expected_head_for_job(job, modern)
     required = ({"schema", "job_id", "project_id", "operation", "arguments",
                  "expected_control_root", "source_commit", "expected_origin_main", "state_epoch",
                  "certificate_sha256", "created_at", "payload_sha256"} if modern else {
@@ -318,7 +336,7 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
     if Path(sys.executable).resolve() != PYTHON.resolve():
         raise Rejected("INTERPRETER_MISMATCH", sys.executable)
     actual_head = git("rev-parse", "HEAD", root=execution_root)
-    expected_head = job["source_commit"] if v2 else job["expected_head"]
+    expected_head = expected_head_for_job(job, modern)
     if actual_head != expected_head and not (recovery and job["operation"] == "change"):
         raise Rejected("HEAD_MOVED", f"expected={expected_head} actual={actual_head}")
     return job, raw_sha, execution_root
