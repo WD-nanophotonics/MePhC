@@ -2,6 +2,7 @@
 param([Parameter(Mandatory=$true)][string]$RequestDirectory,[switch]$RecoveryOnly)
 $ErrorActionPreference='Stop'
 $ControlRoot='C:\Users\icywo\PycharmProjects\MePhC-Windows'
+$ControlRootWsl='/mnt/c/Users/icywo/PycharmProjects/MePhC-Windows'
 $StateRoot='/home/icy/.local/state/mephc-runner/MEPHC'
 $StateRootUnc='\\wsl.localhost\Ubuntu\home\icy\.local\state\mephc-runner\MEPHC'
 $ExecutionRoot='/home/icy/.cache/mephc-runner/checkouts'
@@ -61,7 +62,10 @@ try {
   if($certificateItem.LinkType -or ($certificateItem.Attributes -band [IO.FileAttributes]::ReparsePoint)){ Fail 'ROOT_MISMATCH' 'certificate link is forbidden' }
   $certificate=Get-Content -Raw -LiteralPath $certificatePath | ConvertFrom-Json
   if($certificate.project_id -ne 'MEPHC' -or -not $certificate.worktree -or -not $certificate.control_root -or -not $certificate.head){ Fail 'ROOT_MISMATCH' 'certificate does not bind the MePhC control and execution roots' }
-  if(([string]$certificate.control_root).ToLowerInvariant() -ne $ControlRoot.ToLowerInvariant()){ Fail 'ROOT_MISMATCH' 'certificate control root is not the Windows canonical repository' }
+  $certificateControlRoot=[string]$certificate.control_root
+  $windowsControlBinding=$certificateControlRoot.Equals($ControlRoot,[System.StringComparison]::OrdinalIgnoreCase)
+  $legacyWslControlBinding=$certificateControlRoot.Equals($ControlRootWsl,[System.StringComparison]::Ordinal)
+  if(-not($windowsControlBinding -or $legacyWslControlBinding)){ Fail 'ROOT_MISMATCH' 'certificate control root is not the canonical repository or its exact legacy WSL mapping' }
   $head=[string]$certificate.head
   if($head -notmatch '^[0-9a-f]{40}$'){ Fail 'ROOT_MISMATCH' 'certificate HEAD is invalid' }
   $expectedWorktree=$ExecutionRoot + '/' + $head

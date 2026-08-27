@@ -5,6 +5,9 @@ from pathlib import Path
 import subprocess, sys, time, uuid
 from typing import Any
 
+CONTROL_ROOT_WINDOWS = os.environ.get(
+    "MEPHC_CONTROL_ROOT_WINDOWS", r"C:\Users\icywo\PycharmProjects\MePhC-Windows"
+)
 CONTROL_ROOT = Path(os.environ.get("MEPHC_CONTROL_ROOT_WSL", "/mnt/c/Users/icywo/PycharmProjects/MePhC-Windows"))
 EXECUTION_ROOT = Path(os.environ.get("MEPHC_EXECUTION_ROOT", "/home/icy/.cache/mephc-runner/checkouts"))
 STATE_ROOT = Path(os.environ.get("MEPHC_STATE_ROOT", "/home/icy/.local/state/mephc-runner/MEPHC"))
@@ -124,7 +127,8 @@ def doctor(root: Path) -> Path:
     record = {
         "version": 1, "kind": "runtime-certificate", "project_id": PROJECT_ID,
         "certificate_id": f"doctor-{uuid.uuid4().hex}", "created_at": int(time.time()),
-        "control_root": str(CONTROL_ROOT), "worktree": str(root), "head": head(root),
+        "control_root": CONTROL_ROOT_WINDOWS, "control_root_wsl": str(CONTROL_ROOT),
+        "worktree": str(root), "head": head(root),
         "python": str(Path(sys.executable).resolve()), "pythonpath": os.environ["PYTHONPATH"],
         "origin_main": remote_ref(root, "refs/heads/main"),
         "origin_sandbox": remote_ref(root, "refs/heads/sandbox"),

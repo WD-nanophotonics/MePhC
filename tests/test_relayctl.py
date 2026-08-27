@@ -1,7 +1,10 @@
 from __future__ import annotations
 import hashlib
+import json
 from pathlib import Path
 import subprocess
+import sys
+from types import SimpleNamespace
 import pytest
 from mephc import relayctl
 
@@ -40,6 +43,21 @@ def test_source_drift_fails_closed(monkeypatch, tmp_path):
     monkeypatch.setattr(relayctl, "source_manifest", lambda _: {"x.py": "new"})
     with pytest.raises(relayctl.RelayFailure, match="SOURCE_BYTE_MISMATCH"):
         relayctl.verify_prelive(tmp_path, "p.json")
+
+
+def test_doctor_certificate_uses_windows_canonical_control_root(monkeypatch, tmp_path):
+    monkeypatch.setattr(relayctl, "STATE_ROOT", tmp_path / "state")
+    monkeypatch.setattr(relayctl, "worktree_root", lambda _=None: tmp_path)
+    monkeypatch.setattr(relayctl, "require_python", lambda _: None)
+    monkeypatch.setattr(relayctl, "head", lambda _: "a" * 40)
+    monkeypatch.setattr(relayctl, "remote_ref", lambda *_: "b" * 40)
+    monkeypatch.setenv("PYTHONPATH", str(tmp_path))
+    for dependency in ("numpy", "scipy", "shapely"):
+        monkeypatch.setitem(sys.modules, dependency, SimpleNamespace(__version__="test"))
+    path = relayctl.doctor(tmp_path)
+    record = json.loads(path.read_text(encoding="utf-8"))
+    assert record["control_root"] == r"C:\Users\icywo\PycharmProjects\MePhC-Windows"
+    assert record["control_root_wsl"].replace("\\", "/") == "/mnt/c/Users/icywo/PycharmProjects/MePhC-Windows"
 
 
 def test_prelive_failure_is_specific_and_persists_bounded_diagnostic(monkeypatch, tmp_path):
@@ -99,6 +117,7 @@ def test_bridge_has_required_gates():
 def test_bridge_binds_windows_control_durable_state_and_exact_execution_checkout():
     text = (Path(__file__).parents[1] / "tools" / "mephc-courier.ps1").read_text(encoding="utf-8-sig")
     assert "$ControlRoot='C:\\Users\\icywo\\PycharmProjects\\MePhC-Windows'" in text
+    assert "$ControlRootWsl='/mnt/c/Users/icywo/PycharmProjects/MePhC-Windows'" in text
     assert "$StateRoot='/home/icy/.local/state/mephc-runner/MEPHC'" in text
     assert "$ExecutionRoot='/home/icy/.cache/mephc-runner/checkouts'" in text
     assert "$certificateRoot=$StateRoot + '/certificates'" in text
@@ -107,6 +126,9 @@ def test_bridge_binds_windows_control_durable_state_and_exact_execution_checkout
     assert "certificate.courier_request_root" in text
     assert "certificate.canonical_root" not in text
     assert "/home/icy/MePhC" not in text
+    assert "$windowsControlBinding -or $legacyWslControlBinding" in text
+    assert ".Equals($ControlRootWsl,[System.StringComparison]::Ordinal)" in text
+    assert "StartsWith($ControlRootWsl" not in text
 
 
 def test_bridge_rejects_links_and_non_sha_certificate_heads():

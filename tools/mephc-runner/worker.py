@@ -350,6 +350,7 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
             "LC_ALL": "C.UTF-8",
             "PATH": "/home/icy/miniconda3/envs/mp/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
             "PYTHONPATH": str(execution_root),
+            "MEPHC_CONTROL_ROOT_WINDOWS": config.CONTROL_ROOT_WINDOWS,
             "MEPHC_CONTROL_ROOT_WSL": str(config.CONTROL_ROOT),
             "MEPHC_STATE_ROOT": str(config.STATE_ROOT),
             "MEPHC_EXECUTION_ROOT": str(config.CHECKOUTS),
