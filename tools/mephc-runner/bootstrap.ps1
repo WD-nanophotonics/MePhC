@@ -28,7 +28,7 @@ $previousCurrent=Join-Path $Runtime 'current.json'
 $pendingPath=Join-Path $Runtime 'pending-install.json'
 $previousWindowsVersion=''
 if(Test-Path -LiteralPath $previousCurrent -PathType Leaf){
-  try {$previousWindowsVersion=([json](Get-Content -LiteralPath $previousCurrent -Raw)).version_path}catch{$previousWindowsVersion=''}
+  try {$previousWindowsVersion=(Get-Content -LiteralPath $previousCurrent -Raw|ConvertFrom-Json).version_path}catch{$previousWindowsVersion=''}
 }
 if($Verify) {
   if(-not(Test-Path -LiteralPath $pendingPath -PathType Leaf)){throw 'no pending runner install to verify'}

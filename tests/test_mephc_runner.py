@@ -374,6 +374,8 @@ def test_bootstrap_restarts_broker_and_fixes_parent_cwd():
     assert "$index -lt 180" in text and "scheduled broker failed to produce current heartbeat" in text
     assert "scheduled broker did not stop cleanly" in text and "pending.broker_start_utc" in text
     assert "pending-install.json" in text and "MEPHC_RUNNER_INSTALL_PENDING_VERIFY" in text
+    assert "Get-Content -LiteralPath $previousCurrent -Raw|ConvertFrom-Json" in text
+    assert "([json](Get-Content" not in text
     assert "& $publicLauncher Health" in text and "cross-layer health failed" in text
     wrapper = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
     assert "Security.Cryptography.SHA256" in wrapper and "Get-FileHash" not in wrapper
@@ -528,6 +530,9 @@ def test_broker_is_nonblocking_and_has_exact_tree_watchdog():
     heartbeat_body = broker.split("def heartbeat_process", 1)[1].split("def start_worker_probe", 1)[0]
     assert "atomic_json(HEARTBEAT" in heartbeat_body and "STATE_ROOT" not in heartbeat_body
     assert 'time.time() - float(worker["checked_unix"]) <= 30' in heartbeat_body
+    assert "OpenProcess.restype = wintypes.HANDLE" in broker
+    assert "WaitForSingleObject.argtypes" in broker and "CloseHandle.argtypes" in broker
+    assert "except OSError:" in heartbeat_body
     assert "subprocess.run([str(wsl)" not in broker
     assert "probe.poll()" in broker and "probe.kill()" in broker
     assert "Get-FileHash" not in wrapper and "Security.Cryptography.SHA256" in wrapper
