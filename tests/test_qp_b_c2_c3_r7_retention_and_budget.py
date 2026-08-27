@@ -38,7 +38,7 @@ def test_r96_mirror_is_not_used_as_authoritative_evidence():
     assert data["authoritative_retained_artifact"]["content_match"] == "EXACT_SHA256"
 
 def test_evidence_preserves_pair_scope_and_fail_closed_rule():
-    data = load("qp_b_c_c2_c3_r7_extracted_gate_evidence.json") if False else load("qp_b_c2_c3_r7_extracted_gate_evidence.json")
+    data = load("qp_b_c2_c3_r7_extracted_gate_evidence.json")
     assert len(data["policy_challenge_pairs"]) == 15
     assert len(data["historically_missing_pairs"]) == 9
     assert data["gate_classifications"]["CALIBRATION_CONTROLS"] == "MISSING_REQUIRES_NATIVE_RECOMPUTE"
@@ -52,9 +52,8 @@ def test_budget_accounting_is_explicit():
     assert counts["historically_missing_pairs"] == 9
     assert counts["fresh_native_required_pairs"] == 24
     assert counts["minimum_fresh_base_native_solve_budget"] == 216
-    assert set(counts["fresh_native_required_pairs"] if "fresh_native_required_pairs" in counts else []) == set()
-    assert set(data["fresh_native_required_pairs"]) == set(data["fresh_native_required_pairs"])
-    assert len(data["fresh_native_required_pairs"]) == 24
+    assert len(data["fresh_native_required_pairs"]) == counts["fresh_native_required_pairs"]
+    assert len(set(data["fresh_native_required_pairs"])) == 24
     assert data["native_solve_count_executed"] == 0
     assert data["mpb_executed"] is False
 
