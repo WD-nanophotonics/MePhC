@@ -236,8 +236,20 @@ def run_search(job_dir: Path, execution_root: Path) -> int:
 
 
 def _load_locator(job_dir: Path, retention_id: str) -> tuple[dict[str, Any], dict[str, Any], str]:
-    job = json.loads((job_dir / "job.json").read_text(encoding="utf-8"))
-    result = json.loads((job_dir / "retention-search-result.json").read_text(encoding="utf-8"))
+    if not job_dir.is_dir():
+        raise RetentionError("RETENTION_SEARCH_JOB_NOT_FOUND")
+    try:
+        job = json.loads((job_dir / "job.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RetentionError("RETENTION_SEARCH_JOB_INVALID") from exc
+    if job.get("schema") != "mephc-runner-job-v3" or job.get("operation") != "retention_search":
+        raise RetentionError("RETENTION_SEARCH_JOB_INVALID")
+    try:
+        result = json.loads((job_dir / "retention-search-result.json").read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise RetentionError("RETENTION_SEARCH_NOT_READY") from exc
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RetentionError("RETENTION_SEARCH_RESULT_INVALID") from exc
     binding = next((item for item in job["retention_query"]["bindings"] if item["retention_id"] == retention_id), None)
     artifact = next((item for item in result["artifacts"] if item["retention_id"] == retention_id), None)
     if binding is None or artifact is None:
@@ -355,9 +367,11 @@ def _json_shape(value: Any) -> list[int] | None:
 
 def inspect(job_id: str, retention_id: str, operation: str, json_pointer: str = "",
             offset: int = 0, limit: int = PAGE_LIMIT) -> dict[str, Any]:
-    if not re.fullmatch(r"MEPHC-JOB-[A-Z0-9][A-Z0-9._-]{7,119}", job_id):
+    if not isinstance(job_id, str) or not re.fullmatch(r"MEPHC-JOB-[A-Z0-9][A-Z0-9._-]{7,119}", job_id):
         raise RetentionError("RETENTION_JOB_ID_INVALID")
-    if not ID.fullmatch(retention_id) or operation not in {"metadata", "outline", "json_page", "numeric_summary"}:
+    if (not isinstance(retention_id, str) or not isinstance(operation, str)
+            or not isinstance(json_pointer, str) or not ID.fullmatch(retention_id)
+            or operation not in {"metadata", "outline", "json_page", "numeric_summary"}):
         raise RetentionError("RETENTION_INSPECT_SCHEMA_INVALID")
     if not isinstance(offset, int) or offset < 0 or not isinstance(limit, int) or not 1 <= limit <= PAGE_LIMIT:
         raise RetentionError("RETENTION_PAGE_INVALID")

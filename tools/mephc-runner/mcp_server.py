@@ -299,8 +299,12 @@ def invoke(name, args):
                                                args.get("operation"), args.get("json_pointer", ""),
                                                args.get("offset", 0), args.get("limit", 200))
         except retention_inspector.RetentionError as exc:
+            next_tool = ("mephc_retention_search" if exc.code in {
+                         "RETENTION_SEARCH_JOB_NOT_FOUND", "RETENTION_SEARCH_JOB_INVALID"} else
+                         "mephc_status" if exc.code in {"RETENTION_SEARCH_NOT_READY", "RETENTION_BYTE_DRIFT"} else
+                         "mephc_retention_inspect")
             return {"state": "rejected", "error_code": exc.code, "detail": exc.detail,
-                    "retry_allowed": False, "safe_next_tool": "mephc_retention_inspect"}
+                    "retry_allowed": False, "safe_next_tool": next_tool}
     if name == "mephc_report":
         return report(args)
     if name == "mephc_transport_canary":

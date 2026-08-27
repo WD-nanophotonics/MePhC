@@ -154,7 +154,8 @@ def _inspection_fixture(tmp_path, monkeypatch):
     retained = tmp_path / "retained.json"; retained.write_bytes(data)
     job_id = "MEPHC-JOB-TESTRETENTION"
     job = tmp_path / job_id; job.mkdir()
-    (job / "job.json").write_text(json.dumps({"retention_query": {"bindings": [
+    (job / "job.json").write_text(json.dumps({"schema": "mephc-runner-job-v3",
+        "operation": "retention_search", "retention_query": {"bindings": [
         {"retention_id": "TEST_RESULT", "expected_sha256": digest}
     ]}}))
     (job / "retention-search-result.json").write_text(json.dumps({
@@ -213,6 +214,19 @@ def test_inspect_rehashes_and_rejects_byte_drift(tmp_path, monkeypatch):
     retained.write_text('{"changed":true}')
     with pytest.raises(inspector.RetentionError, match="RETENTION_BYTE_DRIFT"):
         inspector.inspect(job_id, "TEST_RESULT", "metadata")
+
+
+def test_inspect_missing_and_unfinished_jobs_are_structured(tmp_path, monkeypatch):
+    inspector = load("retention_inspector_missing", "retention_inspector.py")
+    monkeypatch.setattr(inspector.config, "JOBS", tmp_path)
+    with pytest.raises(inspector.RetentionError, match="RETENTION_SEARCH_JOB_NOT_FOUND"):
+        inspector.inspect("MEPHC-JOB-NOTFOUND123", "TEST_RESULT", "metadata")
+    job = tmp_path / "MEPHC-JOB-NOTREADY123"; job.mkdir()
+    (job / "job.json").write_text(json.dumps({"schema": "mephc-runner-job-v3",
+                                               "operation": "retention_search",
+                                               "retention_query": {"bindings": []}}))
+    with pytest.raises(inspector.RetentionError, match="RETENTION_SEARCH_NOT_READY"):
+        inspector.inspect(job.name, "TEST_RESULT", "metadata")
 
 
 def test_admission_replays_inspect_but_never_search():
