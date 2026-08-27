@@ -209,6 +209,13 @@ def _retention_allowlist(work_order_text: str) -> dict[str, str]:
     for match in re.finditer(r"RETENTION_ID=([A-Z0-9][A-Z0-9_.-]{2,127})[ \t]*\r?\n[ \t]*EXPECTED_SHA256=([0-9a-f]{64})",
                              work_order_text):
         allowed[match.group(1)] = match.group(2)
+    for match in re.finditer(
+            r"^([A-Z0-9_]+)_RETENTION_ID=([A-Z0-9_.-]+)[ \t]*\r?\n"
+            r"[ \t]*\1_SHA256=([0-9a-f]{64})",
+            work_order_text,
+            flags=re.MULTILINE,
+    ):
+        allowed[match.group(2)] = match.group(3)
     for match in re.finditer(r"(AUTHORITATIVE_[A-Z0-9_]+)_SHA256=([0-9a-f]{64})", work_order_text):
         allowed[match.group(1)] = match.group(2)
     return allowed

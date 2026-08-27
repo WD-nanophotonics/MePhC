@@ -81,3 +81,16 @@ def test_contract_regression_is_non_scientific():
     source = (RUNNER / "worker.py").read_text(encoding="utf-8")
     assert "provider.solve" not in source
     assert "mpb" not in source.lower()
+
+
+def test_prefixed_retention_id_binds_to_matching_sha256():
+    jobctl = load("jobctl_prefixed_allowlist", "jobctl.py")
+    digest = "d" * 64
+    text = (
+        "AUTHORITATIVE_R96_RESULT_RETENTION_ID=RP3_C3C5_R96_AUTHORITATIVE_RESULT\n"
+        f"AUTHORITATIVE_R96_RESULT_SHA256={digest}\n"
+    )
+    assert jobctl._retention_allowlist(text) == {
+        "RP3_C3C5_R96_AUTHORITATIVE_RESULT": digest,
+        "AUTHORITATIVE_R96_RESULT": digest,
+    }
