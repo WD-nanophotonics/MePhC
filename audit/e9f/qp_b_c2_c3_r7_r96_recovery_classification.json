@@ -1,0 +1,18 @@
+{
+  "schema": "mephc_e9f_qp_b_c2_c3_r7_r96_recovery_classification_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R7-20260828-289",
+  "authoritative_retained_artifact": {
+    "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+    "expected_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+    "content_match": "EXACT_SHA256"
+  },
+  "known_non_authoritative_mirrors": {
+    "result": "1be393271d762f9bed95617f6013edc6666bfa887932f244aa60d65b093350c5",
+    "manifest": "a53621a6506fe4daa70b9f2dbe2eefa8f30735da3d2897850f617da0bb84ae59",
+    "checkpoint": "3f7d7b76426c6bc882da72f64b98594d63c908ea3eeaed84b79b2fc67e7dd1c2"
+  },
+  "classification": "UNRESOLVED",
+  "reason": "The exact authoritative retained content is recovered, but the available bounded evidence does not establish whether the differing historical mirror is a revision, archive-index error, or content defect.",
+  "rel_060": "NOT_REGISTERED",
+  "policy": "Do not substitute a hash-mismatch mirror for an exact authoritative retention object."
+}

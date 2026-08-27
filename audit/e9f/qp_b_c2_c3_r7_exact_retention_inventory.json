@@ -1,0 +1,138 @@
+{
+  "schema": "mephc_e9f_qp_b_c2_c3_r7_exact_retention_inventory_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R7-20260828-289",
+  "search_job_id": "MEPHC-JOB-20260828-025523-16E99346BE49",
+  "query_sha256": "f118ba63da16fd3129cae8f301fd5f281153c22f12865e244af7ba1347772070",
+  "terminal_state": "SUCCEEDED",
+  "return_code": 0,
+  "search_incomplete": false,
+  "duplicate_search_jobs": 0,
+  "exact_bindings": [
+    {
+      "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+      "expected_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+      "actual_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+      "match": "EXACT_SHA256",
+      "opaque_locator": "RET-AAE325595B4BAD1679285907",
+      "bytes": 819979,
+      "inspected_operations": [
+        "metadata",
+        "outline",
+        "json_page",
+        "numeric_summary"
+      ]
+    },
+    {
+      "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_MANIFEST",
+      "expected_sha256": "ca9d7fc2184371b1dcf5049a1a8bceaf613372bd69a2cd0449fbf25d4e919d01",
+      "actual_sha256": "ca9d7fc2184371b1dcf5049a1a8bceaf613372bd69a2cd0449fbf25d4e919d01",
+      "match": "EXACT_SHA256",
+      "opaque_locator": "RET-C2EB16DC4C3303E00FC73A39",
+      "bytes": 406,
+      "inspected_operations": [
+        "metadata",
+        "outline",
+        "json_page",
+        "numeric_summary"
+      ]
+    },
+    {
+      "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_CHECKPOINT",
+      "expected_sha256": "871b24983800d178f44d09b2220bcc179804e939f1f4c9163d84917ca5a8ca7d",
+      "actual_sha256": "871b24983800d178f44d09b2220bcc179804e939f1f4c9163d84917ca5a8ca7d",
+      "match": "EXACT_SHA256",
+      "opaque_locator": "RET-40EC6CC647B5A804BC0B41A6",
+      "bytes": 5388,
+      "inspected_operations": [
+        "metadata",
+        "outline",
+        "json_page",
+        "numeric_summary"
+      ]
+    },
+    {
+      "retention_id": "RP3_A_R128_RUN2_RESULT",
+      "expected_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+      "actual_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+      "match": "EXACT_SHA256",
+      "opaque_locator": "RET-F0A264D0123E93A4ADF0695B",
+      "bytes": 389296,
+      "inspected_operations": [
+        "metadata",
+        "outline",
+        "json_page",
+        "numeric_summary"
+      ]
+    },
+    {
+      "retention_id": "RP3_A_R128_RUN2_MANIFEST",
+      "expected_sha256": "7cafe4b2783f2aea13c2027f11abc3100de17c4874f9a4f6586a44c03192be7b",
+      "actual_sha256": "7cafe4b2783f2aea13c2027f11abc3100de17c4874f9a4f6586a44c03192be7b",
+      "match": "EXACT_SHA256",
+      "opaque_locator": "RET-82AB2F9A16924676195CEBDA",
+      "bytes": 425,
+      "inspected_operations": [
+        "metadata",
+        "outline",
+        "json_page",
+        "numeric_summary"
+      ]
+    },
+    {
+      "retention_id": "RP3_A_R128_RUN2_CHECKPOINT",
+      "expected_sha256": "ba253bbb162f75eaf26fa00cdf6a22be984daad6121923a33e61eef2b7607d74",
+      "actual_sha256": "ba253bbb162f75eaf26fa00cdf6a22be984daad6121923a33e61eef2b7607d74",
+      "match": "EXACT_SHA256",
+      "opaque_locator": "RET-3BDEEF33AB9B32C2A7B44DF2",
+      "bytes": 2771,
+      "inspected_operations": [
+        "metadata",
+        "outline",
+        "json_page",
+        "numeric_summary"
+      ]
+    },
+    {
+      "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+      "expected_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+      "actual_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+      "match": "EXACT_SHA256",
+      "opaque_locator": "RET-C4C65D3BD495FDFA329BCB1B",
+      "bytes": 391877,
+      "inspected_operations": [
+        "metadata",
+        "outline",
+        "json_page",
+        "numeric_summary"
+      ]
+    },
+    {
+      "retention_id": "RP3_B_R160_AUTHORITATIVE_MANIFEST",
+      "expected_sha256": "307360273e86a5ee8cc83b8eb01a87d2ccd9f6a8815e7f2612fb7decdf8888b1",
+      "actual_sha256": "307360273e86a5ee8cc83b8eb01a87d2ccd9f6a8815e7f2612fb7decdf8888b1",
+      "match": "EXACT_SHA256",
+      "opaque_locator": "RET-508207A12F306B171A60D114",
+      "bytes": 425,
+      "inspected_operations": [
+        "metadata",
+        "outline",
+        "json_page",
+        "numeric_summary"
+      ]
+    },
+    {
+      "retention_id": "RP3_B_R160_AUTHORITATIVE_CHECKPOINT",
+      "expected_sha256": "17b1967b75177e63c9026b548a984f507033ba7f90e0d8a22e403d19cfcfeb0a",
+      "actual_sha256": "17b1967b75177e63c9026b548a984f507033ba7f90e0d8a22e403d19cfcfeb0a",
+      "match": "EXACT_SHA256",
+      "opaque_locator": "RET-AC19BF50025EF33C0A5F0966",
+      "bytes": 5519,
+      "inspected_operations": [
+        "metadata",
+        "outline",
+        "json_page",
+        "numeric_summary"
+      ]
+    }
+  ]
+}

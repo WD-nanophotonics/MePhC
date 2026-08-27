@@ -1,0 +1,19 @@
+{
+  "schema": "mephc_e9f_qp_b_c2_c3_r7_science_decision_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R7-20260828-289",
+  "primary_decision": "READY_FOR_BOUNDED_NATIVE_VALIDATION_WITH_CORRECTED_BUDGET",
+  "global_validation_state": "NOT_YET_EXECUTED_INSUFFICIENT_CALIBRATION_DATA",
+  "exact_retention_search_job_id": "MEPHC-JOB-20260828-025523-16E99346BE49",
+  "fresh_native_required_pair_count": 24,
+  "fresh_native_solve_budget": 216,
+  "minimum_budget_proven_minimal": false,
+  "accepted_policy_challenge_pairs": 15,
+  "historically_missing_pairs": 9,
+  "native_solve_count_executed": 0,
+  "mpb_executed": false,
+  "threshold_decision_made": false,
+  "reducer_started": false,
+  "chern_started": false,
+  "main_promotion": false,
+  "scope_note": "This is a bounded audit decision only; it does not authorize or execute native validation."
+}

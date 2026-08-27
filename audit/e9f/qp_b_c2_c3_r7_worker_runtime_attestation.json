@@ -1,0 +1,46 @@
+{
+  "schema": "mephc_e9f_qp_b_c2_c3_r7_worker_runtime_attestation_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R7-20260828-289",
+  "source_commit": "e0ffd24470405e2a5f9b458f476e3940977f6469",
+  "retention_worker_reload": {
+    "state": "RETENTION_WORKER_RELOAD_COMPLETED",
+    "exact_role": "MEPHC_RETENTION_EXECUTION_WORKER",
+    "worker_role_reported": "shared_durable_worker",
+    "worker_restart_observed": true,
+    "stable_worker_start_id_observed": true,
+    "changed_worker_process_observed": true,
+    "service": "mephc-runner.service",
+    "build_before": "ac6f5a7de8df3b6e",
+    "build_after": "ac6f5a7de8df3b6e",
+    "worker_module_sha256": "774b27cc16b1f1bdfe08068c68f5bf5318419f56859fddbcdc6324158db6999f",
+    "source_commit": "e0ffd24470405e2a5f9b458f476e3940977f6469",
+    "raw_expected_head_indexing_active": false,
+    "source_commit_validation_active": true,
+    "expected_head_keyerror": false,
+    "broker_fresh": true,
+    "retention_capable": true,
+    "transport_process_separation_proved": true
+  },
+  "runtime_attestation_after_reload": {
+    "coherent": true,
+    "health_fresh": true,
+    "broker_fresh": true,
+    "worker_fresh": true,
+    "installed_source_commit": "e0ffd24470405e2a5f9b458f476e3940977f6469",
+    "loaded_worker_module_sha256": "774b27cc16b1f1bdfe08068c68f5bf5318419f56859fddbcdc6324158db6999f",
+    "mismatches": []
+  },
+  "validation_only_probe": {
+    "job_id": "MEPHC-JOB-20260828-025456-5276BFDF5B72",
+    "terminal_state": "SUCCEEDED",
+    "return_code": 0,
+    "tests": [
+      "tests/test_mephc_retention_worker_lifecycle.py",
+      "tests/test_mephc_retention_runner_contract.py"
+    ],
+    "retention_traversal": false,
+    "native_solve_count": 0,
+    "mpb_executed": false,
+    "expected_head_keyerror": false
+  }
+}

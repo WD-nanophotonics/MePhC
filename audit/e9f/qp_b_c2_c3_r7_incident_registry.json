@@ -1,0 +1,27 @@
+{
+  "schema": "mephc_e9f_qp_b_c2_c3_r7_incident_registry_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R7-20260828-289",
+  "incidents": {
+    "REL_059": {
+      "status": "OPEN_P1",
+      "statement": "R96 authoritative retention and known mirror hashes differ; exact authoritative object is retained and mirror provenance remains unresolved."
+    },
+    "REL_060": {
+      "status": "NOT_REGISTERED",
+      "statement": "No new incident registered because the exact R96 authoritative object was found."
+    },
+    "REL_061": {
+      "status": "CLOSED",
+      "statement": "Typed retention worker reload completed with changed worker identity and coherent runtime attestation."
+    },
+    "REL_062": {
+      "status": "CLOSED",
+      "statement": "Post-reload validation probe and exact retention search completed without expected_head indexing failure or incomplete search."
+    }
+  },
+  "pipeline_health": "PIPELINE_HEALTHY_WITH_TECH_DEBT",
+  "native_and_mpb": {
+    "native_solve_count": 0,
+    "mpb_executed": false
+  }
+}
