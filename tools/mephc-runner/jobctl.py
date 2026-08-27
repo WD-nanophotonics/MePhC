@@ -211,14 +211,14 @@ def _retention_allowlist(work_order_text: str) -> dict[str, str]:
         allowed[match.group(1)] = match.group(2)
     prefixes: dict[str, str] = {}
     for match in re.finditer(
-            r"^([A-Z0-9_]+)_RETENTION_ID=([A-Z0-9_.-]+)[ \t]*$",
+            r"^([A-Z0-9_]+)_RETENTION_ID=([A-Z0-9_.-]+)[ \t]*\r?$",
             work_order_text,
             flags=re.MULTILINE,
     ):
         prefixes[match.group(1)] = match.group(2)
     for prefix, retention_id in prefixes.items():
         match = re.search(
-            rf"^{re.escape(prefix)}_SHA256=([0-9a-f]{64})[ \t]*$",
+            rf"^{re.escape(prefix)}_SHA256=([0-9a-f]{64})[ \t]*\r?$",
             work_order_text,
             flags=re.MULTILINE,
         )
