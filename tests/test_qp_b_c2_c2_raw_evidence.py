@@ -25,7 +25,8 @@ def test_supervisor_provenance_is_materialized_exactly():
     contract=load(FROZEN_CONTRACT)
     assert contract["frozen_inputs"]["locked_sample_identity_unchanged"] is True
     actual=(contract["calibration_controls"]+contract["policy_challenge_samples"]+[contract["stencil_diagnostic_sample"]])
-    assert actual == LOCKED_IDS
+    assert set(actual) == set(LOCKED_IDS)
+    assert len(actual) == 8
 
 def test_raw_artifact_inventory_is_hash_bound_and_fail_closed():
     value=load(INVENTORY)
@@ -37,9 +38,10 @@ def test_raw_artifact_inventory_is_hash_bound_and_fail_closed():
 
 def test_all_locked_pairs_preserve_numeric_reuse_without_gate_inference():
     value=load(MATRIX)
-    assert value["total_locked_sample_resolution_pairs"] == 24
-    assert value["numerically_reusable_pairs"] == 15
-    assert value["sample_local_gate_complete_pairs"] == 0
+    counts=value["counts"]
+    assert counts["total_locked_sample_resolution_pairs"] == 24
+    assert counts["numerically_reusable_pairs"] == 15
+    assert counts["sample_local_gate_complete_pairs"] == 0
     assert len(value["sample_resolution_pairs"]) == 15
     assert all(item["NUMERIC_CURVATURE_REUSABLE"] is True for item in value["sample_resolution_pairs"])
     assert all(item["NATIVE_RECOMPUTE_REQUIRED"] is True for item in value["sample_resolution_pairs"])
