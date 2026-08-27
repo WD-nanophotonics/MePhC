@@ -3,7 +3,17 @@ from __future__ import annotations
 
 import hashlib
 import json
-import msvcrt
+try:
+    import msvcrt
+except ModuleNotFoundError:  # Import-only support for WSL infrastructure tests.
+    class _Msvcrt:
+        LK_NBLCK = 0
+
+        @staticmethod
+        def locking(*_args) -> None:
+            return None
+
+    msvcrt = _Msvcrt()
 import os
 from pathlib import Path
 import shutil
