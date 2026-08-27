@@ -142,3 +142,8 @@ def test_no_infrastructure_default_points_execution_to_mnt_c():
     text = "\n".join(path.read_text(encoding="utf-8-sig") for path in RUNNER.glob("*.*") if path.suffix in {".py", ".ps1", ".service"})
     assert 'MEPHC_EXECUTION_ROOT", "/mnt/c/' not in text
     assert "ReadWritePaths=/mnt/c/" not in text
+
+
+def test_wsl_control_git_uses_windows_line_ending_semantics():
+    text = (RUNNER / "checkout_manager.py").read_text(encoding="utf-8")
+    assert text.count('"-c", "core.autocrlf=true"') == 3

@@ -26,18 +26,18 @@ def _git(*args: str, cwd: Path | None = None) -> str:
 
 
 def source_head() -> str:
-    value = _git("rev-parse", "HEAD", cwd=config.CONTROL_ROOT)
+    value = _git("-c", "core.autocrlf=true", "rev-parse", "HEAD", cwd=config.CONTROL_ROOT)
     if not SHA40.fullmatch(value):
         raise CheckoutError("SOURCE_HEAD_INVALID")
     return value
 
 
 def source_origin_main() -> str:
-    return _git("rev-parse", "origin/main", cwd=config.CONTROL_ROOT)
+    return _git("-c", "core.autocrlf=true", "rev-parse", "origin/main", cwd=config.CONTROL_ROOT)
 
 
 def require_clean_source() -> None:
-    if _git("status", "--porcelain", "--untracked-files=no", cwd=config.CONTROL_ROOT):
+    if _git("-c", "core.autocrlf=true", "status", "--porcelain", "--untracked-files=no", cwd=config.CONTROL_ROOT):
         raise CheckoutError("CONTROL_ROOT_DIRTY")
 
 
@@ -69,4 +69,3 @@ def ensure(commit: str) -> Path:
     if mount.returncode or mount.stdout.strip().lower() in {"9p", "drvfs", "fuseblk"}:
         raise CheckoutError("EXECUTION_CHECKOUT_NOT_EXT4")
     return checkout
-
