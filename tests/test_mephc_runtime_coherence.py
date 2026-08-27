@@ -139,6 +139,27 @@ def test_capabilities_finds_ready_job_missing_from_active_index(tmp_path, monkey
         "operation":"retention_search", "latent_index_entry":True, "safe_next_action":"status_or_wait"}]
 
 
+def test_stale_ready_reconciliation_never_executes_and_preserves_current_job(tmp_path, monkeypatch):
+    module = load("coherence_stale_reconcile", RUNNER / "reconcile_stale_ready.py")
+    jobs, runtime = tmp_path / "jobs", tmp_path / "runtime"
+    old = jobs / "MEPHC-JOB-OLD"; old.mkdir(parents=True)
+    (old / "READY").write_text("ready\n", encoding="ascii")
+    (old / "job.json").write_text(json.dumps({"operation":"retention_search", "source_commit":"1" * 40}))
+    current = jobs / "MEPHC-JOB-CURRENT"; current.mkdir()
+    (current / "READY").write_text("ready\n", encoding="ascii")
+    (current / "job.json").write_text(json.dumps({"operation":"prelive", "source_commit":"2" * 40}))
+    monkeypatch.setattr(module, "JOBS", jobs); monkeypatch.setattr(module, "RUNTIME", runtime)
+    inventory = module.inventory("2" * 40)
+    assert [item["job_id"] for item in inventory["stale_candidates"]] == [old.name]
+    assert [item["job_id"] for item in inventory["current_or_unknown_blockers"]] == [current.name]
+    (current / "READY").unlink()
+    receipt = module.apply("2" * 40)
+    assert receipt["reconciled_job_ids"] == [old.name]
+    assert not (old / "READY").exists()
+    assert (old / "READY.quarantined-runtime-activation").is_file()
+    assert json.loads((old / "state.json").read_text())["failure_code"] == "RUNTIME_ACTIVATION_STALE_QUEUED_JOB"
+
+
 def test_central_job_semantics_are_non_retrying_and_layered():
     module = load("coherence_semantics", RUNNER / "job_semantics.py")
     contract = module.enrich("failed", "retention_search", "RETENTION_QUERY_CONTRACT_MISMATCH")

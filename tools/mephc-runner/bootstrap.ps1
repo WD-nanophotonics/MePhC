@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([switch]$Install,[switch]$Verify,[string]$SourceCommit='')
+param([switch]$Install,[switch]$Verify,[switch]$InventoryStaleReady,[switch]$ReconcileStaleReady,[string]$SourceCommit='')
 $ErrorActionPreference='Stop'
 $SourceRoot=Split-Path -Parent $MyInvocation.MyCommand.Path
 $Runtime=Join-Path $env:LOCALAPPDATA 'MePhCRunner'
@@ -7,6 +7,7 @@ $Python='/home/icy/miniconda3/envs/mp/bin/python'
 $Files=@(
   'worker.py','jobctl.py','workflow.py','workflow_resume.py','work_order_contract.py',
   'runtime_attestation.py','job_semantics.py','runtime_config.py','active_index.py',
+  'reconcile_stale_ready.py',
   'quarantine_oversized_state.py','checkout_manager.py','retention_inspector.py',
   'user_runtime.py','home_cleanup.py','migrate_state.py','migrate_canary_metadata.py',
   'windows_materializer.py','windows_broker.py','materialize_client.py','mcp_server.py',
@@ -30,6 +31,11 @@ if(-not $Install -and -not $Verify) {
 
 $sourceWsl=(wsl.exe -d Ubuntu -- wslpath -a ($SourceRoot -replace '\\','/')).Trim()
 if(-not $sourceWsl){throw 'cannot map bootstrap source directory into WSL'}
+if($InventoryStaleReady -or $ReconcileStaleReady){
+  $mode=if($ReconcileStaleReady){'apply'}else{'inventory'}
+  wsl.exe -d Ubuntu -- $Python "$sourceWsl/reconcile_stale_ready.py" $mode --target-source-commit $SourceCommit
+  exit $LASTEXITCODE
+}
 $sha=[Security.Cryptography.SHA256]::Create()
 $BuildId=([BitConverter]::ToString($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes((($Manifest.sha256)-join ''))))).Replace('-','').ToLowerInvariant().Substring(0,16)
 $versionWsl="/opt/mephc-runner/versions/$BuildId"

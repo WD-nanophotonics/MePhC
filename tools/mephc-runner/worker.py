@@ -585,6 +585,7 @@ def repair_interrupted() -> None:
 def runner_build_id() -> str:
     names = ("worker.py","jobctl.py","workflow.py","workflow_resume.py","work_order_contract.py",
              "runtime_attestation.py","job_semantics.py","runtime_config.py","active_index.py",
+             "reconcile_stale_ready.py",
              "quarantine_oversized_state.py","checkout_manager.py","retention_inspector.py",
              "user_runtime.py","home_cleanup.py","migrate_state.py","migrate_canary_metadata.py",
              "windows_materializer.py","windows_broker.py",
