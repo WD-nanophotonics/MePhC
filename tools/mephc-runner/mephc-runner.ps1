@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-  [Parameter(Position=0)][ValidateSet('Broker','Doctor','Submit','Status','Wait','Recover','Health','Capabilities','RetentionPlan')][string]$Command='Health',
+  [Parameter(Position=0)][ValidateSet('Broker','Doctor','Submit','Status','Wait','Recover','Health','Capabilities','Attest','Preflight','RetentionPlan')][string]$Command='Health',
   [Parameter(ValueFromRemainingArguments=$true)][string[]]$Arguments
 )
 $ErrorActionPreference='Stop'
@@ -87,6 +87,8 @@ $mapped = switch($Command) {
   'Wait' { @($Python,$JobCtl,'wait') + $Arguments }
   'Recover' { @($Python,$JobCtl,'recover') + $Arguments }
   'Capabilities' { @($Python,$JobCtl,'capabilities') }
+  'Attest' { @($Python,$JobCtl,'attest') }
+  'Preflight' { @($Python,$JobCtl,'preflight') }
   'RetentionPlan' { @($Python,$JobCtl,'retention-plan') }
 }
 Invoke-WslFixed $mapped

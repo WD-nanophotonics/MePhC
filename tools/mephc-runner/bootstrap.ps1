@@ -1,10 +1,21 @@
 [CmdletBinding()]
-param([switch]$Install,[switch]$Verify)
+param([switch]$Install,[switch]$Verify,[string]$SourceCommit='')
 $ErrorActionPreference='Stop'
 $SourceRoot=Split-Path -Parent $MyInvocation.MyCommand.Path
 $Runtime=Join-Path $env:LOCALAPPDATA 'MePhCRunner'
 $Python='/home/icy/miniconda3/envs/mp/bin/python'
-$Files=@('worker.py','jobctl.py','workflow.py','workflow_resume.py','runtime_config.py','active_index.py','quarantine_oversized_state.py','checkout_manager.py','retention_inspector.py','user_runtime.py','home_cleanup.py','migrate_state.py','migrate_canary_metadata.py','windows_materializer.py','windows_broker.py','materialize_client.py','mcp_server.py','native-recipes.json','mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-connector.ps1','mephc-runner.service','README.md')
+$Files=@(
+  'worker.py','jobctl.py','workflow.py','workflow_resume.py','work_order_contract.py',
+  'runtime_attestation.py','job_semantics.py','runtime_config.py','active_index.py',
+  'quarantine_oversized_state.py','checkout_manager.py','retention_inspector.py',
+  'user_runtime.py','home_cleanup.py','migrate_state.py','migrate_canary_metadata.py',
+  'windows_materializer.py','windows_broker.py','materialize_client.py','mcp_server.py',
+  'native-recipes.json','mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd',
+  'mephc-connector.ps1','mephc-runner.service','README.md'
+)
+$RepoRoot=Split-Path -Parent (Split-Path -Parent $SourceRoot)
+if(-not $SourceCommit){$SourceCommit=(& git -c "safe.directory=$($RepoRoot -replace '\\','/')" -C $RepoRoot rev-parse HEAD).Trim()}
+if($SourceCommit -notmatch '^[0-9a-f]{40}$'){throw 'invalid activation source commit'}
 $Manifest=@()
 foreach($name in $Files) {
   $path=Join-Path $SourceRoot $name
@@ -27,13 +38,14 @@ $previous=if($previousOutput.Count -gt 0){(($previousOutput)-join '').Trim()}els
 $previousCurrent=Join-Path $Runtime 'current.json'
 $pendingPath=Join-Path $Runtime 'pending-install.json'
 $previousWindowsVersion=''
+$previousSourceCommit=''
 if(Test-Path -LiteralPath $previousCurrent -PathType Leaf){
-  try {$previousWindowsVersion=(Get-Content -LiteralPath $previousCurrent -Raw|ConvertFrom-Json).version_path}catch{$previousWindowsVersion=''}
+  try {$previousRecord=Get-Content -LiteralPath $previousCurrent -Raw|ConvertFrom-Json;$previousWindowsVersion=$previousRecord.version_path;$previousSourceCommit=$previousRecord.source_commit}catch{$previousWindowsVersion='';$previousSourceCommit=''}
 }
 if($Verify) {
   if(-not(Test-Path -LiteralPath $pendingPath -PathType Leaf)){throw 'no pending runner install to verify'}
   $pending=Get-Content -Raw -LiteralPath $pendingPath|ConvertFrom-Json
-  if($pending.build_id -ne $BuildId){throw 'pending runner build does not match bootstrap source'}
+  if($pending.build_id -ne $BuildId -or $pending.source_commit -ne $SourceCommit){throw 'pending runner build does not match bootstrap source'}
   $brokerReady=$false
   for($index=0;$index -lt 180;$index++){
     Start-Sleep -Seconds 1
@@ -58,7 +70,7 @@ if($Verify) {
     if($pending.previous_windows_version -and (Test-Path -LiteralPath $pending.previous_windows_version -PathType Container)){
       foreach($name in @('mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-connector.ps1','windows_materializer.py','windows_broker.py','README.md')){if(Test-Path -LiteralPath (Join-Path $pending.previous_windows_version $name)){Copy-Item -LiteralPath (Join-Path $pending.previous_windows_version $name) -Destination (Join-Path $Runtime $name) -Force}}
       Copy-Item -LiteralPath (Join-Path $pending.previous_windows_version 'install-manifest.json') -Destination (Join-Path $Runtime 'install-manifest.json') -Force
-      @{schema='mephc-runner-current-v1';build_id=(Split-Path -Leaf $pending.previous_windows_version);version_path=$pending.previous_windows_version;restored_at=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Compress|Set-Content -LiteralPath $previousCurrent -Encoding UTF8
+    @{schema='mephc-runner-current-v1';build_id=(Split-Path -Leaf $pending.previous_windows_version);source_commit=$pending.previous_source_commit;version_path=$pending.previous_windows_version;restored_at=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Compress|Set-Content -LiteralPath $previousCurrent -Encoding UTF8
     }
     Stop-ScheduledTask -TaskName MePhCRunnerBroker -ErrorAction SilentlyContinue
     Start-ScheduledTask -TaskName MePhCRunnerBroker -ErrorAction SilentlyContinue
@@ -98,7 +110,7 @@ $versionWin=Join-Path (Join-Path $Runtime 'versions') $BuildId
 New-Item -ItemType Directory -Path $versionWin -Force | Out-Null
 foreach($name in @('mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-connector.ps1','windows_materializer.py','windows_broker.py','README.md')){Copy-Item -LiteralPath (Join-Path $SourceRoot $name) -Destination (Join-Path $versionWin $name) -Force; Copy-Item -LiteralPath (Join-Path $SourceRoot $name) -Destination (Join-Path $Runtime $name) -Force}
 $Manifest|ConvertTo-Json -Depth 4|Set-Content -LiteralPath (Join-Path $versionWin 'install-manifest.json') -Encoding UTF8
-@{schema='mephc-runner-current-v1';build_id=$BuildId;version_path=$versionWin;installed_at=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Compress|Set-Content -LiteralPath $previousCurrent -Encoding UTF8
+@{schema='mephc-runner-current-v1';build_id=$BuildId;source_commit=$SourceCommit;version_path=$versionWin;installed_at=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Compress|Set-Content -LiteralPath $previousCurrent -Encoding UTF8
 Copy-Item -LiteralPath (Join-Path $versionWin 'install-manifest.json') -Destination (Join-Path $Runtime 'install-manifest.json') -Force
 
 Start-Sleep -Seconds 2
@@ -132,7 +144,7 @@ try {
   if((Get-ScheduledTask -TaskName $taskName).State -in @('Running','Queued')){throw 'scheduled broker did not stop cleanly'}
   Enable-ScheduledTask -TaskName $taskName | Out-Null
   $brokerStartUtc=[DateTime]::UtcNow
-  @{schema='mephc-runner-pending-install-v1';build_id=$BuildId;broker_start_utc=$brokerStartUtc.ToString('o');previous_wsl_version=$previous;previous_windows_version=$previousWindowsVersion}|ConvertTo-Json -Compress|Set-Content -LiteralPath $pendingPath -Encoding UTF8
+  @{schema='mephc-runner-pending-install-v1';build_id=$BuildId;source_commit=$SourceCommit;broker_start_utc=$brokerStartUtc.ToString('o');previous_wsl_version=$previous;previous_windows_version=$previousWindowsVersion;previous_source_commit=$previousSourceCommit}|ConvertTo-Json -Compress|Set-Content -LiteralPath $pendingPath -Encoding UTF8
   Start-ScheduledTask -TaskName $taskName
 } catch {
   if($previous){wsl.exe -d Ubuntu -u root -- ln -sfn $previous /opt/mephc-runner/current}
@@ -140,7 +152,7 @@ try {
   if($previousWindowsVersion -and (Test-Path -LiteralPath $previousWindowsVersion -PathType Container)){
     foreach($name in @('mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-connector.ps1','windows_materializer.py','windows_broker.py','README.md')){if(Test-Path -LiteralPath (Join-Path $previousWindowsVersion $name)){Copy-Item -LiteralPath (Join-Path $previousWindowsVersion $name) -Destination (Join-Path $Runtime $name) -Force}}
     Copy-Item -LiteralPath (Join-Path $previousWindowsVersion 'install-manifest.json') -Destination (Join-Path $Runtime 'install-manifest.json') -Force
-    @{schema='mephc-runner-current-v1';build_id=(Split-Path -Leaf $previousWindowsVersion);version_path=$previousWindowsVersion;restored_at=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Compress|Set-Content -LiteralPath $previousCurrent -Encoding UTF8
+    @{schema='mephc-runner-current-v1';build_id=(Split-Path -Leaf $previousWindowsVersion);source_commit=$previousSourceCommit;version_path=$previousWindowsVersion;restored_at=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Compress|Set-Content -LiteralPath $previousCurrent -Encoding UTF8
   }
   throw
 }

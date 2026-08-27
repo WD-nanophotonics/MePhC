@@ -27,10 +27,7 @@ def test_active_work_order_allowlist_binds_ids_to_exact_hashes():
     jobctl = load("retention_jobctl_allowlist", "jobctl.py")
     digest = "a" * 64
     text = f"RETENTION_ID=RP3_TEST\nEXPECTED_SHA256={digest}\nAUTHORITATIVE_R96_RESULT_SHA256={'b' * 64}\n"
-    assert jobctl._retention_allowlist(text) == {
-        "RP3_TEST": digest,
-        "AUTHORITATIVE_R96_RESULT": "b" * 64,
-    }
+    assert jobctl._retention_allowlist(text) == {"RP3_TEST": digest}
 
 
 def test_search_submission_rejects_unbound_before_job_and_reuses_query(tmp_path, monkeypatch):

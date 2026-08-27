@@ -29,6 +29,9 @@ import checkout_manager
 import runtime_config as config
 import active_index
 import workflow
+import job_semantics
+import runtime_attestation
+import work_order_contract
 
 ROOT = config.CONTROL_ROOT
 PYTHON = config.PYTHON
@@ -48,6 +51,7 @@ RECOVERABLE = {"response_timeout", "courier_interrupted", "chat_submission_uncon
 FORBIDDEN_FLAGS = {"--root", "--python", "--pythonpath", "--project-id", "--courier-root", "--profile", "--chat-url", "--certificate"}
 MAX_JSON_BYTES = 4 * 1024 * 1024
 MAX_DETAIL_CHARS = 2000
+LOADED_WORKER_MODULE_HASH = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
 class Rejected(RuntimeError):
@@ -86,13 +90,14 @@ def event(job_dir: Path, name: str, **fields: Any) -> None:
 
 
 def state(job_dir: Path, name: str, **fields: Any) -> None:
-    atomic_json(job_dir / "state.json", {"state": name, "updated_at": now(), **fields})
     operation = fields.get("operation")
     if not isinstance(operation, str):
         try:
             operation = json.loads((job_dir / "job.json").read_text(encoding="utf-8")).get("operation")
         except (OSError, json.JSONDecodeError):
             operation = None
+    semantics = job_semantics.enrich(name, operation, fields.get("error_code"), fields.get("phase"))
+    atomic_json(job_dir / "state.json", {"state": name, "updated_at": now(), **semantics, **fields})
     active_index.update(RUNTIME, job_dir.name, name, operation)
 
 
@@ -303,12 +308,19 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
     if job["operation"] == "retention_search":
         query = job.get("retention_query")
         active = workflow.active()
+        try:
+            active_contract_sha = work_order_contract.parse(
+                active.get("work_order_text", "") if active else "", job.get("active_work_order_id")
+            )["contract_sha256"]
+        except (work_order_contract.ContractError, TypeError) as exc:
+            raise Rejected("RUNNER_CONTRACT_WORK_ORDER_INVALID", str(exc)) from exc
         if (not v3 or arguments or not isinstance(query, dict)
-                or set(query) != {"bindings", "deadline_seconds", "work_order_id", "runner_build"}
+                or set(query) != {"bindings", "deadline_seconds", "work_order_id", "work_order_contract_sha256", "runner_build"}
                 or query.get("work_order_id") != job.get("active_work_order_id")
                 or query.get("runner_build") != job.get("runner_build")
                 or job.get("runner_build") != runner_build_id()
                 or not active or active.get("active_work_order_id") != job.get("active_work_order_id")
+                or active_contract_sha != query.get("work_order_contract_sha256")
                 or hashlib.sha256(json.dumps(query, sort_keys=True, separators=(",", ":"),
                                              ensure_ascii=False).encode("utf-8")).hexdigest() != job.get("query_sha256")):
             raise Rejected("RETENTION_QUERY_INVALID", "query/work-order binding mismatch")
@@ -387,12 +399,19 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
     # loop. Consume it before any parsing/validation that can fail.
     if recovery:
         (job_dir / "RECOVER").unlink(missing_ok=True)
+    prior_state = read_object(job_dir / "state.json") if recovery else None
     try:
+        state(job_dir, "running", recovery=recovery, phase="worker_started",
+              phase_started_at=now(), last_progress_at=now())
+        event(job_dir, "worker_started", recovery=recovery)
         job, immutable_sha, execution_root = validate(job_dir, recovery=recovery)
+        event(job_dir, "contract_validated", operation=job["operation"], job_sha256=immutable_sha)
+        state(job_dir, "running", operation=job["operation"], recovery=recovery,
+              phase="contract_validated", phase_started_at=now(), last_progress_at=now())
         claim = job_dir / "CLAIMED"
         previous_attempt = 0
         if recovery:
-            old_state = read_object(job_dir / "state.json")
+            old_state = prior_state or {}
             change_attested = (job["operation"] == "change" and old_state.get("state") == "failed"
                                and (job_dir / "change-attestation.json").is_file()
                                and (job_dir / "change-journal.json").is_file())
@@ -420,7 +439,8 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
                 handle.flush()
                 os.fsync(handle.fileno())
         attempt = previous_attempt + 1
-        state(job_dir, "running", attempt=attempt, operation=job["operation"], recovery=recovery)
+        state(job_dir, "running", attempt=attempt, operation=job["operation"], recovery=recovery,
+              phase="contract_validated", phase_started_at=now(), last_progress_at=now())
         event(job_dir, "runner_job_started", attempt=attempt, operation=job["operation"], recovery=recovery, job_sha256=immutable_sha)
         command = command_for(job, execution_root, recovery=recovery, attempt=attempt)
         environment = {
@@ -438,6 +458,12 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
             "PYTHONDONTWRITEBYTECODE": "1",
             "PYTEST_ADDOPTS": "-p no:cacheprovider",
         }
+        event(job_dir, "broker_dispatched" if job["operation"] == "change" else "broker_not_applicable",
+              operation=job["operation"])
+        if job["operation"] == "retention_search":
+            event(job_dir, "retention_operation_entered")
+            state(job_dir, "running", attempt=attempt, operation=job["operation"], recovery=recovery,
+                  phase="retention_operation_entered", phase_started_at=now(), last_progress_at=now())
         with (job_dir / "process.log").open("a", encoding="utf-8", newline="\n") as log:
             process = subprocess.Popen(
                 command,
@@ -482,6 +508,8 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
             verify_courier_binding(job)
         courier_state = receipt_state(job)
         if return_code == 0:
+            if job["operation"] == "retention_search":
+                event(job_dir, "retention_search_completed")
             state(job_dir, "succeeded", attempt=attempt, operation=job["operation"], return_code=0, receipt_state=courier_state)
             event(job_dir, "runner_job_succeeded", return_code=0, receipt_state=courier_state)
         elif job["operation"] == "change" and (timed_out or return_code == 3):
@@ -556,7 +584,7 @@ def repair_interrupted() -> None:
 
 def runner_build_id() -> str:
     names = ("worker.py","jobctl.py","workflow.py","workflow_resume.py","runtime_config.py","active_index.py","quarantine_oversized_state.py",
-             "checkout_manager.py","retention_inspector.py","user_runtime.py","home_cleanup.py","migrate_state.py","migrate_canary_metadata.py",
+             "checkout_manager.py","retention_inspector.py","work_order_contract.py","runtime_attestation.py","job_semantics.py","user_runtime.py","home_cleanup.py","migrate_state.py","migrate_canary_metadata.py",
              "windows_materializer.py","windows_broker.py",
              "materialize_client.py","mcp_server.py","native-recipes.json","mephc-runner.ps1",
              "mephc-runner.cmd","mephc-connector.cmd","mephc-connector.ps1",
@@ -565,8 +593,27 @@ def runner_build_id() -> str:
     return hashlib.sha256(source_hashes.encode("ascii")).hexdigest()[:16]
 
 
+def runtime_source_matches() -> bool:
+    try:
+        manifest = json.loads((config.WINDOWS_RUNTIME_WSL / "install-manifest.json").read_text(encoding="utf-8-sig"))
+        expected = {item["name"]: item["sha256"] for item in manifest if isinstance(item, dict)}
+        if not expected:
+            return False
+        for name, digest in expected.items():
+            source = config.CONTROL_ROOT / "tools" / "mephc-runner" / name
+            if not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != digest:
+                return False
+        return True
+    except (OSError, KeyError, TypeError, json.JSONDecodeError):
+        return False
+
+
 def heartbeat() -> None:
     build_id = runner_build_id()
+    expected_mcp = runtime_attestation.bundle_hash(INSTALL_ROOT, runtime_attestation.MCP_BUNDLE_FILES)
+    current = None
+    try: current = json.loads((config.WINDOWS_RUNTIME_WSL / "current.json").read_text(encoding="utf-8-sig"))
+    except (OSError, json.JSONDecodeError): current = {}
     atomic_json(RUNTIME / "heartbeat.json", {
         "schema": "mephc-runner-heartbeat-v1",
         "pid": os.getpid(),
@@ -578,6 +625,10 @@ def heartbeat() -> None:
         "origin_main": checkout_manager.source_origin_main(),
         "state_epoch": config.state_epoch(),
         "worker_build_id": build_id,
+        "installed_source_head": current.get("source_commit"),
+        "loaded_worker_module_hash": LOADED_WORKER_MODULE_HASH,
+        "expected_mcp_bundle_hash": expected_mcp,
+        "runtime_source_matches": runtime_source_matches(),
         "updated_at": now(),
     })
 

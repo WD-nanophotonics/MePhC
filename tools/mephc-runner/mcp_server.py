@@ -15,12 +15,26 @@ import workflow
 import workflow_resume
 import runtime_config as config
 import retention_inspector
+import runtime_attestation
 
 ROOT = config.CONTROL_ROOT
 READ_ROOTS = {"audit", "mephc", "scripts", "tests", "tools"}
 READ_ROOT_FILES = {"AGENTS.md", "pyproject.toml"}
 INSPECT_DEFAULT_BYTES = 16384
 INSPECT_MAX_BYTES = 65536
+LOADED_MCP_MODULE_HASH = runtime_attestation.bundle_hash(Path(__file__).resolve().parent,
+                                                         runtime_attestation.MCP_BUNDLE_FILES)
+runtime_attestation.set_loaded_mcp_hash(LOADED_MCP_MODULE_HASH)
+CURRENT_ADMISSION_REQUEST_ID: str | None = None
+
+
+def bind_admission(directory: Path) -> None:
+    if not CURRENT_ADMISSION_REQUEST_ID:
+        return
+    record = {"event":"admission_accepted","admission_request_id":CURRENT_ADMISSION_REQUEST_ID,
+              "timestamp":__import__("time").strftime("%Y-%m-%dT%H:%M:%SZ", __import__("time").gmtime())}
+    with (directory / "events.jsonl").open("a", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n")
 
 
 def _inspect_error(code: str, **fields: object) -> ValueError:
@@ -29,7 +43,7 @@ def _inspect_error(code: str, **fields: object) -> ValueError:
 
 
 def advertised_tools():
-    return [*TOOLS, *READONLY_TOOLS, *REPORT_TOOLS, *RELEASE_TOOLS, *CANARY_TOOLS]
+    return [*TOOLS, *READONLY_TOOLS, *LIFECYCLE_TOOLS, *REPORT_TOOLS, *RELEASE_TOOLS, *CANARY_TOOLS]
 
 
 def _relative(value: object) -> Path:
@@ -119,6 +133,13 @@ TOOLS = [
     {"name": "mephc_wait", "description": "Wait without killing the persistent job.", "inputSchema": {"type": "object", "required": ["job_id"], "properties": {"job_id": {"type": "string"}, "timeout": {"type": "integer", "minimum": 1, "maximum": 4860}}, "additionalProperties": False}},
     {"name": "mephc_recover", "description": "Request the only state-approved recovery for an existing job.", "inputSchema": {"type": "object", "required": ["job_id"], "properties": {"job_id": {"type": "string"}}, "additionalProperties": False}},
     {"name": "mephc_retention_search", "description": "Create or reuse a durable read-only exact-SHA search over fixed execution-host retention roots. Every binding must occur in the active work order.", "inputSchema": {"type": "object", "required": ["bindings"], "properties": {"bindings": {"type": "array", "minItems": 1, "maxItems": 32, "items": {"type": "object", "required": ["retention_id", "expected_sha256"], "properties": {"retention_id": {"type": "string"}, "expected_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "additionalProperties": False}}}, "additionalProperties": False}},
+]
+
+LIFECYCLE_TOOLS = [
+    {"name": "mephc_runtime_attest", "description": "Return import-time cross-layer build and module attestation without creating a job.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
+    {"name": "mephc_runtime_reload", "description": "Reload only the installed fixed MePhC broker/worker runtime. Admission handles this tool; it accepts no arguments.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
+    {"name": "mephc_runtime_activate", "description": "Strictly gate, test, install and activate the exact published infrastructure build. Admission handles this tool; it accepts no arguments.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
+    {"name": "mephc_work_order_preflight", "description": "Compare the active machine work-order contract with typed capabilities, policy and live runtime attestation.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
 ]
 
 REPORT_TOOLS = [
@@ -286,6 +307,13 @@ def invoke_captured(name, args):
 
 
 def invoke(name, args):
+    if name == "mephc_runtime_attest":
+        return runtime_attestation.attest()
+    if name == "mephc_work_order_preflight":
+        return jobctl.work_order_preflight()
+    if name in {"mephc_runtime_reload", "mephc_runtime_activate"}:
+        return {"state":"rejected","error_code":"ADMISSION_LIFECYCLE_REQUIRED",
+                "retry_allowed":False,"safe_next_tool":"mephc_runtime_attest"}
     if name == "mephc_capabilities":
         value = jobctl.capabilities()
         value["read_only_evidence"] = {"tool": "mephc_inspect", "operations": ["list", "read"], "tracked_only": True}
@@ -316,6 +344,7 @@ def invoke(name, args):
     if name == "mephc_doctor":
         value = jobctl.doctor_deduplicated()
         if value.get("job_created"):
+            bind_admission(jobctl.JOBS / value["job_id"])
             return {**value, **captured(lambda: jobctl.wait(value["job_id"], 120))}
         return value
     if name == "mephc_change":
@@ -325,6 +354,7 @@ def invoke(name, args):
             return {"state": "rejected", "error_code": exc.error_code,
                     "noop_files": exc.noop_files, "job_created": False,
                     "retry_allowed": False, "safe_next_tool": exc.safe_next_tool}
+        bind_admission(directory)
         return {"job_id": directory.name, "state": "ready", "job_created": True,
                 "safe_next_tool": "mephc_wait"}
     if name == "mephc_validate":
@@ -332,6 +362,7 @@ def invoke(name, args):
         if not isinstance(tests, list) or not tests:
             raise ValueError("VALIDATE_TESTS_REQUIRED")
         directory = jobctl.submit("prelive", tests, None)
+        bind_admission(directory)
         return {"job_id": directory.name, "state": "ready", "job_created": True,
                 "safe_next_tool": "mephc_wait"}
     if name == "mephc_retention_search":
@@ -341,6 +372,7 @@ def invoke(name, args):
             return {"state": "rejected", "error_code": exc.error_code, "job_created": False,
                     "retry_allowed": False, "safe_next_tool": exc.safe_next_tool}
         state = jobctl.read_basic_state(directory.name).get("state")
+        if not reused: bind_admission(directory)
         has_result = (directory / "retention-search-result.json").is_file()
         return {"job_id": directory.name, "state": state, "job_created": not reused, "reused": reused,
                 "safe_next_tool": "mephc_retention_inspect" if has_result else
@@ -348,6 +380,7 @@ def invoke(name, args):
                                   "mephc_status" if state == "running" else "mephc_wait"}
     if name == "mephc_submit":
         directory = jobctl.submit(args["operation"], args.get("arguments", []), args.get("certificate_sha256"))
+        bind_admission(directory)
         return {"job_id": directory.name, "state": "ready"}
     if name == "mephc_status":
         return jobctl.read_state(args["job_id"])
@@ -383,6 +416,9 @@ def main():
                 reply(identifier, {"tools": advertised_tools()})
             elif method == "tools/call":
                 params = request.get("params", {})
+                global CURRENT_ADMISSION_REQUEST_ID
+                meta = params.get("_meta") if isinstance(params, dict) else None
+                CURRENT_ADMISSION_REQUEST_ID = meta.get("mephc_admission_request_id") if isinstance(meta, dict) else None
                 value = invoke_captured(params.get("name"), params.get("arguments") or {})
                 reply(identifier, {"content": [{"type": "text", "text": json.dumps(value, sort_keys=True, ensure_ascii=False)}], "isError": False})
             elif identifier is not None:

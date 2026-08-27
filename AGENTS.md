@@ -2,12 +2,19 @@
 
 ## Zero-idle typed startup
 
-Every Agent starts with `mephc_capabilities`. If it reports an active or recovery-required job, inspect that exact job with `mephc_status`/`mephc_wait` before calling doctor; otherwise continue with `mephc_doctor -> mephc_resume`. A blocked doctor is a diagnostic result and must not be resubmitted. Empty `active_jobs` is not completion. Never ask the user for a work order because local state appears idle, and never hand-create `.relayctl/outbox` files.
+Every Agent starts with `mephc_capabilities -> mephc_runtime_attest`. If capabilities reports an active or recovery-required job, inspect that exact job with `mephc_status`/`mephc_wait` before calling doctor; otherwise continue with `mephc_doctor -> mephc_resume -> mephc_work_order_preflight`. Do not execute a work order unless preflight returns `READY`. A blocked doctor or preflight is a diagnostic result and must not be resubmitted. Empty `active_jobs` is not completion. Never ask the user for a work order because local state appears idle, and never hand-create `.relayctl/outbox` files.
 
 A previously successful doctor is reusable only when its source commit, runner
 build, state epoch, and current worker/broker health all still match. Treat
 `DOCTOR_LIVE_HEALTH_FAILED` as an infrastructure diagnostic; do not reuse the
 old certificate or enqueue another doctor behind stale runtime health.
+
+`mephc_runtime_attest` is the authoritative cross-layer build check. A stale
+installed build requires the fixed, no-argument `mephc_runtime_activate`; a
+stale loaded process at the already-installed build requires the fixed,
+no-argument `mephc_runtime_reload`. Neither lifecycle tool accepts a PID,
+path, command, argument, target, or environment variable, and neither may be
+replayed after disconnect. After either action, attest again before doctor.
 
 
 ## Mandatory Agent-facing entry point
@@ -33,7 +40,7 @@ For `mephc_change`, provide only declared UTF-8 file content and a non-empty `te
 
 Never use `mephc_change` merely to run tests or redeclare unchanged files. Use `mephc_validate(tests=[...])` for solver-free validation of the current committed SHA. `CHANGE_NOOP_USE_VALIDATE` creates no durable job and requires `mephc_validate` as the next tool; `CHANGE_CONTAINS_NOOP_FILES` requires resubmitting only genuinely changed files. A stalled change must be observed until the watchdog marks it `recovery_required`; do not resubmit it or guess that a client timeout completed it.
 
-Admission may reconnect and replay exactly once only for read-only tools (`mephc_capabilities`, `mephc_inspect`, `mephc_retention_inspect`, `mephc_status`, and `mephc_wait`). It never replays `mephc_retention_search` or another side-effect/durable-job creation tool. A backend disconnect must return structured `error.data` with `tool`, `job_id` when already known, `admission_request_id`, `retry_allowed=false`, and one `safe_next_tool`; never invent a missing job ID.
+Admission may reconnect and replay exactly once only for read-only tools (`mephc_capabilities`, `mephc_runtime_attest`, `mephc_work_order_preflight`, `mephc_inspect`, `mephc_retention_inspect`, `mephc_status`, and `mephc_wait`). It never replays `mephc_runtime_activate`, `mephc_runtime_reload`, `mephc_retention_search`, or another side-effect/durable-job creation tool. A backend disconnect must return structured `error.data` with `tool`, `job_id` when already known, `admission_request_id`, `retry_allowed=false`, and one `safe_next_tool`; never invent a missing job ID.
 
 `scripts/relayctl` and `tools/mephc-courier.ps1` are internal Runner implementation details, not Agent launchers. Agents must not invoke them, arbitrary shell/Python, Courier, Browser, Chrome, or Gmail directly. Runtime evidence lives outside Git in `/home/icy/.local/state/mephc-runner/MEPHC`; never create or copy `.relayctl` into the Windows control repository. Requests are plain text by default; attachments require separately identified committed remote audit artifacts.
 ## Automatic relay continuation

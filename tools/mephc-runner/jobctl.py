@@ -21,6 +21,9 @@ if str(INSTALL_ROOT) not in sys.path: sys.path.insert(0, str(INSTALL_ROOT))
 import workflow
 import runtime_config as config
 import active_index
+import job_semantics
+import runtime_attestation
+import work_order_contract
 
 ROOT = config.CONTROL_ROOT
 INSTALL_ROOT = Path(__file__).resolve().parent
@@ -205,42 +208,10 @@ def submit(operation: str, arguments: list[str], certificate_sha256: str | None)
 
 
 def _retention_allowlist(work_order_text: str) -> dict[str, str]:
-    normalized_text = (work_order_text
-                       .replace("\\r\\n", "\n")
-                       .replace("\\n", "\n")
-                       .replace("\r\n", "\n")
-                       .replace("\r", "\n"))
-    allowed: dict[str, str] = {}
-    for match in re.finditer(
-            r"RETENTION_ID=([A-Z0-9][A-Z0-9_.-]{2,127})[ \t]*\r?\n"
-            r"[ \t]*EXPECTED_SHA256=([0-9a-f]{64})",
-            normalized_text,
-    ):
-        allowed[match.group(1)] = match.group(2)
-    lines = normalized_text.splitlines()
-    prefixes: dict[str, str] = {}
-    for line in lines:
-        marker = "_RETENTION_ID="
-        if marker not in line:
-            continue
-        prefix, retention_id = line.split(marker, 1)
-        if not re.fullmatch(r"[A-Z0-9_]+", prefix):
-            continue
-        retention_id = retention_id.strip()
-        if not re.fullmatch(r"[A-Z0-9_.-]{3,127}", retention_id):
-            continue
-        prefixes[prefix] = retention_id
-    for prefix, retention_id in prefixes.items():
-        marker = prefix + "_SHA256="
-        for line in lines:
-            if line.startswith(marker):
-                digest = line[len(marker):].strip()
-                if SHA64.fullmatch(digest):
-                    allowed[retention_id] = digest
-                    break
-    for match in re.finditer(r"(AUTHORITATIVE_[A-Z0-9_]+)_SHA256=([0-9a-f]{64})", normalized_text):
-        allowed[match.group(1)] = match.group(2)
-    return allowed
+    match = re.search(r"^NEXT_WORK_ORDER_ID=([^\r\n]+)$", work_order_text, flags=re.MULTILINE)
+    work_order_id = match.group(1).strip() if match else "MEPHC-LEGACY-CONTRACT"
+    contract = work_order_contract.parse(work_order_text, work_order_id)
+    return work_order_contract.binding_map(contract)
 
 
 def current_runner_build() -> str:
@@ -270,7 +241,8 @@ def submit_retention_search(bindings: object) -> tuple[Path, bool]:
         raise RetentionRejected("RETENTION_ACTIVE_WORK_ORDER_REQUIRED")
     if not isinstance(bindings, list) or not 1 <= len(bindings) <= 32:
         raise RetentionRejected("RETENTION_BINDINGS_INVALID")
-    allowed = _retention_allowlist(active["work_order_text"])
+    contract = work_order_contract.parse(active["work_order_text"], work_order_id)
+    allowed = work_order_contract.binding_map(contract)
     normalized: list[dict[str, str]] = []
     seen: set[str] = set()
     for item in bindings:
@@ -285,7 +257,8 @@ def submit_retention_search(bindings: object) -> tuple[Path, bool]:
     normalized.sort(key=lambda item: item["retention_id"])
     runner_build = current_runner_build()
     query = {"bindings": normalized, "deadline_seconds": config.RETENTION_SEARCH_TIMEOUT_SECONDS,
-             "work_order_id": work_order_id, "runner_build": runner_build}
+             "work_order_id": work_order_id, "work_order_contract_sha256": contract["contract_sha256"],
+             "runner_build": runner_build}
     query_sha = hashlib.sha256(canonical(query)).hexdigest()
     head, epoch = git_head(), config.state_epoch()
     for directory in sorted(JOBS.iterdir(), reverse=True) if JOBS.is_dir() else []:
@@ -435,18 +408,30 @@ def read_state(job_id: str) -> dict[str, Any]:
             except (OSError, ValueError, TypeError, json.JSONDecodeError):
                 pass
     result = dict(value)
-    terminal = value.get("state") in {"succeeded", "failed"}
+    operation = value.get("operation")
+    if not isinstance(operation, str):
+        try: operation = json.loads((directory / "job.json").read_text(encoding="utf-8")).get("operation")
+        except (OSError, json.JSONDecodeError): operation = None
+    terminal = value.get("state") in TERMINAL
     phase = "terminal" if terminal else (progress.get("phase") if progress else ("queued" if value.get("state") == "ready" else value.get("state")))
     last = progress.get("phase_heartbeat_unix") if progress else None
     phase_age = max(0.0, time.time() - float(last)) if last is not None else None
-    result.update({"phase": phase, "phase_age_seconds": round(phase_age, 3) if phase_age is not None else None,
+    semantics = job_semantics.enrich(str(value.get("state", "unknown")), operation,
+                                     value.get("error_code") or value.get("failure_code"), phase)
+    result.update(semantics)
+    result.update({"phase": phase, "phase_started_at": value.get("phase_started_at") or
+                                                   (progress.get("phase_started_at") if progress else None),
+                   "phase_age_seconds": round(phase_age, 3) if phase_age is not None else None,
                    "last_progress_at_unix": last,
+                   "last_progress_at": value.get("last_progress_at") or last,
                    "deadline_at_unix": progress.get("deadline_unix") if progress else None,
+                   "deadline_at": value.get("deadline_at") or (progress.get("deadline_unix") if progress else None),
                    "stalled": bool(value.get("state") == "running" and (phase_age is None or phase_age > 20)),
                    "worker_health": _health(RUNTIME / "heartbeat.json"),
                    "broker_health": _health(config.BROKER_HEARTBEAT),
-                   "safe_next_tool": "none" if terminal else
-                                     ("mephc_recover" if value.get("state") == "recovery_required" else "mephc_status")})
+                   "safe_next_tool": value.get("safe_next_tool") or
+                                     ("mephc_recover" if value.get("state") == "recovery_required" else
+                                      "none" if terminal else "mephc_status")})
     return result
 
 
@@ -518,6 +503,11 @@ def doctor_deduplicated() -> dict[str, Any]:
         return {"state": "blocked_by_runtime_health", "error_code": "DOCTOR_LIVE_HEALTH_FAILED",
                 "live_health": health, "job_created": False, "retry_allowed": False,
                 "safe_next_tool": "mephc_capabilities"}
+    attestation = runtime_attestation.attest()
+    if not attestation["coherent"]:
+        return {"state": "blocked_by_runtime_attestation", "error_code": "RUNTIME_ATTESTATION_INCOHERENT",
+                "runtime_attestation": attestation, "job_created": False, "retry_allowed": False,
+                "safe_next_tool": attestation["safe_next_tool"]}
     head, epoch = git_head(), config.state_epoch()
     for directory in sorted(JOBS.iterdir(), reverse=True) if JOBS.is_dir() else []:
         try:
@@ -561,19 +551,54 @@ def capabilities() -> dict[str, Any]:
                        "operation":value.get("operation"),
                        "safe_next_action":"recover" if name=="recovery_required" else "status_or_wait"})
     head = git_head()
-    return {"schema":"mephc-runner-capabilities-v3","project_id":"MEPHC",
+    attestation = runtime_attestation.attest()
+    return {"schema":"mephc-runner-capabilities-v4","project_id":"MEPHC",
             "control_root":config.CONTROL_ROOT_WINDOWS,"state_root":str(config.STATE_ROOT),
             "execution_root_policy":str(config.CHECKOUTS / "<commit-sha>"),
             "source_head":head,"execution_head":None,
             "admission_scope":{"kind":"exact_inherited_windows_cwd","root":config.CONTROL_ROOT_WINDOWS},
-            "state_epoch":config.state_epoch(),"operations":sorted(OPERATIONS|{"resume","transport_canary","validate"}),
+            "state_epoch":config.state_epoch(),"operations":sorted(OPERATIONS|{
+                "resume","transport_canary","validate","runtime_attest","runtime_reload",
+                "runtime_activate","work_order_preflight"}),
             "inspect_limits":{"default_bytes":16384,"max_bytes":65536},
             "retention_interface":{"search_deadline_seconds":config.RETENTION_SEARCH_TIMEOUT_SECONDS,
                                    "page_limit":200,"page_max_bytes":65536,
                                    "archive_formats":["tar","tar.gz","tgz","git-bundle"]},
+            "runtime_attestation":attestation,
             "arbitrary_shell":False,"direct_browser":False,"active_jobs":active,
             "orphaned_job_count":len(orphaned),**workflow.view(),
-            "safe_next_tool":"mephc_resume" if not active else "mephc_status_or_wait"}
+            "safe_next_tool":attestation["safe_next_tool"] if not attestation["coherent"] else
+                             "mephc_resume" if not active else "mephc_status_or_wait"}
+
+
+def work_order_preflight() -> dict[str, Any]:
+    active = workflow.active()
+    if not active:
+        return {"schema":"mephc-work-order-preflight-v1","status":"WORK_ORDER_UNAVAILABLE",
+                "safe_next_tool":"mephc_resume","retry_allowed":False}
+    try:
+        contract = work_order_contract.parse(active["work_order_text"], active["active_work_order_id"])
+    except work_order_contract.ContractError as exc:
+        return {"schema":"mephc-work-order-preflight-v1","status":exc.code,"detail":exc.detail,
+                "safe_next_tool":"mephc_resume","retry_allowed":False}
+    available = {
+        "retention.search", "retention.inspect", "runtime.attest", "runtime.reload", "runtime.activate",
+        "source.change", "source.validate", "sandbox.publish", "workflow.report", "job.status", "job.recover",
+    }
+    required = set(contract["required_capabilities"])
+    missing = sorted(required - available)
+    conflicts = work_order_contract.authority_conflicts(contract)
+    attestation = runtime_attestation.attest()
+    status = ("AUTHORITY_CONFLICT_USER_CONSTRAINT_VS_WORK_ORDER" if conflicts else
+              "WORK_ORDER_BLOCKED_MISSING_TYPED_CAPABILITY" if missing else
+              "RUNTIME_ATTESTATION_INCOHERENT" if not attestation["coherent"] else "READY")
+    return {"schema":"mephc-work-order-preflight-v1","status":status,
+            "work_order_id":contract["work_order_id"],"contract_sha256":contract["contract_sha256"],
+            "contract_mode":contract["contract_mode"],"required_capabilities":sorted(required),
+            "available_capabilities":sorted(available),"missing_capabilities":missing,
+            "authority_conflicts":conflicts,"runtime_attestation":attestation,"retry_allowed":False,
+            "safe_next_tool":"mephc_resume" if conflicts or missing else
+                             attestation["safe_next_tool"] if not attestation["coherent"] else "execute_work_order"}
 def resume() -> dict[str, Any]:
     value=workflow.active()
     return value if value else {"workflow_state":"idle_unconfirmed","error_code":"STATUS_REQUEST_REQUIRED","retry_allowed":False,"safe_next_tool":"mephc_report"}
@@ -652,7 +677,8 @@ def main(argv: list[str] | None = None) -> int:
     status = sub.add_parser("status"); status.add_argument("job_id")
     wait_parser = sub.add_parser("wait"); wait_parser.add_argument("job_id"); wait_parser.add_argument("--timeout", type=int, default=4860)
     recover = sub.add_parser("recover"); recover.add_argument("job_id")
-    sub.add_parser("change"); sub.add_parser("capabilities"); sub.add_parser("retention-plan")
+    sub.add_parser("change"); sub.add_parser("capabilities"); sub.add_parser("attest")
+    sub.add_parser("preflight"); sub.add_parser("retention-plan")
     args = parser.parse_args(argv)
     if args.command == "doctor":
         value = doctor_deduplicated()
@@ -665,6 +691,8 @@ def main(argv: list[str] | None = None) -> int:
         request_recovery(args.job_id); return 0
     if args.command == "change": submit_change(json.load(sys.stdin)); return 0
     if args.command == "capabilities": emit("runner_capabilities", **capabilities()); return 0
+    if args.command == "attest": emit("runner_runtime_attestation", **runtime_attestation.attest()); return 0
+    if args.command == "preflight": emit("runner_work_order_preflight", **work_order_preflight()); return 0
     if args.command == "retention-plan": emit("runner_retention_plan", **retention_plan()); return 0
     return 2
 

@@ -12,6 +12,10 @@ $shim=Join-Path $runtime 'mephc_admission.py'
 if($Mode -in @('Install','Finalize')){
   New-Item -ItemType Directory -Path $runtime -Force|Out-Null
   Copy-Item -LiteralPath (Join-Path $source 'mephc_admission.py') -Destination $shim -Force
+  Copy-Item -LiteralPath (Join-Path $source 'runtime_lifecycle.py') -Destination (Join-Path $runtime 'runtime_lifecycle.py') -Force
+  $runnerCurrent=Join-Path (Split-Path -Parent $runtime) 'current.json'
+  $sourceCommit=if(Test-Path -LiteralPath $runnerCurrent){try{(Get-Content -Raw -LiteralPath $runnerCurrent|ConvertFrom-Json).source_commit}catch{''}}else{''}
+  @{schema='mephc-admission-current-v1';source_commit=$sourceCommit;admission_sha256=(Get-FileHash -Algorithm SHA256 -LiteralPath $shim).Hash.ToLowerInvariant();lifecycle_sha256=(Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $runtime 'runtime_lifecycle.py')).Hash.ToLowerInvariant();installed_at=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Compress|Set-Content -LiteralPath (Join-Path $runtime 'current.json') -Encoding UTF8
   $patchArguments=@((Join-Path $source 'config_patch.py'),'--config',$config,'--python',$python,'--shim',$shim,'--apply')
   if($Mode -eq 'Finalize'){$patchArguments += '--finalize'}
   & $python @patchArguments

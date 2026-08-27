@@ -31,6 +31,17 @@ startup bounded as historical terminal jobs accumulate. Admission retries a
 disconnected backend once only for read-only tools and returns structured
 disconnect identity for all other calls without replaying them.
 
+`mephc_runtime_attest` binds the source HEAD, installed source commit,
+admission, MCP, broker and worker builds, import-time module hashes, state
+epoch, and live heartbeat freshness. Doctor cannot be created or reused while
+that attestation is incoherent. The no-argument lifecycle tools are deliberately
+narrow: `mephc_runtime_reload` restarts only the installed broker/worker and
+rotates the calling admission backend; `mephc_runtime_activate` accepts only a
+clean, published `sandbox` whose delta from the installed source is confined
+to infrastructure. Activation runs a fixed test set, stages the exact commit,
+and restores the prior Windows, WSL, admission and config snapshot if install
+or post-install attestation fails.
+
 The scheduled broker is configured to remain available on battery power and
 when the machine leaves idle state. After cwd admission, the Windows connector
 checks the build-bound heartbeat and starts a stopped broker task before it
@@ -93,3 +104,15 @@ numeric summary. Typed responses redact host paths and identities. The search
 tool is never replayed across an admission disconnect; inspect is read-only
 and may be replayed once. `SEARCH_INCOMPLETE` must never be interpreted as
 `NOT_FOUND_EXHAUSTIVE`.
+
+## Work-order contract and preflight
+
+The canonical `mephc-work-order-contract-v1` JSON binds the work-order ID,
+required typed capabilities, authorized actions and retention ID/hash pairs.
+A read-only legacy adapter normalizes direct, prefixed, CRLF and historically
+escaped-newline retention fields into that same schema. Retention submission
+and worker validation use this shared parser. `mephc_work_order_preflight`
+returns the contract digest, available and missing capabilities, fixed-policy
+conflicts, and runtime attestation. Missing tools and forbidden shell, WSL,
+browser, arbitrary path/process control, or main-promotion requests stop before
+any durable job is created.
