@@ -1,0 +1,19 @@
+{
+  "schema": "mephc_e9f_qp_b_c2_c3_r7_c1_rel059_closure_or_open_record_v2",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R7-C1-20260828-290",
+  "rel_059_status": "OPEN_P1",
+  "pipeline_health": "PIPELINE_REQUIRES_CORRECTIVE",
+  "closure_criteria": {
+    "complete_pair_gate_classifications": true,
+    "explicit_dependency_sets_for_all_24_pairs": true,
+    "historical_81_undercount_documented": true,
+    "implementation_gates_zero_duplicate_solves": true,
+    "budget_mechanically_recomputable": false,
+    "unresolved_solver_free_recovery_assumption": false,
+    "remaining_budget_undercount_path": true
+  },
+  "unresolved_requirement": "True indispensable provider.solve dependency count remains unresolved.",
+  "rel_060": "NOT_REGISTERED",
+  "native_solves_executed": 0,
+  "mpb_execution": false
+}

@@ -1,0 +1,2666 @@
+{
+  "schema": "mephc_e9f_qp_b_c2_c3_r7_c1_pair_gate_matrix_v2",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R7-C1-20260828-290",
+  "base_sandbox_sha": "76f7b470a61e2f8a0398cdb20089911976f02b5",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "exact_retention_search_job_id": "MEPHC-JOB-20260828-025523-16E99346BE49",
+  "exact_search_reused": true,
+  "new_search_created": false,
+  "frozen_threshold": 0.02,
+  "frozen_locked_pair_count": 24,
+  "allowed_status_values": [
+    "DIRECT_AUTHORITATIVE_RETAINED",
+    "DERIVED_SOLVER_FREE_FROM_AUTHORITATIVE_RETAINED",
+    "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+    "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+    "NOT_APPLICABLE_BY_FROZEN_SCOPE"
+  ],
+  "reusable_pair_count": 15,
+  "gate_complete_reusable_pair_count": 0,
+  "rows": [
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID;resolution=R96",
+      "resolution": "R96",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FINITE_DATA_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "NONZERO_NORM_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "H_REPRESENTATION_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "ASSOCIATION_UNAMBIGUOUS_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "OVERLAP_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PRINCIPAL_ANGLE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PROJECTOR_DISTANCE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FORWARD_REVERSE_CONSISTENT_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "GAUGE_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "SOLVER_ORDER_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "direct_evidence": [
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+          "retention_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+          "authoritative_field_or_record_id": "result.numeric_summary.finite_count_and.entries",
+          "value_or_bounded_diagnostic": "finite_count=14325; numeric_count=14325",
+          "frozen_pass_criterion": "All retained numeric values are finite for the exact pair record.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+          "retention_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+          "authoritative_field_or_record_id": "result.entries.association_loop_closure_and.rank2_status",
+          "value_or_bounded_diagnostic": "association_loop_closure=true; ambiguous_count=0",
+          "frozen_pass_criterion": "The exact pair record contains an unambiguous association.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+          "retention_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+          "authoritative_field_or_record_id": "result.entries.association_loop_closure",
+          "value_or_bounded_diagnostic": "loop_closure=true in the exact retained record",
+          "frozen_pass_criterion": "Resolution-local forward/reverse association traversal closes exactly.",
+          "pass_fail": "PASS"
+        }
+      ],
+      "missing_gate_evidence": [
+        {
+          "gate": "NONZERO_NORM",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Positive pair-local selected-state norm bound at every canonical point.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose H residuals but no pair-local selected-state norm or raw state vector that certifies a positive norm.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "OVERLAP_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 overlap singular-value qualification at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 and diagnostic-only rank-1 shadow records; the authoritative rank-1 overlap record is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PRINCIPAL_ANGLE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 principal-angle bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 principal-angle diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PROJECTOR_DISTANCE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 projector-distance bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 projector diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        }
+      ],
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "implementation_level_evidence": {
+        "H_REPRESENTATION": "accepted H-only representation validation; zero pointwise solves",
+        "GAUGE_INVARIANT": "accepted implementation-level gauge validation; zero pointwise solves",
+        "SOLVER_ORDER_INVARIANT": "accepted implementation-level solver-order validation; zero pointwise solves"
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID;resolution=R96",
+      "resolution": "R96",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FINITE_DATA_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "NONZERO_NORM_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "H_REPRESENTATION_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "ASSOCIATION_UNAMBIGUOUS_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "OVERLAP_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PRINCIPAL_ANGLE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PROJECTOR_DISTANCE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FORWARD_REVERSE_CONSISTENT_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "GAUGE_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "SOLVER_ORDER_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "direct_evidence": [
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+          "retention_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+          "authoritative_field_or_record_id": "result.numeric_summary.finite_count_and.entries",
+          "value_or_bounded_diagnostic": "finite_count=14325; numeric_count=14325",
+          "frozen_pass_criterion": "All retained numeric values are finite for the exact pair record.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+          "retention_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+          "authoritative_field_or_record_id": "result.entries.association_loop_closure_and.rank2_status",
+          "value_or_bounded_diagnostic": "association_loop_closure=true; ambiguous_count=0",
+          "frozen_pass_criterion": "The exact pair record contains an unambiguous association.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+          "retention_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+          "authoritative_field_or_record_id": "result.entries.association_loop_closure",
+          "value_or_bounded_diagnostic": "loop_closure=true in the exact retained record",
+          "frozen_pass_criterion": "Resolution-local forward/reverse association traversal closes exactly.",
+          "pass_fail": "PASS"
+        }
+      ],
+      "missing_gate_evidence": [
+        {
+          "gate": "NONZERO_NORM",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Positive pair-local selected-state norm bound at every canonical point.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose H residuals but no pair-local selected-state norm or raw state vector that certifies a positive norm.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "OVERLAP_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 overlap singular-value qualification at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 and diagnostic-only rank-1 shadow records; the authoritative rank-1 overlap record is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PRINCIPAL_ANGLE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 principal-angle bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 principal-angle diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PROJECTOR_DISTANCE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 projector-distance bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 projector diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        }
+      ],
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "implementation_level_evidence": {
+        "H_REPRESENTATION": "accepted H-only representation validation; zero pointwise solves",
+        "GAUGE_INVARIANT": "accepted implementation-level gauge validation; zero pointwise solves",
+        "SOLVER_ORDER_INVARIANT": "accepted implementation-level solver-order validation; zero pointwise solves"
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID;resolution=R96",
+      "resolution": "R96",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FINITE_DATA_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "NONZERO_NORM_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "H_REPRESENTATION_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "ASSOCIATION_UNAMBIGUOUS_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "OVERLAP_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PRINCIPAL_ANGLE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PROJECTOR_DISTANCE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FORWARD_REVERSE_CONSISTENT_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "GAUGE_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "SOLVER_ORDER_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "direct_evidence": [
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+          "retention_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+          "authoritative_field_or_record_id": "result.numeric_summary.finite_count_and.entries",
+          "value_or_bounded_diagnostic": "finite_count=14325; numeric_count=14325",
+          "frozen_pass_criterion": "All retained numeric values are finite for the exact pair record.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+          "retention_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+          "authoritative_field_or_record_id": "result.entries.association_loop_closure_and.rank2_status",
+          "value_or_bounded_diagnostic": "association_loop_closure=true; ambiguous_count=0",
+          "frozen_pass_criterion": "The exact pair record contains an unambiguous association.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+          "retention_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+          "authoritative_field_or_record_id": "result.entries.association_loop_closure",
+          "value_or_bounded_diagnostic": "loop_closure=true in the exact retained record",
+          "frozen_pass_criterion": "Resolution-local forward/reverse association traversal closes exactly.",
+          "pass_fail": "PASS"
+        }
+      ],
+      "missing_gate_evidence": [
+        {
+          "gate": "NONZERO_NORM",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Positive pair-local selected-state norm bound at every canonical point.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose H residuals but no pair-local selected-state norm or raw state vector that certifies a positive norm.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "OVERLAP_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 overlap singular-value qualification at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 and diagnostic-only rank-1 shadow records; the authoritative rank-1 overlap record is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PRINCIPAL_ANGLE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 principal-angle bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 principal-angle diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PROJECTOR_DISTANCE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 projector-distance bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 projector diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        }
+      ],
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "implementation_level_evidence": {
+        "H_REPRESENTATION": "accepted H-only representation validation; zero pointwise solves",
+        "GAUGE_INVARIANT": "accepted implementation-level gauge validation; zero pointwise solves",
+        "SOLVER_ORDER_INVARIANT": "accepted implementation-level solver-order validation; zero pointwise solves"
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID;resolution=R96",
+      "resolution": "R96",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FINITE_DATA_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "NONZERO_NORM_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "H_REPRESENTATION_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "ASSOCIATION_UNAMBIGUOUS_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "OVERLAP_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PRINCIPAL_ANGLE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PROJECTOR_DISTANCE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FORWARD_REVERSE_CONSISTENT_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "GAUGE_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "SOLVER_ORDER_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "direct_evidence": [
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+          "retention_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+          "authoritative_field_or_record_id": "result.numeric_summary.finite_count_and.entries",
+          "value_or_bounded_diagnostic": "finite_count=14325; numeric_count=14325",
+          "frozen_pass_criterion": "All retained numeric values are finite for the exact pair record.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+          "retention_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+          "authoritative_field_or_record_id": "result.entries.association_loop_closure_and.rank2_status",
+          "value_or_bounded_diagnostic": "association_loop_closure=true; ambiguous_count=0",
+          "frozen_pass_criterion": "The exact pair record contains an unambiguous association.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+          "retention_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+          "authoritative_field_or_record_id": "result.entries.association_loop_closure",
+          "value_or_bounded_diagnostic": "loop_closure=true in the exact retained record",
+          "frozen_pass_criterion": "Resolution-local forward/reverse association traversal closes exactly.",
+          "pass_fail": "PASS"
+        }
+      ],
+      "missing_gate_evidence": [
+        {
+          "gate": "NONZERO_NORM",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Positive pair-local selected-state norm bound at every canonical point.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose H residuals but no pair-local selected-state norm or raw state vector that certifies a positive norm.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "OVERLAP_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 overlap singular-value qualification at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 and diagnostic-only rank-1 shadow records; the authoritative rank-1 overlap record is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PRINCIPAL_ANGLE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 principal-angle bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 principal-angle diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PROJECTOR_DISTANCE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 projector-distance bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 projector diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        }
+      ],
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "implementation_level_evidence": {
+        "H_REPRESENTATION": "accepted H-only representation validation; zero pointwise solves",
+        "GAUGE_INVARIANT": "accepted implementation-level gauge validation; zero pointwise solves",
+        "SOLVER_ORDER_INVARIANT": "accepted implementation-level solver-order validation; zero pointwise solves"
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID;resolution=R96",
+      "resolution": "R96",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FINITE_DATA_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "NONZERO_NORM_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "H_REPRESENTATION_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "ASSOCIATION_UNAMBIGUOUS_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "OVERLAP_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PRINCIPAL_ANGLE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PROJECTOR_DISTANCE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FORWARD_REVERSE_CONSISTENT_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "GAUGE_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "SOLVER_ORDER_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "direct_evidence": [
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+          "retention_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+          "authoritative_field_or_record_id": "result.numeric_summary.finite_count_and.entries",
+          "value_or_bounded_diagnostic": "finite_count=14325; numeric_count=14325",
+          "frozen_pass_criterion": "All retained numeric values are finite for the exact pair record.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+          "retention_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+          "authoritative_field_or_record_id": "result.entries.association_loop_closure_and.rank2_status",
+          "value_or_bounded_diagnostic": "association_loop_closure=true; ambiguous_count=0",
+          "frozen_pass_criterion": "The exact pair record contains an unambiguous association.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_C3C5_R96_AUTHORITATIVE_RESULT",
+          "retention_sha256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+          "authoritative_field_or_record_id": "result.entries.association_loop_closure",
+          "value_or_bounded_diagnostic": "loop_closure=true in the exact retained record",
+          "frozen_pass_criterion": "Resolution-local forward/reverse association traversal closes exactly.",
+          "pass_fail": "PASS"
+        }
+      ],
+      "missing_gate_evidence": [
+        {
+          "gate": "NONZERO_NORM",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Positive pair-local selected-state norm bound at every canonical point.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose H residuals but no pair-local selected-state norm or raw state vector that certifies a positive norm.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "OVERLAP_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 overlap singular-value qualification at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 and diagnostic-only rank-1 shadow records; the authoritative rank-1 overlap record is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PRINCIPAL_ANGLE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 principal-angle bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 principal-angle diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PROJECTOR_DISTANCE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 projector-distance bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.entries.h_max_full6",
+            "result.entries.h_max_selected_pair",
+            "result.entries.L0",
+            "result.numeric_summary"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 projector diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        }
+      ],
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "implementation_level_evidence": {
+        "H_REPRESENTATION": "accepted H-only representation validation; zero pointwise solves",
+        "GAUGE_INVARIANT": "accepted implementation-level gauge validation; zero pointwise solves",
+        "SOLVER_ORDER_INVARIANT": "accepted implementation-level solver-order validation; zero pointwise solves"
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID;resolution=R128",
+      "resolution": "R128",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FINITE_DATA_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "NONZERO_NORM_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "H_REPRESENTATION_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "ASSOCIATION_UNAMBIGUOUS_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "OVERLAP_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PRINCIPAL_ANGLE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PROJECTOR_DISTANCE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FORWARD_REVERSE_CONSISTENT_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "GAUGE_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "SOLVER_ORDER_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "direct_evidence": [
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_A_R128_RUN2_RESULT",
+          "retention_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+          "authoritative_field_or_record_id": "result.rows_and.payloads.all_point_metrics",
+          "value_or_bounded_diagnostic": "six exact rows; six payloads; nine metrics per payload; finite frequency arrays",
+          "frozen_pass_criterion": "All retained numeric values are finite for the exact pair record.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_A_R128_RUN2_RESULT",
+          "retention_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.edges_and_loop_closure",
+          "value_or_bounded_diagnostic": "clear association edges and loop_closure=true",
+          "frozen_pass_criterion": "The exact pair record contains an unambiguous association.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_A_R128_RUN2_RESULT",
+          "retention_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.loop_closure_and.propagated_map",
+          "value_or_bounded_diagnostic": "loop_closure=true in the exact retained record",
+          "frozen_pass_criterion": "Resolution-local forward/reverse association traversal closes exactly.",
+          "pass_fail": "PASS"
+        }
+      ],
+      "missing_gate_evidence": [
+        {
+          "gate": "NONZERO_NORM",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Positive pair-local selected-state norm bound at every canonical point.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose H residuals but no pair-local selected-state norm or raw state vector that certifies a positive norm.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "OVERLAP_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 overlap singular-value qualification at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 and diagnostic-only rank-1 shadow records; the authoritative rank-1 overlap record is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PRINCIPAL_ANGLE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 principal-angle bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 principal-angle diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PROJECTOR_DISTANCE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 projector-distance bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 projector diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        }
+      ],
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "implementation_level_evidence": {
+        "H_REPRESENTATION": "accepted H-only representation validation; zero pointwise solves",
+        "GAUGE_INVARIANT": "accepted implementation-level gauge validation; zero pointwise solves",
+        "SOLVER_ORDER_INVARIANT": "accepted implementation-level solver-order validation; zero pointwise solves"
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID;resolution=R128",
+      "resolution": "R128",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FINITE_DATA_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "NONZERO_NORM_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "H_REPRESENTATION_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "ASSOCIATION_UNAMBIGUOUS_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "OVERLAP_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PRINCIPAL_ANGLE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PROJECTOR_DISTANCE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FORWARD_REVERSE_CONSISTENT_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "GAUGE_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "SOLVER_ORDER_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "direct_evidence": [
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_A_R128_RUN2_RESULT",
+          "retention_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+          "authoritative_field_or_record_id": "result.rows_and.payloads.all_point_metrics",
+          "value_or_bounded_diagnostic": "six exact rows; six payloads; nine metrics per payload; finite frequency arrays",
+          "frozen_pass_criterion": "All retained numeric values are finite for the exact pair record.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_A_R128_RUN2_RESULT",
+          "retention_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.edges_and_loop_closure",
+          "value_or_bounded_diagnostic": "clear association edges and loop_closure=true",
+          "frozen_pass_criterion": "The exact pair record contains an unambiguous association.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_A_R128_RUN2_RESULT",
+          "retention_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.loop_closure_and.propagated_map",
+          "value_or_bounded_diagnostic": "loop_closure=true in the exact retained record",
+          "frozen_pass_criterion": "Resolution-local forward/reverse association traversal closes exactly.",
+          "pass_fail": "PASS"
+        }
+      ],
+      "missing_gate_evidence": [
+        {
+          "gate": "NONZERO_NORM",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Positive pair-local selected-state norm bound at every canonical point.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose H residuals but no pair-local selected-state norm or raw state vector that certifies a positive norm.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "OVERLAP_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 overlap singular-value qualification at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 and diagnostic-only rank-1 shadow records; the authoritative rank-1 overlap record is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PRINCIPAL_ANGLE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 principal-angle bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 principal-angle diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PROJECTOR_DISTANCE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 projector-distance bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 projector diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        }
+      ],
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "implementation_level_evidence": {
+        "H_REPRESENTATION": "accepted H-only representation validation; zero pointwise solves",
+        "GAUGE_INVARIANT": "accepted implementation-level gauge validation; zero pointwise solves",
+        "SOLVER_ORDER_INVARIANT": "accepted implementation-level solver-order validation; zero pointwise solves"
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID;resolution=R128",
+      "resolution": "R128",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FINITE_DATA_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "NONZERO_NORM_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "H_REPRESENTATION_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "ASSOCIATION_UNAMBIGUOUS_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "OVERLAP_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PRINCIPAL_ANGLE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PROJECTOR_DISTANCE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FORWARD_REVERSE_CONSISTENT_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "GAUGE_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "SOLVER_ORDER_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "direct_evidence": [
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_A_R128_RUN2_RESULT",
+          "retention_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+          "authoritative_field_or_record_id": "result.rows_and.payloads.all_point_metrics",
+          "value_or_bounded_diagnostic": "six exact rows; six payloads; nine metrics per payload; finite frequency arrays",
+          "frozen_pass_criterion": "All retained numeric values are finite for the exact pair record.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_A_R128_RUN2_RESULT",
+          "retention_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.edges_and_loop_closure",
+          "value_or_bounded_diagnostic": "clear association edges and loop_closure=true",
+          "frozen_pass_criterion": "The exact pair record contains an unambiguous association.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_A_R128_RUN2_RESULT",
+          "retention_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.loop_closure_and.propagated_map",
+          "value_or_bounded_diagnostic": "loop_closure=true in the exact retained record",
+          "frozen_pass_criterion": "Resolution-local forward/reverse association traversal closes exactly.",
+          "pass_fail": "PASS"
+        }
+      ],
+      "missing_gate_evidence": [
+        {
+          "gate": "NONZERO_NORM",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Positive pair-local selected-state norm bound at every canonical point.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose H residuals but no pair-local selected-state norm or raw state vector that certifies a positive norm.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "OVERLAP_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 overlap singular-value qualification at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 and diagnostic-only rank-1 shadow records; the authoritative rank-1 overlap record is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PRINCIPAL_ANGLE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 principal-angle bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 principal-angle diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PROJECTOR_DISTANCE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 projector-distance bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 projector diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        }
+      ],
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "implementation_level_evidence": {
+        "H_REPRESENTATION": "accepted H-only representation validation; zero pointwise solves",
+        "GAUGE_INVARIANT": "accepted implementation-level gauge validation; zero pointwise solves",
+        "SOLVER_ORDER_INVARIANT": "accepted implementation-level solver-order validation; zero pointwise solves"
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID;resolution=R128",
+      "resolution": "R128",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FINITE_DATA_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "NONZERO_NORM_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "H_REPRESENTATION_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "ASSOCIATION_UNAMBIGUOUS_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "OVERLAP_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PRINCIPAL_ANGLE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PROJECTOR_DISTANCE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FORWARD_REVERSE_CONSISTENT_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "GAUGE_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "SOLVER_ORDER_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "direct_evidence": [
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_A_R128_RUN2_RESULT",
+          "retention_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+          "authoritative_field_or_record_id": "result.rows_and.payloads.all_point_metrics",
+          "value_or_bounded_diagnostic": "six exact rows; six payloads; nine metrics per payload; finite frequency arrays",
+          "frozen_pass_criterion": "All retained numeric values are finite for the exact pair record.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_A_R128_RUN2_RESULT",
+          "retention_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.edges_and_loop_closure",
+          "value_or_bounded_diagnostic": "clear association edges and loop_closure=true",
+          "frozen_pass_criterion": "The exact pair record contains an unambiguous association.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_A_R128_RUN2_RESULT",
+          "retention_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.loop_closure_and.propagated_map",
+          "value_or_bounded_diagnostic": "loop_closure=true in the exact retained record",
+          "frozen_pass_criterion": "Resolution-local forward/reverse association traversal closes exactly.",
+          "pass_fail": "PASS"
+        }
+      ],
+      "missing_gate_evidence": [
+        {
+          "gate": "NONZERO_NORM",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Positive pair-local selected-state norm bound at every canonical point.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose H residuals but no pair-local selected-state norm or raw state vector that certifies a positive norm.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "OVERLAP_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 overlap singular-value qualification at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 and diagnostic-only rank-1 shadow records; the authoritative rank-1 overlap record is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PRINCIPAL_ANGLE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 principal-angle bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 principal-angle diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PROJECTOR_DISTANCE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 projector-distance bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 projector diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        }
+      ],
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "implementation_level_evidence": {
+        "H_REPRESENTATION": "accepted H-only representation validation; zero pointwise solves",
+        "GAUGE_INVARIANT": "accepted implementation-level gauge validation; zero pointwise solves",
+        "SOLVER_ORDER_INVARIANT": "accepted implementation-level solver-order validation; zero pointwise solves"
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID;resolution=R128",
+      "resolution": "R128",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FINITE_DATA_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "NONZERO_NORM_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "H_REPRESENTATION_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "ASSOCIATION_UNAMBIGUOUS_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "OVERLAP_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PRINCIPAL_ANGLE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PROJECTOR_DISTANCE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FORWARD_REVERSE_CONSISTENT_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "GAUGE_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "SOLVER_ORDER_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "direct_evidence": [
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_A_R128_RUN2_RESULT",
+          "retention_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+          "authoritative_field_or_record_id": "result.rows_and.payloads.all_point_metrics",
+          "value_or_bounded_diagnostic": "six exact rows; six payloads; nine metrics per payload; finite frequency arrays",
+          "frozen_pass_criterion": "All retained numeric values are finite for the exact pair record.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_A_R128_RUN2_RESULT",
+          "retention_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.edges_and_loop_closure",
+          "value_or_bounded_diagnostic": "clear association edges and loop_closure=true",
+          "frozen_pass_criterion": "The exact pair record contains an unambiguous association.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_A_R128_RUN2_RESULT",
+          "retention_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.loop_closure_and.propagated_map",
+          "value_or_bounded_diagnostic": "loop_closure=true in the exact retained record",
+          "frozen_pass_criterion": "Resolution-local forward/reverse association traversal closes exactly.",
+          "pass_fail": "PASS"
+        }
+      ],
+      "missing_gate_evidence": [
+        {
+          "gate": "NONZERO_NORM",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Positive pair-local selected-state norm bound at every canonical point.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose H residuals but no pair-local selected-state norm or raw state vector that certifies a positive norm.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "OVERLAP_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 overlap singular-value qualification at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 and diagnostic-only rank-1 shadow records; the authoritative rank-1 overlap record is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PRINCIPAL_ANGLE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 principal-angle bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 principal-angle diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PROJECTOR_DISTANCE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 projector-distance bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 projector diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        }
+      ],
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "implementation_level_evidence": {
+        "H_REPRESENTATION": "accepted H-only representation validation; zero pointwise solves",
+        "GAUGE_INVARIANT": "accepted implementation-level gauge validation; zero pointwise solves",
+        "SOLVER_ORDER_INVARIANT": "accepted implementation-level solver-order validation; zero pointwise solves"
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID;resolution=R160",
+      "resolution": "R160",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FINITE_DATA_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "NONZERO_NORM_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "H_REPRESENTATION_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "ASSOCIATION_UNAMBIGUOUS_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "OVERLAP_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PRINCIPAL_ANGLE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PROJECTOR_DISTANCE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FORWARD_REVERSE_CONSISTENT_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "GAUGE_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "SOLVER_ORDER_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "direct_evidence": [
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+          "retention_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+          "authoritative_field_or_record_id": "result.rows_and.payloads.all_point_metrics",
+          "value_or_bounded_diagnostic": "six exact rows; six payloads; nine metrics per payload; finite frequency arrays",
+          "frozen_pass_criterion": "All retained numeric values are finite for the exact pair record.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+          "retention_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.edges_and_loop_closure",
+          "value_or_bounded_diagnostic": "clear association edges and loop_closure=true",
+          "frozen_pass_criterion": "The exact pair record contains an unambiguous association.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+          "retention_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.loop_closure_and.propagated_map",
+          "value_or_bounded_diagnostic": "loop_closure=true in the exact retained record",
+          "frozen_pass_criterion": "Resolution-local forward/reverse association traversal closes exactly.",
+          "pass_fail": "PASS"
+        }
+      ],
+      "missing_gate_evidence": [
+        {
+          "gate": "NONZERO_NORM",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Positive pair-local selected-state norm bound at every canonical point.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose H residuals but no pair-local selected-state norm or raw state vector that certifies a positive norm.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "OVERLAP_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 overlap singular-value qualification at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 and diagnostic-only rank-1 shadow records; the authoritative rank-1 overlap record is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PRINCIPAL_ANGLE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 principal-angle bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 principal-angle diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PROJECTOR_DISTANCE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 projector-distance bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 projector diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        }
+      ],
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "implementation_level_evidence": {
+        "H_REPRESENTATION": "accepted H-only representation validation; zero pointwise solves",
+        "GAUGE_INVARIANT": "accepted implementation-level gauge validation; zero pointwise solves",
+        "SOLVER_ORDER_INVARIANT": "accepted implementation-level solver-order validation; zero pointwise solves"
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID;resolution=R160",
+      "resolution": "R160",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FINITE_DATA_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "NONZERO_NORM_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "H_REPRESENTATION_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "ASSOCIATION_UNAMBIGUOUS_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "OVERLAP_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PRINCIPAL_ANGLE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PROJECTOR_DISTANCE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FORWARD_REVERSE_CONSISTENT_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "GAUGE_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "SOLVER_ORDER_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "direct_evidence": [
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+          "retention_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+          "authoritative_field_or_record_id": "result.rows_and.payloads.all_point_metrics",
+          "value_or_bounded_diagnostic": "six exact rows; six payloads; nine metrics per payload; finite frequency arrays",
+          "frozen_pass_criterion": "All retained numeric values are finite for the exact pair record.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+          "retention_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.edges_and_loop_closure",
+          "value_or_bounded_diagnostic": "clear association edges and loop_closure=true",
+          "frozen_pass_criterion": "The exact pair record contains an unambiguous association.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+          "retention_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.loop_closure_and.propagated_map",
+          "value_or_bounded_diagnostic": "loop_closure=true in the exact retained record",
+          "frozen_pass_criterion": "Resolution-local forward/reverse association traversal closes exactly.",
+          "pass_fail": "PASS"
+        }
+      ],
+      "missing_gate_evidence": [
+        {
+          "gate": "NONZERO_NORM",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Positive pair-local selected-state norm bound at every canonical point.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose H residuals but no pair-local selected-state norm or raw state vector that certifies a positive norm.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "OVERLAP_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 overlap singular-value qualification at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 and diagnostic-only rank-1 shadow records; the authoritative rank-1 overlap record is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PRINCIPAL_ANGLE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 principal-angle bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 principal-angle diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PROJECTOR_DISTANCE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 projector-distance bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 projector diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        }
+      ],
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "implementation_level_evidence": {
+        "H_REPRESENTATION": "accepted H-only representation validation; zero pointwise solves",
+        "GAUGE_INVARIANT": "accepted implementation-level gauge validation; zero pointwise solves",
+        "SOLVER_ORDER_INVARIANT": "accepted implementation-level solver-order validation; zero pointwise solves"
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID;resolution=R160",
+      "resolution": "R160",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FINITE_DATA_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "NONZERO_NORM_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "H_REPRESENTATION_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "ASSOCIATION_UNAMBIGUOUS_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "OVERLAP_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PRINCIPAL_ANGLE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PROJECTOR_DISTANCE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FORWARD_REVERSE_CONSISTENT_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "GAUGE_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "SOLVER_ORDER_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "direct_evidence": [
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+          "retention_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+          "authoritative_field_or_record_id": "result.rows_and.payloads.all_point_metrics",
+          "value_or_bounded_diagnostic": "six exact rows; six payloads; nine metrics per payload; finite frequency arrays",
+          "frozen_pass_criterion": "All retained numeric values are finite for the exact pair record.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+          "retention_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.edges_and_loop_closure",
+          "value_or_bounded_diagnostic": "clear association edges and loop_closure=true",
+          "frozen_pass_criterion": "The exact pair record contains an unambiguous association.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+          "retention_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.loop_closure_and.propagated_map",
+          "value_or_bounded_diagnostic": "loop_closure=true in the exact retained record",
+          "frozen_pass_criterion": "Resolution-local forward/reverse association traversal closes exactly.",
+          "pass_fail": "PASS"
+        }
+      ],
+      "missing_gate_evidence": [
+        {
+          "gate": "NONZERO_NORM",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Positive pair-local selected-state norm bound at every canonical point.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose H residuals but no pair-local selected-state norm or raw state vector that certifies a positive norm.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "OVERLAP_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 overlap singular-value qualification at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 and diagnostic-only rank-1 shadow records; the authoritative rank-1 overlap record is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PRINCIPAL_ANGLE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 principal-angle bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 principal-angle diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PROJECTOR_DISTANCE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 projector-distance bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 projector diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        }
+      ],
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "implementation_level_evidence": {
+        "H_REPRESENTATION": "accepted H-only representation validation; zero pointwise solves",
+        "GAUGE_INVARIANT": "accepted implementation-level gauge validation; zero pointwise solves",
+        "SOLVER_ORDER_INVARIANT": "accepted implementation-level solver-order validation; zero pointwise solves"
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID;resolution=R160",
+      "resolution": "R160",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FINITE_DATA_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "NONZERO_NORM_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "H_REPRESENTATION_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "ASSOCIATION_UNAMBIGUOUS_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "OVERLAP_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PRINCIPAL_ANGLE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PROJECTOR_DISTANCE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FORWARD_REVERSE_CONSISTENT_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "GAUGE_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "SOLVER_ORDER_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "direct_evidence": [
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+          "retention_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+          "authoritative_field_or_record_id": "result.rows_and.payloads.all_point_metrics",
+          "value_or_bounded_diagnostic": "six exact rows; six payloads; nine metrics per payload; finite frequency arrays",
+          "frozen_pass_criterion": "All retained numeric values are finite for the exact pair record.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+          "retention_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.edges_and_loop_closure",
+          "value_or_bounded_diagnostic": "clear association edges and loop_closure=true",
+          "frozen_pass_criterion": "The exact pair record contains an unambiguous association.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+          "retention_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.loop_closure_and.propagated_map",
+          "value_or_bounded_diagnostic": "loop_closure=true in the exact retained record",
+          "frozen_pass_criterion": "Resolution-local forward/reverse association traversal closes exactly.",
+          "pass_fail": "PASS"
+        }
+      ],
+      "missing_gate_evidence": [
+        {
+          "gate": "NONZERO_NORM",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Positive pair-local selected-state norm bound at every canonical point.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose H residuals but no pair-local selected-state norm or raw state vector that certifies a positive norm.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "OVERLAP_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 overlap singular-value qualification at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 and diagnostic-only rank-1 shadow records; the authoritative rank-1 overlap record is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PRINCIPAL_ANGLE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 principal-angle bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 principal-angle diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PROJECTOR_DISTANCE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 projector-distance bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 projector diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        }
+      ],
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "implementation_level_evidence": {
+        "H_REPRESENTATION": "accepted H-only representation validation; zero pointwise solves",
+        "GAUGE_INVARIANT": "accepted implementation-level gauge validation; zero pointwise solves",
+        "SOLVER_ORDER_INVARIANT": "accepted implementation-level solver-order validation; zero pointwise solves"
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID;resolution=R160",
+      "resolution": "R160",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FINITE_DATA_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "NONZERO_NORM_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "H_REPRESENTATION_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "ASSOCIATION_UNAMBIGUOUS_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "OVERLAP_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PRINCIPAL_ANGLE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "PROJECTOR_DISTANCE_QUALIFIED_STATUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "FORWARD_REVERSE_CONSISTENT_STATUS": "DIRECT_AUTHORITATIVE_RETAINED",
+      "GAUGE_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "SOLVER_ORDER_INVARIANT_STATUS": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+      "direct_evidence": [
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+          "retention_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+          "authoritative_field_or_record_id": "result.rows_and.payloads.all_point_metrics",
+          "value_or_bounded_diagnostic": "six exact rows; six payloads; nine metrics per payload; finite frequency arrays",
+          "frozen_pass_criterion": "All retained numeric values are finite for the exact pair record.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+          "retention_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.edges_and_loop_closure",
+          "value_or_bounded_diagnostic": "clear association edges and loop_closure=true",
+          "frozen_pass_criterion": "The exact pair record contains an unambiguous association.",
+          "pass_fail": "PASS"
+        },
+        {
+          "status": "DIRECT_AUTHORITATIVE_RETAINED",
+          "retention_id": "RP3_B_R160_AUTHORITATIVE_RESULT",
+          "retention_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+          "authoritative_field_or_record_id": "result.payloads.stencils.association.loop_closure_and.propagated_map",
+          "value_or_bounded_diagnostic": "loop_closure=true in the exact retained record",
+          "frozen_pass_criterion": "Resolution-local forward/reverse association traversal closes exactly.",
+          "pass_fail": "PASS"
+        }
+      ],
+      "missing_gate_evidence": [
+        {
+          "gate": "NONZERO_NORM",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Positive pair-local selected-state norm bound at every canonical point.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose H residuals but no pair-local selected-state norm or raw state vector that certifies a positive norm.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "OVERLAP_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 overlap singular-value qualification at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 and diagnostic-only rank-1 shadow records; the authoritative rank-1 overlap record is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PRINCIPAL_ANGLE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 principal-angle bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 principal-angle diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        },
+        {
+          "gate": "PROJECTOR_DISTANCE_QUALIFIED",
+          "status": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+          "expected_required_quantity": "Authoritative rank-1 projector-distance bound at every two-stencil edge.",
+          "authoritative_fields_searched": [
+            "result.rows",
+            "result.payloads.all_point_metrics",
+            "result.payloads.stencils.L2_RANK2",
+            "result.payloads.stencils.BAND2_PHYSICAL_BRANCH_SHADOW",
+            "result.payloads.stencils.BAND3_PHYSICAL_BRANCH_SHADOW"
+          ],
+          "why_direct_evidence_is_absent": "Exact pages expose rank-2 projector diagnostics only; rank-1 qualification is absent.",
+          "why_solver_free_reconstruction_is_impossible": "Pointwise selected-state/eigenspace data are absent; residuals, frequencies, curvature, rank-2 diagnostics and resolution contraction do not uniquely reconstruct this rank-1/local quantity under the frozen contract.",
+          "minimum_new_field_data_required": "Provider.solve selected-state norms and rank-1 overlap/eigenspace records at the canonical points.",
+          "which_provider_solve_sample_points_can_supply_it": [
+            "CENTER",
+            "H72_PLUS_X",
+            "H72_MINUS_X",
+            "H72_PLUS_Y",
+            "H72_MINUS_Y",
+            "H144_PLUS_X",
+            "H144_MINUS_X",
+            "H144_PLUS_Y",
+            "H144_MINUS_Y"
+          ]
+        }
+      ],
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "implementation_level_evidence": {
+        "H_REPRESENTATION": "accepted H-only representation validation; zero pointwise solves",
+        "GAUGE_INVARIANT": "accepted implementation-level gauge validation; zero pointwise solves",
+        "SOLVER_ORDER_INVARIANT": "accepted implementation-level solver-order validation; zero pointwise solves"
+      }
+    }
+  ],
+  "historically_missing_pair_count": 9,
+  "historically_missing_rows": [
+    {
+      "pair_id": "fr=0;grid_i=-10;grid_j=-3;estimator=CALIBRATION_CONTROL;resolution=R96",
+      "resolution": "R96",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "gate_statuses": {
+        "FINITE_DATA": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "NONZERO_NORM": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "H_REPRESENTATION": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "ASSOCIATION_UNAMBIGUOUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "OVERLAP_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PRINCIPAL_ANGLE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PROJECTOR_DISTANCE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "FORWARD_REVERSE_CONSISTENT": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "GAUGE_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "SOLVER_ORDER_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION"
+      },
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "reason": "No exact authoritative retained object is bound for this calibration/control pair; no value is inferred from another pair."
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=9;estimator=CALIBRATION_CONTROL;resolution=R96",
+      "resolution": "R96",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "gate_statuses": {
+        "FINITE_DATA": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "NONZERO_NORM": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "H_REPRESENTATION": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "ASSOCIATION_UNAMBIGUOUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "OVERLAP_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PRINCIPAL_ANGLE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PROJECTOR_DISTANCE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "FORWARD_REVERSE_CONSISTENT": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "GAUGE_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "SOLVER_ORDER_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION"
+      },
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "reason": "No exact authoritative retained object is bound for this calibration/control pair; no value is inferred from another pair."
+    },
+    {
+      "pair_id": "fr=0;grid_i=-6;grid_j=-1;estimator=STENCIL_DIAGNOSTIC;resolution=R96",
+      "resolution": "R96",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "gate_statuses": {
+        "FINITE_DATA": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "NONZERO_NORM": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "H_REPRESENTATION": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "ASSOCIATION_UNAMBIGUOUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "OVERLAP_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PRINCIPAL_ANGLE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PROJECTOR_DISTANCE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "FORWARD_REVERSE_CONSISTENT": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "GAUGE_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "SOLVER_ORDER_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION"
+      },
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "reason": "No exact authoritative retained object is bound for this calibration/control pair; no value is inferred from another pair."
+    },
+    {
+      "pair_id": "fr=0;grid_i=-10;grid_j=-3;estimator=CALIBRATION_CONTROL;resolution=R128",
+      "resolution": "R128",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "gate_statuses": {
+        "FINITE_DATA": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "NONZERO_NORM": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "H_REPRESENTATION": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "ASSOCIATION_UNAMBIGUOUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "OVERLAP_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PRINCIPAL_ANGLE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PROJECTOR_DISTANCE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "FORWARD_REVERSE_CONSISTENT": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "GAUGE_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "SOLVER_ORDER_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION"
+      },
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "reason": "No exact authoritative retained object is bound for this calibration/control pair; no value is inferred from another pair."
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=9;estimator=CALIBRATION_CONTROL;resolution=R128",
+      "resolution": "R128",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "gate_statuses": {
+        "FINITE_DATA": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "NONZERO_NORM": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "H_REPRESENTATION": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "ASSOCIATION_UNAMBIGUOUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "OVERLAP_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PRINCIPAL_ANGLE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PROJECTOR_DISTANCE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "FORWARD_REVERSE_CONSISTENT": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "GAUGE_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "SOLVER_ORDER_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION"
+      },
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "reason": "No exact authoritative retained object is bound for this calibration/control pair; no value is inferred from another pair."
+    },
+    {
+      "pair_id": "fr=0;grid_i=-6;grid_j=-1;estimator=STENCIL_DIAGNOSTIC;resolution=R128",
+      "resolution": "R128",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "gate_statuses": {
+        "FINITE_DATA": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "NONZERO_NORM": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "H_REPRESENTATION": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "ASSOCIATION_UNAMBIGUOUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "OVERLAP_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PRINCIPAL_ANGLE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PROJECTOR_DISTANCE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "FORWARD_REVERSE_CONSISTENT": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "GAUGE_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "SOLVER_ORDER_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION"
+      },
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "reason": "No exact authoritative retained object is bound for this calibration/control pair; no value is inferred from another pair."
+    },
+    {
+      "pair_id": "fr=0;grid_i=-10;grid_j=-3;estimator=CALIBRATION_CONTROL;resolution=R160",
+      "resolution": "R160",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "gate_statuses": {
+        "FINITE_DATA": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "NONZERO_NORM": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "H_REPRESENTATION": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "ASSOCIATION_UNAMBIGUOUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "OVERLAP_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PRINCIPAL_ANGLE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PROJECTOR_DISTANCE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "FORWARD_REVERSE_CONSISTENT": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "GAUGE_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "SOLVER_ORDER_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION"
+      },
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "reason": "No exact authoritative retained object is bound for this calibration/control pair; no value is inferred from another pair."
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=9;estimator=CALIBRATION_CONTROL;resolution=R160",
+      "resolution": "R160",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "gate_statuses": {
+        "FINITE_DATA": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "NONZERO_NORM": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "H_REPRESENTATION": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "ASSOCIATION_UNAMBIGUOUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "OVERLAP_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PRINCIPAL_ANGLE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PROJECTOR_DISTANCE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "FORWARD_REVERSE_CONSISTENT": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "GAUGE_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "SOLVER_ORDER_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION"
+      },
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "reason": "No exact authoritative retained object is bound for this calibration/control pair; no value is inferred from another pair."
+    },
+    {
+      "pair_id": "fr=0;grid_i=-6;grid_j=-1;estimator=STENCIL_DIAGNOSTIC;resolution=R160",
+      "resolution": "R160",
+      "pair_classification": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+      "gate_statuses": {
+        "FINITE_DATA": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "NONZERO_NORM": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "H_REPRESENTATION": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "ASSOCIATION_UNAMBIGUOUS": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "OVERLAP_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PRINCIPAL_ANGLE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "PROJECTOR_DISTANCE_QUALIFIED": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "FORWARD_REVERSE_CONSISTENT": "MISSING_REQUIRES_NATIVE_RECOMPUTE",
+        "GAUGE_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION",
+        "SOLVER_ORDER_INVARIANT": "SATISFIED_BY_ACCEPTED_IMPLEMENTATION_LEVEL_VALIDATION"
+      },
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "reason": "No exact authoritative retained object is bound for this calibration/control pair; no value is inferred from another pair."
+    }
+  ],
+  "minimum_budget_proof_status": "UNRESOLVED",
+  "no_inference_from_curvature_frequency_rank2_or_resolution_contraction": true,
+  "no_raw_large_payloads_committed": true
+}

@@ -1,0 +1,942 @@
+{
+  "schema": "mephc_e9f_qp_b_c2_c3_r7_c1_provider_solve_dependencies_v2",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R7-C1-20260828-290",
+  "base_sandbox_sha": "76f7b470a61e2f8a0398cdb20089911976f02b5",
+  "canonical_possible_sample_points": [
+    "CENTER",
+    "H72_PLUS_X",
+    "H72_MINUS_X",
+    "H72_PLUS_Y",
+    "H72_MINUS_Y",
+    "H144_PLUS_X",
+    "H144_MINUS_X",
+    "H144_PLUS_Y",
+    "H144_MINUS_Y"
+  ],
+  "reusable_dependencies": [
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID;resolution=R96",
+      "resolution": "R96",
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID;resolution=R96",
+      "resolution": "R96",
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID;resolution=R96",
+      "resolution": "R96",
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID;resolution=R96",
+      "resolution": "R96",
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID;resolution=R96",
+      "resolution": "R96",
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID;resolution=R128",
+      "resolution": "R128",
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID;resolution=R128",
+      "resolution": "R128",
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID;resolution=R128",
+      "resolution": "R128",
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID;resolution=R128",
+      "resolution": "R128",
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID;resolution=R128",
+      "resolution": "R128",
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID;resolution=R160",
+      "resolution": "R160",
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID;resolution=R160",
+      "resolution": "R160",
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID;resolution=R160",
+      "resolution": "R160",
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID;resolution=R160",
+      "resolution": "R160",
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID;resolution=R160",
+      "resolution": "R160",
+      "missing_native_local_gates": [
+        "NONZERO_NORM",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    }
+  ],
+  "historically_missing_dependencies": [
+    {
+      "pair_id": "fr=0;grid_i=-10;grid_j=-3;estimator=CALIBRATION_CONTROL;resolution=R96",
+      "resolution": "R96",
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=9;estimator=CALIBRATION_CONTROL;resolution=R96",
+      "resolution": "R96",
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-6;grid_j=-1;estimator=STENCIL_DIAGNOSTIC;resolution=R96",
+      "resolution": "R96",
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-10;grid_j=-3;estimator=CALIBRATION_CONTROL;resolution=R128",
+      "resolution": "R128",
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=9;estimator=CALIBRATION_CONTROL;resolution=R128",
+      "resolution": "R128",
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-6;grid_j=-1;estimator=STENCIL_DIAGNOSTIC;resolution=R128",
+      "resolution": "R128",
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-10;grid_j=-3;estimator=CALIBRATION_CONTROL;resolution=R160",
+      "resolution": "R160",
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=9;estimator=CALIBRATION_CONTROL;resolution=R160",
+      "resolution": "R160",
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    },
+    {
+      "pair_id": "fr=0;grid_i=-6;grid_j=-1;estimator=STENCIL_DIAGNOSTIC;resolution=R160",
+      "resolution": "R160",
+      "missing_native_local_gates": [
+        "FINITE_DATA",
+        "NONZERO_NORM",
+        "ASSOCIATION_UNAMBIGUOUS",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "required_new_sample_points": [
+        "CENTER",
+        "H72_PLUS_X",
+        "H72_MINUS_X",
+        "H72_PLUS_Y",
+        "H72_MINUS_Y",
+        "H144_PLUS_X",
+        "H144_MINUS_X",
+        "H144_PLUS_Y",
+        "H144_MINUS_Y"
+      ],
+      "required_new_provider_solve_count": null,
+      "why_each_sample_point_is_required": {
+        "CENTER": "Anchor point: candidate norm/reference data.",
+        "H72_PLUS_X": "+x vertex: candidate 1/72 edge data.",
+        "H72_MINUS_X": "-x vertex: candidate 1/72 edge data.",
+        "H72_PLUS_Y": "+y vertex: candidate 1/72 edge data.",
+        "H72_MINUS_Y": "-y vertex: candidate 1/72 edge data.",
+        "H144_PLUS_X": "+x vertex: candidate 1/144 edge data.",
+        "H144_MINUS_X": "-x vertex: candidate 1/144 edge data.",
+        "H144_PLUS_Y": "+y vertex: candidate 1/144 edge data.",
+        "H144_MINUS_Y": "-y vertex: candidate 1/144 edge data."
+      },
+      "dependency_status": "UNRESOLVED_TRUE_INDISPENSABILITY_NOT_PROVEN",
+      "why_count_is_unresolved": "Exact pages identify missing local quantities but do not prove that every candidate point is indispensable or that any point can be safely omitted.",
+      "implementation_level_gates_contribute_zero_pointwise_solves": true,
+      "equivalent_authoritative_retained_data_unavailable": true
+    }
+  ],
+  "locked_pair_count": 24,
+  "full_9_solve_bundle_equivalent_pair_count": null,
+  "partial_bundle_pair_count": 24,
+  "zero_new_solve_reusable_pair_count": 0,
+  "solver_free_recovery_assumption": false,
+  "mechanical_sum_formula": "unresolved until each pair's indispensable provider.solve set is proven",
+  "mechanical_sum": null
+}

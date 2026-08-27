@@ -1,0 +1,23 @@
+{
+  "schema": "mephc_e9f_qp_b_c2_c3_r7_c1_true_minimal_native_budget_v2",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R7-C1-20260828-290",
+  "base_sandbox_sha": "76f7b470a61e2f8a0398cdb20089911976f02b5",
+  "numerically_reusable_pairs": 15,
+  "gate_complete_reusable_pairs": 0,
+  "gate_incomplete_reusable_pairs": 15,
+  "historically_missing_pairs": 9,
+  "locked_pairs": 24,
+  "full_9_solve_bundle_equivalent_pair_count": null,
+  "partial_bundle_pair_count": 24,
+  "zero_new_solve_reusable_pair_count": 0,
+  "true_minimum_fresh_base_native_solve_budget": null,
+  "conservative_216_solve_ceiling": 216,
+  "optional_r192_native_solve_budget": 9,
+  "optional_r192_excluded_from_base_minimum": true,
+  "minimum_proven_minimal": false,
+  "proof_status": "UNRESOLVED",
+  "conservative_population_of_pairs": 24,
+  "historical_81_solve_undercount": "The prior 81 count treated the 15 reusable pairs as zero-new-solve; the amount omitted cannot be asserted as 135 indispensable solves until pair dependencies are proven.",
+  "native_solves_executed": 0,
+  "mpb_execution": false
+}
