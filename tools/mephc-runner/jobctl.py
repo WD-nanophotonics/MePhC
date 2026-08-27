@@ -541,14 +541,18 @@ def wait(job_id: str, timeout: int) -> int:
 
 
 def capabilities() -> dict[str, Any]:
-    active=[];orphaned=[];seen=set()
+    active=[];orphaned=[];seen=set();stale_index=0
     for job_id, value in sorted(active_index.read(JOBS.parent).items()):
-        name=value.get("state")
+        authoritative = read_basic_state(job_id)
+        name=authoritative.get("state")
+        if name in TERMINAL:
+            stale_index += 1
+            continue
         if name == "unknown":
             orphaned.append(job_id)
             continue
         active.append({"job_id":job_id,"state":name,
-                       "operation":value.get("operation"),
+                       "operation":value.get("operation") or authoritative.get("operation"),
                        "safe_next_action":"recover" if name=="recovery_required" else "status_or_wait"})
         seen.add(job_id)
     latent = latent_active_jobs(seen)
@@ -569,7 +573,8 @@ def capabilities() -> dict[str, Any]:
                                    "archive_formats":["tar","tar.gz","tgz","git-bundle"]},
             "runtime_attestation":attestation,
             "arbitrary_shell":False,"direct_browser":False,"active_jobs":active,
-            "orphaned_job_count":len(orphaned),"latent_active_job_count":len(latent),**workflow.view(),
+            "orphaned_job_count":len(orphaned),"latent_active_job_count":len(latent),
+            "stale_active_index_count":stale_index,**workflow.view(),
             "safe_next_tool":attestation["safe_next_tool"] if not attestation["coherent"] else
                              "mephc_resume" if not active else "mephc_status_or_wait"}
 

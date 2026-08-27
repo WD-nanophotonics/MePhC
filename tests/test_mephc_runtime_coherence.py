@@ -139,6 +139,12 @@ def test_capabilities_finds_ready_job_missing_from_active_index(tmp_path, monkey
         "operation":"retention_search", "latent_index_entry":True, "safe_next_action":"status_or_wait"}]
 
 
+def test_worker_skips_terminal_unclaimed_ready_and_rebuilds_index():
+    source = (RUNNER / "worker.py").read_text(encoding="utf-8")
+    assert "active_index.rebuild(JOBS)" in source
+    assert 'existing not in {"succeeded", "failed", "recovery_required"}' in source
+
+
 def test_stale_ready_reconciliation_never_executes_and_preserves_current_job(tmp_path, monkeypatch):
     module = load("coherence_stale_reconcile", RUNNER / "reconcile_stale_ready.py")
     jobs, runtime = tmp_path / "jobs", tmp_path / "runtime"

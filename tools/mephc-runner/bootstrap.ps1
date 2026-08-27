@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([switch]$Install,[switch]$Verify,[switch]$InventoryStaleReady,[switch]$ReconcileStaleReady,[string]$SourceCommit='')
+param([switch]$Install,[switch]$Verify,[switch]$InventoryStaleReady,[switch]$ReconcileStaleReady,[switch]$PrepareActivation,[string]$SourceCommit='')
 $ErrorActionPreference='Stop'
 $SourceRoot=Split-Path -Parent $MyInvocation.MyCommand.Path
 $Runtime=Join-Path $env:LOCALAPPDATA 'MePhCRunner'
@@ -24,15 +24,16 @@ foreach($name in $Files) {
   $Manifest += [ordered]@{name=$name;sha256=(Get-FileHash -Algorithm SHA256 -LiteralPath $path).Hash.ToLowerInvariant();bytes=(Get-Item -LiteralPath $path).Length}
 }
 $Manifest|ConvertTo-Json -Depth 4
-if(-not $Install -and -not $Verify -and -not $InventoryStaleReady -and -not $ReconcileStaleReady) {
+if(-not $Install -and -not $Verify -and -not $InventoryStaleReady -and -not $ReconcileStaleReady -and -not $PrepareActivation) {
   Write-Output 'AUDIT_ONLY=true; rerun this exact script with -Install after reviewing the manifest.'
   exit 0
 }
 
 $sourceWsl=(wsl.exe -d Ubuntu -- wslpath -a ($SourceRoot -replace '\\','/')).Trim()
 if(-not $sourceWsl){throw 'cannot map bootstrap source directory into WSL'}
-if($InventoryStaleReady -or $ReconcileStaleReady){
-  $mode=if($ReconcileStaleReady){'apply'}else{'inventory'}
+if($InventoryStaleReady -or $ReconcileStaleReady -or $PrepareActivation){
+  if($PrepareActivation){wsl.exe -d Ubuntu -u root -- systemctl stop mephc-runner.service;if($LASTEXITCODE -ne 0){throw 'failed to stop worker for activation preparation'}}
+  $mode=if($ReconcileStaleReady -or $PrepareActivation){'apply'}else{'inventory'}
   wsl.exe -d Ubuntu -- $Python "$sourceWsl/reconcile_stale_ready.py" $mode --target-source-commit $SourceCommit
   exit $LASTEXITCODE
 }

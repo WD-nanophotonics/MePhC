@@ -658,13 +658,19 @@ def main() -> int:
         print(json.dumps({"event": "runner_start_failed", "error_code": "WORKER_ALREADY_RUNNING"}))
         return 3
     repair_interrupted()
+    active_index.rebuild(JOBS)
     threading.Thread(target=heartbeat_loop, daemon=True).start()
     while True:
         for job_dir in sorted(path for path in JOBS.iterdir() if path.is_dir()):
             if (job_dir / "RECOVER").is_file():
                 execute(job_dir, recovery=True)
             elif (job_dir / "READY").is_file() and not (job_dir / "CLAIMED").exists():
-                execute(job_dir)
+                try:
+                    existing = read_object(job_dir / "state.json").get("state")
+                except Rejected:
+                    existing = "unknown"
+                if existing not in {"succeeded", "failed", "recovery_required"}:
+                    execute(job_dir)
         time.sleep(1.0)
 
 
