@@ -14,6 +14,13 @@ $StateRootUnc='\\wsl.localhost\Ubuntu\home\icy\.local\state\mephc-runner\MEPHC'
 $Heartbeat=Join-Path $Runtime 'broker-heartbeat.json'
 $script:RunnerExitCode=0
 
+function Get-Sha256([string]$Path) {
+  $stream=[IO.File]::OpenRead($Path)
+  $sha=[Security.Cryptography.SHA256]::Create()
+  try { return -join @($sha.ComputeHash($stream)|ForEach-Object {$_.ToString('x2')}) }
+  finally { $sha.Dispose(); $stream.Dispose() }
+}
+
 function Invoke-WslFixed([string[]]$FixedArguments) {
   & "$env:SystemRoot\System32\wsl.exe" -d $Distro -- @FixedArguments
   $script:RunnerExitCode=$LASTEXITCODE
@@ -26,46 +33,12 @@ function Ensure-Worker {
     if($LASTEXITCODE -ne 0) { throw 'WSL_WORKER_UNAVAILABLE' }
   }
 }
-function Dispatch-ChangeJobs {
-  $jobsRoot=Join-Path $StateRootUnc 'runner\jobs'
-  if(-not(Test-Path -LiteralPath $jobsRoot -PathType Container)){return}
-  foreach($directory in Get-ChildItem -LiteralPath $jobsRoot -Directory) {
-    $ready=Join-Path $directory.FullName 'MATERIALIZE_READY'
-    $recoverReady=Join-Path $directory.FullName 'MATERIALIZE_RECOVER_READY'
-    $mode=if(Test-Path -LiteralPath $recoverReady -PathType Leaf){'recover'}elseif(Test-Path -LiteralPath $ready -PathType Leaf){'transact'}else{$null}
-    if($null -eq $mode){continue}
-    $dispatchName=if($mode -eq 'recover'){'MATERIALIZE_RECOVER_DISPATCHED'}else{'MATERIALIZE_DISPATCHED'}
-    $dispatched=Join-Path $directory.FullName $dispatchName
-    if(Test-Path -LiteralPath $dispatched){continue}
-    try {
-      $job=Get-Content -Raw -LiteralPath (Join-Path $directory.FullName 'job.json')|ConvertFrom-Json
-      if($job.operation -ne 'change' -or $job.project_id -ne 'MEPHC'){throw 'CHANGE_JOB_INVALID'}
-      if($job.job_id -ne $directory.Name -or $job.job_id -notmatch '^MEPHC-JOB-[A-Z0-9._-]+$'){throw 'CHANGE_JOB_ID_INVALID'}
-      if($job.schema -ne 'mephc-runner-job-v2' -or ([string]$job.expected_control_root).ToLowerInvariant() -ne $ControlRoot.ToLowerInvariant()){throw 'CHANGE_CONTROL_ROOT_INVALID'}
-      $materializer=Join-Path $Runtime 'windows_materializer.py'
-      $windowsPython=(Get-Command python.exe -ErrorAction Stop).Source
-      $process=Start-Process -FilePath $windowsPython -ArgumentList @($materializer,$mode,$directory.FullName) -WorkingDirectory $ControlRoot -WindowStyle Hidden -PassThru
-      $process.WaitForExit()
-      if($process.ExitCode -ne 0){throw 'CHANGE_WINDOWS_MATERIALIZER_FAILED'}
-      [IO.File]::WriteAllText($dispatched,([DateTime]::UtcNow.ToString('o')+"`n"),[Text.UTF8Encoding]::new($false))
-    } catch {
-      $state=@{state='failed';error_code='CHANGE_BROKER_DISPATCH_FAILED';detail=$_.Exception.Message}|ConvertTo-Json -Compress
-      $stateName=if($mode -eq 'recover'){'materializer-recovery-state.json'}else{'materializer-state.json'}
-      [IO.File]::WriteAllText((Join-Path $directory.FullName $stateName),$state,[Text.UTF8Encoding]::new($false))
-    }
-  }
-}
-
-
 if($Command -eq 'Broker') {
   New-Item -ItemType Directory -Path $Runtime -Force | Out-Null
-  while($true) {
-    $ok=$true
-    try { Ensure-Worker; Dispatch-ChangeJobs } catch { $ok=$false }
-    $current=if(Test-Path -LiteralPath (Join-Path $Runtime 'current.json')){Get-Content -Raw -LiteralPath (Join-Path $Runtime 'current.json')|ConvertFrom-Json}else{$null}
-    @{schema='mephc-windows-broker-heartbeat-v1';updated_at=[DateTime]::UtcNow.ToString('o');pid=$PID;worker_ok=$ok;distro=$Distro;broker_build_id=$current.build_id}|ConvertTo-Json -Compress|Set-Content -LiteralPath $Heartbeat -Encoding UTF8
-    Start-Sleep -Seconds 10
-  }
+  $windowsPython=(Get-Command python.exe -ErrorAction Stop).Source
+  $broker=Join-Path $Runtime 'windows_broker.py'
+  & $windowsPython $broker
+  exit $LASTEXITCODE
 }
 
 if($Command -eq 'Health') {
@@ -87,9 +60,9 @@ if($Command -eq 'Health') {
   $manifestPath=Join-Path $Runtime 'install-manifest.json'
   if(-not(Test-Path -LiteralPath $manifestPath -PathType Leaf)){$errors.Add('WINDOWS_INSTALL_MANIFEST_MISSING')}else{
     $manifest=Get-Content -Raw -LiteralPath $manifestPath|ConvertFrom-Json
-    foreach($entry in $manifest|Where-Object {$_.name -in @('mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','README.md')}){
+    foreach($entry in $manifest|Where-Object {$_.name -in @('mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','windows_broker.py','windows_materializer.py','README.md')}){
       $installed=Join-Path $Runtime $entry.name
-      if(-not(Test-Path -LiteralPath $installed -PathType Leaf) -or (Get-FileHash -Algorithm SHA256 -LiteralPath $installed).Hash.ToLowerInvariant() -ne $entry.sha256){$errors.Add('WINDOWS_INSTALL_DRIFT');break}
+      if(-not(Test-Path -LiteralPath $installed -PathType Leaf) -or (Get-Sha256 $installed) -ne $entry.sha256){$errors.Add('WINDOWS_INSTALL_DRIFT');break}
     }
   }
   $unresolved=Get-ChildItem -LiteralPath (Join-Path $StateRootUnc 'runner\jobs') -Directory -ErrorAction SilentlyContinue|Where-Object {$s=Join-Path $_.FullName 'state.json'; if(Test-Path -LiteralPath $s){$v=Get-Content -Raw -LiteralPath $s|ConvertFrom-Json; $v.state -in @('running','recovery_required')}else{$false}}

@@ -13,6 +13,7 @@ import secrets
 import subprocess
 import sys
 import time
+from datetime import datetime, timezone
 from typing import Any
 
 INSTALL_ROOT = Path(__file__).resolve().parent
@@ -29,6 +30,15 @@ NATIVE_RECIPES = INSTALL_ROOT / "native-recipes.json"
 TERMINAL = {"succeeded", "failed", "recovery_required"}
 OPERATIONS = {"doctor", "worktree", "prelive", "native", "publish", "courier", "change"}
 SHA64 = re.compile(r"^[0-9a-f]{64}$")
+
+
+class ChangeRejected(ValueError):
+    def __init__(self, error_code: str, *, noop_files: list[str] | None = None,
+                 safe_next_tool: str = "mephc_change") -> None:
+        self.error_code = error_code
+        self.noop_files = noop_files or []
+        self.safe_next_tool = safe_next_tool
+        super().__init__(error_code)
 
 
 def canonical(value: dict[str, Any]) -> bytes:
@@ -159,6 +169,9 @@ def submit(operation: str, arguments: list[str], certificate_sha256: str | None)
     if operation not in OPERATIONS:
         raise SystemExit(f"operation not allowed: {operation}")
     validate_arguments(operation, arguments)
+    blocker = unresolved_change()
+    if blocker and operation in {"worktree", "native", "publish", "courier"}:
+        raise SystemExit(f"CHANGE_RECOVERY_BLOCKS_SIDE_EFFECTS:{blocker}")
     certificate = "" if operation == "doctor" else (certificate_sha256 or latest_certificate_sha256())
     if operation != "doctor" and not SHA64.fullmatch(certificate):
         raise SystemExit("certificate SHA-256 is invalid")
@@ -194,12 +207,16 @@ def change_path(value: object) -> Path:
 
 
 def submit_change(change: dict[str, Any]) -> Path:
+    blocker = unresolved_change()
+    if blocker:
+        raise ChangeRejected("CHANGE_RECOVERY_BLOCKS_SIDE_EFFECTS", safe_next_tool="mephc_status")
     if not isinstance(change, dict) or set(change) != {"files", "tests", "commit_message"}:
         raise SystemExit("change payload schema mismatch")
     files = change.get("files")
     if not isinstance(files, list) or not files:
         raise SystemExit("change files must be non-empty")
     records: list[dict[str, str]] = []
+    noop_files: list[str] = []
     for item in files:
         if not isinstance(item, dict) or set(item) != {"path", "content_utf8"}:
             raise SystemExit("invalid change file record")
@@ -213,7 +230,16 @@ def submit_change(change: dict[str, Any]) -> Path:
             raise SystemExit("change content is not UTF-8") from exc
         if target.exists() and not target.is_file():
             raise SystemExit("change target must be a regular file")
-        records.append({"path": item["path"], "expected_preimage_sha256": hashlib.sha256(target.read_bytes()).hexdigest() if target.exists() else "MISSING", "expected_postimage_sha256": hashlib.sha256(encoded).hexdigest(), "content_utf8": content})
+        preimage = hashlib.sha256(target.read_bytes()).hexdigest() if target.exists() else "MISSING"
+        postimage = hashlib.sha256(encoded).hexdigest()
+        if preimage == postimage:
+            noop_files.append(item["path"])
+        records.append({"path": item["path"], "expected_preimage_sha256": preimage, "expected_postimage_sha256": postimage, "content_utf8": content})
+    if noop_files:
+        all_noop = len(noop_files) == len(records)
+        raise ChangeRejected("CHANGE_NOOP_USE_VALIDATE" if all_noop else "CHANGE_CONTAINS_NOOP_FILES",
+                             noop_files=noop_files,
+                             safe_next_tool="mephc_validate" if all_noop else "mephc_change")
     tests = change.get("tests")
     if not isinstance(tests, list) or not tests or not all(isinstance(value, str) for value in tests):
         raise SystemExit("change tests must be non-empty")
@@ -232,14 +258,112 @@ def submit_change(change: dict[str, Any]) -> Path:
     return job_dir
 
 
+def _age(path: Path) -> float | None:
+    try:
+        record = json.loads(path.read_text(encoding="utf-8-sig"))
+        unix = record.get("updated_unix") or record.get("phase_heartbeat_unix")
+        if unix is not None:
+            return max(0.0, time.time() - float(unix))
+        value = record.get("updated_at")
+        if isinstance(value, str):
+            return max(0.0, (datetime.now(timezone.utc) - datetime.fromisoformat(value.replace("Z", "+00:00"))).total_seconds())
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return None
+    return None
+
+
+def _health(path: Path, stale_after: int = 20) -> dict[str, Any]:
+    age = _age(path)
+    return {"available": age is not None, "age_seconds": round(age, 3) if age is not None else None,
+            "stale": age is None or age > stale_after}
+
+
 def read_state(job_id: str) -> dict[str, Any]:
     path = JOBS / job_id / "state.json"
     if not path.is_file():
-        return {"state": "ready" if (JOBS / job_id / "READY").is_file() else "unknown"}
-    value = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(value, dict):
-        raise SystemExit(f"invalid state file: {path}")
-    return value
+        value = {"state": "ready" if (JOBS / job_id / "READY").is_file() else "unknown"}
+    else:
+        value = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(value, dict):
+            raise SystemExit(f"invalid state file: {path}")
+    directory = JOBS / job_id
+    progress = None
+    for name in ("materializer-progress.json", "client-progress.json"):
+        candidate = directory / name
+        if candidate.is_file():
+            try:
+                record = json.loads(candidate.read_text(encoding="utf-8"))
+                if progress is None or float(record.get("phase_heartbeat_unix", 0)) >= float(progress.get("phase_heartbeat_unix", 0)):
+                    progress = record
+            except (OSError, ValueError, TypeError, json.JSONDecodeError):
+                pass
+    result = dict(value)
+    terminal = value.get("state") in {"succeeded", "failed"}
+    phase = "terminal" if terminal else (progress.get("phase") if progress else ("queued" if value.get("state") == "ready" else value.get("state")))
+    last = progress.get("phase_heartbeat_unix") if progress else None
+    phase_age = max(0.0, time.time() - float(last)) if last is not None else None
+    result.update({"phase": phase, "phase_age_seconds": round(phase_age, 3) if phase_age is not None else None,
+                   "last_progress_at_unix": last,
+                   "deadline_at_unix": progress.get("deadline_unix") if progress else None,
+                   "stalled": bool(value.get("state") == "running" and (phase_age is None or phase_age > 20)),
+                   "worker_health": _health(RUNTIME / "heartbeat.json"),
+                   "broker_health": _health(config.BROKER_HEARTBEAT),
+                   "safe_next_tool": "none" if terminal else
+                                     ("mephc_recover" if value.get("state") == "recovery_required" else "mephc_status")})
+    return result
+
+
+def unresolved_change() -> str | None:
+    for directory in sorted(JOBS.iterdir()) if JOBS.is_dir() else []:
+        if not directory.is_dir():
+            continue
+        state_value = read_state(directory.name)
+        if state_value.get("state") != "recovery_required":
+            continue
+        try:
+            job = json.loads((directory / "job.json").read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if job.get("operation") == "change":
+            return directory.name
+    return None
+
+
+def active_change() -> str | None:
+    for directory in sorted(JOBS.iterdir()) if JOBS.is_dir() else []:
+        if not directory.is_dir():
+            continue
+        value = read_state(directory.name)
+        if value.get("state") not in {"ready", "running"}:
+            continue
+        try:
+            job = json.loads((directory / "job.json").read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if job.get("operation") == "change":
+            return directory.name
+    return None
+
+
+def doctor_deduplicated() -> dict[str, Any]:
+    blocked = active_change() or unresolved_change()
+    if blocked:
+        return {"state": "blocked_by_active_change", "blocking_job_id": blocked,
+                "blocking_job": read_state(blocked), "job_created": False,
+                "safe_next_tool": "mephc_status"}
+    head, epoch = git_head(), config.state_epoch()
+    for directory in sorted(JOBS.iterdir(), reverse=True) if JOBS.is_dir() else []:
+        try:
+            job = json.loads((directory / "job.json").read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if job.get("operation") == "doctor" and job.get("source_commit") == head and job.get("state_epoch") == epoch:
+            value = read_state(directory.name)
+            if value.get("state") in {"ready", "running", "succeeded"}:
+                return {"job_id": directory.name, "reused": True, **value}
+    directory = submit("doctor", [], None)
+    return {"job_id": directory.name, "state": "ready", "reused": False, "job_created": True,
+            "safe_next_tool": "mephc_wait"}
 
 
 def wait(job_id: str, timeout: int) -> int:
@@ -272,7 +396,8 @@ def capabilities() -> dict[str, Any]:
             "execution_root_policy":str(config.CHECKOUTS / "<commit-sha>"),
             "source_head":head,"execution_head":None,
             "admission_scope":{"kind":"exact_inherited_windows_cwd","root":config.CONTROL_ROOT_WINDOWS},
-            "state_epoch":config.state_epoch(),"operations":sorted(OPERATIONS|{"resume","transport_canary"}),
+            "state_epoch":config.state_epoch(),"operations":sorted(OPERATIONS|{"resume","transport_canary","validate"}),
+            "inspect_limits":{"default_bytes":16384,"max_bytes":65536},
             "arbitrary_shell":False,"direct_browser":False,"active_jobs":active,
             "orphaned_job_count":len(orphaned),**workflow.view(),
             "safe_next_tool":"mephc_resume" if not active else "mephc_status_or_wait"}
@@ -291,15 +416,59 @@ def retention_plan() -> dict[str, Any]:
     return {"schema":"mephc-runner-retention-plan-v1", "read_only":True, "entries":entries}
 
 
+def prewrite_recovery_evidence(directory: Path, job: dict[str, Any]) -> dict[str, Any]:
+    evidence: dict[str, Any] = {"journal_present": (directory / "change-journal.json").exists(),
+                                "attestation_present": (directory / "change-attestation.json").exists()}
+    try:
+        recovery_state=json.loads((directory/"materializer-recovery-state.json").read_text(encoding="utf-8"))
+        evidence["recovery_error_code"]=recovery_state.get("error_code")
+        files=job.get("change",{}).get("files",[])
+        mismatches=[]
+        for item in files:
+            target=change_path(item["path"])
+            actual=hashlib.sha256(target.read_bytes()).hexdigest() if target.is_file() else "MISSING"
+            if actual != item.get("expected_preimage_sha256"):
+                mismatches.append({"path":item.get("path"),"expected":item.get("expected_preimage_sha256"),"actual":actual})
+        evidence["declared_file_count"]=len(files)
+        evidence["preimage_mismatches"]=mismatches
+        status_command=(["git","-c",f"safe.directory={config.CONTROL_ROOT_WINDOWS}","-C",config.CONTROL_ROOT_WINDOWS]
+                        if os.name=="nt" else [str(config.WINDOWS_GIT_WSL),"-c",f"safe.directory={config.CONTROL_ROOT_WINDOWS}","-C",config.CONTROL_ROOT_WINDOWS])
+        status_result=subprocess.run([*status_command,"status","--porcelain","--untracked-files=all"],capture_output=True,text=True,check=False)
+        evidence["git_authority"]="windows_git"
+        evidence["git_status_return_code"]=status_result.returncode
+        evidence["git_status_stderr"]=status_result.stderr.strip()[-1000:]
+        evidence["git_dirty_paths"]=status_result.stdout.splitlines()[:50]
+        evidence["permitted"]=(not evidence["journal_present"] and not evidence["attestation_present"]
+                               and evidence["recovery_error_code"]=="WINDOWS_MATERIALIZATION_FAILED"
+                               and bool(files) and not mismatches and status_result.returncode==0
+                               and not status_result.stdout.strip())
+    except (OSError,KeyError,TypeError,json.JSONDecodeError) as exc:
+        evidence["permitted"]=False
+        evidence["diagnostic_error"]=repr(exc)
+    return evidence
+
+
 def request_recovery(job_id: str) -> None:
     value=read_state(job_id); directory=JOBS/job_id
     permitted=value.get("state")=="recovery_required"
+    prewrite_evidence=None
     if value.get("state")=="failed":
         try: job=json.loads((directory/"job.json").read_text(encoding="utf-8"))
         except Exception: job={}
         permitted=(job.get("operation")=="change" and (directory/"change-attestation.json").is_file()
                    and (directory/"change-journal.json").is_file())
-    if not permitted: raise SystemExit(f"job is not recoverable: {value.get('state')}")
+        if job.get("operation")=="change" and not permitted and not (directory/"change-journal.json").exists() and not (directory/"change-attestation.json").exists():
+            prewrite_evidence=prewrite_recovery_evidence(directory,job)
+            permitted=bool(prewrite_evidence.get("permitted"))
+    if not permitted: raise SystemExit(f"job is not recoverable: {value.get('state')};evidence={json.dumps(prewrite_evidence,sort_keys=True)}")
+    if value.get("state")=="failed" and job.get("operation")=="change":
+        attempt=int(value.get("attempt",1))
+        for name in ("materializer-recovery-state.json","broker-recovery-dispatch.json","MATERIALIZE_RECOVER_READY"):
+            source=directory/name
+            if source.exists():
+                archived=directory/f"{name}.attempt-{attempt}"
+                if archived.exists(): raise SystemExit(f"recovery attempt archive already exists: {archived.name}")
+                os.replace(source,archived)
     atomic_write(directory/"RECOVER",(time.strftime("%Y-%m-%dT%H:%M:%SZ",time.gmtime())+"\n").encode("ascii"))
     emit("runner_recovery_requested",job_id=job_id)
 def main(argv: list[str] | None = None) -> int:
@@ -313,7 +482,9 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("change"); sub.add_parser("capabilities"); sub.add_parser("retention-plan")
     args = parser.parse_args(argv)
     if args.command == "doctor":
-        job_dir = submit("doctor", [], None); return wait(job_dir.name, args.wait_seconds)
+        value = doctor_deduplicated()
+        emit("runner_doctor", **value)
+        return wait(value["job_id"], args.wait_seconds) if value.get("job_created") else 0
     if args.command == "submit": submit(args.operation, args.arguments, args.certificate_sha256); return 0
     if args.command == "status": emit("runner_job_status", job_id=args.job_id, **read_state(args.job_id)); return 0
     if args.command == "wait": return wait(args.job_id, args.timeout)

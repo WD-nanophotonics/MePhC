@@ -290,13 +290,13 @@ def test_courier_recovery_forces_read_only_and_limits_prebrowser(tmp_path):
 def test_connector_and_install_are_typed_and_versioned():
     mcp = load("runner_mcp_server", "mcp_server.py")
     names = {item["name"] for item in mcp.TOOLS}
-    assert names == {"mephc_capabilities","mephc_doctor","mephc_resume","mephc_change","mephc_submit","mephc_status","mephc_wait","mephc_recover"}
+    assert names == {"mephc_capabilities","mephc_doctor","mephc_resume","mephc_change","mephc_validate","mephc_submit","mephc_status","mephc_wait","mephc_recover"}
     bootstrap = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8-sig")
     broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
     assert "/opt/mephc-runner/versions/$BuildId" in bootstrap
     assert "/opt/mephc-runner/current/jobctl.py" in broker
     assert "$previousOutput.Count -gt 0" in bootstrap
-    assert "windows_materializer.py" in broker and "Start-Process" in broker
+    assert "windows_broker.py" in broker and "windows_broker.py" in bootstrap
     assert "ReadWritePaths=/home/icy/MePhC" not in (SOURCE / "mephc-runner.service").read_text().splitlines()
 
 
@@ -333,14 +333,14 @@ def test_mcp_server_initializes_request_and_tolerates_utf8_bom():
 
 
 def test_change_transient_unit_has_canonical_working_directory():
-    text = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
-    assert "-WorkingDirectory $ControlRoot" in text
+    text = (SOURCE / "windows_broker.py").read_text(encoding="utf-8")
+    assert "cwd=CONTROL_ROOT" in text
 
 
 def test_change_and_courier_recovery_are_reachable_and_typed():
     worker = (SOURCE / "worker.py").read_text(encoding="utf-8")
     client = (SOURCE / "materialize_client.py").read_text(encoding="utf-8")
-    broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
+    broker = (SOURCE / "windows_broker.py").read_text(encoding="utf-8")
     assert 'if job["operation"] == "courier":' in worker
     assert 'mode = "recover" if recovery else "transact"' in worker
     assert 'job["operation"] in {"courier", "change"}' in worker
@@ -354,16 +354,29 @@ def test_change_recovery_accepts_committed_ancestor():
 
 
 def test_broker_recovery_dispatch_and_health_fail_closed():
-    broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
-    assert "$dispatchName=if(" in broker
+    broker = (SOURCE / "windows_broker.py").read_text(encoding="utf-8")
+    health = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
+    assert '("recover", "MATERIALIZE_RECOVER_READY")' in broker
     assert "materializer-recovery-state.json" in broker
-    assert "BROKER_WORKER_CHECK_FAILED" in broker
+    assert "BROKER_WORKER_CHECK_FAILED" in health
 
 def test_bootstrap_restarts_broker_and_fixes_parent_cwd():
     text = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8-sig")
-    assert "foreach($process in @($existing)){Stop-Process" in text
+    assert 'taskkill.exe" /PID' in text and "windows_broker.py" in text
     assert "Push-Location $Runtime" in text
     assert "-WorkingDirectory $Runtime" in text
+    assert "Register-ScheduledTask" in text and "RestartCount 999" in text
+    assert "return (($_.CommandLine" in text
+    assert "Stop-ScheduledTask" in text and "Start-ScheduledTask" in text
+    assert "Disable-ScheduledTask" in text and "Enable-ScheduledTask" in text
+    assert "-notin @('Running','Queued')" in text
+    assert "[switch]$Install,[switch]$Verify" in text
+    assert "$index -lt 180" in text and "scheduled broker failed to produce current heartbeat" in text
+    assert "scheduled broker did not stop cleanly" in text and "pending.broker_start_utc" in text
+    assert "pending-install.json" in text and "MEPHC_RUNNER_INSTALL_PENDING_VERIFY" in text
+    assert "& $publicLauncher Health" in text and "cross-layer health failed" in text
+    wrapper = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
+    assert "Security.Cryptography.SHA256" in wrapper and "Get-FileHash" not in wrapper
 
 
 def test_attested_failed_change_has_narrow_recovery_path():
@@ -435,10 +448,176 @@ def test_bridge_requires_bound_attachment_attestation():
 
 
 def test_broker_uses_existing_parent_for_new_declared_directories():
-    broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
+    broker = (SOURCE / "windows_broker.py").read_text(encoding="utf-8")
     materializer = (SOURCE / "windows_materializer.py").read_text(encoding="utf-8")
     assert "target.parent.mkdir(parents=True, exist_ok=True)" in materializer
     assert "ALLOWED_TOP" in materializer
+
+
+def test_change_noop_is_rejected_before_job_creation(tmp_path, monkeypatch):
+    jobctl = load("runner_jobctl_noop", "jobctl.py")
+    target = tmp_path / "tests" / "test_same.py"
+    target.parent.mkdir()
+    target.write_bytes(b"same\n")
+    monkeypatch.setattr(jobctl, "unresolved_change", lambda: None)
+    monkeypatch.setattr(jobctl.config, "CONTROL_ROOT", tmp_path)
+    with pytest.raises(jobctl.ChangeRejected) as error:
+        jobctl.submit_change({"files": [{"path": "tests/test_same.py", "content_utf8": "same\n"}],
+                              "tests": ["tests/test_same.py"], "commit_message": "noop"})
+    assert error.value.error_code == "CHANGE_NOOP_USE_VALIDATE"
+    assert error.value.safe_next_tool == "mephc_validate"
+    assert not list(tmp_path.glob("MEPHC-JOB-*"))
+
+
+def test_change_mixed_noop_names_exact_files(tmp_path, monkeypatch):
+    jobctl = load("runner_jobctl_mixed_noop", "jobctl.py")
+    tests = tmp_path / "tests"; tests.mkdir()
+    (tests / "same.py").write_bytes(b"same\n")
+    (tests / "changed.py").write_bytes(b"before\n")
+    monkeypatch.setattr(jobctl, "unresolved_change", lambda: None)
+    monkeypatch.setattr(jobctl.config, "CONTROL_ROOT", tmp_path)
+    with pytest.raises(jobctl.ChangeRejected) as error:
+        jobctl.submit_change({"files": [
+            {"path": "tests/same.py", "content_utf8": "same\n"},
+            {"path": "tests/changed.py", "content_utf8": "after\n"}],
+            "tests": ["tests/changed.py"], "commit_message": "mixed"})
+    assert error.value.error_code == "CHANGE_CONTAINS_NOOP_FILES"
+    assert error.value.noop_files == ["tests/same.py"]
+
+
+def test_doctor_does_not_queue_behind_active_change(monkeypatch):
+    jobctl = load("runner_jobctl_doctor_dedupe", "jobctl.py")
+    monkeypatch.setattr(jobctl, "active_change", lambda: "MEPHC-JOB-BLOCKED")
+    monkeypatch.setattr(jobctl, "unresolved_change", lambda: None)
+    monkeypatch.setattr(jobctl, "read_state", lambda _job: {"state": "running", "phase": "committing"})
+    value = jobctl.doctor_deduplicated()
+    assert value["state"] == "blocked_by_active_change"
+    assert value["job_created"] is False
+
+
+def test_status_exposes_phase_stall_and_health(tmp_path, monkeypatch):
+    jobctl = load("runner_jobctl_phase", "jobctl.py")
+    jobs = tmp_path / "jobs"; runtime = tmp_path / "runner"; job = jobs / "MEPHC-JOB-PHASE"
+    job.mkdir(parents=True); runtime.mkdir(exist_ok=True)
+    (job / "state.json").write_text(json.dumps({"state": "running"}), encoding="utf-8")
+    (job / "client-progress.json").write_text(json.dumps({"phase": "awaiting_materializer",
+                                                           "phase_heartbeat_unix": 1.0,
+                                                           "deadline_unix": 2.0}), encoding="utf-8")
+    broker = tmp_path / "broker.json"; broker.write_text(json.dumps({"updated_unix": 1.0}), encoding="utf-8")
+    monkeypatch.setattr(jobctl, "JOBS", jobs); monkeypatch.setattr(jobctl, "RUNTIME", runtime)
+    monkeypatch.setattr(jobctl.config, "BROKER_HEARTBEAT", broker)
+    value = jobctl.read_state(job.name)
+    assert value["phase"] == "awaiting_materializer" and value["stalled"] is True
+    assert value["safe_next_tool"] == "mephc_status"
+    (job / "state.json").write_text(json.dumps({"state": "failed", "error_code": "CHANGE_NOT_STARTED_ABORTED"}), encoding="utf-8")
+    terminal = jobctl.read_state(job.name)
+    assert terminal["phase"] == "terminal" and terminal["safe_next_tool"] == "none"
+
+
+def test_broker_is_nonblocking_and_has_exact_tree_watchdog():
+    broker = (SOURCE / "windows_broker.py").read_text(encoding="utf-8")
+    wrapper = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
+    assert "CHANGE_MATERIALIZER_TIMEOUT" in broker
+    assert '"/PID", str(process.pid), "/T", "/F"' in broker
+    assert "process.poll()" in broker and "updated_unix" in broker
+    broker_block = wrapper.split("if($Command -eq 'Broker')", 1)[1].split("if($Command -eq 'Health')", 1)[0]
+    assert "WaitForExit" not in broker_block
+    assert "Ensure-Worker" not in broker_block
+    assert '"--heartbeat", str(os.getpid())' in broker
+    assert "def heartbeat_process(parent_pid: int)" in broker
+    heartbeat_body = broker.split("def heartbeat_process", 1)[1].split("def start_worker_probe", 1)[0]
+    assert "atomic_json(HEARTBEAT" in heartbeat_body and "STATE_ROOT" not in heartbeat_body
+    assert 'time.time() - float(worker["checked_unix"]) <= 30' in heartbeat_body
+    assert "subprocess.run([str(wsl)" not in broker
+    assert "probe.poll()" in broker and "probe.kill()" in broker
+    assert "Get-FileHash" not in wrapper and "Security.Cryptography.SHA256" in wrapper
+
+
+def test_broker_timeout_fault_injection_marks_recovery_without_replay(tmp_path, monkeypatch):
+    broker = load("runner_windows_broker_timeout", "windows_broker.py")
+    class Hung:
+        pid = 4242
+        returncode = None
+        def poll(self): return None
+    calls = []
+    monkeypatch.setattr(broker, "terminate_tree", lambda process: calls.append(("terminate", process.pid)))
+    monkeypatch.setattr(broker, "fail", lambda job, mode, code, detail: calls.append((mode, code, detail)))
+    active = {"job": {"process": Hung(), "job_dir": tmp_path, "mode": "transact", "deadline": 5.0}}
+    broker.poll_active(active, current=6.0)
+    assert active == {}
+    assert calls[0] == ("terminate", 4242)
+    assert calls[1][0:2] == ("transact", "CHANGE_MATERIALIZER_TIMEOUT")
+
+
+def test_recovery_without_journal_never_replays_materialize(tmp_path, monkeypatch):
+    materializer = load("runner_windows_materializer_recovery", "windows_materializer.py")
+    job = tmp_path / "job"; job.mkdir()
+    source = tmp_path / "tests" / "same.py"; source.parent.mkdir(); source.write_bytes(b"same\n")
+    digest = hashlib.sha256(source.read_bytes()).hexdigest()
+    (job / "job.json").write_text(json.dumps({"source_commit": "a" * 40,
+                                               "change": {"files": [{"path": "tests/same.py",
+                                                                        "expected_preimage_sha256": digest}]}}), encoding="utf-8")
+    monkeypatch.setattr(materializer, "CONTROL_ROOT", tmp_path)
+    monkeypatch.setattr(materializer, "git", lambda *args, **_kwargs: "a" * 40 if args[:2] == ("rev-parse", "HEAD") else "")
+    value = materializer.restore_from_journal(job)
+    assert value["error_code"] == "CHANGE_NOT_STARTED_ABORTED"
+    assert value["recovery"] == "no_effect_verified"
+
+
+def test_windows_materializer_scopes_git_safe_directory_without_global_config():
+    materializer = (SOURCE / "windows_materializer.py").read_text(encoding="utf-8")
+    assert 'f"safe.directory={CONTROL_ROOT.as_posix()}"' in materializer
+    assert "config --global" not in materializer
+    jobctl = (SOURCE / "jobctl.py").read_text(encoding="utf-8")
+    worker = (SOURCE / "worker.py").read_text(encoding="utf-8")
+    assert 'evidence["recovery_error_code"]=="WINDOWS_MATERIALIZATION_FAILED"' in jobctl
+    assert 'prewrite_failed = recovery_state.get("error_code") == "WINDOWS_MATERIALIZATION_FAILED"' in worker
+    assert "WINDOWS_GIT_WSL" in jobctl and 'evidence["git_authority"]="windows_git"' in jobctl
+    assert 'materializer-recovery-state.json*' in worker
+    assert 'archived=directory/f"{name}.attempt-{attempt}"' in jobctl
+    assert "prewrite_recovery_evidence" in jobctl and "preimage_mismatches" in jobctl
+
+
+def test_broker_restart_never_redispatches_abandoned_child():
+    broker = (SOURCE / "windows_broker.py").read_text(encoding="utf-8")
+    assert "reconcile_abandoned_dispatch(job_dir, mode)" in broker
+    assert "BROKER_RESTART_DURING_MATERIALIZATION" in broker
+    assert "run_token" in broker and "command_line_for(pid)" in broker
+
+
+def test_broker_ignores_stale_marker_after_job_enters_recovery(tmp_path):
+    broker = load("runner_windows_broker_stale_marker", "windows_broker.py")
+    job = tmp_path / "MEPHC-JOB-STALE"; job.mkdir()
+    (job / "MATERIALIZE_READY").write_text("{}", encoding="utf-8")
+    (job / "state.json").write_text(json.dumps({"state": "recovery_required", "operation": "change"}), encoding="utf-8")
+    assert broker.request_for(job) is None
+    (job / "state.json").write_text(json.dumps({"state": "running", "operation": "change", "recovery": True}), encoding="utf-8")
+    assert broker.request_for(job) is None
+    (job / "MATERIALIZE_RECOVER_READY").write_text("{}", encoding="utf-8")
+    assert broker.request_for(job)[0] == "recover"
+
+
+def test_inspect_invalid_offset_advertises_valid_bounds(tmp_path, monkeypatch):
+    mcp = load("runner_mcp_inspect_bounds", "mcp_server.py")
+    source = tmp_path / "tests" / "small.py"; source.parent.mkdir(); source.write_text("x\n", encoding="utf-8")
+    monkeypatch.setattr(mcp, "ROOT", tmp_path)
+    monkeypatch.setattr(mcp, "_git_files", lambda _relative: ["tests/small.py"])
+    with pytest.raises(ValueError) as error:
+        mcp.inspect({"operation": "read", "path": "tests/small.py", "offset": 999})
+    detail = json.loads(str(error.value))
+    assert detail["error_code"] == "INSPECT_SIZE_OR_OFFSET_INVALID"
+    assert detail["max_bytes"] == 65536 and detail["size_bytes"] == len(source.read_bytes())
+
+
+def test_validate_submits_only_prelive_without_change(tmp_path, monkeypatch):
+    mcp = load("runner_mcp_validate", "mcp_server.py")
+    job_dir = tmp_path / "MEPHC-JOB-VALIDATE"; job_dir.mkdir()
+    calls = []
+    monkeypatch.setattr(mcp.jobctl, "submit", lambda operation, arguments, certificate: calls.append(
+        (operation, arguments, certificate)) or job_dir)
+    value = mcp.invoke("mephc_validate", {"tests": ["tests/test_mephc_runner.py"]})
+    assert calls == [("prelive", ["tests/test_mephc_runner.py"], None)]
+    assert value["job_id"] == job_dir.name and value["job_created"] is True
 
 
 def test_attachment_e2e_factory_is_typed_and_artifact_bound():

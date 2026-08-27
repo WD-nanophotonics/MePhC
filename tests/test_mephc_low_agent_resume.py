@@ -177,5 +177,6 @@ def test_resume_reuses_pending_status_before_creating_another():
 def test_mcp_tool_set_stays_typed_and_describes_zero_idle_resume():
     mcp = load("runner_mcp_zero_idle", "mcp_server.py")
     tools = {item["name"]: item for item in mcp.TOOLS}
-    assert set(tools) == {"mephc_capabilities", "mephc_doctor", "mephc_resume", "mephc_change", "mephc_submit", "mephc_status", "mephc_wait", "mephc_recover"}
+    assert set(tools) == {"mephc_capabilities", "mephc_doctor", "mephc_resume", "mephc_change", "mephc_validate", "mephc_submit", "mephc_status", "mephc_wait", "mephc_recover"}
     assert "Never returns an idle" in tools["mephc_resume"]["description"]
+    assert "without changing or committing source" in tools["mephc_validate"]["description"]

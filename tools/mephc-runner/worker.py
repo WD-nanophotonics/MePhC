@@ -16,6 +16,7 @@ import json
 import os
 from pathlib import Path
 import re
+import signal
 import subprocess
 import sys
 import threading
@@ -298,8 +299,9 @@ def receipt_state(job: dict[str, Any]) -> str | None:
 
 def failure_detail(job_dir: Path) -> str:
     """Return a bounded, structured-safe diagnostic for a failed child process."""
-    materializer_state = job_dir / "materializer-state.json"
-    if materializer_state.is_file():
+    materializer_state = next((path for path in (job_dir / "materializer-recovery-state.json",
+                                                  job_dir / "materializer-state.json") if path.is_file()), None)
+    if materializer_state is not None:
         try:
             record = read_object(materializer_state)
             code = record.get("error_code")
@@ -329,7 +331,17 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
             change_attested = (job["operation"] == "change" and old_state.get("state") == "failed"
                                and (job_dir / "change-attestation.json").is_file()
                                and (job_dir / "change-journal.json").is_file())
-            if not (old_state.get("state") == "recovery_required" and job["operation"] in {"courier", "change"}) and not change_attested:
+            prewrite_failed = False
+            if job["operation"] == "change" and old_state.get("state") == "failed" and not (job_dir / "change-journal.json").exists():
+                try:
+                    recovery_candidates = sorted(job_dir.glob("materializer-recovery-state.json*"), key=lambda path: path.stat().st_mtime_ns, reverse=True)
+                    if not recovery_candidates:
+                        raise Rejected("CHANGE_RECOVERY_STATE_MISSING", str(job_dir))
+                    recovery_state = read_object(recovery_candidates[0])
+                    prewrite_failed = recovery_state.get("error_code") == "WINDOWS_MATERIALIZATION_FAILED"
+                except Rejected:
+                    prewrite_failed = False
+            if not (old_state.get("state") == "recovery_required" and job["operation"] in {"courier", "change"}) and not change_attested and not prewrite_failed:
                 raise Rejected("RECOVERY_NOT_ALLOWED", repr(old_state))
             previous_attempt = int(old_state.get("attempt", 1))
             (job_dir / "RECOVER").unlink(missing_ok=True)
@@ -362,30 +374,71 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
             "PYTEST_ADDOPTS": "-p no:cacheprovider",
         }
         with (job_dir / "process.log").open("a", encoding="utf-8", newline="\n") as log:
-            completed = subprocess.run(
+            process = subprocess.Popen(
                 command,
                 cwd=execution_root,
                 env=environment,
                 stdin=subprocess.DEVNULL,
                 stdout=log,
                 stderr=subprocess.STDOUT,
-                check=False,
+                start_new_session=True,
             )
+            deadline = time.monotonic() + (config.MATERIALIZER_TIMEOUT_SECONDS + 60) if job["operation"] == "change" else None
+            next_progress = 0.0
+            timed_out = False
+            while process.poll() is None:
+                current = time.monotonic()
+                if deadline is not None and current >= deadline:
+                    timed_out = True
+                    try:
+                        os.killpg(process.pid, signal.SIGTERM)
+                        process.wait(timeout=10)
+                    except (ProcessLookupError, subprocess.TimeoutExpired):
+                        try:
+                            os.killpg(process.pid, signal.SIGKILL)
+                        except ProcessLookupError:
+                            pass
+                    break
+                if current >= next_progress:
+                    state(job_dir, "running", attempt=attempt, operation=job["operation"], recovery=recovery,
+                          child_pid=process.pid,
+                          phase="awaiting_materializer" if job["operation"] == "change" else "executing",
+                          deadline_unix=(time.time() + max(0, deadline - current)) if deadline is not None else None)
+                    next_progress = current + 5
+                time.sleep(0.5)
+            return_code = process.returncode if process.returncode is not None else 124
         if hashlib.sha256((job_dir / "job.json").read_bytes()).hexdigest() != immutable_sha:
             raise Rejected("JOB_MUTATED_AFTER_CLAIM", str(job_dir / "job.json"))
         if job["operation"] == "courier" and job["arguments"][:1] == ["--request-directory"]:
             verify_courier_binding(job)
         courier_state = receipt_state(job)
-        if completed.returncode == 0:
+        if return_code == 0:
             state(job_dir, "succeeded", attempt=attempt, operation=job["operation"], return_code=0, receipt_state=courier_state)
             event(job_dir, "runner_job_succeeded", return_code=0, receipt_state=courier_state)
+        elif job["operation"] == "change" and (timed_out or return_code == 3):
+            code = "CHANGE_CLIENT_TIMEOUT" if timed_out else "CHANGE_TRANSACTION_RECOVERY_REQUIRED"
+            state(job_dir, "recovery_required", attempt=attempt, operation="change", return_code=return_code,
+                  error_code=code, detail=failure_detail(job_dir))
+            event(job_dir, "runner_recovery_required", return_code=return_code, error_code=code)
         elif job["operation"] == "courier" and courier_state in RECOVERABLE:
-            state(job_dir, "recovery_required", attempt=attempt, operation="courier", return_code=completed.returncode, receipt_state=courier_state)
-            event(job_dir, "runner_recovery_required", return_code=completed.returncode, receipt_state=courier_state)
+            state(job_dir, "recovery_required", attempt=attempt, operation="courier", return_code=return_code, receipt_state=courier_state)
+            event(job_dir, "runner_recovery_required", return_code=return_code, receipt_state=courier_state)
+        elif job["operation"] == "change":
+            detail = failure_detail(job_dir)
+            state_record = None
+            for candidate in (job_dir / "materializer-recovery-state.json", job_dir / "materializer-state.json"):
+                if candidate.is_file():
+                    try: state_record = read_object(candidate)
+                    except Rejected: state_record = None
+                    if state_record is not None: break
+            code = state_record.get("error_code", "CHILD_PROCESS_FAILED") if state_record else "CHILD_PROCESS_FAILED"
+            state(job_dir, "failed", attempt=attempt, operation="change", return_code=return_code,
+                  detail=detail, error_code=code)
+            event(job_dir, "runner_job_failed", return_code=return_code, error_code=code)
         else:
             detail = failure_detail(job_dir)
-            state(job_dir, "failed", attempt=attempt, operation=job["operation"], return_code=completed.returncode, receipt_state=courier_state, detail=detail, error_code="CHILD_PROCESS_FAILED")
-            event(job_dir, "runner_job_failed", return_code=completed.returncode, receipt_state=courier_state, error_code="CHILD_PROCESS_FAILED")
+            state(job_dir, "failed", attempt=attempt, operation=job["operation"], return_code=return_code, receipt_state=courier_state, detail=detail, error_code="CHILD_PROCESS_FAILED")
+            event(job_dir, "runner_job_failed", return_code=return_code, receipt_state=courier_state, error_code="CHILD_PROCESS_FAILED")
     except Rejected as exc:
         state(job_dir, "failed", error_code=exc.code, detail=exc.detail)
         event(job_dir, "runner_job_rejected", error_code=exc.code, detail=exc.detail)
@@ -418,7 +471,8 @@ def repair_interrupted() -> None:
 
 def heartbeat() -> None:
     names = ("worker.py","jobctl.py","workflow.py","workflow_resume.py","runtime_config.py",
-             "checkout_manager.py","user_runtime.py","home_cleanup.py","migrate_state.py","windows_materializer.py",
+             "checkout_manager.py","user_runtime.py","home_cleanup.py","migrate_state.py","migrate_canary_metadata.py",
+             "windows_materializer.py","windows_broker.py",
              "materialize_client.py","mcp_server.py","native-recipes.json","mephc-runner.ps1",
              "mephc-runner.cmd","mephc-connector.cmd","mephc-connector.ps1",
              "mephc-runner.service","README.md")

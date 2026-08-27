@@ -2,14 +2,14 @@
 
 ## Zero-idle typed startup
 
-Every Agent starts with `mephc_capabilities -> mephc_doctor -> mephc_resume`. Empty `active_jobs` is not completion. Never ask the user for a work order because local state appears idle, and never hand-create `.relayctl/outbox` files.
+Every Agent starts with `mephc_capabilities`. If it reports an active or recovery-required job, inspect that exact job with `mephc_status`/`mephc_wait` before calling doctor; otherwise continue with `mephc_doctor -> mephc_resume`. A blocked doctor is a diagnostic result and must not be resubmitted. Empty `active_jobs` is not completion. Never ask the user for a work order because local state appears idle, and never hand-create `.relayctl/outbox` files.
 
 
 ## Mandatory Agent-facing entry point
 
 This policy is enforced by the MePhC Runner. At task start and after context recovery, Agents must call `mephc_capabilities`. All Agent-facing operations must use the typed connector: `mephc_doctor` for certification; `mephc_change` for exact declared UTF-8 changes; `mephc_submit` for typed worktree, prelive, native, publish, and existing-request Courier jobs; `mephc_report` to create or reuse the only report request for the active work order; and `mephc_status`, `mephc_wait`, or `mephc_recover` for durable observation and recovery.
 
-The connector fixes `control_root=C:\Users\icywo\PycharmProjects\MePhC-Windows`, `state_root=/home/icy/.local/state/mephc-runner/MEPHC`, `project_id=MEPHC`, Git state, Conda Python, `PYTHONPATH`, and installed broker/worker builds. WSL execution occurs only in detached, clean, commit-bound ext4 checkouts below `/home/icy/.cache/mephc-runner/checkouts`. It rejects TriLatt, UNC control roots, subdirectories, Windows execution roots, wrong interpreters, dirty execution trees, uncommitted prelive state, source-byte drift, moved `origin/main`, stale state epochs, duplicate claims, and unsafe Courier recovery.
+The connector fixes `control_root=C:\Users\icywo\PycharmProjects\MePhC-Windows`, `state_root=/home/icy/.local/state/mephc-runner/MEPHC`, `project_id=MEPHC`, Git state, Conda Python, `PYTHONPATH`, and installed broker/worker builds. WSL execution occurs only in detached, clean, commit-bound ext4 checkouts below `/home/icy/.cache/mephc-runner/checkouts`. It rejects TriLatt, UNC control roots, subdirectories, Windows execution roots, wrong interpreters, dirty execution trees, uncommitted prelive state, source-byte drift, moved `origin/main`, stale state epochs, duplicate claims, no-op change declarations, and unsafe Courier recovery.
 
 The sole production MCP server name is `mephc`; `mephc_windows_shadow`, native,
 and probe names are migration-only and must remain disabled. The human-only
@@ -17,6 +17,8 @@ and probe names are migration-only and must remain disabled. The human-only
 and must never be used by an Agent to bypass this typed connector.
 
 For `mephc_change`, provide only declared UTF-8 file content and a non-empty `tests` array of repository-relative `tests/*.py` paths (optionally with a pytest `::` selector). Never pass `python ...`, `python -m ...`, shell syntax, or `audit/` paths as tests. A newly declared `tests/*.py` file is valid in the same transaction and is run only after materialization. The Runner, not the Agent, binds preimage/postimage hashes and `origin/main`.
+
+Never use `mephc_change` merely to run tests or redeclare unchanged files. Use `mephc_validate(tests=[...])` for solver-free validation of the current committed SHA. `CHANGE_NOOP_USE_VALIDATE` creates no durable job and requires `mephc_validate` as the next tool; `CHANGE_CONTAINS_NOOP_FILES` requires resubmitting only genuinely changed files. A stalled change must be observed until the watchdog marks it `recovery_required`; do not resubmit it or guess that a client timeout completed it.
 
 `scripts/relayctl` and `tools/mephc-courier.ps1` are internal Runner implementation details, not Agent launchers. Agents must not invoke them, arbitrary shell/Python, Courier, Browser, Chrome, or Gmail directly. Runtime evidence lives outside Git in `/home/icy/.local/state/mephc-runner/MEPHC`; never create or copy `.relayctl` into the Windows control repository. Requests are plain text by default; attachments require separately identified committed remote audit artifacts.
 ## Automatic relay continuation

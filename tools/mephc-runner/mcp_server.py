@@ -18,6 +18,13 @@ import runtime_config as config
 ROOT = config.CONTROL_ROOT
 READ_ROOTS = {"audit", "mephc", "scripts", "tests", "tools"}
 READ_ROOT_FILES = {"AGENTS.md", "pyproject.toml"}
+INSPECT_DEFAULT_BYTES = 16384
+INSPECT_MAX_BYTES = 65536
+
+
+def _inspect_error(code: str, **fields: object) -> ValueError:
+    return ValueError(json.dumps({"error_code": code, "default_bytes": INSPECT_DEFAULT_BYTES,
+                                  "max_bytes": INSPECT_MAX_BYTES, **fields}, sort_keys=True))
 
 
 def advertised_tools():
@@ -75,19 +82,20 @@ def inspect(args: dict) -> dict:
         entries = sorted({value[len(prefix):].split("/", 1)[0] for value in tracked if value.startswith(prefix)})
         limit = args.get("max_bytes", 200)
         if not isinstance(limit, int) or not 1 <= limit <= 65536:
-            raise ValueError("INSPECT_LIMIT_INVALID")
+            raise _inspect_error("INSPECT_LIMIT_INVALID", minimum=1)
         return {"operation": "list", "path": relative.as_posix(), "entries": entries[:limit], "total_entries": len(entries), "truncated": len(entries) > limit}
     if operation != "read":
         raise ValueError("INSPECT_OPERATION_INVALID")
     if not target.is_file() or target.is_symlink() or relative.as_posix() not in tracked:
         raise ValueError("INSPECT_TRACKED_FILE_REQUIRED")
     offset = args.get("offset", 0)
-    limit = args.get("max_bytes", 16384)
+    limit = args.get("max_bytes", INSPECT_DEFAULT_BYTES)
     if not isinstance(offset, int) or offset < 0 or not isinstance(limit, int) or not 1 <= limit <= 65536:
-        raise ValueError("INSPECT_LIMIT_INVALID")
+        raise _inspect_error("INSPECT_LIMIT_INVALID", minimum=1)
     raw = target.read_bytes()
     if len(raw) > 8 * 1024 * 1024 or offset > len(raw):
-        raise ValueError("INSPECT_SIZE_OR_OFFSET_INVALID")
+        raise _inspect_error("INSPECT_SIZE_OR_OFFSET_INVALID", size_bytes=len(raw), requested_offset=offset,
+                             next_offset=len(raw) if offset > len(raw) else offset)
     end = min(len(raw), offset + limit)
     while True:
         try:
@@ -104,6 +112,7 @@ TOOLS = [
     {"name": "mephc_doctor", "description": "Submit and wait for a canonical MePhC doctor job.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
     {"name": "mephc_resume", "description": "Return the latest hash-bound supervisor work order, or create and dispatch exactly one durable status request and return its wait job. Never returns an idle work-order request to the agent.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
     {"name": "mephc_change", "description": "Atomically materialize, test, and commit declared UTF-8 MePhC files. The Runner binds Git and image hashes itself.", "inputSchema": {"type": "object", "required": ["files", "tests", "commit_message"], "properties": {"files": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["path", "content_utf8"], "properties": {"path": {"type": "string"}, "content_utf8": {"type": "string"}}, "additionalProperties": False}}, "tests": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "commit_message": {"type": "string"}}, "additionalProperties": False}},
+    {"name": "mephc_validate", "description": "Run declared solver-free prelive tests against the current committed SHA without changing or committing source.", "inputSchema": {"type": "object", "required": ["tests"], "properties": {"tests": {"type": "array", "minItems": 1, "items": {"type": "string"}}}, "additionalProperties": False}},
     {"name": "mephc_submit", "description": "Submit a typed non-change MePhC operation.", "inputSchema": {"type": "object", "required": ["operation"], "properties": {"operation": {"type": "string", "enum": ["doctor", "worktree", "prelive", "native", "publish", "courier"]}, "arguments": {"type": "array", "items": {"type": "string"}}, "certificate_sha256": {"type": ["string", "null"]}}, "additionalProperties": False}},
     {"name": "mephc_status", "description": "Read one persisted job state.", "inputSchema": {"type": "object", "required": ["job_id"], "properties": {"job_id": {"type": "string"}}, "additionalProperties": False}},
     {"name": "mephc_wait", "description": "Wait without killing the persistent job.", "inputSchema": {"type": "object", "required": ["job_id"], "properties": {"job_id": {"type": "string"}, "timeout": {"type": "integer", "minimum": 1, "maximum": 4860}}, "additionalProperties": False}},
@@ -290,11 +299,26 @@ def invoke(name, args):
     if name == "mephc_resume":
         return workflow_resume.resume()
     if name == "mephc_doctor":
-        directory = jobctl.submit("doctor", [], None)
-        return captured(lambda: jobctl.wait(directory.name, 120))
+        value = jobctl.doctor_deduplicated()
+        if value.get("job_created"):
+            return {**value, **captured(lambda: jobctl.wait(value["job_id"], 120))}
+        return value
     if name == "mephc_change":
-        directory = jobctl.submit_change(args)
-        return {"job_id": directory.name, "state": "ready"}
+        try:
+            directory = jobctl.submit_change(args)
+        except jobctl.ChangeRejected as exc:
+            return {"state": "rejected", "error_code": exc.error_code,
+                    "noop_files": exc.noop_files, "job_created": False,
+                    "retry_allowed": False, "safe_next_tool": exc.safe_next_tool}
+        return {"job_id": directory.name, "state": "ready", "job_created": True,
+                "safe_next_tool": "mephc_wait"}
+    if name == "mephc_validate":
+        tests = args.get("tests") if isinstance(args, dict) else None
+        if not isinstance(tests, list) or not tests:
+            raise ValueError("VALIDATE_TESTS_REQUIRED")
+        directory = jobctl.submit("prelive", tests, None)
+        return {"job_id": directory.name, "state": "ready", "job_created": True,
+                "safe_next_tool": "mephc_wait"}
     if name == "mephc_submit":
         directory = jobctl.submit(args["operation"], args.get("arguments", []), args.get("certificate_sha256"))
         return {"job_id": directory.name, "state": "ready"}
@@ -325,7 +349,7 @@ def main():
             method = request.get("method")
             identifier = request.get("id")
             if method == "initialize":
-                reply(identifier, {"protocolVersion": request.get("params", {}).get("protocolVersion", "2025-03-26"), "capabilities": {"tools": {}}, "serverInfo": {"name": "mephc-runner", "version": "3.0.0"}})
+                reply(identifier, {"protocolVersion": request.get("params", {}).get("protocolVersion", "2025-03-26"), "capabilities": {"tools": {}}, "serverInfo": {"name": "mephc-runner", "version": "4.0.0"}})
             elif method == "ping":
                 reply(identifier, {})
             elif method == "tools/list":

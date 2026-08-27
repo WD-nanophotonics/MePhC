@@ -27,6 +27,14 @@ CHECKOUTS = Path(os.environ.get(
 PYTHON = Path(os.environ.get(
     "MEPHC_PYTHON", "/home/icy/miniconda3/envs/mp/bin/python"
 ))
+WINDOWS_RUNTIME_WSL = Path(os.environ.get(
+    "MEPHC_WINDOWS_RUNTIME_WSL", "/mnt/c/Users/icywo/AppData/Local/MePhCRunner"
+))
+WINDOWS_GIT_WSL = Path(os.environ.get(
+    "MEPHC_WINDOWS_GIT_WSL", "/mnt/c/Program Files/Git/cmd/git.exe"
+))
+BROKER_HEARTBEAT = WINDOWS_RUNTIME_WSL / "broker-heartbeat.json"
+MATERIALIZER_TIMEOUT_SECONDS = int(os.environ.get("MEPHC_MATERIALIZER_TIMEOUT_SECONDS", "300"))
 EXPECTED_ORIGIN_MAIN = os.environ.get(
     "MEPHC_EXPECTED_ORIGIN_MAIN", "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5"
 )

@@ -7,13 +7,31 @@ immutable JSON jobs from `/home/icy/.local/state/mephc-runner/MEPHC/runner/jobs`
 and executes an exact commit only from a detached clean ext4 checkout under
 `/home/icy/.cache/mephc-runner/checkouts/<commit-sha>`.
 
-The public operations are `doctor`, `worktree`, `prelive`, `native`, `publish`,
-and `courier`. Arbitrary executables, roots, interpreters, project identities,
-browser profiles, and Chat destinations are not accepted.
+The public operations are `doctor`, `validate`, `change`, `worktree`, `prelive`,
+`native`, `publish`, and `courier`. `validate` runs selected committed
+`tests/*.py` targets without materializing source. A change containing any
+unchanged declared file is rejected before a durable job is created, with a
+structured safe next tool. Arbitrary executables, roots, interpreters, project
+identities, browser profiles, and Chat destinations are not accepted.
+
+The Windows broker is a non-blocking supervised process. It updates its own
+heartbeat while a materializer runs, binds each child PID to a random dispatch
+token, and terminates only that process tree after the bounded deadline. A
+timeout, broker restart, lost heartbeat, or interrupted transaction becomes
+`recovery_required`; it never authorizes automatic replay. Change recovery can
+only verify an attested commit, restore a persisted preimage journal, or prove
+that the transaction never started. Job status exposes phase, progress age,
+deadline, broker/worker health, and the single safe next tool.
 
 The only public Windows entry point is
 `%LOCALAPPDATA%\MePhCRunner\mephc-runner.cmd`. It supplies the fixed
 PowerShell execution-policy boundary and delegates to the typed client.
+Installation is an explicit two-phase transaction: run `bootstrap.ps1
+-Install`, let that command exit so Task Scheduler can release the execution
+host, then run the same committed script with `-Verify`. The first phase saves
+a build-bound pending credential and the previous Windows/WSL versions. The
+second requires a fresh matching broker heartbeat plus doctor and health; a
+failure restores the recorded versions instead of leaving a mixed install.
 
 Runtime state and Git object caches are outside every checkout. New jobs use
 schema v2 and bind the exact Windows root, source commit, cached `origin/main`,
