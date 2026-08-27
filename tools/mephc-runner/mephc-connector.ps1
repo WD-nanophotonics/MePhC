@@ -4,6 +4,34 @@ $ErrorActionPreference='Stop'
 $Distro='Ubuntu'
 $Python='/home/icy/miniconda3/envs/mp/bin/python'
 $Server='/opt/mephc-runner/current/mcp_server.py'
+$Runtime=Join-Path $env:LOCALAPPDATA 'MePhCRunner'
+$TaskName='MePhCRunnerBroker'
+
+function Read-BoundedJson([string]$Path) {
+  if(-not(Test-Path -LiteralPath $Path -PathType Leaf)){return $null}
+  $item=Get-Item -LiteralPath $Path
+  if($item.Length -gt 1048576){return $null}
+  try { return [IO.File]::ReadAllText($Path)|ConvertFrom-Json } catch { return $null }
+}
+
+function Test-BrokerFresh {
+  $heartbeat=Read-BoundedJson (Join-Path $Runtime 'broker-heartbeat.json')
+  $current=Read-BoundedJson (Join-Path $Runtime 'current.json')
+  if($null -eq $heartbeat -or $null -eq $current){return $false}
+  try {$age=([DateTime]::UtcNow-[DateTime]::Parse($heartbeat.updated_at).ToUniversalTime()).TotalSeconds}catch{return $false}
+  return $age -le 15 -and $heartbeat.worker_ok -eq $true -and $heartbeat.broker_build_id -eq $current.build_id
+}
+
+function Ensure-Broker {
+  if(Test-BrokerFresh){return}
+  $task=Get-ScheduledTask -TaskName $TaskName -ErrorAction Stop
+  if($task.State -notin @('Running','Queued')){Start-ScheduledTask -TaskName $TaskName}
+  for($index=0;$index -lt 20;$index++){
+    Start-Sleep -Milliseconds 500
+    if(Test-BrokerFresh){return}
+  }
+  throw 'BROKER_HEARTBEAT_UNAVAILABLE'
+}
 
 function Start-McpChild {
   $info=[Diagnostics.ProcessStartInfo]::new()
@@ -28,6 +56,7 @@ function Emit-ChildRestartError([string]$Line) {
 
 $child=$null
 try {
+  Ensure-Broker
   $child=Start-McpChild
   while(($line=[Console]::In.ReadLine()) -ne $null) {
     if($child.HasExited) {

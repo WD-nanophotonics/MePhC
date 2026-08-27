@@ -367,6 +367,8 @@ def test_bootstrap_restarts_broker_and_fixes_parent_cwd():
     assert "Push-Location $Runtime" in text
     assert "-WorkingDirectory $Runtime" in text
     assert "Register-ScheduledTask" in text and "RestartCount 999" in text
+    assert "-AllowStartIfOnBatteries" in text and "-DontStopIfGoingOnBatteries" in text
+    assert "-DontStopOnIdleEnd" in text and "-StartWhenAvailable" in text
     assert "return (($_.CommandLine" in text
     assert "Stop-ScheduledTask" in text and "Start-ScheduledTask" in text
     assert "Disable-ScheduledTask" in text and "Enable-ScheduledTask" in text
@@ -496,6 +498,27 @@ def test_doctor_does_not_queue_behind_active_change(monkeypatch):
     value = jobctl.doctor_deduplicated()
     assert value["state"] == "blocked_by_active_change"
     assert value["job_created"] is False
+
+
+def test_doctor_never_reuses_certificate_when_live_health_is_stale(monkeypatch):
+    jobctl = load("runner_jobctl_doctor_live_health", "jobctl.py")
+    monkeypatch.setattr(jobctl, "active_change", lambda: None)
+    monkeypatch.setattr(jobctl, "unresolved_change", lambda: None)
+    monkeypatch.setattr(jobctl, "live_runtime_health", lambda: {
+        "ok": False, "errors": ["BROKER_HEARTBEAT_STALE"], "worker": {}, "broker": {}})
+    monkeypatch.setattr(jobctl, "submit", lambda *_args: (_ for _ in ()).throw(
+        AssertionError("stale health must not create or reuse doctor")))
+    value = jobctl.doctor_deduplicated()
+    assert value["state"] == "blocked_by_runtime_health"
+    assert value["error_code"] == "DOCTOR_LIVE_HEALTH_FAILED"
+    assert value["job_created"] is False and value["safe_next_tool"] == "mephc_capabilities"
+
+
+def test_connector_self_heals_stopped_broker_after_admission():
+    connector = (SOURCE / "mephc-connector.ps1").read_text(encoding="utf-8-sig")
+    assert "function Ensure-Broker" in connector and "Start-ScheduledTask" in connector
+    assert "BROKER_HEARTBEAT_UNAVAILABLE" in connector and "broker_build_id" in connector
+    assert connector.index("Ensure-Broker") < connector.index("$child=Start-McpChild")
 
 
 def test_status_exposes_phase_stall_and_health(tmp_path, monkeypatch):

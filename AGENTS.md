@@ -4,6 +4,11 @@
 
 Every Agent starts with `mephc_capabilities`. If it reports an active or recovery-required job, inspect that exact job with `mephc_status`/`mephc_wait` before calling doctor; otherwise continue with `mephc_doctor -> mephc_resume`. A blocked doctor is a diagnostic result and must not be resubmitted. Empty `active_jobs` is not completion. Never ask the user for a work order because local state appears idle, and never hand-create `.relayctl/outbox` files.
 
+A previously successful doctor is reusable only when its source commit, runner
+build, state epoch, and current worker/broker health all still match. Treat
+`DOCTOR_LIVE_HEALTH_FAILED` as an infrastructure diagnostic; do not reuse the
+old certificate or enqueue another doctor behind stale runtime health.
+
 
 ## Mandatory Agent-facing entry point
 

@@ -31,6 +31,13 @@ startup bounded as historical terminal jobs accumulate. Admission retries a
 disconnected backend once only for read-only tools and returns structured
 disconnect identity for all other calls without replaying them.
 
+The scheduled broker is configured to remain available on battery power and
+when the machine leaves idle state. After cwd admission, the Windows connector
+checks the build-bound heartbeat and starts a stopped broker task before it
+launches the WSL MCP child. Doctor results are reused only while current worker
+and broker heartbeats are fresh, mutually build-bound, and healthy; an old
+successful certificate cannot conceal a stale runtime.
+
 The only public Windows entry point is
 `%LOCALAPPDATA%\MePhCRunner\mephc-runner.cmd`. It supplies the fixed
 PowerShell execution-policy boundary and delegates to the typed client.

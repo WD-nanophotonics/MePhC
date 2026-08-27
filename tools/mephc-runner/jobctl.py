@@ -363,12 +363,40 @@ def active_change() -> str | None:
     return None
 
 
+def live_runtime_health(stale_after: int = 15) -> dict[str, Any]:
+    worker_path, broker_path = RUNTIME / "heartbeat.json", config.BROKER_HEARTBEAT
+    worker_health, broker_health = _health(worker_path, stale_after), _health(broker_path, stale_after)
+    worker = broker = None
+    try:
+        if worker_path.stat().st_size <= 1024 * 1024:
+            worker = json.loads(worker_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, json.JSONDecodeError):
+        pass
+    try:
+        if broker_path.stat().st_size <= 1024 * 1024:
+            broker = json.loads(broker_path.read_text(encoding="utf-8-sig"))
+    except (OSError, ValueError, json.JSONDecodeError):
+        pass
+    reasons: list[str] = []
+    if worker_health["stale"]: reasons.append("WORKER_HEARTBEAT_STALE")
+    if broker_health["stale"]: reasons.append("BROKER_HEARTBEAT_STALE")
+    if not isinstance(worker, dict) or not isinstance(broker, dict): reasons.append("RUNTIME_HEARTBEAT_INVALID")
+    elif broker.get("worker_ok") is not True: reasons.append("BROKER_WORKER_CHECK_FAILED")
+    elif broker.get("broker_build_id") != worker.get("worker_build_id"): reasons.append("RUNNER_BUILD_MISMATCH")
+    return {"ok": not reasons, "errors": reasons, "worker": worker_health, "broker": broker_health}
+
+
 def doctor_deduplicated() -> dict[str, Any]:
     blocked = active_change() or unresolved_change()
     if blocked:
         return {"state": "blocked_by_active_change", "blocking_job_id": blocked,
                 "blocking_job": read_state(blocked), "job_created": False,
                 "safe_next_tool": "mephc_status"}
+    health = live_runtime_health()
+    if not health["ok"]:
+        return {"state": "blocked_by_runtime_health", "error_code": "DOCTOR_LIVE_HEALTH_FAILED",
+                "live_health": health, "job_created": False, "retry_allowed": False,
+                "safe_next_tool": "mephc_capabilities"}
     head, epoch = git_head(), config.state_epoch()
     for directory in sorted(JOBS.iterdir(), reverse=True) if JOBS.is_dir() else []:
         try:
@@ -378,7 +406,7 @@ def doctor_deduplicated() -> dict[str, Any]:
         if job.get("operation") == "doctor" and job.get("source_commit") == head and job.get("state_epoch") == epoch:
             value = read_state(directory.name)
             if value.get("state") in {"ready", "running", "succeeded"}:
-                return {"job_id": directory.name, "reused": True, **value}
+                return {"job_id": directory.name, "reused": True, "live_health": health, **value}
     directory = submit("doctor", [], None)
     return {"job_id": directory.name, "state": "ready", "reused": False, "job_created": True,
             "safe_next_tool": "mephc_wait"}

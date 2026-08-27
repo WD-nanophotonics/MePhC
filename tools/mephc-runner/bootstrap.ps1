@@ -108,7 +108,7 @@ try {
   $taskName='MePhCRunnerBroker'
   $taskAction=New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$launcher`" Broker" -WorkingDirectory $Runtime
   $taskTrigger=New-ScheduledTaskTrigger -AtLogOn -User $env:USERNAME
-  $taskSettings=New-ScheduledTaskSettingsSet -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) -ExecutionTimeLimit ([TimeSpan]::Zero) -Hidden
+  $taskSettings=New-ScheduledTaskSettingsSet -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -DontStopOnIdleEnd -StartWhenAvailable -Hidden
   Register-ScheduledTask -TaskName $taskName -Action $taskAction -Trigger $taskTrigger -Settings $taskSettings -Description 'MePhC durable Windows broker' -Force | Out-Null
   Disable-ScheduledTask -TaskName $taskName | Out-Null
   Stop-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
