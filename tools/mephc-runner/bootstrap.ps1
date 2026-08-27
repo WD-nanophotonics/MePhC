@@ -42,7 +42,7 @@ try {
   }
   wsl.exe -d Ubuntu -u root -- ln -sfn $versionWsl /opt/mephc-runner/current.new
   wsl.exe -d Ubuntu -u root -- mv -Tf /opt/mephc-runner/current.new /opt/mephc-runner/current
-  wsl.exe -d Ubuntu -u root -- install -d -o icy -g icy -m 0755 /home/icy/.local/bin /home/icy/.local/share/mephc-runtime
+  wsl.exe -d Ubuntu -u root -- install -d -o icy -g icy -m 0755 /home/icy/.local/bin /home/icy/.local/share/mephc-runtime /home/icy/.local/share/mephc-archive
   wsl.exe -d Ubuntu -u root -- ln -sfn /opt/mephc-runner/current/user_runtime.py /home/icy/.local/bin/mephc-runtime
   wsl.exe -d Ubuntu -u root -- install -o root -g root -m 0644 "$sourceWsl/mephc-runner.service" /etc/systemd/system/mephc-runner.service
   wsl.exe -d Ubuntu -u root -- systemctl daemon-reload

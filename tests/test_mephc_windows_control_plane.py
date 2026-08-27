@@ -256,3 +256,4 @@ def test_worker_and_bootstrap_bind_the_same_build_files():
         assert f"'{name}'" in bootstrap
     assert "'user_runtime.py'" in bootstrap
     assert "'home_cleanup.py'" in bootstrap
+    assert "/home/icy/.local/share/mephc-archive" in bootstrap
