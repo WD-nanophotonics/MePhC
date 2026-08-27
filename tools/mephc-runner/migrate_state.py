@@ -11,6 +11,7 @@ import uuid
 from pathlib import Path
 
 import runtime_config as config
+import active_index
 
 LEGACY = Path("/home/icy/MePhC/.relayctl")
 
@@ -49,9 +50,11 @@ def migrate(apply: bool) -> dict:
             raise RuntimeError("STATE_MIGRATION_RECEIPT_MISMATCH")
         if LEGACY.is_dir() and receipt.get("file_count") != len(before):
             raise RuntimeError("STATE_MIGRATION_RECEIPT_MISMATCH")
+        indexed = (active_index.rebuild(config.STATE_ROOT / "runner" / "jobs") if apply
+                   else active_index.read(config.STATE_ROOT / "runner"))
         return {"schema": "mephc-state-migration-v1", "legacy": str(LEGACY),
                 "legacy_present": LEGACY.is_dir(), "state_root": str(config.STATE_ROOT),
-                "file_count": receipt.get("file_count"), "active_jobs": [], "apply": apply,
+                "file_count": receipt.get("file_count"), "active_jobs": sorted(indexed), "apply": apply,
                 "reused": True, "state_epoch": epoch_file.read_text(encoding="ascii").strip()}
     if not LEGACY.is_dir():
         raise RuntimeError("LEGACY_STATE_MISSING_BEFORE_INITIAL_MIGRATION")

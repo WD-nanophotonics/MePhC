@@ -77,6 +77,26 @@ def test_stdio_notifications_are_forwarded_without_waiting_for_response():
     assert 'audit("notification_forwarded"' in text
 
 
+def test_admission_disconnect_policy_retries_only_read_only_tools():
+    admission = load("windows_admission_disconnect_policy", ADMISSION / "mephc_admission.py")
+    capabilities = {"method": "tools/call", "params": {"name": "mephc_capabilities", "arguments": {}}}
+    change = {"method": "tools/call", "params": {"name": "mephc_change", "arguments": {}}}
+    status = {"method": "tools/call", "params": {"name": "mephc_status",
+                                                    "arguments": {"job_id": "MEPHC-JOB-TEST"}}}
+    assert admission.replay_safe(capabilities) is True
+    assert admission.replay_safe(status) is True
+    assert admission.replay_safe(change) is False
+    unknown = admission.disconnect_data(change, "request-token")
+    assert unknown == {"error_code": "BACKEND_DISCONNECTED", "tool": "mephc_change",
+                       "job_id": None, "admission_request_id": "request-token",
+                       "retry_allowed": False, "safe_next_tool": "mephc_capabilities"}
+    known = admission.disconnect_data(status, "status-token")
+    assert known["job_id"] == "MEPHC-JOB-TEST" and known["safe_next_tool"] == "mephc_status"
+    source = (ADMISSION / "mephc_admission.py").read_text(encoding="utf-8")
+    assert "stderr.readline" not in source
+    assert "backend_restarted_for_read_only" in source
+
+
 def test_config_patch_changes_only_owned_tables(tmp_path):
     module = load("windows_config_patch", ADMISSION / "config_patch.py")
     config = tmp_path / "config.toml"

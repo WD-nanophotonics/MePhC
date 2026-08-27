@@ -27,6 +27,7 @@ INSTALL_ROOT = Path(__file__).resolve().parent
 if str(INSTALL_ROOT) not in sys.path: sys.path.insert(0, str(INSTALL_ROOT))
 import checkout_manager
 import runtime_config as config
+import active_index
 
 ROOT = config.CONTROL_ROOT
 PYTHON = config.PYTHON
@@ -82,6 +83,13 @@ def event(job_dir: Path, name: str, **fields: Any) -> None:
 
 def state(job_dir: Path, name: str, **fields: Any) -> None:
     atomic_json(job_dir / "state.json", {"state": name, "updated_at": now(), **fields})
+    operation = fields.get("operation")
+    if not isinstance(operation, str):
+        try:
+            operation = json.loads((job_dir / "job.json").read_text(encoding="utf-8")).get("operation")
+        except (OSError, json.JSONDecodeError):
+            operation = None
+    active_index.update(RUNTIME, job_dir.name, name, operation)
 
 
 def read_object(path: Path) -> dict[str, Any]:

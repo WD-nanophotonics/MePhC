@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import sys
 import time
+import secrets
 from typing import Any
 
 ALLOWED_ROOT = Path(r"C:\Users\icywo\PycharmProjects\MePhC-Windows")
@@ -14,9 +15,10 @@ WSL = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "System32" / "wsl.exe"
 BACKEND = ["-d", "Ubuntu", "--", "/home/icy/miniconda3/envs/mp/bin/python",
            "/opt/mephc-runner/current/mcp_server.py"]
 TOOL_NAMES = ("mephc_capabilities", "mephc_doctor", "mephc_resume", "mephc_change",
-              "mephc_submit", "mephc_status", "mephc_wait", "mephc_recover",
+              "mephc_validate", "mephc_submit", "mephc_status", "mephc_wait", "mephc_recover",
               "mephc_inspect", "mephc_report", "mephc_publish", "mephc_transport_canary")
 AUDIT_LOG = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "MePhCRunner" / "admission" / "launch-audit.jsonl"
+READ_ONLY_TOOLS = {"mephc_capabilities", "mephc_inspect", "mephc_status", "mephc_wait"}
 
 
 def audit(event: str, **fields: Any) -> None:
@@ -39,12 +41,15 @@ def inherited_cwd() -> Path:
     return actual
 
 
-def reply(identifier: Any, result: Any = None, error: str | None = None) -> None:
+def reply(identifier: Any, result: Any = None, error: str | None = None,
+          error_data: dict[str, Any] | None = None) -> None:
     value: dict[str, Any] = {"jsonrpc": "2.0", "id": identifier}
     if error is None:
         value["result"] = result
     else:
         value["error"] = {"code": -32001, "message": error}
+        if error_data is not None:
+            value["error"]["data"] = error_data
     sys.stdout.write(json.dumps(value, separators=(",", ":"), ensure_ascii=False) + "\n")
     sys.stdout.flush()
 
@@ -74,11 +79,45 @@ def rejected_loop(reason: str) -> int:
     return 0
 
 
+def start_backend() -> subprocess.Popen[str]:
+    return subprocess.Popen([str(WSL), *BACKEND], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE, text=True, encoding="utf-8", bufsize=1)
+
+
+def tool_name(request: dict[str, Any]) -> str | None:
+    if request.get("method") != "tools/call":
+        return None
+    value = request.get("params", {}).get("name")
+    return value if isinstance(value, str) else None
+
+
+def replay_safe(request: dict[str, Any]) -> bool:
+    return request.get("method") in {"initialize", "ping", "tools/list"} or tool_name(request) in READ_ONLY_TOOLS
+
+
+def disconnect_data(request: dict[str, Any], request_identity: str) -> dict[str, Any]:
+    arguments = request.get("params", {}).get("arguments") or {}
+    job_id = arguments.get("job_id") if isinstance(arguments, dict) else None
+    name = tool_name(request)
+    return {"error_code": "BACKEND_DISCONNECTED", "tool": name,
+            "job_id": job_id if isinstance(job_id, str) else None,
+            "admission_request_id": request_identity, "retry_allowed": False,
+            "safe_next_tool": "mephc_status" if isinstance(job_id, str) else "mephc_capabilities"}
+
+
+def stop_backend(child: subprocess.Popen[str]) -> None:
+    if child.poll() is None:
+        child.terminate()
+        try:
+            child.wait(timeout=2)
+        except subprocess.TimeoutExpired:
+            child.kill()
+
+
 def proxy() -> int:
     audit("admission_authorized", cwd=os.getcwd())
     try:
-        child = subprocess.Popen([str(WSL), *BACKEND], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                 stderr=subprocess.PIPE, text=True, encoding="utf-8", bufsize=1)
+        child = start_backend()
     except OSError as exc:
         audit("backend_start_failed", error=type(exc).__name__)
         return rejected_loop("BACKEND_START_FAILED")
@@ -88,27 +127,46 @@ def proxy() -> int:
         try:
             request = json.loads(line.lstrip("\ufeff"))
             audit("client_request", method=request.get("method"))
-            child.stdin.write(json.dumps(request, separators=(",", ":"), ensure_ascii=False) + "\n")
-            child.stdin.flush()
+            payload = json.dumps(request, separators=(",", ":"), ensure_ascii=False) + "\n"
             if request.get("id") is None:
+                child.stdin.write(payload)
+                child.stdin.flush()
                 audit("notification_forwarded", method=request.get("method"))
                 continue
-            response = child.stdout.readline()
+            request_identity = secrets.token_hex(16)
+            response = ""
+            attempts = 2 if replay_safe(request) else 1
+            for attempt in range(attempts):
+                try:
+                    child.stdin.write(payload)
+                    child.stdin.flush()
+                    response = child.stdout.readline()
+                except (BrokenPipeError, OSError):
+                    response = ""
+                if response:
+                    break
+                audit("backend_disconnected", return_code=child.poll(), tool=tool_name(request),
+                      request_identity=request_identity, attempt=attempt + 1)
+                if attempt + 1 < attempts:
+                    stop_backend(child)
+                    child = start_backend()
+                    audit("backend_restarted_for_read_only", tool=tool_name(request),
+                          request_identity=request_identity)
             if not response:
-                detail = child.stderr.readline().strip()[:500] if child.stderr is not None else ""
-                audit("backend_disconnected", return_code=child.poll(), detail=detail)
-                if request.get("id") is not None:
-                    reply(request.get("id"), error="DURABLE_JOB_RECOVERY_REQUIRED")
+                reply(request.get("id"), error="DURABLE_JOB_RECOVERY_REQUIRED",
+                      error_data=disconnect_data(request, request_identity))
                 return 3
             audit("backend_response", method=request.get("method"))
             sys.stdout.write(response)
             sys.stdout.flush()
         except (BrokenPipeError, OSError, json.JSONDecodeError):
             if request.get("id") is not None:
-                reply(request.get("id"), error="DURABLE_JOB_RECOVERY_REQUIRED")
+                identity = secrets.token_hex(16)
+                reply(request.get("id"), error="DURABLE_JOB_RECOVERY_REQUIRED",
+                      error_data=disconnect_data(request, identity))
             return 3
     child.stdin.close()
-    child.terminate()
+    stop_backend(child)
     return 0
 
 

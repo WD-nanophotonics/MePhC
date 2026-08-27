@@ -516,6 +516,25 @@ def test_status_exposes_phase_stall_and_health(tmp_path, monkeypatch):
     assert terminal["phase"] == "terminal" and terminal["safe_next_tool"] == "none"
 
 
+def test_capabilities_inventory_does_not_enrich_every_historical_job(tmp_path, monkeypatch):
+    jobctl = load("runner_jobctl_capabilities_inventory", "jobctl.py")
+    jobs = tmp_path / "jobs"; jobs.mkdir()
+    for index, state in enumerate(("succeeded", "failed", "ready")):
+        directory = jobs / f"MEPHC-JOB-{index}"; directory.mkdir()
+        (directory / "state.json").write_text(json.dumps({"state": state}), encoding="utf-8")
+    monkeypatch.setattr(jobctl, "JOBS", jobs)
+    jobctl.active_index.rebuild(jobs)
+    monkeypatch.setattr(jobctl, "git_head", lambda: "a" * 40)
+    monkeypatch.setattr(jobctl.workflow, "view", lambda: {"workflow_state": "available",
+                                                           "active_work_order_id": "MEPHC-WORK",
+                                                           "pending_job_id": None})
+    monkeypatch.setattr(jobctl, "read_state", lambda _job_id: (_ for _ in ()).throw(
+        AssertionError("capabilities must not perform per-job health enrichment")))
+    value = jobctl.capabilities()
+    assert value["active_jobs"] == [{"job_id": "MEPHC-JOB-2", "state": "ready",
+                                      "operation": None, "safe_next_action": "status_or_wait"}]
+
+
 def test_broker_is_nonblocking_and_has_exact_tree_watchdog():
     broker = (SOURCE / "windows_broker.py").read_text(encoding="utf-8")
     wrapper = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")

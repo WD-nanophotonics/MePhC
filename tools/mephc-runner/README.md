@@ -23,6 +23,14 @@ only verify an attested commit, restore a persisted preimage journal, or prove
 that the transaction never started. Job status exposes phase, progress age,
 deadline, broker/worker health, and the single safe next tool.
 
+Capabilities and blocker discovery use a durable `active-jobs.json` index
+maintained transactionally by submission and worker state transitions. The
+index contains only nonterminal, recovery-required, and orphan identities;
+selected-job status still reads the authoritative per-job state. This keeps
+startup bounded as historical terminal jobs accumulate. Admission retries a
+disconnected backend once only for read-only tools and returns structured
+disconnect identity for all other calls without replaying them.
+
 The only public Windows entry point is
 `%LOCALAPPDATA%\MePhCRunner\mephc-runner.cmd`. It supplies the fixed
 PowerShell execution-policy boundary and delegates to the typed client.

@@ -20,6 +20,8 @@ For `mephc_change`, provide only declared UTF-8 file content and a non-empty `te
 
 Never use `mephc_change` merely to run tests or redeclare unchanged files. Use `mephc_validate(tests=[...])` for solver-free validation of the current committed SHA. `CHANGE_NOOP_USE_VALIDATE` creates no durable job and requires `mephc_validate` as the next tool; `CHANGE_CONTAINS_NOOP_FILES` requires resubmitting only genuinely changed files. A stalled change must be observed until the watchdog marks it `recovery_required`; do not resubmit it or guess that a client timeout completed it.
 
+Admission may reconnect and replay exactly once only for read-only tools (`mephc_capabilities`, `mephc_inspect`, `mephc_status`, and `mephc_wait`). It never replays a side-effect tool. A backend disconnect must return structured `error.data` with `tool`, `job_id` when already known, `admission_request_id`, `retry_allowed=false`, and one `safe_next_tool`; never invent a missing job ID.
+
 `scripts/relayctl` and `tools/mephc-courier.ps1` are internal Runner implementation details, not Agent launchers. Agents must not invoke them, arbitrary shell/Python, Courier, Browser, Chrome, or Gmail directly. Runtime evidence lives outside Git in `/home/icy/.local/state/mephc-runner/MEPHC`; never create or copy `.relayctl` into the Windows control repository. Requests are plain text by default; attachments require separately identified committed remote audit artifacts.
 ## Automatic relay continuation
 

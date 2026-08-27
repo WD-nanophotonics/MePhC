@@ -20,6 +20,7 @@ INSTALL_ROOT = Path(__file__).resolve().parent
 if str(INSTALL_ROOT) not in sys.path: sys.path.insert(0, str(INSTALL_ROOT))
 import workflow
 import runtime_config as config
+import active_index
 
 ROOT = config.CONTROL_ROOT
 INSTALL_ROOT = Path(__file__).resolve().parent
@@ -60,13 +61,18 @@ def emit(event: str, **fields: Any) -> None:
 
 
 def git_head() -> str:
+    command = (["git", "-c", f"safe.directory={config.CONTROL_ROOT_WINDOWS}", "-C", config.CONTROL_ROOT_WINDOWS]
+               if os.name == "nt" else [str(config.WINDOWS_GIT_WSL), "-c",
+                                          f"safe.directory={config.CONTROL_ROOT_WINDOWS}",
+                                          "-C", config.CONTROL_ROOT_WINDOWS])
     completed = subprocess.run(
-        ["git" if os.name == "nt" else "/usr/bin/git", "-C", str(ROOT), "rev-parse", "HEAD"],
+        [*command, "rev-parse", "HEAD"],
         text=True,
         encoding="utf-8",
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,
+        timeout=15,
     )
     if completed.returncode:
         raise SystemExit(f"cannot resolve MePhC HEAD: {completed.stderr.strip()}")
@@ -185,10 +191,16 @@ def submit(operation: str, arguments: list[str], certificate_sha256: str | None)
     record["payload_sha256"] = hashlib.sha256(canonical(record)).hexdigest()
     atomic_write(job_dir / "job.json", (json.dumps(record, sort_keys=True, indent=2, ensure_ascii=False) + "\n").encode("utf-8"))
     atomic_write(job_dir / "READY", (record["payload_sha256"] + "\n").encode("ascii"))
+    active_index.update(JOBS.parent, job_id, "ready", operation)
     emit("runner_job_submitted", job_id=job_id, job_directory=str(job_dir), payload_sha256=record["payload_sha256"])
     return job_dir
 def git_ref(ref: str) -> str:
-    completed = subprocess.run(["git" if os.name == "nt" else "/usr/bin/git", "-C", str(ROOT), "rev-parse", ref], text=True, encoding="utf-8", stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    command = (["git", "-c", f"safe.directory={config.CONTROL_ROOT_WINDOWS}", "-C", config.CONTROL_ROOT_WINDOWS]
+               if os.name == "nt" else [str(config.WINDOWS_GIT_WSL), "-c",
+                                          f"safe.directory={config.CONTROL_ROOT_WINDOWS}",
+                                          "-C", config.CONTROL_ROOT_WINDOWS])
+    completed = subprocess.run([*command, "rev-parse", ref], text=True, encoding="utf-8",
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=15)
     if completed.returncode:
         raise SystemExit(f"cannot resolve MePhC {ref}: {completed.stderr.strip()}")
     return completed.stdout.strip()
@@ -254,6 +266,7 @@ def submit_change(change: dict[str, Any]) -> Path:
     record["payload_sha256"] = hashlib.sha256(canonical(record)).hexdigest()
     atomic_write(job_dir / "job.json", (json.dumps(record, sort_keys=True, indent=2, ensure_ascii=False) + "\n").encode("utf-8"))
     atomic_write(job_dir / "READY", (record["payload_sha256"] + "\n").encode("ascii"))
+    active_index.update(JOBS.parent, job_id, "ready", "change")
     emit("runner_job_submitted", job_id=job_id, job_directory=str(job_dir), payload_sha256=record["payload_sha256"])
     return job_dir
 
@@ -313,35 +326,34 @@ def read_state(job_id: str) -> dict[str, Any]:
     return result
 
 
+def read_basic_state(job_id: str) -> dict[str, Any]:
+    """Read only the durable state needed for inventory scans.
+
+    In particular this must not touch the Windows broker heartbeat once per
+    historical job; health enrichment belongs only to an explicitly selected
+    job.
+    """
+    directory = JOBS / job_id
+    path = directory / "state.json"
+    if not path.is_file():
+        return {"state": "ready" if (directory / "READY").is_file() else "unknown"}
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise SystemExit(f"invalid state file: {path}")
+    return value
+
+
 def unresolved_change() -> str | None:
-    for directory in sorted(JOBS.iterdir()) if JOBS.is_dir() else []:
-        if not directory.is_dir():
-            continue
-        state_value = read_state(directory.name)
-        if state_value.get("state") != "recovery_required":
-            continue
-        try:
-            job = json.loads((directory / "job.json").read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            continue
-        if job.get("operation") == "change":
-            return directory.name
+    for job_id, value in sorted(active_index.read(JOBS.parent).items()):
+        if value.get("state") == "recovery_required" and value.get("operation") == "change":
+            return job_id
     return None
 
 
 def active_change() -> str | None:
-    for directory in sorted(JOBS.iterdir()) if JOBS.is_dir() else []:
-        if not directory.is_dir():
-            continue
-        value = read_state(directory.name)
-        if value.get("state") not in {"ready", "running"}:
-            continue
-        try:
-            job = json.loads((directory / "job.json").read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            continue
-        if job.get("operation") == "change":
-            return directory.name
+    for job_id, value in sorted(active_index.read(JOBS.parent).items()):
+        if value.get("state") in {"ready", "running"} and value.get("operation") == "change":
+            return job_id
     return None
 
 
@@ -385,11 +397,14 @@ def wait(job_id: str, timeout: int) -> int:
 
 def capabilities() -> dict[str, Any]:
     active=[];orphaned=[]
-    for directory in sorted(JOBS.iterdir()) if JOBS.is_dir() else []:
-        if not directory.is_dir():continue
-        value=read_state(directory.name);name=value.get("state")
-        if name=="unknown":orphaned.append(directory.name)
-        elif name not in TERMINAL:active.append({"job_id":directory.name,"state":name,"safe_next_action":"status_or_wait"})
+    for job_id, value in sorted(active_index.read(JOBS.parent).items()):
+        name=value.get("state")
+        if name == "unknown":
+            orphaned.append(job_id)
+            continue
+        active.append({"job_id":job_id,"state":name,
+                       "operation":value.get("operation"),
+                       "safe_next_action":"recover" if name=="recovery_required" else "status_or_wait"})
     head = git_head()
     return {"schema":"mephc-runner-capabilities-v3","project_id":"MEPHC",
             "control_root":config.CONTROL_ROOT_WINDOWS,"state_root":str(config.STATE_ROOT),
