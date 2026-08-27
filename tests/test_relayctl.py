@@ -96,6 +96,26 @@ def test_bridge_has_required_gates():
         assert token in text
 
 
+def test_bridge_binds_windows_control_durable_state_and_exact_execution_checkout():
+    text = (Path(__file__).parents[1] / "tools" / "mephc-courier.ps1").read_text(encoding="utf-8-sig")
+    assert "$ControlRoot='C:\\Users\\icywo\\PycharmProjects\\MePhC-Windows'" in text
+    assert "$StateRoot='/home/icy/.local/state/mephc-runner/MEPHC'" in text
+    assert "$ExecutionRoot='/home/icy/.cache/mephc-runner/checkouts'" in text
+    assert "$certificateRoot=$StateRoot + '/certificates'" in text
+    assert "$expectedWorktree=$ExecutionRoot + '/' + $head" in text
+    assert "certificate.control_root" in text
+    assert "certificate.courier_request_root" in text
+    assert "certificate.canonical_root" not in text
+    assert "/home/icy/MePhC" not in text
+
+
+def test_bridge_rejects_links_and_non_sha_certificate_heads():
+    text = (Path(__file__).parents[1] / "tools" / "mephc-courier.ps1").read_text(encoding="utf-8-sig")
+    assert text.count("[IO.FileAttributes]::ReparsePoint") >= 3
+    assert "^[0-9a-f]{40}$" in text
+    assert "-cne $expectedWorktree" in text
+
+
 def test_bridge_does_not_require_preflight_before_run():
     text = (Path(__file__).parents[1] / "tools" / "mephc-courier.ps1").read_text(encoding="utf-8-sig")
     assert "& $Courier validate $request" in text

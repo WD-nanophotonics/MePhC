@@ -1,13 +1,28 @@
 [CmdletBinding()]
 param([Parameter(Mandatory=$true)][string]$RequestDirectory,[switch]$RecoveryOnly)
 $ErrorActionPreference='Stop'
-$MePhCRoot='\\wsl.localhost\Ubuntu\home\icy\MePhC'
+$ControlRoot='C:\Users\icywo\PycharmProjects\MePhC-Windows'
+$StateRoot='/home/icy/.local/state/mephc-runner/MEPHC'
+$StateRootUnc='\\wsl.localhost\Ubuntu\home\icy\.local\state\mephc-runner\MEPHC'
+$ExecutionRoot='/home/icy/.cache/mephc-runner/checkouts'
+$WslUncPrefix='\\wsl.localhost\Ubuntu'
 $Courier='C:\Users\icywo\PycharmProjects\GmailCourier\scripts\chat-courier.cmd'
 function Emit([string]$Event,[bool]$Ok,[hashtable]$Values=@{}) { @{event=$Event;ok=$Ok} + $Values | ConvertTo-Json -Compress }
 function Fail([string]$Code,[string]$Detail) { Emit $Code $false @{detail=$Detail}; exit 2 }
 function Hash([string]$Path) { (Get-FileHash -Algorithm SHA256 -LiteralPath $Path).Hash.ToLowerInvariant() }
+function WslToUnc([string]$Path) {
+  if(-not $Path.StartsWith('/',[System.StringComparison]::Ordinal)){ Fail 'ROOT_MISMATCH' 'expected an absolute WSL path' }
+  return $WslUncPrefix + $Path.Replace('/',[string][char]92)
+}
+function RequireUnder([string]$Path,[string]$Parent,[string]$Detail) {
+  $prefix=$Parent.TrimEnd([string][char]92) + [string][char]92
+  if(-not $Path.StartsWith($prefix,[System.StringComparison]::OrdinalIgnoreCase)){ Fail 'ROOT_MISMATCH' $Detail }
+}
 try {
   $request=(Resolve-Path -LiteralPath $RequestDirectory).ProviderPath
+  RequireUnder $request (Join-Path $StateRootUnc 'outbox') 'request is outside the durable MePhC outbox'
+  $requestItem=Get-Item -LiteralPath $request
+  if($requestItem.LinkType -or ($requestItem.Attributes -band [IO.FileAttributes]::ReparsePoint)){ Fail 'ROOT_MISMATCH' 'request directory link is forbidden' }
   $manifestPath=Join-Path $request 'request.json'
   $manifest=Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
   if($manifest.project_id -ne 'MEPHC'){ Fail 'ROOT_MISMATCH' 'only PROJECT_ID=MEPHC is accepted' }
@@ -35,16 +50,27 @@ try {
     }
     if($totalBytes -gt 20971520 -or $totalBytes -ne [int64]$attachmentAttestation.total_bytes){ Fail 'ROOT_MISMATCH' 'attachment total exceeds policy or attestation' }
   }
-  if(-not $manifest.relay_certificate -or -not $manifest.relay_certificate.StartsWith('/home/icy/MePhC/')){ Fail 'PRELIVE_UNCOMMITTED' 'request lacks a native MePhC relayctl certificate path' }
-  $certificatePath='\\wsl.localhost\Ubuntu' + $manifest.relay_certificate.Replace('/','\')
-  if(-not(Test-Path -LiteralPath $certificatePath -PathType Leaf)){ Fail 'PRELIVE_UNCOMMITTED' 'request certificate is unavailable' }
+  $certificateWsl=[string]$manifest.relay_certificate
+  $certificateRoot=$StateRoot + '/certificates'
+  if(-not $certificateWsl -or -not $certificateWsl.StartsWith($certificateRoot + '/',[System.StringComparison]::Ordinal)){ Fail 'PRELIVE_UNCOMMITTED' 'request lacks a durable MePhC Runner certificate path' }
+  $certificateCandidate=WslToUnc $certificateWsl
+  if(-not(Test-Path -LiteralPath $certificateCandidate -PathType Leaf)){ Fail 'PRELIVE_UNCOMMITTED' 'request certificate is unavailable' }
+  $certificatePath=(Resolve-Path -LiteralPath $certificateCandidate).ProviderPath
+  RequireUnder $certificatePath (WslToUnc $certificateRoot) 'certificate is outside the durable MePhC certificate root'
+  $certificateItem=Get-Item -LiteralPath $certificatePath
+  if($certificateItem.LinkType -or ($certificateItem.Attributes -band [IO.FileAttributes]::ReparsePoint)){ Fail 'ROOT_MISMATCH' 'certificate link is forbidden' }
   $certificate=Get-Content -Raw -LiteralPath $certificatePath | ConvertFrom-Json
-  if($certificate.project_id -ne 'MEPHC' -or -not $certificate.worktree -or -not $certificate.canonical_root){ Fail 'ROOT_MISMATCH' 'certificate does not bind a MePhC worktree' }
-  if(-not ($certificate.worktree -eq $certificate.canonical_root -or $certificate.worktree.StartsWith($certificate.canonical_root + '/',[System.StringComparison]::Ordinal)) -or $certificate.canonical_root -ne '/home/icy/MePhC'){ Fail 'ROOT_MISMATCH' 'certificate worktree is outside canonical MePhC root' }
-  $separator=[string][char]92
-  $wslPrefix=$separator + $separator + 'wsl.localhost' + $separator + 'Ubuntu'
-  $expectedOutbox=$wslPrefix + $certificate.worktree.Replace('/',$separator) + $separator + '.relayctl' + $separator + 'outbox' + $separator
-  if(-not $request.StartsWith($expectedOutbox,[System.StringComparison]::OrdinalIgnoreCase)){ Emit 'ROOT_MISMATCH' $false @{request=$request;expected_outbox=$expectedOutbox}; exit 2 }
+  if($certificate.project_id -ne 'MEPHC' -or -not $certificate.worktree -or -not $certificate.control_root -or -not $certificate.head){ Fail 'ROOT_MISMATCH' 'certificate does not bind the MePhC control and execution roots' }
+  if(([string]$certificate.control_root).ToLowerInvariant() -ne $ControlRoot.ToLowerInvariant()){ Fail 'ROOT_MISMATCH' 'certificate control root is not the Windows canonical repository' }
+  $head=[string]$certificate.head
+  if($head -notmatch '^[0-9a-f]{40}$'){ Fail 'ROOT_MISMATCH' 'certificate HEAD is invalid' }
+  $expectedWorktree=$ExecutionRoot + '/' + $head
+  if([string]$certificate.worktree -cne $expectedWorktree){ Fail 'ROOT_MISMATCH' 'certificate worktree is not the exact SHA-bound execution checkout' }
+  if([string]$certificate.courier_request_root -cne ($StateRoot + '/outbox')){ Fail 'ROOT_MISMATCH' 'certificate does not bind the durable MePhC outbox' }
+  $executionPath=(Resolve-Path -LiteralPath (WslToUnc $expectedWorktree)).ProviderPath
+  $executionItem=Get-Item -LiteralPath $executionPath
+  if($executionItem.LinkType -or ($executionItem.Attributes -band [IO.FileAttributes]::ReparsePoint)){ Fail 'ROOT_MISMATCH' 'execution checkout link is forbidden' }
+  $expectedOutbox=(Join-Path $StateRootUnc 'outbox').TrimEnd([string][char]92) + [string][char]92
   if(-not(Test-Path -LiteralPath $Courier -PathType Leaf)){ Fail 'COURIER_HARD_STOP' 'approved Courier launcher is unavailable' }
   $receiptPath=Join-Path $request 'receipt.json'
   if($RecoveryOnly){
