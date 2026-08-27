@@ -1,0 +1,716 @@
+{
+  "schema": "mephc_e9f_c2_c2_gate_scope_and_evidence_matrix_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C2-20260827-281",
+  "base_sandbox_sha": "5fd2fd805e6edcd9c15319c48f7808caf034ce39",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "frozen_threshold": 0.02,
+  "frozen_srd_formula": true,
+  "frozen_locked_sample_count": 8,
+  "contract_evidence": {
+    "path": "audit/e9f/qp_b_c1_completed_validation_contract.json",
+    "sha256": "140ba40f4541dcccdd22de1a2916c8e6c8fd10ae4616dfb41aeb3efa6b9c68d6"
+  },
+  "gate_scope_decisions": {
+    "FINITE_DATA": {
+      "GATE_NAME": "FINITE_DATA",
+      "FROZEN_SCOPE": "SAMPLE_LOCAL",
+      "CONTRACT_EVIDENCE": "all_identity_invariance_gates in bound QP.B.C1 contract",
+      "ALGORITHMIC_REASON": "Finite Omega and frequencies must be present for the exact pair.",
+      "PRE_QP_ACCEPTED_VALIDATION_EVIDENCE": [
+        {
+          "path": "tests/test_e3_spectral_association.py",
+          "sha256": "170dd1e84454797ab08fd454ec8ce219fca3c9111d90d0eada498dcac88649ee"
+        },
+        {
+          "path": "tests/test_r6_6h_hspace_overlap.py",
+          "sha256": "3a692b976c75d09309e7549b583d2451cb65559e8ef81ccc25bf827d6a779804"
+        },
+        {
+          "path": "tests/test_e7g_mpb_symmetry_validation.py",
+          "sha256": "5c5a09b94a5d276c5484db2bc12ad1cceb02dd0d591622c5d41ed01262c0fb0e"
+        },
+        {
+          "path": "tests/test_r6_6q_certificate_integrity_scope.py",
+          "sha256": "2d7b9f6befd6fccc62901fe33786087c7a8d79e0fa46e3ad04714f8b72cad8e7"
+        }
+      ],
+      "CURRENT_PAIR_LOCAL_EVIDENCE_IF_REQUIRED": "No exact authoritative pair-local evidence admitted; see per-pair rows.",
+      "RAW_H_VECTORS_STRICTLY_REQUIRED": false,
+      "SOLVER_FREE_ESTABLISHABLE": true,
+      "NATIVE_SOLVE_REQUIRED": false
+    },
+    "NONZERO_NORM": {
+      "GATE_NAME": "NONZERO_NORM",
+      "FROZEN_SCOPE": "SAMPLE_LOCAL",
+      "CONTRACT_EVIDENCE": "all_identity_invariance_gates in bound QP.B.C1 contract",
+      "ALGORITHMIC_REASON": "Norm/nonzero checks are pair-local and cannot be inferred from curvature.",
+      "PRE_QP_ACCEPTED_VALIDATION_EVIDENCE": [
+        {
+          "path": "tests/test_e3_spectral_association.py",
+          "sha256": "170dd1e84454797ab08fd454ec8ce219fca3c9111d90d0eada498dcac88649ee"
+        },
+        {
+          "path": "tests/test_r6_6h_hspace_overlap.py",
+          "sha256": "3a692b976c75d09309e7549b583d2451cb65559e8ef81ccc25bf827d6a779804"
+        },
+        {
+          "path": "tests/test_e7g_mpb_symmetry_validation.py",
+          "sha256": "5c5a09b94a5d276c5484db2bc12ad1cceb02dd0d591622c5d41ed01262c0fb0e"
+        },
+        {
+          "path": "tests/test_r6_6q_certificate_integrity_scope.py",
+          "sha256": "2d7b9f6befd6fccc62901fe33786087c7a8d79e0fa46e3ad04714f8b72cad8e7"
+        }
+      ],
+      "CURRENT_PAIR_LOCAL_EVIDENCE_IF_REQUIRED": "No exact authoritative pair-local evidence admitted; see per-pair rows.",
+      "RAW_H_VECTORS_STRICTLY_REQUIRED": true,
+      "SOLVER_FREE_ESTABLISHABLE": false,
+      "NATIVE_SOLVE_REQUIRED": true
+    },
+    "H_REPRESENTATION_QUALIFIED": {
+      "GATE_NAME": "H_REPRESENTATION_QUALIFIED",
+      "FROZEN_SCOPE": "GLOBAL_REPRESENTATION_LEVEL",
+      "CONTRACT_EVIDENCE": "all_identity_invariance_gates in bound QP.B.C1 contract",
+      "ALGORITHMIC_REASON": "H-only representation is globally accepted; pair-local conditioning still needs authoritative raw diagnostics.",
+      "PRE_QP_ACCEPTED_VALIDATION_EVIDENCE": [
+        {
+          "path": "tests/test_e3_spectral_association.py",
+          "sha256": "170dd1e84454797ab08fd454ec8ce219fca3c9111d90d0eada498dcac88649ee"
+        },
+        {
+          "path": "tests/test_r6_6h_hspace_overlap.py",
+          "sha256": "3a692b976c75d09309e7549b583d2451cb65559e8ef81ccc25bf827d6a779804"
+        },
+        {
+          "path": "tests/test_e7g_mpb_symmetry_validation.py",
+          "sha256": "5c5a09b94a5d276c5484db2bc12ad1cceb02dd0d591622c5d41ed01262c0fb0e"
+        },
+        {
+          "path": "tests/test_r6_6q_certificate_integrity_scope.py",
+          "sha256": "2d7b9f6befd6fccc62901fe33786087c7a8d79e0fa46e3ad04714f8b72cad8e7"
+        }
+      ],
+      "CURRENT_PAIR_LOCAL_EVIDENCE_IF_REQUIRED": "No exact authoritative pair-local evidence admitted; see per-pair rows.",
+      "RAW_H_VECTORS_STRICTLY_REQUIRED": false,
+      "SOLVER_FREE_ESTABLISHABLE": true,
+      "NATIVE_SOLVE_REQUIRED": false
+    },
+    "ASSOCIATION_UNAMBIGUOUS": {
+      "GATE_NAME": "ASSOCIATION_UNAMBIGUOUS",
+      "FROZEN_SCOPE": "SAMPLE_LOCAL",
+      "CONTRACT_EVIDENCE": "all_identity_invariance_gates in bound QP.B.C1 contract",
+      "ALGORITHMIC_REASON": "Assignment margins and selected slots are pair-local.",
+      "PRE_QP_ACCEPTED_VALIDATION_EVIDENCE": [
+        {
+          "path": "tests/test_e3_spectral_association.py",
+          "sha256": "170dd1e84454797ab08fd454ec8ce219fca3c9111d90d0eada498dcac88649ee"
+        },
+        {
+          "path": "tests/test_r6_6h_hspace_overlap.py",
+          "sha256": "3a692b976c75d09309e7549b583d2451cb65559e8ef81ccc25bf827d6a779804"
+        },
+        {
+          "path": "tests/test_e7g_mpb_symmetry_validation.py",
+          "sha256": "5c5a09b94a5d276c5484db2bc12ad1cceb02dd0d591622c5d41ed01262c0fb0e"
+        },
+        {
+          "path": "tests/test_r6_6q_certificate_integrity_scope.py",
+          "sha256": "2d7b9f6befd6fccc62901fe33786087c7a8d79e0fa46e3ad04714f8b72cad8e7"
+        }
+      ],
+      "CURRENT_PAIR_LOCAL_EVIDENCE_IF_REQUIRED": "No exact authoritative pair-local evidence admitted; see per-pair rows.",
+      "RAW_H_VECTORS_STRICTLY_REQUIRED": true,
+      "SOLVER_FREE_ESTABLISHABLE": false,
+      "NATIVE_SOLVE_REQUIRED": true
+    },
+    "OVERLAP_QUALIFIED": {
+      "GATE_NAME": "OVERLAP_QUALIFIED",
+      "FROZEN_SCOPE": "STENCIL_LOCAL",
+      "CONTRACT_EVIDENCE": "all_identity_invariance_gates in bound QP.B.C1 contract",
+      "ALGORITHMIC_REASON": "Rank-1 overlap singular values must be directly bound at each stencil edge.",
+      "PRE_QP_ACCEPTED_VALIDATION_EVIDENCE": [
+        {
+          "path": "tests/test_e3_spectral_association.py",
+          "sha256": "170dd1e84454797ab08fd454ec8ce219fca3c9111d90d0eada498dcac88649ee"
+        },
+        {
+          "path": "tests/test_r6_6h_hspace_overlap.py",
+          "sha256": "3a692b976c75d09309e7549b583d2451cb65559e8ef81ccc25bf827d6a779804"
+        },
+        {
+          "path": "tests/test_e7g_mpb_symmetry_validation.py",
+          "sha256": "5c5a09b94a5d276c5484db2bc12ad1cceb02dd0d591622c5d41ed01262c0fb0e"
+        },
+        {
+          "path": "tests/test_r6_6q_certificate_integrity_scope.py",
+          "sha256": "2d7b9f6befd6fccc62901fe33786087c7a8d79e0fa46e3ad04714f8b72cad8e7"
+        }
+      ],
+      "CURRENT_PAIR_LOCAL_EVIDENCE_IF_REQUIRED": "No exact authoritative pair-local evidence admitted; see per-pair rows.",
+      "RAW_H_VECTORS_STRICTLY_REQUIRED": true,
+      "SOLVER_FREE_ESTABLISHABLE": false,
+      "NATIVE_SOLVE_REQUIRED": true
+    },
+    "PRINCIPAL_ANGLE_QUALIFIED": {
+      "GATE_NAME": "PRINCIPAL_ANGLE_QUALIFIED",
+      "FROZEN_SCOPE": "STENCIL_LOCAL",
+      "CONTRACT_EVIDENCE": "all_identity_invariance_gates in bound QP.B.C1 contract",
+      "ALGORITHMIC_REASON": "Principal-angle qualification is an edge-local consequence of retained qualified rank-1 overlap data.",
+      "PRE_QP_ACCEPTED_VALIDATION_EVIDENCE": [
+        {
+          "path": "tests/test_e3_spectral_association.py",
+          "sha256": "170dd1e84454797ab08fd454ec8ce219fca3c9111d90d0eada498dcac88649ee"
+        },
+        {
+          "path": "tests/test_r6_6h_hspace_overlap.py",
+          "sha256": "3a692b976c75d09309e7549b583d2451cb65559e8ef81ccc25bf827d6a779804"
+        },
+        {
+          "path": "tests/test_e7g_mpb_symmetry_validation.py",
+          "sha256": "5c5a09b94a5d276c5484db2bc12ad1cceb02dd0d591622c5d41ed01262c0fb0e"
+        },
+        {
+          "path": "tests/test_r6_6q_certificate_integrity_scope.py",
+          "sha256": "2d7b9f6befd6fccc62901fe33786087c7a8d79e0fa46e3ad04714f8b72cad8e7"
+        }
+      ],
+      "CURRENT_PAIR_LOCAL_EVIDENCE_IF_REQUIRED": "No exact authoritative pair-local evidence admitted; see per-pair rows.",
+      "RAW_H_VECTORS_STRICTLY_REQUIRED": true,
+      "SOLVER_FREE_ESTABLISHABLE": false,
+      "NATIVE_SOLVE_REQUIRED": true
+    },
+    "PROJECTOR_DISTANCE_QUALIFIED": {
+      "GATE_NAME": "PROJECTOR_DISTANCE_QUALIFIED",
+      "FROZEN_SCOPE": "STENCIL_LOCAL",
+      "CONTRACT_EVIDENCE": "all_identity_invariance_gates in bound QP.B.C1 contract",
+      "ALGORITHMIC_REASON": "Projector distance is edge-local and must be retained or deterministically reconstructed from the qualified rank-1 overlap.",
+      "PRE_QP_ACCEPTED_VALIDATION_EVIDENCE": [
+        {
+          "path": "tests/test_e3_spectral_association.py",
+          "sha256": "170dd1e84454797ab08fd454ec8ce219fca3c9111d90d0eada498dcac88649ee"
+        },
+        {
+          "path": "tests/test_r6_6h_hspace_overlap.py",
+          "sha256": "3a692b976c75d09309e7549b583d2451cb65559e8ef81ccc25bf827d6a779804"
+        },
+        {
+          "path": "tests/test_e7g_mpb_symmetry_validation.py",
+          "sha256": "5c5a09b94a5d276c5484db2bc12ad1cceb02dd0d591622c5d41ed01262c0fb0e"
+        },
+        {
+          "path": "tests/test_r6_6q_certificate_integrity_scope.py",
+          "sha256": "2d7b9f6befd6fccc62901fe33786087c7a8d79e0fa46e3ad04714f8b72cad8e7"
+        }
+      ],
+      "CURRENT_PAIR_LOCAL_EVIDENCE_IF_REQUIRED": "No exact authoritative pair-local evidence admitted; see per-pair rows.",
+      "RAW_H_VECTORS_STRICTLY_REQUIRED": true,
+      "SOLVER_FREE_ESTABLISHABLE": false,
+      "NATIVE_SOLVE_REQUIRED": true
+    },
+    "FORWARD_REVERSE_CONSISTENT": {
+      "GATE_NAME": "FORWARD_REVERSE_CONSISTENT",
+      "FROZEN_SCOPE": "RESOLUTION_LOCAL",
+      "CONTRACT_EVIDENCE": "all_identity_invariance_gates in bound QP.B.C1 contract",
+      "ALGORITHMIC_REASON": "Forward/reverse loop or association closure is resolution-local.",
+      "PRE_QP_ACCEPTED_VALIDATION_EVIDENCE": [
+        {
+          "path": "tests/test_e3_spectral_association.py",
+          "sha256": "170dd1e84454797ab08fd454ec8ce219fca3c9111d90d0eada498dcac88649ee"
+        },
+        {
+          "path": "tests/test_r6_6h_hspace_overlap.py",
+          "sha256": "3a692b976c75d09309e7549b583d2451cb65559e8ef81ccc25bf827d6a779804"
+        },
+        {
+          "path": "tests/test_e7g_mpb_symmetry_validation.py",
+          "sha256": "5c5a09b94a5d276c5484db2bc12ad1cceb02dd0d591622c5d41ed01262c0fb0e"
+        },
+        {
+          "path": "tests/test_r6_6q_certificate_integrity_scope.py",
+          "sha256": "2d7b9f6befd6fccc62901fe33786087c7a8d79e0fa46e3ad04714f8b72cad8e7"
+        }
+      ],
+      "CURRENT_PAIR_LOCAL_EVIDENCE_IF_REQUIRED": "No exact authoritative pair-local evidence admitted; see per-pair rows.",
+      "RAW_H_VECTORS_STRICTLY_REQUIRED": true,
+      "SOLVER_FREE_ESTABLISHABLE": false,
+      "NATIVE_SOLVE_REQUIRED": true
+    },
+    "GAUGE_INVARIANT": {
+      "GATE_NAME": "GAUGE_INVARIANT",
+      "FROZEN_SCOPE": "IMPLEMENTATION_LEVEL",
+      "CONTRACT_EVIDENCE": "all_identity_invariance_gates in bound QP.B.C1 contract",
+      "ALGORITHMIC_REASON": "Accepted implementation-level H-link and phase invariance tests cover the frozen semantics generically.",
+      "PRE_QP_ACCEPTED_VALIDATION_EVIDENCE": [
+        {
+          "path": "tests/test_e3_spectral_association.py",
+          "sha256": "170dd1e84454797ab08fd454ec8ce219fca3c9111d90d0eada498dcac88649ee"
+        },
+        {
+          "path": "tests/test_r6_6h_hspace_overlap.py",
+          "sha256": "3a692b976c75d09309e7549b583d2451cb65559e8ef81ccc25bf827d6a779804"
+        },
+        {
+          "path": "tests/test_e7g_mpb_symmetry_validation.py",
+          "sha256": "5c5a09b94a5d276c5484db2bc12ad1cceb02dd0d591622c5d41ed01262c0fb0e"
+        },
+        {
+          "path": "tests/test_r6_6q_certificate_integrity_scope.py",
+          "sha256": "2d7b9f6befd6fccc62901fe33786087c7a8d79e0fa46e3ad04714f8b72cad8e7"
+        }
+      ],
+      "CURRENT_PAIR_LOCAL_EVIDENCE_IF_REQUIRED": "No exact authoritative pair-local evidence admitted; see per-pair rows.",
+      "RAW_H_VECTORS_STRICTLY_REQUIRED": false,
+      "SOLVER_FREE_ESTABLISHABLE": true,
+      "NATIVE_SOLVE_REQUIRED": false
+    },
+    "SOLVER_ORDER_INVARIANT": {
+      "GATE_NAME": "SOLVER_ORDER_INVARIANT",
+      "FROZEN_SCOPE": "IMPLEMENTATION_LEVEL",
+      "CONTRACT_EVIDENCE": "all_identity_invariance_gates in bound QP.B.C1 contract",
+      "ALGORITHMIC_REASON": "Accepted implementation-level solver-order permutation tests cover the frozen semantics generically.",
+      "PRE_QP_ACCEPTED_VALIDATION_EVIDENCE": [
+        {
+          "path": "tests/test_e3_spectral_association.py",
+          "sha256": "170dd1e84454797ab08fd454ec8ce219fca3c9111d90d0eada498dcac88649ee"
+        },
+        {
+          "path": "tests/test_r6_6h_hspace_overlap.py",
+          "sha256": "3a692b976c75d09309e7549b583d2451cb65559e8ef81ccc25bf827d6a779804"
+        },
+        {
+          "path": "tests/test_e7g_mpb_symmetry_validation.py",
+          "sha256": "5c5a09b94a5d276c5484db2bc12ad1cceb02dd0d591622c5d41ed01262c0fb0e"
+        },
+        {
+          "path": "tests/test_r6_6q_certificate_integrity_scope.py",
+          "sha256": "2d7b9f6befd6fccc62901fe33786087c7a8d79e0fa46e3ad04714f8b72cad8e7"
+        }
+      ],
+      "CURRENT_PAIR_LOCAL_EVIDENCE_IF_REQUIRED": "No exact authoritative pair-local evidence admitted; see per-pair rows.",
+      "RAW_H_VECTORS_STRICTLY_REQUIRED": false,
+      "SOLVER_FREE_ESTABLISHABLE": true,
+      "NATIVE_SOLVE_REQUIRED": false
+    }
+  },
+  "implementation_level_scope": {
+    "GAUGE_INVARIANT": {
+      "CONTRACT_REQUIRES_POINTWISE_EVIDENCE": false,
+      "PREEXISTING_ACCEPTED_TEST_OR_ARTIFACT": "tests/test_r6_6h_hspace_overlap.py; tests/test_e7g_mpb_symmetry_validation.py",
+      "SEMANTIC_RUNTIME_BINDING": "mpb_h closed-flux phase invariance and accepted local-U2/phase fixtures",
+      "SUFFICIENT_FOR_QP_B_C2": true,
+      "ADDITIONAL_NATIVE_SOLVES_REQUIRED": false
+    },
+    "SOLVER_ORDER_INVARIANT": {
+      "CONTRACT_REQUIRES_POINTWISE_EVIDENCE": false,
+      "PREEXISTING_ACCEPTED_TEST_OR_ARTIFACT": "tests/test_e7g_mpb_symmetry_validation.py",
+      "SEMANTIC_RUNTIME_BINDING": "accepted solver-order permutation preserves rank decisions/Wilson invariants",
+      "SUFFICIENT_FOR_QP_B_C2": true,
+      "ADDITIONAL_NATIVE_SOLVES_REQUIRED": false
+    }
+  },
+  "sample_resolution_pairs": [
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+      "resolution": "R96",
+      "external_gap": 0.018428896349577062,
+      "role": "POLICY_CHALLENGE",
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH_OR_RETENTION_ID": "RETENTION:/home/icy/MePhC/.c3-c5-live2/audit/e9f/rp2_c3_c5_runtime_20260825_fix1/c3_c5_matrix_result.json",
+      "NUMERIC_SOURCE_SHA256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+      "SAMPLE_LOCAL_IDENTITY_GATES_ALREADY_RETAINED": [],
+      "SAMPLE_LOCAL_GATES_DERIVABLE_SOLVER_FREE": [],
+      "RAW_H_VECTOR_REQUIRED_GATES": [
+        "NONZERO_NORM",
+        "H_REPRESENTATION_QUALIFIED",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "IMPLEMENTATION_LEVEL_INVARIANCE_GATES_APPLICABLE": [
+        "GAUGE_INVARIANT",
+        "SOLVER_ORDER_INVARIANT"
+      ],
+      "NATIVE_RECOMPUTE_REQUIRED": true,
+      "MINIMAL_NATIVE_REASON_IF_REQUIRED": "Readable mirror is byte-hash mismatched with authoritative retention; compact/derived fields cannot establish exact gate provenance.",
+      "NUMERIC_SOURCE_HASH_STATUS": "EXPECTED_RETENTION_SHA_UNMATCHED_BY_READABLE_CONTROL_MIRROR"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+      "resolution": "R128",
+      "external_gap": 0.018428896349577062,
+      "role": "POLICY_CHALLENGE",
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH_OR_RETENTION_ID": "RETENTION:/home/icy/MePhC/.rp3-a-r128-runtime-20260825-run2/rp3_a_r128_result.json",
+      "NUMERIC_SOURCE_SHA256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+      "SAMPLE_LOCAL_IDENTITY_GATES_ALREADY_RETAINED": [],
+      "SAMPLE_LOCAL_GATES_DERIVABLE_SOLVER_FREE": [],
+      "RAW_H_VECTOR_REQUIRED_GATES": [
+        "NONZERO_NORM",
+        "H_REPRESENTATION_QUALIFIED",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "IMPLEMENTATION_LEVEL_INVARIANCE_GATES_APPLICABLE": [
+        "GAUGE_INVARIANT",
+        "SOLVER_ORDER_INVARIANT"
+      ],
+      "NATIVE_RECOMPUTE_REQUIRED": true,
+      "MINIMAL_NATIVE_REASON_IF_REQUIRED": "Authoritative result/manifest/checkpoint is hash-bound by retention index but external content is not readable through the typed control-root surface; no gate evidence is inferred from compact traces.",
+      "NUMERIC_SOURCE_HASH_STATUS": "HASH_BOUND_RETENTION_INDEX_ONLY"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+      "resolution": "R160",
+      "external_gap": 0.018428896349577062,
+      "role": "POLICY_CHALLENGE",
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH_OR_RETENTION_ID": "RETENTION:/home/icy/MePhC/.rp3-b-r160-authoritative-20260825/rp3_b_r160_result.json",
+      "NUMERIC_SOURCE_SHA256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+      "SAMPLE_LOCAL_IDENTITY_GATES_ALREADY_RETAINED": [],
+      "SAMPLE_LOCAL_GATES_DERIVABLE_SOLVER_FREE": [],
+      "RAW_H_VECTOR_REQUIRED_GATES": [
+        "NONZERO_NORM",
+        "H_REPRESENTATION_QUALIFIED",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "IMPLEMENTATION_LEVEL_INVARIANCE_GATES_APPLICABLE": [
+        "GAUGE_INVARIANT",
+        "SOLVER_ORDER_INVARIANT"
+      ],
+      "NATIVE_RECOMPUTE_REQUIRED": true,
+      "MINIMAL_NATIVE_REASON_IF_REQUIRED": "Authoritative result/manifest/checkpoint is hash-bound by retention index but external content is not readable through the typed control-root surface; no gate evidence is inferred from compact traces.",
+      "NUMERIC_SOURCE_HASH_STATUS": "HASH_BOUND_RETENTION_INDEX_ONLY"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+      "resolution": "R96",
+      "external_gap": 0.013482483999199102,
+      "role": "POLICY_CHALLENGE",
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH_OR_RETENTION_ID": "RETENTION:/home/icy/MePhC/.c3-c5-live2/audit/e9f/rp2_c3_c5_runtime_20260825_fix1/c3_c5_matrix_result.json",
+      "NUMERIC_SOURCE_SHA256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+      "SAMPLE_LOCAL_IDENTITY_GATES_ALREADY_RETAINED": [],
+      "SAMPLE_LOCAL_GATES_DERIVABLE_SOLVER_FREE": [],
+      "RAW_H_VECTOR_REQUIRED_GATES": [
+        "NONZERO_NORM",
+        "H_REPRESENTATION_QUALIFIED",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "IMPLEMENTATION_LEVEL_INVARIANCE_GATES_APPLICABLE": [
+        "GAUGE_INVARIANT",
+        "SOLVER_ORDER_INVARIANT"
+      ],
+      "NATIVE_RECOMPUTE_REQUIRED": true,
+      "MINIMAL_NATIVE_REASON_IF_REQUIRED": "Readable mirror is byte-hash mismatched with authoritative retention; compact/derived fields cannot establish exact gate provenance.",
+      "NUMERIC_SOURCE_HASH_STATUS": "EXPECTED_RETENTION_SHA_UNMATCHED_BY_READABLE_CONTROL_MIRROR"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+      "resolution": "R128",
+      "external_gap": 0.013482483999199102,
+      "role": "POLICY_CHALLENGE",
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH_OR_RETENTION_ID": "RETENTION:/home/icy/MePhC/.rp3-a-r128-runtime-20260825-run2/rp3_a_r128_result.json",
+      "NUMERIC_SOURCE_SHA256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+      "SAMPLE_LOCAL_IDENTITY_GATES_ALREADY_RETAINED": [],
+      "SAMPLE_LOCAL_GATES_DERIVABLE_SOLVER_FREE": [],
+      "RAW_H_VECTOR_REQUIRED_GATES": [
+        "NONZERO_NORM",
+        "H_REPRESENTATION_QUALIFIED",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "IMPLEMENTATION_LEVEL_INVARIANCE_GATES_APPLICABLE": [
+        "GAUGE_INVARIANT",
+        "SOLVER_ORDER_INVARIANT"
+      ],
+      "NATIVE_RECOMPUTE_REQUIRED": true,
+      "MINIMAL_NATIVE_REASON_IF_REQUIRED": "Authoritative result/manifest/checkpoint is hash-bound by retention index but external content is not readable through the typed control-root surface; no gate evidence is inferred from compact traces.",
+      "NUMERIC_SOURCE_HASH_STATUS": "HASH_BOUND_RETENTION_INDEX_ONLY"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+      "resolution": "R160",
+      "external_gap": 0.013482483999199102,
+      "role": "POLICY_CHALLENGE",
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH_OR_RETENTION_ID": "RETENTION:/home/icy/MePhC/.rp3-b-r160-authoritative-20260825/rp3_b_r160_result.json",
+      "NUMERIC_SOURCE_SHA256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+      "SAMPLE_LOCAL_IDENTITY_GATES_ALREADY_RETAINED": [],
+      "SAMPLE_LOCAL_GATES_DERIVABLE_SOLVER_FREE": [],
+      "RAW_H_VECTOR_REQUIRED_GATES": [
+        "NONZERO_NORM",
+        "H_REPRESENTATION_QUALIFIED",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "IMPLEMENTATION_LEVEL_INVARIANCE_GATES_APPLICABLE": [
+        "GAUGE_INVARIANT",
+        "SOLVER_ORDER_INVARIANT"
+      ],
+      "NATIVE_RECOMPUTE_REQUIRED": true,
+      "MINIMAL_NATIVE_REASON_IF_REQUIRED": "Authoritative result/manifest/checkpoint is hash-bound by retention index but external content is not readable through the typed control-root surface; no gate evidence is inferred from compact traces.",
+      "NUMERIC_SOURCE_HASH_STATUS": "HASH_BOUND_RETENTION_INDEX_ONLY"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+      "resolution": "R96",
+      "external_gap": 0.013443428678322489,
+      "role": "POLICY_CHALLENGE",
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH_OR_RETENTION_ID": "RETENTION:/home/icy/MePhC/.c3-c5-live2/audit/e9f/rp2_c3_c5_runtime_20260825_fix1/c3_c5_matrix_result.json",
+      "NUMERIC_SOURCE_SHA256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+      "SAMPLE_LOCAL_IDENTITY_GATES_ALREADY_RETAINED": [],
+      "SAMPLE_LOCAL_GATES_DERIVABLE_SOLVER_FREE": [],
+      "RAW_H_VECTOR_REQUIRED_GATES": [
+        "NONZERO_NORM",
+        "H_REPRESENTATION_QUALIFIED",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "IMPLEMENTATION_LEVEL_INVARIANCE_GATES_APPLICABLE": [
+        "GAUGE_INVARIANT",
+        "SOLVER_ORDER_INVARIANT"
+      ],
+      "NATIVE_RECOMPUTE_REQUIRED": true,
+      "MINIMAL_NATIVE_REASON_IF_REQUIRED": "Readable mirror is byte-hash mismatched with authoritative retention; compact/derived fields cannot establish exact gate provenance.",
+      "NUMERIC_SOURCE_HASH_STATUS": "EXPECTED_RETENTION_SHA_UNMATCHED_BY_READABLE_CONTROL_MIRROR"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+      "resolution": "R128",
+      "external_gap": 0.013443428678322489,
+      "role": "POLICY_CHALLENGE",
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH_OR_RETENTION_ID": "RETENTION:/home/icy/MePhC/.rp3-a-r128-runtime-20260825-run2/rp3_a_r128_result.json",
+      "NUMERIC_SOURCE_SHA256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+      "SAMPLE_LOCAL_IDENTITY_GATES_ALREADY_RETAINED": [],
+      "SAMPLE_LOCAL_GATES_DERIVABLE_SOLVER_FREE": [],
+      "RAW_H_VECTOR_REQUIRED_GATES": [
+        "NONZERO_NORM",
+        "H_REPRESENTATION_QUALIFIED",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "IMPLEMENTATION_LEVEL_INVARIANCE_GATES_APPLICABLE": [
+        "GAUGE_INVARIANT",
+        "SOLVER_ORDER_INVARIANT"
+      ],
+      "NATIVE_RECOMPUTE_REQUIRED": true,
+      "MINIMAL_NATIVE_REASON_IF_REQUIRED": "Authoritative result/manifest/checkpoint is hash-bound by retention index but external content is not readable through the typed control-root surface; no gate evidence is inferred from compact traces.",
+      "NUMERIC_SOURCE_HASH_STATUS": "HASH_BOUND_RETENTION_INDEX_ONLY"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+      "resolution": "R160",
+      "external_gap": 0.013443428678322489,
+      "role": "POLICY_CHALLENGE",
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH_OR_RETENTION_ID": "RETENTION:/home/icy/MePhC/.rp3-b-r160-authoritative-20260825/rp3_b_r160_result.json",
+      "NUMERIC_SOURCE_SHA256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+      "SAMPLE_LOCAL_IDENTITY_GATES_ALREADY_RETAINED": [],
+      "SAMPLE_LOCAL_GATES_DERIVABLE_SOLVER_FREE": [],
+      "RAW_H_VECTOR_REQUIRED_GATES": [
+        "NONZERO_NORM",
+        "H_REPRESENTATION_QUALIFIED",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "IMPLEMENTATION_LEVEL_INVARIANCE_GATES_APPLICABLE": [
+        "GAUGE_INVARIANT",
+        "SOLVER_ORDER_INVARIANT"
+      ],
+      "NATIVE_RECOMPUTE_REQUIRED": true,
+      "MINIMAL_NATIVE_REASON_IF_REQUIRED": "Authoritative result/manifest/checkpoint is hash-bound by retention index but external content is not readable through the typed control-root surface; no gate evidence is inferred from compact traces.",
+      "NUMERIC_SOURCE_HASH_STATUS": "HASH_BOUND_RETENTION_INDEX_ONLY"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+      "resolution": "R96",
+      "external_gap": 0.016715192085324126,
+      "role": "POLICY_CHALLENGE",
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH_OR_RETENTION_ID": "RETENTION:/home/icy/MePhC/.c3-c5-live2/audit/e9f/rp2_c3_c5_runtime_20260825_fix1/c3_c5_matrix_result.json",
+      "NUMERIC_SOURCE_SHA256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+      "SAMPLE_LOCAL_IDENTITY_GATES_ALREADY_RETAINED": [],
+      "SAMPLE_LOCAL_GATES_DERIVABLE_SOLVER_FREE": [],
+      "RAW_H_VECTOR_REQUIRED_GATES": [
+        "NONZERO_NORM",
+        "H_REPRESENTATION_QUALIFIED",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "IMPLEMENTATION_LEVEL_INVARIANCE_GATES_APPLICABLE": [
+        "GAUGE_INVARIANT",
+        "SOLVER_ORDER_INVARIANT"
+      ],
+      "NATIVE_RECOMPUTE_REQUIRED": true,
+      "MINIMAL_NATIVE_REASON_IF_REQUIRED": "Readable mirror is byte-hash mismatched with authoritative retention; compact/derived fields cannot establish exact gate provenance.",
+      "NUMERIC_SOURCE_HASH_STATUS": "EXPECTED_RETENTION_SHA_UNMATCHED_BY_READABLE_CONTROL_MIRROR"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+      "resolution": "R128",
+      "external_gap": 0.016715192085324126,
+      "role": "POLICY_CHALLENGE",
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH_OR_RETENTION_ID": "RETENTION:/home/icy/MePhC/.rp3-a-r128-runtime-20260825-run2/rp3_a_r128_result.json",
+      "NUMERIC_SOURCE_SHA256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+      "SAMPLE_LOCAL_IDENTITY_GATES_ALREADY_RETAINED": [],
+      "SAMPLE_LOCAL_GATES_DERIVABLE_SOLVER_FREE": [],
+      "RAW_H_VECTOR_REQUIRED_GATES": [
+        "NONZERO_NORM",
+        "H_REPRESENTATION_QUALIFIED",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "IMPLEMENTATION_LEVEL_INVARIANCE_GATES_APPLICABLE": [
+        "GAUGE_INVARIANT",
+        "SOLVER_ORDER_INVARIANT"
+      ],
+      "NATIVE_RECOMPUTE_REQUIRED": true,
+      "MINIMAL_NATIVE_REASON_IF_REQUIRED": "Authoritative result/manifest/checkpoint is hash-bound by retention index but external content is not readable through the typed control-root surface; no gate evidence is inferred from compact traces.",
+      "NUMERIC_SOURCE_HASH_STATUS": "HASH_BOUND_RETENTION_INDEX_ONLY"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+      "resolution": "R160",
+      "external_gap": 0.016715192085324126,
+      "role": "POLICY_CHALLENGE",
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH_OR_RETENTION_ID": "RETENTION:/home/icy/MePhC/.rp3-b-r160-authoritative-20260825/rp3_b_r160_result.json",
+      "NUMERIC_SOURCE_SHA256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+      "SAMPLE_LOCAL_IDENTITY_GATES_ALREADY_RETAINED": [],
+      "SAMPLE_LOCAL_GATES_DERIVABLE_SOLVER_FREE": [],
+      "RAW_H_VECTOR_REQUIRED_GATES": [
+        "NONZERO_NORM",
+        "H_REPRESENTATION_QUALIFIED",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "IMPLEMENTATION_LEVEL_INVARIANCE_GATES_APPLICABLE": [
+        "GAUGE_INVARIANT",
+        "SOLVER_ORDER_INVARIANT"
+      ],
+      "NATIVE_RECOMPUTE_REQUIRED": true,
+      "MINIMAL_NATIVE_REASON_IF_REQUIRED": "Authoritative result/manifest/checkpoint is hash-bound by retention index but external content is not readable through the typed control-root surface; no gate evidence is inferred from compact traces.",
+      "NUMERIC_SOURCE_HASH_STATUS": "HASH_BOUND_RETENTION_INDEX_ONLY"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID",
+      "resolution": "R96",
+      "external_gap": 0.010594785956050956,
+      "role": "POLICY_CHALLENGE",
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH_OR_RETENTION_ID": "RETENTION:/home/icy/MePhC/.c3-c5-live2/audit/e9f/rp2_c3_c5_runtime_20260825_fix1/c3_c5_matrix_result.json",
+      "NUMERIC_SOURCE_SHA256": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+      "SAMPLE_LOCAL_IDENTITY_GATES_ALREADY_RETAINED": [],
+      "SAMPLE_LOCAL_GATES_DERIVABLE_SOLVER_FREE": [],
+      "RAW_H_VECTOR_REQUIRED_GATES": [
+        "NONZERO_NORM",
+        "H_REPRESENTATION_QUALIFIED",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "IMPLEMENTATION_LEVEL_INVARIANCE_GATES_APPLICABLE": [
+        "GAUGE_INVARIANT",
+        "SOLVER_ORDER_INVARIANT"
+      ],
+      "NATIVE_RECOMPUTE_REQUIRED": true,
+      "MINIMAL_NATIVE_REASON_IF_REQUIRED": "Readable mirror is byte-hash mismatched with authoritative retention; compact/derived fields cannot establish exact gate provenance.",
+      "NUMERIC_SOURCE_HASH_STATUS": "EXPECTED_RETENTION_SHA_UNMATCHED_BY_READABLE_CONTROL_MIRROR"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID",
+      "resolution": "R128",
+      "external_gap": 0.010594785956050956,
+      "role": "POLICY_CHALLENGE",
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH_OR_RETENTION_ID": "RETENTION:/home/icy/MePhC/.rp3-a-r128-runtime-20260825-run2/rp3_a_r128_result.json",
+      "NUMERIC_SOURCE_SHA256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+      "SAMPLE_LOCAL_IDENTITY_GATES_ALREADY_RETAINED": [],
+      "SAMPLE_LOCAL_GATES_DERIVABLE_SOLVER_FREE": [],
+      "RAW_H_VECTOR_REQUIRED_GATES": [
+        "NONZERO_NORM",
+        "H_REPRESENTATION_QUALIFIED",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "IMPLEMENTATION_LEVEL_INVARIANCE_GATES_APPLICABLE": [
+        "GAUGE_INVARIANT",
+        "SOLVER_ORDER_INVARIANT"
+      ],
+      "NATIVE_RECOMPUTE_REQUIRED": true,
+      "MINIMAL_NATIVE_REASON_IF_REQUIRED": "Authoritative result/manifest/checkpoint is hash-bound by retention index but external content is not readable through the typed control-root surface; no gate evidence is inferred from compact traces.",
+      "NUMERIC_SOURCE_HASH_STATUS": "HASH_BOUND_RETENTION_INDEX_ONLY"
+    },
+    {
+      "sample_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID",
+      "resolution": "R160",
+      "external_gap": 0.010594785956050956,
+      "role": "POLICY_CHALLENGE",
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH_OR_RETENTION_ID": "RETENTION:/home/icy/MePhC/.rp3-b-r160-authoritative-20260825/rp3_b_r160_result.json",
+      "NUMERIC_SOURCE_SHA256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+      "SAMPLE_LOCAL_IDENTITY_GATES_ALREADY_RETAINED": [],
+      "SAMPLE_LOCAL_GATES_DERIVABLE_SOLVER_FREE": [],
+      "RAW_H_VECTOR_REQUIRED_GATES": [
+        "NONZERO_NORM",
+        "H_REPRESENTATION_QUALIFIED",
+        "OVERLAP_QUALIFIED",
+        "PRINCIPAL_ANGLE_QUALIFIED",
+        "PROJECTOR_DISTANCE_QUALIFIED",
+        "FORWARD_REVERSE_CONSISTENT"
+      ],
+      "IMPLEMENTATION_LEVEL_INVARIANCE_GATES_APPLICABLE": [
+        "GAUGE_INVARIANT",
+        "SOLVER_ORDER_INVARIANT"
+      ],
+      "NATIVE_RECOMPUTE_REQUIRED": true,
+      "MINIMAL_NATIVE_REASON_IF_REQUIRED": "Authoritative result/manifest/checkpoint is hash-bound by retention index but external content is not readable through the typed control-root surface; no gate evidence is inferred from compact traces.",
+      "NUMERIC_SOURCE_HASH_STATUS": "HASH_BOUND_RETENTION_INDEX_ONLY"
+    }
+  ],
+  "counts": {
+    "total_locked_sample_resolution_pairs": 24,
+    "numerically_reusable_pairs": 15,
+    "sample_local_gate_complete_pairs": 0,
+    "solver_free_gate_recoverable_pairs": 0,
+    "native_recompute_required_pairs": 15,
+    "missing_pair_requires_native_execution_pairs": 9,
+    "fresh_sample_resolution_pairs_required": 24
+  },
+  "no_inference_from_compact_traces": true,
+  "no_h_vector_provenance_inference": true,
+  "native_solves_executed": 0,
+  "mpb_execution": false
+}

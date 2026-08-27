@@ -1,0 +1,450 @@
+{
+  "schema": "mephc_e9f_c2_c2_supervisor_resolved_provenance_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C2-20260827-281",
+  "base_sandbox_sha": "5fd2fd805e6edcd9c15319c48f7808caf034ce39",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "historical_range": {
+    "base": "9ee6d52fe6b7ef851d4b696a0d8b6f3a2ecf47a9",
+    "head": "8981c421da76c0efafa57f2fcdf15492e44a0b10",
+    "total_commits": 53
+  },
+  "science_commit_sha_or_shas": [
+    "aede3467cc0fbfa4f1bdad115566569dbd30b47a",
+    "cb8e4216404fc7da1ceff5ad97c2e923874f7c78"
+  ],
+  "science_commit_parents": [
+    "4db4cc59fe9c49695cbfbf6f06d50f94e444e12e",
+    "aede3467cc0fbfa4f1bdad115566569dbd30b47a"
+  ],
+  "science_commit_descends_from_9ee6": true,
+  "science_commit_messages": [
+    "E9F C2 QP B C2 prereg control-referenced curvature rule",
+    "Complete QP B C2 bounded solver-free audit tests"
+  ],
+  "science_commit_changed_files": [
+    [
+      "audit/e9f/qp_b_c2_control_referenced_curvature_contract.json",
+      "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "audit/e9f/qp_b_c2_incremental_native_budget.json",
+      "audit/e9f/qp_b_c2_science_decision.json",
+      "tests/test_qp_b_c2_control_referenced.py"
+    ],
+    [
+      "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "tests/test_qp_b_c2_control_referenced.py"
+    ]
+  ],
+  "excluded_interleaved_infrastructure_commit_count": 51,
+  "excluded_interleaved_infrastructure_commits": [
+    {
+      "commit_sha": "5d8e801faa56a7af8dba01fbbd7553d19d8d3c7a",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "edd799ecee38772fc2009382e0af569e09a9a28a",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "c2a82e92021268b9ee3c34777c019bd3956c68d5",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "d401e0af24721aa48ffc148c591750fb2ba40d7f",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "7867ec3ceae8496984af4d0b6788c2591945c4e6",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "4db4cc59fe9c49695cbfbf6f06d50f94e444e12e",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "a114a1efb6a7fc950adbd687e521147984985297",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "b80ffbc0fa1981359cb4d58ec4ad002689ee920f",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "8b6a2f60a3056a6c4813b743a180fee4deb3a829",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "2a40a88a0310a0972bdfaa47c1f769dbc3e5802c",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "6c4f39ba67b0087dbc15beab1798bd36807bbc2e",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "1998c49c16a496cc964872d64353469103397736",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "a5a695c326ca6bfe9de340f50429cc42b5182bb5",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "80fc6b6c2dd468a26c7edcf87cccf14d300508e5",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "ad26b5cd0f7955be7fd80e5130b41c9d5edf4ead",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "8946bc4ee0451cf768f1ac10dbd23de9deb96fe9",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "7830a94bb1330fbc874999b883dc416e502d7294",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "996d906f337a34d7fd006ed9dea114a895d9f7e7",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "bc3d83937c6b90a224b83b2d80576f9fb0ad0b09",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "b7a202e75f01231a9c3fcbea0b78ce41d2af5991",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "d2d0d5e03251dc73f68eda713a53213c03d154b1",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "f955de27a109ccad7926b2075d64b53d64c6f41d",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "29ae0551ff05f98b645d8c8d170420fab5f31ea7",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "dd5b8cfea974f91e24c95143b701aa8ffad0f44b",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "e8a7298f88d02d267eef01ef5b4e3771453d0687",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "925e802de29852237427d78ddececa424ccdea2a",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "248f95711015673e1bfbd8f1f9207c9b41d84298",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "fd46bde3d51bdf5fd8a3ba86c1614607cf271b0a",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "9e8475b3c09c1c014de2c13979240768b113fa47",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "db122cff9921bd9dc89ea952814b38909fc880ea",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "b5704bc7f8a1ef7eb2ddc70b2f9ed113d6e41224",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "56125fadd6feac8b76b8c155da89e665151500f1",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "41e5cd899c493a19e60f390b06f1fae87f4f58d5",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "d546f28222642d307ad1c33e28dc5c8d6fdd5fa6",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "1f86aa221a0fff21beb9c58b7fbc9610d88de9c7",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "12a53f05d4a8c40ce6aef0d4800c4be3d0210e17",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "05ba82a4e24c1b51c2006b645f8ff9b956dcc707",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "aa7ad517b15bb04e190a9ea8a10efa68a353381a",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "435a84c43a9859020d24e5d6a825982811486625",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "cd541a8e9f90ea576af256ea12fb439a97d24109",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "d880c3b6fb3a66b64146d249c0c513c213852f64",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "2ed8084ba11fae5f9d509121e9ee0f5f5473fb05",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "638a071676dacd46316fe5fefaba5d4ddebf2a28",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "80a74f8cb191d54fafda9ecab5b903013867d21f",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "ef1b2a67588e1341f5b7fe315463acf9482e1bdc",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "74f5f5fb96e098900f96d9492be193ca31f6d6e4",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "20d37a13610e22a66ee6a1fc0903bb5cad07d1c4",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "7c2caa57154a951ebf34cc3c61cedb439d9961aa",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "f40c96661f09429c04b98faa67676cbf4e9fbef4",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "38b97ee29735376549ef2bd2d68439db8d5f34a0",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    },
+    {
+      "commit_sha": "8981c421da76c0efafa57f2fcdf15492e44a0b10",
+      "parent_sha": null,
+      "commit_message": null,
+      "changed_files": null,
+      "classification": "INTERLEAVED_INFRASTRUCTURE_COMMIT",
+      "scientific_result_impact": "NONE_BY_SUPERVISOR_ATTESTATION"
+    }
+  ],
+  "historical_qp_b_c2_artifacts_unchanged": true,
+  "supervisor_provenance_resolution_available": true
+}

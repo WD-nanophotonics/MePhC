@@ -1,0 +1,202 @@
+{
+  "schema": "mephc_e9f_c2_c2_authoritative_raw_artifact_inventory_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C2-20260827-281",
+  "base_sandbox_sha": "5fd2fd805e6edcd9c15319c48f7808caf034ce39",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "search_roots": [
+    "audit/infrastructure/local_replica_archive/20260825",
+    "audit/e9f",
+    "accepted SHA256SUMS retention index"
+  ],
+  "artifacts": [
+    {
+      "resolution": "R96",
+      "kind": "result",
+      "expected": "068cbb6048d5813cbdd5c38efa323e85af3a340d58d7fa69e0e3b5ff1511785a",
+      "discovered": "audit/infrastructure/local_replica_archive/20260825/c3-c5-live2/rp2_c3_c5_runtime_20260825_fix1/c3_c5_matrix_result.json",
+      "mirror_sha": "1be393271d762f9bed95617f6013edc6666bfa887932f244aa60d65b093350c5",
+      "available": true,
+      "immutable_or_hash_bound": true,
+      "actual_sha256": "1be393271d762f9bed95617f6013edc6666bfa887932f244aa60d65b093350c5",
+      "matches_expected": false,
+      "content_inspection_status": "READABLE_MIRROR_HASH_MISMATCHES_AUTHORITATIVE_RETENTION",
+      "fields_relevant_to_qp_gates": [
+        "finite_data",
+        "Omega_curvature",
+        "H_GATE_or_equivalent_diagnostics",
+        "association",
+        "resolution",
+        "sample_identity"
+      ],
+      "consumed_in_c1": false,
+      "consumed_in_c2": true
+    },
+    {
+      "resolution": "R96",
+      "kind": "manifest",
+      "expected": "ca9d7fc2184371b1dcf5049a1a8bceaf613372bd69a2cd0449fbf25d4e919d01",
+      "discovered": "audit/infrastructure/local_replica_archive/20260825/c3-c5-live2/rp2_c3_c5_runtime_20260825_fix1/c3_c5_matrix_manifest.json",
+      "mirror_sha": "a53621a6506fe4daa70b9f2dbe2eefa8f30735da3d2897850f617da0bb84ae59",
+      "available": true,
+      "immutable_or_hash_bound": true,
+      "actual_sha256": "a53621a6506fe4daa70b9f2dbe2eefa8f30735da3d2897850f617da0bb84ae59",
+      "matches_expected": false,
+      "content_inspection_status": "READABLE_MIRROR_HASH_MISMATCHES_AUTHORITATIVE_RETENTION",
+      "fields_relevant_to_qp_gates": [
+        "result_binding",
+        "checkpoint_binding",
+        "execution_identity",
+        "resolution"
+      ],
+      "consumed_in_c1": false,
+      "consumed_in_c2": true
+    },
+    {
+      "resolution": "R96",
+      "kind": "checkpoint",
+      "expected": "871b24983800d178f44d09b2220bcc179804e939f1f4c9163d84917ca5a8ca7d",
+      "discovered": "audit/infrastructure/local_replica_archive/20260825/c3-c5-live2/rp2_c3_c5_runtime_20260825_fix1/matrix_checkpoint.json",
+      "mirror_sha": "3f7d7b76426c6bc882da72f64b98594d63c908ea3eeaed84b79b2fc67e7dd1c2",
+      "available": true,
+      "immutable_or_hash_bound": true,
+      "actual_sha256": "3f7d7b76426c6bc882da72f64b98594d63c908ea3eeaed84b79b2fc67e7dd1c2",
+      "matches_expected": false,
+      "content_inspection_status": "READABLE_MIRROR_HASH_MISMATCHES_AUTHORITATIVE_RETENTION",
+      "fields_relevant_to_qp_gates": [
+        "worker_identity",
+        "sample_identity",
+        "payload_hash_binding",
+        "completion_state"
+      ],
+      "consumed_in_c1": false,
+      "consumed_in_c2": true
+    },
+    {
+      "resolution": "R128",
+      "kind": "result",
+      "expected": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+      "discovered": "RETENTION:/home/icy/MePhC/.rp3-a-r128-runtime-20260825-run2/rp3_a_r128_result.json",
+      "mirror_sha": null,
+      "available": true,
+      "immutable_or_hash_bound": true,
+      "actual_sha256": "4c84a9c9b15ff46e7083915bc3a6902058105af65dfb1ede6f5e1dbd27f5b746",
+      "matches_expected": true,
+      "content_inspection_status": "RETENTION_INDEX_ONLY_EXTERNAL_CONTENT_NOT_READABLE_VIA_TYPED_INSPECT",
+      "fields_relevant_to_qp_gates": [
+        "finite_data",
+        "Omega_curvature",
+        "H_GATE_or_equivalent_diagnostics",
+        "association",
+        "resolution",
+        "sample_identity"
+      ],
+      "consumed_in_c1": false,
+      "consumed_in_c2": true
+    },
+    {
+      "resolution": "R128",
+      "kind": "manifest",
+      "expected": "7cafe4b2783f2aea13c2027f11abc3100de17c4874f9a4f6586a44c03192be7b",
+      "discovered": "RETENTION:/home/icy/MePhC/.rp3-a-r128-runtime-20260825-run2/rp3_a_r128_manifest.json",
+      "mirror_sha": null,
+      "available": true,
+      "immutable_or_hash_bound": true,
+      "actual_sha256": "7cafe4b2783f2aea13c2027f11abc3100de17c4874f9a4f6586a44c03192be7b",
+      "matches_expected": true,
+      "content_inspection_status": "RETENTION_INDEX_ONLY_EXTERNAL_CONTENT_NOT_READABLE_VIA_TYPED_INSPECT",
+      "fields_relevant_to_qp_gates": [
+        "result_binding",
+        "checkpoint_binding",
+        "execution_identity",
+        "resolution"
+      ],
+      "consumed_in_c1": false,
+      "consumed_in_c2": true
+    },
+    {
+      "resolution": "R128",
+      "kind": "checkpoint",
+      "expected": "ba253bbb162f75eaf26fa00cdf6a22be984daad6121923a33e61eef2b7607d74",
+      "discovered": "RETENTION:/home/icy/MePhC/.rp3-a-r128-runtime-20260825-run2/matrix_checkpoint.json",
+      "mirror_sha": null,
+      "available": true,
+      "immutable_or_hash_bound": true,
+      "actual_sha256": "ba253bbb162f75eaf26fa00cdf6a22be984daad6121923a33e61eef2b7607d74",
+      "matches_expected": true,
+      "content_inspection_status": "RETENTION_INDEX_ONLY_EXTERNAL_CONTENT_NOT_READABLE_VIA_TYPED_INSPECT",
+      "fields_relevant_to_qp_gates": [
+        "worker_identity",
+        "sample_identity",
+        "payload_hash_binding",
+        "completion_state"
+      ],
+      "consumed_in_c1": false,
+      "consumed_in_c2": true
+    },
+    {
+      "resolution": "R160",
+      "kind": "result",
+      "expected": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+      "discovered": "RETENTION:/home/icy/MePhC/.rp3-b-r160-authoritative-20260825/rp3_b_r160_result.json",
+      "mirror_sha": null,
+      "available": true,
+      "immutable_or_hash_bound": true,
+      "actual_sha256": "5456250e9da1555c603e96a593734d4938b9de4cc4791a3244ed64f3fe27c9da",
+      "matches_expected": true,
+      "content_inspection_status": "RETENTION_INDEX_ONLY_EXTERNAL_CONTENT_NOT_READABLE_VIA_TYPED_INSPECT",
+      "fields_relevant_to_qp_gates": [
+        "finite_data",
+        "Omega_curvature",
+        "H_GATE_or_equivalent_diagnostics",
+        "association",
+        "resolution",
+        "sample_identity"
+      ],
+      "consumed_in_c1": false,
+      "consumed_in_c2": true
+    },
+    {
+      "resolution": "R160",
+      "kind": "manifest",
+      "expected": "307360273e86a5ee8cc83b8eb01a87d2ccd9f6a8815e7f2612fb7decdf8888b1",
+      "discovered": "RETENTION:/home/icy/MePhC/.rp3-b-r160-authoritative-20260825/rp3_b_r160_manifest.json",
+      "mirror_sha": null,
+      "available": true,
+      "immutable_or_hash_bound": true,
+      "actual_sha256": "307360273e86a5ee8cc83b8eb01a87d2ccd9f6a8815e7f2612fb7decdf8888b1",
+      "matches_expected": true,
+      "content_inspection_status": "RETENTION_INDEX_ONLY_EXTERNAL_CONTENT_NOT_READABLE_VIA_TYPED_INSPECT",
+      "fields_relevant_to_qp_gates": [
+        "result_binding",
+        "checkpoint_binding",
+        "execution_identity",
+        "resolution"
+      ],
+      "consumed_in_c1": false,
+      "consumed_in_c2": true
+    },
+    {
+      "resolution": "R160",
+      "kind": "checkpoint",
+      "expected": "17b1967b75177e63c9026b548a984f507033ba7f90e0d8a22e403d19cfcfeb0a",
+      "discovered": "RETENTION:/home/icy/MePhC/.rp3-b-r160-authoritative-20260825/matrix_checkpoint.json",
+      "mirror_sha": null,
+      "available": true,
+      "immutable_or_hash_bound": true,
+      "actual_sha256": "17b1967b75177e63c9026b548a984f507033ba7f90e0d8a22e403d19cfcfeb0a",
+      "matches_expected": true,
+      "content_inspection_status": "RETENTION_INDEX_ONLY_EXTERNAL_CONTENT_NOT_READABLE_VIA_TYPED_INSPECT",
+      "fields_relevant_to_qp_gates": [
+        "worker_identity",
+        "sample_identity",
+        "payload_hash_binding",
+        "completion_state"
+      ],
+      "consumed_in_c1": false,
+      "consumed_in_c2": true
+    }
+  ],
+  "search_exhausted_for_committed_and_retention_records": true,
+  "exact_raw_content_accessible_via_typed_surface": false,
+  "conclusion": "R96 control-root mirrors are byte-hash mismatched; R128/R160 authoritative raw content is external to the typed control-root read surface. No mismatched mirror or compact trace is promoted to authoritative gate evidence."
+}
