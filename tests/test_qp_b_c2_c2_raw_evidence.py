@@ -46,7 +46,8 @@ def test_all_locked_pairs_preserve_numeric_reuse_without_gate_inference():
     assert all(item["NUMERIC_CURVATURE_REUSABLE"] is True for item in value["sample_resolution_pairs"])
     assert all(item["NATIVE_RECOMPUTE_REQUIRED"] is True for item in value["sample_resolution_pairs"])
     assert value["no_inference_from_compact_traces"] is True
-    assert {item["sample_id"] for item in value["sample_resolution_pairs"]} == set(LOCKED_IDS[2:])
+    contract=load(FROZEN_CONTRACT)
+    assert {item["sample_id"] for item in value["sample_resolution_pairs"]} == set(contract["policy_challenge_samples"])
     assert {item["resolution"] for item in value["sample_resolution_pairs"]} == {"R96","R128","R160"}
     assert all(item["RAW_H_VECTOR_REQUIRED_GATES"] for item in value["sample_resolution_pairs"])
     assert all("<" not in item["NUMERIC_SOURCE_PATH_OR_RETENTION_ID"] for item in value["sample_resolution_pairs"])
