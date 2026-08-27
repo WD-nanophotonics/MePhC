@@ -10,11 +10,18 @@ import re
 import shutil
 import time
 
-TARGETS = ("mephc_windows_shadow", "mephc_native_admission_shadow", "mephc_native_admission_probe")
+SHADOW = "mcp_servers.mephc_windows_shadow"
+LEGACY_TABLES = (
+    "mcp_servers.mephc_native",
+    "mcp_servers.mephc_admission_probe",
+    "mcp_servers.mephc_native_admission_shadow",
+    "mcp_servers.mephc_native_admission_probe",
+    'plugins."mephc-runner@personal"',
+)
 
 
-def table_span(text: str, name: str) -> tuple[int, int] | None:
-    pattern = re.compile(rf"(?m)^\[mcp_servers\.{re.escape(name)}\]\s*$")
+def table_span(text: str, table: str) -> tuple[int, int] | None:
+    pattern = re.compile(rf"(?m)^\[{re.escape(table)}\]\s*$")
     match = pattern.search(text)
     if not match:
         return None
@@ -22,16 +29,28 @@ def table_span(text: str, name: str) -> tuple[int, int] | None:
     return match.start(), match.end() + (following.start() if following else len(text[match.end():]))
 
 
-def remove_table(text: str, name: str) -> str:
-    span = table_span(text, name)
+def remove_table(text: str, table: str) -> str:
+    span = table_span(text, table)
     return text if span is None else text[:span[0]].rstrip() + "\n\n" + text[span[1]:].lstrip()
+
+
+def set_enabled(text: str, table: str, enabled: bool) -> str:
+    span = table_span(text, table)
+    if span is None:
+        return text
+    start, end = span
+    block = text[start:end].rstrip()
+    value = "true" if enabled else "false"
+    pattern = re.compile(r"(?m)^enabled\s*=.*$")
+    block = pattern.sub(f"enabled = {value}", block, count=1) if pattern.search(block) else block + f"\nenabled = {value}"
+    return text[:start] + block + "\n\n" + text[end:].lstrip()
 
 
 def patch(config: Path, python: Path, shim: Path, apply: bool) -> dict:
     before = config.read_text(encoding="utf-8-sig") if config.exists() else ""
-    after = before
-    for name in TARGETS:
-        after = remove_table(after, name)
+    after = remove_table(before, SHADOW)
+    for table_name in LEGACY_TABLES:
+        after = set_enabled(after, table_name, False)
     table = ("[mcp_servers.mephc_windows_shadow]\n"
              f"command = {json.dumps(str(python))}\n"
              f"args = [{json.dumps(str(shim))}]\n"

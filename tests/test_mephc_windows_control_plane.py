@@ -80,18 +80,30 @@ def test_stdio_notifications_are_forwarded_without_waiting_for_response():
 def test_config_patch_changes_only_owned_tables(tmp_path):
     module = load("windows_config_patch", ADMISSION / "config_patch.py")
     config = tmp_path / "config.toml"
-    config.write_text("model = 'gpt-5.6'\n\n[mcp_servers.keep_me]\ncommand = 'keep'\n\n[mcp_servers.mephc_native_admission_probe]\ncommand = 'old'\n", encoding="utf-8")
+    config.write_text(
+        "model = 'gpt-5.6'\n\n"
+        "[mcp_servers.keep_me]\ncommand = 'keep'\n\n"
+        "[mcp_servers.mephc_native]\nurl = 'http://127.0.0.1:8765/mcp'\n\n"
+        "[mcp_servers.mephc_admission_probe]\ncommand = 'probe'\nenabled = true\n\n"
+        "[mcp_servers.mephc_native_admission_probe]\ncommand = 'old'\n\n"
+        "[plugins.\"mephc-runner@personal\"]\nenabled = true\n",
+        encoding="utf-8",
+    )
     result = module.patch(config, Path("C:/Python/python.exe"), Path("C:/runtime/shim.py"), True)
     after = config.read_text(encoding="utf-8")
     assert result["changed"] is True
     assert "[mcp_servers.keep_me]" in after and "command = 'keep'" in after
-    assert "mephc_native_admission_probe" not in after
+    assert "mephc_native_admission_probe" in after
     assert after.count("[mcp_servers.mephc_windows_shadow]") == 1
     assert Path(result["backup"]).is_file()
     parsed = tomllib.loads(after)
     assert parsed["mcp_servers"]["mephc_windows_shadow"]["enabled"] is True
     assert parsed["mcp_servers"]["mephc_windows_shadow"]["command"] == r"C:\Python\python.exe"
     assert parsed["mcp_servers"]["mephc_windows_shadow"]["args"] == [r"C:\runtime\shim.py"]
+    assert parsed["mcp_servers"]["mephc_native"]["enabled"] is False
+    assert parsed["mcp_servers"]["mephc_admission_probe"]["enabled"] is False
+    assert parsed["mcp_servers"]["mephc_native_admission_probe"]["enabled"] is False
+    assert parsed["plugins"]["mephc-runner@personal"]["enabled"] is False
 
 
 def test_state_migration_is_byte_exact_and_keeps_orphan(tmp_path, monkeypatch):
