@@ -1,6 +1,6 @@
 """Machine-enforced MePhC relay entry point."""
 from __future__ import annotations
-import argparse, hashlib, json, os, shutil
+import argparse, hashlib, json, os, re, shutil
 from pathlib import Path
 import subprocess, sys, time, uuid
 from typing import Any
@@ -13,8 +13,13 @@ EXECUTION_ROOT = Path(os.environ.get("MEPHC_EXECUTION_ROOT", "/home/icy/.cache/m
 STATE_ROOT = Path(os.environ.get("MEPHC_STATE_ROOT", "/home/icy/.local/state/mephc-runner/MEPHC"))
 REQUIRED_PYTHON = Path("/home/icy/miniconda3/envs/mp/bin/python")
 WINDOWS_POWERSHELL = Path("/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
+WINDOWS_GIT = Path(os.environ.get("MEPHC_WINDOWS_GIT_WSL", "/mnt/c/Program Files/Git/cmd/git.exe"))
+EXPECTED_ORIGIN_MAIN = os.environ.get(
+    "MEPHC_EXPECTED_ORIGIN_MAIN", "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5"
+)
 PROJECT_ID = "MEPHC"
-FAILURE_CODES = {"ROOT_MISMATCH", "WORKTREE_NOT_WSL_NATIVE", "INTERPRETER_MISMATCH", "PRELIVE_UNCOMMITTED", "PRELIVE_TEST_FAILED", "SOURCE_BYTE_MISMATCH", "COURIER_TIMEOUT_RECOVERY_REQUIRED", "COURIER_QUEUE_TIMEOUT", "COURIER_QUEUE_RECOVERY_REQUIRED", "COURIER_INTERRUPTED", "COURIER_HARD_STOP"}
+FAILURE_CODES = {"ROOT_MISMATCH", "WORKTREE_NOT_WSL_NATIVE", "INTERPRETER_MISMATCH", "PRELIVE_UNCOMMITTED", "PRELIVE_TEST_FAILED", "SOURCE_BYTE_MISMATCH", "PUBLISH_REMOTE_INVALID", "PUBLISH_FAILED", "COURIER_TIMEOUT_RECOVERY_REQUIRED", "COURIER_QUEUE_TIMEOUT", "COURIER_QUEUE_RECOVERY_REQUIRED", "COURIER_INTERRUPTED", "COURIER_HARD_STOP"}
+SHA40 = re.compile(r"^[0-9a-f]{40}$")
 
 
 class RelayFailure(RuntimeError):
@@ -102,6 +107,39 @@ def remote_ref(root: Path, ref: str) -> str:
         return git(root, "rev-parse", tracking)
     except RelayFailure as exc:
         raise RelayFailure("ROOT_MISMATCH", f"cannot resolve cached {tracking}") from exc
+
+
+def windows_git(*args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
+    """Run Git against the Windows canonical repository and its credential helper."""
+    command = [str(WINDOWS_GIT), "-c", f"safe.directory={CONTROL_ROOT_WINDOWS}",
+               "-C", CONTROL_ROOT_WINDOWS, *args]
+    environment = {
+        **os.environ,
+        "GIT_TERMINAL_PROMPT": "0",
+        "GCM_INTERACTIVE": "Never",
+        "GIT_EDITOR": "true",
+        "GIT_SEQUENCE_EDITOR": "true",
+    }
+    try:
+        result = subprocess.run(command, text=True, encoding="utf-8", capture_output=True,
+                                check=False, timeout=120, env=environment)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise RelayFailure("PUBLISH_FAILED", f"Windows Git unavailable: {type(exc).__name__}") from exc
+    if check and result.returncode:
+        raise RelayFailure("PUBLISH_FAILED", (result.stderr or result.stdout).strip()[-2000:])
+    return result
+
+
+def windows_remote_refs() -> dict[str, str]:
+    result = windows_git("ls-remote", "origin", "refs/heads/main", "refs/heads/sandbox")
+    refs: dict[str, str] = {}
+    for line in result.stdout.splitlines():
+        fields = line.split()
+        if len(fields) == 2 and SHA40.fullmatch(fields[0]):
+            refs[fields[1]] = fields[0]
+    if set(refs) != {"refs/heads/main", "refs/heads/sandbox"}:
+        raise RelayFailure("PUBLISH_REMOTE_INVALID", f"unexpected remote refs: {sorted(refs)}")
+    return refs
 
 
 def require_python(root: Path) -> None:
@@ -223,13 +261,38 @@ def native(root: Path, prelive_value: str, command: list[str]) -> Path:
 
 def publish(root: Path, prelive_value: str, push: bool) -> Path:
     record = verify_prelive(root, prelive_value)
+    target = record["prelive_sha"]
+    remote_main = remote_sandbox_before = remote_sandbox_after = None
+    push_performed = False
     if push:
-        result = run("git", "push", "origin", "HEAD:refs/heads/sandbox", cwd=root, check=False)
-        if result.returncode:
-            raise RelayFailure("PRELIVE_UNCOMMITTED", f"sandbox push failed: {result.stderr.strip()}")
+        status = windows_git("status", "--porcelain", "--untracked-files=all").stdout.strip()
+        if status:
+            raise RelayFailure("PUBLISH_REMOTE_INVALID", f"Windows canonical worktree is dirty: {status.splitlines()[0]}")
+        control_head = windows_git("rev-parse", "HEAD").stdout.strip()
+        if control_head != target:
+            raise RelayFailure("PUBLISH_REMOTE_INVALID", f"control HEAD={control_head}; prelive HEAD={target}")
+        refs = windows_remote_refs()
+        remote_main = refs["refs/heads/main"]
+        remote_sandbox_before = refs["refs/heads/sandbox"]
+        if remote_main != EXPECTED_ORIGIN_MAIN or remote_main != record["origin_main"]:
+            raise RelayFailure("PUBLISH_REMOTE_INVALID", f"origin/main moved: {remote_main}")
+        if remote_sandbox_before != target:
+            ancestry = windows_git("merge-base", "--is-ancestor", remote_sandbox_before, target, check=False)
+            if ancestry.returncode:
+                raise RelayFailure("PUBLISH_REMOTE_INVALID", "origin/sandbox is not an ancestor of the exact prelive HEAD")
+            windows_git("push", "origin", f"{target}:refs/heads/sandbox")
+            push_performed = True
+        verified = windows_remote_refs()
+        if verified["refs/heads/main"] != remote_main or verified["refs/heads/sandbox"] != target:
+            raise RelayFailure("PUBLISH_FAILED", "remote refs did not verify after publish")
+        remote_sandbox_after = verified["refs/heads/sandbox"]
     return write_json(runtime(root) / "publish" / f"publish-{uuid.uuid4().hex}.json", {
-        "version": 1, "kind": "publish-attestation", "project_id": PROJECT_ID,
-        "head": record["prelive_sha"], "sandbox_pushed": push, "created_at": int(time.time()),
+        "version": 2, "kind": "publish-attestation", "project_id": PROJECT_ID,
+        "head": target, "push_requested": push, "push_performed": push_performed,
+        "sandbox_pushed": bool(push and remote_sandbox_after == target),
+        "git_authority": "windows_canonical", "remote_main": remote_main,
+        "remote_sandbox_before": remote_sandbox_before,
+        "remote_sandbox_after": remote_sandbox_after, "created_at": int(time.time()),
     })
 
 

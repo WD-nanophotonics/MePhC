@@ -60,6 +60,51 @@ def test_doctor_certificate_uses_windows_canonical_control_root(monkeypatch, tmp
     assert record["control_root_wsl"].replace("\\", "/") == "/mnt/c/Users/icywo/PycharmProjects/MePhC-Windows"
 
 
+def test_publish_uses_windows_canonical_git_when_execution_checkout_has_no_origin(monkeypatch, tmp_path):
+    target, main = "a" * 40, relayctl.EXPECTED_ORIGIN_MAIN
+    calls = []
+
+    def fake_windows_git(*args, check=True):
+        calls.append(args)
+        if args[:1] == ("status",):
+            return SimpleNamespace(returncode=0, stdout="", stderr="")
+        if args == ("rev-parse", "HEAD"):
+            return SimpleNamespace(returncode=0, stdout=target + "\n", stderr="")
+        if args[:1] == ("ls-remote",):
+            stdout = f"{main}\trefs/heads/main\n{target}\trefs/heads/sandbox\n"
+            return SimpleNamespace(returncode=0, stdout=stdout, stderr="")
+        raise AssertionError(args)
+
+    monkeypatch.setattr(relayctl, "verify_prelive", lambda *_: {"prelive_sha": target, "origin_main": main})
+    monkeypatch.setattr(relayctl, "windows_git", fake_windows_git)
+    monkeypatch.setattr(relayctl, "STATE_ROOT", tmp_path / "state")
+    result = relayctl.publish(tmp_path / "originless-execution-checkout", "prelive.json", True)
+    record = json.loads(result.read_text(encoding="utf-8"))
+    assert record["sandbox_pushed"] is True
+    assert record["push_performed"] is False
+    assert record["git_authority"] == "windows_canonical"
+    assert not any(call[:1] == ("push",) for call in calls)
+
+
+def test_publish_fails_closed_when_remote_main_moves(monkeypatch, tmp_path):
+    target, moved = "a" * 40, "b" * 40
+
+    def fake_windows_git(*args, check=True):
+        if args[:1] == ("status",):
+            return SimpleNamespace(returncode=0, stdout="", stderr="")
+        if args == ("rev-parse", "HEAD"):
+            return SimpleNamespace(returncode=0, stdout=target + "\n", stderr="")
+        if args[:1] == ("ls-remote",):
+            stdout = f"{moved}\trefs/heads/main\n{target}\trefs/heads/sandbox\n"
+            return SimpleNamespace(returncode=0, stdout=stdout, stderr="")
+        raise AssertionError(args)
+
+    monkeypatch.setattr(relayctl, "verify_prelive", lambda *_: {"prelive_sha": target, "origin_main": relayctl.EXPECTED_ORIGIN_MAIN})
+    monkeypatch.setattr(relayctl, "windows_git", fake_windows_git)
+    with pytest.raises(relayctl.RelayFailure, match="origin/main moved"):
+        relayctl.publish(tmp_path, "prelive.json", True)
+
+
 def test_prelive_failure_is_specific_and_persists_bounded_diagnostic(monkeypatch, tmp_path):
     tests = tmp_path / "tests"
     tests.mkdir()
