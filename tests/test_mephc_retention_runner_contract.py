@@ -93,3 +93,9 @@ def test_prefixed_retention_id_binds_to_matching_sha256():
     )
     allowed = jobctl._retention_allowlist(text)
     assert allowed["RP3_C3C5_R96_AUTHORITATIVE_RESULT"] == digest
+    escaped_text = (
+        "AUTHORITATIVE_R96_RESULT_RETENTION_ID=RP3_C3C5_R96_AUTHORITATIVE_RESULT\\n"
+        "AUTHORITATIVE_R96_RESULT_SHA256=" + digest + "\\n"
+    )
+    escaped_allowed = jobctl._retention_allowlist(escaped_text)
+    assert escaped_allowed["RP3_C3C5_R96_AUTHORITATIVE_RESULT"] == digest
