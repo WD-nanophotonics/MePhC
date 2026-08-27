@@ -9,3 +9,4 @@ def test_bootstrap_installs_resume_coordinator_and_has_initialized_windows_rollb
     assert "$previousCurrent=Join-Path $Runtime 'current.json'" in text
     assert "$previousWindowsVersion=''" in text
     assert "if($previousWindowsVersion -and" in text
+    assert "for($healthIndex=0;$healthIndex -lt 20;$healthIndex++)" in text

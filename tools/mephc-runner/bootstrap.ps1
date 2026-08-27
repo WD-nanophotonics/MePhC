@@ -61,8 +61,13 @@ if($Verify) {
     Push-Location $Runtime
     try { & $publicLauncher Doctor; $doctorExit=$LASTEXITCODE } finally { Pop-Location }
     if($doctorExit -ne 0){throw 'cross-layer doctor failed'}
-    Push-Location $Runtime
-    try { & $publicLauncher Health; $healthExit=$LASTEXITCODE } finally { Pop-Location }
+    $healthExit=2
+    for($healthIndex=0;$healthIndex -lt 20;$healthIndex++){
+      Push-Location $Runtime
+      try { & $publicLauncher Health; $healthExit=$LASTEXITCODE } finally { Pop-Location }
+      if($healthExit -eq 0){break}
+      Start-Sleep -Milliseconds 500
+    }
     if($healthExit -ne 0){throw 'cross-layer health failed'}
   } catch {
     if($pending.previous_wsl_version){wsl.exe -d Ubuntu -u root -- ln -sfn $pending.previous_wsl_version /opt/mephc-runner/current}
