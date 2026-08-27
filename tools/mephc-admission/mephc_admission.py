@@ -87,6 +87,7 @@ def proxy() -> int:
         request: dict[str, Any] = {}
         try:
             request = json.loads(line.lstrip("\ufeff"))
+            audit("client_request", method=request.get("method"))
             child.stdin.write(json.dumps(request, separators=(",", ":"), ensure_ascii=False) + "\n")
             child.stdin.flush()
             response = child.stdout.readline()
@@ -96,6 +97,7 @@ def proxy() -> int:
                 if request.get("id") is not None:
                     reply(request.get("id"), error="DURABLE_JOB_RECOVERY_REQUIRED")
                 return 3
+            audit("backend_response", method=request.get("method"))
             sys.stdout.write(response)
             sys.stdout.flush()
         except (BrokenPipeError, OSError, json.JSONDecodeError):
