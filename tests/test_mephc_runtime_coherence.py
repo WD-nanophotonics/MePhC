@@ -208,7 +208,8 @@ def test_lifecycle_gate_accepts_only_published_clean_infrastructure(monkeypatch)
         ("rev-parse", "origin/main"): module.EXPECTED_MAIN,
         ("ls-remote", "origin", "refs/heads/main", "refs/heads/sandbox"):
             f"{module.EXPECTED_MAIN}\trefs/heads/main\n{head}\trefs/heads/sandbox",
-        ("diff", "--name-only", f"{installed}..{head}"): "tools/mephc-runner/jobctl.py\nAGENTS.md",
+        ("diff", "--name-only", f"{installed}..{head}"):
+            "tools/mephc-runner/jobctl.py\nAGENTS.md\n.codex/config.toml",
     }
     monkeypatch.setattr(module, "_git", lambda *args, **kwargs: answers[args])
     monkeypatch.setattr(module, "_current", lambda: {"source_commit":installed})

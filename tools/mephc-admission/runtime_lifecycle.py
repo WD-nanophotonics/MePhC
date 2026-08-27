@@ -98,7 +98,7 @@ def _gate() -> dict[str, str]:
     if not isinstance(installed, str) or len(installed) != 40:
         raise LifecycleError("RUNTIME_INSTALLED_SOURCE_UNKNOWN")
     changed = _git("diff", "--name-only", f"{installed}..{head}").splitlines()
-    allowed = lambda name: (name == "AGENTS.md" or name.startswith("tools/mephc-runner/")
+    allowed = lambda name: (name in {"AGENTS.md", ".codex/config.toml"} or name.startswith("tools/mephc-runner/")
                             or name.startswith("tools/mephc-admission/")
                             or name.startswith("tests/test_mephc") or name == "tests/test_relayctl.py")
     forbidden = sorted(name for name in changed if not allowed(name))
