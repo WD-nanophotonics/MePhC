@@ -33,6 +33,8 @@ try {
   wsl.exe -d Ubuntu -u root -- systemctl stop mephc-runner.service
   wsl.exe -d Ubuntu -- $Python "$sourceWsl/migrate_state.py" --apply
   if($LASTEXITCODE -ne 0){throw 'durable state migration failed'}
+  wsl.exe -d Ubuntu -u root -- install -d -o icy -g icy -m 0700 /home/icy/.cache/mephc-runner /home/icy/.cache/mephc-runner/checkouts
+  if($LASTEXITCODE -ne 0){throw 'failed to create WSL execution cache roots'}
   wsl.exe -d Ubuntu -u root -- install -d -o root -g root -m 0555 $versionWsl
   foreach($name in $Files) {
     wsl.exe -d Ubuntu -u root -- install -o root -g root -m 0555 "$sourceWsl/$name" "$versionWsl/$name"
