@@ -5,6 +5,7 @@ import ast
 import importlib.util
 import json
 from pathlib import Path
+import subprocess
 import sys
 from types import SimpleNamespace
 
@@ -151,8 +152,26 @@ def test_worker_skips_terminal_unclaimed_ready_and_rebuilds_index():
     assert "active_index.rebuild(JOBS)" in source
     assert 'existing not in {"succeeded", "failed", "recovery_required"}' in source
     assert "installed = INSTALL_ROOT / name" in source
-    assert 'source = config.CONTROL_ROOT / "tools/mephc-runner" / name' in source
-    assert "hashlib.sha256(source.read_bytes()).hexdigest() != digest" in source
+    assert '"show", f"{source_head}:tools/mephc-runner/{name}"' in source
+    assert "hashlib.sha256(source.stdout).hexdigest() != digest" in source
+
+
+def test_runtime_source_match_uses_committed_blob_not_worktree_line_endings(monkeypatch, tmp_path):
+    module = load("coherence_worker_blob", RUNNER / "worker.py")
+    installed, windows = tmp_path / "installed", tmp_path / "windows"
+    installed.mkdir(); windows.mkdir()
+    blob = b"line-one\nline-two\n"
+    (installed / "worker.py").write_bytes(blob)
+    (windows / "install-manifest.json").write_text(json.dumps([
+        {"name":"worker.py", "sha256":__import__("hashlib").sha256(blob).hexdigest()}
+    ]), encoding="utf-8")
+    (windows / "current.json").write_text(json.dumps({"source_commit":"1" * 40}), encoding="utf-8")
+    monkeypatch.setattr(module, "INSTALL_ROOT", installed)
+    monkeypatch.setattr(module.config, "WINDOWS_RUNTIME_WSL", windows)
+    monkeypatch.setattr(module.checkout_manager, "source_head", lambda: "2" * 40)
+    monkeypatch.setattr(module.subprocess, "run", lambda *_, **__: subprocess.CompletedProcess([], 0, blob, b""))
+    module._SOURCE_RUNTIME_MATCH_CACHE = None
+    assert module.runtime_source_matches() is True
 
 
 def test_stale_ready_reconciliation_never_executes_and_preserves_current_job(tmp_path, monkeypatch):

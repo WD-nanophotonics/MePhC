@@ -55,6 +55,7 @@ MAX_DETAIL_CHARS = 2000
 LOADED_WORKER_MODULE_HASH = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 WORKER_START_ID = uuid.uuid4().hex
 WORKER_STARTED_AT = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+_SOURCE_RUNTIME_MATCH_CACHE: tuple[str, bool] | None = None
 
 
 class Rejected(RuntimeError):
@@ -623,19 +624,29 @@ def runner_build_id() -> str:
 
 
 def runtime_source_matches() -> bool:
+    global _SOURCE_RUNTIME_MATCH_CACHE
     try:
         manifest = json.loads((config.WINDOWS_RUNTIME_WSL / "install-manifest.json").read_text(encoding="utf-8-sig"))
         current = json.loads((config.WINDOWS_RUNTIME_WSL / "current.json").read_text(encoding="utf-8-sig"))
         expected = {item["name"]: item["sha256"] for item in manifest if isinstance(item, dict)}
+        source_head = checkout_manager.source_head()
+        if _SOURCE_RUNTIME_MATCH_CACHE is not None and _SOURCE_RUNTIME_MATCH_CACHE[0] == source_head:
+            return _SOURCE_RUNTIME_MATCH_CACHE[1]
         if not expected or not isinstance(current.get("source_commit"), str):
             return False
         for name, digest in expected.items():
             installed = INSTALL_ROOT / name
-            source = config.CONTROL_ROOT / "tools/mephc-runner" / name
-            if (not installed.is_file() or not source.is_file()
+            source = subprocess.run(
+                [str(config.WINDOWS_GIT_WSL), "-c", f"safe.directory={config.CONTROL_ROOT_WINDOWS}",
+                 "-C", config.CONTROL_ROOT_WINDOWS, "show", f"{source_head}:tools/mephc-runner/{name}"],
+                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False, timeout=15,
+            )
+            if (not installed.is_file() or source.returncode
                     or hashlib.sha256(installed.read_bytes()).hexdigest() != digest
-                    or hashlib.sha256(source.read_bytes()).hexdigest() != digest):
+                    or hashlib.sha256(source.stdout).hexdigest() != digest):
+                _SOURCE_RUNTIME_MATCH_CACHE = (source_head, False)
                 return False
+        _SOURCE_RUNTIME_MATCH_CACHE = (source_head, True)
         return True
     except (OSError, KeyError, TypeError, json.JSONDecodeError):
         return False
