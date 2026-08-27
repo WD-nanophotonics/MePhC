@@ -52,6 +52,9 @@ def ensure(commit: str) -> Path:
     if not config.GIT_CACHE.is_dir():
         _git("init", "--bare", str(config.GIT_CACHE))
     _git("fetch", "--force", "--no-tags", str(config.CONTROL_ROOT / ".git"), commit, cwd=config.GIT_CACHE)
+    _git("fetch", "--force", "--no-tags", str(config.CONTROL_ROOT / ".git"),
+         "refs/remotes/origin/main:refs/remotes/origin/main",
+         "refs/remotes/origin/sandbox:refs/remotes/origin/sandbox", cwd=config.GIT_CACHE)
     resolved = _git("rev-parse", "FETCH_HEAD^{commit}", cwd=config.GIT_CACHE)
     if resolved != commit:
         raise CheckoutError("SOURCE_COMMIT_NOT_EXACT")

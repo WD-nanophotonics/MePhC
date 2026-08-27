@@ -149,3 +149,9 @@ def test_no_infrastructure_default_points_execution_to_mnt_c():
 def test_wsl_control_git_uses_windows_line_ending_semantics():
     text = (RUNNER / "checkout_manager.py").read_text(encoding="utf-8")
     assert text.count('"-c", "core.autocrlf=true"') == 3
+
+
+def test_execution_cache_carries_audited_remote_tracking_refs():
+    text = (RUNNER / "checkout_manager.py").read_text(encoding="utf-8")
+    assert "refs/remotes/origin/main:refs/remotes/origin/main" in text
+    assert "refs/remotes/origin/sandbox:refs/remotes/origin/sandbox" in text
