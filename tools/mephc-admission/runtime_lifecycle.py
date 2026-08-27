@@ -143,6 +143,20 @@ def _receipt(action: str, value: dict[str, Any]) -> dict[str, Any]:
     return {**value, "receipt_id": path.stem, "receipt_sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
 
 
+def _redact_detail(value: str) -> str:
+    text = value.replace(str(CONTROL_ROOT), "<CONTROL_ROOT>").replace(str(RUNTIME), "<RUNTIME>")
+    return text[-1200:]
+
+
+def _restart_broker() -> None:
+    script = ("Stop-ScheduledTask -TaskName MePhCRunnerBroker -ErrorAction SilentlyContinue;"
+              "for($i=0;$i -lt 20;$i++){if((Get-ScheduledTask -TaskName MePhCRunnerBroker).State "
+              "-notin @('Running','Queued')){break};Start-Sleep -Milliseconds 250};"
+              "Start-ScheduledTask -TaskName MePhCRunnerBroker")
+    result = _run([str(POWERSHELL), "-NoProfile", "-Command", script], timeout=60)
+    if result.returncode: raise LifecycleError("RUNTIME_RELOAD_BROKER_FAILED", result.stderr[-1000:])
+
+
 def _snapshot() -> dict[str, Any]:
     current = _current()
     token = f"{int(time.time())}-{current.get('build_id', 'unknown')}"
@@ -182,9 +196,10 @@ def _restore(snapshot: dict[str, Any]) -> None:
     if config_backup.is_file(): shutil.copy2(config_backup, snapshot["config"])
     worker = _run(["wsl.exe", "-d", "Ubuntu", "-u", "root", "--", "systemctl", "restart",
                    "mephc-runner.service"], timeout=60)
-    broker = _run([str(POWERSHELL), "-NoProfile", "-Command",
-                   "Stop-ScheduledTask -TaskName MePhCRunnerBroker -ErrorAction SilentlyContinue; Start-ScheduledTask -TaskName MePhCRunnerBroker"], timeout=60)
-    if worker.returncode or broker.returncode:
+    try: _restart_broker()
+    except LifecycleError as exc:
+        raise LifecycleError("RUNTIME_ACTIVATION_ROLLBACK_RESTART_FAILED", exc.detail) from exc
+    if worker.returncode:
         raise LifecycleError("RUNTIME_ACTIVATION_ROLLBACK_RESTART_FAILED")
 
 
@@ -192,8 +207,7 @@ def reload_installed() -> dict[str, Any]:
     if _active_jobs(): raise LifecycleError("RUNTIME_RELOAD_ACTIVE_JOB")
     first = _run(["wsl.exe", "-d", "Ubuntu", "-u", "root", "--", "systemctl", "restart", "mephc-runner.service"], timeout=60)
     if first.returncode: raise LifecycleError("RUNTIME_RELOAD_WORKER_FAILED", first.stderr[-1000:])
-    stop = _run([str(POWERSHELL), "-NoProfile", "-Command", "Stop-ScheduledTask -TaskName MePhCRunnerBroker -ErrorAction SilentlyContinue; Start-ScheduledTask -TaskName MePhCRunnerBroker"], timeout=60)
-    if stop.returncode: raise LifecycleError("RUNTIME_RELOAD_BROKER_FAILED", stop.stderr[-1000:])
+    _restart_broker()
     return _receipt("reload", {"build_id":_current().get("build_id"),"client_backend_rotation_required":True})
 
 
@@ -219,8 +233,10 @@ def activate() -> dict[str, Any]:
                                  ",".join(attestation.get("mismatches", [])))
     except LifecycleError as exc:
         _restore(snapshot)
-        _receipt("rollback", {**gate, "failed_code":exc.code, "restored_build_id":snapshot["current"].get("build_id")})
-        raise LifecycleError("RUNTIME_ACTIVATION_ROLLED_BACK", exc.code) from exc
+        detail = _redact_detail(exc.detail)
+        _receipt("rollback", {**gate, "failed_code":exc.code, "failed_detail":detail,
+                               "restored_build_id":snapshot["current"].get("build_id")})
+        raise LifecycleError("RUNTIME_ACTIVATION_ROLLED_BACK", f"{exc.code}:{detail}") from exc
     return _receipt("activate", {**gate,"build_id":_current().get("build_id"),
                                   "client_backend_rotation_required":True,
                                   "desktop_restart_required_if_tool_schema_changed":True})
