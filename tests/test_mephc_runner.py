@@ -29,7 +29,7 @@ def test_job_payload_hash_excludes_only_hash_field():
 
 def test_operation_allowlist_is_exact():
     worker = load("runner_worker_allowlist", "worker.py")
-    assert worker.OPERATIONS == {"doctor", "worktree", "prelive", "native", "publish", "courier", "change"}
+    assert worker.OPERATIONS == {"doctor", "worktree", "prelive", "native", "publish", "courier", "change", "retention_search"}
     assert "shell" not in worker.OPERATIONS
 
 
@@ -291,7 +291,7 @@ def test_courier_recovery_forces_read_only_and_limits_prebrowser(tmp_path):
 def test_connector_and_install_are_typed_and_versioned():
     mcp = load("runner_mcp_server", "mcp_server.py")
     names = {item["name"] for item in mcp.TOOLS}
-    assert names == {"mephc_capabilities","mephc_doctor","mephc_resume","mephc_change","mephc_validate","mephc_submit","mephc_status","mephc_wait","mephc_recover"}
+    assert names == {"mephc_capabilities","mephc_doctor","mephc_resume","mephc_change","mephc_validate","mephc_submit","mephc_status","mephc_wait","mephc_recover","mephc_retention_search"}
     bootstrap = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8-sig")
     broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
     assert "/opt/mephc-runner/versions/$BuildId" in bootstrap
@@ -344,7 +344,7 @@ def test_change_and_courier_recovery_are_reachable_and_typed():
     broker = (SOURCE / "windows_broker.py").read_text(encoding="utf-8")
     assert 'if job["operation"] == "courier":' in worker
     assert 'mode = "recover" if recovery else "transact"' in worker
-    assert 'job["operation"] in {"courier", "change"}' in worker
+    assert 'job["operation"] in {"courier", "change", "retention_search"}' in worker
     assert '"MATERIALIZE_RECOVER"' in client
     assert "MATERIALIZE_RECOVER_READY" in broker
 

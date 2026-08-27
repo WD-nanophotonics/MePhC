@@ -21,6 +21,14 @@ and probe names are migration-only and must remain disabled. The human-only
 `mephc-runtime sync|path|run` command is for interactive downstream WSL work
 and must never be used by an Agent to bypass this typed connector.
 
+Host-local retained evidence is available only through the hash-bound typed
+pair `mephc_retention_search` and `mephc_retention_inspect`. Search bindings
+must be exact `RETENTION_ID + SHA256` pairs stated in the active work order;
+Agents cannot provide paths or roots. Inspect returns opaque locators and
+redacted, bounded JSON pages or generic numeric summaries. Never use shell,
+WSL, Browser, or arbitrary file reads to bypass this boundary. A
+`SEARCH_INCOMPLETE` result is not evidence that an object is absent.
+
 For `mephc_change`, provide only declared UTF-8 file content and a non-empty `tests` array of repository-relative `tests/*.py` paths (optionally with a pytest `::` selector). Never pass `python ...`, `python -m ...`, shell syntax, or `audit/` paths as tests. A newly declared `tests/*.py` file is valid in the same transaction and is run only after materialization. The Runner, not the Agent, binds preimage/postimage hashes and `origin/main`.
 
 Never use `mephc_change` merely to run tests or redeclare unchanged files. Use `mephc_validate(tests=[...])` for solver-free validation of the current committed SHA. `CHANGE_NOOP_USE_VALIDATE` creates no durable job and requires `mephc_validate` as the next tool; `CHANGE_CONTAINS_NOOP_FILES` requires resubmitting only genuinely changed files. A stalled change must be observed until the watchdog marks it `recovery_required`; do not resubmit it or guess that a client timeout completed it.

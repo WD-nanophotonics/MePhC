@@ -14,6 +14,7 @@ import jobctl
 import workflow
 import workflow_resume
 import runtime_config as config
+import retention_inspector
 
 ROOT = config.CONTROL_ROOT
 READ_ROOTS = {"audit", "mephc", "scripts", "tests", "tools"}
@@ -117,6 +118,7 @@ TOOLS = [
     {"name": "mephc_status", "description": "Read one persisted job state.", "inputSchema": {"type": "object", "required": ["job_id"], "properties": {"job_id": {"type": "string"}}, "additionalProperties": False}},
     {"name": "mephc_wait", "description": "Wait without killing the persistent job.", "inputSchema": {"type": "object", "required": ["job_id"], "properties": {"job_id": {"type": "string"}, "timeout": {"type": "integer", "minimum": 1, "maximum": 4860}}, "additionalProperties": False}},
     {"name": "mephc_recover", "description": "Request the only state-approved recovery for an existing job.", "inputSchema": {"type": "object", "required": ["job_id"], "properties": {"job_id": {"type": "string"}}, "additionalProperties": False}},
+    {"name": "mephc_retention_search", "description": "Create or reuse a durable read-only exact-SHA search over fixed execution-host retention roots. Every binding must occur in the active work order.", "inputSchema": {"type": "object", "required": ["bindings"], "properties": {"bindings": {"type": "array", "minItems": 1, "maxItems": 32, "items": {"type": "object", "required": ["retention_id", "expected_sha256"], "properties": {"retention_id": {"type": "string"}, "expected_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "additionalProperties": False}}}, "additionalProperties": False}},
 ]
 
 REPORT_TOOLS = [
@@ -125,6 +127,7 @@ REPORT_TOOLS = [
 
 READONLY_TOOLS = [
     {"name": "mephc_inspect", "description": "Read only tracked UTF-8 MePhC source or audit evidence, or list a controlled tracked directory. Rejects runtime, Git internals, symlinks, credentials, path traversal, and untracked files.", "inputSchema": {"type": "object", "required": ["operation", "path"], "properties": {"operation": {"type": "string", "enum": ["list", "read"]}, "path": {"type": "string"}, "offset": {"type": "integer", "minimum": 0}, "max_bytes": {"type": "integer", "minimum": 1, "maximum": 65536}}, "additionalProperties": False}},
+    {"name": "mephc_retention_inspect", "description": "Inspect an exact hash-matched retention JSON through an opaque locator. Rehashes bytes on every call and redacts host identity.", "inputSchema": {"type": "object", "required": ["job_id", "retention_id", "operation"], "properties": {"job_id": {"type": "string"}, "retention_id": {"type": "string"}, "operation": {"type": "string", "enum": ["metadata", "outline", "json_page", "numeric_summary"]}, "json_pointer": {"type": "string"}, "offset": {"type": "integer", "minimum": 0}, "limit": {"type": "integer", "minimum": 1, "maximum": 200}}, "additionalProperties": False}},
 ]
 
 RELEASE_TOOLS = [
@@ -290,6 +293,14 @@ def invoke(name, args):
         return value
     if name == "mephc_inspect":
         return inspect(args)
+    if name == "mephc_retention_inspect":
+        try:
+            return retention_inspector.inspect(args.get("job_id"), args.get("retention_id"),
+                                               args.get("operation"), args.get("json_pointer", ""),
+                                               args.get("offset", 0), args.get("limit", 200))
+        except retention_inspector.RetentionError as exc:
+            return {"state": "rejected", "error_code": exc.code, "detail": exc.detail,
+                    "retry_allowed": False, "safe_next_tool": "mephc_retention_inspect"}
     if name == "mephc_report":
         return report(args)
     if name == "mephc_transport_canary":
@@ -319,6 +330,18 @@ def invoke(name, args):
         directory = jobctl.submit("prelive", tests, None)
         return {"job_id": directory.name, "state": "ready", "job_created": True,
                 "safe_next_tool": "mephc_wait"}
+    if name == "mephc_retention_search":
+        try:
+            directory, reused = jobctl.submit_retention_search(args.get("bindings") if isinstance(args, dict) else None)
+        except jobctl.RetentionRejected as exc:
+            return {"state": "rejected", "error_code": exc.error_code, "job_created": False,
+                    "retry_allowed": False, "safe_next_tool": exc.safe_next_tool}
+        state = jobctl.read_basic_state(directory.name).get("state")
+        has_result = (directory / "retention-search-result.json").is_file()
+        return {"job_id": directory.name, "state": state, "job_created": not reused, "reused": reused,
+                "safe_next_tool": "mephc_retention_inspect" if has_result else
+                                  "mephc_recover" if state == "recovery_required" else
+                                  "mephc_status" if state == "running" else "mephc_wait"}
     if name == "mephc_submit":
         directory = jobctl.submit(args["operation"], args.get("arguments", []), args.get("certificate_sha256"))
         return {"job_id": directory.name, "state": "ready"}

@@ -29,7 +29,7 @@ JOBS = config.JOBS
 CERTIFICATES = config.CERTIFICATES
 NATIVE_RECIPES = INSTALL_ROOT / "native-recipes.json"
 TERMINAL = {"succeeded", "failed", "recovery_required"}
-OPERATIONS = {"doctor", "worktree", "prelive", "native", "publish", "courier", "change"}
+OPERATIONS = {"doctor", "worktree", "prelive", "native", "publish", "courier", "change", "retention_search"}
 SHA64 = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -39,6 +39,12 @@ class ChangeRejected(ValueError):
         self.error_code = error_code
         self.noop_files = noop_files or []
         self.safe_next_tool = safe_next_tool
+        super().__init__(error_code)
+
+
+class RetentionRejected(ValueError):
+    def __init__(self, error_code: str, safe_next_tool: str = "mephc_resume") -> None:
+        self.error_code, self.safe_next_tool = error_code, safe_next_tool
         super().__init__(error_code)
 
 
@@ -141,6 +147,8 @@ def validate_arguments(operation: str, arguments: list[str]) -> None:
         raise SystemExit("doctor accepts no relayctl arguments")
     if operation == "change":
         raise SystemExit("change requires the typed JSON interface")
+    if operation == "retention_search":
+        raise SystemExit("retention_search requires the typed JSON interface")
     if operation == "prelive":
         for target in arguments:
             file_part = target.split("::", 1)[0]
@@ -194,6 +202,90 @@ def submit(operation: str, arguments: list[str], certificate_sha256: str | None)
     active_index.update(JOBS.parent, job_id, "ready", operation)
     emit("runner_job_submitted", job_id=job_id, job_directory=str(job_dir), payload_sha256=record["payload_sha256"])
     return job_dir
+
+
+def _retention_allowlist(work_order_text: str) -> dict[str, str]:
+    allowed: dict[str, str] = {}
+    for match in re.finditer(r"RETENTION_ID=([A-Z0-9][A-Z0-9_.-]{2,127})[ \t]*\r?\n[ \t]*EXPECTED_SHA256=([0-9a-f]{64})",
+                             work_order_text):
+        allowed[match.group(1)] = match.group(2)
+    for match in re.finditer(r"(AUTHORITATIVE_[A-Z0-9_]+)_SHA256=([0-9a-f]{64})", work_order_text):
+        allowed[match.group(1)] = match.group(2)
+    return allowed
+
+
+def current_runner_build() -> str:
+    try:
+        heartbeat = json.loads((RUNTIME / "heartbeat.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RetentionRejected("RETENTION_RUNNER_HEALTH_REQUIRED") from exc
+    build = heartbeat.get("worker_build_id")
+    updated_at = heartbeat.get("updated_at")
+    if not isinstance(build, str) or not re.fullmatch(r"[0-9a-f]{16}", build) or not isinstance(updated_at, str):
+        raise RetentionRejected("RETENTION_RUNNER_HEALTH_REQUIRED")
+    try:
+        age = (datetime.now(timezone.utc) - datetime.fromisoformat(updated_at.replace("Z", "+00:00"))).total_seconds()
+    except ValueError as exc:
+        raise RetentionRejected("RETENTION_RUNNER_HEALTH_REQUIRED") from exc
+    if age < -5 or age > 15:
+        raise RetentionRejected("RETENTION_RUNNER_HEALTH_REQUIRED")
+    return build
+
+
+def submit_retention_search(bindings: object) -> tuple[Path, bool]:
+    active = workflow.active()
+    if not active or not isinstance(active.get("work_order_text"), str):
+        raise RetentionRejected("RETENTION_ACTIVE_WORK_ORDER_REQUIRED")
+    work_order_id = active.get("active_work_order_id")
+    if not isinstance(work_order_id, str):
+        raise RetentionRejected("RETENTION_ACTIVE_WORK_ORDER_REQUIRED")
+    if not isinstance(bindings, list) or not 1 <= len(bindings) <= 32:
+        raise RetentionRejected("RETENTION_BINDINGS_INVALID")
+    allowed = _retention_allowlist(active["work_order_text"])
+    normalized: list[dict[str, str]] = []
+    seen: set[str] = set()
+    for item in bindings:
+        if not isinstance(item, dict) or set(item) != {"retention_id", "expected_sha256"}:
+            raise RetentionRejected("RETENTION_BINDINGS_INVALID")
+        retention_id, digest = item["retention_id"], item["expected_sha256"]
+        if (not isinstance(retention_id, str) or not isinstance(digest, str)
+                or retention_id in seen or allowed.get(retention_id) != digest):
+            raise RetentionRejected("RETENTION_BINDING_NOT_IN_ACTIVE_WORK_ORDER")
+        seen.add(retention_id)
+        normalized.append({"retention_id": retention_id, "expected_sha256": digest})
+    normalized.sort(key=lambda item: item["retention_id"])
+    runner_build = current_runner_build()
+    query = {"bindings": normalized, "deadline_seconds": config.RETENTION_SEARCH_TIMEOUT_SECONDS,
+             "work_order_id": work_order_id, "runner_build": runner_build}
+    query_sha = hashlib.sha256(canonical(query)).hexdigest()
+    head, epoch = git_head(), config.state_epoch()
+    for directory in sorted(JOBS.iterdir(), reverse=True) if JOBS.is_dir() else []:
+        try:
+            record = json.loads((directory / "job.json").read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if (record.get("operation") == "retention_search" and record.get("query_sha256") == query_sha
+                and record.get("source_commit") == head and record.get("state_epoch") == epoch
+                and record.get("active_work_order_id") == work_order_id
+                and record.get("runner_build") == runner_build):
+            state_value = read_basic_state(directory.name).get("state")
+            if (state_value in {"ready", "running", "succeeded", "recovery_required"}
+                    or state_value == "failed" and (directory / "retention-search-result.json").is_file()):
+                return directory, True
+    certificate = latest_certificate_sha256()
+    job_id = f"MEPHC-JOB-{time.strftime('%Y%m%d-%H%M%S')}-{secrets.token_hex(6).upper()}"
+    job_dir = JOBS / job_id
+    job_dir.mkdir(parents=True, exist_ok=False, mode=0o700)
+    record = job_v2_base(job_id, "retention_search", [], certificate)
+    record.update({"schema": "mephc-runner-job-v3", "retention_query": query,
+                   "active_work_order_id": work_order_id, "query_sha256": query_sha,
+                   "runner_build": runner_build})
+    record["payload_sha256"] = hashlib.sha256(canonical(record)).hexdigest()
+    atomic_write(job_dir / "job.json", (json.dumps(record, sort_keys=True, indent=2) + "\n").encode())
+    atomic_write(job_dir / "READY", (record["payload_sha256"] + "\n").encode("ascii"))
+    active_index.update(JOBS.parent, job_id, "ready", "retention_search")
+    emit("runner_retention_search_submitted", job_id=job_id, query_sha256=query_sha)
+    return job_dir, False
 def git_ref(ref: str) -> str:
     command = (["git", "-c", f"safe.directory={config.CONTROL_ROOT_WINDOWS}", "-C", config.CONTROL_ROOT_WINDOWS]
                if os.name == "nt" else [str(config.WINDOWS_GIT_WSL), "-c",
@@ -304,7 +396,7 @@ def read_state(job_id: str) -> dict[str, Any]:
             raise SystemExit(f"invalid state file: {path}")
     directory = JOBS / job_id
     progress = None
-    for name in ("materializer-progress.json", "client-progress.json"):
+    for name in ("materializer-progress.json", "client-progress.json", "retention-progress.json"):
         candidate = directory / name
         if candidate.is_file():
             try:
@@ -447,6 +539,9 @@ def capabilities() -> dict[str, Any]:
             "admission_scope":{"kind":"exact_inherited_windows_cwd","root":config.CONTROL_ROOT_WINDOWS},
             "state_epoch":config.state_epoch(),"operations":sorted(OPERATIONS|{"resume","transport_canary","validate"}),
             "inspect_limits":{"default_bytes":16384,"max_bytes":65536},
+            "retention_interface":{"search_deadline_seconds":config.RETENTION_SEARCH_TIMEOUT_SECONDS,
+                                   "page_limit":200,"page_max_bytes":65536,
+                                   "archive_formats":["tar","tar.gz","tgz","git-bundle"]},
             "arbitrary_shell":False,"direct_browser":False,"active_jobs":active,
             "orphaned_job_count":len(orphaned),**workflow.view(),
             "safe_next_tool":"mephc_resume" if not active else "mephc_status_or_wait"}

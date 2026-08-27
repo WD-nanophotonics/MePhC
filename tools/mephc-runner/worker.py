@@ -28,6 +28,7 @@ if str(INSTALL_ROOT) not in sys.path: sys.path.insert(0, str(INSTALL_ROOT))
 import checkout_manager
 import runtime_config as config
 import active_index
+import workflow
 
 ROOT = config.CONTROL_ROOT
 PYTHON = config.PYTHON
@@ -38,7 +39,8 @@ CERTIFICATES = config.CERTIFICATES
 NATIVE_RECIPES = INSTALL_ROOT / "native-recipes.json"
 MATERIALIZE_CLIENT = INSTALL_ROOT / "materialize_client.py"
 MATERIALIZER = INSTALL_ROOT / "materializer.py"
-OPERATIONS = {"doctor", "worktree", "prelive", "native", "publish", "courier", "change"}
+RETENTION_INSPECTOR = INSTALL_ROOT / "retention_inspector.py"
+OPERATIONS = {"doctor", "worktree", "prelive", "native", "publish", "courier", "change", "retention_search"}
 JOB_ID = re.compile(r"^MEPHC-JOB-[A-Z0-9][A-Z0-9._-]{7,119}$")
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
 SHA64 = re.compile(r"^[0-9a-f]{64}$")
@@ -183,6 +185,9 @@ def command_for(job: dict[str, Any], execution_root: Path | None = None, recover
     if job["operation"] == "change":
         mode = "recover" if recovery else "transact"
         return [str(PYTHON), str(MATERIALIZE_CLIENT), mode, str(JOBS / job["job_id"])]
+    if job["operation"] == "retention_search":
+        return [str(PYTHON), str(RETENTION_INSPECTOR), "search", str(JOBS / job["job_id"]),
+                str(execution_root)]
     return [str(relayctl), job["operation"], *job["arguments"]]
 def inside(path: Path, parent: Path, code: str) -> Path:
     resolved = path.resolve(strict=False)
@@ -200,16 +205,20 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
     raw_sha = hashlib.sha256(raw).hexdigest()
     job = read_object(job_dir / "job.json")
     v2 = job.get("schema") == "mephc-runner-job-v2"
+    v3 = job.get("schema") == "mephc-runner-job-v3"
+    modern = v2 or v3
     required = ({"schema", "job_id", "project_id", "operation", "arguments",
                  "expected_control_root", "source_commit", "expected_origin_main", "state_epoch",
-                 "certificate_sha256", "created_at", "payload_sha256"} if v2 else {
+                 "certificate_sha256", "created_at", "payload_sha256"} if modern else {
                  "schema", "job_id", "project_id", "operation", "arguments", "expected_root",
                  "expected_head", "certificate_sha256", "created_at", "payload_sha256"})
     if job.get("operation") == "change":
         required.add("change")
     if job.get("operation") == "courier" and job.get("arguments", [])[:1] == ["--request-directory"]:
         required.add("courier_binding")
-    if set(job) != required or job.get("schema") not in {"mephc-runner-job-v1", "mephc-runner-job-v2"}:
+    if v3:
+        required.update({"retention_query", "active_work_order_id", "query_sha256", "runner_build"})
+    if set(job) != required or job.get("schema") not in {"mephc-runner-job-v1", "mephc-runner-job-v2", "mephc-runner-job-v3"}:
         raise Rejected("JOB_SCHEMA_MISMATCH", f"keys={sorted(job)}")
     if not isinstance(job.get("job_id"), str) or not JOB_ID.fullmatch(job["job_id"]):
         raise Rejected("JOB_ID_INVALID", repr(job.get("job_id")))
@@ -222,7 +231,7 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
     expected = hashlib.sha256(canonical(job)).hexdigest()
     if job.get("payload_sha256") != expected:
         raise Rejected("PAYLOAD_SHA256_MISMATCH", f"expected={expected}")
-    if v2:
+    if modern:
         if job.get("expected_control_root") != config.CONTROL_ROOT_WINDOWS:
             raise Rejected("CONTROL_ROOT_MISMATCH", repr(job.get("expected_control_root")))
         if job.get("expected_origin_main") != config.EXPECTED_ORIGIN_MAIN:
@@ -259,7 +268,7 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
                     or relative.parts[:1] != ("tests",) or relative.suffix != ".py"
                     or not (execution_root / relative).is_file()):
                 raise Rejected("PRELIVE_ARGUMENTS_INVALID", target)
-    if not v2 and not recovery:
+    if not modern and not recovery:
         raise Rejected("LEGACY_JOB_RECOVERY_ONLY", job.get("job_id", ""))
 
     certificate = job.get("certificate_sha256")
@@ -273,6 +282,18 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
 
     if job["operation"] == "change" and (arguments or not isinstance(job.get("change"), dict)):
         raise Rejected("CHANGE_JOB_INVALID", "typed change payload required")
+    if job["operation"] == "retention_search":
+        query = job.get("retention_query")
+        active = workflow.active()
+        if (not v3 or arguments or not isinstance(query, dict)
+                or set(query) != {"bindings", "deadline_seconds", "work_order_id", "runner_build"}
+                or query.get("work_order_id") != job.get("active_work_order_id")
+                or query.get("runner_build") != job.get("runner_build")
+                or job.get("runner_build") != runner_build_id()
+                or not active or active.get("active_work_order_id") != job.get("active_work_order_id")
+                or hashlib.sha256(json.dumps(query, sort_keys=True, separators=(",", ":"),
+                                             ensure_ascii=False).encode("utf-8")).hexdigest() != job.get("query_sha256")):
+            raise Rejected("RETENTION_QUERY_INVALID", "query/work-order binding mismatch")
     if job["operation"] == "native":
         if len(arguments) != 2 or arguments[0] != "--recipe":
             raise Rejected("NATIVE_RECIPE_INVALID", repr(arguments))
@@ -367,7 +388,8 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
                     prewrite_failed = recovery_state.get("error_code") == "WINDOWS_MATERIALIZATION_FAILED"
                 except Rejected:
                     prewrite_failed = False
-            if not (old_state.get("state") == "recovery_required" and job["operation"] in {"courier", "change"}) and not change_attested and not prewrite_failed:
+            if not (old_state.get("state") == "recovery_required"
+                    and job["operation"] in {"courier", "change", "retention_search"}) and not change_attested and not prewrite_failed:
                 raise Rejected("RECOVERY_NOT_ALLOWED", repr(old_state))
             previous_attempt = int(old_state.get("attempt", 1))
         else:
@@ -408,7 +430,10 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
                 stderr=subprocess.STDOUT,
                 start_new_session=True,
             )
-            deadline = time.monotonic() + (config.MATERIALIZER_TIMEOUT_SECONDS + 60) if job["operation"] == "change" else None
+            deadline = (time.monotonic() + config.MATERIALIZER_TIMEOUT_SECONDS + 60
+                        if job["operation"] == "change" else
+                        time.monotonic() + config.RETENTION_SEARCH_TIMEOUT_SECONDS + 30
+                        if job["operation"] == "retention_search" else None)
             next_progress = 0.0
             timed_out = False
             while process.poll() is None:
@@ -427,7 +452,8 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
                 if current >= next_progress:
                     state(job_dir, "running", attempt=attempt, operation=job["operation"], recovery=recovery,
                           child_pid=process.pid,
-                          phase="awaiting_materializer" if job["operation"] == "change" else "executing",
+                          phase="awaiting_materializer" if job["operation"] == "change" else
+                                "retention_search" if job["operation"] == "retention_search" else "executing",
                           deadline_unix=(time.time() + max(0, deadline - current)) if deadline is not None else None)
                     next_progress = current + 5
                 time.sleep(0.5)
@@ -448,6 +474,13 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
         elif job["operation"] == "courier" and courier_state in RECOVERABLE:
             state(job_dir, "recovery_required", attempt=attempt, operation="courier", return_code=return_code, receipt_state=courier_state)
             event(job_dir, "runner_recovery_required", return_code=return_code, receipt_state=courier_state)
+        elif job["operation"] == "retention_search":
+            code = "SEARCH_INCOMPLETE" if timed_out or return_code == 4 else "CHILD_PROCESS_FAILED"
+            state(job_dir, "failed", attempt=attempt, operation="retention_search", return_code=return_code,
+                  error_code=code, detail=failure_detail(job_dir), retry_allowed=False,
+                  safe_next_tool="mephc_retention_inspect" if (job_dir / "retention-search-result.json").is_file()
+                                 else "mephc_status")
+            event(job_dir, "runner_job_failed", return_code=return_code, error_code=code)
         elif job["operation"] == "change":
             detail = failure_detail(job_dir)
             state_record = None
@@ -488,6 +521,13 @@ def repair_interrupted() -> None:
                 state(job_dir, "recovery_required", attempt=old_state.get("attempt", 1), operation="change", error_code="CHANGE_TRANSACTION_RECOVERY_REQUIRED")
                 event(job_dir, "runner_interrupted_state_repaired", next_state="recovery_required", error_code="CHANGE_TRANSACTION_RECOVERY_REQUIRED")
                 continue
+            if job.get("operation") == "retention_search":
+                state(job_dir, "recovery_required", attempt=old_state.get("attempt", 1),
+                      operation="retention_search", error_code="SEARCH_INTERRUPTED_RECOVERY_REQUIRED",
+                      retry_allowed=False, safe_next_tool="mephc_recover")
+                event(job_dir, "runner_interrupted_state_repaired", next_state="recovery_required",
+                      error_code="SEARCH_INTERRUPTED_RECOVERY_REQUIRED")
+                continue
             next_state = "recovery_required" if job.get("operation") == "courier" else "failed"
             code = "WORKER_RESTART_RECOVERY_REQUIRED" if next_state == "recovery_required" else "WORKER_RESTARTED"
             state(job_dir, next_state, attempt=old_state.get("attempt", 1), error_code=code)
@@ -496,15 +536,19 @@ def repair_interrupted() -> None:
             continue
 
 
-def heartbeat() -> None:
+def runner_build_id() -> str:
     names = ("worker.py","jobctl.py","workflow.py","workflow_resume.py","runtime_config.py","active_index.py","quarantine_oversized_state.py",
-             "checkout_manager.py","user_runtime.py","home_cleanup.py","migrate_state.py","migrate_canary_metadata.py",
+             "checkout_manager.py","retention_inspector.py","user_runtime.py","home_cleanup.py","migrate_state.py","migrate_canary_metadata.py",
              "windows_materializer.py","windows_broker.py",
              "materialize_client.py","mcp_server.py","native-recipes.json","mephc-runner.ps1",
              "mephc-runner.cmd","mephc-connector.cmd","mephc-connector.ps1",
              "mephc-runner.service","README.md")
     source_hashes = "".join(hashlib.sha256((INSTALL_ROOT / name).read_bytes()).hexdigest() for name in names)
-    build_id = hashlib.sha256(source_hashes.encode("ascii")).hexdigest()[:16]
+    return hashlib.sha256(source_hashes.encode("ascii")).hexdigest()[:16]
+
+
+def heartbeat() -> None:
+    build_id = runner_build_id()
     atomic_json(RUNTIME / "heartbeat.json", {
         "schema": "mephc-runner-heartbeat-v1",
         "pid": os.getpid(),

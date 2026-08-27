@@ -53,10 +53,12 @@ a build-bound pending credential and the previous Windows/WSL versions. The
 second requires a fresh matching broker heartbeat plus doctor and health; a
 failure restores the recorded versions instead of leaving a mixed install.
 
-Runtime state and Git object caches are outside every checkout. New jobs use
-schema v2 and bind the exact Windows root, source commit, cached `origin/main`,
-and state epoch. Legacy v1 jobs remain inspectable and recovery-only. Source
-belongs on `origin/sandbox`; this migration never moves `main` or pushes.
+Runtime state and Git object caches are outside every checkout. Ordinary jobs
+use schema v2 and bind the exact Windows root, source commit, cached
+`origin/main`, and state epoch. Hash-bound retention search uses schema v3 and
+additionally binds the active work order, query digest, and installed Runner
+build. Legacy v1 jobs remain inspectable and recovery-only. Source belongs on
+`origin/sandbox`; this migration never moves `main`.
 
 For interactive WSL use, `mephc-runtime sync` creates the exact committed
 local `sandbox` checkout and atomically updates
@@ -79,3 +81,15 @@ installed launchers and are retired after archival. Legacy v1 jobs remain
 queryable in durable state. Recovery that requires the archived source fails
 closed with `LEGACY_ARCHIVED_RECOVERY_UNAVAILABLE` until an operator restores
 the archive; it is never automatically replayed.
+
+## Hash-bound retention inspection
+
+`mephc_retention_search` accepts only `RETENTION_ID + expected_sha256` pairs
+present in the active work order. It searches fixed Runner-owned roots in
+index-first order, creates an idempotent durable read-only job, and reports
+only opaque locators. `mephc_retention_inspect` rehashes the selected bytes on
+every read and provides metadata, outline, bounded JSON pages, or a generic
+numeric summary. Typed responses redact host paths and identities. The search
+tool is never replayed across an admission disconnect; inspect is read-only
+and may be replayed once. `SEARCH_INCOMPLETE` must never be interpreted as
+`NOT_FOUND_EXHAUSTIVE`.
