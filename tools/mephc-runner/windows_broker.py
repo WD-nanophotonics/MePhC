@@ -10,7 +10,6 @@ import hashlib
 import json
 import ctypes
 from ctypes import wintypes
-import msvcrt
 import os
 import subprocess
 import sys
@@ -27,13 +26,18 @@ WORKER_HEALTH = RUNTIME / "broker-worker-health.json"
 LOCK = RUNTIME / "broker.lock"
 MATERIALIZER = RUNTIME / "windows_materializer.py"
 TIMEOUT_SECONDS = int(os.environ.get("MEPHC_MATERIALIZER_TIMEOUT_SECONDS", "300"))
-KERNEL32 = ctypes.WinDLL("kernel32", use_last_error=True)
-KERNEL32.OpenProcess.argtypes = (wintypes.DWORD, wintypes.BOOL, wintypes.DWORD)
-KERNEL32.OpenProcess.restype = wintypes.HANDLE
-KERNEL32.WaitForSingleObject.argtypes = (wintypes.HANDLE, wintypes.DWORD)
-KERNEL32.WaitForSingleObject.restype = wintypes.DWORD
-KERNEL32.CloseHandle.argtypes = (wintypes.HANDLE,)
-KERNEL32.CloseHandle.restype = wintypes.BOOL
+if os.name == "nt":
+    import msvcrt
+    KERNEL32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    KERNEL32.OpenProcess.argtypes = (wintypes.DWORD, wintypes.BOOL, wintypes.DWORD)
+    KERNEL32.OpenProcess.restype = wintypes.HANDLE
+    KERNEL32.WaitForSingleObject.argtypes = (wintypes.HANDLE, wintypes.DWORD)
+    KERNEL32.WaitForSingleObject.restype = wintypes.DWORD
+    KERNEL32.CloseHandle.argtypes = (wintypes.HANDLE,)
+    KERNEL32.CloseHandle.restype = wintypes.BOOL
+else:  # Permit solver-free policy tests to import the Windows-only broker in WSL.
+    msvcrt = None
+    KERNEL32 = None
 
 
 def atomic_json(path: Path, value: dict) -> None:
@@ -54,6 +58,8 @@ def now_record(worker_ok: bool) -> dict:
 
 
 def parent_alive(pid: int) -> bool:
+    if KERNEL32 is None:
+        return False
     synchronize = 0x00100000
     still_running = 0x00000102
     handle = KERNEL32.OpenProcess(synchronize, False, pid)

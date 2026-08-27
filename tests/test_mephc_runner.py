@@ -192,6 +192,7 @@ def test_courier_explicit_read_only_recovery_is_typed(tmp_path, monkeypatch):
     jobctl = load("runner_jobctl_read_only_recovery", "jobctl.py")
     monkeypatch.setattr(jobctl, "ROOT", tmp_path)
     request = tmp_path / ".relayctl" / "outbox" / "MEPHC-E2E"
+    monkeypatch.setattr(jobctl.config, "OUTBOX", request.parent)
     jobctl.validate_arguments("courier", ["--request-directory", str(request), "--recovery-only"])
     with pytest.raises(SystemExit):
         jobctl.validate_arguments("courier", ["--recovery-only", str(request)])
