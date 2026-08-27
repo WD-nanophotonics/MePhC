@@ -150,17 +150,20 @@ def patch_project_scoped(user_config: Path, project_config: Path, python: Path, 
     if not apply or not result["changed"]:
         return result
     stamp = time.strftime("%Y%m%d-%H%M%S")
+    changes = [(user_config, user_after)] if user_before != user_after else []
+    if project_before != project_after:
+        changes.append((project_config, project_after))
     backups: list[tuple[Path, Path | None]] = []
     temporaries: list[Path] = []
     try:
-        for path in (user_config, project_config):
+        for path, _text in changes:
             backup = path.with_name(path.name + ".mephc-backup-" + stamp) if path.exists() else None
             if backup is not None:
                 shutil.copy2(path, backup)
             backups.append((path, backup))
-        temporaries = [_write_atomic(user_config, user_after), _write_atomic(project_config, project_after)]
-        os.replace(temporaries[0], user_config)
-        os.replace(temporaries[1], project_config)
+        temporaries = [_write_atomic(path, text) for path, text in changes]
+        for temporary, (path, _text) in zip(temporaries, changes, strict=True):
+            os.replace(temporary, path)
     except Exception:
         for path, backup in backups:
             if backup is not None and backup.exists():

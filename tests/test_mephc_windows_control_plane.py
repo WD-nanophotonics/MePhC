@@ -182,6 +182,22 @@ def test_project_scoped_config_removes_global_server_and_pins_canonical_cwd(tmp_
     assert result["changed"] is True and len(result["backups"]) == 2
 
 
+def test_project_scoped_config_does_not_backup_unchanged_project_file(tmp_path):
+    module = load("windows_project_config_unchanged", ADMISSION / "config_patch.py")
+    user = tmp_path / "user.toml"
+    project = tmp_path / "project.toml"
+    python = Path("C:/Python/python.exe")
+    shim = Path("C:/runtime/shim.py")
+    cwd = Path("C:/control")
+    user.write_text("[mcp_servers.mephc]\ncommand = 'old'\n", encoding="utf-8")
+    project.write_text(module._render_project_config("", python, shim, cwd), encoding="utf-8")
+    result = module.patch_project_scoped(user, project, python, shim, cwd, True)
+    assert result["changed"] is True
+    assert len(result["backups"]) == 1
+    assert Path(result["backups"][0]).name.startswith("user.toml.mephc-backup-")
+    assert not list(tmp_path.glob("project.toml.mephc-backup-*"))
+
+
 def test_windows_process_launches_are_consoleless():
     admission = (ADMISSION / "mephc_admission.py").read_text(encoding="utf-8")
     lifecycle = (ADMISSION / "runtime_lifecycle.py").read_text(encoding="utf-8")
