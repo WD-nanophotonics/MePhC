@@ -209,21 +209,27 @@ def _retention_allowlist(work_order_text: str) -> dict[str, str]:
     for match in re.finditer(r"RETENTION_ID=([A-Z0-9][A-Z0-9_.-]{2,127})[ \t]*\r?\n[ \t]*EXPECTED_SHA256=([0-9a-f]{64})",
                              work_order_text):
         allowed[match.group(1)] = match.group(2)
+    lines = work_order_text.splitlines()
     prefixes: dict[str, str] = {}
-    for match in re.finditer(
-            r"^([A-Z0-9_]+)_RETENTION_ID=([A-Z0-9_.-]+)[ \t]*\r?$",
-            work_order_text,
-            flags=re.MULTILINE,
-    ):
-        prefixes[match.group(1)] = match.group(2)
+    for line in lines:
+        marker = "_RETENTION_ID="
+        if marker not in line:
+            continue
+        prefix, retention_id = line.split(marker, 1)
+        if not re.fullmatch(r"[A-Z0-9_]+", prefix):
+            continue
+        retention_id = retention_id.strip()
+        if not re.fullmatch(r"[A-Z0-9_.-]{3,127}", retention_id):
+            continue
+        prefixes[prefix] = retention_id
     for prefix, retention_id in prefixes.items():
-        match = re.search(
-            rf"^{re.escape(prefix)}_SHA256=([0-9a-f]{64})[ \t]*\r?$",
-            work_order_text,
-            flags=re.MULTILINE,
-        )
-        if match:
-            allowed[retention_id] = match.group(1)
+        marker = prefix + "_SHA256="
+        for line in lines:
+            if line.startswith(marker):
+                digest = line[len(marker):].strip()
+                if SHA64.fullmatch(digest):
+                    allowed[retention_id] = digest
+                    break
     for match in re.finditer(r"(AUTHORITATIVE_[A-Z0-9_]+)_SHA256=([0-9a-f]{64})", work_order_text):
         allowed[match.group(1)] = match.group(2)
     return allowed
