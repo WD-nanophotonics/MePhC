@@ -351,6 +351,9 @@ def invoke(name, args):
     if name == "mephc_change":
         try:
             directory = jobctl.submit_change(args)
+        except jobctl.CertificateRejected as exc:
+            return {"state":"rejected","error_code":exc.error_code,"detail":exc.detail,
+                    "job_created":False,"retry_allowed":False,"safe_next_tool":exc.safe_next_tool}
         except jobctl.ChangeRejected as exc:
             return {"state": "rejected", "error_code": exc.error_code,
                     "noop_files": exc.noop_files, "job_created": False,
@@ -362,13 +365,20 @@ def invoke(name, args):
         tests = args.get("tests") if isinstance(args, dict) else None
         if not isinstance(tests, list) or not tests:
             raise ValueError("VALIDATE_TESTS_REQUIRED")
-        directory = jobctl.submit("prelive", tests, None)
+        try:
+            directory = jobctl.submit("prelive", tests, None)
+        except jobctl.CertificateRejected as exc:
+            return {"state":"rejected","error_code":exc.error_code,"detail":exc.detail,
+                    "job_created":False,"retry_allowed":False,"safe_next_tool":exc.safe_next_tool}
         bind_admission(directory)
         return {"job_id": directory.name, "state": "ready", "job_created": True,
                 "safe_next_tool": "mephc_wait"}
     if name == "mephc_retention_search":
         try:
             directory, reused = jobctl.submit_retention_search(args.get("bindings") if isinstance(args, dict) else None)
+        except jobctl.CertificateRejected as exc:
+            return {"state":"rejected","error_code":exc.error_code,"detail":exc.detail,
+                    "job_created":False,"retry_allowed":False,"safe_next_tool":exc.safe_next_tool}
         except jobctl.RetentionRejected as exc:
             return {"state": "rejected", "error_code": exc.error_code, "job_created": False,
                     "retry_allowed": False, "safe_next_tool": exc.safe_next_tool}
@@ -380,7 +390,11 @@ def invoke(name, args):
                                   "mephc_recover" if state == "recovery_required" else
                                   "mephc_status" if state == "running" else "mephc_wait"}
     if name == "mephc_submit":
-        directory = jobctl.submit(args["operation"], args.get("arguments", []), args.get("certificate_sha256"))
+        try:
+            directory = jobctl.submit(args["operation"], args.get("arguments", []), args.get("certificate_sha256"))
+        except jobctl.CertificateRejected as exc:
+            return {"state":"rejected","error_code":exc.error_code,"detail":exc.detail,
+                    "job_created":False,"retry_allowed":False,"safe_next_tool":exc.safe_next_tool}
         bind_admission(directory)
         return {"job_id": directory.name, "state": "ready"}
     if name == "mephc_status":

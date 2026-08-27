@@ -162,32 +162,38 @@ def _restart_broker() -> None:
     if result.returncode: raise LifecycleError("RUNTIME_RELOAD_BROKER_FAILED", result.stderr[-1000:])
 
 
-def _heartbeat() -> dict[str, Any]:
+def _runner_health() -> dict[str, Any]:
+    result = _run([str(RUNNER), "Health"], cwd=RUNTIME, timeout=30)
     try:
-        value = json.loads((RUNTIME / "heartbeat.json").read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "HEARTBEAT_UNAVAILABLE") from exc
-    if not isinstance(value, dict):
-        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "HEARTBEAT_INVALID")
+        value = json.loads(result.stdout.splitlines()[-1])
+    except (IndexError, json.JSONDecodeError) as exc:
+        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "HEALTH_RESPONSE_INVALID") from exc
+    if not isinstance(value, dict) or not isinstance(value.get("worker"), dict) or not isinstance(value.get("broker"), dict):
+        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "HEALTH_RESPONSE_INCOMPLETE")
     return value
 
 
 def retention_worker_reload() -> dict[str, Any]:
-    process_role = "MEPHC_RETENTION_EXECUTION_WORKER"
-    transport_process_separation_proved = True
     if _active_jobs():
         raise LifecycleError("RETENTION_WORKER_RELOAD_FAILED", "ACTIVE_JOB")
-    before = _heartbeat()
+    before_health = _runner_health()
+    if before_health.get("ok") is not True:
+        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "LIVE_HEALTH_NOT_READY")
+    before = before_health["worker"]
     current = _current()
     source_commit = current.get("source_commit")
     if not isinstance(source_commit, str) or len(source_commit) != 40:
         raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "SOURCE_COMMIT_MISSING")
     old_build = before.get("worker_build_id")
-    old_marker = before.get("updated_at") or before.get("worker_start_generation")
+    old_start_id = before.get("worker_start_id")
+    old_pid = before.get("pid")
+    if not isinstance(old_start_id, str) or not old_start_id or not isinstance(old_pid, int):
+        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "WORKER_START_IDENTITY_MISSING")
     accepted = {
         "state": "RETENTION_WORKER_RELOAD_ACCEPTED",
-        "process_role": process_role,
-        "transport_process_separation_proved": transport_process_separation_proved,
+        "worker_role": "shared_durable_worker",
+        "retention_capable": True,
+        "service_name": "mephc-runner.service",
         "raw_expected_head_indexing_active": False,
         "v3_canonical_head_field": "source_commit",
         "source_commit_validation_active": True,
@@ -196,24 +202,45 @@ def retention_worker_reload() -> dict[str, Any]:
                    "mephc-runner.service"], timeout=60)
     if result.returncode:
         raise LifecycleError("RETENTION_WORKER_RELOAD_FAILED", "FIXED_WORKER_SERVICE_RESTART_FAILED")
-    deadline = time.monotonic() + 10.0
-    after = _heartbeat()
-    while (after.get("updated_at") or after.get("worker_start_generation")) == old_marker and time.monotonic() < deadline:
-        time.sleep(0.25)
-        after = _heartbeat()
-    new_marker = after.get("updated_at") or after.get("worker_start_generation")
+    deadline = time.monotonic() + 30.0
+    after_health: dict[str, Any] | None = None
+    while time.monotonic() < deadline:
+        try:
+            candidate = _runner_health()
+            worker = candidate["worker"]
+            if candidate.get("ok") is True and worker.get("worker_start_id") != old_start_id:
+                after_health = candidate
+                break
+        except LifecycleError:
+            pass
+        time.sleep(0.5)
+    if after_health is None:
+        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "SERVICE_RESTART_TIMEOUT")
+    after = after_health["worker"]
     new_build = after.get("worker_build_id")
     module_sha = after.get("loaded_worker_module_hash")
     if not isinstance(new_build, str) or not new_build:
         raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "WORKER_BUILD_ID_MISSING")
     if not isinstance(module_sha, str) or len(module_sha) != 64:
         raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "WORKER_MODULE_HASH_MISSING")
-    if after.get("source_commit") not in (None, source_commit):
+    if after.get("source_commit") != source_commit:
         raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "SOURCE_COMMIT_MISMATCH")
-    if after.get("installed_source_head") not in (None, source_commit):
+    if after.get("installed_source_head") != source_commit:
         raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "INSTALLED_SOURCE_COMMIT_MISMATCH")
-    if new_marker is None or new_marker == old_marker:
+    if (after.get("worker_start_id") == old_start_id or after.get("pid") == old_pid
+            or after.get("worker_started_at") == before.get("worker_started_at")):
         raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "RESTART_NOT_OBSERVED")
+    for key in ("worker_build_id", "loaded_worker_module_hash", "installed_source_head", "state_epoch"):
+        if after.get(key) != before.get(key):
+            raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", f"{key.upper()}_CHANGED")
+    broker = after_health["broker"]
+    broker_pid = broker.get("supervisor_pid") or broker.get("pid")
+    separation = (after.get("platform") == "wsl" and broker.get("platform") == "windows"
+                  and isinstance(after.get("pid"), int) and isinstance(broker_pid, int)
+                  and after.get("worker_role") == "shared_durable_worker"
+                  and broker.get("process_role") == "transport_broker")
+    if not separation:
+        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "TRANSPORT_PROCESS_SEPARATION_UNPROVED")
     return _receipt("retention-worker-reload", {
         **accepted,
         "state": "RETENTION_WORKER_RELOAD_COMPLETED",
@@ -221,7 +248,13 @@ def retention_worker_reload() -> dict[str, Any]:
         "new_worker_build_id": new_build,
         "worker_module_sha256": module_sha,
         "worker_restart_observed": True,
-        "worker_start_generation_or_timestamp": new_marker,
+        "before_worker_start_id": old_start_id,
+        "after_worker_start_id": after.get("worker_start_id"),
+        "before_worker_pid": old_pid,
+        "after_worker_pid": after.get("pid"),
+        "worker_started_at": after.get("worker_started_at"),
+        "broker_fresh": True,
+        "transport_process_separation_proved": separation,
         "source_commit": source_commit,
         "expected_head_keyerror": False,
     })

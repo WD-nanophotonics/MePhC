@@ -52,12 +52,16 @@ def test_doctor_certificate_uses_windows_canonical_control_root(monkeypatch, tmp
     monkeypatch.setattr(relayctl, "head", lambda _: "a" * 40)
     monkeypatch.setattr(relayctl, "remote_ref", lambda *_: "b" * 40)
     monkeypatch.setenv("PYTHONPATH", str(tmp_path))
+    monkeypatch.setenv("MEPHC_RUNNER_BUILD", "a" * 16)
+    monkeypatch.setenv("MEPHC_STATE_EPOCH", "epoch-1")
+    monkeypatch.setenv("MEPHC_INSTALLED_SOURCE_HEAD", "a" * 40)
     for dependency in ("numpy", "scipy", "shapely"):
         monkeypatch.setitem(sys.modules, dependency, SimpleNamespace(__version__="test"))
     path = relayctl.doctor(tmp_path)
     record = json.loads(path.read_text(encoding="utf-8"))
     assert record["control_root"] == r"C:\Users\icywo\PycharmProjects\MePhC-Windows"
     assert record["control_root_wsl"].replace("\\", "/") == "/mnt/c/Users/icywo/PycharmProjects/MePhC-Windows"
+    assert record["version"] == 2 and record["kind"] == "environment-certificate"
 
 
 def test_publish_uses_windows_canonical_git_when_execution_checkout_has_no_origin(monkeypatch, tmp_path):
@@ -116,7 +120,7 @@ def test_prelive_failure_is_specific_and_persists_bounded_diagnostic(monkeypatch
     monkeypatch.setattr(relayctl, "worktree_root", lambda _=None: tmp_path)
     monkeypatch.setattr(relayctl, "require_python", lambda _: None)
     monkeypatch.setattr(relayctl, "clean", lambda _: None)
-    monkeypatch.setattr(relayctl, "load_certificate", lambda *_: (certificate, {"head": "h", "origin_main": "m"}))
+    monkeypatch.setattr(relayctl, "load_certificate", lambda *_, **__: (certificate, {"version": 2, "head": "old", "origin_main": "m"}))
     monkeypatch.setattr(relayctl, "head", lambda _: "h")
     monkeypatch.setattr(relayctl, "source_manifest", lambda _: {})
     monkeypatch.setattr(relayctl.subprocess, "run", lambda *_, **__: subprocess.CompletedProcess([], 1, "first\n" + "x" * 2500, "stderr"))
@@ -129,6 +133,36 @@ def test_prelive_failure_is_specific_and_persists_bounded_diagnostic(monkeypatch
     assert record["test_returncode"] == 1
     assert len(record["test_stdout_tail"]) == 2000
     assert record["test_stderr_tail"] == "stderr"
+
+
+def test_v2_environment_certificate_is_reusable_across_source_commits(monkeypatch, tmp_path):
+    certificate = tmp_path / "environment-v2.json"
+    record = {
+        "version": 2, "kind": "environment-certificate", "project_id": "MEPHC",
+        "runner_build": "a" * 16, "state_epoch": "epoch-1",
+        "control_root": relayctl.CONTROL_ROOT_WINDOWS, "state_root": str(tmp_path / "state"),
+        "python": str(relayctl.REQUIRED_PYTHON.resolve()), "origin_main": relayctl.EXPECTED_ORIGIN_MAIN,
+        "head": "1" * 40, "worktree": "/old/checkout",
+    }
+    certificate.write_text(json.dumps(record), encoding="utf-8")
+    monkeypatch.setattr(relayctl, "STATE_ROOT", tmp_path / "state")
+    monkeypatch.setenv("MEPHC_RUNNER_BUILD", "a" * 16)
+    monkeypatch.setenv("MEPHC_STATE_EPOCH", "epoch-1")
+    monkeypatch.setenv("MEPHC_INSTALLED_SOURCE_HEAD", "2" * 40)
+    monkeypatch.setattr(relayctl.sys, "executable", str(relayctl.REQUIRED_PYTHON.resolve()))
+    monkeypatch.setattr(relayctl, "head", lambda _: "2" * 40)
+    path, loaded = relayctl.load_certificate(tmp_path, str(certificate), for_execution=True)
+    assert path == certificate and loaded["head"] == "1" * 40
+
+
+def test_v1_certificate_cannot_cross_execution_head(monkeypatch, tmp_path):
+    certificate = tmp_path / "legacy-v1.json"
+    certificate.write_text(json.dumps({"version": 1, "kind": "runtime-certificate", "project_id": "MEPHC",
+                                       "worktree": str(tmp_path), "head": "1" * 40}), encoding="utf-8")
+    monkeypatch.setattr(relayctl, "head", lambda _: "2" * 40)
+    with pytest.raises(relayctl.RelayFailure) as error:
+        relayctl.load_certificate(tmp_path, str(certificate), for_execution=True)
+    assert error.value.code == "CERTIFICATE_EXECUTION_BINDING_MISMATCH"
 
 
 def test_e2e_request_is_plain_text(monkeypatch, tmp_path):

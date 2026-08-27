@@ -4,8 +4,12 @@
 
 Every Agent starts with `mephc_capabilities -> mephc_runtime_attest`. If capabilities reports an active or recovery-required job, inspect that exact job with `mephc_status`/`mephc_wait` before calling doctor; otherwise continue with `mephc_doctor -> mephc_resume -> mephc_work_order_preflight`. Do not execute a work order unless preflight returns `READY`. A blocked doctor or preflight is a diagnostic result and must not be resubmitted. Empty `active_jobs` is not completion. Never ask the user for a work order because local state appears idle, and never hand-create `.relayctl/outbox` files.
 
-A previously successful doctor is reusable only when its source commit, runner
-build, state epoch, and current worker/broker health all still match. Treat
+A previously successful doctor v2 is reusable only when its runner build,
+state epoch, interpreter, fixed roots, and current worker/broker health all
+still match. Its issue-time source commit is audit metadata; prelive and
+validate independently bind their exact detached execution SHA. A legacy v1
+certificate remains executable only when its worktree and HEAD exactly match.
+Treat
 `DOCTOR_LIVE_HEALTH_FAILED` as an infrastructure diagnostic; do not reuse the
 old certificate or enqueue another doctor behind stale runtime health.
 
@@ -15,6 +19,11 @@ stale loaded process at the already-installed build requires the fixed,
 no-argument `mephc_runtime_reload`. Neither lifecycle tool accepts a PID,
 path, command, argument, target, or environment variable, and neither may be
 replayed after disconnect. After either action, attest again before doctor.
+`mephc_retention_worker_reload` is also fixed and argumentless. It restarts the
+shared durable `mephc-runner.service` worker, not an exclusive retention
+process, and succeeds only when Health proves a changed WSL PID and stable
+worker start ID while build, module hash, installed source, epoch, and broker
+health remain coherent.
 
 
 ## Mandatory Agent-facing entry point

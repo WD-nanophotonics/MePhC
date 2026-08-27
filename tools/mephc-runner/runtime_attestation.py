@@ -95,8 +95,6 @@ def attest() -> dict[str, Any]:
             mismatches.append("ADMISSION_SOURCE_COMMIT_MISMATCH")
     source = _source_head()
     installed_source = current.get("source_commit")
-    if source != installed_source:
-        mismatches.append("SOURCE_HEAD_NOT_INSTALLED")
     runtime_source_matches = worker.get("runtime_source_matches") if worker else None
     if runtime_source_matches is False: mismatches.append("SOURCE_RUNTIME_FILES_MISMATCH")
     value = {
@@ -116,6 +114,6 @@ def attest() -> dict[str, Any]:
         "mismatches": sorted(set(mismatches)),
     }
     value["safe_next_tool"] = "mephc_doctor" if value["coherent"] else (
-        "mephc_runtime_activate" if ({"SOURCE_RUNTIME_FILES_MISMATCH", "SOURCE_HEAD_NOT_INSTALLED"}
+        "mephc_runtime_activate" if ({"SOURCE_RUNTIME_FILES_MISMATCH"}
                                      & set(value["mismatches"])) else "mephc_runtime_reload")
     return value

@@ -51,6 +51,12 @@ class RetentionRejected(ValueError):
         super().__init__(error_code)
 
 
+class CertificateRejected(ValueError):
+    def __init__(self, error_code: str, safe_next_tool: str, detail: str = "") -> None:
+        self.error_code, self.safe_next_tool, self.detail = error_code, safe_next_tool, detail
+        super().__init__(error_code)
+
+
 def canonical(value: dict[str, Any]) -> bytes:
     payload = {key: item for key, item in value.items() if key != "payload_sha256"}
     return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
@@ -117,6 +123,66 @@ def latest_certificate_sha256() -> str:
     if not candidates:
         raise SystemExit("no relayctl doctor certificate exists")
     return hashlib.sha256(candidates[0].read_bytes()).hexdigest()
+
+
+def _certificate_record(path: Path) -> dict[str, Any] | None:
+    try:
+        if path.stat().st_size > 1024 * 1024:
+            return None
+        value = json.loads(path.read_text(encoding="utf-8"))
+        return value if isinstance(value, dict) else None
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def environment_certificate_status(source_commit: str | None = None, requested_sha256: str | None = None) -> dict[str, Any]:
+    source_commit = source_commit or git_head()
+    health = live_runtime_health()
+    attestation = runtime_attestation.attest()
+    safe_next = attestation.get("safe_next_tool", "mephc_runtime_attest")
+    if not health["ok"] or not attestation.get("coherent"):
+        return {"valid": False, "error_code": "ENVIRONMENT_CERTIFICATE_REQUIRED",
+                "safe_next_tool": safe_next if not attestation.get("coherent") else "mephc_runtime_attest",
+                "live_health": health, "runtime_attestation": attestation, "certificate_sha256": None}
+    expected = {
+        "project_id": "MEPHC", "runner_build": attestation.get("worker_build"),
+        "state_epoch": config.state_epoch(), "control_root": config.CONTROL_ROOT_WINDOWS,
+        "state_root": str(config.STATE_ROOT), "python": str(config.PYTHON),
+        "origin_main": config.EXPECTED_ORIGIN_MAIN,
+    }
+    environment_mismatches: list[str] = []
+    for path in sorted(CERTIFICATES.glob("*.json"), key=lambda item: item.stat().st_mtime_ns, reverse=True):
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        if requested_sha256 is not None and digest != requested_sha256:
+            continue
+        record = _certificate_record(path)
+        if not record:
+            continue
+        if record.get("version") == 2 and record.get("kind") == "environment-certificate":
+            mismatches = [key for key, value in expected.items() if not value or record.get(key) != value]
+            if (not mismatches and record.get("live_health_fresh") is True
+                    and record.get("worker_health_fresh_at_issue") is True
+                    and record.get("broker_health_fresh_at_issue") is True):
+                return {"valid": True, "version": 2, "certificate_sha256": digest,
+                        "certificate_head": record.get("head"), "cross_source_reusable": True,
+                        "live_health": health, "runtime_attestation": attestation, "safe_next_tool": "none"}
+            environment_mismatches.extend(mismatches)
+        elif (record.get("project_id") == "MEPHC" and record.get("head") == source_commit
+              and record.get("worktree") == str(config.CHECKOUTS / source_commit)):
+            return {"valid": True, "version": 1, "certificate_sha256": digest,
+                    "certificate_head": record.get("head"), "cross_source_reusable": False,
+                    "live_health": health, "runtime_attestation": attestation, "safe_next_tool": "none"}
+    return {"valid": False, "error_code": "CERTIFICATE_ENVIRONMENT_MISMATCH" if requested_sha256 else "ENVIRONMENT_CERTIFICATE_REQUIRED",
+            "environment_mismatches": sorted(set(environment_mismatches)), "certificate_sha256": None,
+            "live_health": health, "runtime_attestation": attestation, "safe_next_tool": "mephc_doctor"}
+
+
+def select_environment_certificate(source_commit: str | None = None, requested_sha256: str | None = None) -> str:
+    status = environment_certificate_status(source_commit, requested_sha256)
+    if not status["valid"]:
+        raise CertificateRejected(status["error_code"], status["safe_next_tool"],
+                                  ",".join(status.get("environment_mismatches", [])))
+    return str(status["certificate_sha256"])
 
 
 def courier_binding(arguments: list[str]) -> dict[str, str] | None:
@@ -189,7 +255,12 @@ def submit(operation: str, arguments: list[str], certificate_sha256: str | None)
     blocker = unresolved_change()
     if blocker and operation in {"worktree", "native", "publish", "courier"}:
         raise SystemExit(f"CHANGE_RECOVERY_BLOCKS_SIDE_EFFECTS:{blocker}")
-    certificate = "" if operation == "doctor" else (certificate_sha256 or latest_certificate_sha256())
+    if operation == "doctor":
+        certificate = ""
+    elif operation == "courier":
+        certificate = certificate_sha256 or latest_certificate_sha256()
+    else:
+        certificate = select_environment_certificate(requested_sha256=certificate_sha256)
     if operation != "doctor" and not SHA64.fullmatch(certificate):
         raise SystemExit("certificate SHA-256 is invalid")
     job_id = f"MEPHC-JOB-{time.strftime('%Y%m%d-%H%M%S')}-{secrets.token_hex(6).upper()}"
@@ -274,7 +345,7 @@ def submit_retention_search(bindings: object) -> tuple[Path, bool]:
             if (state_value in {"ready", "running", "succeeded", "recovery_required"}
                     or state_value == "failed" and (directory / "retention-search-result.json").is_file()):
                 return directory, True
-    certificate = latest_certificate_sha256()
+    certificate = select_environment_certificate(head)
     job_id = f"MEPHC-JOB-{time.strftime('%Y%m%d-%H%M%S')}-{secrets.token_hex(6).upper()}"
     job_dir = JOBS / job_id
     job_dir.mkdir(parents=True, exist_ok=False, mode=0o700)
@@ -355,7 +426,7 @@ def submit_change(change: dict[str, Any]) -> Path:
     job_id = f"MEPHC-JOB-{time.strftime('%Y%m%d-%H%M%S')}-{secrets.token_hex(6).upper()}"
     job_dir = JOBS / job_id
     job_dir.mkdir(parents=True, exist_ok=False, mode=0o700)
-    record = job_v2_base(job_id, "change", [], latest_certificate_sha256())
+    record = job_v2_base(job_id, "change", [], select_environment_certificate())
     record["change"] = materialized
     record["payload_sha256"] = hashlib.sha256(canonical(record)).hexdigest()
     atomic_write(job_dir / "job.json", (json.dumps(record, sort_keys=True, indent=2, ensure_ascii=False) + "\n").encode("utf-8"))
@@ -508,6 +579,11 @@ def doctor_deduplicated() -> dict[str, Any]:
         return {"state": "blocked_by_runtime_attestation", "error_code": "RUNTIME_ATTESTATION_INCOHERENT",
                 "runtime_attestation": attestation, "job_created": False, "retry_allowed": False,
                 "safe_next_tool": attestation["safe_next_tool"]}
+    certificate_status = environment_certificate_status()
+    if certificate_status["valid"] and certificate_status.get("version") == 2:
+        return {"state": "succeeded", "reused": True, "job_created": False,
+                "environment_certificate": certificate_status, "live_health": health,
+                "return_code": 0, "safe_next_tool": "mephc_resume"}
     head, epoch = git_head(), config.state_epoch()
     for directory in sorted(JOBS.iterdir(), reverse=True) if JOBS.is_dir() else []:
         try:
@@ -545,7 +621,7 @@ def capabilities() -> dict[str, Any]:
     for job_id, value in sorted(active_index.read(JOBS.parent).items()):
         authoritative = read_basic_state(job_id)
         name=authoritative.get("state")
-        if name in TERMINAL:
+        if name in {"succeeded", "failed"}:
             stale_index += 1
             continue
         if name == "unknown":
@@ -559,6 +635,7 @@ def capabilities() -> dict[str, Any]:
     active.extend(latent)
     head = git_head()
     attestation = runtime_attestation.attest()
+    certificate_status = environment_certificate_status(head)
     return {"schema":"mephc-runner-capabilities-v4","project_id":"MEPHC",
             "control_root":config.CONTROL_ROOT_WINDOWS,"state_root":str(config.STATE_ROOT),
             "execution_root_policy":str(config.CHECKOUTS / "<commit-sha>"),
@@ -572,6 +649,7 @@ def capabilities() -> dict[str, Any]:
                                    "page_limit":200,"page_max_bytes":65536,
                                    "archive_formats":["tar","tar.gz","tgz","git-bundle"]},
             "runtime_attestation":attestation,
+            "environment_certificate":certificate_status,
             "arbitrary_shell":False,"direct_browser":False,"active_jobs":active,
             "orphaned_job_count":len(orphaned),"latent_active_job_count":len(latent),
             "stale_active_index_count":stale_index,**workflow.view(),
@@ -623,16 +701,20 @@ def work_order_preflight() -> dict[str, Any]:
     missing = sorted(required - available)
     conflicts = work_order_contract.authority_conflicts(contract)
     attestation = runtime_attestation.attest()
+    certificate_status = environment_certificate_status()
     status = ("AUTHORITY_CONFLICT_USER_CONSTRAINT_VS_WORK_ORDER" if conflicts else
               "WORK_ORDER_BLOCKED_MISSING_TYPED_CAPABILITY" if missing else
-              "RUNTIME_ATTESTATION_INCOHERENT" if not attestation["coherent"] else "READY")
+              "RUNTIME_ATTESTATION_INCOHERENT" if not attestation["coherent"] else
+              "ENVIRONMENT_CERTIFICATE_REQUIRED" if not certificate_status["valid"] else "READY")
     return {"schema":"mephc-work-order-preflight-v1","status":status,
             "work_order_id":contract["work_order_id"],"contract_sha256":contract["contract_sha256"],
             "contract_mode":contract["contract_mode"],"required_capabilities":sorted(required),
             "available_capabilities":sorted(available),"missing_capabilities":missing,
-            "authority_conflicts":conflicts,"runtime_attestation":attestation,"retry_allowed":False,
+            "authority_conflicts":conflicts,"runtime_attestation":attestation,
+            "environment_certificate":certificate_status,"retry_allowed":False,
             "safe_next_tool":"mephc_resume" if conflicts or missing else
-                             attestation["safe_next_tool"] if not attestation["coherent"] else "execute_work_order"}
+                             attestation["safe_next_tool"] if not attestation["coherent"] else
+                             certificate_status["safe_next_tool"] if not certificate_status["valid"] else "execute_work_order"}
 def resume() -> dict[str, Any]:
     value=workflow.active()
     return value if value else {"workflow_state":"idle_unconfirmed","error_code":"STATUS_REQUEST_REQUIRED","retry_allowed":False,"safe_next_tool":"mephc_report"}

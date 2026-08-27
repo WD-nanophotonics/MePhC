@@ -18,7 +18,7 @@ EXPECTED_ORIGIN_MAIN = os.environ.get(
     "MEPHC_EXPECTED_ORIGIN_MAIN", "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5"
 )
 PROJECT_ID = "MEPHC"
-FAILURE_CODES = {"ROOT_MISMATCH", "WORKTREE_NOT_WSL_NATIVE", "INTERPRETER_MISMATCH", "PRELIVE_UNCOMMITTED", "PRELIVE_TEST_FAILED", "SOURCE_BYTE_MISMATCH", "PUBLISH_REMOTE_INVALID", "PUBLISH_FAILED", "COURIER_TIMEOUT_RECOVERY_REQUIRED", "COURIER_QUEUE_TIMEOUT", "COURIER_QUEUE_RECOVERY_REQUIRED", "COURIER_INTERRUPTED", "COURIER_HARD_STOP"}
+FAILURE_CODES = {"ROOT_MISMATCH", "WORKTREE_NOT_WSL_NATIVE", "INTERPRETER_MISMATCH", "PRELIVE_UNCOMMITTED", "PRELIVE_TEST_FAILED", "SOURCE_BYTE_MISMATCH", "PUBLISH_REMOTE_INVALID", "PUBLISH_FAILED", "COURIER_TIMEOUT_RECOVERY_REQUIRED", "COURIER_QUEUE_TIMEOUT", "COURIER_QUEUE_RECOVERY_REQUIRED", "COURIER_INTERRUPTED", "COURIER_HARD_STOP", "CERTIFICATE_ENVIRONMENT_MISMATCH", "CERTIFICATE_EXECUTION_BINDING_MISMATCH"}
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
 
 
@@ -151,23 +151,52 @@ def require_python(root: Path) -> None:
         raise RelayFailure("INTERPRETER_MISMATCH", f"PYTHONPATH must include {root}")
 
 
-def load_certificate(root: Path, value: str) -> tuple[Path, dict[str, Any]]:
+def _environment_binding() -> dict[str, str]:
+    return {
+        "runner_build": os.environ.get("MEPHC_RUNNER_BUILD", ""),
+        "state_epoch": os.environ.get("MEPHC_STATE_EPOCH", ""),
+        "installed_source_head": os.environ.get("MEPHC_INSTALLED_SOURCE_HEAD", ""),
+        "control_root": CONTROL_ROOT_WINDOWS,
+        "state_root": str(STATE_ROOT),
+        "python": str(Path(sys.executable).resolve()),
+    }
+
+
+def load_certificate(root: Path, value: str, *, for_execution: bool = False) -> tuple[Path, dict[str, Any]]:
     path = Path(value) if Path(value).is_absolute() else runtime(root) / "certificates" / value
     record = read_json(path)
-    if record.get("project_id") != PROJECT_ID or record.get("worktree") != str(root):
-        raise RelayFailure("ROOT_MISMATCH", "certificate does not bind this worktree")
+    if record.get("project_id") != PROJECT_ID:
+        raise RelayFailure("CERTIFICATE_ENVIRONMENT_MISMATCH", "certificate project mismatch")
+    if not for_execution:
+        return path, record
+    if record.get("version") == 2 and record.get("kind") == "environment-certificate":
+        expected = _environment_binding()
+        mismatches = [key for key in ("runner_build", "state_epoch", "control_root", "state_root", "python")
+                      if not expected[key] or record.get(key) != expected[key]]
+        if record.get("origin_main") != EXPECTED_ORIGIN_MAIN:
+            mismatches.append("origin_main")
+        if mismatches:
+            raise RelayFailure("CERTIFICATE_ENVIRONMENT_MISMATCH", ",".join(sorted(set(mismatches))))
+    else:
+        if record.get("worktree") != str(root) or record.get("head") != head(root):
+            raise RelayFailure("CERTIFICATE_EXECUTION_BINDING_MISMATCH", "legacy certificate does not bind execution checkout")
     return path, record
 
 
 def doctor(root: Path) -> Path:
     root = worktree_root(root)
     require_python(root)
+    environment = _environment_binding()
+    if not environment["runner_build"] or not environment["state_epoch"]:
+        raise RelayFailure("CERTIFICATE_ENVIRONMENT_MISMATCH", "runner build or state epoch unavailable")
     record = {
-        "version": 1, "kind": "runtime-certificate", "project_id": PROJECT_ID,
+        "version": 2, "kind": "environment-certificate", "project_id": PROJECT_ID,
         "certificate_id": f"doctor-{uuid.uuid4().hex}", "created_at": int(time.time()),
-        "control_root": CONTROL_ROOT_WINDOWS, "control_root_wsl": str(CONTROL_ROOT),
+        **environment, "control_root_wsl": str(CONTROL_ROOT),
         "worktree": str(root), "head": head(root),
-        "python": str(Path(sys.executable).resolve()), "pythonpath": os.environ["PYTHONPATH"],
+        "audit_source_commit": head(root), "audit_execution_checkout": str(root),
+        "pythonpath": os.environ["PYTHONPATH"], "live_health_fresh": True,
+        "worker_health_fresh_at_issue": True, "broker_health_fresh_at_issue": True,
         "origin_main": remote_ref(root, "refs/heads/main"),
         "origin_sandbox": remote_ref(root, "refs/heads/sandbox"),
         "courier_request_root": str(runtime(root) / "outbox"),
@@ -204,15 +233,19 @@ def prelive(root: Path, certificate: str, tests: list[str]) -> Path:
     root = worktree_root(root)
     require_python(root)
     clean(root)
-    certificate_path, cert = load_certificate(root, certificate)
-    if cert.get("head") != head(root):
-        raise RelayFailure("PRELIVE_UNCOMMITTED", "doctor certificate HEAD differs")
+    certificate_path, cert = load_certificate(root, certificate, for_execution=True)
+    source_commit = head(root)
     command = [str(REQUIRED_PYTHON), "-m", "pytest", *prelive_test_targets(root, tests)]
     result = subprocess.run(command, cwd=root, text=True, capture_output=True, env={**os.environ, "PYTHONPATH": str(root)})
     record = {
         "version": 2, "kind": "prelive-attestation", "project_id": PROJECT_ID,
         "prelive_id": f"prelive-{uuid.uuid4().hex}", "created_at": int(time.time()),
-        "certificate": str(certificate_path), "prelive_sha": head(root), "origin_main": cert["origin_main"],
+        "certificate": str(certificate_path),
+        "environment_certificate_sha256": hashlib.sha256(certificate_path.read_bytes()).hexdigest(),
+        "certificate_version": cert.get("version"), "certificate_head": cert.get("head"),
+        "prelive_sha": source_commit, "source_commit": source_commit,
+        "execution_checkout_sha": source_commit, "execution_checkout": str(root),
+        "origin_main": cert["origin_main"],
         "source_sha256": source_manifest(root), "tests": command, "test_returncode": result.returncode,
         "test_stdout_sha256": hashlib.sha256(result.stdout.encode()).hexdigest(),
         "test_stderr_sha256": hashlib.sha256(result.stderr.encode()).hexdigest(),

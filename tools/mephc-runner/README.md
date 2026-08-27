@@ -31,9 +31,11 @@ startup bounded as historical terminal jobs accumulate. Admission retries a
 disconnected backend once only for read-only tools and returns structured
 disconnect identity for all other calls without replaying them.
 
-`mephc_runtime_attest` binds the source HEAD, installed source commit,
+`mephc_runtime_attest` reports the source HEAD and installed source commit and binds
 admission, MCP, broker and worker builds, import-time module hashes, state
-epoch, and live heartbeat freshness. Doctor cannot be created or reused while
+epoch, infrastructure source bytes, and live heartbeat freshness. A source-only
+commit does not make the runtime stale when all installed infrastructure bytes
+still match. Doctor cannot be created or reused while
 that attestation is incoherent. The no-argument lifecycle tools are deliberately
 narrow: `mephc_runtime_reload` restarts only the installed broker/worker and
 rotates the calling admission backend; `mephc_runtime_activate` accepts only a
@@ -41,6 +43,22 @@ clean, published `sandbox` whose delta from the installed source is confined
 to infrastructure. Activation runs a fixed test set, stages the exact commit,
 and restores the prior Windows, WSL, admission and config snapshot if install
 or post-install attestation fails.
+
+Doctor emits an environment-certificate v2 bound to the Runner build, state
+epoch, interpreter, fixed roots, `origin/main`, and fresh runtime health. Its
+issue-time source and worktree are audit metadata. Validate/prelive separately
+bind the requested source commit and detached execution checkout, and their
+attestation records both that SHA and the environment-certificate digest.
+Legacy v1 certificates remain queryable and are executable only at their exact
+recorded checkout and HEAD. Missing or mismatched certificates are rejected
+before a durable job directory is created.
+
+`mephc_retention_worker_reload` is a compatibility name for a fixed restart of
+the shared durable `mephc-runner.service`; it does not imply a dedicated
+retention queue. Health must prove a new stable worker start ID, WSL PID, and
+start time while the build, loaded module hash, installed source, state epoch,
+and fresh Windows broker identity remain unchanged. Timestamp-only movement or
+an active/recovery-required job fails closed.
 
 The scheduled broker is configured to remain available on battery power and
 when the machine leaves idle state. It uses the consoleless `pythonw.exe`

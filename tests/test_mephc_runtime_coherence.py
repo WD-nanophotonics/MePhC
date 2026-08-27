@@ -78,6 +78,8 @@ def test_work_order_preflight_blocks_before_execution(required, authorized, cohe
     monkeypatch.setattr(module.workflow, "active", lambda: active)
     monkeypatch.setattr(module.runtime_attestation, "attest", lambda: {
         "coherent":coherent, "safe_next_tool":"mephc_runtime_reload"})
+    monkeypatch.setattr(module, "environment_certificate_status", lambda: {
+        "valid":True, "safe_next_tool":"none", "certificate_sha256":"a" * 64})
     value = module.work_order_preflight()
     assert value["status"] == status
     assert value["retry_allowed"] is False
@@ -122,8 +124,13 @@ def test_attestation_detects_loaded_worker_and_source_staleness(tmp_path, monkey
     (state / "heartbeat.json").write_text(json.dumps(heartbeat))
     assert "MCP_LOADED_MODULE_MISMATCH" in module.attest()["mismatches"]
     monkeypatch.setattr(module, "_source_head", lambda: "2" * 40)
+    source_only_changed = module.attest()
+    assert "SOURCE_HEAD_NOT_INSTALLED" not in source_only_changed["mismatches"]
+    heartbeat["expected_mcp_bundle_hash"] = mcp_hash
+    heartbeat["runtime_source_matches"] = False
+    (state / "heartbeat.json").write_text(json.dumps(heartbeat))
     stale_source = module.attest()
-    assert "SOURCE_HEAD_NOT_INSTALLED" in stale_source["mismatches"]
+    assert "SOURCE_RUNTIME_FILES_MISMATCH" in stale_source["mismatches"]
     assert stale_source["safe_next_tool"] == "mephc_runtime_activate"
 
 
@@ -144,7 +151,8 @@ def test_worker_skips_terminal_unclaimed_ready_and_rebuilds_index():
     assert "active_index.rebuild(JOBS)" in source
     assert 'existing not in {"succeeded", "failed", "recovery_required"}' in source
     assert "installed = INSTALL_ROOT / name" in source
-    assert 'current.get("source_commit") != checkout_manager.source_head()' in source
+    assert 'source = config.CONTROL_ROOT / "tools/mephc-runner" / name' in source
+    assert "hashlib.sha256(source.read_bytes()).hexdigest() != digest" in source
 
 
 def test_stale_ready_reconciliation_never_executes_and_preserves_current_job(tmp_path, monkeypatch):
@@ -258,7 +266,9 @@ def test_lifecycle_schema_and_admission_replay_boundary_are_fixed():
     server = (RUNNER / "mcp_server.py").read_text(encoding="utf-8")
     admission_module = load("coherence_admission", ADMISSION / "mephc_admission.py")
     assert '"additionalProperties": False' in server
-    assert 'LOCAL_LIFECYCLE_TOOLS = {"mephc_runtime_reload": "reload", "mephc_runtime_activate": "activate"}' in admission
+    assert '"mephc_runtime_reload": "reload"' in admission
+    assert '"mephc_runtime_activate": "activate"' in admission
+    assert '"mephc_retention_worker_reload": "retention-worker-reload"' in admission
     assert "mephc_runtime_attest" in admission_module.READ_ONLY_TOOLS
     assert "mephc_runtime_reload" not in admission_module.READ_ONLY_TOOLS
     assert "mephc_runtime_activate" not in admission_module.READ_ONLY_TOOLS

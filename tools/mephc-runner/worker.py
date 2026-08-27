@@ -21,6 +21,7 @@ import subprocess
 import sys
 import threading
 import time
+import uuid
 from typing import Any
 
 INSTALL_ROOT = Path(__file__).resolve().parent
@@ -52,6 +53,8 @@ FORBIDDEN_FLAGS = {"--root", "--python", "--pythonpath", "--project-id", "--cour
 MAX_JSON_BYTES = 4 * 1024 * 1024
 MAX_DETAIL_CHARS = 2000
 LOADED_WORKER_MODULE_HASH = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+WORKER_START_ID = uuid.uuid4().hex
+WORKER_STARTED_AT = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
 
 class Rejected(RuntimeError):
@@ -394,6 +397,18 @@ def failure_detail(job_dir: Path) -> str:
     return tail[-2000:] if tail else "PROCESS_LOG_EMPTY"
 
 
+def relay_failure_code(job_dir: Path) -> str | None:
+    allowed = {"CERTIFICATE_ENVIRONMENT_MISMATCH", "CERTIFICATE_EXECUTION_BINDING_MISMATCH"}
+    try:
+        for line in reversed((job_dir / "process.log").read_text(encoding="utf-8", errors="replace").splitlines()[-24:]):
+            value = json.loads(line)
+            if isinstance(value, dict) and value.get("event") in allowed:
+                return value["event"]
+    except (OSError, json.JSONDecodeError):
+        return None
+    return None
+
+
 def execute(job_dir: Path, recovery: bool = False) -> None:
     # A recovery marker authorizes one reconciliation attempt, never a replay
     # loop. Consume it before any parsing/validation that can fail.
@@ -455,6 +470,9 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
             "MEPHC_EXECUTION_ROOT": str(config.CHECKOUTS),
             "MEPHC_GIT_CACHE": str(config.GIT_CACHE),
             "MEPHC_RUNNER_JOB_ID": job["job_id"],
+            "MEPHC_RUNNER_BUILD": runner_build_id(),
+            "MEPHC_STATE_EPOCH": config.state_epoch(),
+            "MEPHC_INSTALLED_SOURCE_HEAD": current_installed_source(),
             "PYTHONDONTWRITEBYTECODE": "1",
             "PYTEST_ADDOPTS": "-p no:cacheprovider",
         }
@@ -510,7 +528,13 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
         if return_code == 0:
             if job["operation"] == "retention_search":
                 event(job_dir, "retention_search_completed")
-            state(job_dir, "succeeded", attempt=attempt, operation=job["operation"], return_code=0, receipt_state=courier_state)
+            completion: dict[str, Any] = {}
+            if job["operation"] == "change":
+                attestation = read_object(job_dir / "change-attestation.json")
+                completion = {"prelive_required": True, "source_commit": attestation.get("final_commit"),
+                              "safe_next_tool": "mephc_validate"}
+            state(job_dir, "succeeded", attempt=attempt, operation=job["operation"], return_code=0,
+                  receipt_state=courier_state, **completion)
             event(job_dir, "runner_job_succeeded", return_code=0, receipt_state=courier_state)
         elif job["operation"] == "change" and (timed_out or return_code == 3):
             code = "CHANGE_CLIENT_TIMEOUT" if timed_out else "CHANGE_TRANSACTION_RECOVERY_REQUIRED"
@@ -541,8 +565,10 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
             event(job_dir, "runner_job_failed", return_code=return_code, error_code=code)
         else:
             detail = failure_detail(job_dir)
-            state(job_dir, "failed", attempt=attempt, operation=job["operation"], return_code=return_code, receipt_state=courier_state, detail=detail, error_code="CHILD_PROCESS_FAILED")
-            event(job_dir, "runner_job_failed", return_code=return_code, receipt_state=courier_state, error_code="CHILD_PROCESS_FAILED")
+            code = relay_failure_code(job_dir) or "CHILD_PROCESS_FAILED"
+            state(job_dir, "failed", attempt=attempt, operation=job["operation"], return_code=return_code,
+                  receipt_state=courier_state, detail=detail, error_code=code)
+            event(job_dir, "runner_job_failed", return_code=return_code, receipt_state=courier_state, error_code=code)
     except Rejected as exc:
         detail = bounded_detail(exc.detail)
         state(job_dir, "failed", error_code=exc.code, detail=detail)
@@ -601,15 +627,27 @@ def runtime_source_matches() -> bool:
         manifest = json.loads((config.WINDOWS_RUNTIME_WSL / "install-manifest.json").read_text(encoding="utf-8-sig"))
         current = json.loads((config.WINDOWS_RUNTIME_WSL / "current.json").read_text(encoding="utf-8-sig"))
         expected = {item["name"]: item["sha256"] for item in manifest if isinstance(item, dict)}
-        if not expected or current.get("source_commit") != checkout_manager.source_head():
+        if not expected or not isinstance(current.get("source_commit"), str):
             return False
         for name, digest in expected.items():
             installed = INSTALL_ROOT / name
-            if not installed.is_file() or hashlib.sha256(installed.read_bytes()).hexdigest() != digest:
+            source = config.CONTROL_ROOT / "tools/mephc-runner" / name
+            if (not installed.is_file() or not source.is_file()
+                    or hashlib.sha256(installed.read_bytes()).hexdigest() != digest
+                    or hashlib.sha256(source.read_bytes()).hexdigest() != digest):
                 return False
         return True
     except (OSError, KeyError, TypeError, json.JSONDecodeError):
         return False
+
+
+def current_installed_source() -> str:
+    try:
+        value = json.loads((config.WINDOWS_RUNTIME_WSL / "current.json").read_text(encoding="utf-8-sig"))
+        source = value.get("source_commit")
+        return source if isinstance(source, str) else ""
+    except (OSError, json.JSONDecodeError):
+        return ""
 
 
 def heartbeat() -> None:
@@ -621,6 +659,12 @@ def heartbeat() -> None:
     atomic_json(RUNTIME / "heartbeat.json", {
         "schema": "mephc-runner-heartbeat-v1",
         "pid": os.getpid(),
+        "platform": "wsl",
+        "worker_role": "shared_durable_worker",
+        "retention_capable": True,
+        "service_name": "mephc-runner.service",
+        "worker_start_id": WORKER_START_ID,
+        "worker_started_at": WORKER_STARTED_AT,
         "control_root": config.CONTROL_ROOT_WINDOWS,
         "state_root": str(config.STATE_ROOT),
         "execution_root_policy": str(config.CHECKOUTS / "<commit-sha>"),

@@ -517,6 +517,47 @@ def test_doctor_never_reuses_certificate_when_live_health_is_stale(monkeypatch):
     assert value["job_created"] is False and value["safe_next_tool"] == "mephc_capabilities"
 
 
+def test_v2_environment_certificate_selection_crosses_source_head(monkeypatch, tmp_path):
+    jobctl = load("runner_jobctl_environment_certificate", "jobctl.py")
+    certificate_root = tmp_path / "certificates"
+    certificate_root.mkdir()
+    record = {
+        "version": 2, "kind": "environment-certificate", "project_id": "MEPHC",
+        "runner_build": "b" * 16, "state_epoch": "epoch-1",
+        "control_root": jobctl.config.CONTROL_ROOT_WINDOWS, "state_root": str(jobctl.config.STATE_ROOT),
+        "python": str(jobctl.config.PYTHON), "origin_main": jobctl.config.EXPECTED_ORIGIN_MAIN,
+        "head": "1" * 40, "live_health_fresh": True,
+        "worker_health_fresh_at_issue": True, "broker_health_fresh_at_issue": True,
+    }
+    path = certificate_root / "doctor-v2.json"
+    path.write_text(json.dumps(record), encoding="utf-8")
+    monkeypatch.setattr(jobctl, "CERTIFICATES", certificate_root)
+    monkeypatch.setattr(jobctl, "live_runtime_health", lambda: {"ok": True})
+    monkeypatch.setattr(jobctl.runtime_attestation, "attest", lambda: {
+        "coherent": True, "worker_build": "b" * 16, "safe_next_tool": "mephc_doctor"
+    })
+    monkeypatch.setattr(jobctl.config, "state_epoch", lambda: "epoch-1")
+    status = jobctl.environment_certificate_status("2" * 40)
+    assert status["valid"] is True and status["version"] == 2
+    assert status["certificate_head"] == "1" * 40 and status["cross_source_reusable"] is True
+
+
+def test_certificate_rejection_precedes_durable_job_creation(monkeypatch, tmp_path):
+    jobctl = load("runner_jobctl_certificate_reject", "jobctl.py")
+    jobs = tmp_path / "jobs"
+    jobs.mkdir()
+    monkeypatch.setattr(jobctl, "JOBS", jobs)
+    monkeypatch.setattr(jobctl, "unresolved_change", lambda: None)
+    monkeypatch.setattr(jobctl, "environment_certificate_status", lambda *_, **__: {
+        "valid": False, "error_code": "ENVIRONMENT_CERTIFICATE_REQUIRED",
+        "safe_next_tool": "mephc_doctor", "environment_mismatches": []
+    })
+    with pytest.raises(jobctl.CertificateRejected) as error:
+        jobctl.submit("worktree", [], None)
+    assert error.value.error_code == "ENVIRONMENT_CERTIFICATE_REQUIRED"
+    assert list(jobs.iterdir()) == []
+
+
 def test_connector_self_heals_stopped_broker_after_admission():
     connector = (SOURCE / "mephc-connector.ps1").read_text(encoding="utf-8-sig")
     assert "function Ensure-Broker" in connector and "Start-ScheduledTask" in connector

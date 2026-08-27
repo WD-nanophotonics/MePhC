@@ -44,6 +44,7 @@ def test_search_submission_rejects_unbound_before_job_and_reuses_query(tmp_path,
     monkeypatch.setattr(jobctl, "git_origin_main", lambda: jobctl.config.EXPECTED_ORIGIN_MAIN)
     monkeypatch.setattr(jobctl.config, "state_epoch", lambda: "test-epoch")
     monkeypatch.setattr(jobctl, "current_runner_build", lambda: "1" * 16)
+    monkeypatch.setattr(jobctl, "select_environment_certificate", lambda *_args, **_kwargs: hashlib.sha256(b"{}").hexdigest())
     monkeypatch.setattr(jobctl.active_index, "update", lambda *_: None)
     with pytest.raises(jobctl.RetentionRejected, match="RETENTION_BINDING_NOT_IN_ACTIVE_WORK_ORDER"):
         jobctl.submit_retention_search([{"retention_id": "UNBOUND", "expected_sha256": digest}])
@@ -74,6 +75,7 @@ def test_interrupted_search_reuses_same_job_and_requires_explicit_recovery(tmp_p
     monkeypatch.setattr(jobctl, "git_origin_main", lambda: jobctl.config.EXPECTED_ORIGIN_MAIN)
     monkeypatch.setattr(jobctl.config, "state_epoch", lambda: "test-epoch")
     monkeypatch.setattr(jobctl, "current_runner_build", lambda: "2" * 16)
+    monkeypatch.setattr(jobctl, "select_environment_certificate", lambda *_args, **_kwargs: hashlib.sha256(b"{}").hexdigest())
     monkeypatch.setattr(jobctl.active_index, "update", lambda *_: None)
     first, _ = jobctl.submit_retention_search(
         [{"retention_id": "BOUND_RESULT", "expected_sha256": digest}])

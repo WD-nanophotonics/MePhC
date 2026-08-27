@@ -52,7 +52,8 @@ def now_record(worker_ok: bool) -> dict:
         build = json.loads(current.read_text(encoding="utf-8-sig")).get("build_id")
     except (OSError, json.JSONDecodeError):
         build = None
-    return {"schema": "mephc-windows-broker-heartbeat-v2", "updated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    return {"schema": "mephc-windows-broker-heartbeat-v2", "platform": "windows", "process_role": "transport_broker",
+            "updated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "updated_unix": time.time(), "pid": os.getpid(), "worker_ok": worker_ok,
             "distro": "Ubuntu", "broker_build_id": build}
 

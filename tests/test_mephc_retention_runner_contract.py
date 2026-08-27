@@ -60,6 +60,7 @@ def test_failed_retention_job_is_not_completed_and_retry_gets_new_identity(tmp_p
     monkeypatch.setattr(jobctl, "git_origin_main", lambda: jobctl.config.EXPECTED_ORIGIN_MAIN)
     monkeypatch.setattr(jobctl.config, "state_epoch", lambda: "test-epoch")
     monkeypatch.setattr(jobctl, "current_runner_build", lambda: "2" * 16)
+    monkeypatch.setattr(jobctl, "select_environment_certificate", lambda *_args, **_kwargs: "d" * 64)
     monkeypatch.setattr(jobctl.active_index, "update", lambda *_: None)
 
     first, reused = jobctl.submit_retention_search(
