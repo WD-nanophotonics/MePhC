@@ -27,16 +27,19 @@ def test_v3_uses_explicit_source_commit_as_expected_head():
 
 def test_missing_expected_head_is_explicit_contract_failure():
     worker = load("worker_expected_head_missing", "worker.py")
-    with pytest.raises(worker.Rejected, match="RUNNER_CONTRACT_EXPECTED_HEAD_MISSING"):
+    with pytest.raises(worker.Rejected) as missing:
         worker.expected_head_for_job({}, True)
-    with pytest.raises(worker.Rejected, match="RUNNER_CONTRACT_EXPECTED_HEAD_INVALID"):
+    assert missing.value.code == "RUNNER_CONTRACT_EXPECTED_HEAD_MISSING"
+    with pytest.raises(worker.Rejected) as invalid:
         worker.expected_head_for_job({"source_commit": "not-a-sha"}, True)
+    assert invalid.value.code == "RUNNER_CONTRACT_EXPECTED_HEAD_INVALID"
 
 
 def test_mismatched_expected_head_fails_before_payload_execution():
     worker = load("worker_expected_head_mismatch", "worker.py")
-    with pytest.raises(worker.Rejected, match="HEAD_MOVED"):
+    with pytest.raises(worker.Rejected) as mismatch:
         worker.verify_expected_head({"source_commit": "a" * 40}, "b" * 40, True)
+    assert mismatch.value.code == "HEAD_MOVED"
 
 
 def test_failed_retention_job_is_not_completed_and_retry_gets_new_identity(tmp_path, monkeypatch):
