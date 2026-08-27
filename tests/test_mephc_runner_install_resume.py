@@ -10,3 +10,4 @@ def test_bootstrap_installs_resume_coordinator_and_has_initialized_windows_rollb
     assert "$previousWindowsVersion=''" in text
     assert "if($previousWindowsVersion -and" in text
     assert "for($healthIndex=0;$healthIndex -lt 20;$healthIndex++)" in text
+    assert "-not $InventoryStaleReady -and -not $ReconcileStaleReady" in text

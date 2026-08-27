@@ -24,7 +24,7 @@ foreach($name in $Files) {
   $Manifest += [ordered]@{name=$name;sha256=(Get-FileHash -Algorithm SHA256 -LiteralPath $path).Hash.ToLowerInvariant();bytes=(Get-Item -LiteralPath $path).Length}
 }
 $Manifest|ConvertTo-Json -Depth 4
-if(-not $Install -and -not $Verify) {
+if(-not $Install -and -not $Verify -and -not $InventoryStaleReady -and -not $ReconcileStaleReady) {
   Write-Output 'AUDIT_ONLY=true; rerun this exact script with -Install after reviewing the manifest.'
   exit 0
 }
