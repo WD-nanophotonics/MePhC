@@ -17,11 +17,17 @@ $Files=@(
 $RepoRoot=Split-Path -Parent (Split-Path -Parent $SourceRoot)
 if(-not $SourceCommit){$SourceCommit=(& git -c "safe.directory=$($RepoRoot -replace '\\','/')" -C $RepoRoot rev-parse HEAD).Trim()}
 if($SourceCommit -notmatch '^[0-9a-f]{40}$'){throw 'invalid activation source commit'}
+function Get-Sha256([string]$Path) {
+  $stream=[IO.File]::OpenRead($Path)
+  $hash=[Security.Cryptography.SHA256]::Create()
+  try {return -join @($hash.ComputeHash($stream)|ForEach-Object {$_.ToString('x2')})}
+  finally {$hash.Dispose();$stream.Dispose()}
+}
 $Manifest=@()
 foreach($name in $Files) {
   $path=Join-Path $SourceRoot $name
   if(-not(Test-Path -LiteralPath $path -PathType Leaf)){throw "missing bootstrap source: $path"}
-  $Manifest += [ordered]@{name=$name;sha256=(Get-FileHash -Algorithm SHA256 -LiteralPath $path).Hash.ToLowerInvariant();bytes=(Get-Item -LiteralPath $path).Length}
+  $Manifest += [ordered]@{name=$name;sha256=(Get-Sha256 $path);bytes=(Get-Item -LiteralPath $path).Length}
 }
 $Manifest|ConvertTo-Json -Depth 4
 if(-not $Install -and -not $Verify -and -not $InventoryStaleReady -and -not $ReconcileStaleReady -and -not $PrepareActivation) {

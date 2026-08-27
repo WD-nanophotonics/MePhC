@@ -270,3 +270,5 @@ def test_bootstrap_and_worker_share_one_ordered_build_manifest():
     function = worker.split("def runner_build_id()", 1)[1].split("def runtime_source_matches", 1)[0]
     tuple_source = function.split("names =", 1)[1].split("\n    source_hashes", 1)[0].strip()
     assert powershell_names == list(ast.literal_eval(tuple_source))
+    assert "Get-FileHash" not in bootstrap
+    assert "Get-FileHash" not in (ADMISSION / "bootstrap.ps1").read_text(encoding="utf-8")
