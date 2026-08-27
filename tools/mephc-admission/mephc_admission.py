@@ -19,13 +19,14 @@ TOOL_NAMES = ("mephc_capabilities", "mephc_doctor", "mephc_resume", "mephc_chang
               "mephc_validate", "mephc_submit", "mephc_status", "mephc_wait", "mephc_recover",
               "mephc_inspect", "mephc_retention_search", "mephc_retention_inspect",
               "mephc_runtime_attest", "mephc_runtime_reload", "mephc_runtime_activate",
-              "mephc_work_order_preflight",
+              "mephc_work_order_preflight", "mephc_retention_worker_reload",
               "mephc_report", "mephc_publish", "mephc_transport_canary")
 AUDIT_LOG = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "MePhCRunner" / "admission" / "launch-audit.jsonl"
 READ_ONLY_TOOLS = {"mephc_capabilities", "mephc_inspect", "mephc_retention_inspect",
                    "mephc_runtime_attest", "mephc_work_order_preflight",
                    "mephc_status", "mephc_wait"}
-LOCAL_LIFECYCLE_TOOLS = {"mephc_runtime_reload": "reload", "mephc_runtime_activate": "activate"}
+LOCAL_LIFECYCLE_TOOLS = {"mephc_runtime_reload": "reload", "mephc_runtime_activate": "activate",
+                         "mephc_retention_worker_reload": "retention-worker-reload"}
 LIFECYCLE = Path(__file__).resolve().parent / "runtime_lifecycle.py"
 LOADED_ADMISSION_MODULE_HASH = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)

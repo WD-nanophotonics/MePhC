@@ -140,6 +140,7 @@ LIFECYCLE_TOOLS = [
     {"name": "mephc_runtime_reload", "description": "Reload only the installed fixed MePhC broker/worker runtime. Admission handles this tool; it accepts no arguments.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
     {"name": "mephc_runtime_activate", "description": "Strictly gate, test, install and activate the exact published infrastructure build. Admission handles this tool; it accepts no arguments.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
     {"name": "mephc_work_order_preflight", "description": "Compare the active machine work-order contract with typed capabilities, policy and live runtime attestation.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
+    {"name": "mephc_retention_worker_reload", "description": "Reload and attest only the fixed MePhC retention-execution worker role. Accepts no arguments.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
 ]
 
 REPORT_TOOLS = [
@@ -311,7 +312,7 @@ def invoke(name, args):
         return runtime_attestation.attest()
     if name == "mephc_work_order_preflight":
         return jobctl.work_order_preflight()
-    if name in {"mephc_runtime_reload", "mephc_runtime_activate"}:
+    if name in {"mephc_runtime_reload", "mephc_runtime_activate", "mephc_retention_worker_reload"}:
         return {"state":"rejected","error_code":"ADMISSION_LIFECYCLE_REQUIRED",
                 "retry_allowed":False,"safe_next_tool":"mephc_runtime_attest"}
     if name == "mephc_capabilities":

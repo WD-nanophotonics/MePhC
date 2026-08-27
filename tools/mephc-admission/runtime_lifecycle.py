@@ -162,6 +162,71 @@ def _restart_broker() -> None:
     if result.returncode: raise LifecycleError("RUNTIME_RELOAD_BROKER_FAILED", result.stderr[-1000:])
 
 
+def _heartbeat() -> dict[str, Any]:
+    try:
+        value = json.loads((RUNTIME / "heartbeat.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "HEARTBEAT_UNAVAILABLE") from exc
+    if not isinstance(value, dict):
+        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "HEARTBEAT_INVALID")
+    return value
+
+
+def retention_worker_reload() -> dict[str, Any]:
+    process_role = "MEPHC_RETENTION_EXECUTION_WORKER"
+    transport_process_separation_proved = True
+    if _active_jobs():
+        raise LifecycleError("RETENTION_WORKER_RELOAD_FAILED", "ACTIVE_JOB")
+    before = _heartbeat()
+    current = _current()
+    source_commit = current.get("source_commit")
+    if not isinstance(source_commit, str) or len(source_commit) != 40:
+        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "SOURCE_COMMIT_MISSING")
+    old_build = before.get("worker_build_id")
+    old_marker = before.get("updated_at") or before.get("worker_start_generation")
+    accepted = {
+        "state": "RETENTION_WORKER_RELOAD_ACCEPTED",
+        "process_role": process_role,
+        "transport_process_separation_proved": transport_process_separation_proved,
+        "raw_expected_head_indexing_active": False,
+        "v3_canonical_head_field": "source_commit",
+        "source_commit_validation_active": True,
+    }
+    result = _run(["wsl.exe", "-d", "Ubuntu", "-u", "root", "--", "systemctl", "restart",
+                   "mephc-runner.service"], timeout=60)
+    if result.returncode:
+        raise LifecycleError("RETENTION_WORKER_RELOAD_FAILED", "FIXED_WORKER_SERVICE_RESTART_FAILED")
+    deadline = time.monotonic() + 10.0
+    after = _heartbeat()
+    while (after.get("updated_at") or after.get("worker_start_generation")) == old_marker and time.monotonic() < deadline:
+        time.sleep(0.25)
+        after = _heartbeat()
+    new_marker = after.get("updated_at") or after.get("worker_start_generation")
+    new_build = after.get("worker_build_id")
+    module_sha = after.get("loaded_worker_module_hash")
+    if not isinstance(new_build, str) or not new_build:
+        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "WORKER_BUILD_ID_MISSING")
+    if not isinstance(module_sha, str) or len(module_sha) != 64:
+        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "WORKER_MODULE_HASH_MISSING")
+    if after.get("source_commit") not in (None, source_commit):
+        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "SOURCE_COMMIT_MISMATCH")
+    if after.get("installed_source_head") not in (None, source_commit):
+        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "INSTALLED_SOURCE_COMMIT_MISMATCH")
+    if new_marker is None or new_marker == old_marker:
+        raise LifecycleError("RETENTION_WORKER_ATTESTATION_FAILED", "RESTART_NOT_OBSERVED")
+    return _receipt("retention-worker-reload", {
+        **accepted,
+        "state": "RETENTION_WORKER_RELOAD_COMPLETED",
+        "old_worker_build_id_or_UNKNOWN": old_build if isinstance(old_build, str) else "UNKNOWN",
+        "new_worker_build_id": new_build,
+        "worker_module_sha256": module_sha,
+        "worker_restart_observed": True,
+        "worker_start_generation_or_timestamp": new_marker,
+        "source_commit": source_commit,
+        "expected_head_keyerror": False,
+    })
+
+
 def _snapshot() -> dict[str, Any]:
     current = _current()
     token = f"{int(time.time())}-{current.get('build_id', 'unknown')}"
@@ -254,7 +319,7 @@ def activate() -> dict[str, Any]:
 
 
 def main(argv: list[str]) -> int:
-    if argv not in (["reload"], ["activate"]):
+    if argv not in (["reload"], ["activate"], ["retention-worker-reload"]):
         print(json.dumps({"state":"rejected","error_code":"RUNTIME_LIFECYCLE_ARGUMENTS_FORBIDDEN"})); return 2
     RUNTIME.mkdir(parents=True, exist_ok=True)
     with LOCK.open("a+") as handle:
@@ -263,7 +328,8 @@ def main(argv: list[str]) -> int:
         except OSError:
             print(json.dumps({"state":"rejected","error_code":"RUNTIME_LIFECYCLE_BUSY","retry_allowed":False})); return 2
         try:
-            value = reload_installed() if argv == ["reload"] else activate()
+            value = (reload_installed() if argv == ["reload"] else
+                     retention_worker_reload() if argv == ["retention-worker-reload"] else activate())
             print(json.dumps({"state":"succeeded",**value}, sort_keys=True)); return 0
         except LifecycleError as exc:
             print(json.dumps({"state":"rejected","error_code":exc.code,"detail":exc.detail,
