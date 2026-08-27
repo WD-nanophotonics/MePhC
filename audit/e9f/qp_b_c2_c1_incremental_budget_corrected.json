@@ -1,0 +1,23 @@
+{
+  "schema": "mephc_e9f_c2_c1_incremental_budget_corrected_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C1-20260827-280",
+  "base_sandbox_sha": "8981c421da76c0efafa57f2fcdf15492e44a0b10",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "total_locked_sample_resolution_pairs": 24,
+  "numerically_reusable_pairs": 15,
+  "fully_gate_complete_pairs": 0,
+  "solver_free_gate_recoverable_pairs": 0,
+  "native_recompute_required_pairs": 15,
+  "missing_pair_requires_native_execution_pairs": 9,
+  "fresh_sample_resolution_pairs_required": 24,
+  "native_solves_per_fresh_sample_resolution_pair": 9,
+  "minimum_fresh_base_native_solve_budget": 216,
+  "maximum_full_recompute_base_native_solve_budget": 216,
+  "optional_r192_native_solve_budget": 9,
+  "total_incremental_max_native_solve_budget": 225,
+  "additional_native_solves_required_by_invariance_gates": true,
+  "no_budget_authorized_in_qp_b_c2_c1": true,
+  "optional_r192_authorized": false,
+  "native_solves_executed": 0,
+  "mpb_execution": false
+}

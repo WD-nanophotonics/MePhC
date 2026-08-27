@@ -1,0 +1,816 @@
+{
+  "schema": "mephc_e9f_c2_c1_gate_recoverability_matrix_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C1-20260827-280",
+  "base_sandbox_sha": "8981c421da76c0efafa57f2fcdf15492e44a0b10",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "frozen_qp_b_c2_artifacts_unchanged": true,
+  "frozen_threshold": 0.02,
+  "frozen_locked_sample_count": 8,
+  "calibration_controls": [
+    "fr=0;grid_i=-10;grid_j=-3;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-34;grid_j=9;estimator=SOURCE_GRID"
+  ],
+  "stencil_diagnostic_sample": "fr=0;grid_i=-6;grid_j=-1;estimator=SOURCE_GRID",
+  "policy_challenge_samples": [
+    "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+    "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID"
+  ],
+  "total_locked_sample_resolution_pairs": 24,
+  "sample_resolution_pairs": [
+    {
+      "sample_id": "fr=0;grid_i=-10;grid_j=-3;estimator=SOURCE_GRID",
+      "resolution": "R96",
+      "bin": "ABOVE_POLICY",
+      "role": "CALIBRATION_CONTROL",
+      "external_gap": 0.031182933708827576,
+      "NUMERIC_CURVATURE_REUSABLE": false,
+      "NUMERIC_SOURCE_PATH": null,
+      "NUMERIC_SOURCE_SHA256": null,
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "MISSING_PAIR_REQUIRES_NATIVE_EXECUTION",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle; no accepted pair-level evidence is retained.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-10;grid_j=-3;estimator=SOURCE_GRID",
+      "resolution": "R128",
+      "bin": "ABOVE_POLICY",
+      "role": "CALIBRATION_CONTROL",
+      "external_gap": 0.031182933708827576,
+      "NUMERIC_CURVATURE_REUSABLE": false,
+      "NUMERIC_SOURCE_PATH": null,
+      "NUMERIC_SOURCE_SHA256": null,
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "MISSING_PAIR_REQUIRES_NATIVE_EXECUTION",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle; no accepted pair-level evidence is retained.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-10;grid_j=-3;estimator=SOURCE_GRID",
+      "resolution": "R160",
+      "bin": "ABOVE_POLICY",
+      "role": "CALIBRATION_CONTROL",
+      "external_gap": 0.031182933708827576,
+      "NUMERIC_CURVATURE_REUSABLE": false,
+      "NUMERIC_SOURCE_PATH": null,
+      "NUMERIC_SOURCE_SHA256": null,
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "MISSING_PAIR_REQUIRES_NATIVE_EXECUTION",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle; no accepted pair-level evidence is retained.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=9;estimator=SOURCE_GRID",
+      "resolution": "R96",
+      "bin": "ABOVE_POLICY",
+      "role": "CALIBRATION_CONTROL",
+      "external_gap": 0.03212420764192775,
+      "NUMERIC_CURVATURE_REUSABLE": false,
+      "NUMERIC_SOURCE_PATH": null,
+      "NUMERIC_SOURCE_SHA256": null,
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "MISSING_PAIR_REQUIRES_NATIVE_EXECUTION",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle; no accepted pair-level evidence is retained.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=9;estimator=SOURCE_GRID",
+      "resolution": "R128",
+      "bin": "ABOVE_POLICY",
+      "role": "CALIBRATION_CONTROL",
+      "external_gap": 0.03212420764192775,
+      "NUMERIC_CURVATURE_REUSABLE": false,
+      "NUMERIC_SOURCE_PATH": null,
+      "NUMERIC_SOURCE_SHA256": null,
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "MISSING_PAIR_REQUIRES_NATIVE_EXECUTION",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle; no accepted pair-level evidence is retained.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=9;estimator=SOURCE_GRID",
+      "resolution": "R160",
+      "bin": "ABOVE_POLICY",
+      "role": "CALIBRATION_CONTROL",
+      "external_gap": 0.03212420764192775,
+      "NUMERIC_CURVATURE_REUSABLE": false,
+      "NUMERIC_SOURCE_PATH": null,
+      "NUMERIC_SOURCE_SHA256": null,
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "MISSING_PAIR_REQUIRES_NATIVE_EXECUTION",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle; no accepted pair-level evidence is retained.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+      "resolution": "R96",
+      "bin": "NEAR_POLICY",
+      "role": "POLICY_CHALLENGE",
+      "external_gap": 0.018428896349577062,
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "NUMERIC_SOURCE_SHA256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142",
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle to retain H vectors and reconstruct every missing identity/invariance gate.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+      "resolution": "R128",
+      "bin": "NEAR_POLICY",
+      "role": "POLICY_CHALLENGE",
+      "external_gap": 0.018428896349577062,
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "NUMERIC_SOURCE_SHA256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142",
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle to retain H vectors and reconstruct every missing identity/invariance gate.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+      "resolution": "R160",
+      "bin": "NEAR_POLICY",
+      "role": "POLICY_CHALLENGE",
+      "external_gap": 0.018428896349577062,
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "NUMERIC_SOURCE_SHA256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142",
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle to retain H vectors and reconstruct every missing identity/invariance gate.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-6;grid_j=-1;estimator=SOURCE_GRID",
+      "resolution": "R96",
+      "bin": "NEAR_POLICY",
+      "role": "STENCIL_DIAGNOSTIC",
+      "external_gap": 0.021895409471319016,
+      "NUMERIC_CURVATURE_REUSABLE": false,
+      "NUMERIC_SOURCE_PATH": null,
+      "NUMERIC_SOURCE_SHA256": null,
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "MISSING_PAIR_REQUIRES_NATIVE_EXECUTION",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle; no accepted pair-level evidence is retained.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-6;grid_j=-1;estimator=SOURCE_GRID",
+      "resolution": "R128",
+      "bin": "NEAR_POLICY",
+      "role": "STENCIL_DIAGNOSTIC",
+      "external_gap": 0.021895409471319016,
+      "NUMERIC_CURVATURE_REUSABLE": false,
+      "NUMERIC_SOURCE_PATH": null,
+      "NUMERIC_SOURCE_SHA256": null,
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "MISSING_PAIR_REQUIRES_NATIVE_EXECUTION",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle; no accepted pair-level evidence is retained.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-6;grid_j=-1;estimator=SOURCE_GRID",
+      "resolution": "R160",
+      "bin": "NEAR_POLICY",
+      "role": "STENCIL_DIAGNOSTIC",
+      "external_gap": 0.021895409471319016,
+      "NUMERIC_CURVATURE_REUSABLE": false,
+      "NUMERIC_SOURCE_PATH": null,
+      "NUMERIC_SOURCE_SHA256": null,
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "MISSING_PAIR_REQUIRES_NATIVE_EXECUTION",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle; no accepted pair-level evidence is retained.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+      "resolution": "R96",
+      "bin": "BELOW_POLICY",
+      "role": "POLICY_CHALLENGE",
+      "external_gap": 0.013482483999199102,
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "NUMERIC_SOURCE_SHA256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142",
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle to retain H vectors and reconstruct every missing identity/invariance gate.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+      "resolution": "R128",
+      "bin": "BELOW_POLICY",
+      "role": "POLICY_CHALLENGE",
+      "external_gap": 0.013482483999199102,
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "NUMERIC_SOURCE_SHA256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142",
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle to retain H vectors and reconstruct every missing identity/invariance gate.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+      "resolution": "R160",
+      "bin": "BELOW_POLICY",
+      "role": "POLICY_CHALLENGE",
+      "external_gap": 0.013482483999199102,
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "NUMERIC_SOURCE_SHA256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142",
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle to retain H vectors and reconstruct every missing identity/invariance gate.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+      "resolution": "R96",
+      "bin": "BELOW_POLICY",
+      "role": "POLICY_CHALLENGE",
+      "external_gap": 0.013443428678322489,
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "NUMERIC_SOURCE_SHA256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142",
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle to retain H vectors and reconstruct every missing identity/invariance gate.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+      "resolution": "R128",
+      "bin": "BELOW_POLICY",
+      "role": "POLICY_CHALLENGE",
+      "external_gap": 0.013443428678322489,
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "NUMERIC_SOURCE_SHA256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142",
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle to retain H vectors and reconstruct every missing identity/invariance gate.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+      "resolution": "R160",
+      "bin": "BELOW_POLICY",
+      "role": "POLICY_CHALLENGE",
+      "external_gap": 0.013443428678322489,
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "NUMERIC_SOURCE_SHA256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142",
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle to retain H vectors and reconstruct every missing identity/invariance gate.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+      "resolution": "R96",
+      "bin": "BELOW_POLICY",
+      "role": "POLICY_CHALLENGE",
+      "external_gap": 0.016715192085324126,
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "NUMERIC_SOURCE_SHA256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142",
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle to retain H vectors and reconstruct every missing identity/invariance gate.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+      "resolution": "R128",
+      "bin": "BELOW_POLICY",
+      "role": "POLICY_CHALLENGE",
+      "external_gap": 0.016715192085324126,
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "NUMERIC_SOURCE_SHA256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142",
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle to retain H vectors and reconstruct every missing identity/invariance gate.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+      "resolution": "R160",
+      "bin": "BELOW_POLICY",
+      "role": "POLICY_CHALLENGE",
+      "external_gap": 0.016715192085324126,
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "NUMERIC_SOURCE_SHA256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142",
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle to retain H vectors and reconstruct every missing identity/invariance gate.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID",
+      "resolution": "R96",
+      "bin": "BELOW_POLICY",
+      "role": "POLICY_CHALLENGE",
+      "external_gap": 0.010594785956050956,
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "NUMERIC_SOURCE_SHA256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142",
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle to retain H vectors and reconstruct every missing identity/invariance gate.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID",
+      "resolution": "R128",
+      "bin": "BELOW_POLICY",
+      "role": "POLICY_CHALLENGE",
+      "external_gap": 0.010594785956050956,
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "NUMERIC_SOURCE_SHA256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142",
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle to retain H vectors and reconstruct every missing identity/invariance gate.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    },
+    {
+      "sample_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID",
+      "resolution": "R160",
+      "bin": "BELOW_POLICY",
+      "role": "POLICY_CHALLENGE",
+      "external_gap": 0.010594785956050956,
+      "NUMERIC_CURVATURE_REUSABLE": true,
+      "NUMERIC_SOURCE_PATH": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+      "NUMERIC_SOURCE_SHA256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142",
+      "IDENTITY_EVIDENCE_COMPLETE": false,
+      "INVARIANCE_EVIDENCE_COMPLETE": false,
+      "GATE_RECOVERABILITY_STATUS": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "MINIMAL_FUTURE_ACTION": "Fresh canonical two-stencil solve bundle to retain H vectors and reconstruct every missing identity/invariance gate.",
+      "H_VECTORS_RETAINED": false,
+      "H_VECTOR_SOURCE_PATH": null,
+      "H_VECTOR_SOURCE_SHA256_OR_IMMUTABLE_ID": null,
+      "SUFFICIENT_FOR_OVERLAP_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_FORWARD_REVERSE_RECONSTRUCTION": false,
+      "SUFFICIENT_FOR_SOLVER_ORDER_CHECK": false,
+      "SUFFICIENT_FOR_GAUGE_PHASE_CHECK": false
+    }
+  ],
+  "gate_decisions": {
+    "FINITE_DATA": {
+      "status": "ALREADY_AUTHORITATIVE",
+      "requires_additional_native_solves": false,
+      "retained_inputs": [
+        {
+          "path": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+          "sha256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142"
+        },
+        {
+          "path": "audit/e9f/rp3_a_r128_compact_trace.json",
+          "sha256": "898cb798fb39228aba786582972b11df17c00c7c3a63124e55716b4b2f5ccef7"
+        },
+        {
+          "path": "audit/e9f/rp3_b_r160_compact_trace.json",
+          "sha256": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487"
+        },
+        {
+          "path": "audit/e9f/qp_b_c1_completed_gap_ladder.json",
+          "sha256": "3297bcc234e9bb9f7d2712f8d14e1094982474f87978191b7fd99b153dbb24a8"
+        }
+      ],
+      "derivation_method_if_solver_free": "Read frozen Omega fields from the hash-bound historical QP.B.C2 evidence matrix; no solver invocation.",
+      "why": "Finite Omega values are present in the frozen matrix."
+    },
+    "NONZERO_NORM": {
+      "status": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "requires_additional_native_solves": true,
+      "retained_inputs": [
+        {
+          "path": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+          "sha256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142"
+        },
+        {
+          "path": "audit/e9f/rp3_a_r128_compact_trace.json",
+          "sha256": "898cb798fb39228aba786582972b11df17c00c7c3a63124e55716b4b2f5ccef7"
+        },
+        {
+          "path": "audit/e9f/rp3_b_r160_compact_trace.json",
+          "sha256": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487"
+        },
+        {
+          "path": "audit/e9f/qp_b_c1_completed_gap_ladder.json",
+          "sha256": "3297bcc234e9bb9f7d2712f8d14e1094982474f87978191b7fd99b153dbb24a8"
+        }
+      ],
+      "derivation_method_if_solver_free": null,
+      "why": "Required H vectors or equivalent overlap/association inputs are absent from retained committed artifacts; compact traces are insufficient."
+    },
+    "H_REPRESENTATION_QUALIFIED": {
+      "status": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "requires_additional_native_solves": true,
+      "retained_inputs": [
+        {
+          "path": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+          "sha256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142"
+        },
+        {
+          "path": "audit/e9f/rp3_a_r128_compact_trace.json",
+          "sha256": "898cb798fb39228aba786582972b11df17c00c7c3a63124e55716b4b2f5ccef7"
+        },
+        {
+          "path": "audit/e9f/rp3_b_r160_compact_trace.json",
+          "sha256": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487"
+        },
+        {
+          "path": "audit/e9f/qp_b_c1_completed_gap_ladder.json",
+          "sha256": "3297bcc234e9bb9f7d2712f8d14e1094982474f87978191b7fd99b153dbb24a8"
+        }
+      ],
+      "derivation_method_if_solver_free": null,
+      "why": "Required H vectors or equivalent overlap/association inputs are absent from retained committed artifacts; compact traces are insufficient."
+    },
+    "ASSOCIATION_UNAMBIGUOUS": {
+      "status": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "requires_additional_native_solves": true,
+      "retained_inputs": [
+        {
+          "path": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+          "sha256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142"
+        },
+        {
+          "path": "audit/e9f/rp3_a_r128_compact_trace.json",
+          "sha256": "898cb798fb39228aba786582972b11df17c00c7c3a63124e55716b4b2f5ccef7"
+        },
+        {
+          "path": "audit/e9f/rp3_b_r160_compact_trace.json",
+          "sha256": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487"
+        },
+        {
+          "path": "audit/e9f/qp_b_c1_completed_gap_ladder.json",
+          "sha256": "3297bcc234e9bb9f7d2712f8d14e1094982474f87978191b7fd99b153dbb24a8"
+        }
+      ],
+      "derivation_method_if_solver_free": null,
+      "why": "Required H vectors or equivalent overlap/association inputs are absent from retained committed artifacts; compact traces are insufficient."
+    },
+    "OVERLAP_QUALIFIED": {
+      "status": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "requires_additional_native_solves": true,
+      "retained_inputs": [
+        {
+          "path": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+          "sha256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142"
+        },
+        {
+          "path": "audit/e9f/rp3_a_r128_compact_trace.json",
+          "sha256": "898cb798fb39228aba786582972b11df17c00c7c3a63124e55716b4b2f5ccef7"
+        },
+        {
+          "path": "audit/e9f/rp3_b_r160_compact_trace.json",
+          "sha256": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487"
+        },
+        {
+          "path": "audit/e9f/qp_b_c1_completed_gap_ladder.json",
+          "sha256": "3297bcc234e9bb9f7d2712f8d14e1094982474f87978191b7fd99b153dbb24a8"
+        }
+      ],
+      "derivation_method_if_solver_free": null,
+      "why": "Required H vectors or equivalent overlap/association inputs are absent from retained committed artifacts; compact traces are insufficient."
+    },
+    "PRINCIPAL_ANGLE_QUALIFIED": {
+      "status": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "requires_additional_native_solves": true,
+      "retained_inputs": [
+        {
+          "path": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+          "sha256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142"
+        },
+        {
+          "path": "audit/e9f/rp3_a_r128_compact_trace.json",
+          "sha256": "898cb798fb39228aba786582972b11df17c00c7c3a63124e55716b4b2f5ccef7"
+        },
+        {
+          "path": "audit/e9f/rp3_b_r160_compact_trace.json",
+          "sha256": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487"
+        },
+        {
+          "path": "audit/e9f/qp_b_c1_completed_gap_ladder.json",
+          "sha256": "3297bcc234e9bb9f7d2712f8d14e1094982474f87978191b7fd99b153dbb24a8"
+        }
+      ],
+      "derivation_method_if_solver_free": null,
+      "why": "Required H vectors or equivalent overlap/association inputs are absent from retained committed artifacts; compact traces are insufficient."
+    },
+    "PROJECTOR_DISTANCE_QUALIFIED": {
+      "status": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "requires_additional_native_solves": true,
+      "retained_inputs": [
+        {
+          "path": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+          "sha256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142"
+        },
+        {
+          "path": "audit/e9f/rp3_a_r128_compact_trace.json",
+          "sha256": "898cb798fb39228aba786582972b11df17c00c7c3a63124e55716b4b2f5ccef7"
+        },
+        {
+          "path": "audit/e9f/rp3_b_r160_compact_trace.json",
+          "sha256": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487"
+        },
+        {
+          "path": "audit/e9f/qp_b_c1_completed_gap_ladder.json",
+          "sha256": "3297bcc234e9bb9f7d2712f8d14e1094982474f87978191b7fd99b153dbb24a8"
+        }
+      ],
+      "derivation_method_if_solver_free": null,
+      "why": "Required H vectors or equivalent overlap/association inputs are absent from retained committed artifacts; compact traces are insufficient."
+    },
+    "FORWARD_REVERSE_CONSISTENT": {
+      "status": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "requires_additional_native_solves": true,
+      "retained_inputs": [
+        {
+          "path": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+          "sha256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142"
+        },
+        {
+          "path": "audit/e9f/rp3_a_r128_compact_trace.json",
+          "sha256": "898cb798fb39228aba786582972b11df17c00c7c3a63124e55716b4b2f5ccef7"
+        },
+        {
+          "path": "audit/e9f/rp3_b_r160_compact_trace.json",
+          "sha256": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487"
+        },
+        {
+          "path": "audit/e9f/qp_b_c1_completed_gap_ladder.json",
+          "sha256": "3297bcc234e9bb9f7d2712f8d14e1094982474f87978191b7fd99b153dbb24a8"
+        }
+      ],
+      "derivation_method_if_solver_free": null,
+      "why": "Required H vectors or equivalent overlap/association inputs are absent from retained committed artifacts; compact traces are insufficient."
+    },
+    "GAUGE_INVARIANT": {
+      "status": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "requires_additional_native_solves": true,
+      "retained_inputs": [
+        {
+          "path": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+          "sha256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142"
+        },
+        {
+          "path": "audit/e9f/rp3_a_r128_compact_trace.json",
+          "sha256": "898cb798fb39228aba786582972b11df17c00c7c3a63124e55716b4b2f5ccef7"
+        },
+        {
+          "path": "audit/e9f/rp3_b_r160_compact_trace.json",
+          "sha256": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487"
+        },
+        {
+          "path": "audit/e9f/qp_b_c1_completed_gap_ladder.json",
+          "sha256": "3297bcc234e9bb9f7d2712f8d14e1094982474f87978191b7fd99b153dbb24a8"
+        }
+      ],
+      "derivation_method_if_solver_free": null,
+      "why": "Required H vectors or equivalent overlap/association inputs are absent from retained committed artifacts; compact traces are insufficient."
+    },
+    "SOLVER_ORDER_INVARIANT": {
+      "status": "NOT_DERIVABLE_REQUIRES_NATIVE_RECOMPUTE",
+      "requires_additional_native_solves": true,
+      "retained_inputs": [
+        {
+          "path": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+          "sha256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142"
+        },
+        {
+          "path": "audit/e9f/rp3_a_r128_compact_trace.json",
+          "sha256": "898cb798fb39228aba786582972b11df17c00c7c3a63124e55716b4b2f5ccef7"
+        },
+        {
+          "path": "audit/e9f/rp3_b_r160_compact_trace.json",
+          "sha256": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487"
+        },
+        {
+          "path": "audit/e9f/qp_b_c1_completed_gap_ladder.json",
+          "sha256": "3297bcc234e9bb9f7d2712f8d14e1094982474f87978191b7fd99b153dbb24a8"
+        }
+      ],
+      "derivation_method_if_solver_free": null,
+      "why": "Required H vectors or equivalent overlap/association inputs are absent from retained committed artifacts; compact traces are insufficient."
+    }
+  },
+  "H_vector_audit": {
+    "numerically_reusable_pairs": 15,
+    "H_vectors_retained": false,
+    "source_paths_audited": [
+      {
+        "path": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+        "sha256": "0414b42b891755bd2742fc54fb73d25783aec8f67c34e48064e71e4299ec4142"
+      },
+      {
+        "path": "audit/e9f/rp3_a_r128_compact_trace.json",
+        "sha256": "898cb798fb39228aba786582972b11df17c00c7c3a63124e55716b4b2f5ccef7"
+      },
+      {
+        "path": "audit/e9f/rp3_b_r160_compact_trace.json",
+        "sha256": "26ce0d6b0ecfe2e674c81ea0193108674e56e2b3f7bdbbd25aba9eaa4f326487"
+      },
+      {
+        "path": "audit/e9f/qp_b_c1_completed_gap_ladder.json",
+        "sha256": "3297bcc234e9bb9f7d2712f8d14e1094982474f87978191b7fd99b153dbb24a8"
+      }
+    ],
+    "sufficient_for_overlap_reconstruction": false,
+    "sufficient_for_forward_reverse_reconstruction": false,
+    "sufficient_for_solver_order_check": false,
+    "sufficient_for_gauge_phase_check": false,
+    "conclusion": "No raw authoritative H vectors are retained for the 15 numerically reusable pairs; compact curvature traces do not prove solver-free gate recoverability."
+  },
+  "identity_invariance_summary": {
+    "numeric_curvature_reusable": true,
+    "identity_evidence_complete": false,
+    "invariance_evidence_complete": false,
+    "fully_gate_complete_pairs": 0,
+    "solver_free_gate_recoverable_pairs": 0,
+    "native_recompute_required_pairs": 15,
+    "missing_pair_requires_native_execution_pairs": 9,
+    "additional_native_solves_required_by_invariance_gates": true
+  },
+  "rel_059": {
+    "incident_id": "REL-059",
+    "priority": "P1",
+    "status": "OPEN",
+    "classification": "MATERIAL_NATIVE_BUDGET_UNDERCOUNT_RISK",
+    "reason": "Historical QP.B.C2 asserted gate solver-free recoverability without retained H-vector proof and reported a 90-solve incremental ceiling; corrected audit requires up to 216 base solves."
+  },
+  "native_solves_executed": 0,
+  "mpb_execution": false
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "mephc_e9f_c2_c1_interleaved_provenance_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C1-20260827-280",
+  "base_sandbox_sha": "8981c421da76c0efafa57f2fcdf15492e44a0b10",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "requested_range": "9ee6d52fe6b7ef851d4b696a0d8b6f3a2ecf47a9..8981c421da76c0efafa57f2fcdf15492e44a0b10",
+  "science_commit_sha_or_shas": [],
+  "science_commit_parent_sha": null,
+  "science_commit_changed_files": [
+    "audit/e9f/qp_b_c2_control_referenced_curvature_contract.json",
+    "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+    "audit/e9f/qp_b_c2_incremental_native_budget.json",
+    "audit/e9f/qp_b_c2_science_decision.json",
+    "tests/test_qp_b_c2_control_referenced.py"
+  ],
+  "science_commit_descends_from_9ee6": null,
+  "exact_history_recovery_status": "UNRESOLVED_FROM_TYPED_READ_ONLY_CONNECTOR",
+  "excluded_interleaved_infrastructure_commits": [],
+  "exclusion_status": "NOT_ENUMERATED_WITHOUT_GIT_HISTORY_READ_SURFACE",
+  "safety_classification": "PROVENANCE_UNRESOLVED_FAIL_CLOSED",
+  "scientific_result_impact": "NONE",
+  "note": "No commit SHA is invented. The typed read-only inspection surface exposes tracked files and content hashes but not Git commit history; exact science/interleaved commit attribution remains unresolved and blocks provenance qualification."
+}
