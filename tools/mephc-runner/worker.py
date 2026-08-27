@@ -44,6 +44,8 @@ SHA40 = re.compile(r"^[0-9a-f]{40}$")
 SHA64 = re.compile(r"^[0-9a-f]{64}$")
 RECOVERABLE = {"response_timeout", "courier_interrupted", "chat_submission_unconfirmed", "submission_state_uncertain"}
 FORBIDDEN_FLAGS = {"--root", "--python", "--pythonpath", "--project-id", "--courier-root", "--profile", "--chat-url", "--certificate"}
+MAX_JSON_BYTES = 4 * 1024 * 1024
+MAX_DETAIL_CHARS = 2000
 
 
 class Rejected(RuntimeError):
@@ -94,12 +96,24 @@ def state(job_dir: Path, name: str, **fields: Any) -> None:
 
 def read_object(path: Path) -> dict[str, Any]:
     try:
+        size = path.stat().st_size
+        if size > MAX_JSON_BYTES:
+            raise Rejected("JOB_JSON_TOO_LARGE", f"{path}: size={size} max={MAX_JSON_BYTES}")
         value = json.loads(path.read_text(encoding="utf-8"))
+    except Rejected:
+        raise
     except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise Rejected("JOB_JSON_INVALID", f"{path}: {exc}") from exc
     if not isinstance(value, dict):
         raise Rejected("JOB_JSON_INVALID", f"{path}: object required")
     return value
+
+
+def bounded_detail(value: object) -> str:
+    text = str(value)
+    if len(text) <= MAX_DETAIL_CHARS:
+        return text
+    return f"{text[:MAX_DETAIL_CHARS]}...[truncated; original_chars={len(text)}]"
 
 
 def git(*arguments: str, root: Path | None = None) -> str:
@@ -330,6 +344,10 @@ def failure_detail(job_dir: Path) -> str:
 
 
 def execute(job_dir: Path, recovery: bool = False) -> None:
+    # A recovery marker authorizes one reconciliation attempt, never a replay
+    # loop. Consume it before any parsing/validation that can fail.
+    if recovery:
+        (job_dir / "RECOVER").unlink(missing_ok=True)
     try:
         job, immutable_sha, execution_root = validate(job_dir, recovery=recovery)
         claim = job_dir / "CLAIMED"
@@ -352,7 +370,6 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
             if not (old_state.get("state") == "recovery_required" and job["operation"] in {"courier", "change"}) and not change_attested and not prewrite_failed:
                 raise Rejected("RECOVERY_NOT_ALLOWED", repr(old_state))
             previous_attempt = int(old_state.get("attempt", 1))
-            (job_dir / "RECOVER").unlink(missing_ok=True)
         else:
             try:
                 descriptor = os.open(claim, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
@@ -448,11 +465,13 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
             state(job_dir, "failed", attempt=attempt, operation=job["operation"], return_code=return_code, receipt_state=courier_state, detail=detail, error_code="CHILD_PROCESS_FAILED")
             event(job_dir, "runner_job_failed", return_code=return_code, receipt_state=courier_state, error_code="CHILD_PROCESS_FAILED")
     except Rejected as exc:
-        state(job_dir, "failed", error_code=exc.code, detail=exc.detail)
-        event(job_dir, "runner_job_rejected", error_code=exc.code, detail=exc.detail)
+        detail = bounded_detail(exc.detail)
+        state(job_dir, "failed", error_code=exc.code, detail=detail)
+        event(job_dir, "runner_job_rejected", error_code=exc.code, detail=detail)
     except Exception as exc:
-        state(job_dir, "failed", error_code="RUNNER_INTERNAL_ERROR", detail=repr(exc))
-        event(job_dir, "runner_internal_error", detail=repr(exc))
+        detail = bounded_detail(repr(exc))
+        state(job_dir, "failed", error_code="RUNNER_INTERNAL_ERROR", detail=detail)
+        event(job_dir, "runner_internal_error", detail=detail)
 
 
 def repair_interrupted() -> None:
@@ -478,7 +497,7 @@ def repair_interrupted() -> None:
 
 
 def heartbeat() -> None:
-    names = ("worker.py","jobctl.py","workflow.py","workflow_resume.py","runtime_config.py",
+    names = ("worker.py","jobctl.py","workflow.py","workflow_resume.py","runtime_config.py","active_index.py","quarantine_oversized_state.py",
              "checkout_manager.py","user_runtime.py","home_cleanup.py","migrate_state.py","migrate_canary_metadata.py",
              "windows_materializer.py","windows_broker.py",
              "materialize_client.py","mcp_server.py","native-recipes.json","mephc-runner.ps1",

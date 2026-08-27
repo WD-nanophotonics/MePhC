@@ -65,8 +65,15 @@ if($Command -eq 'Health') {
       if(-not(Test-Path -LiteralPath $installed -PathType Leaf) -or (Get-Sha256 $installed) -ne $entry.sha256){$errors.Add('WINDOWS_INSTALL_DRIFT');break}
     }
   }
-  $unresolved=Get-ChildItem -LiteralPath (Join-Path $StateRootUnc 'runner\jobs') -Directory -ErrorAction SilentlyContinue|Where-Object {$s=Join-Path $_.FullName 'state.json'; if(Test-Path -LiteralPath $s){$v=Get-Content -Raw -LiteralPath $s|ConvertFrom-Json; $v.state -in @('running','recovery_required')}else{$false}}
-  if($unresolved){$errors.Add('UNRESOLVED_RUNNER_JOB')}
+  $activeIndexPath=Join-Path $StateRootUnc 'runner\active-jobs.json'
+  if(-not(Test-Path -LiteralPath $activeIndexPath -PathType Leaf)){$errors.Add('ACTIVE_JOB_INDEX_MISSING')}else{
+    $activeIndexFile=Get-Item -LiteralPath $activeIndexPath
+    if($activeIndexFile.Length -gt 1048576){$errors.Add('ACTIVE_JOB_INDEX_TOO_LARGE')}else{
+      $activeIndex=[IO.File]::ReadAllText($activeIndexPath)|ConvertFrom-Json
+      $unresolved=@($activeIndex.jobs.PSObject.Properties|Where-Object {$_.Value.state -in @('running','recovery_required','recovery_requested')})
+      if($unresolved.Count -gt 0){$errors.Add('UNRESOLVED_RUNNER_JOB')}
+    }
+  }
   $ok=($errors.Count -eq 0)
   $nextAction=if($ok){'none'}else{'inspect_or_restart_runner'}
   @{schema='mephc-runner-health-v2';ok=$ok;errors=@($errors);broker=$brokerRecord;worker=$workerRecord;retry_allowed=$false;safe_next_action=$nextAction}|ConvertTo-Json -Depth 5 -Compress

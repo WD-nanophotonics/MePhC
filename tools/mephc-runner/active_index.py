@@ -17,6 +17,7 @@ from typing import Any
 import runtime_config as config
 
 VISIBLE = {"ready", "running", "recovery_required", "recovery_requested", "unknown"}
+MAX_STATE_BYTES = 1024 * 1024
 
 
 def _paths(runtime: Path) -> tuple[Path, Path]:
@@ -64,8 +65,11 @@ def rebuild(jobs_root: Path) -> dict[str, dict[str, Any]]:
         if not directory.is_dir():
             continue
         try:
-            state = json.loads((directory / "state.json").read_text(encoding="utf-8")).get("state")
-        except (OSError, json.JSONDecodeError):
+            state_path = directory / "state.json"
+            if state_path.stat().st_size > MAX_STATE_BYTES:
+                raise ValueError("state file exceeds bounded index input")
+            state = json.loads(state_path.read_text(encoding="utf-8")).get("state")
+        except (OSError, ValueError, json.JSONDecodeError):
             state = "unknown"
         try:
             job = json.loads((directory / "job.json").read_text(encoding="utf-8"))

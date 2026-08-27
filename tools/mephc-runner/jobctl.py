@@ -295,6 +295,9 @@ def read_state(job_id: str) -> dict[str, Any]:
     path = JOBS / job_id / "state.json"
     if not path.is_file():
         value = {"state": "ready" if (JOBS / job_id / "READY").is_file() else "unknown"}
+    elif path.stat().st_size > 1024 * 1024:
+        value = {"state": "unknown", "error_code": "STATE_FILE_TOO_LARGE",
+                 "size_bytes": path.stat().st_size}
     else:
         value = json.loads(path.read_text(encoding="utf-8"))
         if not isinstance(value, dict):
@@ -337,6 +340,9 @@ def read_basic_state(job_id: str) -> dict[str, Any]:
     path = directory / "state.json"
     if not path.is_file():
         return {"state": "ready" if (directory / "READY").is_file() else "unknown"}
+    if path.stat().st_size > 1024 * 1024:
+        return {"state": "unknown", "error_code": "STATE_FILE_TOO_LARGE",
+                "size_bytes": path.stat().st_size}
     value = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(value, dict):
         raise SystemExit(f"invalid state file: {path}")

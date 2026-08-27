@@ -4,7 +4,7 @@ $ErrorActionPreference='Stop'
 $SourceRoot=Split-Path -Parent $MyInvocation.MyCommand.Path
 $Runtime=Join-Path $env:LOCALAPPDATA 'MePhCRunner'
 $Python='/home/icy/miniconda3/envs/mp/bin/python'
-$Files=@('worker.py','jobctl.py','workflow.py','workflow_resume.py','runtime_config.py','active_index.py','checkout_manager.py','user_runtime.py','home_cleanup.py','migrate_state.py','migrate_canary_metadata.py','windows_materializer.py','windows_broker.py','materialize_client.py','mcp_server.py','native-recipes.json','mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-connector.ps1','mephc-runner.service','README.md')
+$Files=@('worker.py','jobctl.py','workflow.py','workflow_resume.py','runtime_config.py','active_index.py','quarantine_oversized_state.py','checkout_manager.py','user_runtime.py','home_cleanup.py','migrate_state.py','migrate_canary_metadata.py','windows_materializer.py','windows_broker.py','materialize_client.py','mcp_server.py','native-recipes.json','mephc-runner.ps1','mephc-runner.cmd','mephc-connector.cmd','mephc-connector.ps1','mephc-runner.service','README.md')
 $Manifest=@()
 foreach($name in $Files) {
   $path=Join-Path $SourceRoot $name

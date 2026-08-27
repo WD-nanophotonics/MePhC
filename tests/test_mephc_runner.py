@@ -535,6 +535,56 @@ def test_capabilities_inventory_does_not_enrich_every_historical_job(tmp_path, m
                                       "operation": None, "safe_next_action": "status_or_wait"}]
 
 
+def test_active_index_rebuild_never_reads_oversized_state(tmp_path):
+    active_index = load("runner_active_index_bounded", "active_index.py")
+    jobs = tmp_path / "jobs"; directory = jobs / "MEPHC-JOB-CORRUPT"; directory.mkdir(parents=True)
+    (directory / "state.json").write_bytes(b"{" + b"x" * (active_index.MAX_STATE_BYTES + 1))
+    (directory / "job.json").write_text(json.dumps({"operation": "change"}), encoding="utf-8")
+    value = active_index.rebuild(jobs)
+    assert value[directory.name] == {"state": "unknown", "operation": "change"}
+
+
+def test_worker_consumes_recovery_marker_before_validation_and_bounds_errors():
+    worker = (SOURCE / "worker.py").read_text(encoding="utf-8")
+    execute = worker.split("def execute", 1)[1].split("def repair_interrupted", 1)[0]
+    assert execute.index('(job_dir / "RECOVER").unlink') < execute.index("validate(job_dir")
+    assert "bounded_detail(exc.detail)" in execute
+    assert "JOB_JSON_TOO_LARGE" in worker
+
+
+def test_windows_health_uses_bounded_active_index_not_historical_scan():
+    wrapper = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
+    health = wrapper.split("if($Command -eq 'Health')", 1)[1].split("Ensure-Worker", 1)[0]
+    assert "active-jobs.json" in health and "ACTIVE_JOB_INDEX_TOO_LARGE" in health
+    assert "Get-ChildItem" not in health and "state.json" not in health
+
+
+def test_status_fails_bounded_on_oversized_state(tmp_path, monkeypatch):
+    jobctl = load("runner_jobctl_bounded_state", "jobctl.py")
+    jobs = tmp_path / "jobs"; job = jobs / "MEPHC-JOB-CORRUPT"; job.mkdir(parents=True)
+    state = job / "state.json"; state.write_bytes(b"x" * (1024 * 1024 + 1))
+    runtime = tmp_path / "runner"; runtime.mkdir()
+    monkeypatch.setattr(jobctl, "JOBS", jobs); monkeypatch.setattr(jobctl, "RUNTIME", runtime)
+    monkeypatch.setattr(jobctl.config, "BROKER_HEARTBEAT", tmp_path / "broker.json")
+    value = jobctl.read_state(job.name)
+    assert value["state"] == "unknown" and value["error_code"] == "STATE_FILE_TOO_LARGE"
+
+
+def test_hash_bound_oversized_state_quarantine_preserves_evidence(tmp_path, monkeypatch):
+    repair = load("runner_quarantine_oversized", "quarantine_oversized_state.py")
+    jobs = tmp_path / "runner" / "jobs"; job = jobs / "MEPHC-JOB-CORRUPT1"; job.mkdir(parents=True)
+    state_bytes, event_bytes = b'{"detail":"recursive"}', b'{"event":"old"}\n'
+    (job / "state.json").write_bytes(state_bytes); (job / "events.jsonl").write_bytes(event_bytes)
+    (job / "RECOVER").write_text("retry", encoding="ascii")
+    monkeypatch.setattr(repair.active_index, "update", lambda *_args: None)
+    value = repair.quarantine(jobs, job.name, hashlib.sha256(state_bytes).hexdigest(),
+                              hashlib.sha256(event_bytes).hexdigest())
+    assert len(value["files"]) == 2 and not (job / "RECOVER").exists()
+    assert json.loads((job / "state.json").read_text())["error_code"] == "OVERSIZED_STATE_QUARANTINED"
+    for record in value["files"]:
+        assert (job / record["name"]).is_file()
+
+
 def test_broker_is_nonblocking_and_has_exact_tree_watchdog():
     broker = (SOURCE / "windows_broker.py").read_text(encoding="utf-8")
     wrapper = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")

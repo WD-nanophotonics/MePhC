@@ -113,7 +113,10 @@ def terminate_tree(process: subprocess.Popen[bytes]) -> None:
 
 def request_for(job_dir: Path) -> tuple[str, Path] | None:
     try:
-        state = json.loads((job_dir / "state.json").read_text(encoding="utf-8"))
+        state_path = job_dir / "state.json"
+        if state_path.stat().st_size > 1024 * 1024:
+            return None
+        state = json.loads(state_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return None
     if state.get("state") != "running" or state.get("operation") != "change":
