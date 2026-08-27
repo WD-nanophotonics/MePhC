@@ -308,6 +308,7 @@ def test_health_is_fail_closed_and_capabilities_are_context_complete(tmp_path, m
     monkeypatch.setattr(jobctl.workflow, "RUNTIME", tmp_path / "runner")
     monkeypatch.setattr(jobctl.workflow, "LEDGER", tmp_path / "runner" / "ledger.json")
     monkeypatch.setattr(jobctl.workflow, "OUTBOX", tmp_path / "outbox")
+    monkeypatch.setattr(jobctl, "git_head", lambda: "a" * 40)
     value = jobctl.capabilities()
     assert value["control_root"] == r"C:\Users\icywo\PycharmProjects\MePhC-Windows"
     assert value["execution_root_policy"].endswith("<commit-sha>")
