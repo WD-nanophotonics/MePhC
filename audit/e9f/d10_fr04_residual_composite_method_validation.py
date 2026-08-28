@@ -434,7 +434,7 @@ def analysis() -> dict[str, Any]:
     final_sha = git_head()
     result: dict[str, Any] = {
         "schema": "mephc-e9f-d10-fr04-residual-composite-method-validation-v1", "work_order_id": WORK_ORDER_ID,
-        "base_sandbox_sha": BASE_SANDBOX_SHA, "final_sandbox_sha": final_sha, "origin_sandbox_sha": final_sha, "main_sha": MAIN_SHA,
+        "base_sandbox_sha": BASE_SANDBOX_SHA, "main_sha": MAIN_SHA,
         "machine_contract_status": "PASS", "dataset_binding_status": "VERIFIED_EXISTING_IMMUTABLE_DATASET", "structural_threshold_provenance_status": structural["status"], "nonabelian_provenance_status": d8_provenance["status"],
         "dataset_id": DATASET_ID, "dataset_manifest_sha256": MANIFEST_SHA256, "dataset_record_count": 420,
         "d10_dataset_id": DATASET_ID, "d10_dataset_manifest_sha256": MANIFEST_SHA256, "d10_dataset_record_count": 420,
