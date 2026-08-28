@@ -18,6 +18,7 @@ import runtime_config as config
 
 VISIBLE = {"ready", "running", "recovery_required", "recovery_requested", "unknown"}
 MAX_STATE_BYTES = 1024 * 1024
+LEGACY_DURABLE_ORPHANS = {"MEPHC-JOB-20260826-163139-D162066386D7"}
 
 
 def _paths(runtime: Path) -> tuple[Path, Path]:
@@ -65,7 +66,8 @@ def rebuild(jobs_root: Path) -> dict[str, dict[str, Any]]:
         if not directory.is_dir():
             continue
         job_path = directory / "job.json"
-        if not job_path.is_file() and not any((directory / marker).exists() for marker in ("READY", "CLAIMED", "state.json")):
+        if (directory.name not in LEGACY_DURABLE_ORPHANS and not job_path.is_file()
+                and not any((directory / marker).exists() for marker in ("READY", "CLAIMED", "state.json"))):
             # A process may have died after mkdir but before the durable job
             # manifest. Preserve the directory as forensic residue, but it is
             # not a durable job and must not become an active/orphan entry.

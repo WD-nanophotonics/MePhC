@@ -118,6 +118,15 @@ def test_active_index_preserves_but_does_not_index_pre_manifest_residue(tmp_path
     assert residue.is_dir()
 
 
+def test_active_index_keeps_explicit_migrated_orphan_visible(tmp_path):
+    import active_index
+    jobs = tmp_path / "jobs"
+    orphan_id = next(iter(active_index.LEGACY_DURABLE_ORPHANS))
+    (jobs / orphan_id).mkdir(parents=True)
+    value = active_index.rebuild(jobs)
+    assert value == {orphan_id:{"state":"unknown", "operation":None}}
+
+
 def test_failed_native_never_authorizes_a_new_job():
     import job_semantics
     value = job_semantics.enrich("failed", "native", "CHILD_PROCESS_FAILED", "terminal")
