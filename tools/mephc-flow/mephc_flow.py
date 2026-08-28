@@ -488,6 +488,297 @@ def _science_runtime_module(paths: Paths):
     return module
 
 
+def d9r1_reconcile_existing_dataset(
+        paths: Paths, contract: dict[str, Any], preflight: dict[str, Any],
+) -> dict[str, Any]:
+    """Reconcile the immutable D9 dataset and repair only closeout compatibility."""
+    inputs = contract.get("inputs", {})
+    target_work_order = inputs.get("target_work_order_id")
+    execution_source = inputs.get("execution_source_commit")
+    publication_source = inputs.get("publication_source_commit")
+    dataset_id = inputs.get("dataset_id")
+    expected_manifest_sha = inputs.get("dataset_manifest_sha256")
+    binding_sha = inputs.get("binding_sha256")
+    graph_sha = inputs.get("request_graph_sha256")
+    entrypoint_sha = inputs.get("entrypoint_sha256")
+    runtime_sha = inputs.get("science_runtime_sha256")
+    if (contract.get("work_order_id") != "MEPHC-E9F-D9R1-FR04-RESIDUAL-COMPOSITE-RECON-COMPAT-20260829-338"
+            or contract.get("action") != "infrastructure"
+            or contract.get("budgets") != {"native_invocations": 0, "provider_requests": 0, "solver_executions": 0}
+            or not all(isinstance(value, str) and SHA40.fullmatch(value)
+                       for value in (execution_source, publication_source))
+            or not all(isinstance(value, str) and SHA64.fullmatch(value)
+                       for value in (dataset_id, expected_manifest_sha, binding_sha, graph_sha, entrypoint_sha, runtime_sha))):
+        raise FlowError("D9R1_RECONCILIATION_CONTRACT_INVALID", safe_next="report")
+
+    source = require_source(paths, published=True)
+    if source["head"] != preflight.get("source_commit") or source["head"] != publication_source:
+        raise FlowError("D9R1_RECONCILIATION_SOURCE_CHANGED", safe_next="status")
+    ancestry = git(paths, "merge-base", "--is-ancestor", execution_source, publication_source, check=False)
+    if ancestry.returncode:
+        raise FlowError("D9R1_EXECUTION_SOURCE_ANCESTRY_INVALID")
+    post_execution_diff = [
+        line for line in git(paths, "diff", "--name-only", f"{execution_source}..{publication_source}").stdout.splitlines()
+        if line
+    ]
+    if post_execution_diff != ["audit/e9f/d9_fr04_residual_composite_acquisition_binding.json"]:
+        raise FlowError("D9R1_POST_EXECUTION_DIFF_INVALID", ",".join(post_execution_diff))
+
+    jobs: list[dict[str, Any]] = []
+    jobs_root = paths.state / "science-jobs"
+    if jobs_root.is_dir():
+        for path in sorted(jobs_root.glob("MEPHC-SCIENCE-*.json")):
+            value = read_json(path, default={})
+            if (isinstance(value, dict) and value.get("work_order_id") == target_work_order
+                    and value.get("source_commit") == execution_source
+                    and value.get("action") == "acquire"):
+                jobs.append(value)
+    if len(jobs) != 1:
+        raise FlowError("D9R1_ORIGINAL_SCIENCE_JOB_LINEAGE_INVALID")
+    job = jobs[0]
+    native = job.get("result")
+    native_run_id = job.get("native_run_id")
+    if (job.get("state") != "succeeded" or not isinstance(native, dict)
+            or not isinstance(native_run_id, str) or native.get("run_id") != native_run_id
+            or native.get("state") != "succeeded" or native.get("process_started") is not True
+            or native.get("return_code") != 0 or native.get("launcher_return_code") != 0):
+        raise FlowError("D9R1_ORIGINAL_NATIVE_SUCCESS_INVALID")
+    summary = native.get("result_summary")
+    if not isinstance(summary, dict):
+        raise FlowError("D9R1_ORIGINAL_RESULT_SUMMARY_MISSING")
+    if "provider_failure_count" in summary:
+        raise FlowError("D9R1_PROVIDER_FAILURE_FIELD_NOT_ABSENT")
+    required_summary = {
+        "work_order_id": target_work_order,
+        "execution_source_commit": execution_source,
+        "science_runtime_sha256": runtime_sha,
+        "target_cell_count": 10,
+        "refined_stencil_representative_count": 5,
+        "odd_resolution_class": [96, 160, 224],
+        "even_resolution_class": [128, 192, 256],
+        "logical_provider_demand_count": 420,
+        "unique_provider_request_count": 420,
+        "native_invocation_count": 1,
+        "provider_request_count": 420,
+        "fresh_provider_execution_count": 420,
+        "solver_executions": 420,
+        "native_solves": 420,
+        "completed_key_count": 420,
+        "failed_key_count": 0,
+        "cache_reuse_count": 0,
+        "mpb_execution": True,
+        "d9_dataset_id": dataset_id,
+        "d9_dataset_manifest_sha256": expected_manifest_sha,
+        "d9_dataset_record_count": 420,
+        "d9_acquisition_source_commit": execution_source,
+        "d9_entrypoint_sha256": entrypoint_sha,
+        "d9_request_graph_sha256": graph_sha,
+        "native_retry_count": 0,
+        "terminal": "E9F_D9_FR04_RESIDUAL_COMPOSITE_CONVERGENCE_DATASET_ACQUIRED",
+    }
+    if any(summary.get(key) != value for key, value in required_summary.items()):
+        raise FlowError("D9R1_AUTHORITATIVE_RESULT_SUMMARY_MISMATCH")
+
+    native_runs: list[dict[str, Any]] = []
+    native_root = paths.state / "native-runs"
+    if native_root.is_dir():
+        for path in sorted(native_root.glob("*.json")):
+            value = read_json(path, default={})
+            if isinstance(value, dict) and value.get("run_id") == native_run_id:
+                native_runs.append(value)
+    if len(native_runs) != 1:
+        raise FlowError("D9R1_NATIVE_RUN_LINEAGE_INVALID")
+    native_record = native_runs[0]
+    if (native_record.get("work_order_id") != target_work_order
+            or native_record.get("state") != "succeeded"
+            or native_record.get("return_code") != 0
+            or native_record.get("process_started") is not True):
+        raise FlowError("D9R1_NATIVE_RUN_SUCCESS_INVALID")
+
+    scientific_job = science_module(paths)
+    runtime = _science_runtime_module(paths)
+    index_path = paths.science_state / "dataset-index" / f"{dataset_id}.json"
+    index = read_json(index_path, default={})
+    if (not isinstance(index, dict) or index.get("dataset_id") != dataset_id
+            or index.get("manifest_sha256") != expected_manifest_sha):
+        raise FlowError("D9R1_DATASET_INDEX_INVALID")
+    namespace_sha = index.get("namespace_sha256")
+    if not isinstance(namespace_sha, str) or not SHA64.fullmatch(namespace_sha):
+        raise FlowError("D9R1_DATASET_NAMESPACE_INVALID")
+    manifest_path = paths.science_state / "datasets" / namespace_sha / "dataset-manifest.json"
+    manifest = read_json(manifest_path, default={})
+    if (not isinstance(manifest, dict) or manifest.get("dataset_id") != dataset_id
+            or manifest.get("manifest_sha256") != expected_manifest_sha
+            or manifest.get("schema") != scientific_job.DATASET_SCHEMA
+            or manifest.get("completion_state") != "COMPLETE"
+            or manifest.get("record_count") != 420):
+        raise FlowError("D9R1_DATASET_MANIFEST_INVALID")
+    unsigned = {key: value for key, value in manifest.items() if key not in {"dataset_id", "manifest_sha256"}}
+    if (scientific_job.digest(unsigned) != dataset_id
+            or scientific_job.digest({**unsigned, "dataset_id": dataset_id}) != expected_manifest_sha):
+        raise FlowError("D9R1_DATASET_MANIFEST_INTEGRITY_INVALID")
+    expected_namespace = {
+        "project_id": "MEPHC", "science_contract_id": target_work_order,
+        "work_order_id": target_work_order, "source_commit": execution_source,
+        "fr": 0.4, "resolutions": [96, 128, 160, 192, 224, 256],
+        "target_cells": [[-35, -16], [-35, -15], [-35, 15], [-35, 16], [-33, -17], [-33, 17],
+                         [-32, -17], [-32, 17], [-5, -1], [-5, 1]],
+        "geometry_boundary_digest": "d52fd66afa87c1e6cda397616d6a46a23c980db292b0a2ef49171ec8f3f27f71",
+        "arc_segments_per_corner": 96, "source_model_identity": "E9E_FR04_ROUNDED_TRIANGLE_V1",
+        "band_request_configuration": "E9F_D5_FR04_R64_SIX_BAND_TE_LOCKED",
+        "science_runtime_sha256": runtime_sha,
+    }
+    if manifest.get("namespace") != expected_namespace or manifest.get("namespace_sha256") != namespace_sha:
+        raise FlowError("D9R1_DATASET_NAMESPACE_BINDING_INVALID")
+
+    graph_path = paths.control / "audit" / "e9f" / "d9_fr04_residual_composite_request_graph.json"
+    if sha256_file(graph_path) != graph_sha:
+        raise FlowError("D9R1_REQUEST_GRAPH_HASH_INVALID")
+    graph = read_json(graph_path, default={})
+    expected_cells = expected_namespace["target_cells"]
+    if (graph.get("schema") != "mephc-e9f-d9-fr04-residual-composite-request-graph-v1"
+            or graph.get("work_order_id") != target_work_order
+            or graph.get("source_commit") != "5e6cac51f8f6932571db7d0b41cc70356b82d451"
+            or graph.get("target_cells") != expected_cells
+            or graph.get("refined_stencil_representatives") != [[-35, -16], [-35, -15], [-33, -17], [-32, -17], [-5, -1]]
+            or graph.get("resolutions") != [96, 128, 160, 192, 224, 256]
+            or graph.get("odd_resolution_class") != [96, 160, 224]
+            or graph.get("even_resolution_class") != [128, 192, 256]
+            or graph.get("primary_stencil") != "1/144" or graph.get("refined_stencil") != "1/288"
+            or graph.get("logical_provider_demand_count") != 420
+            or graph.get("unique_provider_request_count") != 420
+            or graph.get("duplicate_provider_request_count") != 0
+            or graph.get("collision_group_count") != 0):
+        raise FlowError("D9R1_REQUEST_GRAPH_SEMANTICS_INVALID")
+    requests = graph.get("unique_provider_requests")
+    if not isinstance(requests, list) or len(requests) != 420:
+        raise FlowError("D9R1_REQUEST_GRAPH_REQUEST_SET_INVALID")
+    expected_keys: dict[str, tuple[bytes, dict[str, Any]]] = {}
+    primary_count = refined_count = 0
+    for item in requests:
+        if not isinstance(item, dict) or item.get("request_class") not in {"primary", "refined"}:
+            raise FlowError("D9R1_REQUEST_GRAPH_REQUEST_INVALID")
+        if item["request_class"] == "primary":
+            primary_count += 1
+        else:
+            refined_count += 1
+        key = item.get("request_key")
+        if not isinstance(key, dict):
+            raise FlowError("D9R1_REQUEST_GRAPH_KEY_INVALID")
+        if key.get("stencil_h") not in {"1/144", "1/288"}:
+            raise FlowError("D9R1_REQUEST_GRAPH_STENCIL_INVALID")
+        if key.get("stencil_h") == "1/36":
+            raise FlowError("D9R1_SOURCE_STENCIL_REQUEST_PRESENT")
+        key_bytes = scientific_job.canonical_bytes(key)
+        key_sha = sha256_bytes(key_bytes)
+        if key_sha in expected_keys:
+            raise FlowError("D9R1_REQUEST_GRAPH_DUPLICATE")
+        expected_keys[key_sha] = (key_bytes, key)
+    if primary_count != 300 or refined_count != 120:
+        raise FlowError("D9R1_REQUEST_GRAPH_CLASS_COUNT_INVALID")
+
+    records = manifest.get("records")
+    if not isinstance(records, list) or len(records) != 420:
+        raise FlowError("D9R1_DATASET_RECORD_COUNT_INVALID")
+    record_by_key: dict[str, dict[str, Any]] = {}
+    for record in records:
+        if not isinstance(record, dict) or record.get("key_sha256") in record_by_key:
+            raise FlowError("D9R1_DATASET_RECORD_KEY_SET_INVALID")
+        key_sha = record.get("key_sha256")
+        if not isinstance(key_sha, str) or not SHA64.fullmatch(key_sha) or record.get("complete") is not True:
+            raise FlowError("D9R1_DATASET_RECORD_METADATA_INVALID")
+        record_by_key[key_sha] = record
+    if set(record_by_key) != set(expected_keys):
+        raise FlowError("D9R1_DATASET_RECORD_KEY_SET_INVALID")
+
+    store = scientific_job.ImmutableDatasetStore(paths.science_state, manifest["namespace"])
+    integrity_pass_count = 0
+    for key_sha in sorted(expected_keys):
+        key_bytes, key = expected_keys[key_sha]
+        record = record_by_key[key_sha]
+        try:
+            payload, metadata = store.get(key_bytes)
+            if metadata != record:
+                raise FlowError("D9R1_DATASET_METADATA_MANIFEST_MISMATCH")
+            decoded = runtime.decode_snapshot(payload)
+            coordinate = key["canonical_k_coordinate"]
+            denominator = int(coordinate["denominator"])
+            expected_k = tuple(float(value) / denominator for value in coordinate["numerator"])
+            identity = {
+                "schema": "mephc-e9f-d9-residual-composite-record-v1", "key_sha256": key_sha,
+                "identity": key, "k_point": list(expected_k), "resolution": key["resolution"],
+                "stencil_role": key["stencil_role"], "h_representation": "mpb_periodic_h_l2_v1",
+            }
+            if (record.get("identity") != identity or record.get("schema") != "mephc-scientific-record-v1"
+                    or tuple(decoded.k_point) != expected_k
+                    or len(decoded.frequencies) != 6
+                    or any(not math.isfinite(float(value)) for value in decoded.frequencies)
+                    or decoded.provenance.get("representation") != "mpb_periodic_h_l2_v1"):
+                raise FlowError("D9R1_DATASET_RECORD_IDENTITY_INVALID")
+            integrity_pass_count += 1
+        except FlowError:
+            raise
+        except Exception as exc:
+            raise FlowError("D9R1_DATASET_RECORD_VERIFICATION_FAILED", f"{key_sha}:{type(exc).__name__}:{str(exc)[:200]}") from exc
+        finally:
+            for name in ("decoded", "payload", "metadata"):
+                if name in locals():
+                    del locals()[name]
+    if integrity_pass_count != 420:
+        raise FlowError("D9R1_DATASET_RECORD_INTEGRITY_COUNT_INVALID")
+
+    binding_path = paths.control / "audit" / "e9f" / "d9_fr04_residual_composite_acquisition_binding.json"
+    if sha256_file(binding_path) != binding_sha:
+        raise FlowError("D9R1_PUBLIC_BINDING_HASH_INVALID")
+    binding = read_json(binding_path, default={})
+    binding_expected = {
+        "schema": "mephc-e9f-d9-fr04-residual-composite-acquisition-binding-v1",
+        "work_order_id": target_work_order, "acquisition_source_commit": execution_source,
+        "dataset_id": dataset_id, "dataset_manifest_sha256": expected_manifest_sha,
+        "dataset_record_count": 420, "entrypoint_sha256": entrypoint_sha,
+        "request_graph_sha256": graph_sha, "graph_sha256": graph_sha,
+        "science_runtime_sha256": runtime_sha, "target_cell_count": 10,
+        "refined_stencil_representative_count": 5, "logical_provider_demand_count": 420,
+        "unique_provider_request_count": 420, "duplicate_provider_request_count": 0,
+        "collision_group_count": 0, "completed_key_count": 420, "failed_key_count": 0,
+        "provider_failure_count": 0, "fresh_provider_execution_count": 420,
+        "cache_reuse_count": 0, "native_invocation_count": 1,
+        "provider_request_count": 420, "solver_executions": 420, "native_solves": 420,
+        "mpb_execution": True, "native_retry_count": 0, "completion_state": "COMPLETE",
+    }
+    if any(binding.get(key) != value for key, value in binding_expected.items()):
+        raise FlowError("D9R1_PUBLIC_BINDING_VALUE_MISMATCH")
+
+    reconciliation = {
+        "schema": "mephc-e9f-d9r1-fr04-residual-composite-dataset-reconciliation-v1",
+        "work_order_id": contract["work_order_id"], "base_sandbox_sha": contract["source_commit"],
+        "final_sandbox_sha": source["head"], "origin_sandbox_sha": source["origin_sandbox"],
+        "main_sha": EXPECTED_MAIN, "machine_contract_status": "PASS",
+        "original_d9_science_job_id": job.get("job_id"), "original_d9_science_job_state": job.get("state"),
+        "original_d9_native_run_id": native_run_id, "original_d9_native_state": native.get("state"),
+        "original_d9_child_return_code": native.get("return_code"), "original_d9_result_summary_present": True,
+        "original_d9_result_provider_failure_count_present": False,
+        "original_d9_stdout_sha256": native.get("stdout_sha256"), "original_d9_stdout_size_bytes": native.get("stdout_size_bytes"),
+        "original_d9_stderr_sha256": native.get("stderr_sha256"), "original_d9_stderr_size_bytes": native.get("stderr_size_bytes"),
+        "d9_existing_dataset_status": "COMPLETE_NATIVE_RESULT_AND_DATASET_VERIFIED",
+        "d9_dataset_id": dataset_id, "d9_dataset_manifest_sha256": expected_manifest_sha,
+        "d9_dataset_record_count": 420, "full_d9_record_integrity_pass_count": integrity_pass_count,
+        "d9_request_graph_status": "PASS_EXACT_300_PRIMARY_120_REFINED_420_UNIQUE",
+        "post_execution_diff_status": "PASS_BINDING_ONLY",
+        "post_execution_binding_verification_status": "PASS",
+        "d9_provider_failure_count_reconciliation_status": "PASS_DERIVED_ZERO_FROM_COMPLETE_EXACT_ACCOUNTING",
+        "strict_d9_missing_provider_failure_count_compatibility_status": "PASS",
+        "d9_native_rerun_required": False, "native_invocation_count": 0,
+        "provider_request_count": 0, "native_solves": 0, "mpb_execution": False,
+        "pipeline_health": "HEALTHY", "blocked_by_infrastructure": False,
+        "scientific_work_must_stop": False,
+        "next_scientific_state": "FR04_RESIDUAL_COMPOSITE_10_CELL_MULTIRESOLUTION_DATASET_RECONCILED_READY_FOR_SOLVER_FREE_CONVERGENCE_AND_METHOD_VALIDATION",
+        "terminal": "E9F_D9R1_FR04_RESIDUAL_COMPOSITE_DATASET_RECONCILED_CLOSEOUT_COMPATIBILITY_FIXED",
+    }
+    atomic_json(paths.control / "audit" / "e9f" / "d9r1_fr04_residual_composite_dataset_reconciliation.json", reconciliation)
+    return {**reconciliation, "state": "succeeded", "safe_next": "publish"}
+
+
 def d3_reconcile_existing_dataset(
         paths: Paths, contract: dict[str, Any], preflight: dict[str, Any],
 ) -> dict[str, Any]:
@@ -926,6 +1217,42 @@ def acquire_binding_source_compatible(
             or not SHA64.fullmatch(summary["science_runtime_sha256"])):
         return False
 
+    missing_d9_provider_failure_count = (
+        summary.get("schema") == "mephc-e9f-d9-fr04-residual-composite-convergence-acquisition-v1"
+        and binding.get("schema") == "mephc-e9f-d9-fr04-residual-composite-acquisition-binding-v1"
+        and "provider_failure_count" not in summary
+    )
+    if missing_d9_provider_failure_count:
+        reconciliation = read_json(
+            paths.control / "audit" / "e9f" / "d9r1_fr04_residual_composite_dataset_reconciliation.json",
+            default={},
+        )
+        exact_accounting = {
+            "failed_key_count": 0, "completed_key_count": 420,
+            "logical_provider_demand_count": 420, "unique_provider_request_count": 420,
+            "provider_request_count": 420, "fresh_provider_execution_count": 420,
+            "solver_executions": 420, "native_solves": 420, "cache_reuse_count": 0,
+            "native_retry_count": 0, "mpb_execution": True,
+        }
+        if (not isinstance(reconciliation, dict)
+                or reconciliation.get("schema") != "mephc-e9f-d9r1-fr04-residual-composite-dataset-reconciliation-v1"
+                or reconciliation.get("d9_dataset_id") != summary.get(f"{prefix}_dataset_id")
+                or reconciliation.get("d9_dataset_manifest_sha256") != summary.get(f"{prefix}_dataset_manifest_sha256")
+                or reconciliation.get("d9_dataset_record_count") != 420
+                or reconciliation.get("full_d9_record_integrity_pass_count") != 420
+                or reconciliation.get("d9_existing_dataset_status") != "COMPLETE_NATIVE_RESULT_AND_DATASET_VERIFIED"
+                or reconciliation.get("d9_provider_failure_count_reconciliation_status") != "PASS_DERIVED_ZERO_FROM_COMPLETE_EXACT_ACCOUNTING"
+                or reconciliation.get("strict_d9_missing_provider_failure_count_compatibility_status") != "PASS"
+                or binding.get("provider_failure_count") != 0
+                or binding.get("failed_key_count") != 0
+                or binding.get("completed_key_count") != 420
+                or binding.get("completion_state") != "COMPLETE"
+                or any(summary.get(key) != value for key, value in exact_accounting.items())):
+            return False
+        reconciled_provider_failure_count = 0
+    else:
+        reconciled_provider_failure_count = summary.get("provider_failure_count")
+
     if binding.get("schema") == "mephc-e9f-d6-fr04-r64-corrected-acquisition-binding-v1":
         duplicate_count = summary.get("duplicate_logical_demand_count")
         if duplicate_count is None:
@@ -982,7 +1309,7 @@ def acquire_binding_source_compatible(
         "duplicate_logical_demand_count": duplicate_count,
         "completed_key_count": summary.get("completed_key_count"),
         "failed_key_count": summary.get("failed_key_count"),
-        "provider_failure_count": summary.get("provider_failure_count"),
+        "provider_failure_count": reconciled_provider_failure_count,
         "fresh_provider_execution_count": summary.get("fresh_provider_execution_count"),
         "cache_reuse_count": summary.get("cache_reuse_count"),
         "mpb_execution": summary.get("mpb_execution"),
@@ -1572,6 +1899,9 @@ def science_acquire(paths: Paths) -> dict[str, Any]:
 def science_analyze(paths: Paths) -> dict[str, Any]:
     preflight = science_preflight(paths)
     _, contract = active_machine_contract(paths)
+    if (contract["kind"] == "INFRASTRUCTURE"
+            and contract["work_order_id"] == "MEPHC-E9F-D9R1-FR04-RESIDUAL-COMPOSITE-RECON-COMPAT-20260829-338"):
+        return d9r1_reconcile_existing_dataset(paths, contract, preflight)
     if (contract["kind"] == "INFRASTRUCTURE"
             and contract["work_order_id"] == "MEPHC-E9F-D3-FR04-R64-RECON-COMPAT-20260828-324"):
         return d3_reconcile_existing_dataset(paths, contract, preflight)

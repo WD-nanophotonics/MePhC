@@ -526,6 +526,114 @@ def test_closeout_job_accepts_exact_post_execution_acquisition_binding(tmp_path:
     assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is True
 
 
+def _d9_missing_provider_failure_fixture(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> tuple[flow.Paths, dict, dict]:
+    scope, binding, refs = _acquire_binding_fixture(tmp_path, monkeypatch)
+    work_order_id = "MEPHC-E9F-D9-FR04-RESIDUAL-COMPOSITE-CONVERGENCE-ACQ-20260829-337"
+    binding_path = refs["binding_path"]
+    monkeypatch.setattr(flow, "active_work_order", lambda _paths: {
+        "work_order_id": work_order_id,
+        "text": "WORK_ORDER_CONTRACT_JSON=" + json.dumps({
+            "kind": "SCIENCE", "action": "acquire", "work_order_id": work_order_id,
+            "allowed_writes": [binding_path],
+        }) + "\n",
+    })
+    job_path = next((scope.state / "science-jobs").glob("MEPHC-SCIENCE-*.json"))
+    job = json.loads(job_path.read_text(encoding="utf-8"))
+    job["work_order_id"] = work_order_id
+    summary = job["result"]["result_summary"]
+    summary.clear()
+    summary.update({
+        "schema": "mephc-e9f-d9-fr04-residual-composite-convergence-acquisition-v1",
+        "d9_dataset_id": "1" * 64, "d9_dataset_manifest_sha256": "2" * 64,
+        "d9_entrypoint_sha256": "3" * 64, "d9_request_graph_sha256": "4" * 64,
+        "science_runtime_sha256": "5" * 64, "logical_provider_demand_count": 420,
+        "unique_provider_request_count": 420, "completed_key_count": 420,
+        "failed_key_count": 0, "fresh_provider_execution_count": 420,
+        "cache_reuse_count": 0, "mpb_execution": True, "provider_request_count": 420,
+        "solver_executions": 420, "native_solves": 420, "native_retry_count": 0,
+    })
+    write_json(job_path, job)
+    binding.clear()
+    binding.update({
+        "schema": "mephc-e9f-d9-fr04-residual-composite-acquisition-binding-v1",
+        "work_order_id": work_order_id, "acquisition_source_commit": refs["job_source"],
+        "acquisition_dataset_id": summary["d9_dataset_id"],
+        "dataset_manifest_sha256": summary["d9_dataset_manifest_sha256"],
+        "entrypoint_sha256": summary["d9_entrypoint_sha256"],
+        "graph_sha256": summary["d9_request_graph_sha256"],
+        "science_runtime_sha256": summary["science_runtime_sha256"],
+        "logical_provider_demand_count": 420, "unique_provider_request_count": 420,
+        "duplicate_logical_demand_count": 0, "completed_key_count": 420,
+        "failed_key_count": 0, "provider_failure_count": 0,
+        "fresh_provider_execution_count": 420, "cache_reuse_count": 0,
+        "mpb_execution": True, "completion_state": "COMPLETE",
+    })
+    write_json(scope.control / "audit/e9f/d9r1_fr04_residual_composite_dataset_reconciliation.json", {
+        "schema": "mephc-e9f-d9r1-fr04-residual-composite-dataset-reconciliation-v1",
+        "d9_dataset_id": summary["d9_dataset_id"],
+        "d9_dataset_manifest_sha256": summary["d9_dataset_manifest_sha256"],
+        "d9_dataset_record_count": 420, "full_d9_record_integrity_pass_count": 420,
+        "d9_existing_dataset_status": "COMPLETE_NATIVE_RESULT_AND_DATASET_VERIFIED",
+        "d9_provider_failure_count_reconciliation_status": "PASS_DERIVED_ZERO_FROM_COMPLETE_EXACT_ACCOUNTING",
+        "strict_d9_missing_provider_failure_count_compatibility_status": "PASS",
+    })
+    return scope, binding, refs
+
+
+def test_closeout_job_accepts_strict_d9_missing_provider_failure_count_reconciliation(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    scope, _binding, refs = _d9_missing_provider_failure_fixture(tmp_path, monkeypatch)
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is True
+
+
+@pytest.mark.parametrize("mutation", [
+    "failed", "completed", "provider_requests", "fresh_provider", "solver", "native_solves",
+    "cache_reuse", "native_retry", "mpb", "binding_missing", "binding_nonzero", "binding_incomplete",
+    "evidence_incomplete",
+])
+def test_closeout_job_rejects_d9_missing_provider_failure_count_without_exact_reconciliation(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mutation: str,
+) -> None:
+    scope, binding, refs = _d9_missing_provider_failure_fixture(tmp_path, monkeypatch)
+    job_path = next((scope.state / "science-jobs").glob("MEPHC-SCIENCE-*.json"))
+    job = json.loads(job_path.read_text(encoding="utf-8"))
+    summary = job["result"]["result_summary"]
+    if mutation == "failed":
+        summary["failed_key_count"] = 1
+    elif mutation == "completed":
+        summary["completed_key_count"] = 419
+    elif mutation == "provider_requests":
+        summary["provider_request_count"] = 419
+    elif mutation == "fresh_provider":
+        summary["fresh_provider_execution_count"] = 419
+    elif mutation == "solver":
+        summary["solver_executions"] = 419
+    elif mutation == "native_solves":
+        summary["native_solves"] = 419
+    elif mutation == "cache_reuse":
+        summary["cache_reuse_count"] = 1
+    elif mutation == "native_retry":
+        summary["native_retry_count"] = 1
+    elif mutation == "mpb":
+        summary["mpb_execution"] = False
+    elif mutation == "binding_missing":
+        binding.pop("provider_failure_count")
+    elif mutation == "binding_nonzero":
+        binding["provider_failure_count"] = 1
+    elif mutation == "binding_incomplete":
+        binding["completion_state"] = "PARTIAL"
+    elif mutation == "evidence_incomplete":
+        evidence = scope.control / "audit/e9f/d9r1_fr04_residual_composite_dataset_reconciliation.json"
+        value = json.loads(evidence.read_text(encoding="utf-8"))
+        value["full_d9_record_integrity_pass_count"] = 419
+        write_json(evidence, value)
+    write_json(job_path, job)
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is False
+
+
 def _d6r2_binding_fixture(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[flow.Paths, dict, dict]:
     scope = paths(tmp_path)
     work_order_id = "MEPHC-E9F-D6R2-FR04-R64-CORRECTED-SHARED-ACQUISITION-20260829-333"
