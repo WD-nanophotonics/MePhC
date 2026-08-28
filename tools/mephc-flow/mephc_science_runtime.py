@@ -125,14 +125,42 @@ def _atomic_bytes(path: Path, payload: bytes) -> None:
             handle.flush()
             os.fsync(handle.fileno())
         os.replace(temporary, path)
+        _fsync_directory(path.parent)
     finally:
         temporary.unlink(missing_ok=True)
+
+
+def _fsync_directory(directory: Path) -> None:
+    """Durably publish a replacement in the canonical Linux runtime."""
+    if os.name == "nt":
+        return
+    try:
+        descriptor = os.open(directory, os.O_RDONLY)
+        try:
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+    except OSError as exc:
+        raise ScienceRuntimeError("RETENTION_DIRECTORY_FSYNC_FAILED") from exc
 
 
 def _payload_has_state(payload: Any) -> bool:
     if isinstance(payload, dict):
         return "frequencies" in payload and "normalized_vectors" in payload
     return hasattr(payload, "frequencies") and hasattr(payload, "normalized_vectors")
+
+
+def _canonical_json_bytes(value: Any) -> bytes:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+
+
+def _dataset_id(content: dict[str, Any]) -> str:
+    return hashlib.sha256(_canonical_json_bytes(content)).hexdigest()
+
+
+def _manifest_sha(content: dict[str, Any]) -> str:
+    unsigned = {key: value for key, value in content.items() if key != "manifest_sha256"}
+    return hashlib.sha256(_canonical_json_bytes(unsigned)).hexdigest()
 
 
 class ExactKeyRetention:
@@ -150,6 +178,10 @@ class ExactKeyRetention:
     def _paths(self, key: bytes) -> tuple[Path, Path]:
         digest = hashlib.sha256(key).hexdigest()
         return self.records / f"{digest}.payload", self.records / f"{digest}.json"
+
+    @property
+    def namespace_id(self) -> str:
+        return hashlib.sha256(_canonical_json_bytes(self.namespace)).hexdigest()[:24]
 
     def expected_identity(self, key: bytes) -> dict[str, Any]:
         return _request_identity(self.namespace, key)
@@ -213,6 +245,84 @@ class ExactKeyRetention:
         _atomic_bytes(metadata_path, json.dumps(metadata, sort_keys=True, separators=(",", ":")).encode("utf-8"))
         self.completed.add(hashlib.sha256(key).hexdigest())
 
+    def record_metadata(self, key: bytes) -> dict[str, Any]:
+        payload_path, metadata_path = self._paths(key)
+        if not payload_path.is_file() or not metadata_path.is_file():
+            raise ScienceRuntimeError("RETENTION_RECORD_INCOMPLETE")
+        try:
+            metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise ScienceRuntimeError("RETENTION_METADATA_CORRUPT") from exc
+        if (metadata.get("complete") is not True
+                or metadata.get("identity") != self.expected_identity(key)
+                or metadata.get("key_sha256") != hashlib.sha256(key).hexdigest()):
+            raise ScienceRuntimeError("RETENTION_RECORD_IDENTITY_INVALID")
+        payload_bytes = payload_path.read_bytes()
+        if (metadata.get("payload_sha256") != hashlib.sha256(payload_bytes).hexdigest()
+                or metadata.get("payload_size_bytes") != len(payload_bytes)):
+            raise ScienceRuntimeError("RETENTION_PAYLOAD_INTEGRITY_MISMATCH")
+        return {
+            "key_sha256": metadata["key_sha256"],
+            "payload_sha256": metadata["payload_sha256"],
+            "payload_size_bytes": metadata["payload_size_bytes"],
+            "identity": metadata["identity"],
+        }
+
+    def finalize_dataset_manifest(
+        self, plan: list[dict[str, Any]], *, fresh_provider_execution_count: int,
+        cache_reuse_count: int, fresh_mpb_execution_observed: bool,
+    ) -> dict[str, Any]:
+        if len(plan) != MAX_UNIQUE_REQUESTS:
+            raise ScienceRuntimeError("DATASET_COMPLETION_COUNT_INVALID")
+        module = _entrypoint_module()
+        records = [self.record_metadata(module.canonical_key(item["request_key"])) for item in plan]
+        records.sort(key=lambda item: item["key_sha256"])
+        keys = [_key_fields(module.canonical_key(item["request_key"])) for item in plan]
+        identities = {
+            field: {value[field] for value in keys}
+            for field in ("source_model_identity", "provider_configuration_identity", "band_request_configuration")
+        }
+        if any(len(values) != 1 for values in identities.values()):
+            raise ScienceRuntimeError("DATASET_IDENTITY_SET_INVALID")
+        content: dict[str, Any] = {
+            "schema": "mephc_direct_flow_r8_acquisition_dataset_v1",
+            "project_id": PROJECT_ID,
+            "science_contract_id": SCIENCE_CONTRACT_ID,
+            "acquisition_source_commit": self.namespace["source_commit"],
+            "entrypoint_sha256": self.namespace["entrypoint_sha256"],
+            "graph_sha256": self.namespace["graph_sha256"],
+            "source_model_identity": next(iter(identities["source_model_identity"])),
+            "provider_configuration_identity": next(iter(identities["provider_configuration_identity"])),
+            "band_request_configuration": next(iter(identities["band_request_configuration"])),
+            "logical_provider_demand_count": 216,
+            "unique_provider_request_count": MAX_UNIQUE_REQUESTS,
+            "completed_key_count": MAX_UNIQUE_REQUESTS,
+            "records": records,
+            "fresh_provider_execution_count": fresh_provider_execution_count,
+            "cache_reuse_count": cache_reuse_count,
+            "fresh_mpb_execution_observed": bool(fresh_mpb_execution_observed),
+            "dataset_is_mpb_backed": True,
+            "completion_state": "COMPLETE",
+        }
+        content["dataset_id"] = _dataset_id(content)
+        content["manifest_sha256"] = _manifest_sha(content)
+        manifest_path = self.root / "acquisition-dataset-manifest.json"
+        if manifest_path.is_file():
+            try:
+                existing = json.loads(manifest_path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+                raise ScienceRuntimeError("DATASET_MANIFEST_CORRUPT") from exc
+            static_fields = set(content) - {
+                "fresh_provider_execution_count", "cache_reuse_count",
+                "fresh_mpb_execution_observed", "dataset_id", "manifest_sha256",
+            }
+            if any(existing.get(field) != content[field] for field in static_fields):
+                raise ScienceRuntimeError("DATASET_MANIFEST_IMMUTABILITY_VIOLATION")
+            return existing
+        else:
+            _atomic_bytes(manifest_path, _canonical_json_bytes(content))
+        return content
+
     def load_run_manifest(self) -> dict[str, Any]:
         path = self.root / "run-manifest.json"
         if not path.is_file():
@@ -238,6 +348,78 @@ class ExactKeyRetention:
         _atomic_bytes(self.root / "run-manifest.json", json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8"))
         self._manifest = value
         return value
+
+
+class ImmutableR8DatasetConsumer:
+    """Read-only consumer for a completed acquisition from any later commit."""
+
+    REQUIRED_BINDING_FIELDS = frozenset({
+        "acquisition_source_commit", "acquisition_dataset_id",
+        "dataset_manifest_sha256", "entrypoint_sha256", "graph_sha256",
+    })
+
+    def __init__(self, binding: dict[str, str]) -> None:
+        if set(binding) != set(self.REQUIRED_BINDING_FIELDS):
+            raise ScienceRuntimeError("DATASET_BINDING_FIELDS_INVALID")
+        if (len(binding["acquisition_source_commit"]) != 40
+                or any(len(binding[field]) != 64 for field in (
+                    "acquisition_dataset_id", "dataset_manifest_sha256",
+                    "entrypoint_sha256", "graph_sha256"))):
+            raise ScienceRuntimeError("DATASET_BINDING_DIGEST_INVALID")
+        namespace = {
+            "project_id": PROJECT_ID,
+            "science_contract_id": SCIENCE_CONTRACT_ID,
+            "source_commit": binding["acquisition_source_commit"],
+            "entrypoint_sha256": binding["entrypoint_sha256"],
+            "graph_sha256": binding["graph_sha256"],
+        }
+        retention = ExactKeyRetention(namespace)
+        manifest_path = retention.root / "acquisition-dataset-manifest.json"
+        try:
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise ScienceRuntimeError("DATASET_MANIFEST_UNAVAILABLE") from exc
+        if manifest.get("manifest_sha256") != binding["dataset_manifest_sha256"]:
+            raise ScienceRuntimeError("DATASET_MANIFEST_SHA_MISMATCH")
+        if _manifest_sha(manifest) != binding["dataset_manifest_sha256"]:
+            raise ScienceRuntimeError("DATASET_MANIFEST_INTEGRITY_MISMATCH")
+        unsigned = {key: value for key, value in manifest.items() if key not in {"dataset_id", "manifest_sha256"}}
+        if manifest.get("dataset_id") != binding["acquisition_dataset_id"] or _dataset_id(unsigned) != binding["acquisition_dataset_id"]:
+            raise ScienceRuntimeError("DATASET_ID_MISMATCH")
+        if (manifest.get("project_id") != PROJECT_ID
+                or manifest.get("science_contract_id") != SCIENCE_CONTRACT_ID
+                or manifest.get("acquisition_source_commit") != binding["acquisition_source_commit"]
+                or manifest.get("entrypoint_sha256") != binding["entrypoint_sha256"]
+                or manifest.get("graph_sha256") != binding["graph_sha256"]
+                or manifest.get("completion_state") != "COMPLETE"
+                or manifest.get("completed_key_count") != MAX_UNIQUE_REQUESTS):
+            raise ScienceRuntimeError("DATASET_MANIFEST_IDENTITY_INVALID")
+        self.binding = dict(binding)
+        self.retention = retention
+        self.manifest = manifest
+        self.records = {record["key_sha256"]: record for record in manifest.get("records", [])}
+        if len(self.records) != MAX_UNIQUE_REQUESTS:
+            raise ScienceRuntimeError("DATASET_RECORD_COUNT_INVALID")
+
+    def lookup_exact(self, key: bytes) -> Any:
+        key_sha = hashlib.sha256(key).hexdigest()
+        record = self.records.get(key_sha)
+        if record is None:
+            raise ScienceRuntimeError("DATASET_KEY_NOT_IN_IMMUTABLE_DATASET")
+        payload = self.retention.lookup_exact(key)
+        if payload is None:
+            raise ScienceRuntimeError("DATASET_RECORD_NOT_COMPLETE")
+        actual = self.retention.record_metadata(key)
+        if {field: actual[field] for field in ("key_sha256", "payload_sha256", "payload_size_bytes")} != {
+            field: record[field] for field in ("key_sha256", "payload_sha256", "payload_size_bytes")
+        }:
+            raise ScienceRuntimeError("DATASET_RECORD_METADATA_MISMATCH")
+        return payload
+
+
+def open_r8_dataset(binding: dict[str, str]) -> ImmutableR8DatasetConsumer:
+    """Open only the fixed, immutable, read-only R8 dataset binding."""
+    return ImmutableR8DatasetConsumer(binding)
 
 
 def _verified_plan() -> tuple[dict[str, Any], list[dict[str, Any]]]:
@@ -302,6 +484,7 @@ class R8ScienceRuntime:
             raise ScienceRuntimeError("PROVIDER_REQUEST_CAP_EXCEEDED")
         reused = 0
         fresh = 0
+        fresh_mpb_execution_observed = False
         for item in plan:
             key = _canonical_key(item["request_key"])
             payload = self.retention.lookup_exact(key)
@@ -312,6 +495,7 @@ class R8ScienceRuntime:
             if fresh >= MAX_FRESH_SOLVER_EXECUTIONS:
                 raise ScienceRuntimeError("FRESH_SOLVER_EXECUTION_CAP_EXCEEDED")
             payload = self.provider_solve(item["request_key"])
+            fresh_mpb_execution_observed = True
             self.retention.store_exact(key, payload, self.retention.expected_identity(key))
             self.retention.mark_complete(key)
             fresh += 1
@@ -319,9 +503,16 @@ class R8ScienceRuntime:
         namespace_id = hashlib.sha256(
             json.dumps(self.retention.namespace, sort_keys=True, separators=(",", ":")).encode("utf-8")
         ).hexdigest()[:24]
+        dataset = self.retention.finalize_dataset_manifest(
+            plan,
+            fresh_provider_execution_count=fresh,
+            cache_reuse_count=reused,
+            fresh_mpb_execution_observed=fresh_mpb_execution_observed,
+        )
         summary = {
             "science_contract_id": self.retention.namespace["science_contract_id"],
             "source_commit": self.retention.namespace["source_commit"],
+            "acquisition_source_commit": dataset["acquisition_source_commit"],
             "entrypoint_sha256": self.retention.namespace["entrypoint_sha256"],
             "graph_sha256": self.retention.namespace["graph_sha256"],
             "logical_provider_demand_count": 216,
@@ -329,6 +520,11 @@ class R8ScienceRuntime:
             "cache_reuse_count": reused,
             "fresh_native_solver_execution_count": fresh,
             "completed_key_count": len(plan),
+            "fresh_provider_execution_count": fresh,
+            "fresh_mpb_execution_observed": fresh_mpb_execution_observed,
+            "dataset_is_mpb_backed": dataset["dataset_is_mpb_backed"],
+            "acquisition_dataset_id": dataset["dataset_id"],
+            "acquisition_dataset_manifest_sha256": dataset["manifest_sha256"],
             "failed_key_count": 0,
             "provider_failure_count": 0,
             "mpb_execution_observed": False,

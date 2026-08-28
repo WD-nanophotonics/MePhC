@@ -3,7 +3,9 @@ from __future__ import annotations
 import importlib.util
 import inspect
 import json
+import pickle
 from pathlib import Path
+import sys
 
 import pytest
 
@@ -61,6 +63,14 @@ class FakeRetention:
 
     def finalize_run_manifest(self, summary=None):
         return {"completed_count": len(self.completed), **(summary or {})}
+
+    def finalize_dataset_manifest(self, plan, *, fresh_provider_execution_count, cache_reuse_count, fresh_mpb_execution_observed):
+        return {
+            "acquisition_source_commit": self.namespace["source_commit"],
+            "dataset_id": "d" * 64,
+            "manifest_sha256": "e" * 64,
+            "dataset_is_mpb_backed": True,
+        }
 
 
 def test_zero_argument_runtime_factory_constructs_official_context(monkeypatch):
@@ -182,7 +192,7 @@ def test_payload_byte_integrity_and_size_are_verified_before_reuse(monkeypatch, 
     payload_path.write_bytes(payload_path.read_bytes() + b"tamper")
     with pytest.raises(runtime.ScienceRuntimeError, match="INTEGRITY_MISMATCH"):
         retention.lookup_exact(key)
-    payload_path.write_bytes(__import__("pickle").dumps(payload, protocol=__import__("pickle").HIGHEST_PROTOCOL))
+    payload_path.write_bytes(pickle.dumps(payload, protocol=pickle.HIGHEST_PROTOCOL))
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     metadata["payload_size_bytes"] += 1
     metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
@@ -203,13 +213,73 @@ def test_production_summary_does_not_aggregate_payloads_or_exceed_stdout_limit(m
 
     monkeypatch.setattr(runtime, "_official_r8_provider_factory", lambda: provider)
     monkeypatch.setattr(runtime, "_official_private_retention", lambda: retention)
-    monkeypatch.setattr(__import__("sys"), "argv", ["qp_b_c2_c3_r8_locked_set_native.py"])
+    monkeypatch.setattr(sys, "argv", ["qp_b_c2_c3_r8_locked_set_native.py"])
     assert entrypoint.main() == 0
     stdout = capsys.readouterr().out
     assert len(stdout.encode("utf-8")) <= entrypoint.MAX_SUCCESS_STDOUT_BYTES
     assert "normalized_vectors" not in stdout
     assert "raw-state-" not in stdout
     assert "opaque_retention_namespace_id" in stdout
+
+
+def test_complete_dataset_is_immutable_and_cross_commit_consumer_is_read_only(monkeypatch, tmp_path):
+    runtime = load_runtime()
+    entrypoint, requests = plan()
+    namespace = runtime._identity()
+    monkeypatch.setattr(runtime, "_trusted_science_state_root", lambda: tmp_path)
+    retention = runtime.ExactKeyRetention(namespace)
+    calls = []
+
+    def provider(request):
+        calls.append(request)
+        return {"frequencies": [1.0], "normalized_vectors": [[1.0]]}
+
+    first = runtime.R8ScienceRuntime(provider, retention)
+    summary = first.execute(requests)
+    assert len(calls) == 210
+    assert summary["fresh_provider_execution_count"] == 210
+    assert summary["fresh_mpb_execution_observed"] is True
+    assert summary["dataset_is_mpb_backed"] is True
+    assert len(summary["acquisition_dataset_id"]) == 64
+    binding = {
+        "acquisition_source_commit": namespace["source_commit"],
+        "acquisition_dataset_id": summary["acquisition_dataset_id"],
+        "dataset_manifest_sha256": summary["acquisition_dataset_manifest_sha256"],
+        "entrypoint_sha256": namespace["entrypoint_sha256"],
+        "graph_sha256": namespace["graph_sha256"],
+    }
+    consumer = runtime.open_r8_dataset(binding)
+    assert consumer.lookup_exact(entrypoint.canonical_key(requests[0]["request_key"]))["frequencies"] == [1.0]
+    with pytest.raises(runtime.ScienceRuntimeError, match="KEY_NOT_IN_IMMUTABLE_DATASET"):
+        consumer.lookup_exact(b"outside")
+
+    calls.clear()
+    resumed = runtime.R8ScienceRuntime(lambda _request: pytest.fail("all keys should be reused"), runtime.ExactKeyRetention(namespace))
+    resumed_summary = resumed.execute(requests)
+    assert resumed_summary["fresh_provider_execution_count"] == 0
+    assert resumed_summary["fresh_mpb_execution_observed"] is False
+    assert resumed_summary["dataset_is_mpb_backed"] is True
+    assert resumed_summary["acquisition_dataset_id"] == summary["acquisition_dataset_id"]
+
+
+def test_directory_fsync_is_required_for_durable_replacement(monkeypatch, tmp_path):
+    runtime = load_runtime()
+    entrypoint, requests = plan()
+    namespace = runtime._identity()
+    monkeypatch.setattr(runtime, "_trusted_science_state_root", lambda: tmp_path)
+    fsync_calls = []
+    monkeypatch.setattr(runtime, "_fsync_directory", lambda directory: fsync_calls.append(directory))
+    retention = runtime.ExactKeyRetention(namespace)
+    key = entrypoint.canonical_key(requests[0]["request_key"])
+    payload = {"frequencies": [1.0], "normalized_vectors": [[1.0]]}
+    retention.store_exact(key, payload, retention.expected_identity(key))
+    retention.mark_complete(key)
+    assert len(fsync_calls) == 3
+
+    failing = runtime.ExactKeyRetention({**namespace, "source_commit": "9" * 40})
+    monkeypatch.setattr(runtime, "_fsync_directory", lambda _directory: (_ for _ in ()).throw(runtime.ScienceRuntimeError("fsync")))
+    with pytest.raises(runtime.ScienceRuntimeError, match="fsync"):
+        failing.store_exact(key, payload, failing.expected_identity(key))
 
 
 def test_manifest_summary_is_bounded_and_root_is_canonical_runtime_derived(monkeypatch, tmp_path):
