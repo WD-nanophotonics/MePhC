@@ -1,0 +1,329 @@
+{
+  "band2_chern_execution": false,
+  "controls": {
+    "envelopes": null,
+    "ids": [
+      "fr=0;grid_i=-10;grid_j=-3;estimator=SOURCE_GRID",
+      "fr=0;grid_i=-34;grid_j=9;estimator=SOURCE_GRID"
+    ],
+    "valid": false
+  },
+  "current_0p02_policy_calibration": "INCONCLUSIVE",
+  "dataset": {
+    "acquisition_source_commit": "c8eeaa4e5fa78e25a5b7df07510b446b1f6d6738",
+    "dataset_id": "a2935beba40ef0c4b524198e6d2f44b93630bdff4c645e61a47d31187012b3db",
+    "manifest_sha256": "55828e4a0eb6e24914807e42d13fa113457ce080ffe37c947b3c0cd7af1281d7",
+    "record_count": 210
+  },
+  "execution": {
+    "mpb_execution": false,
+    "native_invocations": 0,
+    "provider_requests": 0,
+    "solver_executions": 0
+  },
+  "full_source_grid_validation_still_required": true,
+  "global_validation_state": "EXECUTED_LOCKED_SET_CALIBRATION_COMPLETE",
+  "historical_anchor_binding": {
+    "curvature_value_count": 30,
+    "sample_count": 5,
+    "source": "audit/e9f/qp_b_c2_evidence_reuse_matrix.json",
+    "status": "PARTIAL"
+  },
+  "policy_challenges": {
+    "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID": "INCOMPLETE_OR_AMBIGUOUS",
+    "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID": "INCOMPLETE_OR_AMBIGUOUS",
+    "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID": "INCOMPLETE_OR_AMBIGUOUS",
+    "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID": "INCOMPLETE_OR_AMBIGUOUS",
+    "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID": "INCOMPLETE_OR_AMBIGUOUS"
+  },
+  "samples": {
+    "fr=0;grid_i=-10;grid_j=-3;estimator=SOURCE_GRID": {
+      "all_evidence_complete": true,
+      "final_resolution_metric": 0.0028873534304547817,
+      "final_stencil_metric": 0.005066330928792239,
+      "resolution_contraction_pass": true,
+      "role": "CALIBRATION_CONTROL",
+      "stencil_contraction_pass": true,
+      "stencil_srd": {
+        "R128": 0.005273504204847125,
+        "R160": 0.005066330928792239,
+        "R96": 0.005394955596552323
+      },
+      "stencils": {
+        "1/144": {
+          "omega": {
+            "R128": -4.009721502491367,
+            "R160": -4.020482695508246,
+            "R96": -3.9389469168716373
+          },
+          "resolution_contraction_pass": true,
+          "step_128_160": 0.0026801791714238317,
+          "step_96_128": 0.01780790992547178
+        },
+        "1/72": {
+          "omega": {
+            "R128": -3.9886318275324997,
+            "R160": -4.000165067592673,
+            "R96": -3.9177536415475975
+          },
+          "resolution_contraction_pass": true,
+          "step_128_160": 0.0028873534304547817,
+          "step_96_128": 0.017929352486566474
+        }
+      }
+    },
+    "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID": {
+      "all_evidence_complete": true,
+      "final_resolution_metric": 0.02342781393245851,
+      "final_stencil_metric": 0.036297457552595204,
+      "resolution_contraction_pass": true,
+      "role": "POLICY_CHALLENGE",
+      "stencil_contraction_pass": false,
+      "stencil_srd": {
+        "R128": 0.03578694927821401,
+        "R160": 0.036297457552595204,
+        "R96": 0.03891575372806515
+      },
+      "stencils": {
+        "1/144": {
+          "omega": {
+            "R128": -12.37248289993709,
+            "R160": -12.085978755567425,
+            "R96": -11.033600076938704
+          },
+          "resolution_contraction_pass": true,
+          "step_128_160": 0.02342781393245851,
+          "step_96_128": 0.11440468909908118
+        },
+        "1/72": {
+          "omega": {
+            "R128": -12.823323421359055,
+            "R160": -12.532777892788102,
+            "R96": -11.47150157366876
+          },
+          "resolution_contraction_pass": true,
+          "step_128_160": 0.02291720836506088,
+          "step_96_128": 0.11128475697741871
+        }
+      }
+    },
+    "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID": {
+      "all_evidence_complete": true,
+      "final_resolution_metric": 0.02968318638515552,
+      "final_stencil_metric": 0.03340280108472533,
+      "resolution_contraction_pass": true,
+      "role": "POLICY_CHALLENGE",
+      "stencil_contraction_pass": false,
+      "stencil_srd": {
+        "R128": 0.032931332455303323,
+        "R160": 0.03340280108472533,
+        "R96": 0.03534470650424535
+      },
+      "stencils": {
+        "1/144": {
+          "omega": {
+            "R128": -21.980910968539103,
+            "R160": -21.337989470670575,
+            "R96": -20.568098580959212
+          },
+          "resolution_contraction_pass": true,
+          "step_128_160": 0.02968318638515552,
+          "step_96_128": 0.06640870857105761
+        },
+        "1/72": {
+          "omega": {
+            "R128": -22.716890041073373,
+            "R160": -22.062844177297745,
+            "R96": -21.308150446648963
+          },
+          "resolution_contraction_pass": true,
+          "step_128_160": 0.029211690296603105,
+          "step_96_128": 0.06399719699598136
+        }
+      }
+    },
+    "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID": {
+      "all_evidence_complete": true,
+      "final_resolution_metric": 0.02760381379341383,
+      "final_stencil_metric": 0.0334333197411788,
+      "resolution_contraction_pass": true,
+      "role": "POLICY_CHALLENGE",
+      "stencil_contraction_pass": false,
+      "stencil_srd": {
+        "R128": 0.032869429375047325,
+        "R160": 0.0334333197411788,
+        "R96": 0.0354360237186905
+      },
+      "stencils": {
+        "1/144": {
+          "omega": {
+            "R128": -21.98361406302429,
+            "R160": -21.385043883806997,
+            "R96": -20.566986417516787
+          },
+          "resolution_contraction_pass": true,
+          "step_128_160": 0.02760381379341383,
+          "step_96_128": 0.06658555364713807
+        },
+        "1/72": {
+          "omega": {
+            "R128": -22.718276886777073,
+            "R160": -22.11217204785416,
+            "R96": -21.30894466098684
+          },
+          "resolution_contraction_pass": true,
+          "step_128_160": 0.02703987371648654,
+          "step_96_128": 0.06402094777937727
+        }
+      }
+    },
+    "fr=0;grid_i=-34;grid_j=9;estimator=SOURCE_GRID": {
+      "all_evidence_complete": true,
+      "final_resolution_metric": 0.009930541291770208,
+      "final_stencil_metric": 0.026059203802658134,
+      "resolution_contraction_pass": false,
+      "role": "CALIBRATION_CONTROL",
+      "stencil_contraction_pass": false,
+      "stencil_srd": {
+        "R128": 0.025997567922237032,
+        "R160": 0.026059203802658134,
+        "R96": 0.024395215442912017
+      },
+      "stencils": {
+        "1/144": {
+          "omega": {
+            "R128": -2.1156705063188364,
+            "R160": -2.0948936952036203,
+            "R96": -2.095755424971097
+          },
+          "resolution_contraction_pass": false,
+          "step_128_160": 0.009868896480763088,
+          "step_96_128": 0.009457642932658428
+        },
+        "1/72": {
+          "omega": {
+            "R128": -2.06137400709302,
+            "R160": -2.0410045870810603,
+            "R96": -2.045245124691973
+          },
+          "resolution_contraction_pass": false,
+          "step_128_160": 0.009930541291770208,
+          "step_96_128": 0.007855066118116689
+        }
+      }
+    },
+    "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID": {
+      "all_evidence_complete": true,
+      "final_resolution_metric": 0.07438619108027796,
+      "final_stencil_metric": 0.018156296353467227,
+      "resolution_contraction_pass": false,
+      "role": "POLICY_CHALLENGE",
+      "stencil_contraction_pass": false,
+      "stencil_srd": {
+        "R128": 0.018134911164137794,
+        "R160": 0.018156296353467227,
+        "R96": 0.01937730009682182
+      },
+      "stencils": {
+        "1/144": {
+          "omega": {
+            "R128": -25.71651974347312,
+            "R160": -27.702778353332704,
+            "R96": -24.993560939842883
+          },
+          "resolution_contraction_pass": false,
+          "step_128_160": 0.07436483370710369,
+          "step_96_128": 0.028513415632095293
+        },
+        "1/72": {
+          "omega": {
+            "R128": -26.187153999685407,
+            "R160": -28.21036616429081,
+            "R96": -25.482606865493654
+          },
+          "resolution_contraction_pass": false,
+          "step_128_160": 0.07438619108027796,
+          "step_96_128": 0.027271159083941354
+        }
+      }
+    },
+    "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID": {
+      "all_evidence_complete": true,
+      "final_resolution_metric": 0.07190988053941842,
+      "final_stencil_metric": 0.015347367183389802,
+      "resolution_contraction_pass": true,
+      "role": "POLICY_CHALLENGE",
+      "stencil_contraction_pass": false,
+      "stencil_srd": {
+        "R128": 0.014984460797346994,
+        "R160": 0.015347367183389802,
+        "R96": 0.015592465296929111
+      },
+      "stencils": {
+        "1/144": {
+          "omega": {
+            "R128": -12.510015644781006,
+            "R160": -13.438282540343062,
+            "R96": -11.412151221521722
+          },
+          "resolution_contraction_pass": true,
+          "step_128_160": 0.07154742009972914,
+          "step_96_128": 0.09178636947021385
+        },
+        "1/72": {
+          "omega": {
+            "R128": -12.698886548107755,
+            "R160": -13.646119673199992,
+            "R96": -11.591492983506626
+          },
+          "resolution_contraction_pass": true,
+          "step_128_160": 0.07190988053941842,
+          "step_96_128": 0.09117960163280572
+        }
+      }
+    },
+    "fr=0;grid_i=-6;grid_j=-1;estimator=SOURCE_GRID": {
+      "all_evidence_complete": true,
+      "final_resolution_metric": 0.06017317602264111,
+      "final_stencil_metric": 0.011634476438319967,
+      "resolution_contraction_pass": true,
+      "role": "STENCIL_DIAGNOSTIC",
+      "stencil_contraction_pass": false,
+      "stencil_srd": {
+        "R128": 0.010258711137977407,
+        "R160": 0.011634476438319967,
+        "R96": 0.009036467262326901
+      },
+      "stencils": {
+        "1/144": {
+          "omega": {
+            "R128": -7.201062735675269,
+            "R160": -7.63730011731458,
+            "R96": -6.282519153594969
+          },
+          "resolution_contraction_pass": true,
+          "step_128_160": 0.05879858660437207,
+          "step_96_128": 0.13624622739321884
+        },
+        "1/72": {
+          "omega": {
+            "R128": -7.275317235901272,
+            "R160": -7.726676026536855,
+            "R96": -6.339548604635028
+          },
+          "resolution_contraction_pass": true,
+          "step_128_160": 0.06017317602264111,
+          "step_96_128": 0.13746277667755313
+        }
+      }
+    }
+  },
+  "schema": "mephc-r8-c1-locked-set-calibration-v1",
+  "stencil_diagnostic": {
+    "pass": false,
+    "sample_id": "fr=0;grid_i=-6;grid_j=-1;estimator=SOURCE_GRID"
+  },
+  "terminal": "E9F_C2_QP_B_C2_C3_R8_C1_M1_LOCKED_SET_CALIBRATION_COMPLETE",
+  "threshold_change_authorized": false,
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-C1-M1-20260828-305"
+}
