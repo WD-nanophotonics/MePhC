@@ -476,6 +476,9 @@ def dataset_verify(paths: Paths, dataset_id: str) -> dict[str, Any]:
 def _science_runtime_module(paths: Paths):
     name = "_mephc_science_runtime_reconcile"
     path = paths.control / "tools" / "mephc-flow" / "mephc_science_runtime.py"
+    root = str(paths.control)
+    if root not in sys.path:
+        sys.path.insert(0, root)
     spec = importlib.util.spec_from_file_location(name, path)
     if spec is None or spec.loader is None:
         raise FlowError("SCIENCE_RUNTIME_MODULE_UNAVAILABLE")
