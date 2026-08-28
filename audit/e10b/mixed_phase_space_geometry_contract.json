@@ -1,0 +1,165 @@
+{
+  "base_sandbox_sha": "8fb300ffc361872f8f46b50ec1bf96310cbc57dd",
+  "canonical_coordinates": {
+    "F": "diag(exp(s),exp(-s))",
+    "deformation_parameter": "s",
+    "local_direct_lattice": "A(s)=F(s)A0",
+    "local_mpb_fractional_coordinate": "kappa(s,q)=A(s)^T q",
+    "public_physical_q": "q=(a/(2*pi))*k_phys"
+  },
+  "e10a_artifact_hashes": {
+    "audit/e10a/local_nonuniform_deformation_feasibility.json": "fece715f1dd4ca9e6eb6fcc11d0b4950189f31f24c3faa2d5ef51d20933cb7a0",
+    "audit/e10a/local_nonuniform_deformation_observable_contract.json": "f8b8cc197ac5034f8e31b50bbd2157dbaf37642c28cc625df28304b7eab64ffc",
+    "audit/e10a/local_nonuniform_deformation_observable_contract.py": "591683527780a57d0bec4ff620e52292571432f54d55afcd9d01b945f76537f6"
+  },
+  "e10a_provenance_status": "VERIFIED_BOUND_E10A_CONTRACT_AND_FEASIBILITY",
+  "fixed_q_chain_rule": {
+    "fixed_kappa_warning": "A derivative at fixed kappa is not a fixed-physical-momentum derivative under deformation.",
+    "local_profile": "grad_r omega_n=[partial_s omega_n|q] grad_r s, plus only convention-required physical-coordinate terms",
+    "partial_kappa_fixed_q": "(partial kappa/partial s)|q=(partial_s A(s))^T q",
+    "statement": "(d/ds)|q = (partial/dpartial s)|kappa + [(partial kappa/partial s)|q] dot grad_kappa"
+  },
+  "local_states": {
+    "rank1": "|u_n(q;s)> is the periodic Maxwell eigenstate at geometry s and kappa(s,q)",
+    "rankN": "Q_N(q;s) is the isolated rank-N subspace at the same derived kappa",
+    "required_request_identity": [
+      "geometry_identity",
+      "s_identity",
+      "physical_q_identity",
+      "derived_local_kappa_identity",
+      "representation_identity",
+      "solver_configuration"
+    ]
+  },
+  "main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "mixed_conversion": {
+    "Omega_ki_rj": "(a/(2*pi))*Omega_qi_s*partial_rj s",
+    "Omega_ki_s": "(a/(2*pi))*Omega_qi_s",
+    "Omega_qi_rj": "Omega_qi_s * partial_rj s",
+    "units": {
+      "Omega_ki_rj": "dimensionless",
+      "Omega_ki_s": "length",
+      "Omega_qi_rj": "dimensionless_per_length",
+      "Omega_qi_s": "dimensionless"
+    }
+  },
+  "phase_space_objects": [
+    "A_qx",
+    "A_qy",
+    "A_s",
+    "Omega_qx_qy",
+    "Omega_qx_s",
+    "Omega_qy_s"
+  ],
+  "reference_equations": {
+    "affine_limit": "The validated uniform affine E8B pilot has grad_r s=0, so Omega_kr and the deformation-force term are parametrically absent there; this does not establish their absence for local nonuniform deformation.",
+    "exact_linear_system": {
+      "matrix": "[(I-Omega_rk), -Omega_rr; Omega_kk, (I+Omega_kr)] [dot_k;dot_r]=[-partial_r omega;partial_k omega]",
+      "validity": "requires declared phase-space conventions and invertible coupled matrix"
+    },
+    "first_order_grad_s": {
+      "force_refraction": "dot_k=-[partial_s omega|q] grad_r s+O(|grad s|^2)",
+      "mixed_deformation_velocity": "-Omega_kr v_g=-[Omega_ks tensor grad_r s]v_g",
+      "momentum_anomalous_velocity": "+Omega_kk [partial_s omega|q grad_r s]",
+      "ordinary_group_velocity": "v_g=partial_k omega",
+      "retained_order": "both curvature terms are first order in grad_r s and neither may be discarded solely because the gradient is small"
+    },
+    "one_parameter_substitution": {
+      "Omega_kr": "Omega_ks tensor grad_r s",
+      "Omega_rk": "-transpose(Omega_kr)",
+      "Omega_rr": "0 by scalar antisymmetry"
+    },
+    "reference_equations": {
+      "dot_k": "dot(k)=-partial_r omega+Omega_rk dot(k)+Omega_rr dot(r)",
+      "dot_r": "dot(r)=partial_k omega-Omega_kk dot(k)-Omega_kr dot(r)",
+      "static_profile": "time-curvature terms absent"
+    }
+  },
+  "result_summary": {
+    "base_sandbox_sha": "8fb300ffc361872f8f46b50ec1bf96310cbc57dd",
+    "blocked_by_infrastructure": false,
+    "canonical_phase_space_coordinates": "PUBLIC_PHYSICAL_Q_AND_DEFORMATION_PARAMETER_S",
+    "capability_extension_matrix": [
+      {
+        "object": "LOCAL_AFFINE_STATE_PROVIDER(q,s)",
+        "status": "NEW_REQUIRED"
+      },
+      {
+        "object": "FIXED_Q_TO_LOCAL_KAPPA_TRANSFORM",
+        "status": "REUSABLE_WITH_CERTIFICATION"
+      },
+      {
+        "object": "REFERENCE_CELL_H_PULLBACK",
+        "status": "NEW_REQUIRED"
+      },
+      {
+        "object": "PARTIAL_S_OMEGA_AT_FIXED_Q",
+        "status": "NEW_REQUIRED"
+      },
+      {
+        "object": "MIXED_OMEGA_QS_RANK1",
+        "status": "NEW_REQUIRED"
+      },
+      {
+        "object": "TRACE_MIXED_OMEGA_QS_RANKN",
+        "status": "NEW_REQUIRED"
+      },
+      {
+        "object": "LOCAL_PROFILE_S_OF_R_AND_GRAD_S",
+        "status": "NEW_REQUIRED"
+      },
+      {
+        "object": "PHASE_SPACE_TRAJECTORY_LINEAR_SOLVER",
+        "status": "NEW_REQUIRED"
+      },
+      {
+        "object": "LOCAL_BLOCH_VALIDITY_MONITOR",
+        "status": "NEW_REQUIRED"
+      },
+      {
+        "object": "TRAJECTORY_TO_TRANSVERSE_SHIFT_OBSERVABLE",
+        "status": "NEW_REQUIRED"
+      },
+      {
+        "object": "UNCERTAINTY_PROPAGATION",
+        "status": "NEW_REQUIRED"
+      }
+    ],
+    "e10a_artifact_hashes": {
+      "audit/e10a/local_nonuniform_deformation_feasibility.json": "fece715f1dd4ca9e6eb6fcc11d0b4950189f31f24c3faa2d5ef51d20933cb7a0",
+      "audit/e10a/local_nonuniform_deformation_observable_contract.json": "f8b8cc197ac5034f8e31b50bbd2157dbaf37642c28cc625df28304b7eab64ffc",
+      "audit/e10a/local_nonuniform_deformation_observable_contract.py": "591683527780a57d0bec4ff620e52292571432f54d55afcd9d01b945f76537f6"
+    },
+    "e10a_provenance_status": "VERIFIED_BOUND_E10A_CONTRACT_AND_FEASIBILITY",
+    "e10b_next_step": "REFERENCE_CELL_OR_INNER_PRODUCT_CONTRACT_UNRESOLVED",
+    "fixed_q_derivative_contract_status": "COMPLETE_WITH_KAPPA_CHAIN_RULE",
+    "h_space_variable_geometry_inner_product_status": "UNRESOLVED_REQUIRES_MATERIAL_METRIC_AND_COMPONENT_PULLBACK",
+    "main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+    "minimal_capability_extension_status": "UNIQUELY_DEFINED_BUT_NOT_IMPLEMENTED",
+    "mixed_qs_curvature_contract_status": "COMPLETE_ONE_PARAMETER_PULLBACK",
+    "mixed_wilson_estimator_status": "DEFINED_GAUGE_INVARIANT_SIGNED_DIAMOND",
+    "mpb_execution": false,
+    "native_invocation_count": 0,
+    "native_solves": 0,
+    "next_live_solver_authorization": false,
+    "next_scientific_state": "E10B_MIXED_PHASE_SPACE_GEOMETRY_CONTRACT_COMPLETE_READY_FOR_REFERENCE_CELL_INNER_PRODUCT_CONTRACT",
+    "pipeline_health": "HEALTHY",
+    "provider_request_count": 0,
+    "rank1_trajectory_scope_status": "SCALAR_CURVATURE_FORMALISM",
+    "rankn_trajectory_scope_status": "MATRIX_VALUED_NONABELIAN_CURVATURE_PLUS_INTERNAL_STATE_REQUIRED",
+    "reference_cell_pullback_status": "UNRESOLVED_REQUIRES_CERTIFICATION",
+    "reference_theory_contract_status": "SOURCE_DERIVED_FROM_BOUND_EXTERNAL_THEORY",
+    "return_to_supervisor": true,
+    "schema": "mephc-e10b-mixed-phase-space-geometry-contract-v1",
+    "science_runtime_sha256": "4ae06ff8c1de0a9c5f8b5ea905adf6f6030ec657b9f52da6dc30568e1baf64e5",
+    "scientific_work_must_stop": false,
+    "semiclassical_one_parameter_reduction_status": "CONTROLLED_EQUATION_SET_DERIVED",
+    "terminal": "E10B_MIXED_PHASE_SPACE_GEOMETRY_CONTRACT_COMPLETE",
+    "weighted_berry_gradient_observable_role": "DESCRIPTOR_ONLY_NO_OBSERVABLE_MAPPING_ESTABLISHED",
+    "work_order_id": "MEPHC-E10B-MIXED-PHASE-SPACE-GEOMETRY-CONTRACT-20260829-343"
+  },
+  "rr_vanishing_proof": "For one scalar s, Omega_ss=-Omega_ss by antisymmetry, hence 2*Omega_ss=0 and Omega_ss=0; therefore Omega_rr_ij=Omega_ss*(partial_ri s)*(partial_rj s)=0.",
+  "schema": "mephc-e10b-mixed-phase-space-geometry-contract-v1",
+  "science_runtime_sha256": "4ae06ff8c1de0a9c5f8b5ea905adf6f6030ec657b9f52da6dc30568e1baf64e5",
+  "work_order_id": "MEPHC-E10B-MIXED-PHASE-SPACE-GEOMETRY-CONTRACT-20260829-343"
+}

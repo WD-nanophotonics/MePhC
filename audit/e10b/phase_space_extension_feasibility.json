@@ -1,0 +1,76 @@
+{
+  "base_sandbox_sha": "8fb300ffc361872f8f46b50ec1bf96310cbc57dd",
+  "capability_extension_matrix": [
+    {
+      "object": "LOCAL_AFFINE_STATE_PROVIDER(q,s)",
+      "status": "NEW_REQUIRED"
+    },
+    {
+      "object": "FIXED_Q_TO_LOCAL_KAPPA_TRANSFORM",
+      "status": "REUSABLE_WITH_CERTIFICATION"
+    },
+    {
+      "object": "REFERENCE_CELL_H_PULLBACK",
+      "status": "NEW_REQUIRED"
+    },
+    {
+      "object": "PARTIAL_S_OMEGA_AT_FIXED_Q",
+      "status": "NEW_REQUIRED"
+    },
+    {
+      "object": "MIXED_OMEGA_QS_RANK1",
+      "status": "NEW_REQUIRED"
+    },
+    {
+      "object": "TRACE_MIXED_OMEGA_QS_RANKN",
+      "status": "NEW_REQUIRED"
+    },
+    {
+      "object": "LOCAL_PROFILE_S_OF_R_AND_GRAD_S",
+      "status": "NEW_REQUIRED"
+    },
+    {
+      "object": "PHASE_SPACE_TRAJECTORY_LINEAR_SOLVER",
+      "status": "NEW_REQUIRED"
+    },
+    {
+      "object": "LOCAL_BLOCH_VALIDITY_MONITOR",
+      "status": "NEW_REQUIRED"
+    },
+    {
+      "object": "TRAJECTORY_TO_TRANSVERSE_SHIFT_OBSERVABLE",
+      "status": "NEW_REQUIRED"
+    },
+    {
+      "object": "UNCERTAINTY_PROPAGATION",
+      "status": "NEW_REQUIRED"
+    }
+  ],
+  "e10a_artifact_hashes": {
+    "audit/e10a/local_nonuniform_deformation_feasibility.json": "fece715f1dd4ca9e6eb6fcc11d0b4950189f31f24c3faa2d5ef51d20933cb7a0",
+    "audit/e10a/local_nonuniform_deformation_observable_contract.json": "f8b8cc197ac5034f8e31b50bbd2157dbaf37642c28cc625df28304b7eab64ffc",
+    "audit/e10a/local_nonuniform_deformation_observable_contract.py": "591683527780a57d0bec4ff620e52292571432f54d55afcd9d01b945f76537f6"
+  },
+  "e10a_provenance_status": "VERIFIED_BOUND_E10A_CONTRACT_AND_FEASIBILITY",
+  "main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "minimal_framework_extension_uniquely_defined": true,
+  "mixed_curvature_estimator_defined": true,
+  "next_live_solver_authorization": false,
+  "no_live_authorization": true,
+  "reference_cell_overlap_resolved": false,
+  "schema": "mephc-e10b-phase-space-extension-feasibility-v1",
+  "science_runtime_sha256": "4ae06ff8c1de0a9c5f8b5ea905adf6f6030ec657b9f52da6dc30568e1baf64e5",
+  "status": "REFERENCE_CELL_OR_INNER_PRODUCT_CONTRACT_UNRESOLVED",
+  "synthetic_validation_requirements": [
+    "gauge-phase invariance",
+    "U(N) gauge invariance",
+    "loop orientation sign reversal",
+    "forward/reverse consistency",
+    "independent h_q and h_s refinement",
+    "zero mixed curvature for a separable parameter-independent state",
+    "known nonzero analytic two-level q-s model",
+    "no phase unwrapping"
+  ],
+  "terminal": "E10B_MIXED_PHASE_SPACE_GEOMETRY_CONTRACT_COMPLETE",
+  "work_order_id": "MEPHC-E10B-MIXED-PHASE-SPACE-GEOMETRY-CONTRACT-20260829-343"
+}

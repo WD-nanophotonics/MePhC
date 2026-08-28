@@ -1,0 +1,38 @@
+{
+  "base_sandbox_sha": "8fb300ffc361872f8f46b50ec1bf96310cbc57dd",
+  "e10a_artifact_hashes": {
+    "audit/e10a/local_nonuniform_deformation_feasibility.json": "fece715f1dd4ca9e6eb6fcc11d0b4950189f31f24c3faa2d5ef51d20933cb7a0",
+    "audit/e10a/local_nonuniform_deformation_observable_contract.json": "f8b8cc197ac5034f8e31b50bbd2157dbaf37642c28cc625df28304b7eab64ffc",
+    "audit/e10a/local_nonuniform_deformation_observable_contract.py": "591683527780a57d0bec4ff620e52292571432f54d55afcd9d01b945f76537f6"
+  },
+  "e10a_provenance_status": "VERIFIED_BOUND_E10A_CONTRACT_AND_FEASIBILITY",
+  "main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "reference_equations": {
+    "dot_k": "dot(k)=-partial_r omega+Omega_rk dot(k)+Omega_rr dot(r)",
+    "dot_r": "dot(r)=partial_k omega-Omega_kk dot(k)-Omega_kr dot(r)",
+    "static_profile": "time-curvature terms absent"
+  },
+  "references": {
+    "equation_source_status": "SUPERVISOR_BOUND_EQUATIONS_RECORDED_AND_DERIVED_FOR_ONE_PARAMETER_FAMILY",
+    "project_implementation_status": "REFERENCE_BOUND_CONTRACT_ONLY; no external paper text is copied into the repository",
+    "source_basis": "SOURCE_DERIVED_FROM_BOUND_EXTERNAL_THEORY; repository stores identities and contract, not the papers themselves",
+    "theory_1": {
+      "arxiv": "cond-mat/0602001",
+      "authors": "Kei Sawada, Shuichi Murakami, Naoto Nagaosa",
+      "journal": "Phys. Rev. Lett. 96, 154802 (2006)",
+      "role": "deformed-crystal wavepacket trajectory and deformation-induced shift",
+      "title": "Dynamical Diffraction Theory for Wave Packet Propagation in Deformed Crystals"
+    },
+    "theory_2": {
+      "arxiv": "physics/0606178",
+      "authors": "Masaru Onoda, Shuichi Murakami, Naoto Nagaosa",
+      "journal": "Phys. Rev. E 74, 066610 (2006)",
+      "role": "semiclassical optical wavepacket Berry geometry and optical Hall framework",
+      "title": "Geometrical Aspects in Optical Wavepacket Dynamics"
+    }
+  },
+  "schema": "mephc-e10b-deformed-wavepacket-reference-contract-v1",
+  "science_runtime_sha256": "4ae06ff8c1de0a9c5f8b5ea905adf6f6030ec657b9f52da6dc30568e1baf64e5",
+  "source_derivation_boundary": "The equations are recorded from the supervisor-bound theory identities; external papers are not represented as repository-local evidence.",
+  "work_order_id": "MEPHC-E10B-MIXED-PHASE-SPACE-GEOMETRY-CONTRACT-20260829-343"
+}
