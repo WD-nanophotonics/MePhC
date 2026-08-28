@@ -568,12 +568,99 @@ def closeout_job_source_compatible(paths: Paths, job_source: str, published_sour
     if ancestor.returncode:
         return False
     changed = [line for line in git(paths, "diff", "--name-only", f"{job_source}..{published_source}").stdout.splitlines() if line]
-    return bool(changed) and all(
+    if bool(changed) and all(
         path == "AGENTS.md" or path == "tools/mephc-flow/README.md"
         or path == "tools/mephc-flow/mephc_flow.py" or path == "tests/test_mephc_flow.py"
         or path == "audit/e9f/qp_b_c2_c3_r8_c5_r224_state_reconciliation.json"
         for path in changed
-    )
+    ):
+        return True
+    return acquire_binding_source_compatible(paths, job_source, published_source, changed)
+
+
+def acquire_binding_source_compatible(
+        paths: Paths, job_source: str, published_source: str, changed: Sequence[str],
+) -> bool:
+    """Accept only a verified post-acquisition binding publication.
+
+    Acquisition entrypoints and inputs are hashed into the science job source.
+    A binding is generated after execution, so publishing that one new JSON
+    must not make an otherwise authoritative job undiscoverable.  This helper
+    deliberately requires the active acquire contract, a single new binding
+    path, and content equality with the durable Native result.
+    """
+    if len(changed) != 1:
+        return False
+    relative = changed[0].replace("\\", "/")
+    if (not relative.startswith("audit/") or not relative.endswith("_acquisition_binding.json")
+            or any(token in relative.lower() for token in ("request_graph", "method_contract", "runtime", "provider"))):
+        return False
+    try:
+        order = active_work_order(paths)
+        contract = machine_contract(order["text"])
+    except (FlowError, OSError, UnicodeDecodeError, json.JSONDecodeError):
+        return False
+    allowed = contract.get("allowed_writes")
+    if contract.get("action") != "acquire" or not isinstance(allowed, list) or relative not in allowed:
+        return False
+    existing = git(paths, "ls-tree", "--name-only", job_source, "--", relative, check=False)
+    if existing.returncode == 0 and relative in existing.stdout.splitlines():
+        return False
+    shown = git(paths, "show", f"{published_source}:{relative}", check=False)
+    if shown.returncode:
+        return False
+    try:
+        binding = json.loads(shown.stdout)
+    except json.JSONDecodeError:
+        return False
+    if not isinstance(binding, dict):
+        return False
+
+    jobs = paths.state / "science-jobs"
+    candidates: list[dict[str, Any]] = []
+    if jobs.is_dir():
+        for path in jobs.glob("MEPHC-SCIENCE-*.json"):
+            value = read_json(path, default={})
+            if (isinstance(value, dict) and value.get("work_order_id") == order["work_order_id"]
+                    and value.get("source_commit") == job_source and value.get("action") == "acquire"
+                    and value.get("state") == "succeeded"):
+                candidates.append(value)
+    if len(candidates) != 1:
+        return False
+    job = candidates[0]
+    native = job.get("result")
+    if (not isinstance(native, dict) or native.get("run_id") != job.get("native_run_id")
+            or native.get("state") != "succeeded" or native.get("process_started") is not True
+            or native.get("return_code") != 0 or native.get("launcher_return_code") != 0):
+        return False
+    summary = native.get("result_summary")
+    if not isinstance(summary, dict):
+        return False
+    dataset_keys = sorted(key for key in summary if re.fullmatch(r"R[0-9]+_dataset_id", str(key)))
+    if len(dataset_keys) != 1:
+        return False
+    prefix = dataset_keys[0][:-len("_dataset_id")]
+    expected = {
+        "work_order_id": order["work_order_id"],
+        "acquisition_source_commit": job_source,
+        "acquisition_dataset_id": summary.get(f"{prefix}_dataset_id"),
+        "dataset_manifest_sha256": summary.get(f"{prefix}_dataset_manifest_sha256"),
+        "entrypoint_sha256": summary.get(f"{prefix}_entrypoint_sha256"),
+        "graph_sha256": summary.get(f"{prefix}_request_graph_sha256"),
+        "science_runtime_sha256": summary.get("science_runtime_sha256"),
+        "logical_provider_demand_count": summary.get("logical_provider_demand_count"),
+        "unique_provider_request_count": summary.get("unique_provider_request_count"),
+        "duplicate_logical_demand_count": summary.get("duplicate_logical_demand_count"),
+        "completed_key_count": summary.get("completed_key_count"),
+        "failed_key_count": summary.get("failed_key_count"),
+        "provider_failure_count": summary.get("provider_failure_count"),
+        "fresh_provider_execution_count": summary.get("fresh_provider_execution_count"),
+        "cache_reuse_count": summary.get("cache_reuse_count"),
+        "mpb_execution": summary.get("mpb_execution"),
+    }
+    if any(expected[key] is None or binding.get(key) != expected[key] for key in expected):
+        return False
+    return binding.get("completion_state") == "COMPLETE"
 
 
 def successful_science_job(paths: Paths, work_order_id: str, source_commit: str) -> dict[str, Any] | None:

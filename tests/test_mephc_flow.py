@@ -462,6 +462,127 @@ def test_closeout_job_may_cross_only_fixed_flow_infrastructure(monkeypatch: pyte
     assert flow.closeout_job_source_compatible(paths(Path("unused")), "a" * 40, "b" * 40) is False
 
 
+def _acquire_binding_fixture(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[flow.Paths, dict, dict]:
+    scope = paths(tmp_path)
+    work_order_id = "MEPHC-E9F-C2-QP-B-C2-C3-R8-C7-A1-20260828-315"
+    job_source, published_source = "a" * 40, "b" * 40
+    binding_path = "audit/e9f/qp_b_c2_c3_r8_c7_r256_acquisition_binding.json"
+    order_text = ('WORK_ORDER_CONTRACT_JSON=' + json.dumps({
+        "kind": "SCIENCE", "action": "acquire", "work_order_id": work_order_id,
+        "allowed_writes": [binding_path],
+    }) + "\n")
+    monkeypatch.setattr(flow, "active_work_order", lambda _paths: {
+        "work_order_id": work_order_id, "text": order_text,
+    })
+    summary = {
+        "R256_dataset_id": "1" * 64, "R256_dataset_manifest_sha256": "2" * 64,
+        "R256_entrypoint_sha256": "3" * 64, "R256_request_graph_sha256": "4" * 64,
+        "science_runtime_sha256": "5" * 64, "logical_provider_demand_count": 36,
+        "unique_provider_request_count": 35, "duplicate_logical_demand_count": 1,
+        "completed_key_count": 35, "failed_key_count": 0, "provider_failure_count": 0,
+        "fresh_provider_execution_count": 35, "cache_reuse_count": 0, "mpb_execution": True,
+    }
+    binding = {
+        "work_order_id": work_order_id, "acquisition_source_commit": job_source,
+        "acquisition_dataset_id": summary["R256_dataset_id"],
+        "dataset_manifest_sha256": summary["R256_dataset_manifest_sha256"],
+        "entrypoint_sha256": summary["R256_entrypoint_sha256"],
+        "graph_sha256": summary["R256_request_graph_sha256"],
+        "science_runtime_sha256": summary["science_runtime_sha256"],
+        "logical_provider_demand_count": 36, "unique_provider_request_count": 35,
+        "duplicate_logical_demand_count": 1, "completed_key_count": 35,
+        "failed_key_count": 0, "provider_failure_count": 0,
+        "fresh_provider_execution_count": 35, "cache_reuse_count": 0,
+        "mpb_execution": True, "completion_state": "COMPLETE",
+    }
+    job = {
+        "job_id": "MEPHC-SCIENCE-" + "c" * 24, "work_order_id": work_order_id,
+        "source_commit": job_source, "action": "acquire", "state": "succeeded",
+        "native_run_id": "MEPHC-NATIVE-" + "d" * 24,
+        "result": {
+            "run_id": "MEPHC-NATIVE-" + "d" * 24, "state": "succeeded",
+            "process_started": True, "return_code": 0, "launcher_return_code": 0,
+            "result_summary": summary,
+        },
+    }
+    write_json(scope.state / "science-jobs" / f"{job['job_id']}.json", job)
+
+    def fake_git(_paths, *args, **kwargs):
+        if args[:2] == ("merge-base", "--is-ancestor"):
+            return subprocess.CompletedProcess(args, 0, "", "")
+        if args[:2] == ("diff", "--name-only"):
+            return subprocess.CompletedProcess(args, 0, binding_path + "\n", "")
+        if args[:2] == ("ls-tree", "--name-only"):
+            return subprocess.CompletedProcess(args, 0, "", "")
+        if args[:1] == ("show",):
+            return subprocess.CompletedProcess(args, 0, json.dumps(binding), "")
+        raise AssertionError(args)
+    monkeypatch.setattr(flow, "git", fake_git)
+    return scope, binding, {"job_source": job_source, "published_source": published_source, "binding_path": binding_path}
+
+
+def test_closeout_job_accepts_exact_post_execution_acquisition_binding(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope, _binding, refs = _acquire_binding_fixture(tmp_path, monkeypatch)
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is True
+
+
+@pytest.mark.parametrize("field", [
+    "acquisition_source_commit", "acquisition_dataset_id", "dataset_manifest_sha256",
+    "entrypoint_sha256", "graph_sha256", "science_runtime_sha256",
+])
+def test_closeout_job_rejects_binding_identity_drift(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, field: str) -> None:
+    scope, binding, refs = _acquire_binding_fixture(tmp_path, monkeypatch)
+    binding[field] = "f" * 64 if field != "acquisition_source_commit" else "f" * 40
+    monkeypatch.setattr(flow, "git", lambda _paths, *args, **kwargs: (
+        subprocess.CompletedProcess(args, 0, "", "") if args[:2] == ("merge-base", "--is-ancestor")
+        else subprocess.CompletedProcess(args, 0, refs["binding_path"] + "\n", "") if args[:2] == ("diff", "--name-only")
+        else subprocess.CompletedProcess(args, 0, "", "") if args[:2] == ("ls-tree", "--name-only")
+        else subprocess.CompletedProcess(args, 0, json.dumps(binding), "")
+    ))
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is False
+
+
+@pytest.mark.parametrize("changed", [
+    "audit/e9f/qp_b_c2_c3_r8_c7_r256_targeted_acquisition.py",
+    "audit/e9f/qp_b_c2_c3_r8_c7_r256_request_graph.json",
+    "audit/e9f/qp_b_c2_c3_r8_c7_parity_aware_method_contract.json",
+    "tools/mephc-flow/scientific_job.py",
+])
+def test_closeout_job_rejects_execution_input_or_runtime_change(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, changed: str) -> None:
+    scope, _binding, refs = _acquire_binding_fixture(tmp_path, monkeypatch)
+    monkeypatch.setattr(flow, "git", lambda _paths, *args, **kwargs: (
+        subprocess.CompletedProcess(args, 0, "", "") if args[:2] == ("merge-base", "--is-ancestor")
+        else subprocess.CompletedProcess(args, 0, changed + "\n", "") if args[:2] == ("diff", "--name-only")
+        else subprocess.CompletedProcess(args, 0, "", "")
+    ))
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is False
+
+
+def test_closeout_job_rejects_second_post_execution_file_and_preexisting_binding(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope, _binding, refs = _acquire_binding_fixture(tmp_path, monkeypatch)
+    def second_file_git(_paths, *args, **kwargs):
+        if args[:2] == ("merge-base", "--is-ancestor"):
+            return subprocess.CompletedProcess(args, 0, "", "")
+        if args[:2] == ("diff", "--name-only"):
+            return subprocess.CompletedProcess(args, 0, refs["binding_path"] + "\naudit/e9f/extra.json\n", "")
+        return subprocess.CompletedProcess(args, 0, "", "")
+    monkeypatch.setattr(flow, "git", second_file_git)
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is False
+
+    scope, _binding, refs = _acquire_binding_fixture(tmp_path / "preexisting", monkeypatch)
+    def preexisting_git(_paths, *args, **kwargs):
+        if args[:2] == ("merge-base", "--is-ancestor"):
+            return subprocess.CompletedProcess(args, 0, "", "")
+        if args[:2] == ("diff", "--name-only"):
+            return subprocess.CompletedProcess(args, 0, refs["binding_path"] + "\n", "")
+        if args[:2] == ("ls-tree", "--name-only"):
+            return subprocess.CompletedProcess(args, 0, refs["binding_path"] + "\n", "")
+        return subprocess.CompletedProcess(args, 0, "", "")
+    monkeypatch.setattr(flow, "git", preexisting_git)
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is False
+
+
 def test_closeout_blocked_accepts_only_structured_code(tmp_path: Path) -> None:
     scope = paths(tmp_path)
     with pytest.raises(flow.FlowError, match="CLOSEOUT_BLOCKED_CODE_INVALID"):
