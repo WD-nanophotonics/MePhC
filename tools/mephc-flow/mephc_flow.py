@@ -623,6 +623,7 @@ def d3_reconcile_existing_dataset(
                 "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
                 "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST",
                 "h_representation": "mpb_periodic_h_l2_v1",
+                "schema": "mephc-e9f-d3-r64-exact-key-record-v1", "key_sha256": key_sha,
             }
             if identity != expected_identity or decoded.provenance.get("representation") != "mpb_periodic_h_l2_v1":
                 raise FlowError("D3_DATASET_RECORD_IDENTITY_INVALID")
