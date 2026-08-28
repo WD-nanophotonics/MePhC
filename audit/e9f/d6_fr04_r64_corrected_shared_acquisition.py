@@ -21,8 +21,8 @@ EMBEDDING_PATH = ROOT / "audit/e9e/run_spectral_embedding.py"
 RUNTIME_PATH = ROOT / "tools/mephc-flow/mephc_science_runtime.py"
 SCIENTIFIC_JOB_PATH = ROOT / "tools/mephc-flow/scientific_job.py"
 
-WORK_ORDER_ID = "MEPHC-E9F-D6-FR04-R64-CORRECTED-SHARED-ACQUISITION-20260829-331"
-BASE_SANDBOX_SHA = "e80ecf622c34248fd79134f89ac42e83c08d8771"
+WORK_ORDER_ID = "MEPHC-E9F-D6R2-FR04-R64-CORRECTED-SHARED-ACQUISITION-20260829-333"
+BASE_SANDBOX_SHA = "ff76e1e3d30792cb631850ebadff9f7fcd304375"
 MAIN_SHA = "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5"
 RUNTIME_SHA256 = "4ae06ff8c1de0a9c5f8b5ea905adf6f6030ec657b9f52da6dc30568e1baf64e5"
 DOMAIN_LIST_SHA256 = "df1e87976df1f435c075485dca2cebd9cf350b32376f8a6d5c61188df447d631"
@@ -40,7 +40,7 @@ UNIQUE_COUNT = 3205
 ARC_SEGMENTS = 96
 SOURCE_MODEL_IDENTITY = "E9E_FR04_ROUNDED_TRIANGLE_V1"
 PROVIDER_CONFIGURATION_IDENTITY = "E9E_FR04_ROUNDED_TRIANGLE_R64_TE_PROVIDER_V1"
-BAND_REQUEST_CONFIGURATION = "E9F_D6_FR04_R64_SIX_BAND_TE_LOCKED"
+BAND_REQUEST_CONFIGURATION = "E9F_D5_FR04_R64_SIX_BAND_TE_LOCKED"
 H_REPRESENTATION = "mpb_periodic_h_l2_v1"
 NUM_BANDS = 6
 
@@ -187,7 +187,7 @@ def acquire() -> dict[str, Any]:
     verify_runtime(scientific_job, runtime)
     state_root = runtime._trusted_science_state_root()
     namespace = {
-        "project_id": "MEPHC", "science_contract_id": "E9F_D6_FR04_R64_CORRECTED_SHARED_ACQUISITION",
+        "project_id": "MEPHC", "science_contract_id": "E9F_D6R2_FR04_R64_CORRECTED_SHARED_ACQUISITION",
         "work_order_id": WORK_ORDER_ID, "source_commit": source_commit, "fr": FR, "resolution": RESOLUTION,
         "corrected_graph_sha256": GRAPH_SHA256, "domain_list_sha256": DOMAIN_LIST_SHA256,
         "geometry_boundary_digest": GEOMETRY_BOUNDARY_DIGEST, "arc_segments_per_corner": ARC_SEGMENTS,
