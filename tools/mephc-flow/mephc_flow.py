@@ -630,7 +630,7 @@ def d3_reconcile_existing_dataset(
         except FlowError:
             raise
         except Exception as exc:
-            raise FlowError("D3_DATASET_RECORD_VERIFICATION_FAILED", key_sha) from exc
+            raise FlowError("D3_DATASET_RECORD_VERIFICATION_FAILED", f"{key_sha}:{type(exc).__name__}:{str(exc)[:200]}") from exc
         finally:
             if "decoded" in locals():
                 del decoded
