@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+from types import SimpleNamespace
 from pathlib import Path
 
 import pytest
@@ -126,3 +127,31 @@ def test_public_graph_has_no_host_paths_or_payloads_and_no_native_execution():
     assert "raw_payload" not in text.lower()
     assert data["native_execution_started"] is False
     assert data["mpb_execution_started"] is False
+
+
+def test_future_source_binding_requires_the_certified_execution_checkout(monkeypatch):
+    entrypoint = load()
+    monkeypatch.delenv("MEPHC_SOURCE_COMMIT", raising=False)
+    with pytest.raises(entrypoint.EntrypointError, match="SOURCE_COMMIT_INVALID"):
+        entrypoint.certified_execution_source_commit()
+    monkeypatch.setenv("MEPHC_SOURCE_COMMIT", "not-a-commit")
+    with pytest.raises(entrypoint.EntrypointError, match="SOURCE_COMMIT_INVALID"):
+        entrypoint.certified_execution_source_commit()
+    monkeypatch.setenv("MEPHC_SOURCE_COMMIT", "a" * 40)
+    monkeypatch.setattr(entrypoint.subprocess, "run", lambda *args, **kwargs: SimpleNamespace(returncode=0, stdout="b" * 40))
+    with pytest.raises(entrypoint.EntrypointError, match="CHECKOUT_MISMATCH"):
+        entrypoint.certified_execution_source_commit()
+
+
+def test_future_source_binding_accepts_only_matching_checkout_head(monkeypatch):
+    entrypoint = load()
+    commit = "f" * 40
+    monkeypatch.setenv("MEPHC_SOURCE_COMMIT", commit)
+    monkeypatch.setattr(entrypoint.subprocess, "run", lambda *args, **kwargs: SimpleNamespace(returncode=0, stdout=commit))
+    assert entrypoint.certified_execution_source_commit() == commit
+
+
+def test_future_acquisition_does_not_hard_code_execution_provenance():
+    source = SCRIPT.read_text(encoding="utf-8")
+    assert "MEPHC_SOURCE_COMMIT" in source
+    assert "BASE_SOURCE_COMMIT" not in source

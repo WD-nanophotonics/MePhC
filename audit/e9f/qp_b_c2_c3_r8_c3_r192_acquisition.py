@@ -4,6 +4,8 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import os
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Callable, Iterable
@@ -16,7 +18,7 @@ SCIENCE_RUNTIME_PATH = ROOT / "tools" / "mephc-flow" / "mephc_science_runtime.py
 SCIENTIFIC_JOB_PATH = ROOT / "tools" / "mephc-flow" / "scientific_job.py"
 
 WORK_ORDER_ID = "MEPHC-E9F-C2-QP-B-C2-C3-R8-C3-A1-20260828-307"
-BASE_SOURCE_COMMIT = "56f7e51a2cb910a7187d982366a492c9cb17bd09"
+DECLARED_WORK_ORDER_BASE_COMMIT = "56f7e51a2cb910a7187d982366a492c9cb17bd09"
 EXPECTED_MAIN_SHA = "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5"
 PARENT_DATASET_ID = "a2935beba40ef0c4b524198e6d2f44b93630bdff4c645e61a47d31187012b3db"
 PARENT_MANIFEST_SHA256 = "55828e4a0eb6e24914807e42d13fa113457ce080ffe37c947b3c0cd7af1281d7"
@@ -75,6 +77,20 @@ def sha256_file(path: Path) -> str:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def certified_execution_source_commit() -> str:
+    """Bind acquisition provenance to the exact checkout launched by the flow."""
+    value = os.environ.get("MEPHC_SOURCE_COMMIT", "")
+    if len(value) != 40 or any(char not in "0123456789abcdef" for char in value):
+        raise EntrypointError("EXECUTION_SOURCE_COMMIT_INVALID")
+    result = subprocess.run(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=False,
+    )
+    actual = result.stdout.strip()
+    if result.returncode != 0 or actual != value:
+        raise EntrypointError("EXECUTION_SOURCE_CHECKOUT_MISMATCH")
+    return value
 
 
 def load_module(name: str, path: Path):
@@ -160,7 +176,7 @@ def make_graph() -> dict[str, Any]:
             })
     return {
         "schema": "mephc_e9f_qp_b_c2_c3_r8_c3_r192_request_graph_v1",
-        "work_order_id": WORK_ORDER_ID, "base_sandbox_sha": BASE_SOURCE_COMMIT,
+        "work_order_id": WORK_ORDER_ID, "base_sandbox_sha": DECLARED_WORK_ORDER_BASE_COMMIT,
         "expected_main_sha": EXPECTED_MAIN_SHA, "canonical_coordinate_unit": "1/144 of source-grid q coordinate",
         "canonical_center_formula": "CENTER=(4*i,4*j)",
         "canonical_stencil_offsets": {"H72": ["(+2,0)", "(-2,0)", "(0,+2)", "(0,-2)"], "H144": ["(+1,0)", "(-1,0)", "(0,+1)", "(0,-1)"]},
@@ -317,6 +333,7 @@ def _identity(request_key: dict[str, Any]) -> dict[str, Any]:
 
 
 def _acquisition_manifest(store: Any, plan: list[dict[str, Any]], runtime_sha: str, entrypoint_sha: str, graph_sha: str,
+                          acquisition_source_commit: str,
                           fresh: int, reused: int, mpb: bool) -> dict[str, Any]:
     records = []
     for item in plan:
@@ -327,7 +344,7 @@ def _acquisition_manifest(store: Any, plan: list[dict[str, Any]], runtime_sha: s
     records.sort(key=lambda item: item["key_sha256"])
     content = {
         "schema": "mephc_direct_flow_r8_acquisition_dataset_v1", "project_id": "MEPHC",
-        "science_contract_id": SCIENCE_CONTRACT_ID, "acquisition_source_commit": BASE_SOURCE_COMMIT,
+        "science_contract_id": SCIENCE_CONTRACT_ID, "acquisition_source_commit": acquisition_source_commit,
         "entrypoint_sha256": entrypoint_sha, "graph_sha256": graph_sha,
         "science_runtime_sha256": runtime_sha, "source_model_identity": SOURCE_MODEL,
         "provider_configuration_identity": PROVIDER_CONFIGURATION, "band_request_configuration": BAND_CONFIGURATION,
@@ -349,10 +366,11 @@ def _acquisition_manifest(store: Any, plan: list[dict[str, Any]], runtime_sha: s
     return content
 
 
-def _write_binding(dataset: dict[str, Any], runtime_sha: str, entrypoint_sha: str, graph_sha: str, fresh: int, reused: int) -> None:
+def _write_binding(dataset: dict[str, Any], runtime_sha: str, entrypoint_sha: str, graph_sha: str,
+                   acquisition_source_commit: str, fresh: int, reused: int) -> None:
     value = {
         "schema": "mephc_e9f_qp_b_c2_c3_r8_c3_r192_acquisition_binding_v1", "work_order_id": WORK_ORDER_ID,
-        "acquisition_source_commit": BASE_SOURCE_COMMIT, "acquisition_dataset_id": dataset["dataset_id"],
+        "acquisition_source_commit": acquisition_source_commit, "acquisition_dataset_id": dataset["dataset_id"],
         "dataset_manifest_sha256": dataset["manifest_sha256"], "entrypoint_sha256": entrypoint_sha,
         "graph_sha256": graph_sha, "science_runtime_sha256": runtime_sha, "parent_dataset_id": PARENT_DATASET_ID,
         "parent_dataset_manifest_sha256": PARENT_MANIFEST_SHA256, "resolution": RESOLUTION,
@@ -371,12 +389,13 @@ def acquire() -> dict[str, Any]:
     plan = build_provider_plan(graph)
     runtime = load_runtime()
     scientific_job = load_scientific_job()
+    acquisition_source_commit = certified_execution_source_commit()
     runtime_sha = scientific_job.runtime_hash(ROOT)
     entrypoint_sha = sha256_file(Path(__file__))
     graph_sha = sha256_file(GRAPH_PATH)
     namespace = {
         "project_id": "MEPHC", "science_contract_id": f"{SCIENCE_CONTRACT_ID}_R192",
-        "source_commit": BASE_SOURCE_COMMIT, "work_order_id": WORK_ORDER_ID, "resolution": RESOLUTION,
+        "source_commit": acquisition_source_commit, "work_order_id": WORK_ORDER_ID, "resolution": RESOLUTION,
         "entrypoint_sha256": entrypoint_sha, "graph_sha256": graph_sha, "science_runtime_sha256": runtime_sha,
     }
     store = scientific_job.ImmutableDatasetStore(runtime._trusted_science_state_root(), namespace)
@@ -406,19 +425,21 @@ def acquire() -> dict[str, Any]:
         fresh += 1
         mpb = True
     store.finalize(MAX_UNIQUE_REQUESTS, {"work_order_id": WORK_ORDER_ID, "resolution": RESOLUTION, "science_runtime_sha256": runtime_sha})
-    dataset = _acquisition_manifest(store, plan, runtime_sha, entrypoint_sha, graph_sha, fresh, reused, mpb)
-    _write_binding(dataset, runtime_sha, entrypoint_sha, graph_sha, fresh, reused)
+    dataset = _acquisition_manifest(store, plan, runtime_sha, entrypoint_sha, graph_sha,
+                                    acquisition_source_commit, fresh, reused, mpb)
+    _write_binding(dataset, runtime_sha, entrypoint_sha, graph_sha, acquisition_source_commit, fresh, reused)
     return {
         "schema": "mephc-r8-c3-r192-acquisition-v1", "result_schema": "mephc-r8-c3-r192-acquisition-v1",
-        "work_order_id": WORK_ORDER_ID, "base_sandbox_sha": BASE_SOURCE_COMMIT, "final_sandbox_sha": BASE_SOURCE_COMMIT,
-        "origin_sandbox_sha": BASE_SOURCE_COMMIT, "main_sha": EXPECTED_MAIN_SHA, "machine_contract_status": "PASS",
+        "work_order_id": WORK_ORDER_ID, "base_sandbox_sha": DECLARED_WORK_ORDER_BASE_COMMIT,
+        "final_sandbox_sha": acquisition_source_commit, "origin_sandbox_sha": acquisition_source_commit,
+        "main_sha": EXPECTED_MAIN_SHA, "machine_contract_status": "PASS",
         "science_runtime_sha256": runtime_sha, "request_graph_status": "PASS", **verification,
         "native_invocation_count": 1, "native_invocation_cost": 1, "provider_request_count": 70,
         "cache_reuse_count": reused, "fresh_provider_execution_count": fresh,
         "fresh_native_solver_execution_count": fresh, "native_solves": fresh, "mpb_execution": mpb,
         "completed_key_count": 70, "failed_key_count": 0, "provider_failure_count": 0,
         "R192_dataset_id": dataset["dataset_id"], "R192_dataset_manifest_sha256": dataset["manifest_sha256"],
-        "R192_dataset_record_count": 70, "R192_acquisition_source_commit": BASE_SOURCE_COMMIT,
+        "R192_dataset_record_count": 70, "R192_acquisition_source_commit": acquisition_source_commit,
         "R192_entrypoint_sha256": entrypoint_sha, "R192_request_graph_sha256": graph_sha,
         "parent_dataset_id": PARENT_DATASET_ID, "holdout_used": False, "third_stencil_executed": False,
         "native_retry_count": 0, "pipeline_health": "HEALTHY", "blocked_by_infrastructure": False,
