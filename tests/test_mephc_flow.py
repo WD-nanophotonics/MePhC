@@ -189,6 +189,126 @@ def test_existing_report_is_never_resent(tmp_path: Path, monkeypatch: pytest.Mon
     assert called is False
 
 
+def closeout_prepared() -> dict:
+    message = b"SCHEMA=mephc-fixed-closeout-v1\nWORK_ORDER_ID=MEPHC-TEST-WORK-ORDER-0001\nTERMINAL=COMPLETE\n"
+    message_hash = flow.sha256_bytes(message)
+    request_hash = flow.sha256_bytes(flow.canonical_json({
+        "work_order_id": "MEPHC-TEST-WORK-ORDER-0001", "kind": "complete",
+        "message_sha256": message_hash,
+    }))
+    return {
+        "work_order_id": "MEPHC-TEST-WORK-ORDER-0001", "work_order_class": "SCIENCE",
+        "kind": "complete", "source_commit": "a" * 40, "job_id": "MEPHC-SCIENCE-test",
+        "artifacts": [], "message": message, "message_sha256": message_hash,
+        "request_hash": request_hash, "request_id": "MEPHC-FLOW-" + request_hash[:24],
+    }
+
+
+def test_closeout_validation_failure_creates_no_request(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope = paths(tmp_path)
+    prepared = closeout_prepared()
+    monkeypatch.setattr(flow, "courier_command", lambda *_args, **_kwargs:
+                        subprocess.CompletedProcess([], 2, "", "invalid"))
+    with pytest.raises(flow.FlowError, match="COURIER_VALIDATION_FAILED"):
+        flow.finish_closeout(scope, prepared)
+    assert not (scope.outbox / prepared["request_id"]).exists()
+
+
+def test_closeout_repeated_call_has_one_submission(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope = paths(tmp_path)
+    prepared = closeout_prepared()
+    operations: list[tuple[str, bool]] = []
+
+    def fake_courier(_paths, operation, directory, *, recovery=False):
+        operations.append((operation, recovery))
+        if operation == "run" and not recovery:
+            (directory / "events.jsonl").write_text('{"event":"request_submitted"}\n', encoding="utf-8")
+            write_json(directory / "receipt.json", {"state": "response_timeout", "request_id": directory.name})
+        return subprocess.CompletedProcess([], 0, "", "")
+
+    monkeypatch.setattr(flow, "courier_command", fake_courier)
+    first = flow.finish_closeout(scope, prepared)
+    second = flow.finish_closeout(scope, prepared)
+    assert first["submission_count"] == 1
+    assert second["submission_count"] == 1
+    assert operations.count(("run", False)) == 1
+    assert operations.count(("run", True)) == 1
+
+
+def test_closeout_after_response_only_consumes(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope = paths(tmp_path)
+    prepared = closeout_prepared()
+    directory = scope.outbox / prepared["request_id"]
+    directory.mkdir(parents=True)
+    (directory / "message.txt").write_bytes(prepared["message"])
+    write_json(directory / "request.json", flow.report_manifest(prepared))
+    write_json(directory / "receipt.json", {"state": "response_received", "request_id": directory.name})
+    (directory / "events.jsonl").write_text('{"event":"request_submitted"}\n', encoding="utf-8")
+    (directory / "response.txt").write_text("NEXT_WORK_ORDER_ID=MEPHC-NEXT-WORK-ORDER-0002\n", encoding="utf-8")
+    monkeypatch.setattr(flow, "courier_command", lambda *_args, **_kwargs: pytest.fail("Courier must not run"))
+    result = flow.finish_closeout(scope, prepared)
+    assert result["safe_next"] == "resume"
+    assert result["next_work_order_id"] == "MEPHC-NEXT-WORK-ORDER-0002"
+    assert result["submission_count"] == 1
+
+
+def test_canonical_closeout_is_bounded_and_path_free(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope = paths(tmp_path)
+    head = "a" * 40
+    work_order_id = "MEPHC-TEST-WORK-ORDER-0001"
+    order_text = ("NEXT_WORK_ORDER_ID=" + work_order_id + "\nWORK_ORDER_CLASS=SCIENCE\n"
+                  'WORK_ORDER_CONTRACT_JSON={"kind":"SCIENCE","allowed_writes":[]}\n')
+    monkeypatch.setattr(flow, "require_source", lambda *_args, **_kwargs: {
+        "branch": "sandbox", "head": head, "origin_main": flow.EXPECTED_MAIN,
+        "origin_sandbox": head, "dirty": False,
+    })
+    monkeypatch.setattr(flow, "active_work_order", lambda _paths: {"work_order_id": work_order_id, "text": order_text})
+    write_json(scope.state / "publish" / f"{head}.json", {
+        "return_code": 0, "published_sandbox": head, "tests": ["tests/test_safe.py"],
+    })
+    write_json(scope.state / "science-jobs" / "MEPHC-SCIENCE-safe.json", {
+        "job_id": "MEPHC-SCIENCE-safe", "work_order_id": work_order_id, "source_commit": head,
+        "state": "succeeded", "action": "analyze", "return_code": 0,
+        "result_summary": {"decision": "PASS", "count": 4, "H": [1, 2],
+                           "private_path": "/home/icy/secret"},
+    })
+    prepared = flow.canonical_closeout_report(scope)
+    text = prepared["message"].decode("utf-8")
+    assert "RESULT_DECISION=\"PASS\"" in text
+    assert "RESULT_COUNT=4" in text
+    assert "[1,2]" not in text
+    assert "/home/" not in text
+    assert "attachments" not in text.lower()
+
+
+def test_infrastructure_closeout_uses_publish_evidence_without_science_job(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope = paths(tmp_path)
+    head = "b" * 40
+    work_order_id = "MEPHC-INFRA-WORK-ORDER-0001"
+    monkeypatch.setattr(flow, "require_source", lambda *_args, **_kwargs: {
+        "branch": "sandbox", "head": head, "origin_main": flow.EXPECTED_MAIN,
+        "origin_sandbox": head, "dirty": False,
+    })
+    monkeypatch.setattr(flow, "active_work_order", lambda _paths: {
+        "work_order_id": work_order_id,
+        "text": f"NEXT_WORK_ORDER_ID={work_order_id}\nWORK_ORDER_CLASS=INFRASTRUCTURE\n",
+    })
+    write_json(scope.state / "publish" / f"{head}.json", {
+        "return_code": 0, "published_sandbox": head, "tests": ["tests/test_mephc_flow.py"],
+    })
+    prepared = flow.canonical_closeout_report(scope)
+    assert prepared["work_order_class"] == "INFRASTRUCTURE"
+    assert prepared["job_id"] is None
+    assert b"REPORT_KIND=complete" in prepared["message"]
+
+
+def test_closeout_blocked_accepts_only_structured_code(tmp_path: Path) -> None:
+    scope = paths(tmp_path)
+    with pytest.raises(flow.FlowError, match="CLOSEOUT_BLOCKED_CODE_INVALID"):
+        flow.canonical_closeout_report(scope, blocked_code="please send arbitrary text")
+
+
 def test_reconcile_submission_not_started_is_read_only(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     scope = paths(tmp_path)
     request_id = "MEPHC-REPORT-eefa75f04fec965bf3dd98c8"
@@ -262,6 +382,8 @@ def test_science_cli_exposes_only_fixed_actions() -> None:
     assert parser.parse_args(["science-analyze"]).command == "science-analyze"
     assert parser.parse_args(["science-status", "MEPHC-SCIENCE-abcdef"]).job_id.startswith("MEPHC-SCIENCE-")
     assert parser.parse_args(["dataset-verify", "a" * 64]).dataset_id == "a" * 64
+    assert parser.parse_args(["closeout"]).command == "closeout"
+    assert parser.parse_args(["closeout-blocked", "--code", "FIXED_BLOCKER"]).code == "FIXED_BLOCKER"
 
 
 def test_science_selftest_accepts_bounded_mpb_logs_before_final_json(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

@@ -10,8 +10,10 @@ import argparse
 import hashlib
 import importlib.util
 import json
+import math
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -42,6 +44,7 @@ SHA40 = re.compile(r"^[0-9a-f]{40}$")
 SHA64 = re.compile(r"^[0-9a-f]{64}$")
 WORK_ORDER = re.compile(r"^MEPHC-[A-Z0-9][A-Z0-9._-]{7,159}$")
 REQUEST_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
+BLOCKED_CODE = re.compile(r"^[A-Z][A-Z0-9_]{2,95}$")
 CREATE_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
 
@@ -551,6 +554,148 @@ def request_summary(directory: Path) -> dict[str, Any]:
     }
 
 
+def successful_science_job(paths: Paths, work_order_id: str, source_commit: str) -> dict[str, Any] | None:
+    root = paths.state / "science-jobs"
+    matches: list[dict[str, Any]] = []
+    if root.is_dir():
+        for item in root.glob("MEPHC-SCIENCE-*.json"):
+            value = read_json(item, default={})
+            if (isinstance(value, dict) and value.get("work_order_id") == work_order_id
+                    and value.get("source_commit") == source_commit and value.get("state") == "succeeded"):
+                matches.append(value)
+    return max(matches, key=lambda item: float(item.get("completed_at", 0))) if matches else None
+
+
+def scalar_result(value: Any) -> bool:
+    if value is None or isinstance(value, bool) or isinstance(value, int):
+        return True
+    if isinstance(value, float):
+        return math.isfinite(value)
+    if isinstance(value, str):
+        lowered = value.lower()
+        return (len(value) <= 512 and "\n" not in value and "\r" not in value
+                and "\\\\wsl" not in lowered and "/home/" not in lowered
+                and not re.search(r"[a-z]:[\\/]", lowered))
+    return False
+
+
+def report_artifacts(paths: Paths, order_text: str, head: str) -> list[dict[str, Any]]:
+    contract = machine_contract(order_text)
+    allowed = contract.get("allowed_writes", []) if isinstance(contract, dict) else []
+    if not isinstance(allowed, list):
+        raise FlowError("WORK_ORDER_ALLOWED_WRITES_INVALID")
+    artifacts: list[dict[str, Any]] = []
+    for raw in sorted(set(item for item in allowed if isinstance(item, str))):
+        relative = PurePosixPath(raw.replace("\\", "/"))
+        if (relative.is_absolute() or ".." in relative.parts or not relative.parts
+                or relative.parts[0] == "tests"):
+            continue
+        tracked = git(paths, "ls-tree", "--name-only", head, "--", str(relative), check=False)
+        if tracked.returncode or str(relative) not in tracked.stdout.splitlines():
+            continue
+        blob = git(paths, "show", f"{head}:{relative}").stdout.encode("utf-8")
+        artifacts.append({"path": str(relative), "sha256": sha256_bytes(blob), "size_bytes": len(blob)})
+    return artifacts
+
+
+def canonical_closeout_report(paths: Paths, *, blocked_code: str | None = None) -> dict[str, Any]:
+    if blocked_code is not None and not BLOCKED_CODE.fullmatch(blocked_code):
+        raise FlowError("CLOSEOUT_BLOCKED_CODE_INVALID")
+    source = require_source(paths, published=True)
+    order = active_work_order(paths)
+    contract = machine_contract(order["text"])
+    values = key_values(order["text"])
+    work_class = str(contract.get("kind") or (values.get("WORK_ORDER_CLASS") or ["INFRASTRUCTURE"])[-1]).upper()
+    if work_class not in {"SCIENCE", "INFRASTRUCTURE"}:
+        raise FlowError("CLOSEOUT_WORK_ORDER_CLASS_INVALID")
+    publish_evidence = read_json(paths.state / "publish" / f"{source['head']}.json", default={})
+    if (not isinstance(publish_evidence, dict) or publish_evidence.get("return_code") != 0
+            or publish_evidence.get("published_sandbox") != source["head"]):
+        raise FlowError("CLOSEOUT_PUBLISH_EVIDENCE_REQUIRED", safe_next="publish")
+    job = successful_science_job(paths, order["work_order_id"], source["head"])
+    if blocked_code is None and work_class == "SCIENCE" and job is None:
+        raise FlowError("CLOSEOUT_SUCCESSFUL_JOB_REQUIRED", safe_next="science-status")
+    result_summary = job.get("result_summary", {}) if isinstance(job, dict) else {}
+    if not isinstance(result_summary, dict):
+        raise FlowError("CLOSEOUT_RESULT_SUMMARY_INVALID")
+    artifacts = report_artifacts(paths, order["text"], source["head"])
+    lines = [
+        "SCHEMA=mephc-fixed-closeout-v1",
+        f"WORK_ORDER_ID={order['work_order_id']}",
+        f"WORK_ORDER_CLASS={work_class}",
+        f"REPORT_KIND={'blocked' if blocked_code else 'complete'}",
+        "CODE_CHANGE=SANDBOX_ONLY",
+        f"BASE_MAIN_SHA={EXPECTED_MAIN}",
+        f"SANDBOX_HEAD_SHA={source['head']}",
+        f"ORIGIN_SANDBOX_SHA={source['origin_sandbox']}",
+        f"AUDIT_DIFF_RANGE={EXPECTED_MAIN}..{source['head']}",
+        f"PUBLISH_TEST_RETURN_CODE={publish_evidence['return_code']}",
+    ]
+    tests = publish_evidence.get("tests", [])
+    if isinstance(tests, list) and all(isinstance(item, str) and len(item) <= 240 for item in tests):
+        lines.append(f"PUBLISH_TEST_COUNT={len(tests)}")
+    if job is not None:
+        lines.extend([
+            f"SCIENCE_JOB_ID={job.get('job_id')}", f"SCIENCE_JOB_STATE={job.get('state')}",
+            f"SCIENCE_ACTION={job.get('action')}", f"SCIENCE_RETURN_CODE={job.get('return_code')}",
+            f"NATIVE_INVOCATION_COUNT={job.get('native_invocation_count', result_summary.get('native_invocation_count', 0))}",
+            f"PROVIDER_EXECUTION_COUNT={job.get('provider_executions', result_summary.get('provider_request_count', 0))}",
+            f"SOLVER_EXECUTION_COUNT={job.get('solver_executions', result_summary.get('native_solves', 0))}",
+        ])
+    for key in sorted(result_summary):
+        value = result_summary[key]
+        if scalar_result(value):
+            safe_key = re.sub(r"[^A-Z0-9_]", "_", key.upper())[:96]
+            rendered = json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+            lines.append(f"RESULT_{safe_key}={rendered}")
+    lines.append(f"ARTIFACT_COUNT={len(artifacts)}")
+    for index, artifact in enumerate(artifacts, start=1):
+        lines.extend([
+            f"ARTIFACT_{index}_PATH={artifact['path']}",
+            f"ARTIFACT_{index}_SHA256={artifact['sha256']}",
+            f"ARTIFACT_{index}_SIZE_BYTES={artifact['size_bytes']}",
+        ])
+    if blocked_code:
+        lines.extend([f"BLOCKED_CODE={blocked_code}", "TERMINAL=BLOCKED"])
+    else:
+        terminal = result_summary.get("terminal") if scalar_result(result_summary.get("terminal")) else "COMPLETE"
+        lines.append(f"TERMINAL={terminal}")
+    message = ("\n".join(lines) + "\n").encode("utf-8")
+    message_hash = sha256_bytes(message)
+    kind = "blocked" if blocked_code else "complete"
+    request_hash = sha256_bytes(canonical_json({
+        "work_order_id": order["work_order_id"], "kind": kind, "message_sha256": message_hash,
+    }))
+    return {
+        "work_order_id": order["work_order_id"], "work_order_class": work_class, "kind": kind,
+        "source_commit": source["head"], "job_id": job.get("job_id") if job else None,
+        "artifacts": artifacts, "message": message, "message_sha256": message_hash,
+        "request_hash": request_hash, "request_id": "MEPHC-FLOW-" + request_hash[:24],
+    }
+
+
+def closeout_status(paths: Paths) -> dict[str, Any]:
+    try:
+        prepared = canonical_closeout_report(paths)
+    except FlowError as exc:
+        return {"state": "not_ready", "error_code": exc.code, "safe_next": exc.safe_next}
+    directory = paths.outbox / prepared["request_id"]
+    if not directory.is_dir():
+        return {"state": "ready", "request_id": prepared["request_id"], "submission_count": 0,
+                "safe_next": "closeout"}
+    summary = request_summary(directory)
+    if summary["response_received"]:
+        safe_next = "resume"
+        state = "response_received"
+    elif summary["submission_count"]:
+        safe_next = "closeout"
+        state = "reconciliation_required"
+    else:
+        safe_next = "closeout"
+        state = "request_not_submitted"
+    return {"state": state, **summary, "safe_next": safe_next}
+
+
 def status(paths: Paths) -> dict[str, Any]:
     source = source_state(paths)
     try:
@@ -572,11 +717,13 @@ def status(paths: Paths) -> dict[str, Any]:
         for directory in paths.outbox.glob("MEPHC-FLOW-*"):
             if directory.is_dir():
                 requests.append(request_summary(directory))
+    closeout = closeout_status(paths) if work_order_id is not None else {"state": "unavailable", "safe_next": "resume"}
     return {
         "schema": "mephc-flow-status-v1", "source": source,
         "active_work_order_id": work_order_id, "work_order_policy": policy,
         "effective_policy": effective, "pending_native_runs": runs,
         "flow_requests": sorted(requests, key=lambda item: str(item["request_id"])),
+        "closeout_state": closeout,
     }
 
 
@@ -836,7 +983,8 @@ def science_acquire(paths: Paths) -> dict[str, Any]:
     job_path = paths.state / "science-jobs" / f"{job_id}.json"
     existing = read_json(job_path, default=None)
     if isinstance(existing, dict):
-        return {**existing, "reused": True, "safe_next": f"science-status {job_id}"}
+        safe_next = "closeout" if existing.get("state") == "succeeded" else f"science-status {job_id}"
+        return {**existing, "reused": True, "safe_next": safe_next}
     record = {
         "schema": "mephc-scientific-job-v1", "job_id": job_id,
         "work_order_id": contract["work_order_id"], "contract_sha256": contract["contract_sha256"],
@@ -855,7 +1003,8 @@ def science_acquire(paths: Paths) -> dict[str, Any]:
     final = {**record, "state": result.get("state"), "native_run_id": result.get("run_id"),
              "result": result, "completed_at": time.time()}
     atomic_json(job_path, final)
-    return {**final, "reused": False, "safe_next": f"science-status {job_id}"}
+    safe_next = "closeout" if final.get("state") == "succeeded" else f"science-status {job_id}"
+    return {**final, "reused": False, "safe_next": safe_next}
 
 
 def science_analyze(paths: Paths) -> dict[str, Any]:
@@ -867,7 +1016,8 @@ def science_analyze(paths: Paths) -> dict[str, Any]:
     job_path = paths.state / "science-jobs" / f"{job_id}.json"
     existing = read_json(job_path, default=None)
     if isinstance(existing, dict):
-        return {**existing, "reused": True, "safe_next": f"science-status {job_id}"}
+        safe_next = "closeout" if existing.get("state") == "succeeded" else f"science-status {job_id}"
+        return {**existing, "reused": True, "safe_next": safe_next}
     record = {
         "schema": "mephc-scientific-job-v1", "job_id": job_id,
         "work_order_id": contract["work_order_id"], "contract_sha256": contract["contract_sha256"],
@@ -890,7 +1040,8 @@ def science_analyze(paths: Paths) -> dict[str, Any]:
     final.update({"provider_executions": 0, "solver_executions": 0,
                   "launcher_return_code": result.returncode})
     atomic_json(job_path, final)
-    return {**final, "reused": False, "safe_next": f"science-status {job_id}"}
+    safe_next = "closeout" if final.get("state") == "succeeded" else f"science-status {job_id}"
+    return {**final, "reused": False, "safe_next": safe_next}
 
 
 def science_status(paths: Paths, job_id: str) -> dict[str, Any]:
@@ -902,9 +1053,11 @@ def science_status(paths: Paths, job_id: str) -> dict[str, Any]:
         raise FlowError("SCIENCE_JOB_NOT_FOUND")
     native_run_id = value.get("native_run_id")
     if isinstance(native_run_id, str):
-        return {**value, "native_status": native_status(paths, native_run_id)}
+        native = native_status(paths, native_run_id)
+        safe_next = "closeout" if value.get("state") == "succeeded" else native.get("safe_next", f"science-status {job_id}")
+        return {**value, "native_status": native, "safe_next": safe_next}
     if value.get("state") in {"succeeded", "failed"}:
-        return value
+        return {**value, "safe_next": "closeout" if value.get("state") == "succeeded" else "closeout-blocked"}
     pid, start_ticks = value.get("pid"), value.get("linux_start_ticks")
     alive = False
     if isinstance(pid, int) and isinstance(start_ticks, str):
@@ -928,6 +1081,108 @@ def courier_command(paths: Paths, operation: str, directory: Path, *, recovery: 
     if recovery:
         argv.append("--recovery-only")
     return command(argv, timeout=4860, check=False)
+
+
+def report_manifest(prepared: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "version": 1, "project_id": PROJECT_ID, "request_id": prepared["request_id"],
+        "message_file": "message.txt", "attachments": [], "workflow_window_seconds": 600,
+        "queue_wait_seconds": 3600, "task_difficulty": "normal", "instruction_level": "normal",
+        "flow_schema": "mephc-fixed-closeout-v1", "work_order_id": prepared["work_order_id"],
+        "report_kind": prepared["kind"], "message_sha256": prepared["message_sha256"],
+        "idempotency_key": prepared["request_hash"],
+    }
+
+
+def validate_and_create_closeout_request(paths: Paths, prepared: dict[str, Any]) -> Path:
+    request_id = prepared["request_id"]
+    directory = paths.outbox / request_id
+    validation_parent = paths.state / "closeout-validation" / str(os.getpid())
+    validation = validation_parent / request_id
+    if validation_parent.exists():
+        shutil.rmtree(validation_parent)
+    validation.mkdir(parents=True, exist_ok=False)
+    (validation / "message.txt").write_bytes(prepared["message"])
+    atomic_json(validation / "request.json", report_manifest(prepared))
+    try:
+        checked = courier_command(paths, "validate", validation)
+        if checked.returncode:
+            raise FlowError("COURIER_VALIDATION_FAILED", (checked.stderr or checked.stdout)[-4000:])
+    finally:
+        shutil.rmtree(validation_parent, ignore_errors=True)
+    paths.outbox.mkdir(parents=True, exist_ok=True)
+    staging = paths.outbox / f".{request_id}.{os.getpid()}.tmp"
+    staging.mkdir(parents=False, exist_ok=False)
+    (staging / "message.txt").write_bytes(prepared["message"])
+    atomic_json(staging / "request.json", report_manifest(prepared))
+    try:
+        os.replace(staging, directory)
+    except FileExistsError:
+        shutil.rmtree(staging, ignore_errors=True)
+    return directory
+
+
+def verify_closeout_request(directory: Path, prepared: dict[str, Any]) -> None:
+    if directory.is_symlink() or not directory.is_dir():
+        raise FlowError("REQUEST_DIRECTORY_INVALID")
+    prior = read_json(directory / "request.json", default={})
+    expected = (prepared["work_order_id"], prepared["kind"], prepared["message_sha256"])
+    actual = (prior.get("work_order_id"), prior.get("report_kind"), prior.get("message_sha256"))
+    if actual != expected or prior.get("request_id") != prepared["request_id"]:
+        raise FlowError("REQUEST_IDEMPOTENCY_CONFLICT")
+
+
+def finish_closeout(paths: Paths, prepared: dict[str, Any]) -> dict[str, Any]:
+    directory = paths.outbox / prepared["request_id"]
+    if not directory.exists():
+        directory = validate_and_create_closeout_request(paths, prepared)
+    verify_closeout_request(directory, prepared)
+    summary = request_summary(directory)
+    if summary["response_received"]:
+        consumed = consume_response(paths, directory)
+        return {"state": "response_received", **summary, **consumed,
+                "closeout_state": "complete", "message_sha256": prepared["message_sha256"],
+                "safe_next": "resume", "next_work_order_id": consumed["work_order_id"]}
+    receipt = read_json(directory / "receipt.json", default={})
+    receipt_state = receipt.get("state") if isinstance(receipt, dict) else None
+    recoverable = {"request_submitted", "waiting_for_response", "submission_unconfirmed", "chat_submission_unconfirmed",
+                   "submission_state_uncertain", "response_timeout", "response_protocol_error"}
+    hard_errors = {"login_error", "target_error", "hard_error", "validation_failed", "request_rejected"}
+    if receipt_state in hard_errors:
+        raise FlowError("COURIER_HARD_ERROR", str(receipt_state), safe_next="human-intervention-required")
+    if summary["submission_count"] > 0 or receipt_state in recoverable:
+        result = courier_reconcile(paths, prepared["request_id"])
+    else:
+        dispatched = courier_command(paths, "run", directory)
+        final = request_summary(directory)
+        atomic_json(directory / "flow-bridge.json", {
+            "schema": "mephc-flow-courier-bridge-v1", "request_id": prepared["request_id"],
+            "message_sha256": prepared["message_sha256"], "return_code": dispatched.returncode,
+            "stdout_sha256": sha256_bytes(dispatched.stdout.encode("utf-8")),
+            "stderr_sha256": sha256_bytes(dispatched.stderr.encode("utf-8")), "completed_at": time.time(),
+        })
+        if final["response_received"]:
+            consumed = consume_response(paths, directory)
+            result = {"state": "response_received", **final, **consumed,
+                      "return_code": dispatched.returncode, "safe_next": "resume"}
+        else:
+            result = {"state": "courier_stopped", **final, "return_code": dispatched.returncode,
+                      "safe_next": f"closeout"}
+    if result.get("response_received"):
+        result.update({"closeout_state": "complete", "message_sha256": prepared["message_sha256"],
+                       "safe_next": "resume", "next_work_order_id": result.get("work_order_id")})
+    else:
+        result.update({"closeout_state": "reconciliation_required",
+                       "message_sha256": prepared["message_sha256"], "safe_next": "closeout"})
+    return result
+
+
+def closeout(paths: Paths) -> dict[str, Any]:
+    return finish_closeout(paths, canonical_closeout_report(paths))
+
+
+def closeout_blocked(paths: Paths, code: str) -> dict[str, Any]:
+    return finish_closeout(paths, canonical_closeout_report(paths, blocked_code=code))
 
 
 def report(paths: Paths, work_order_id: str, kind: str, message_file: Path) -> dict[str, Any]:
@@ -1050,6 +1305,9 @@ def parser() -> argparse.ArgumentParser:
     report_cmd.add_argument("--work-order", required=True)
     report_cmd.add_argument("--kind", choices=sorted(REPORT_KINDS), required=True)
     report_cmd.add_argument("--message-file", type=Path, required=True)
+    commands.add_parser("closeout")
+    blocked_cmd = commands.add_parser("closeout-blocked")
+    blocked_cmd.add_argument("--code", required=True)
     commands.add_parser("reconcile-r8-native-result")
     reconcile_cmd = commands.add_parser("courier-reconcile")
     reconcile_cmd.add_argument("--request-id", required=True)
@@ -1086,6 +1344,10 @@ def main(argv: list[str] | None = None, *, paths: Paths = Paths()) -> int:
             value = native_status(paths, args.run_id)
         elif args.command == "report":
             value = report(paths, args.work_order, args.kind, args.message_file.resolve())
+        elif args.command == "closeout":
+            value = closeout(paths)
+        elif args.command == "closeout-blocked":
+            value = closeout_blocked(paths, args.code)
         elif args.command == "reconcile-r8-native-result":
             helper = f"{CONTROL_ROOT_WSL}/tools/mephc-flow/reconcile_r8_native_result.py"
             result = wsl([CONDA_PYTHON_WSL, helper], timeout=3600, check=False)

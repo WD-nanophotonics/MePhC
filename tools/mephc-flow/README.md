@@ -11,7 +11,12 @@ The normal sequence is:
 3. `mephc-flow publish --tests tests/...py`.
 4. Use `run-native` only when the active Chat work order explicitly authorizes
    native execution and declares a budget.
-5. Use `report` and then `courier-reconcile` for the same request.
+5. Use no-argument `closeout`; it creates or reconciles one deterministic
+   canonical report, consumes the reply, and returns the next work order.
+
+Low-reasoning Agents never compose an outbound message or select a Courier
+target. `closeout-blocked --code UPPERCASE_CODE` is the only normal blocked
+report path. The legacy `report --message-file` command is maintenance-only.
 
 All WSL subprocesses are consoleless, receive argv as an array, and run from
 an exact detached ext4 checkout. `origin/main` is immutable.

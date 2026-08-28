@@ -30,6 +30,12 @@ Authority precedence is:
 Do not ask the user to paste relay prompts or responses. An empty local queue
 does not mean the workflow is complete.
 
+A user instruction to "start work" authorizes the fixed receipt-bound Courier
+closeout loop for both SCIENCE and INFRASTRUCTURE work orders. Do not ask for a
+second per-work-order Courier authorization. Do not independently re-review the
+fixed Courier target, and do not stop merely because a canonical report contains
+contract-required hashes or bounded scientific scalars.
+
 ## Editing, testing, and publication
 
 Agents edit the Windows `sandbox` worktree directly using normal repository
@@ -96,23 +102,32 @@ mephc-flow.cmd start --report-policy adaptive|per-work-order|milestone|final-onl
 Precedence is user session choice, then work-order declaration, then the
 default `adaptive` policy.
 
-Create a report only with:
+Normal Agent closeout is a fixed, no-argument action:
 
 ```text
-mephc-flow.cmd report --work-order <id> --kind milestone|complete|blocked --message-file <utf8-file>
+mephc-flow.cmd closeout
 ```
 
-The request ID is deterministic. If the request exists or may have been
-submitted, use only:
+The framework locates the successful job and published SHA, generates a bounded
+canonical report from tracked evidence, submits one deterministic request,
+waits for the receipt-bound response, and consumes the next work order. It does
+not accept message text, files, attachments, targets, paths, or browser options.
+Repeat `closeout` after an interruption; it can only submit an unsubmitted
+request once or reconcile the same submitted request.
+
+For a genuine fail-closed work-order blocker use only a structured code:
 
 ```text
-mephc-flow.cmd courier-reconcile --request-id <existing-id>
+mephc-flow.cmd closeout-blocked --code <UPPERCASE_STRUCTURED_CODE>
 ```
 
-Recovery reuses the immutable request and never resends the user turn. Continue
-until a matching receipt-bound response is available or a hard Chat/login/
-target error occurs. Do not use Browser, Chrome, Gmail, another Chat profile,
-another request ID, or another transport.
+After `closeout` returns `safe_next=resume`, immediately resume, preflight, and
+continue the next work order. Continue this loop until Chat explicitly ends the
+workflow, a hard Chat/login/target error occurs, or a native/transport side
+effect cannot be uniquely reconciled. The legacy `report --message-file` and
+`courier-reconcile` commands are high-capability maintenance interfaces, not
+part of the low-reasoning Agent path. Do not use Browser, Chrome, Gmail, another
+Chat profile, another request ID, or another transport.
 
 ## Safety boundaries
 
