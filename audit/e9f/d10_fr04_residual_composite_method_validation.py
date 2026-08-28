@@ -212,10 +212,12 @@ def decode_bundle(store: Any, runtime: Any, keys: dict[str, bytes], cell: tuple[
     snapshots: dict[str, Any] = {}
     for role, key in keys.items():
         payload, metadata = store.get(key)
-        if metadata.get("identity") != json.loads(key.decode("utf-8")) or metadata.get("key_sha256") != sha256_bytes(key):
+        record_identity = metadata.get("identity")
+        if (not isinstance(record_identity, dict) or record_identity.get("identity") != json.loads(key.decode("utf-8"))
+                or record_identity.get("key_sha256") != sha256_bytes(key) or metadata.get("key_sha256") != sha256_bytes(key)):
             raise AnalysisError("D9_RECORD_IDENTITY_MISMATCH")
         snapshot = runtime.decode_snapshot(payload)
-        identity = metadata["identity"]
+        identity = record_identity["identity"]
         coordinate = identity["canonical_k_coordinate"]
         expected_k = tuple(float(value) / int(coordinate["denominator"]) for value in coordinate["numerator"])
         if tuple(float(value) for value in snapshot.k_point) != expected_k or snapshot.provenance.get("representation") != H_REPRESENTATION:
