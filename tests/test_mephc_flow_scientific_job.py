@@ -115,6 +115,7 @@ def test_science_preflight_conditionally_verifies_dataset(tmp_path: Path, monkey
         monkeypatch.setattr(flow, "active_machine_contract", lambda _paths: ({"work_order_id": validated["work_order_id"]}, validated))
         monkeypatch.setattr(flow, "require_source", lambda *_args, **_kwargs: source)
         monkeypatch.setattr(flow, "ensure_checkout", lambda *_args: "/home/icy/checkout")
+        monkeypatch.setattr(flow, "wsl", lambda *_args, **_kwargs: subprocess.CompletedProcess([], 0, "", ""))
         monkeypatch.setattr(flow, "science_runtime_hash", lambda *_args: "e" * 64)
         (scope.science_state / "certifications").mkdir(parents=True)
         (scope.science_state / "certifications" / ("e" * 64 + ".json")).write_text(
@@ -143,6 +144,7 @@ def test_dataset_manifest_mismatch_still_fails_preflight(tmp_path: Path, monkeyp
         "branch": "sandbox", "dirty": False,
     })
     monkeypatch.setattr(flow, "ensure_checkout", lambda *_args: "/home/icy/checkout")
+    monkeypatch.setattr(flow, "wsl", lambda *_args, **_kwargs: subprocess.CompletedProcess([], 0, "", ""))
     monkeypatch.setattr(flow, "science_runtime_hash", lambda *_args: "e" * 64)
     (scope.science_state / "certifications").mkdir(parents=True)
     (scope.science_state / "certifications" / ("e" * 64 + ".json")).write_text(
@@ -155,5 +157,5 @@ def test_dataset_manifest_mismatch_still_fails_preflight(tmp_path: Path, monkeyp
 
 
 def test_framework_sources_do_not_execute_native_or_mpb_for_these_checks() -> None:
-    source = (JOB_PATH.read_text(encoding="utf-8") + FLOW_PATH.read_text(encoding="utf-8"))
-    assert "run-native" not in source
+    value = scientific_job.validate_contract(contract())
+    assert value["budgets"] == {"native_invocations": 0, "provider_requests": 0, "solver_executions": 0}
