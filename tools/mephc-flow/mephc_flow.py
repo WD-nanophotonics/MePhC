@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 import re
@@ -27,6 +28,8 @@ LEGACY_STATE_WSL = "/home/icy/.local/state/mephc-runner/MEPHC"
 LEGACY_STATE_UNC = Path(r"\\wsl.localhost\Ubuntu\home\icy\.local\state\mephc-runner\MEPHC")
 FLOW_STATE_UNC = LEGACY_STATE_UNC / "flow"
 FLOW_STATE_WSL = LEGACY_STATE_WSL + "/flow"
+SCIENCE_STATE_WSL = "/home/icy/.local/share/mephc-runtime/science"
+SCIENCE_STATE_UNC = Path(r"\\wsl.localhost\Ubuntu\home\icy\.local\share\mephc-runtime\science")
 OUTBOX_UNC = LEGACY_STATE_UNC / "outbox"
 OUTBOX_WSL = LEGACY_STATE_WSL + "/outbox"
 CHECKOUT_ROOT_WSL = "/home/icy/.cache/mephc-runner/checkouts"
@@ -56,6 +59,8 @@ class Paths:
     courier: Path = COURIER
     legacy_state: Path = LEGACY_STATE_UNC
     outbox_wsl: str = OUTBOX_WSL
+    science_state: Path = SCIENCE_STATE_UNC
+    science_state_wsl: str = SCIENCE_STATE_WSL
 
 
 def canonical_json(value: Any) -> bytes:
@@ -295,6 +300,145 @@ def machine_contract(text: str) -> dict[str, Any]:
     return {}
 
 
+def science_module(paths: Paths):
+    name = "_mephc_scientific_job_control"
+    path = paths.control / "tools" / "mephc-flow" / "scientific_job.py"
+    spec = importlib.util.spec_from_file_location(name, path)
+    if spec is None or spec.loader is None:
+        raise FlowError("SCIENCE_RUNTIME_MODULE_UNAVAILABLE")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def active_machine_contract(paths: Paths) -> tuple[dict[str, Any], dict[str, Any]]:
+    order = active_work_order(paths)
+    value = machine_contract(order["text"])
+    module = science_module(paths)
+    try:
+        contract = module.validate_contract(value)
+    except module.ScientificJobError as exc:
+        raise FlowError(str(exc), safe_next="report") from exc
+    if contract["work_order_id"] != order["work_order_id"]:
+        raise FlowError("WORK_ORDER_CONTRACT_ID_MISMATCH")
+    return order, contract
+
+
+def science_runtime_hash(paths: Paths, commit: str) -> str:
+    accumulator = hashlib.sha256()
+    for relative in (
+        "tools/mephc-flow/scientific_job.py",
+        "tools/mephc-flow/mephc_science_runtime.py",
+        "tools/mephc-flow/wsl_native_exec.py",
+    ):
+        blob = git(paths, "show", f"{commit}:{relative}").stdout.encode("utf-8")
+        accumulator.update(relative.encode("utf-8"))
+        accumulator.update(hashlib.sha256(blob).digest())
+    return accumulator.hexdigest()
+
+
+def science_selftest(paths: Paths, *, mpb_smoke: bool) -> dict[str, Any]:
+    source = require_source(paths, published=True)
+    checkout = ensure_checkout(paths, source["head"])
+    helper = f"{checkout}/tools/mephc-flow/scientific_job.py"
+    argv = [CONDA_PYTHON_WSL, helper, "internal-selftest", "--root", checkout,
+            "--state-root", paths.science_state_wsl]
+    if mpb_smoke:
+        argv.append("--mpb-smoke")
+    result = wsl(argv, cwd=checkout, timeout=3600, check=False)
+    if result.returncode:
+        raise FlowError("SCIENCE_RUNTIME_SELFTEST_FAILED", (result.stderr or result.stdout)[-8000:])
+    try:
+        value = json.loads(result.stdout)
+    except json.JSONDecodeError as exc:
+        raise FlowError("SCIENCE_RUNTIME_SELFTEST_OUTPUT_INVALID") from exc
+    return {**value, "source_commit": source["head"], "execution_checkout": checkout}
+
+
+def science_preflight(paths: Paths) -> dict[str, Any]:
+    order, contract = active_machine_contract(paths)
+    source = require_source(paths, published=True)
+    if contract["source_commit"] != source["head"]:
+        raise FlowError("WORK_ORDER_SOURCE_COMMIT_MISMATCH", safe_next="report")
+    checkout = ensure_checkout(paths, source["head"])
+    entrypoint = contract.get("entrypoint")
+    if entrypoint is not None:
+        tracked = wsl(["/usr/bin/git", "-C", checkout, "ls-files", "--error-unmatch", entrypoint], check=False)
+        if tracked.returncode:
+            raise FlowError("WORK_ORDER_ENTRYPOINT_NOT_TRACKED")
+    runtime_sha = science_runtime_hash(paths, source["head"])
+    certification_path = paths.science_state / "certifications" / f"{runtime_sha}.json"
+    certification = read_json(certification_path, default={})
+    if certification.get("schema") != "mephc-science-runtime-certification-v1":
+        raise FlowError("SCIENCE_RUNTIME_SELFTEST_REQUIRED", safe_next="science-selftest")
+    if contract["action"] == "acquire" and certification.get("mpb_smoke", {}).get("executed") is not True:
+        raise FlowError("SCIENCE_RUNTIME_MPB_SMOKE_REQUIRED", safe_next="science-selftest")
+    available = {
+        "exact_checkout", "sandbox_publication", "native_execution", "mpb",
+        "private_retention", "cross_commit_dataset_read", "result_channel",
+        "checkpoint", "payload_codec", "automatic_provenance",
+    }
+    missing = sorted(set(contract["required_capabilities"]) - available)
+    if missing:
+        raise FlowError("INFRASTRUCTURE_CAPABILITY_MISSING", ",".join(missing))
+    dataset_evidence = None
+    if contract["action"] == "analyze":
+        dataset_evidence = dataset_verify(paths, contract["inputs"]["dataset_id"])
+        expected_manifest = contract["inputs"].get("dataset_manifest_sha256")
+        if expected_manifest is not None and dataset_evidence.get("manifest_sha256") != expected_manifest:
+            raise FlowError("WORK_ORDER_DATASET_MANIFEST_MISMATCH")
+    publish_evidence = read_json(paths.state / "publish" / f"{source['head']}.json", default={})
+    changed_files = [line for line in git(paths, "diff", "--name-only", f"{EXPECTED_MAIN}..{source['head']}").stdout.splitlines() if line]
+    atomic_json(paths.state / "contracts" / f"{contract['contract_sha256']}.json", {
+        **contract, "receipt_response_sha256": order["response_sha256"], "validated_at": time.time(),
+    })
+    return {
+        "schema": "mephc-science-preflight-v1", "ready_to_run": True,
+        "work_order_id": order["work_order_id"], "contract_sha256": contract["contract_sha256"],
+        "source_commit": source["head"], "execution_checkout": checkout,
+        "runtime_sha256": runtime_sha, "required_capabilities": contract["required_capabilities"],
+        "missing_capabilities": [], "entrypoint": entrypoint, "budgets": contract["budgets"],
+        "certification": certification, "dataset_evidence": dataset_evidence,
+        "automatic_provenance": {
+            "main_sha": EXPECTED_MAIN, "sandbox_sha": source["head"],
+            "changed_files": changed_files,
+            "publish_test_count": len(publish_evidence.get("tests", [])),
+            "publish_stdout_sha256": publish_evidence.get("stdout_sha256"),
+            "publish_stderr_sha256": publish_evidence.get("stderr_sha256"),
+        },
+    }
+
+
+def dataset_verify(paths: Paths, dataset_id: str) -> dict[str, Any]:
+    if not SHA64.fullmatch(dataset_id):
+        raise FlowError("DATASET_ID_INVALID")
+    binding = paths.control / "audit" / "e9f" / "qp_b_c2_c3_r8_d3_acquisition_binding.json"
+    value = read_json(binding, default={})
+    if value.get("acquisition_dataset_id") == dataset_id:
+        record_path = paths.state / "reconciliations" / f"{value['original_native_run_id']}.json"
+        record = read_json(record_path, default={})
+        if (record.get("reconciliation_status") != "VERIFIED_COMPLETE_DATASET_RESULT_RECOVERED"
+                or record.get("acquisition_binding", {}).get("acquisition_dataset_id") != dataset_id
+                or sha256_file(record_path) != value.get("reconciliation_record_sha256")):
+            raise FlowError("DATASET_RECONCILIATION_BINDING_INVALID")
+        return {
+            "state": "verified", "dataset_id": dataset_id,
+            "manifest_sha256": value["dataset_manifest_sha256"],
+            "record_count": value["completed_key_count"],
+            "source_commit": value["acquisition_source_commit"], "compatibility_adapter": "R8",
+        }
+    source = require_source(paths, published=True)
+    checkout = ensure_checkout(paths, source["head"])
+    helper = f"{checkout}/tools/mephc-flow/scientific_job.py"
+    result = wsl([CONDA_PYTHON_WSL, helper, "internal-dataset-verify",
+                  "--state-root", paths.science_state_wsl, "--dataset-id", dataset_id],
+                 cwd=checkout, timeout=3600, check=False)
+    if result.returncode:
+        raise FlowError("DATASET_VERIFICATION_FAILED", (result.stderr or result.stdout)[-4000:])
+    return json.loads(result.stdout)
+
+
 def work_order_policy(text: str) -> dict[str, Any]:
     values = key_values(text)
     contract = machine_contract(text)
@@ -311,6 +455,12 @@ def work_order_policy(text: str) -> dict[str, Any]:
     for item in contract.get("native_recipes", []) if isinstance(contract.get("native_recipes", []), list) else []:
         if isinstance(item, dict) and isinstance(item.get("max_invocations"), int) and item["max_invocations"] > 0:
             budget_values.append(item["max_invocations"])
+    if contract.get("schema") == "mephc-science-work-order-v1":
+        budgets = contract.get("budgets", {})
+        if contract.get("action") == "acquire" and isinstance(budgets.get("native_invocations"), int):
+            native_true = budgets["native_invocations"] > 0
+            if budgets["native_invocations"] > 0:
+                budget_values.append(budgets["native_invocations"])
     allowed: set[str] = set()
     for key, entries in values.items():
         if key in {"ALLOWED_PROJECT_PATH", "NATIVE_PROJECT_PATH", "PROJECT_PATH", "DOWNSTREAM_PROJECT_PATH"}:
@@ -324,8 +474,8 @@ def work_order_policy(text: str) -> dict[str, Any]:
         "allowed_project_paths": sorted(allowed),
         "report_policy": declared_policy,
         "arbitrary_native_command_authorized": values.get("ARBITRARY_NATIVE_COMMAND_AUTHORIZED", ["false"])[-1].lower() in {"1", "true", "yes"},
-        "native_entrypoint": values.get("NATIVE_ENTRYPOINT", [None])[-1],
-        "native_arguments": values.get("NATIVE_ARGUMENT", []),
+        "native_entrypoint": contract.get("entrypoint") if contract.get("schema") == "mephc-science-work-order-v1" else values.get("NATIVE_ENTRYPOINT", [None])[-1],
+        "native_arguments": [] if contract.get("schema") == "mephc-science-work-order-v1" else values.get("NATIVE_ARGUMENT", []),
     }
 
 
@@ -475,8 +625,19 @@ def publish(paths: Paths, tests: list[str]) -> dict[str, Any]:
             "origin_sandbox": verified_sandbox, "execution_checkout": checkout, "tests": tests}
 
 
-def native_payload(work_order_id: str, source: str, cost: int, project: str, argv: list[str]) -> dict[str, Any]:
-    return {"work_order_id": work_order_id, "source_commit": source, "cost": cost, "project": project, "argv": argv}
+def native_payload(
+    work_order_id: str, source: str, cost: int, project: str, argv: list[str],
+    scientific_contract: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    value = {"work_order_id": work_order_id, "source_commit": source, "cost": cost, "project": project, "argv": argv}
+    if scientific_contract is not None:
+        value.update({
+            "science_contract_sha256": scientific_contract["contract_sha256"],
+            "provider_request_budget": scientific_contract["budgets"]["provider_requests"],
+            "solver_execution_budget": scientific_contract["budgets"]["solver_executions"],
+            "expected_output": scientific_contract["expected_output"],
+        })
+    return value
 
 
 def native_usage(paths: Paths, work_order_id: str) -> int:
@@ -527,7 +688,10 @@ def validate_native_argv(policy: dict[str, Any], checkout: str, argv: list[str])
         raise FlowError("NATIVE_ENTRYPOINT_NOT_TRACKED_AT_SOURCE_SHA")
 
 
-def run_native(paths: Paths, work_order_id: str, cost: int, project: str, argv: list[str]) -> dict[str, Any]:
+def run_native(
+    paths: Paths, work_order_id: str, cost: int, project: str, argv: list[str],
+    scientific_contract: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     if cost < 1 or not argv or any(not item or "\x00" in item for item in argv):
         raise FlowError("NATIVE_ARGUMENTS_INVALID")
     order = active_work_order(paths)
@@ -547,7 +711,7 @@ def run_native(paths: Paths, work_order_id: str, cost: int, project: str, argv: 
     used = native_usage(paths, work_order_id)
     if used + cost > budget:
         raise FlowError("NATIVE_BUDGET_EXCEEDED")
-    payload = native_payload(work_order_id, source["head"], cost, project, argv)
+    payload = native_payload(work_order_id, source["head"], cost, project, argv, scientific_contract)
     payload_hash = sha256_bytes(canonical_json(payload))
     run_id = "MEPHC-NATIVE-" + payload_hash[:24]
     run_path = paths.state / "native-runs" / f"{run_id}.json"
@@ -607,6 +771,122 @@ def native_status(paths: Paths, run_id: str) -> dict[str, Any]:
         alive = result.returncode == 0 and len(fields) > 21 and fields[21] == start_ticks
     return {**value, "process_identity_alive": alive,
             "safe_next": f"native-status {run_id}" if alive else "human-reconciliation-required"}
+
+
+def science_job_id(contract: dict[str, Any]) -> str:
+    payload = {
+        "contract_sha256": contract["contract_sha256"],
+        "source_commit": contract["source_commit"],
+        "entrypoint": contract["entrypoint"],
+        "project": contract["project"],
+        "action": contract["action"],
+    }
+    return "MEPHC-SCIENCE-" + sha256_bytes(canonical_json(payload))[:24]
+
+
+def science_job_metrics(paths: Paths, contract: dict[str, Any], *, created: bool) -> None:
+    path = paths.state / "workflow-metrics.json"
+    value = read_json(path, default={})
+    if not isinstance(value, dict):
+        value = {}
+    value.setdefault("schema", "mephc-flow-workflow-metrics-v1")
+    value.setdefault("science_work_orders", [])
+    value.setdefault("infrastructure_work_orders", [])
+    target = value["science_work_orders" if contract["kind"] == "SCIENCE" else "infrastructure_work_orders"]
+    if created and contract["work_order_id"] not in target:
+        target.append(contract["work_order_id"])
+    recent = value["infrastructure_work_orders"][-2:]
+    value["workflow_overhead_excessive"] = len(recent) >= 2
+    value["updated_at"] = time.time()
+    atomic_json(path, value)
+
+
+def science_acquire(paths: Paths) -> dict[str, Any]:
+    preflight = science_preflight(paths)
+    _, contract = active_machine_contract(paths)
+    if contract["kind"] != "SCIENCE" or contract["action"] != "acquire":
+        raise FlowError("SCIENCE_ACQUIRE_ACTION_NOT_AUTHORIZED")
+    job_id = science_job_id(contract)
+    job_path = paths.state / "science-jobs" / f"{job_id}.json"
+    existing = read_json(job_path, default=None)
+    if isinstance(existing, dict):
+        return {**existing, "reused": True, "safe_next": f"science-status {job_id}"}
+    record = {
+        "schema": "mephc-scientific-job-v1", "job_id": job_id,
+        "work_order_id": contract["work_order_id"], "contract_sha256": contract["contract_sha256"],
+        "source_commit": contract["source_commit"], "action": "acquire", "state": "dispatching",
+        "created_at": time.time(), "provenance": {
+            "main_sha": EXPECTED_MAIN, "sandbox_sha": contract["source_commit"],
+            "runtime_sha256": preflight["runtime_sha256"],
+        },
+    }
+    atomic_json(job_path, record)
+    science_job_metrics(paths, contract, created=True)
+    result = run_native(
+        paths, contract["work_order_id"], contract["budgets"]["native_invocations"],
+        preflight["execution_checkout"], [CONDA_PYTHON_WSL, contract["entrypoint"]], contract,
+    )
+    final = {**record, "state": result.get("state"), "native_run_id": result.get("run_id"),
+             "result": result, "completed_at": time.time()}
+    atomic_json(job_path, final)
+    return {**final, "reused": False, "safe_next": f"science-status {job_id}"}
+
+
+def science_analyze(paths: Paths) -> dict[str, Any]:
+    preflight = science_preflight(paths)
+    _, contract = active_machine_contract(paths)
+    if contract["kind"] != "SCIENCE" or contract["action"] != "analyze":
+        raise FlowError("SCIENCE_ANALYZE_ACTION_NOT_AUTHORIZED")
+    job_id = science_job_id(contract)
+    job_path = paths.state / "science-jobs" / f"{job_id}.json"
+    existing = read_json(job_path, default=None)
+    if isinstance(existing, dict):
+        return {**existing, "reused": True, "safe_next": f"science-status {job_id}"}
+    record = {
+        "schema": "mephc-scientific-job-v1", "job_id": job_id,
+        "work_order_id": contract["work_order_id"], "contract_sha256": contract["contract_sha256"],
+        "source_commit": contract["source_commit"], "action": "analyze", "state": "dispatching",
+        "process_started": False, "provider_executions": 0, "solver_executions": 0,
+        "created_at": time.time(), "provenance": {
+            "main_sha": EXPECTED_MAIN, "sandbox_sha": contract["source_commit"],
+            "runtime_sha256": preflight["runtime_sha256"],
+        },
+    }
+    atomic_json(job_path, record)
+    science_job_metrics(paths, contract, created=True)
+    helper = f"{preflight['execution_checkout']}/tools/mephc-flow/wsl_native_exec.py"
+    result = wsl([
+        CONDA_PYTHON_WSL, helper, "--state", f"{FLOW_STATE_WSL}/science-jobs/{job_id}.json",
+        "--checkout", preflight["execution_checkout"], "--project", preflight["execution_checkout"],
+        "--", CONDA_PYTHON_WSL, contract["entrypoint"],
+    ], timeout=24 * 3600, check=False)
+    final = read_json(job_path, default=record)
+    final.update({"provider_executions": 0, "solver_executions": 0,
+                  "launcher_return_code": result.returncode})
+    atomic_json(job_path, final)
+    return {**final, "reused": False, "safe_next": f"science-status {job_id}"}
+
+
+def science_status(paths: Paths, job_id: str) -> dict[str, Any]:
+    if not REQUEST_ID.fullmatch(job_id) or not job_id.startswith("MEPHC-SCIENCE-"):
+        raise FlowError("SCIENCE_JOB_ID_INVALID")
+    path = paths.state / "science-jobs" / f"{job_id}.json"
+    value = read_json(path, default=None)
+    if not isinstance(value, dict) or value.get("job_id") != job_id:
+        raise FlowError("SCIENCE_JOB_NOT_FOUND")
+    native_run_id = value.get("native_run_id")
+    if isinstance(native_run_id, str):
+        return {**value, "native_status": native_status(paths, native_run_id)}
+    if value.get("state") in {"succeeded", "failed"}:
+        return value
+    pid, start_ticks = value.get("pid"), value.get("linux_start_ticks")
+    alive = False
+    if isinstance(pid, int) and isinstance(start_ticks, str):
+        result = wsl(["/usr/bin/cat", f"/proc/{pid}/stat"], check=False)
+        fields = result.stdout.split()
+        alive = result.returncode == 0 and len(fields) > 21 and fields[21] == start_ticks
+    return {**value, "process_identity_alive": alive,
+            "safe_next": f"science-status {job_id}" if alive else "human-reconciliation-required"}
 
 
 def report_allowed(policy: str, kind: str) -> bool:
@@ -722,6 +1002,15 @@ def parser() -> argparse.ArgumentParser:
     start_cmd.add_argument("--native-cap", type=int)
     commands.add_parser("status")
     commands.add_parser("resume")
+    commands.add_parser("science-preflight")
+    selftest_cmd = commands.add_parser("science-selftest")
+    selftest_cmd.add_argument("--mpb-smoke", action="store_true")
+    commands.add_parser("science-acquire")
+    science_status_cmd = commands.add_parser("science-status")
+    science_status_cmd.add_argument("job_id")
+    dataset_cmd = commands.add_parser("dataset-verify")
+    dataset_cmd.add_argument("dataset_id")
+    commands.add_parser("science-analyze")
     publish_cmd = commands.add_parser("publish")
     publish_cmd.add_argument("--tests", nargs="+", required=True)
     native_cmd = commands.add_parser("run-native")
@@ -750,6 +1039,18 @@ def main(argv: list[str] | None = None, *, paths: Paths = Paths()) -> int:
             value = status(paths)
         elif args.command == "resume":
             value = resume(paths)
+        elif args.command == "science-preflight":
+            value = science_preflight(paths)
+        elif args.command == "science-selftest":
+            value = science_selftest(paths, mpb_smoke=args.mpb_smoke)
+        elif args.command == "science-acquire":
+            value = science_acquire(paths)
+        elif args.command == "science-status":
+            value = science_status(paths, args.job_id)
+        elif args.command == "dataset-verify":
+            value = dataset_verify(paths, args.dataset_id)
+        elif args.command == "science-analyze":
+            value = science_analyze(paths)
         elif args.command == "publish":
             value = publish(paths, args.tests)
         elif args.command == "run-native":

@@ -251,3 +251,14 @@ def test_main_push_hook_is_present_and_denies_main() -> None:
     text = (ROOT / ".githooks" / "pre-push").read_text(encoding="utf-8")
     assert "refs/heads/main" in text
     assert "MEPHC_MAIN_PUSH_FORBIDDEN" in text
+
+
+def test_science_cli_exposes_only_fixed_actions() -> None:
+    parser = flow.parser()
+    assert parser.parse_args(["science-preflight"]).command == "science-preflight"
+    assert parser.parse_args(["science-selftest"]).mpb_smoke is False
+    assert parser.parse_args(["science-selftest", "--mpb-smoke"]).mpb_smoke is True
+    assert parser.parse_args(["science-acquire"]).command == "science-acquire"
+    assert parser.parse_args(["science-analyze"]).command == "science-analyze"
+    assert parser.parse_args(["science-status", "MEPHC-SCIENCE-abcdef"]).job_id.startswith("MEPHC-SCIENCE-")
+    assert parser.parse_args(["dataset-verify", "a" * 64]).dataset_id == "a" * 64

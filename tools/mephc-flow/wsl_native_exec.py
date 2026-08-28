@@ -116,6 +116,12 @@ def main() -> int:
     environment["PATH"] = "/home/icy/miniconda3/envs/mp/bin:" + environment.get("PATH", "")
     environment["PYTHONPATH"] = args.checkout
     environment["MEPHC_SOURCE_COMMIT"] = Path(args.checkout).name
+    if isinstance(value.get("provider_request_budget"), int):
+        environment["MEPHC_PROVIDER_REQUEST_BUDGET"] = str(value["provider_request_budget"])
+    if isinstance(value.get("solver_execution_budget"), int):
+        environment["MEPHC_SOLVER_EXECUTION_BUDGET"] = str(value["solver_execution_budget"])
+    if isinstance(value.get("science_contract_sha256"), str):
+        environment["MEPHC_SCIENCE_CONTRACT_SHA256"] = value["science_contract_sha256"]
     with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
         process = subprocess.Popen(argv, cwd=args.project, env=environment, shell=False,
                                    stdout=stdout, stderr=stderr)

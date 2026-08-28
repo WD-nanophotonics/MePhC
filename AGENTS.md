@@ -13,8 +13,11 @@ project remain independently editable downstream projects.
 
 ## Startup and continuation
 
-At task start run `mephc-flow.cmd status`, then `mephc-flow.cmd resume`. Read
-the receipt-bound active Chat work order and continue it directly. Do not call
+At task start run `mephc-flow.cmd status`, then `mephc-flow.cmd resume`, then
+`mephc-flow.cmd science-preflight` for a scientific work order. Continue only
+when the receipt-bound `mephc-science-work-order-v1` contract validates and
+preflight returns `ready_to_run=true`. Do not infer a science state machine
+from the surrounding prose. Do not call
 the retired `mephc_*` MCP tools, doctor, prelive, runtime activation, broker,
 worker, certificates, or durable change jobs.
 
@@ -50,22 +53,37 @@ non-sandbox pushes.
 For ordinary WSL work, `mephc-runtime sync|path|run` uses the current clean
 committed sandbox while keeping outputs in the downstream project.
 
-## Native execution
+## Scientific execution
 
-Native/MPB execution is permitted only when the current receipt-bound Chat
-work order explicitly authorizes it and declares a numeric budget. Invoke:
+Normal scientific work uses only the fixed actions:
 
 ```text
-mephc-flow.cmd run-native --work-order <id> --cost <n> --project <allowed-path> -- <argv...>
+mephc-flow.cmd science-selftest
+mephc-flow.cmd science-preflight
+mephc-flow.cmd science-acquire
+mephc-flow.cmd science-status <job-id>
+mephc-flow.cmd dataset-verify <dataset-id>
+mephc-flow.cmd science-analyze
 ```
 
-Arguments are passed as an array in the fixed WSL/Conda environment. The
-project must be the exact SHA checkout or an exact path named by the work
-order. A user-supplied session cap may only reduce the Chat budget.
+The machine contract owns the exact source, tracked zero-argument entrypoint,
+project, capabilities, budgets, dataset inputs, output schemas, allowed writes,
+acceptance criteria, and forbidden operations. Agents do not supply a command,
+path, provider factory, storage root, codec, or result channel. Missing or
+invalid contracts stop before creating a job.
 
-If the caller is interrupted, use `mephc-flow.cmd native-status <run-id>`.
-Never infer from a missing foreground process and never resubmit an uncertain
-native run. The same payload reuses its durable run record.
+`run-native -- <argv>` is a maintenance compatibility interface and is not part
+of the low-reasoning Agent workflow.
+
+If the caller is interrupted, use `science-status` for the same deterministic
+job ID. Never infer from a missing foreground process and never resubmit an
+uncertain scientific job. A completed immutable dataset makes every later
+recovery solver-free.
+
+SCIENCE work orders cannot modify `tools/mephc-flow`; INFRASTRUCTURE work
+orders cannot advance scientific conclusions. Two consecutive infrastructure
+repairs for one scientific milestone set `WORKFLOW_OVERHEAD_EXCESSIVE=true`
+and require one convergent framework repair instead of more local patches.
 
 ## Courier reporting
 
