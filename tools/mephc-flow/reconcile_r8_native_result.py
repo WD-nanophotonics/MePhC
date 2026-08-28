@@ -7,8 +7,10 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 import time
 from typing import Any
+from contextlib import contextmanager
 
 
 CONTROL_ROOT = Path("/mnt/c/Users/icywo/PycharmProjects/MePhC-Windows")
@@ -79,6 +81,34 @@ def exact_checkout() -> Path:
     if result.returncode or result.stdout.strip() != SOURCE_COMMIT:
         raise ReconciliationError("EXACT_CHECKOUT_MISMATCH")
     return checkout
+
+
+@contextmanager
+def exact_checkout_import_scope(checkout: Path):
+    """Bind acquisition imports to one already-verified exact checkout."""
+    checkout = checkout.resolve()
+    original_path = list(sys.path)
+    saved_modules = {
+        name: module for name, module in sys.modules.items()
+        if name == "mephc" or name.startswith("mephc.")
+    }
+    for name in saved_modules:
+        sys.modules.pop(name, None)
+    sys.path.insert(0, str(checkout))
+    try:
+        importlib.invalidate_caches()
+        import mephc
+        module_root = Path(mephc.__file__).resolve().parents[1]
+        if module_root != checkout:
+            raise ReconciliationError("ACQUISITION_MODULE_ROOT_MISMATCH")
+        yield
+    finally:
+        for name in list(sys.modules):
+            if name == "mephc" or name.startswith("mephc."):
+                sys.modules.pop(name, None)
+        sys.modules.update(saved_modules)
+        sys.path[:] = original_path
+        importlib.invalidate_caches()
 
 
 def historical_marker(stdout_path: Path, native_helper: Any) -> dict[str, Any]:
@@ -178,42 +208,43 @@ def write_once(path: Path, value: dict[str, Any]) -> None:
 
 def reconcile() -> dict[str, Any]:
     checkout = exact_checkout()
-    native_helper = load_module("_mephc_reconcile_native_helper", checkout / "tools" / "mephc-flow" / "wsl_native_exec.py")
-    science = load_module("_mephc_reconcile_science_runtime", checkout / "tools" / "mephc-flow" / "mephc_science_runtime.py")
-    entrypoint = load_module("_mephc_reconcile_entrypoint", checkout / "audit" / "e9f" / "qp_b_c2_c3_r8_locked_set_native.py")
-    original, stdout_path, _ = validate_original_run()
-    marker = historical_marker(stdout_path, native_helper)
-    binding = {
-        "acquisition_source_commit": SOURCE_COMMIT,
-        "acquisition_dataset_id": DATASET_ID,
-        "dataset_manifest_sha256": DATASET_MANIFEST_SHA256,
-        "entrypoint_sha256": ENTRYPOINT_SHA256,
-        "graph_sha256": GRAPH_SHA256,
-    }
-    dataset = science.open_r8_dataset(binding)
-    manifest = dataset.manifest
-    if (manifest.get("logical_provider_demand_count") != 216
-            or manifest.get("unique_provider_request_count") != 210
-            or manifest.get("completed_key_count") != 210
-            or manifest.get("completion_state") != "COMPLETE"
-            or len(manifest.get("records", [])) != 210
-            or manifest.get("dataset_is_mpb_backed") is not True):
-        raise ReconciliationError("IMMUTABLE_DATASET_SCOPE_INVALID")
-    graph = entrypoint.load_frozen_graph()
-    verified = entrypoint.verify_graph(graph)
-    plan = entrypoint.build_provider_plan(graph)
-    if verified["logical_provider_demand_count"] != 216 or len(plan) != 210:
-        raise ReconciliationError("FROZEN_GRAPH_SCOPE_INVALID")
-    plan_keys = {sha256_bytes(entrypoint.canonical_key(item["request_key"])) for item in plan}
-    if set(dataset.records) != plan_keys:
-        raise ReconciliationError("IMMUTABLE_DATASET_KEY_SET_MISMATCH")
-    namespace_id = dataset.retention.namespace_id
-    summary = validate_summary(marker, manifest, namespace_id)
-    integrity_pass_count = 0
-    for item in plan:
-        payload = dataset.lookup_exact(entrypoint.canonical_key(item["request_key"]))
-        del payload
-        integrity_pass_count += 1
+    with exact_checkout_import_scope(checkout):
+        native_helper = load_module("_mephc_reconcile_native_helper", checkout / "tools" / "mephc-flow" / "wsl_native_exec.py")
+        science = load_module("_mephc_reconcile_science_runtime", checkout / "tools" / "mephc-flow" / "mephc_science_runtime.py")
+        entrypoint = load_module("_mephc_reconcile_entrypoint", checkout / "audit" / "e9f" / "qp_b_c2_c3_r8_locked_set_native.py")
+        original, stdout_path, _ = validate_original_run()
+        marker = historical_marker(stdout_path, native_helper)
+        binding = {
+            "acquisition_source_commit": SOURCE_COMMIT,
+            "acquisition_dataset_id": DATASET_ID,
+            "dataset_manifest_sha256": DATASET_MANIFEST_SHA256,
+            "entrypoint_sha256": ENTRYPOINT_SHA256,
+            "graph_sha256": GRAPH_SHA256,
+        }
+        dataset = science.open_r8_dataset(binding)
+        manifest = dataset.manifest
+        if (manifest.get("logical_provider_demand_count") != 216
+                or manifest.get("unique_provider_request_count") != 210
+                or manifest.get("completed_key_count") != 210
+                or manifest.get("completion_state") != "COMPLETE"
+                or len(manifest.get("records", [])) != 210
+                or manifest.get("dataset_is_mpb_backed") is not True):
+            raise ReconciliationError("IMMUTABLE_DATASET_SCOPE_INVALID")
+        graph = entrypoint.load_frozen_graph()
+        verified = entrypoint.verify_graph(graph)
+        plan = entrypoint.build_provider_plan(graph)
+        if verified["logical_provider_demand_count"] != 216 or len(plan) != 210:
+            raise ReconciliationError("FROZEN_GRAPH_SCOPE_INVALID")
+        plan_keys = {sha256_bytes(entrypoint.canonical_key(item["request_key"])) for item in plan}
+        if set(dataset.records) != plan_keys:
+            raise ReconciliationError("IMMUTABLE_DATASET_KEY_SET_MISMATCH")
+        namespace_id = dataset.retention.namespace_id
+        summary = validate_summary(marker, manifest, namespace_id)
+        integrity_pass_count = 0
+        for item in plan:
+            payload = dataset.lookup_exact(entrypoint.canonical_key(item["request_key"]))
+            del payload
+            integrity_pass_count += 1
     if integrity_pass_count != 210:
         raise ReconciliationError("IMMUTABLE_DATASET_INTEGRITY_INCOMPLETE")
     summary_sha256 = sha256_bytes(canonical_bytes(summary))

@@ -104,3 +104,32 @@ def test_native_status_preserves_failed_history_and_surfaces_reconciliation(tmp_
     assert value["reconciled"] is True
     assert value["reconciliation_status"] == "VERIFIED_COMPLETE_DATASET_RESULT_RECOVERED"
     assert value["reconciled_result_summary"] == summary
+
+
+def test_exact_checkout_import_scope_binds_and_restores_mephc(tmp_path):
+    reconciliation = load("r8_reconciliation_import_scope", "tools/mephc-flow/reconcile_r8_native_result.py")
+    checkout = tmp_path / "checkout"
+    package = checkout / "mephc"
+    package.mkdir(parents=True)
+    (package / "__init__.py").write_text("ORIGIN = 'acquisition'\n", encoding="utf-8")
+    before_path = list(sys.path)
+    before_module = sys.modules.get("mephc")
+    with reconciliation.exact_checkout_import_scope(checkout):
+        import mephc
+        assert mephc.ORIGIN == "acquisition"
+        assert Path(mephc.__file__).resolve().parents[1] == checkout.resolve()
+    assert sys.path == before_path
+    assert sys.modules.get("mephc") is before_module
+
+
+def test_exact_checkout_import_scope_rejects_wrong_module_root(tmp_path, monkeypatch):
+    reconciliation = load("r8_reconciliation_wrong_import", "tools/mephc-flow/reconcile_r8_native_result.py")
+    checkout = tmp_path / "checkout"
+    wrong = tmp_path / "wrong" / "mephc"
+    checkout.mkdir()
+    wrong.mkdir(parents=True)
+    (wrong / "__init__.py").write_text("", encoding="utf-8")
+    monkeypatch.syspath_prepend(str(wrong.parent))
+    with pytest.raises(reconciliation.ReconciliationError, match="ACQUISITION_MODULE_ROOT_MISMATCH"):
+        with reconciliation.exact_checkout_import_scope(checkout):
+            pass
