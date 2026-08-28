@@ -1,0 +1,171 @@
+{
+  "capability_matrix": [
+    {
+      "missing": "No spatially varying local band-energy field omega_n(k_phys,r).",
+      "object": "local_omega_n_of_k",
+      "status": "PARTIAL_STATIC_OR_SOLVER_BOUND"
+    },
+    {
+      "missing": null,
+      "object": "rank1_Omega_kk",
+      "status": "VALIDATED_EXISTING"
+    },
+    {
+      "missing": "No local-r dependence or phase-space extension.",
+      "object": "rankN_determinant_Wilson_Omega_kk",
+      "status": "VALIDATED_EXISTING_FOR_LOCKED_REPLAY"
+    },
+    {
+      "missing": null,
+      "object": "uniform_affine_geometry",
+      "status": "VALIDATED_BOUNDED_E8B_PILOT"
+    },
+    {
+      "missing": "Geometry/profile evaluator parameterized by r with provenance binding.",
+      "object": "spatially_varying_geometry",
+      "status": "ABSENT"
+    },
+    {
+      "missing": "Gauge-invariant derivative of local band energy with respect to physical position.",
+      "object": "grad_r_omega_n",
+      "status": "ABSENT"
+    },
+    {
+      "missing": "A physically derived force/canonical momentum equation for the local lattice.",
+      "object": "physical_k_dot",
+      "status": "ABSENT"
+    },
+    {
+      "missing": "Mixed phase-space Berry curvature and its convention/transport equation.",
+      "object": "Omega_kr_Omega_rk",
+      "status": "ABSENT"
+    },
+    {
+      "missing": "Validated integrator for coupled r,k equations with local-Bloch validity checks.",
+      "object": "wavepacket_trajectory_integration",
+      "status": "ABSENT"
+    },
+    {
+      "missing": "Observable map from trajectory to detector/sample displacement.",
+      "object": "real_space_transverse_shift",
+      "status": "ABSENT"
+    },
+    {
+      "missing": "Propagation of spectral/geometric uncertainty into displacement uncertainty.",
+      "object": "uncertainty_qualification_propagation",
+      "status": "PARTIAL_QUALIFICATION_ONLY"
+    }
+  ],
+  "coordinate_contract": {
+    "deformation": "F(r)=diag(exp(s(r)), exp(-s(r))); A(r)=F(r)A0; G(r)=A(r)^(-T)G0 in dimensionless basis convention.",
+    "local_band": "omega_n(k_phys,r)=omega_n(kappa=A(r)^T*a*k_phys/(2*pi), r).",
+    "normalized_coordinate": "q=a*k_phys/(2*pi); therefore q=A(r)^(-T)kappa and kappa=A(r)^T q.",
+    "phase_space_completion": "The general local theory requires the coupled symplectic equations containing Omega_kk, Omega_kr, Omega_rk, and possibly Omega_rr; these objects are not implemented.",
+    "reciprocal_basis": "b_i(r)=(2*pi/a)[A(r)^(-T)]_i; k_phys(r)=B(r)kappa with B(r)=(2*pi/a)A(r)^(-T).",
+    "semiclassical_minimal": "dot(r)=grad_k epsilon_n - dot(k) cross Omega_kk, dot(k)=-grad_r epsilon_n for a scalar local-band model with no external force convention.",
+    "strain_gradient": "grad_r s is independent physical input; it is not a relabeling of q or k_phys."
+  },
+  "established": {
+    "e8a_weighted_berry_gradient_functional": "VALIDATED_AS_A_MATHEMATICAL_NUMERICAL_FUNCTIONAL",
+    "e8b_bcd_physical_observable": "NOT_CLAIMED",
+    "e8b_dynamical_hall_shift": "NOT_DERIVED",
+    "e8b_local_nonuniform_deformation": "NOT_YET_STARTED",
+    "e8b_nonlinear_hall_coefficient": "NOT_DERIVED",
+    "e8b_strain_derivative_convergence": "NOT_YET_ESTABLISHED",
+    "e8b_strain_linearity": "NOT_YET_ESTABLISHED",
+    "e8b_uniform_affine_deformation": "VALIDATED_FOR_BOUNDED_THREE_POINT_PILOT",
+    "e8b_weight_dependence": "NOT_YET_CHARACTERIZED",
+    "e8b_weighted_berry_gradient_strain_response": "RESOLVED_BOUNDED_PILOT"
+  },
+  "observability_gates": {
+    "band_isolation": "Every sampled local state must pass the accepted external-isolation gate and declared subspace continuity/overlap gates; no threshold relaxation.",
+    "convergence": "Repeat profile, spatial step, k step, and wavepacket integration tolerances prospectively; require stable signed transverse shift and stable uncertainty interval.",
+    "deformation_smoothness": "epsilon_ad=a/L_def <= 0.05 and a*max(abs(grad_r s)) <= 0.05; abrupt profiles are outside local-Bloch scope.",
+    "minimum_displacement": "abs(Delta_r_perp) >= max(0.1*a, 3*delta_sample) before a live pilot can claim spatial observability.",
+    "propagation": "Use a predeclared L_prop and require the entire trajectory to remain inside the local-Bloch region with margin epsilon_ad <= 0.05.",
+    "reference_scale": "For a=400 nm only, 0.1*a is 40 nm; this is a prospective scale reference, not a measured result.",
+    "uncertainty": "Report Delta_r_perp +/- U with U <= 0.5*abs(Delta_r_perp) and propagate qualification failures as non-observable, not zero-filled data."
+  },
+  "observable_classification": {
+    "A_omega_and_Omega_kk_only": "INSUFFICIENT",
+    "B_omega_Omega_kk_and_physical_k_dot": "MINIMAL_SCALAR_MODEL_ONLY",
+    "C_mixed_phase_space_Berry_objects": "REQUIRED_FOR_GENERAL_LOCAL_NONUNIFORM_CASE",
+    "D_complete_Maxwell_wavepacket": "REQUIRED_IF_LOCAL_BAND_REDUCTION_IS_NOT_CONTROLLED",
+    "selected": "THEORY_OR_FRAMEWORK_EXTENSION_REQUIRED_BEFORE_LIVE_PILOT"
+  },
+  "policy": {
+    "live_solver_authorized": false,
+    "main_promotion_authorized": false,
+    "production_threshold_action": "RETAIN_UNCHANGED"
+  },
+  "result_summary": {
+    "base_sandbox_sha": "dc8ad3d138179ea2257ff032390009faae4f8ed7",
+    "blocked_by_infrastructure": false,
+    "bound_artifact_hashes": {
+      "audit/e8a/result.json": "dc5994f029ca1b1d320eeeb1ff78fb23c2285014b6c6d9794d81d05020f521d2",
+      "audit/e8a/weighted_berry_gradient.py": "37737ca5e036cf01e250e775af23541c2c4f7210bee187834a1467781b40de75",
+      "audit/e8b/closure.json": "b0d695d3756cfb003b11583f0df7750ae21a76494d383ea75fbd90063507d9e3",
+      "audit/e8b/e8b_contract.json": "8eed7959fc66041c9171e6b996de7ea941ae244ae22ca7d79365b66d34b3d59f",
+      "audit/e8b/e8b_geometry.py": "65023f2d2802dc5950bcead4002c48d2ce36ae059262ca7396c7b686cd7a0a3b",
+      "audit/e8b/run_e8b.py": "ff90ce23232c23f164112de8e87690dd6f9a31b86c3d17319738b346cde60f1d",
+      "audit/e9f/d11_fr04_source_reproduction_terminal_assessment.json": "5e942fccd63c3c152364961fca7d64376301f9592d1b6ce13253c69516d3ab86"
+    },
+    "current_framework_sufficient_for_observable": false,
+    "d11_terminal_assessment_sha256": "5e942fccd63c3c152364961fca7d64376301f9592d1b6ce13253c69516d3ab86",
+    "e10a_next_step": "THEORY_OR_FRAMEWORK_EXTENSION_REQUIRED_BEFORE_LIVE_PILOT",
+    "e8_provenance_status": "VERIFIED_BOUND_ARTIFACTS_AND_EXACT_RECORDED_OUTCOMES",
+    "e9f_source_binding_lesson_applied": true,
+    "e9f_terminal_provenance_status": "VERIFIED_D11_TERMINAL_ASSESSMENT",
+    "future_live_observability_gates_status": "PROSPECTIVE_GATES_DEFINED_NO_LIVE_AUTHORIZATION",
+    "local_bloch_validity_status": "CONTRACT_DEFINED_NOT_LIVE_VALIDATED",
+    "local_nonuniform_status": "NOT_YET_STARTED",
+    "machine_contract_status": "PASS",
+    "main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+    "mpb_execution": false,
+    "native_invocation_count": 0,
+    "native_solves": 0,
+    "next_live_solver_authorization": false,
+    "next_scientific_state": "E10A_LOCAL_NONUNIFORM_DEFORMATION_OBSERVABLE_CONTRACT_COMPLETE_READY_FOR_SUPERVISOR_POLICY_DECISION",
+    "observability_scale_status": "CONTROLLED_SCALE_NOT_NUMERICALLY_ESTABLISHED",
+    "physical_k_normalized_k_contract_status": "EXPLICIT_TRANSFORM_CHAIN_DEFINED",
+    "pipeline_health": "HEALTHY",
+    "provider_request_count": 0,
+    "required_missing_physical_objects": [
+      "No spatially varying local band-energy field omega_n(k_phys,r).",
+      "No local-r dependence or phase-space extension.",
+      "Geometry/profile evaluator parameterized by r with provenance binding.",
+      "Gauge-invariant derivative of local band energy with respect to physical position.",
+      "A physically derived force/canonical momentum equation for the local lattice.",
+      "Mixed phase-space Berry curvature and its convention/transport equation.",
+      "Validated integrator for coupled r,k equations with local-Bloch validity checks.",
+      "Observable map from trajectory to detector/sample displacement.",
+      "Propagation of spectral/geometric uncertainty into displacement uncertainty."
+    ],
+    "required_missing_physical_objects_text": "No spatially varying local band-energy field omega_n(k_phys,r).; No local-r dependence or phase-space extension.; Geometry/profile evaluator parameterized by r with provenance binding.; Gauge-invariant derivative of local band energy with respect to physical position.; A physically derived force/canonical momentum equation for the local lattice.; Mixed phase-space Berry curvature and its convention/transport equation.; Validated integrator for coupled r,k equations with local-Bloch validity checks.; Observable map from trajectory to detector/sample displacement.; Propagation of spectral/geometric uncertainty into displacement uncertainty.",
+    "return_to_supervisor": true,
+    "schema": "mephc-e10a-local-nonuniform-deformation-observable-contract-v1",
+    "science_runtime_sha256": "4ae06ff8c1de0a9c5f8b5ea905adf6f6030ec657b9f52da6dc30568e1baf64e5",
+    "scientific_work_must_stop": false,
+    "semiclassical_equation_classification": "MIXED_PHASE_SPACE_OBJECTS_REQUIRED",
+    "terminal": "E10A_LOCAL_NONUNIFORM_DEFORMATION_OBSERVABLE_CONTRACT_COMPLETE",
+    "uniform_affine_status": "VALIDATED_FOR_BOUNDED_THREE_POINT_PILOT",
+    "weighted_berry_gradient_observable_role": "DESCRIPTOR_ONLY_NO_OBSERVABLE_MAPPING_ESTABLISHED",
+    "work_order_id": "MEPHC-E10A-LOCAL-NONUNIFORM-DEFORMATION-OBSERVABLE-CONTRACT-20260829-342"
+  },
+  "schema": "mephc-e10a-local-nonuniform-deformation-observable-contract-v1",
+  "source": {
+    "base_sandbox_sha": "dc8ad3d138179ea2257ff032390009faae4f8ed7",
+    "bound_artifact_hashes": {
+      "audit/e8a/result.json": "dc5994f029ca1b1d320eeeb1ff78fb23c2285014b6c6d9794d81d05020f521d2",
+      "audit/e8a/weighted_berry_gradient.py": "37737ca5e036cf01e250e775af23541c2c4f7210bee187834a1467781b40de75",
+      "audit/e8b/closure.json": "b0d695d3756cfb003b11583f0df7750ae21a76494d383ea75fbd90063507d9e3",
+      "audit/e8b/e8b_contract.json": "8eed7959fc66041c9171e6b996de7ea941ae244ae22ca7d79365b66d34b3d59f",
+      "audit/e8b/e8b_geometry.py": "65023f2d2802dc5950bcead4002c48d2ce36ae059262ca7396c7b686cd7a0a3b",
+      "audit/e8b/run_e8b.py": "ff90ce23232c23f164112de8e87690dd6f9a31b86c3d17319738b346cde60f1d",
+      "audit/e9f/d11_fr04_source_reproduction_terminal_assessment.json": "5e942fccd63c3c152364961fca7d64376301f9592d1b6ce13253c69516d3ab86"
+    },
+    "d11_terminal_assessment_sha256": "5e942fccd63c3c152364961fca7d64376301f9592d1b6ce13253c69516d3ab86",
+    "main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5"
+  },
+  "work_order_id": "MEPHC-E10A-LOCAL-NONUNIFORM-DEFORMATION-OBSERVABLE-CONTRACT-20260829-342"
+}

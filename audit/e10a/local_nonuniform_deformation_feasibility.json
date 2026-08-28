@@ -1,0 +1,34 @@
+{
+  "controlled_scale_reference": "a=400 nm gives 0.1*a=40 nm only as a prospective reference; no measured shift is reported.",
+  "current_framework_sufficient": false,
+  "future_gates": {
+    "band_isolation": "Every sampled local state must pass the accepted external-isolation gate and declared subspace continuity/overlap gates; no threshold relaxation.",
+    "convergence": "Repeat profile, spatial step, k step, and wavepacket integration tolerances prospectively; require stable signed transverse shift and stable uncertainty interval.",
+    "deformation_smoothness": "epsilon_ad=a/L_def <= 0.05 and a*max(abs(grad_r s)) <= 0.05; abrupt profiles are outside local-Bloch scope.",
+    "minimum_displacement": "abs(Delta_r_perp) >= max(0.1*a, 3*delta_sample) before a live pilot can claim spatial observability.",
+    "propagation": "Use a predeclared L_prop and require the entire trajectory to remain inside the local-Bloch region with margin epsilon_ad <= 0.05.",
+    "reference_scale": "For a=400 nm only, 0.1*a is 40 nm; this is a prospective scale reference, not a measured result.",
+    "uncertainty": "Report Delta_r_perp +/- U with U <= 0.5*abs(Delta_r_perp) and propagate qualification failures as non-observable, not zero-filled data."
+  },
+  "local_bloch_limit": "epsilon_ad <= 0.05 and a*max(abs(grad_r s)) <= 0.05",
+  "local_bloch_parameter": "epsilon_ad=a/L_def",
+  "missing_objects": [
+    "No spatially varying local band-energy field omega_n(k_phys,r).",
+    "No local-r dependence or phase-space extension.",
+    "Geometry/profile evaluator parameterized by r with provenance binding.",
+    "Gauge-invariant derivative of local band energy with respect to physical position.",
+    "A physically derived force/canonical momentum equation for the local lattice.",
+    "Mixed phase-space Berry curvature and its convention/transport equation.",
+    "Validated integrator for coupled r,k equations with local-Bloch validity checks.",
+    "Observable map from trajectory to detector/sample displacement.",
+    "Propagation of spectral/geometric uncertainty into displacement uncertainty."
+  ],
+  "mixed_phase_space_object_required": true,
+  "no_live_authorization": true,
+  "observable_is_uniquely_defined": false,
+  "schema": "mephc-e10a-local-nonuniform-deformation-feasibility-v1",
+  "status": "THEORY_OR_FRAMEWORK_EXTENSION_REQUIRED_BEFORE_LIVE_PILOT",
+  "terminal": "E10A_LOCAL_NONUNIFORM_DEFORMATION_OBSERVABLE_CONTRACT_COMPLETE",
+  "weighted_berry_gradient_role": "DESCRIPTOR_ONLY_NO_OBSERVABLE_MAPPING_ESTABLISHED",
+  "work_order_id": "MEPHC-E10A-LOCAL-NONUNIFORM-DEFORMATION-OBSERVABLE-CONTRACT-20260829-342"
+}
