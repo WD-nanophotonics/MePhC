@@ -767,6 +767,16 @@ def test_bootstrap_allows_only_exact_build_with_single_unresolved_job_during_rec
     assert "$healthRecord.worker.installed_source_head -eq $SourceCommit" in block
 
 
+def test_bootstrap_runtime_pointer_uses_atomic_bounded_retry():
+    bootstrap = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8-sig")
+    atomic = bootstrap.split("function Set-AtomicJson", 1)[1].split("$Manifest=@()", 1)[0]
+    assert "[IO.File]::WriteAllText($temporary" in atomic
+    assert "[IO.File]::Replace($temporary,$Path,$null)" in atomic
+    assert "$attempt -lt 40" in atomic and "Start-Sleep -Milliseconds 50" in atomic
+    assert bootstrap.count("Set-AtomicJson $previousCurrent") == 3
+    assert "Set-Content -LiteralPath $previousCurrent" not in bootstrap
+
+
 def test_recovery_without_journal_never_replays_materialize(tmp_path, monkeypatch):
     materializer = load("runner_windows_materializer_recovery", "windows_materializer.py")
     job = tmp_path / "job"; job.mkdir()
