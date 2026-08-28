@@ -692,7 +692,13 @@ def runtime_source_matches() -> bool:
         current = json.loads((config.WINDOWS_RUNTIME_WSL / "current.json").read_text(encoding="utf-8-sig"))
         expected = {item["name"]: item["sha256"] for item in manifest if isinstance(item, dict)}
         source_head = checkout_manager.source_head()
-        if _SOURCE_RUNTIME_MATCH_CACHE is not None and _SOURCE_RUNTIME_MATCH_CACHE[0] == source_head:
+        # A negative result can be observed during the small bootstrap window
+        # between the WSL version switch and the Windows manifest pointer
+        # switch.  Never pin that transient mismatch for the lifetime of the
+        # worker; only a positive proof is safe to cache by source SHA.
+        if (_SOURCE_RUNTIME_MATCH_CACHE is not None
+                and _SOURCE_RUNTIME_MATCH_CACHE[0] == source_head
+                and _SOURCE_RUNTIME_MATCH_CACHE[1] is True):
             return _SOURCE_RUNTIME_MATCH_CACHE[1]
         if not expected or not isinstance(current.get("source_commit"), str):
             _SOURCE_RUNTIME_MISMATCH = {"reason": "manifest_or_current_invalid"}

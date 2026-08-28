@@ -164,6 +164,26 @@ def test_runtime_source_proofs_use_raw_git_blob_bytes():
     assert '"runtime_source_mismatch": worker.get("runtime_source_mismatch")' in attestation
 
 
+def test_runtime_source_negative_bootstrap_cache_is_rechecked(tmp_path, monkeypatch):
+    module = load("coherence_worker_negative_cache", RUNNER / "worker.py")
+    source = "a" * 40
+    content = b"stable committed bytes\n"
+    digest = __import__("hashlib").sha256(content).hexdigest()
+    install = tmp_path / "install"; install.mkdir(); (install / "worker.py").write_bytes(content)
+    windows = tmp_path / "windows"; windows.mkdir()
+    (windows / "install-manifest.json").write_text(json.dumps([{"name": "worker.py", "sha256": digest}]))
+    (windows / "current.json").write_text(json.dumps({"source_commit": source}))
+    monkeypatch.setattr(module, "INSTALL_ROOT", install)
+    monkeypatch.setattr(module.config, "WINDOWS_RUNTIME_WSL", windows)
+    monkeypatch.setattr(module.checkout_manager, "source_head", lambda: source)
+    monkeypatch.setattr(module.subprocess, "run", lambda *_args, **_kwargs:
+                        SimpleNamespace(returncode=0, stdout=content))
+    module._SOURCE_RUNTIME_MATCH_CACHE = (source, False)
+    module._SOURCE_RUNTIME_MISMATCH = {"reason": "transient_old_manifest"}
+    assert module.runtime_source_matches() is True
+    assert module._SOURCE_RUNTIME_MISMATCH is None
+
+
 def test_capabilities_finds_ready_job_missing_from_active_index(tmp_path, monkeypatch):
     module = load("coherence_latent_jobs", RUNNER / "jobctl.py")
     jobs = tmp_path / "jobs"
