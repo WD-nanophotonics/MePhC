@@ -1,7 +1,7 @@
 {
   "schema": "mephc_e9f_qp_b_c2_c3_r8_global_provider_request_graph_v1",
-  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-20260828-291",
-  "base_sandbox_sha": "e4a60bf7c7dde77a87e04d72cfeaa26a20adcf27",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-D1-20260828-293",
+  "base_sandbox_sha": "0e5c71f8f07571a5870e151bcffc7bcc6e74588d",
   "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
   "canonical_coordinate_unit": "1/144 of source-grid q coordinate",
   "canonical_center_formula": "CENTER=(4*i,4*j)",
