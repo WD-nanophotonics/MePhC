@@ -57,6 +57,7 @@ LOADED_WORKER_MODULE_HASH = hashlib.sha256(Path(__file__).read_bytes()).hexdiges
 WORKER_START_ID = uuid.uuid4().hex
 WORKER_STARTED_AT = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 _SOURCE_RUNTIME_MATCH_CACHE: tuple[str, bool] | None = None
+_SOURCE_RUNTIME_MISMATCH: dict[str, Any] | None = None
 
 
 class Rejected(RuntimeError):
@@ -685,7 +686,7 @@ def runner_build_id() -> str:
 
 
 def runtime_source_matches() -> bool:
-    global _SOURCE_RUNTIME_MATCH_CACHE
+    global _SOURCE_RUNTIME_MATCH_CACHE, _SOURCE_RUNTIME_MISMATCH
     try:
         manifest = json.loads((config.WINDOWS_RUNTIME_WSL / "install-manifest.json").read_text(encoding="utf-8-sig"))
         current = json.loads((config.WINDOWS_RUNTIME_WSL / "current.json").read_text(encoding="utf-8-sig"))
@@ -694,6 +695,7 @@ def runtime_source_matches() -> bool:
         if _SOURCE_RUNTIME_MATCH_CACHE is not None and _SOURCE_RUNTIME_MATCH_CACHE[0] == source_head:
             return _SOURCE_RUNTIME_MATCH_CACHE[1]
         if not expected or not isinstance(current.get("source_commit"), str):
+            _SOURCE_RUNTIME_MISMATCH = {"reason": "manifest_or_current_invalid"}
             return False
         for name, digest in expected.items():
             installed = INSTALL_ROOT / name
@@ -703,14 +705,21 @@ def runtime_source_matches() -> bool:
                  f"{source_head}:tools/mephc-runner/{name}"],
                 stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False, timeout=15,
             )
-            if (not installed.is_file() or source.returncode
-                    or hashlib.sha256(installed.read_bytes()).hexdigest() != digest
-                    or hashlib.sha256(source.stdout).hexdigest() != digest):
+            installed_matches = (installed.is_file()
+                                 and hashlib.sha256(installed.read_bytes()).hexdigest() == digest)
+            source_matches = source.returncode == 0 and hashlib.sha256(source.stdout).hexdigest() == digest
+            if not installed_matches or not source_matches:
+                _SOURCE_RUNTIME_MISMATCH = {"reason": "managed_file_mismatch", "name": name,
+                                            "git_return_code": source.returncode,
+                                            "installed_matches_manifest": installed_matches,
+                                            "source_blob_matches_manifest": source_matches}
                 _SOURCE_RUNTIME_MATCH_CACHE = (source_head, False)
                 return False
+        _SOURCE_RUNTIME_MISMATCH = None
         _SOURCE_RUNTIME_MATCH_CACHE = (source_head, True)
         return True
     except (OSError, KeyError, TypeError, json.JSONDecodeError):
+        _SOURCE_RUNTIME_MISMATCH = {"reason": "runtime_source_check_failed"}
         return False
 
 
@@ -751,6 +760,7 @@ def heartbeat() -> None:
         "loaded_worker_module_hash": LOADED_WORKER_MODULE_HASH,
         "expected_mcp_bundle_hash": expected_mcp,
         "runtime_source_matches": runtime_source_matches(),
+        "runtime_source_mismatch": _SOURCE_RUNTIME_MISMATCH,
         "updated_at": now(),
     })
 

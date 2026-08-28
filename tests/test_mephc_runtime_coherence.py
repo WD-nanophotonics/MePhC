@@ -159,6 +159,9 @@ def test_runtime_source_proofs_use_raw_git_blob_bytes():
         assert '"cat-file", "blob"' in text
     assert '"show", f"{source}' not in attestation
     assert '"show", f"{source_head}' not in worker
+    assert '"runtime_source_mismatch": _SOURCE_RUNTIME_MISMATCH' in worker
+    assert '"source_blob_matches_manifest": source_matches' in worker
+    assert '"runtime_source_mismatch": worker.get("runtime_source_mismatch")' in attestation
 
 
 def test_capabilities_finds_ready_job_missing_from_active_index(tmp_path, monkeypatch):
@@ -180,7 +183,7 @@ def test_worker_skips_terminal_unclaimed_ready_and_rebuilds_index():
     assert "installed = INSTALL_ROOT / name" in source
     assert '"cat-file", "blob"' in source
     assert 'f"{source_head}:tools/mephc-runner/{name}"' in source
-    assert "hashlib.sha256(source.stdout).hexdigest() != digest" in source
+    assert "hashlib.sha256(source.stdout).hexdigest() == digest" in source
     assert '"source_commit": checkout_manager.source_head()' in source
 
 

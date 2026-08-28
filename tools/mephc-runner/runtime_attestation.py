@@ -127,6 +127,7 @@ def attest() -> dict[str, Any]:
         "health_fresh": _fresh(worker) and _fresh(broker),
         "coherent": not mismatches,
         "mismatches": sorted(set(mismatches)),
+        "runtime_source_mismatch": worker.get("runtime_source_mismatch") if worker else None,
     }
     value["safe_next_tool"] = "mephc_doctor" if value["coherent"] else (
         "mephc_runtime_activate" if ({"SOURCE_RUNTIME_FILES_MISMATCH"}
