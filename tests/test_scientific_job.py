@@ -113,3 +113,24 @@ def test_solver_free_selftest_covers_codec_checkpoint_result_and_dataset(tmp_pat
     assert result["dataset_consumer_tested"] is True
     assert result["mpb_smoke"] == {"executed": False, "reused": False}
     assert (tmp_path / "certifications" / f"{result['runtime_sha256']}.json").is_file()
+
+
+def test_selftest_rejects_nonmatching_mephc_module_root(tmp_path, monkeypatch):
+    module = load_module("scientific_job_wrong_root")
+    wrong_root = tmp_path / "wrong"
+    package = wrong_root / "mephc"
+    package.mkdir(parents=True)
+    (package / "__init__.py").write_text("", encoding="utf-8")
+    original = sys.modules.pop("mephc", None)
+    spec = importlib.util.spec_from_file_location("mephc", package / "__init__.py")
+    assert spec and spec.loader
+    wrong_module = importlib.util.module_from_spec(spec)
+    sys.modules["mephc"] = wrong_module
+    spec.loader.exec_module(wrong_module)
+    try:
+        with pytest.raises(module.ScientificJobError, match="SOURCE_MODULE_ROOT_MISMATCH"):
+            module.selftest(ROOT, tmp_path / "state", mpb_smoke=False)
+    finally:
+        sys.modules.pop("mephc", None)
+        if original is not None:
+            sys.modules["mephc"] = original

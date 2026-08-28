@@ -296,6 +296,11 @@ def load_module(name: str, path: Path):
 
 
 def selftest(root: Path, state_root: Path, *, mpb_smoke: bool) -> dict[str, Any]:
+    root = root.resolve()
+    sys.path.insert(0, str(root))
+    import mephc
+    if Path(mephc.__file__).resolve().parents[1] != root:
+        raise ScientificJobError("SELFTEST_SOURCE_MODULE_ROOT_MISMATCH")
     runtime = load_module("_mephc_science_runtime_selftest", root / "tools" / "mephc-flow" / "mephc_science_runtime.py")
     helper = load_module("_mephc_native_helper_selftest", root / "tools" / "mephc-flow" / "wsl_native_exec.py")
     import numpy as np
