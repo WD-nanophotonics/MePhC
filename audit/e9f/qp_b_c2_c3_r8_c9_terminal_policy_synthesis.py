@@ -11,6 +11,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 C1_RESULT_PATH = ROOT / "audit/e9f/c1_live_result.json"
+C1_CALIBRATION_PATH = ROOT / "audit/e9f/qp_b_c2_c3_r8_c1_calibration.json"
 C8_EVIDENCE_PATH = ROOT / "audit/e9f/qp_b_c2_c3_r8_c8_parity_aware_terminal_evidence.json"
 SYNTHESIS_PATH = ROOT / "audit/e9f/qp_b_c2_c3_r8_c9_terminal_policy_synthesis.json"
 BAND2_ENDPOINT_PATH = ROOT / "audit/e9f/qp_b_c2_c3_r8_c9_band2_endpoint.json"
@@ -116,7 +117,8 @@ def accepted_c1_source_reproduction() -> dict[str, Any]:
     if (summaries.get(0, {}).get("VALLEY_CHERN") != BAND0_VALLEY_CHERN
             or summaries.get(1, {}).get("VALLEY_CHERN") != BAND1_VALLEY_CHERN):
         raise SynthesisError("C1_ACCEPTED_CHERN_ANCHORS_INVALID")
-    if value.get("current_0p02_policy_calibration") != "INCONCLUSIVE":
+    calibration = read_json(C1_CALIBRATION_PATH)
+    if calibration.get("current_0p02_policy_calibration") != "INCONCLUSIVE":
         raise SynthesisError("C1_POLICY_CALIBRATION_CHANGED")
     return {
         "band0_valley_chern": BAND0_VALLEY_CHERN,
