@@ -517,7 +517,7 @@ def analyze() -> dict[str, Any]:
         "terminal": "E9F_D4_FR04_R64_SOURCE_GRID_REDUCTION_COMPLETE",
     }
     atomic_json(ROOT / "audit/e9f/d4_fr04_r64_three_band_qualification_berry.json", qualification)
-    atomic_json(ROOT / "audit/e9f/d4_fr04_source_grid_reduction.json", reduction_artifact)
+    atomic_json(ROOT / "audit/e9f/d4_fr04_r64_source_grid_reduction.json", reduction_artifact)
     return {
         "schema": "mephc-e9f-d4-fr04-r64-three-band-analysis-v1", "work_order_id": WORK_ORDER_ID,
         "machine_contract_status": "PASS", "dataset_binding_status": "VERIFIED_EXISTING_IMMUTABLE_DATASET",

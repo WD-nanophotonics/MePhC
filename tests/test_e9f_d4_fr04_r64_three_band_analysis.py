@@ -53,7 +53,7 @@ def test_reducer_is_fail_closed_for_missing_berry():
 def test_output_artifacts_are_bounded_if_present():
     for path in (
         ROOT / "audit" / "e9f" / "d4_fr04_r64_three_band_qualification_berry.json",
-        ROOT / "audit" / "e9f" / "d4_fr04_source_grid_reduction.json",
+        ROOT / "audit" / "e9f" / "d4_fr04_r64_source_grid_reduction.json",
     ):
         if not path.exists():
             continue
