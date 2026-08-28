@@ -132,6 +132,8 @@ def verify_inputs() -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dic
         raise AnalysisError("D9_GRAPH_SCOPE_INVALID")
     required_binding = {
         "dataset_id": DATASET_ID, "dataset_manifest_sha256": MANIFEST_SHA256, "dataset_record_count": 420,
+        "d10_dataset_id": DATASET_ID, "d10_dataset_manifest_sha256": MANIFEST_SHA256, "d10_dataset_record_count": 420,
+        "d10_entrypoint_sha256": sha256_file(Path(__file__)), "d10_request_graph_sha256": GRAPH_SHA256,
         "request_graph_sha256": GRAPH_SHA256, "completed_key_count": 420, "failed_key_count": 0,
         "provider_failure_count": 0, "native_invocation_count": 1, "provider_request_count": 420,
         "solver_executions": 420, "native_solves": 420, "mpb_execution": True, "native_retry_count": 0,
