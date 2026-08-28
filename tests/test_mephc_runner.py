@@ -761,7 +761,9 @@ def test_bootstrap_allows_only_exact_build_with_single_unresolved_job_during_rec
     bootstrap = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8-sig")
     block = bootstrap.split("$recoveryMaintenanceHealthy=", 1)[1].split("if($recoveryMaintenanceHealthy)", 1)[0]
     assert "$healthExit -eq 2" in block
-    assert "$errors.Count -eq 1" in block and "$errors[0] -eq 'UNRESOLVED_RUNNER_JOB'" in block
+    assert "$healthErrors=@()" in bootstrap and "$healthErrors=@($healthRecord.errors)" in bootstrap
+    assert "$healthErrors.Count -eq 1" in block
+    assert "$healthErrors[0] -eq 'UNRESOLVED_RUNNER_JOB'" in block
     assert "$healthRecord.broker.broker_build_id -eq $BuildId" in block
     assert "$healthRecord.worker.worker_build_id -eq $BuildId" in block
     assert "$healthRecord.worker.installed_source_head -eq $SourceCommit" in block

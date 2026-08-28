@@ -106,9 +106,10 @@ if($Verify) {
       # bootstrap may be necessary.  Permit that one semantic health error
       # only when every newly installed runtime identity is exact; all stale,
       # drift, service, root, interpreter, main or extra errors still fail.
-      $errors=if($null -ne $healthRecord){@($healthRecord.errors)}else{@()}
-      $recoveryMaintenanceHealthy=($healthExit -eq 2 -and $errors.Count -eq 1 -and
-        $errors[0] -eq 'UNRESOLVED_RUNNER_JOB' -and
+      $healthErrors=@()
+      if($null -ne $healthRecord){$healthErrors=@($healthRecord.errors)}
+      $recoveryMaintenanceHealthy=($healthExit -eq 2 -and $healthErrors.Count -eq 1 -and
+        $healthErrors[0] -eq 'UNRESOLVED_RUNNER_JOB' -and
         $healthRecord.broker.broker_build_id -eq $BuildId -and
         $healthRecord.worker.worker_build_id -eq $BuildId -and
         $healthRecord.worker.installed_source_head -eq $SourceCommit)
