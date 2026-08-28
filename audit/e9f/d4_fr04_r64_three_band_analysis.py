@@ -198,6 +198,8 @@ def open_dataset(binding: dict[str, Any], runtime: Any, scientific_job: Any) -> 
     }
     store = scientific_job.ImmutableDatasetStore(runtime._trusted_science_state_root(), namespace)
     manifest_path = store.root / "dataset-manifest.json"
+    if not manifest_path.is_file():
+        raise AnalysisError(f"IMMUTABLE_DATASET_MANIFEST_UNAVAILABLE:{store.namespace_sha256}")
     manifest = read_json(manifest_path)
     unsigned_id = {key: value for key, value in manifest.items() if key not in {"dataset_id", "manifest_sha256"}}
     unsigned_manifest = {key: value for key, value in manifest.items() if key != "manifest_sha256"}
