@@ -238,15 +238,22 @@ def test_lifecycle_gate_accepts_only_published_clean_infrastructure(monkeypatch)
             f"{module.EXPECTED_MAIN}\trefs/heads/main\n{head}\trefs/heads/sandbox",
         ("diff", "--name-only", f"{installed}..{head}"):
             "tools/mephc-runner/jobctl.py\nmephc/relayctl.py\nAGENTS.md\n.codex/config.toml",
+        ("diff", "--name-only", f"{head}^..{head}"):
+            "tools/mephc-runner/jobctl.py\nmephc/relayctl.py\nAGENTS.md\n.codex/config.toml",
     }
     monkeypatch.setattr(module, "_git", lambda *args, **kwargs: answers[args])
     monkeypatch.setattr(module, "_current", lambda: {"source_commit":installed})
     monkeypatch.setattr(module, "_active_jobs", lambda: [])
-    assert module._gate() == {"source_head":head, "installed_source_head":installed}
+    result = module._gate()
+    assert result["source_head"] == head and result["installed_source_head"] == installed
+    assert result["ignored_nonruntime_change_count"] == 0
     answers[("diff", "--name-only", f"{installed}..{head}")] = "mephc/science.py"
+    result = module._gate()
+    assert result["ignored_nonruntime_change_count"] == 1
+    answers[("diff", "--name-only", f"{head}^..{head}")] = "mephc/science.py"
     with pytest.raises(module.LifecycleError) as caught:
         module._gate()
-    assert caught.value.code == "RUNTIME_ACTIVATION_NON_INFRASTRUCTURE_DIFF"
+    assert caught.value.code == "RUNTIME_ACTIVATION_NON_INFRASTRUCTURE_TIP"
 
 
 def test_activation_install_failure_restores_snapshot(monkeypatch, tmp_path):

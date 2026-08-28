@@ -111,12 +111,20 @@ def _gate() -> dict[str, str]:
     allowed = lambda name: (name in {"AGENTS.md", ".codex/config.toml", "mephc/relayctl.py"} or name.startswith("tools/mephc-runner/")
                             or name.startswith("tools/mephc-admission/")
                             or name.startswith("tests/test_mephc") or name == "tests/test_relayctl.py")
-    forbidden = sorted(name for name in changed if not allowed(name))
-    if forbidden:
-        raise LifecycleError("RUNTIME_ACTIVATION_NON_INFRASTRUCTURE_DIFF", ",".join(forbidden[:20]))
+    # The exact tip must be a deliberate infrastructure capstone. Historical
+    # scientific commits may exist between installed and HEAD, but bootstrap
+    # never copies them into either runtime; retain only a digest/count here.
+    tip_changed = _git("diff", "--name-only", f"{head}^..{head}").splitlines()
+    tip_forbidden = sorted(name for name in tip_changed if not allowed(name))
+    if tip_forbidden or not tip_changed:
+        raise LifecycleError("RUNTIME_ACTIVATION_NON_INFRASTRUCTURE_TIP", ",".join(tip_forbidden[:20]))
+    ignored = sorted(name for name in changed if not allowed(name))
+    ignored_digest = hashlib.sha256("\n".join(ignored).encode("utf-8")).hexdigest()
     if _active_jobs():
         raise LifecycleError("RUNTIME_ACTIVATION_ACTIVE_JOB")
-    return {"source_head": head, "installed_source_head": installed}
+    return {"source_head": head, "installed_source_head": installed,
+            "ignored_nonruntime_change_count": len(ignored),
+            "ignored_nonruntime_change_list_sha256": ignored_digest}
 
 
 def _tests() -> None:
