@@ -284,6 +284,53 @@ def test_directory_fsync_is_required_for_durable_replacement(monkeypatch, tmp_pa
         failing.store_exact(key, payload, failing.expected_identity(key))
 
 
+def test_real_mpb_h_snapshot_codec_roundtrip_reconstructs_immutable_state():
+    import numpy as np
+    from mephc.mpb_spectral import MPBHEnvelopeSnapshot, adapt_mpb_h_envelopes
+
+    runtime = load_runtime()
+    fields = np.asarray(
+        [[[[1.0, 0.0, 0.0]], [[0.0, 1.0, 0.0]]],
+         [[[0.0, 0.0, 1.0]], [[1.0, 1.0, 0.0]]]],
+        dtype=np.complex128,
+    )
+    snapshot = adapt_mpb_h_envelopes(
+        (0.25, -0.125), [0.5, 0.75], fields,
+        provenance={"representation": "mpb_periodic_h_l2_v1", "nested": {"value": 3}},
+    )
+    assert isinstance(snapshot, MPBHEnvelopeSnapshot)
+    assert hasattr(snapshot.provenance, "get")
+    assert hasattr(snapshot.raw_eigenstates[0].metadata, "get")
+    encoded = runtime.encode_snapshot(snapshot)
+    assert b"pickle" not in encoded
+    decoded = runtime.decode_snapshot(encoded)
+    assert isinstance(decoded, MPBHEnvelopeSnapshot)
+    assert decoded.k_point == snapshot.k_point
+    np.testing.assert_array_equal(decoded.frequencies, snapshot.frequencies)
+    np.testing.assert_array_equal(decoded.h_fields, snapshot.h_fields)
+    np.testing.assert_array_equal(decoded.raw_norms, snapshot.raw_norms)
+    np.testing.assert_array_equal(decoded.gram_matrix, snapshot.gram_matrix)
+    np.testing.assert_array_equal(decoded.normalized_vectors[0], snapshot.normalized_vectors[0])
+    assert decoded.provenance == snapshot.provenance
+    assert decoded.raw_eigenstates[0].metadata == snapshot.raw_eigenstates[0].metadata
+
+
+def test_codec_rejects_object_arrays_and_unknown_schema():
+    import io
+    import numpy as np
+
+    runtime = load_runtime()
+    unsafe = io.BytesIO()
+    np.savez(unsafe, metadata=np.frombuffer(b"{}", dtype=np.uint8), unsafe=np.asarray([object()], dtype=object))
+    with pytest.raises(runtime.ScienceRuntimeError):
+        runtime.decode_snapshot(unsafe.getvalue())
+    unknown = io.BytesIO()
+    metadata = json.dumps({"schema": "unknown"}).encode()
+    np.savez(unknown, metadata=np.frombuffer(metadata, dtype=np.uint8))
+    with pytest.raises(runtime.ScienceRuntimeError, match="SCHEMA_INVALID"):
+        runtime.decode_snapshot(unknown.getvalue())
+
+
 def test_manifest_summary_is_bounded_and_root_is_canonical_runtime_derived(monkeypatch, tmp_path):
     runtime = load_runtime()
     retention = FakeRetention()
@@ -299,7 +346,7 @@ def test_manifest_summary_is_bounded_and_root_is_canonical_runtime_derived(monke
 def test_contract_declares_official_runtime_and_no_caller_surfaces():
     contract = json.loads((AUDIT / "qp_b_c2_c3_r8_native_entrypoint_contract.json").read_text(encoding="utf-8"))
     assert contract["runtime_provider_binding"] == "OFFICIAL_DIRECT_FLOW_FIXED_R8_MPB_PROVIDER"
-    assert contract["runtime_retention_binding"] == "OFFICIAL_DIRECT_FLOW_PRIVATE_EXACT_KEY_RETENTION_WITH_PAYLOAD_SHA256"
+    assert contract["runtime_retention_binding"] == "OFFICIAL_DIRECT_FLOW_PRIVATE_EXACT_KEY_RETENTION_WITH_PAYLOAD_SHA256_AND_SAFE_MPB_H_CODEC"
     assert contract["caller_callback_injection_required"] is False
     assert contract["caller_checkpoint_argument_required"] is False
     assert contract["cli_zero_argument_executable"] is True

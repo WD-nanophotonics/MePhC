@@ -7,10 +7,10 @@ launcher, provider builder, or filesystem API.
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
-import pickle
 import subprocess
 import importlib.util
 from typing import Any, Callable
@@ -24,6 +24,7 @@ MAX_UNIQUE_REQUESTS = 210
 MAX_FRESH_SOLVER_EXECUTIONS = 210
 RESOLUTION_VALUES = {"R96": 96, "R128": 128, "R160": 160}
 H_REPRESENTATION = "mpb_periodic_h_l2_v1"
+RETENTION_PAYLOAD_CODEC_SCHEMA = "mephc_direct_flow_mpb_h_snapshot_payload_v1"
 
 
 class ScienceRuntimeError(RuntimeError):
@@ -150,6 +151,141 @@ def _payload_has_state(payload: Any) -> bool:
     return hasattr(payload, "frequencies") and hasattr(payload, "normalized_vectors")
 
 
+def _jsonable(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {str(key): _jsonable(item) for key, item in value.items()}
+    if hasattr(value, "items") and not isinstance(value, (str, bytes, bytearray)):
+        return {str(key): _jsonable(item) for key, item in value.items()}
+    if isinstance(value, (tuple, list)):
+        return [_jsonable(item) for item in value]
+    if hasattr(value, "item"):
+        return _jsonable(value.item())
+    if isinstance(value, (str, int, float, bool)) or value is None:
+        return value
+    raise ScienceRuntimeError("RETENTION_METADATA_NOT_JSON_SAFE")
+
+
+def encode_snapshot(payload: Any) -> bytes:
+    """Encode MPBHEnvelopeSnapshot using numeric NPZ arrays and JSON metadata."""
+    import numpy as np
+    from mephc.mpb_spectral import MPBHEnvelopeSnapshot
+    if not isinstance(payload, MPBHEnvelopeSnapshot):
+        if isinstance(payload, dict) and "frequencies" in payload and "normalized_vectors" in payload:
+            metadata = _canonical_json_bytes({
+                "schema": RETENTION_PAYLOAD_CODEC_SCHEMA,
+                "kind": "explicit_test_equivalent",
+                "payload": _jsonable(payload),
+            })
+            buffer = io.BytesIO()
+            np.savez_compressed(buffer, metadata=np.frombuffer(metadata, dtype=np.uint8))
+            return buffer.getvalue()
+        raise ScienceRuntimeError("RETENTION_PAYLOAD_TYPE_UNSUPPORTED")
+    if payload.provenance.get("representation") != H_REPRESENTATION:
+        raise ScienceRuntimeError("RETENTION_PAYLOAD_REPRESENTATION_INVALID")
+    arrays = {
+        "h_fields": np.asarray(payload.h_fields),
+        "frequencies": np.asarray(payload.frequencies),
+        "raw_norms": np.asarray(payload.raw_norms),
+        "gram_matrix": np.asarray(payload.gram_matrix),
+    }
+    if payload.e_fields is not None:
+        arrays["e_fields"] = np.asarray(payload.e_fields)
+    if any(array.dtype.kind == "O" or not np.all(np.isfinite(array)) for array in arrays.values()):
+        raise ScienceRuntimeError("RETENTION_PAYLOAD_ARRAY_INVALID")
+    if arrays["h_fields"].ndim != 4 or arrays["h_fields"].shape[-1] != 3:
+        raise ScienceRuntimeError("RETENTION_PAYLOAD_H_SHAPE_INVALID")
+    if arrays["raw_norms"].ndim != 1 or np.any(arrays["raw_norms"] <= 0):
+        raise ScienceRuntimeError("RETENTION_PAYLOAD_NORMS_INVALID")
+    states = []
+    for state in payload.raw_eigenstates:
+        states.append({
+            "k_point": list(state.k_point),
+            "solver_index": state.solver_index,
+            "eigenvalue": state.eigenvalue,
+            "metadata": _jsonable(state.metadata),
+        })
+    metadata = _canonical_json_bytes({
+        "schema": RETENTION_PAYLOAD_CODEC_SCHEMA,
+        "kind": "mpb_h_snapshot",
+        "k_point": list(payload.k_point),
+        "max_normalization_error": payload.max_normalization_error,
+        "max_off_diagonal_gram": payload.max_off_diagonal_gram,
+        "orthogonality_status": payload.orthogonality_status,
+        "normalization_tolerance": payload.normalization_tolerance,
+        "orthogonality_tolerance": payload.orthogonality_tolerance,
+        "provenance": _jsonable(payload.provenance),
+        "raw_eigenstates": states,
+        "e_fields_present": payload.e_fields is not None,
+    })
+    buffer = io.BytesIO()
+    np.savez_compressed(buffer, metadata=np.frombuffer(metadata, dtype=np.uint8), **arrays)
+    return buffer.getvalue()
+
+
+def decode_snapshot(payload_bytes: bytes) -> Any:
+    """Decode and validate only the fixed numeric/JSON snapshot schema."""
+    import numpy as np
+    from mephc.eigenspace import RawEigenstate
+    from mephc.mpb_spectral import MPBHEnvelopeSnapshot
+    try:
+        with np.load(io.BytesIO(payload_bytes), allow_pickle=False) as archive:
+            if "metadata" not in archive.files:
+                raise ScienceRuntimeError("RETENTION_CODEC_METADATA_MISSING")
+            metadata = json.loads(archive["metadata"].tobytes().decode("utf-8"))
+            if metadata.get("schema") != RETENTION_PAYLOAD_CODEC_SCHEMA:
+                raise ScienceRuntimeError("RETENTION_CODEC_SCHEMA_INVALID")
+            if metadata.get("kind") == "explicit_test_equivalent":
+                if set(archive.files) != {"metadata"}:
+                    raise ScienceRuntimeError("RETENTION_CODEC_FIELDS_INVALID")
+                return metadata["payload"]
+            expected = {"metadata", "h_fields", "frequencies", "raw_norms", "gram_matrix"}
+            if metadata.get("kind") != "mpb_h_snapshot":
+                raise ScienceRuntimeError("RETENTION_CODEC_KIND_INVALID")
+            if metadata.get("e_fields_present"):
+                expected.add("e_fields")
+            if set(archive.files) != expected:
+                raise ScienceRuntimeError("RETENTION_CODEC_FIELDS_INVALID")
+            arrays = {name: np.asarray(archive[name]) for name in expected if name != "metadata"}
+            if any(array.dtype.kind == "O" or not np.all(np.isfinite(array)) for array in arrays.values()):
+                raise ScienceRuntimeError("RETENTION_CODEC_ARRAY_INVALID")
+            h_fields = arrays["h_fields"]
+            frequencies = arrays["frequencies"]
+            raw_norms = arrays["raw_norms"]
+            gram = arrays["gram_matrix"]
+            if (h_fields.ndim != 4 or h_fields.shape[-1] != 3
+                    or frequencies.ndim != 1 or raw_norms.ndim != 1
+                    or gram.ndim != 2 or h_fields.shape[0] != frequencies.size
+                    or raw_norms.size != frequencies.size or gram.shape != (frequencies.size, frequencies.size)
+                    or np.any(raw_norms <= 0)):
+                raise ScienceRuntimeError("RETENTION_CODEC_SHAPE_INVALID")
+            if metadata.get("e_fields_present") and arrays["e_fields"].shape != h_fields.shape:
+                raise ScienceRuntimeError("RETENTION_CODEC_E_SHAPE_INVALID")
+            normalized = tuple(np.asarray(h_fields[index].reshape(-1), dtype=np.complex128) / raw_norms[index] for index in range(h_fields.shape[0]))
+            states = tuple(
+                RawEigenstate(
+                    tuple(item["k_point"]), int(item["solver_index"]), float(item["eigenvalue"]), normalized[index], item["metadata"]
+                )
+                for index, item in enumerate(metadata.get("raw_eigenstates", []))
+            )
+            if len(states) != frequencies.size:
+                raise ScienceRuntimeError("RETENTION_CODEC_STATE_COUNT_INVALID")
+            return MPBHEnvelopeSnapshot(
+                k_point=tuple(metadata["k_point"]), frequencies=frequencies,
+                h_fields=h_fields, raw_norms=raw_norms, normalized_vectors=normalized,
+                gram_matrix=gram, max_normalization_error=float(metadata["max_normalization_error"]),
+                max_off_diagonal_gram=float(metadata["max_off_diagonal_gram"]),
+                orthogonality_status=metadata["orthogonality_status"],
+                normalization_tolerance=float(metadata["normalization_tolerance"]),
+                orthogonality_tolerance=float(metadata["orthogonality_tolerance"]),
+                raw_eigenstates=states, provenance=metadata["provenance"],
+                e_fields=arrays.get("e_fields"),
+            )
+    except ScienceRuntimeError:
+        raise
+    except Exception as exc:
+        raise ScienceRuntimeError("RETENTION_CODEC_DECODE_FAILED") from exc
+
+
 def _canonical_json_bytes(value: Any) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
 
@@ -205,10 +341,7 @@ class ExactKeyRetention:
         if (metadata.get("payload_sha256") != hashlib.sha256(payload_bytes).hexdigest()
                 or metadata.get("payload_size_bytes") != len(payload_bytes)):
             raise ScienceRuntimeError("RETENTION_PAYLOAD_INTEGRITY_MISMATCH")
-        try:
-            payload = pickle.loads(payload_bytes)
-        except (OSError, pickle.PickleError, EOFError, AttributeError, ValueError) as exc:
-            raise ScienceRuntimeError("RETENTION_PAYLOAD_CORRUPT") from exc
+        payload = decode_snapshot(payload_bytes)
         if not _payload_has_state(payload):
             raise ScienceRuntimeError("RETENTION_PAYLOAD_STATE_INCOMPLETE")
         self.completed.add(metadata["key_sha256"])
@@ -222,7 +355,7 @@ class ExactKeyRetention:
             raise ScienceRuntimeError("RETENTION_PAYLOAD_STATE_INCOMPLETE")
         payload_path, metadata_path = self._paths(key)
         key_sha = hashlib.sha256(key).hexdigest()
-        payload_bytes = pickle.dumps(payload, protocol=pickle.HIGHEST_PROTOCOL)
+        payload_bytes = encode_snapshot(payload)
         payload_sha = hashlib.sha256(payload_bytes).hexdigest()
         _atomic_bytes(payload_path, payload_bytes)
         _atomic_bytes(metadata_path, json.dumps({
