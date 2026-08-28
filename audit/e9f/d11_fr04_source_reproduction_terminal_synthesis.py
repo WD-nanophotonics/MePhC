@@ -107,7 +107,7 @@ def synthesis() -> dict[str, Any]:
     refined = files["audit/e9f/d10_fr04_refined_stencil_convergence.json"]
     structural = files["audit/e9f/d10_fr04_structural_threshold_provenance.json"]
 
-    if d7_norm.get("berry_normalization_replay_status") != "PASS_EXACT_ACCEPTED_PRODUCTION_REPLAY":
+    if d7_norm.get("status") != "PASS_EXACT_ACCEPTED_PRODUCTION_REPLAY":
         raise SynthesisError("D7_NORMALIZATION_NOT_EXACT")
     if d7_qual.get("berry_normalization_provenance_status") != "PASS_EXACT_ACCEPTED_PRODUCTION_REPLAY":
         raise SynthesisError("D7_QUALIFICATION_PROVENANCE_NOT_EXACT")
