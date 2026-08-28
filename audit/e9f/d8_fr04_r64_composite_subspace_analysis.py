@@ -394,8 +394,8 @@ def analysis() -> dict[str, Any]:
         raise AnalysisError("D8_CONSUMPTION_CARDINALITY_MISMATCH")
     reduced = {label: reduce_supplied_berry_rows(plan, all_rows[label], label) for label in all_rows}
     summaries = {label: summarize(all_rows[label], all_evidence[label], reduced[label], label) for label in all_rows}
-    d7_band1 = {row["SAMPLE_ID"]: row for row in d7_qualification["rows"] if row["band_index"] == 1}
-    d7_band2 = {row["SAMPLE_ID"]: row for row in d7_qualification["rows"] if row["band_index"] == 2}
+    d7_band1 = {row["sample_id"]: row for row in d7_qualification["rows"] if row["band_index"] == 1}
+    d7_band2 = {row["sample_id"]: row for row in d7_qualification["rows"] if row["band_index"] == 2}
     intersection = d7_failures["band1"] & d7_failures["band2"]
     band1_only = d7_failures["band1"] - d7_failures["band2"]
     band2_only = d7_failures["band2"] - d7_failures["band1"]
