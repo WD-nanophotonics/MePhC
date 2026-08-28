@@ -133,7 +133,6 @@ def verify_inputs() -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dic
         "acquisition_source_commit": EXECUTION_SOURCE,
         "acquisition_dataset_id": DATASET_ID,
         "dataset_manifest_sha256": MANIFEST_SHA256,
-        "entrypoint_sha256": ENTRYPOINT_SHA256,
         "graph_sha256": GRAPH_SHA256,
         "domain_list_sha256": DOMAIN_LIST_SHA256,
         "science_runtime_sha256": RUNTIME_SHA256,
