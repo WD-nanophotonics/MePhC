@@ -63,7 +63,8 @@ def _source_blob_sha(source: str | None, relative: str) -> str | None:
                                           f"safe.directory={config.CONTROL_ROOT_WINDOWS}",
                                           "-C", config.CONTROL_ROOT_WINDOWS])
     try:
-        result = subprocess.run([*command, "show", f"{source}:{relative}"], stdout=subprocess.PIPE,
+        result = subprocess.run([*command, "-c", "core.autocrlf=false", "cat-file", "blob",
+                                 f"{source}:{relative}"], stdout=subprocess.PIPE,
                                 stderr=subprocess.DEVNULL, timeout=15, check=False)
         return hashlib.sha256(result.stdout).hexdigest() if result.returncode == 0 else None
     except (OSError, subprocess.TimeoutExpired):

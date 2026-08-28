@@ -699,7 +699,8 @@ def runtime_source_matches() -> bool:
             installed = INSTALL_ROOT / name
             source = subprocess.run(
                 [str(config.WINDOWS_GIT_WSL), "-c", f"safe.directory={config.CONTROL_ROOT_WINDOWS}",
-                 "-C", config.CONTROL_ROOT_WINDOWS, "show", f"{source_head}:tools/mephc-runner/{name}"],
+                 "-C", config.CONTROL_ROOT_WINDOWS, "-c", "core.autocrlf=false", "cat-file", "blob",
+                 f"{source_head}:tools/mephc-runner/{name}"],
                 stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False, timeout=15,
             )
             if (not installed.is_file() or source.returncode

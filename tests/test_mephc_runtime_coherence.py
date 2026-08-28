@@ -151,6 +151,16 @@ def test_attestation_binds_admission_to_commit_blob_not_windows_worktree(tmp_pat
     assert __import__("hashlib").sha256(working).hexdigest() != admission_hash
 
 
+def test_runtime_source_proofs_use_raw_git_blob_bytes():
+    attestation = (RUNNER / "runtime_attestation.py").read_text(encoding="utf-8")
+    worker = (RUNNER / "worker.py").read_text(encoding="utf-8")
+    for text in (attestation, worker):
+        assert '"core.autocrlf=false"' in text
+        assert '"cat-file", "blob"' in text
+    assert '"show", f"{source}' not in attestation
+    assert '"show", f"{source_head}' not in worker
+
+
 def test_capabilities_finds_ready_job_missing_from_active_index(tmp_path, monkeypatch):
     module = load("coherence_latent_jobs", RUNNER / "jobctl.py")
     jobs = tmp_path / "jobs"
@@ -168,7 +178,8 @@ def test_worker_skips_terminal_unclaimed_ready_and_rebuilds_index():
     assert "active_index.rebuild(JOBS)" in source
     assert 'existing not in {"succeeded", "failed", "recovery_required"}' in source
     assert "installed = INSTALL_ROOT / name" in source
-    assert '"show", f"{source_head}:tools/mephc-runner/{name}"' in source
+    assert '"cat-file", "blob"' in source
+    assert 'f"{source_head}:tools/mephc-runner/{name}"' in source
     assert "hashlib.sha256(source.stdout).hexdigest() != digest" in source
     assert '"source_commit": checkout_manager.source_head()' in source
 
