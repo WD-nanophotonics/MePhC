@@ -1,13 +1,1 @@
-{
-  "schema": "mephc_e9f_qp_b_c2_c3_r8_c3_r192_acquisition_binding_v1",
-  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-C3-A1-20260828-307",
-  "parent_dataset_id": "a2935beba40ef0c4b524198e6d2f44b93630bdff4c645e61a47d31187012b3db",
-  "parent_dataset_manifest_sha256": "55828e4a0eb6e24914807e42d13fa113457ce080ffe37c947b3c0cd7af1281d7",
-  "resolution": "R192",
-  "logical_provider_demand_count": 72,
-  "unique_provider_request_count": 70,
-  "duplicate_logical_demand_count": 2,
-  "holdout_used": false,
-  "third_stencil_executed": false,
-  "completion_state": "PENDING_NATIVE_ACQUISITION"
-}
+{"R192_dataset_record_count":70,"entrypoint_sha256":"2e690c68a1a270189d15cbaf1a9c173f684c64acf6309c8635d72cc395c18b2f","future_consumer_requires_reconciliation":true,"graph_sha256":"c0dc7ba7600e2bd18a7c57cb91683ece237f432cb68e70f325725535a0091008","parent_dataset_id":"a2935beba40ef0c4b524198e6d2f44b93630bdff4c645e61a47d31187012b3db","provenance_reconciliation_sha256":"bc49f09faaaa2eeb27d47e41f846361218d40d32f8cebf3078dfe3db1261ba10","provenance_status":"RECONCILED","raw_dataset_declared_source_commit":"56f7e51a2cb910a7187d982366a492c9cb17bd09","raw_immutable_dataset_id":"446ad69a302c9eb3524b67fe2127701030f62986dd1ccc570e3b0830a3dc488c","raw_immutable_dataset_manifest_sha256":"4db0377cf2126fcc1ed8fb4b74a0ed6a2bd0ccf2e58e4a22e922262bc427d7d5","runtime_sha256":"d292915b021769ae3c5ee2be3181b6aef4acf021bb178ec2af5ea6ac9905f022","schema":"mephc_e9f_qp_b_c2_c3_r8_c3_r192_acquisition_binding_v2","verified_execution_source_commit":"f468e6016fed3019fcdf5937722abf47d20995e6","work_order_id":"MEPHC-E9F-C2-QP-B-C2-C3-R8-C3-R1-20260828-310"}
