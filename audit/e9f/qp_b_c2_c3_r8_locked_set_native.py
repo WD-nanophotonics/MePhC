@@ -275,6 +275,14 @@ def validate_output_contract(output: dict[str, Any]) -> None:
         raise EntrypointError("NATIVE_OUTPUT_CONTRACT_INCOMPLETE")
 
 
+def canonical_result_bytes(result: dict[str, Any]) -> bytes:
+    """Serialize the bounded result marker with the shared byte contract."""
+    if not isinstance(result, dict):
+        raise EntrypointError("NATIVE_RESULT_NOT_OBJECT")
+    return json.dumps(result, sort_keys=True, separators=(",", ":"),
+                      ensure_ascii=False).encode("utf-8")
+
+
 def run(
     arguments: Iterable[str] = (),
     *,
@@ -319,11 +327,11 @@ def main() -> int:
     except EntrypointError as exc:
         print(json.dumps({"error_code": exc.code, "detail": exc.detail}, sort_keys=True))
         return 2
-    serialized = json.dumps(result, sort_keys=True, default=str)
-    if len(serialized.encode("utf-8")) > MAX_SUCCESS_STDOUT_BYTES:
+    serialized_bytes = canonical_result_bytes(result)
+    if len(serialized_bytes) > MAX_SUCCESS_STDOUT_BYTES:
         print(json.dumps({"error_code": "SUCCESS_STDOUT_LIMIT_EXCEEDED"}, sort_keys=True))
         return 2
-    print("MEPHC_NATIVE_RESULT_JSON=" + serialized)
+    print("MEPHC_NATIVE_RESULT_JSON=" + serialized_bytes.decode("utf-8"))
     return 0
 
 

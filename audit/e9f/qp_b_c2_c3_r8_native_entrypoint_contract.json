@@ -1,6 +1,6 @@
 {
   "schema": "mephc_e9f_qp_b_c2_c3_r8_native_entrypoint_contract_v1",
-  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-D3-I1-20260828-300",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-D3-R1-20260828-302",
   "entrypoint_path": "audit/e9f/qp_b_c2_c3_r8_locked_set_native.py",
   "frozen_graph_path": "audit/e9f/qp_b_c2_c3_r8_global_provider_request_graph.json",
   "logical_provider_demand_count": 216,
@@ -51,6 +51,8 @@
   "mpb_execution_observed_alias": "fresh_mpb_execution_observed",
   "native_result_marker": "MEPHC_NATIVE_RESULT_JSON=",
   "native_result_channel": "DURABLE_BOUNDED_SUMMARY_WITH_STREAM_HASHES_AND_SIZES",
+  "native_result_serialization": "JSON_SORTED_KEYS_COMPACT_SEPARATORS_UTF8_NO_ASCII_ESCAPING",
+  "native_result_reconciliation": "FIXED_R8_ZERO_NATIVE_ZERO_MPB_EXISTING_DATASET_RECONCILIATION",
   "retention_payload_codec_schema": "mephc_direct_flow_mpb_h_snapshot_payload_v1",
   "direct_provider_object_pickle": false,
   "unsafe_object_deserialization": false,

@@ -587,6 +587,17 @@ def native_status(paths: Paths, run_id: str) -> dict[str, Any]:
     if not isinstance(value, dict) or value.get("run_id") != run_id:
         raise FlowError("NATIVE_RUN_NOT_FOUND")
     if value.get("state") in {"succeeded", "failed"}:
+        reconciliation_path = paths.state / "reconciliations" / f"{run_id}.json"
+        reconciliation = read_json(reconciliation_path, default=None)
+        if (isinstance(reconciliation, dict)
+                and reconciliation.get("original_native_run_id") == run_id
+                and isinstance(reconciliation.get("canonical_result_summary"), dict)):
+            return {
+                **value,
+                "reconciled": True,
+                "reconciliation_status": reconciliation.get("reconciliation_status"),
+                "reconciled_result_summary": reconciliation["canonical_result_summary"],
+            }
         return value
     pid, start_ticks = value.get("pid"), value.get("linux_start_ticks")
     alive = False
@@ -724,6 +735,7 @@ def parser() -> argparse.ArgumentParser:
     report_cmd.add_argument("--work-order", required=True)
     report_cmd.add_argument("--kind", choices=sorted(REPORT_KINDS), required=True)
     report_cmd.add_argument("--message-file", type=Path, required=True)
+    commands.add_parser("reconcile-r8-native-result")
     reconcile_cmd = commands.add_parser("courier-reconcile")
     reconcile_cmd.add_argument("--request-id", required=True)
     return result
@@ -747,6 +759,17 @@ def main(argv: list[str] | None = None, *, paths: Paths = Paths()) -> int:
             value = native_status(paths, args.run_id)
         elif args.command == "report":
             value = report(paths, args.work_order, args.kind, args.message_file.resolve())
+        elif args.command == "reconcile-r8-native-result":
+            helper = f"{CONTROL_ROOT_WSL}/tools/mephc-flow/reconcile_r8_native_result.py"
+            result = wsl([CONDA_PYTHON_WSL, helper], timeout=3600, check=False)
+            if result.returncode:
+                raise FlowError("R8_RECONCILIATION_FAILED", (result.stderr or result.stdout)[-8000:])
+            try:
+                value = json.loads(result.stdout)
+            except json.JSONDecodeError as exc:
+                raise FlowError("R8_RECONCILIATION_OUTPUT_INVALID", result.stdout[-4000:]) from exc
+            if not isinstance(value, dict):
+                raise FlowError("R8_RECONCILIATION_OUTPUT_INVALID")
         else:
             value = courier_reconcile(paths, args.request_id)
         emit(value)
