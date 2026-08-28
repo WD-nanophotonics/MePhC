@@ -1,12 +1,7 @@
-"""Fixed, zero-argument R8 locked-set native entrypoint.
-
-The entrypoint performs an independent, solver-free graph verification before
-any provider is initialized.  Provider and private-retention integration are
-injected only by the future direct-flow execution contract; this work order
-does not execute them.
-"""
+"""Fixed, zero-argument R8 locked-set direct-flow entrypoint."""
 from __future__ import annotations
 
+import importlib.util
 import json
 import sys
 from pathlib import Path
@@ -16,6 +11,7 @@ from typing import Any, Callable, Iterable
 FROZEN_GRAPH_PATH = Path(__file__).resolve().with_name(
     "qp_b_c2_c3_r8_global_provider_request_graph.json"
 )
+SCIENCE_RUNTIME_PATH = Path(__file__).resolve().parents[2] / "tools" / "mephc-flow" / "mephc_science_runtime.py"
 EXPECTED_RESOLUTIONS = ("R96", "R128", "R160")
 EXPECTED_POINTS = frozenset({
     "CENTER", "H72_PLUS_X", "H72_MINUS_X", "H72_PLUS_Y", "H72_MINUS_Y",
@@ -50,6 +46,20 @@ class EntrypointError(ValueError):
         self.code = code
         self.detail = detail
         super().__init__(f"{code}: {detail}" if detail else code)
+
+
+def load_science_runtime():
+    """Load only the fixed direct-flow science runtime module."""
+    module_name = "_mephc_direct_flow_science_runtime"
+    if module_name in sys.modules:
+        return sys.modules[module_name]
+    spec = importlib.util.spec_from_file_location(module_name, SCIENCE_RUNTIME_PATH)
+    if spec is None or spec.loader is None:
+        raise EntrypointError("DIRECT_FLOW_SCIENCE_RUNTIME_UNAVAILABLE")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
 
 
 def canonical_key(request_key: dict[str, Any]) -> bytes:
@@ -270,13 +280,28 @@ def run(
     provider_solve: Callable[[dict[str, Any]], Any] | None = None,
     checkpoint: dict[bytes, Any] | None = None,
 ) -> dict[str, Any]:
-    """Validate the frozen scope, then require the future private facility."""
+    """Validate the frozen scope, then use the official runtime when un-injected."""
     validate_arguments(arguments)
     graph = load_frozen_graph()
     verification = verify_graph(graph)
     plan = build_provider_plan(graph)
+    if provider_solve is None and checkpoint is None:
+        try:
+            runtime = load_science_runtime().create_r8_runtime()
+            results, reused, fresh = runtime.execute(plan)
+        except Exception as exc:
+            if isinstance(exc, EntrypointError):
+                raise
+            raise EntrypointError("DIRECT_FLOW_SCIENCE_RUNTIME_FAILED", str(exc)) from exc
+        return {
+            **verification,
+            "provider_request_count": len(plan),
+            "cache_reuse_count": reused,
+            "fresh_native_solver_execution_count": fresh,
+            "results": results,
+        }
     if provider_solve is None or checkpoint is None:
-        raise EntrypointError("DIRECT_FLOW_PRIVATE_NUMERICAL_RETENTION_OR_CHECKPOINT_INTERFACE")
+        raise EntrypointError("CALLER_RUNTIME_INJECTION_INCOMPLETE")
     results, reused, fresh = execute_unique_requests(plan, provider_solve, checkpoint)
     return {
         **verification,

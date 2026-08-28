@@ -1,6 +1,6 @@
 {
   "schema": "mephc_e9f_qp_b_c2_c3_r8_native_entrypoint_contract_v1",
-  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-D1-I1-20260828-294",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-D1-I3-20260828-296",
   "entrypoint_path": "audit/e9f/qp_b_c2_c3_r8_locked_set_native.py",
   "frozen_graph_path": "audit/e9f/qp_b_c2_c3_r8_global_provider_request_graph.json",
   "logical_provider_demand_count": 216,
@@ -30,6 +30,15 @@
   "adaptive_k_expansion": false,
   "cross_resolution_deduplication": false,
   "checkpoint_identity": "exact-provider-key-v1",
+  "runtime_provider_binding": "OFFICIAL_DIRECT_FLOW_FIXED_R8_MPB_PROVIDER",
+  "runtime_retention_binding": "OFFICIAL_DIRECT_FLOW_PRIVATE_EXACT_KEY_RETENTION",
+  "science_runtime_api_path": "tools/mephc-flow/mephc_science_runtime.py",
+  "private_retention_identity_schema": "mephc_direct_flow_exact_key_record_v1",
+  "private_retention_atomicity": "DURABLE_ATOMIC_PAYLOAD_METADATA_AND_COMPLETE_MARKER",
+  "private_retention_resume": "EXACT_CANONICAL_PROVIDER_KEY_GRANULARITY",
+  "caller_callback_injection_required": false,
+  "caller_checkpoint_argument_required": false,
+  "cli_zero_argument_executable": true,
   "native_solver_execution_in_tests": 0,
   "mpb_execution_in_tests": false,
   "output_contract_fields": [
