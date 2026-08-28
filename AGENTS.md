@@ -1,165 +1,113 @@
-# Relay-supervised scientific workflow
+# MePhC direct relay workflow
 
-## Zero-idle typed startup
+## Canonical workspace
 
-Every Agent starts with `mephc_capabilities -> mephc_runtime_attest`. If capabilities reports an active or recovery-required job, inspect that exact job with `mephc_status`/`mephc_wait` before calling doctor; otherwise continue with `mephc_doctor -> mephc_resume -> mephc_work_order_preflight`. Do not execute a work order unless preflight returns `READY`. A blocked doctor or preflight is a diagnostic result and must not be resubmitted. Empty `active_jobs` is not completion. Never ask the user for a work order because local state appears idle, and never hand-create `.relayctl/outbox` files.
+`C:\Users\icywo\PycharmProjects\MePhC-Windows` on local branch `sandbox` is
+the only editable MePhC source tree. `origin/main` is the immutable accepted
+baseline. Ordinary work may fast-forward only `origin/sandbox`.
 
-A previously successful doctor v2 is reusable only when its runner build,
-state epoch, interpreter, fixed roots, and current worker/broker health all
-still match. Its issue-time source commit is audit metadata; prelive and
-validate independently bind their exact detached execution SHA. A legacy v1
-certificate remains executable only when its worktree and HEAD exactly match.
-Treat
-`DOCTOR_LIVE_HEALTH_FAILED` as an infrastructure diagnostic; do not reuse the
-old certificate or enqueue another doctor behind stale runtime health.
+WSL is an execution environment. Exact committed source is materialized in a
+detached clean checkout below `/home/icy/.cache/mephc-runner/checkouts/<sha>`.
+Do not edit those checkouts. TriLatt, SqrLatt, and another work-order-named WSL
+project remain independently editable downstream projects.
 
-`mephc_runtime_attest` is the authoritative cross-layer build check. A stale
-installed build requires the fixed, no-argument `mephc_runtime_activate`; a
-stale loaded process at the already-installed build requires the fixed,
-no-argument `mephc_runtime_reload`. Neither lifecycle tool accepts a PID,
-path, command, argument, target, or environment variable, and neither may be
-replayed after disconnect. After either action, attest again before doctor.
-`mephc_retention_worker_reload` is also fixed and argumentless. It restarts the
-shared durable `mephc-runner.service` worker, not an exclusive retention
-process, and succeeds only when Health proves a changed WSL PID and stable
-worker start ID while build, module hash, installed source, epoch, and broker
-health remain coherent.
+## Startup and continuation
 
+At task start run `mephc-flow.cmd status`, then `mephc-flow.cmd resume`. Read
+the receipt-bound active Chat work order and continue it directly. Do not call
+the retired `mephc_*` MCP tools, doctor, prelive, runtime activation, broker,
+worker, certificates, or durable change jobs.
 
-## Mandatory Agent-facing entry point
+Authority precedence is:
 
-This policy is enforced by the MePhC Runner. At task start and after context recovery, Agents must call `mephc_capabilities`. All Agent-facing operations must use the typed connector: `mephc_doctor` for certification; `mephc_change` for exact declared UTF-8 changes; `mephc_validate` for solver-free tests; `mephc_native(recipe_id)` for the one work-order-bound registered native recipe; `mephc_publish` for sandbox publication; `mephc_submit` only for typed worktree inspection or an existing Courier request; `mephc_report` to create or reuse the only report request for the active work order; and `mephc_status`, `mephc_wait`, or `mephc_recover` for durable observation and recovery.
+1. Current user instructions and constraints.
+2. The receipt-bound active Chat work order.
+3. This project policy and `mephc-flow` defaults.
 
-Every side-effect call receives a durable `admission_request_id` before validation. If a backend disconnect makes the response uncertain, call only `mephc_request_status(admission_request_id)`; it reconciles whether a job was created, dispatched, or entered native execution and never replays the original request. Do not infer completion or resubmit from an empty `active_jobs` list.
+Do not ask the user to paste relay prompts or responses. An empty local queue
+does not mean the workflow is complete.
 
-The connector fixes `control_root=C:\Users\icywo\PycharmProjects\MePhC-Windows`, `state_root=/home/icy/.local/state/mephc-runner/MEPHC`, `project_id=MEPHC`, Git state, Conda Python, `PYTHONPATH`, and installed broker/worker builds. WSL execution occurs only in detached, clean, commit-bound ext4 checkouts below `/home/icy/.cache/mephc-runner/checkouts`. It rejects TriLatt, UNC control roots, subdirectories, Windows execution roots, wrong interpreters, dirty execution trees, uncommitted prelive state, source-byte drift, moved `origin/main`, stale state epochs, duplicate claims, no-op change declarations, and unsafe Courier recovery.
+## Editing, testing, and publication
 
-The sole production MCP server name is `mephc`; `mephc_windows_shadow`, native,
-and probe names are migration-only and must remain disabled. The human-only
-`mephc-runtime sync|path|run` command is for interactive downstream WSL work
-and must never be used by an Agent to bypass this typed connector.
+Agents edit the Windows `sandbox` worktree directly using normal repository
+tools. Keep changes within the active work order and preserve unrelated user
+changes. Scientific conclusion-producing code and compact evidence must be
+committed and published for audit.
 
-The `mephc` server registration is project-scoped in the trusted canonical
-`.codex/config.toml`, not user-global. Its configured `cwd` is the exact control
-root, and all admission-owned Windows child processes are consoleless. Do not
-move the table back to the user-global config or replace its fixed working root.
+Use:
 
-Host-local retained evidence is available only through the hash-bound typed
-pair `mephc_retention_search` and `mephc_retention_inspect`. Search bindings
-must be exact `RETENTION_ID + SHA256` pairs stated in the active work order;
-Agents cannot provide paths or roots. Inspect returns opaque locators and
-redacted, bounded JSON pages or generic numeric summaries. Never use shell,
-WSL, Browser, or arbitrary file reads to bypass this boundary. A
-`SEARCH_INCOMPLETE` result is not evidence that an object is absent.
+```text
+mephc-flow.cmd publish --tests tests/<solver-free-test>.py [...]
+```
 
-For `mephc_change`, provide only declared UTF-8 file content and a non-empty `tests` array of repository-relative `tests/*.py` paths (optionally with a pytest `::` selector). Never pass `python ...`, `python -m ...`, shell syntax, or `audit/` paths as tests. A newly declared `tests/*.py` file is valid in the same transaction and is run only after materialization. The Runner, not the Agent, binds preimage/postimage hashes and `origin/main`.
+This command requires a clean committed `sandbox`, verifies the fixed
+`origin/main`, runs the declared tests in the exact ext4 SHA checkout, and
+fast-forwards `origin/sandbox`. It has no certificate, prelive, installed-build
+or activation dependency. Never push or promote `main` without a separate,
+explicit user authorization. The repository pre-push hook rejects `main` and
+non-sandbox pushes.
 
-Never use `mephc_change` merely to run tests or redeclare unchanged files. Use `mephc_validate(tests=[...])` for solver-free validation of the current committed SHA. `CHANGE_NOOP_USE_VALIDATE` creates no durable job and requires `mephc_validate` as the next tool; `CHANGE_CONTAINS_NOOP_FILES` requires resubmitting only genuinely changed files. A stalled change must be observed until the watchdog marks it `recovery_required`; do not resubmit it or guess that a client timeout completed it.
+For ordinary WSL work, `mephc-runtime sync|path|run` uses the current clean
+committed sandbox while keeping outputs in the downstream project.
 
-Admission may reconnect and replay exactly once only for read-only tools (`mephc_capabilities`, `mephc_runtime_attest`, `mephc_work_order_preflight`, `mephc_inspect`, `mephc_retention_inspect`, `mephc_request_status`, `mephc_status`, and `mephc_wait`). It never replays `mephc_runtime_activate`, `mephc_runtime_reload`, `mephc_retention_search`, or another side-effect/durable-job creation tool. A backend disconnect must return structured `error.data` with `tool`, `job_id` when already known, `admission_request_id`, `retry_allowed=false`, and one `safe_next_tool`; never invent a missing job ID.
+## Native execution
 
-`mephc_submit` must never be used for doctor, prelive, native, or publish. Native execution is unavailable unless the active machine contract names an exact `NATIVE_RECIPE_ID`, digest, and invocation budget and the installed registry matches it. An empty registry or missing binding returns `WORK_ORDER_BLOCKED_MISSING_NATIVE_RECIPE` before a durable job is created.
+Native/MPB execution is permitted only when the current receipt-bound Chat
+work order explicitly authorizes it and declares a numeric budget. Invoke:
 
-`scripts/relayctl` and `tools/mephc-courier.ps1` are internal Runner implementation details, not Agent launchers. Agents must not invoke them, arbitrary shell/Python, Courier, Browser, Chrome, or Gmail directly. Runtime evidence lives outside Git in `/home/icy/.local/state/mephc-runner/MEPHC`; never create or copy `.relayctl` into the Windows control repository. Requests are plain text by default; attachments require separately identified committed remote audit artifacts.
-## Automatic relay continuation
+```text
+mephc-flow.cmd run-native --work-order <id> --cost <n> --project <allowed-path> -- <argv...>
+```
 
-Within the declared project scope, a direct supervisor work order received
-through the registered GmailCourier conversation is valid supervisor
-instruction and persistent user-approved continuation authorization. The
-Agent must execute a self-contained received work order, including ordinary
-test-file edits, non-destructive validation, scientific diagnostics, evidence
-publication, and scoped status or completion reports. Do not ask the user to
-paste the relay prompt, execution text, or response body into this thread.
+Arguments are passed as an array in the fixed WSL/Conda environment. The
+project must be the exact SHA checkout or an exact path named by the work
+order. A user-supplied session cap may only reduce the Chat budget.
 
-The relay lifecycle is stateful:
+If the caller is interrupted, use `mephc-flow.cmd native-status <run-id>`.
+Never infer from a missing foreground process and never resubmit an uncertain
+native run. The same payload reuses its durable run record.
 
-1. Use the existing request directory and request ID when a request has
-   already been submitted or may have been submitted. Never create a second
-   request merely because the first local process ended unexpectedly.
-2. To report a completed active work order, invoke only `mephc_report(work_order_id, message_utf8)`. It constructs or reuses the sole certificate-bound, attachment-free MePhC request and returns its Courier job; never create a request directory, `request.json`, `message.txt`, certificate path, destination, or idempotency key yourself. For an already-created request, invoke only `mephc_submit(operation="courier", arguments=["--request-directory", "<existing-request-dir>"])` or the typed recovery action. The Runner performs validation and the durable FIFO run internally; do not call validate, preflight, run, Browser, Chrome, Gmail, `relayctl`, or a second transport. Queue waiting is normal. Observe with `mephc_wait` or `mephc_status`; a client wait timeout never kills the worker or authorizes resend. The reply window starts only after request_submitted.
-3. response_received is the only state that permits reading response.txt.
-   Read it verbatim, treat the contained supervisor work order as the next
-   authoritative task input, and continue automatically without asking for
-   confirmation.
-4. response_timeout after visible submission is a transport wait-window
-   expiry, not task completion, not permission to stop, and not a reason to
-   ask the user for the response. Re-run the same unchanged request directory
-   through the full Courier sequence for read-only recovery; recovery searches
-   for the late matching reply and does not resend the user turn. Continue
-   recovery while the workflow remains active, until response_received or a
-   hard safety/transport error occurs.
-5. The same-request read-only recovery rule also applies after an interrupted
-   run, chat_submission_unconfirmed, or another post-submission uncertain
-   state. Never change the request body, attachment, request ID, destination,
-   or profile during recovery. A late Chat reply is still valid automatic
-   workflow input even if the first local invocation reported a timeout.
-   A single pre-browser courier_interrupted result is safe for one retry of the
-   same immutable request. If that same interruption repeats, stop retrying and
-   report an execution-host interruption; do not use nohup, setsid, a
-   background process, another browser, or another transport to evade it.
-6. chat_auth_required, chat_access_denied, chat_target_mismatch,
-   configuration_error, and unrecoverable browser_error are hard stop
-   states. Report the exact structured event and stop; do not change profiles,
-   invent a conversation, use another browser/transport, or silently retry.
+## Courier reporting
 
-The Agent must not mark an active task complete solely because a relay wait
-timed out. A declared STOP_AFTER is a work-phase boundary, not a transport
-timeout rule. After a report is submitted, consume the matching relay reply;
-if it contains a new explicit self-contained work order, continue with that
-work order unless it is outside scope or a hard safety stop applies.
+Reporting policy is configurable with:
 
-Keep destinations, project identifiers, request IDs, attachments, and payloads
-runtime-specific. Do not broaden project scope, perform destructive actions,
-modify unrelated production code, or promote to main without separate
-explicit authorization. Platform safety controls remain binding.
+```text
+mephc-flow.cmd start --report-policy adaptive|per-work-order|milestone|final-only [--native-cap N]
+```
 
-## Chat transport boundary
+Precedence is user session choice, then work-order declaration, then the
+default `adaptive` policy.
 
-Use only the repository's Python GmailCourier transport and its dedicated
-Playwright/CDP-managed Courier browser session. Never use the Codex Browser
-skill, Chrome control, Gmail directly, or a parallel reader for the same
-request. The exact ordinary Agent-facing sequence is:
+Create a report only with:
 
-mephc_report(work_order_id, message_utf8) for a new completion or status report
-mephc_submit(operation="courier", arguments=["--request-directory", "<existing-request-dir>"]) only for an already-created immutable request
-mephc_wait(job_id) or mephc_status(job_id)
-mephc_recover(job_id) only when the persisted receipt requires recovery
+```text
+mephc-flow.cmd report --work-order <id> --kind milestone|complete|blocked --message-file <utf8-file>
+```
 
-The public Courier CLI is invoked only by the controlled Runner bridge. Agents must not call `scripts/relayctl`, `python -m chat_courier.cli`, Courier commands, Browser, Chrome, or Gmail directly.
+The request ID is deterministic. If the request exists or may have been
+submitted, use only:
 
-Do not use preflight to gate a run: it is read-only and may correctly report queue_waiting while another project owns the shared Courier browser. The single bridge command waits for its own FIFO turn. Never set CHAT_COURIER_PROFILE, AGENT_RELAY_CHATGPT_PROFILE, or CHAT_COURIER_PROFILE_DIRECTORY during ordinary Agent work; never point Courier at a user's normal Chrome user-data tree. A registered ChatGPT conversation must be reused exactly. Do not register a replacement URL merely because of an access or browser error.
+```text
+mephc-flow.cmd courier-reconcile --request-id <existing-id>
+```
 
-# Audit publication and promotion protocol
+Recovery reuses the immutable request and never resends the user turn. Continue
+until a matching receipt-bound response is available or a hard Chat/login/
+target error occurs. Do not use Browser, Chrome, Gmail, another Chat profile,
+another request ID, or another transport.
 
-For work in this repository, `origin/sandbox` is the mandatory remote audit
-branch for work in progress. Any source code, test, analysis script, numerical
-reduction logic, classification logic, or other executable logic that
-materially affects a scientific conclusion must be copied into the repository,
-committed, and pushed to `origin/sandbox` before completion is reported. This
-also applies to temporary conclusion-producing scripts created outside the
-repository, even when no production source file changed. Agent confidence
-does not waive this requirement.
+## Safety boundaries
 
-Sandbox publication means only that the implementation is available for
-supervisor inspection. `main` is the accepted baseline. Promotion of an exact
-sandbox commit to `main` requires explicit supervisor authorization after
-inspection of the real remote diff and supporting evidence. Compact control
-evidence required to audit classification logic should accompany the scripts
-when reasonably small. Do not interpret supervisor silence as authorization to
-move `main`.
+- Do not modify unrelated projects, arbitrary user directories, browser
+  profiles, accounts, or arbitrary processes.
+- Do not create a second Luna worker or parallelize the same work order.
+- Do not recreate the retired Runner or add new certificate/permission layers.
+- Preserve the legacy outbox, receipts, responses, workflow ledger, and
+  retirement archives.
+- A transport or native side effect whose state cannot be uniquely reconciled
+  requires a human decision; it never authorizes a retry.
 
-Corrective commits remain on `sandbox` until supervisor seal or promotion
-authorization. Supervisor silence never authorizes main promotion.
-
-Scientific audit invariant: cached or previously computed scientific results
-must never be reused by coordinate alone when additional physical identity
-fields exist. Reuse must match complete physical provenance, ambiguous
-collisions fail closed, and a human-readable rounded coordinate label is never
-a physical cache identity.
-
-Completion reports involving auditable code must include:
-Use `CODE_CHANGE=NONE` only when no auditable implementation or conclusion-producing logic changed.
-
+Completion reports involving auditable code include:
 
 ```text
 CODE_CHANGE=NONE|SANDBOX_ONLY|SANDBOX_AND_AUTHORIZED_MAIN_PROMOTION
@@ -167,93 +115,3 @@ BASE_MAIN_SHA=<sha>
 SANDBOX_HEAD_SHA=<sha>
 AUDIT_DIFF_RANGE=<base>..<sandbox-head>
 ```
-
-Scientific sampling invariant: distinguish NOMINAL_Q (requested quadrature
-coordinate) from EVALUATED_Q (actual solved target_q) and MANIFEST_Q. Physical
-cache identity uses EVALUATED_Q plus complete provenance. Any serialization or
-quantization must be explicit and versioned; never describe a quantized
-evaluated coordinate as exact nominal sampling.
-
-Historical numerical evidence sampled at explicitly known coordinates slightly
-different from nominal coordinates may only be accepted through an explicit
-perturbed-node error analysis; it must never be silently relabeled as exact
-nominal sampling. New computations should avoid such quantization unless
-explicitly authorized and versioned.
-
-Large raw scientific evidence may remain external when repository size or
-privacy policy requires it, but any scientific conclusion based on that
-evidence must bind the exact external artifact by cryptographic digest and
-publish enough deterministic reduction logic and compact trace evidence on
-`sandbox` for supervisor audit.
-## Gmail task-intake boundary
-
-When a user sends a standalone title that looks like a task or project title,
-treat it as a Gmail email subject unless the user explicitly says it is not
-email-related. Before implementing that task, read or search the corresponding
-Gmail message or thread through the approved intake path. The email body,
-artifact instructions, attachments, and referenced paths are the authoritative
-task contract. Confirm the matched message is in the user's Inbox when needed;
-do not send, archive, trash, or apply unrelated labels. Only after extracting
-the contract should the Agent inspect the local worktree and implement it. If
-the title is ambiguous or no match is found, request sender, approximate date,
-message link, or body rather than guessing. This is an intake trigger, not
-permission to send or self-deliver email.
-
-## Safe Git authentication note
-
-When WSL HTTPS Git needs Windows Credential Manager, use the installed Windows
-helper without exposing secrets. Verify the remote audit branch with
-git ls-remote origin refs/heads/sandbox, push only to origin/sandbox for
-ordinary work, and verify the resulting remote SHA. Never print, copy, or
-manually extract a password or token.
-
-## Persistent plain-text and attachment handoff policy
-
-The relay is an automatic workflow. The Agent must retain and apply this
-policy across handoffs; it is not a request for the human to paste relay
-instructions, execution text, response text, or attachments into the current
-conversation.
-
-Use plain text in the Chrome/Courier conversation whenever the information can
-be conveyed faithfully that way. Do not paste attachments into the chat merely
-for convenience. If an attachment is required for the next handoff, publish it
-to the remote audit repository in a dedicated runtime-specific attachment
-directory. Reuse an existing dedicated directory when it belongs to the same
-request; otherwise create a new uniquely identified directory. Every published
-attachment must have its own stable artifact ID, exact path, producing commit,
-and SHA-256 digest. The plain-text relay message must identify the artifact ID
-and digest so the supervisor can bind the attachment unambiguously.
-
-Never mix attachment IDs between work orders, silently replace an attachment,
-or paste a large attachment into the conversation when a published artifact
-can be referenced. Do not create a second request to change the transport
-format after a request may have been submitted; preserve the existing request
-ID, request directory, destination, message body, and attachment during
-same-request recovery. New reports should follow the plain-text-first policy
-from the beginning.
-
-## Primary workspace and Courier project binding
-
-This repository is the canonical source and Codex control workspace. Its exact
-Windows root is `C:\Users\icywo\PycharmProjects\MePhC-Windows`. The old
-`/home/icy/MePhC` repository is a frozen rollback source until its verified
-hidden archive is created; after retirement it must not be recreated as an
-editable or canonical source.
-Linux-native tests and numerical work run only in disposable SHA-bound WSL
-checkouts below `/home/icy/.cache/mephc-runner/checkouts`; those checkouts are
-never source-of-truth workspaces.
-
-The active Courier project identity for this workspace is `MEPHC`. New MePhC
-requests must use `PROJECT_ID=MEPHC` and a request directory under the MePhC
-project-owned outbox. Do not use `TRILATT` as the project identity, request
-namespace, Chat address binding, or default working directory for MePhC.
-
-`/home/icy/TriLatt` is a legacy auxiliary repository. Its files and historical
-requests are not part of the active MePhC work unless a future work order
-explicitly names TriLatt. Never infer the active workspace from a stale TriLatt
-request, attachment, branch, or address binding.
-
-TriLatt and SqrLatt remain independently editable WSL downstream projects for
-human use. Their project-relative outputs belong in those downstream projects.
-This does not make either repository part of an Agent's MePhC work-order scope.
-

@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /home/icy/miniconda3/envs/mp/bin/python /mnt/c/Users/icywo/PycharmProjects/MePhC-Windows/tools/mephc-flow/mephc_runtime.py "$@"

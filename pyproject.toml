@@ -19,5 +19,3 @@ dependencies = [
 where = ["."]
 include = ["mephc*"]
 exclude = ["examples*", "legacy*"]
-[project.scripts]
-relayctl = "mephc.relayctl:main"

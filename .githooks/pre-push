@@ -1,0 +1,15 @@
+#!/bin/sh
+while read local_ref local_sha remote_ref remote_sha
+do
+  case "$remote_ref" in
+    refs/heads/sandbox) ;;
+    refs/heads/main)
+      echo "MEPHC_MAIN_PUSH_FORBIDDEN" >&2
+      exit 1
+      ;;
+    *)
+      echo "MEPHC_ONLY_SANDBOX_PUSH_SUPPORTED: $remote_ref" >&2
+      exit 1
+      ;;
+  esac
+done
