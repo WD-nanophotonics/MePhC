@@ -28,6 +28,7 @@ LEGACY_STATE_UNC = Path(r"\\wsl.localhost\Ubuntu\home\icy\.local\state\mephc-run
 FLOW_STATE_UNC = LEGACY_STATE_UNC / "flow"
 FLOW_STATE_WSL = LEGACY_STATE_WSL + "/flow"
 OUTBOX_UNC = LEGACY_STATE_UNC / "outbox"
+OUTBOX_WSL = LEGACY_STATE_WSL + "/outbox"
 CHECKOUT_ROOT_WSL = "/home/icy/.cache/mephc-runner/checkouts"
 GIT_CACHE_WSL = "/home/icy/.cache/mephc-runner/MEPHC.git"
 CONDA_PYTHON_WSL = "/home/icy/miniconda3/envs/mp/bin/python"
@@ -54,6 +55,7 @@ class Paths:
     outbox: Path = OUTBOX_UNC
     courier: Path = COURIER
     legacy_state: Path = LEGACY_STATE_UNC
+    outbox_wsl: str = OUTBOX_WSL
 
 
 def canonical_json(value: Any) -> bytes:
@@ -222,6 +224,52 @@ def active_work_order(paths: Paths) -> dict[str, Any]:
     return {"work_order_id": work_order_id, "response_sha256": expected_hash, "response_path": str(response), "text": text}
 
 
+def response_work_order(text: str) -> str:
+    match = re.search(r"^NEXT_WORK_ORDER_ID=([^\r\n]+)$", text.replace("\r\n", "\n"), flags=re.MULTILINE)
+    value = match.group(1).strip() if match else ""
+    if not WORK_ORDER.fullmatch(value):
+        raise FlowError("RESPONSE_WORK_ORDER_ID_INVALID")
+    return value
+
+
+def consume_response(paths: Paths, directory: Path) -> dict[str, Any]:
+    request = read_json(directory / "request.json", default={})
+    receipt = read_json(directory / "receipt.json", default={})
+    response = directory / "response.txt"
+    if (request.get("project_id") != PROJECT_ID or request.get("request_id") != directory.name
+            or receipt.get("state") != "response_received" or not response.is_file()):
+        raise FlowError("RESPONSE_NOT_RECEIPT_BOUND")
+    text = response.read_text(encoding="utf-8-sig")
+    work_order_id = response_work_order(text)
+    digest = sha256_file(response)
+    value = {
+        "schema": "mephc-workflow-ledger-v2", "workflow_state": "available",
+        "active_work_order_id": work_order_id,
+        "active_response_path": f"{paths.outbox_wsl.rstrip('/')}/{directory.name}/response.txt",
+        "active_response_sha256": digest, "pending_job_id": None, "updated_at": time.time(),
+    }
+    atomic_json(paths.legacy_state / "runner" / "workflow-ledger.json", value)
+    atomic_json(paths.state / "last-consumed-response.json", {
+        "schema": "mephc-flow-consumed-response-v1", "request_id": directory.name,
+        "work_order_id": work_order_id, "response_sha256": digest, "consumed_at": time.time(),
+    })
+    return {"work_order_id": work_order_id, "response_sha256": digest, "response_text": text}
+
+
+def latest_response(paths: Paths) -> Path | None:
+    if not paths.outbox.is_dir():
+        return None
+    candidates: list[Path] = []
+    for directory in paths.outbox.iterdir():
+        if not directory.is_dir() or directory.is_symlink() or not (directory / "response.txt").is_file():
+            continue
+        request = read_json(directory / "request.json", default={})
+        receipt = read_json(directory / "receipt.json", default={})
+        if request.get("project_id") == PROJECT_ID and receipt.get("state") == "response_received":
+            candidates.append(directory)
+    return max(candidates, key=lambda item: (item.joinpath("response.txt").stat().st_mtime_ns, item.name)) if candidates else None
+
+
 def key_values(text: str) -> dict[str, list[str]]:
     result: dict[str, list[str]] = {}
     normalized = text.replace("\\r\\n", "\n").replace("\\n", "\n").replace("\r\n", "\n")
@@ -275,6 +323,9 @@ def work_order_policy(text: str) -> dict[str, Any]:
         "native_budget": min(budget_values) if budget_values else None,
         "allowed_project_paths": sorted(allowed),
         "report_policy": declared_policy,
+        "arbitrary_native_command_authorized": values.get("ARBITRARY_NATIVE_COMMAND_AUTHORIZED", ["false"])[-1].lower() in {"1", "true", "yes"},
+        "native_entrypoint": values.get("NATIVE_ENTRYPOINT", [None])[-1],
+        "native_arguments": values.get("NATIVE_ARGUMENT", []),
     }
 
 
@@ -354,6 +405,12 @@ def status(paths: Paths) -> dict[str, Any]:
 
 
 def resume(paths: Paths) -> dict[str, Any]:
+    newest = latest_response(paths)
+    if newest is not None:
+        current = ledger(paths)
+        newest_wsl = f"{paths.outbox_wsl.rstrip('/')}/{newest.name}/response.txt"
+        if current.get("active_response_path") != newest_wsl:
+            consume_response(paths, newest)
     order = active_work_order(paths)
     return {
         "schema": "mephc-flow-work-order-v1", "work_order_id": order["work_order_id"],
@@ -448,6 +505,28 @@ def normalize_project(project: str, checkout: str, allowed: list[str]) -> str:
     return normalized
 
 
+def validate_native_argv(policy: dict[str, Any], checkout: str, argv: list[str]) -> None:
+    if policy.get("arbitrary_native_command_authorized") is True:
+        return
+    entrypoint = policy.get("native_entrypoint")
+    declared_arguments = policy.get("native_arguments") or []
+    if entrypoint is not None:
+        expected = [CONDA_PYTHON_WSL, entrypoint, *declared_arguments]
+        if argv != expected:
+            raise FlowError("NATIVE_COMMAND_NOT_WORK_ORDER_BOUND")
+        script = entrypoint
+    else:
+        if len(argv) != 2 or argv[0] not in {"python", "python3", CONDA_PYTHON_WSL}:
+            raise FlowError("NATIVE_COMMAND_NOT_FIXED_TRACKED_PYTHON_ENTRYPOINT")
+        script = argv[1]
+    relative = PurePosixPath(script.replace("\\", "/"))
+    if relative.is_absolute() or ".." in relative.parts or relative.suffix != ".py":
+        raise FlowError("NATIVE_ENTRYPOINT_OUT_OF_SCOPE")
+    tracked = wsl(["/usr/bin/git", "-C", checkout, "ls-files", "--error-unmatch", str(relative)], check=False)
+    if tracked.returncode:
+        raise FlowError("NATIVE_ENTRYPOINT_NOT_TRACKED_AT_SOURCE_SHA")
+
+
 def run_native(paths: Paths, work_order_id: str, cost: int, project: str, argv: list[str]) -> dict[str, Any]:
     if cost < 1 or not argv or any(not item or "\x00" in item for item in argv):
         raise FlowError("NATIVE_ARGUMENTS_INVALID")
@@ -464,6 +543,7 @@ def run_native(paths: Paths, work_order_id: str, cost: int, project: str, argv: 
     source = require_source(paths, published=True)
     checkout = ensure_checkout(paths, source["head"])
     project = normalize_project(project, checkout, policy["allowed_project_paths"])
+    validate_native_argv(policy, checkout, argv)
     used = native_usage(paths, work_order_id)
     if used + cost > budget:
         raise FlowError("NATIVE_BUDGET_EXCEEDED")
@@ -566,7 +646,7 @@ def report(paths: Paths, work_order_id: str, kind: str, message_file: Path) -> d
     paths.outbox.mkdir(parents=True, exist_ok=True)
     staging = paths.outbox / f".{request_id}.{os.getpid()}.tmp"
     staging.mkdir(parents=False, exist_ok=False)
-    (staging / "message.txt").write_text(text, encoding="utf-8")
+    (staging / "message.txt").write_bytes(message)
     manifest = {
         "version": 1, "project_id": PROJECT_ID, "request_id": request_id,
         "message_file": "message.txt", "attachments": [], "workflow_window_seconds": 600,
@@ -587,9 +667,10 @@ def report(paths: Paths, work_order_id: str, kind: str, message_file: Path) -> d
         "stdout_sha256": sha256_bytes(result.stdout.encode("utf-8")),
         "stderr_sha256": sha256_bytes(result.stderr.encode("utf-8")), "completed_at": time.time(),
     })
+    consumed = consume_response(paths, directory) if summary["response_received"] else {}
     return {"state": "response_received" if summary["response_received"] else "courier_stopped",
-            **summary, "return_code": result.returncode,
-            "safe_next": f"courier-reconcile {request_id}"}
+            **summary, **consumed, "return_code": result.returncode,
+            "safe_next": "resume" if summary["response_received"] else f"courier-reconcile {request_id}"}
 
 
 def courier_reconcile(paths: Paths, request_id: str) -> dict[str, Any]:
@@ -603,9 +684,8 @@ def courier_reconcile(paths: Paths, request_id: str) -> dict[str, Any]:
         raise FlowError("REQUEST_BINDING_INVALID")
     summary = request_summary(directory)
     if summary["response_received"]:
-        response = directory / "response.txt"
-        return {"state": "response_received", **summary, "response_sha256": sha256_file(response),
-                "response_text": response.read_text(encoding="utf-8-sig")}
+        consumed = consume_response(paths, directory)
+        return {"state": "response_received", **summary, **consumed, "safe_next": "resume"}
     recoverable = {"request_submitted", "waiting_for_response", "submission_unconfirmed", "chat_submission_unconfirmed",
                    "submission_state_uncertain", "response_timeout", "response_protocol_error"}
     if summary["receipt_state"] not in recoverable:
@@ -613,9 +693,10 @@ def courier_reconcile(paths: Paths, request_id: str) -> dict[str, Any]:
                 "safe_next": "report-same-request-only" if summary["submission_count"] == 0 else "human-reconciliation-required"}
     result = courier_command(paths, "run", directory, recovery=True)
     final = request_summary(directory)
+    consumed = consume_response(paths, directory) if final["response_received"] else {}
     return {"state": "response_received" if final["response_received"] else "recovery_stopped",
-            **final, "return_code": result.returncode,
-            "safe_next": f"courier-reconcile {request_id}"}
+            **final, **consumed, "return_code": result.returncode,
+            "safe_next": "resume" if final["response_received"] else f"courier-reconcile {request_id}"}
 
 
 def emit(value: dict[str, Any]) -> None:

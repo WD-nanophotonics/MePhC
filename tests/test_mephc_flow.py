@@ -27,7 +27,7 @@ def paths(tmp_path: Path) -> flow.Paths:
     return flow.Paths(
         control=tmp_path / "control", state=tmp_path / "legacy" / "flow",
         outbox=tmp_path / "legacy" / "outbox", courier=tmp_path / "courier.cmd",
-        legacy_state=tmp_path / "legacy",
+        legacy_state=tmp_path / "legacy", outbox_wsl=flow.OUTBOX_WSL,
     )
 
 
@@ -144,6 +144,21 @@ def test_native_project_scope_rejected_before_host_probe() -> None:
         flow.normalize_project("/home/icy/UnmentionedProject", "/home/icy/checkouts/a", [])
 
 
+def test_non_arbitrary_native_is_one_tracked_python_entrypoint(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls = []
+
+    def fake_wsl(argv, **_kwargs):
+        calls.append(argv)
+        return subprocess.CompletedProcess(argv, 0, "audit/e9f/run.py\n", "")
+
+    monkeypatch.setattr(flow, "wsl", fake_wsl)
+    policy = {"arbitrary_native_command_authorized": False, "native_entrypoint": None, "native_arguments": []}
+    flow.validate_native_argv(policy, "/home/icy/checkouts/a", ["python", "audit/e9f/run.py"])
+    assert calls[0][-2:] == ["--error-unmatch", "audit/e9f/run.py"]
+    with pytest.raises(flow.FlowError, match="NATIVE_COMMAND_NOT_FIXED_TRACKED_PYTHON_ENTRYPOINT"):
+        flow.validate_native_argv(policy, "/home/icy/checkouts/a", ["python", "-c", "print(1)"])
+
+
 def test_existing_report_is_never_resent(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     scope = paths(tmp_path)
     install_active_order(scope, "NEXT_WORK_ORDER_ID=MEPHC-TEST-WORK-ORDER-0001\n")
@@ -199,6 +214,37 @@ def test_reconcile_late_response_does_not_launch_courier(tmp_path: Path, monkeyp
     result = flow.courier_reconcile(scope, request_id)
     assert result["state"] == "response_received"
     assert result["response_sha256"] == flow.sha256_file(directory / "response.txt")
+    assert flow.active_work_order(scope)["work_order_id"] == "MEPHC-NEXT-ORDER-0001"
+
+
+def test_resume_discovers_and_consumes_newest_receipt_bound_response(tmp_path: Path) -> None:
+    scope = paths(tmp_path)
+    install_active_order(scope, "NEXT_WORK_ORDER_ID=MEPHC-OLD-ORDER-0001\n", "MEPHC-OLD-ORDER-0001")
+    directory = scope.outbox / "MEPHC-FLOW-NEWEST"
+    directory.mkdir()
+    write_json(directory / "request.json", {"project_id": "MEPHC", "request_id": directory.name})
+    write_json(directory / "receipt.json", {"state": "response_received", "request_id": directory.name})
+    (directory / "response.txt").write_text("NEXT_WORK_ORDER_ID=MEPHC-NEW-ORDER-0002\n", encoding="utf-8")
+    assert flow.resume(scope)["work_order_id"] == "MEPHC-NEW-ORDER-0002"
+
+
+def test_report_copies_message_bytes_exactly(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope = paths(tmp_path)
+    install_active_order(scope, "NEXT_WORK_ORDER_ID=MEPHC-TEST-WORK-ORDER-0001\n")
+    message = tmp_path / "message.txt"
+    message.write_bytes(b"line-one\r\nline-two\r\n")
+
+    def fake_courier(_paths, operation, directory, **_kwargs):
+        if operation == "run":
+            write_json(directory / "receipt.json", {"state": "submission_not_started", "request_id": directory.name})
+        return subprocess.CompletedProcess([], 0 if operation == "validate" else 1, "", "")
+
+    monkeypatch.setattr(flow, "courier_command", fake_courier)
+    result = flow.report(scope, "MEPHC-TEST-WORK-ORDER-0001", "blocked", message)
+    durable = scope.outbox / result["request_id"] / "message.txt"
+    assert durable.read_bytes() == message.read_bytes()
+    manifest = json.loads((durable.parent / "request.json").read_text(encoding="utf-8"))
+    assert manifest["message_sha256"] == flow.sha256_file(durable)
 
 
 def test_main_push_hook_is_present_and_denies_main() -> None:
