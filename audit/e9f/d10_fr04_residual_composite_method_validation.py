@@ -140,10 +140,12 @@ def verify_inputs() -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dic
     if any(binding.get(key) != value for key, value in required_binding.items()):
         raise AnalysisError("D9_BINDING_INVALID")
     required_reconciliation = {
-        "dataset_id": DATASET_ID, "dataset_manifest_sha256": MANIFEST_SHA256, "dataset_record_count": 420,
-        "full_d9_record_integrity_pass_count": 420, "dataset_completion_state": "COMPLETE",
+        "d9_dataset_id": DATASET_ID, "d9_dataset_manifest_sha256": MANIFEST_SHA256, "d9_dataset_record_count": 420,
+        "full_d9_record_integrity_pass_count": 420, "d9_existing_dataset_status": "COMPLETE_NATIVE_RESULT_AND_DATASET_VERIFIED",
         "strict_d9_missing_provider_failure_count_compatibility_status": "PASS",
+        "d9_provider_failure_count_reconciliation_status": "PASS_DERIVED_ZERO_FROM_COMPLETE_EXACT_ACCOUNTING",
         "reconciled_provider_failure_count": 0, "d9_native_rerun_required": False,
+        "d9_dataset_ready_for_d10": True,
         "pipeline_health": "HEALTHY", "blocked_by_infrastructure": False, "scientific_work_must_stop": False,
     }
     if any(reconciliation.get(key) != value for key, value in required_reconciliation.items()):
