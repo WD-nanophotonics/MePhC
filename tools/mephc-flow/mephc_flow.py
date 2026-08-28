@@ -417,7 +417,7 @@ def science_preflight(paths: Paths) -> dict[str, Any]:
     if missing:
         raise FlowError("INFRASTRUCTURE_CAPABILITY_MISSING", ",".join(missing))
     dataset_evidence = None
-    if contract["action"] == "analyze":
+    if contract["action"] == "analyze" and "dataset_id" in contract["inputs"]:
         dataset_evidence = dataset_verify(paths, contract["inputs"]["dataset_id"])
         expected_manifest = contract["inputs"].get("dataset_manifest_sha256")
         if expected_manifest is not None and dataset_evidence.get("manifest_sha256") != expected_manifest:

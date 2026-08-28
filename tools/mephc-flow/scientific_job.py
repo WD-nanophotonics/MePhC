@@ -117,8 +117,14 @@ def validate_contract(value: Any) -> dict[str, Any]:
     if value["action"] == "analyze":
         if not isinstance(output["result_schema"], str) or not output["result_schema"]:
             raise ScientificJobError("ANALYSIS_RESULT_SCHEMA_REQUIRED")
-        if not SHA64(value["inputs"].get("dataset_id")):
-            raise ScientificJobError("ANALYSIS_DATASET_INPUT_REQUIRED")
+        if "dataset_id" in value["inputs"]:
+            if not SHA64(value["inputs"].get("dataset_id")):
+                raise ScientificJobError("ANALYSIS_DATASET_INPUT_INVALID")
+            manifest = value["inputs"].get("dataset_manifest_sha256")
+            if manifest is not None and not SHA64(manifest):
+                raise ScientificJobError("ANALYSIS_DATASET_MANIFEST_INVALID")
+        elif output["dataset_schema"] is not None:
+            raise ScientificJobError("ARTIFACT_ONLY_ANALYSIS_DATASET_SCHEMA_REQUIRED_NULL")
     if value["kind"] == "SCIENCE" and any(
         path.startswith("tools/mephc-flow/") for path in value["allowed_writes"]
     ):
