@@ -131,11 +131,11 @@ def normalization_replay() -> dict[str, Any]:
     production_contract = ROOT / "audit/e9f/b_production_contract.json"
     expected = {
         impl: "61529182a180a103b376ae25adff85747ee9024b5a6708593bea2d8cf86dcefc",
-        result: "290042576883e209cd64d6b8136ed63d027f953ae6cffe3bda05b6454ab71d4f",
-        manifest: "25aa1ea187b521ce0003194dbf312d3b012195cc04077b104f9b6b7ded7c28f6",
-        contract: "170072011dea7b20c614c383f11d3b9a9fffdf8a4b518424ff5a143c6b790190",
-        source_contract: "1fceb0f4e515d0c9bf1e12b93da9c7b4328903cc7221a0be21a99ca3991222e2",
-        production_contract: "eb223b068777ebbaf3af532cd15d584081e22efebd701acf443cd158d6113fb6",
+        result: "123acc40c448b45cab0fbffffeeec4a879202c25f20cb6c5769041726fe8296c",
+        manifest: "3cc059b6ce16ddaa9eb4ec2cdb35460393de967073307df93f63bdbcff2d7da6",
+        contract: "2d770bc1525be8ca7a1722d855aa7f262767fe93ad7bfe905edfb1b0f62ed4da",
+        source_contract: "613463aa25de2de5b3b3955c50c68cf4311c2fba24b7cc7e3110b74030c3520b",
+        production_contract: "2770ebb0633d64d146ed4095c70e904a77b5a711087486243bc319f717523477",
     }
     if any(not path.is_file() or sha256_file(path) != digest for path, digest in expected.items()):
         raise AnalysisError("BERRY_NORMALIZATION_PROVENANCE_UNRESOLVED")
