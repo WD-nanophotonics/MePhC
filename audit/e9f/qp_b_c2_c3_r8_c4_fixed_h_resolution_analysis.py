@@ -312,7 +312,7 @@ def prospective_graph(samples: list[tuple[int, int, str, dict[str, Any]]], decis
         key = (item["resolution"], coordinate["i_numerator"], coordinate["j_numerator"], coordinate["denominator"], "FROZEN_QP_B_SOURCE_MODEL", "FROZEN_QP_B_PROVIDER_CONFIGURATION", "FROZEN_QP_B_LOCKED_BAND_REQUEST")
         keys.setdefault(key, []).append(item)
     collisions = [refs for refs in keys.values() if len(refs) > 1]
-    selected_ids = [item[0] if isinstance(item, tuple) else item["sample_id"] for item in selected]
+    selected_ids = [sample_id(item[0], item[1]) if isinstance(item, tuple) else item["sample_id"] for item in selected]
     return {
         "status": "DESIGNED_NOT_EXECUTED", "axis": axis,
         "selected_sample_ids": selected_ids,

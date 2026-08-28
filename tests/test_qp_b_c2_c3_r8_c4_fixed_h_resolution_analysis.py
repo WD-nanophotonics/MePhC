@@ -46,6 +46,7 @@ def test_prospective_graph_is_mechanical_and_nonexecuting():
     assert graph["unique_provider_request_count"] == 32
     assert graph["duplicate_count"] == 0
     assert all(item["coordinate"]["denominator"] == 288 for item in graph["logical_demands"])
+    assert graph["selected_sample_ids"] == [module.sample_id(i, j) for i, j, _ in module.SAMPLES]
 
 
 def test_real_analysis_binds_both_immutable_datasets_and_preserves_policy(analysis):
