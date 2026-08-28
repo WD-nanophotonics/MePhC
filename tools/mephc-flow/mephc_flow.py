@@ -901,10 +901,74 @@ def acquire_binding_source_compatible(
                 or logical_count < unique_count):
             return False
         duplicate_count = logical_count - unique_count
-    dataset_keys = sorted(key for key in summary if re.fullmatch(r"R[0-9]+_dataset_id", str(key)))
+    dataset_keys = sorted(
+        key for key in summary
+        if isinstance(key, str) and key.endswith("_dataset_id")
+    )
     if len(dataset_keys) != 1:
         return False
-    prefix = dataset_keys[0][:-len("_dataset_id")]
+    dataset_key = dataset_keys[0]
+    prefix = dataset_key[:-len("_dataset_id")]
+    if not isinstance(prefix, str) or not re.fullmatch(r"[A-Za-z][A-Za-z0-9_]{0,95}", prefix):
+        return False
+    companion_keys = (
+        dataset_key,
+        f"{prefix}_dataset_manifest_sha256",
+        f"{prefix}_entrypoint_sha256",
+        f"{prefix}_request_graph_sha256",
+    )
+    if any(
+        key not in summary or not isinstance(summary[key], str) or not SHA64.fullmatch(summary[key])
+        for key in companion_keys
+    ):
+        return False
+    if (not isinstance(summary.get("science_runtime_sha256"), str)
+            or not SHA64.fullmatch(summary["science_runtime_sha256"])):
+        return False
+
+    if binding.get("schema") == "mephc-e9f-d6-fr04-r64-corrected-acquisition-binding-v1":
+        duplicate_count = summary.get("duplicate_logical_demand_count")
+        if duplicate_count is None:
+            logical_count = summary.get("logical_provider_demand_count")
+            unique_count = summary.get("unique_provider_request_count")
+            if (type(logical_count) is not int or type(unique_count) is not int
+                    or logical_count < unique_count):
+                return False
+            duplicate_count = logical_count - unique_count
+        expected = {
+            "work_order_id": order["work_order_id"],
+            "acquisition_source_commit": job_source,
+            "acquisition_dataset_id": summary[dataset_key],
+            "dataset_manifest_sha256": summary[f"{prefix}_dataset_manifest_sha256"],
+            "entrypoint_sha256": summary[f"{prefix}_entrypoint_sha256"],
+            "corrected_graph_sha256": summary[f"{prefix}_request_graph_sha256"],
+            "science_runtime_sha256": summary["science_runtime_sha256"],
+            "dataset_record_count": summary.get(f"{prefix}_dataset_record_count"),
+            "domain_list_sha256": summary.get(f"{prefix}_domain_list_sha256"),
+            "geometry_boundary_digest": summary.get(f"{prefix}_geometry_boundary_digest"),
+            "source_model_identity": summary.get(f"{prefix}_source_model_identity"),
+            "arc_segments_per_corner": summary.get(f"{prefix}_arc_segments_per_corner"),
+            "resolution": summary.get("resolution"),
+            "fr": summary.get("fr"),
+            "logical_provider_demand_count": summary.get("logical_provider_demand_count"),
+            "unique_provider_request_count": summary.get("unique_provider_request_count"),
+            "duplicate_logical_demand_count": duplicate_count,
+            "completed_key_count": summary.get("completed_key_count"),
+            "failed_key_count": summary.get("failed_key_count"),
+            "provider_failure_count": summary.get("provider_failure_count"),
+            "fresh_provider_execution_count": summary.get("fresh_provider_execution_count"),
+            "provider_request_count": summary.get("provider_request_count"),
+            "solver_executions": summary.get("solver_executions"),
+            "native_solves": summary.get("native_solves"),
+            "cache_reuse_count": summary.get("cache_reuse_count"),
+            "mpb_execution": summary.get("mpb_execution"),
+            "native_retry_count": summary.get("native_retry_count"),
+            "completion_state": "COMPLETE",
+        }
+        if any(expected[key] is None or binding.get(key) != expected[key] for key in expected):
+            return False
+        return summary.get(f"{prefix}_dataset_record_count") == summary.get("completed_key_count")
+
     expected = {
         "work_order_id": order["work_order_id"],
         "acquisition_source_commit": job_source,

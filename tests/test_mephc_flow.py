@@ -526,6 +526,138 @@ def test_closeout_job_accepts_exact_post_execution_acquisition_binding(tmp_path:
     assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is True
 
 
+def _d6r2_binding_fixture(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[flow.Paths, dict, dict]:
+    scope = paths(tmp_path)
+    work_order_id = "MEPHC-E9F-D6R2-FR04-R64-CORRECTED-SHARED-ACQUISITION-20260829-333"
+    job_source, published_source = "a" * 40, "b" * 40
+    binding_path = "audit/e9f/d6_fr04_r64_corrected_acquisition_binding.json"
+    order_text = "WORK_ORDER_CONTRACT_JSON=" + json.dumps({
+        "kind": "SCIENCE", "action": "acquire", "work_order_id": work_order_id,
+        "allowed_writes": [binding_path],
+    }) + "\n"
+    monkeypatch.setattr(flow, "active_work_order", lambda _paths: {
+        "work_order_id": work_order_id, "text": order_text,
+    })
+    prefix = "fr04_corrected_r64"
+    summary = {
+        f"{prefix}_dataset_id": "1" * 64,
+        f"{prefix}_dataset_manifest_sha256": "2" * 64,
+        f"{prefix}_dataset_record_count": 3205,
+        f"{prefix}_entrypoint_sha256": "3" * 64,
+        f"{prefix}_request_graph_sha256": "4" * 64,
+        f"{prefix}_domain_list_sha256": "5" * 64,
+        f"{prefix}_geometry_boundary_digest": "6" * 64,
+        f"{prefix}_source_model_identity": "E9E_FR04_ROUNDED_TRIANGLE_V1",
+        f"{prefix}_arc_segments_per_corner": 96,
+        "science_runtime_sha256": "7" * 64,
+        "fr": 0.4, "resolution": "R64", "logical_provider_demand_count": 3205,
+        "unique_provider_request_count": 3205, "completed_key_count": 3205,
+        "failed_key_count": 0, "provider_failure_count": 0,
+        "fresh_provider_execution_count": 3205, "provider_request_count": 3205,
+        "solver_executions": 3205, "native_solves": 3205, "cache_reuse_count": 0,
+        "mpb_execution": True, "native_retry_count": 0,
+        "immutable_dataset_completion_state": "COMPLETE",
+    }
+    binding = {
+        "schema": "mephc-e9f-d6-fr04-r64-corrected-acquisition-binding-v1",
+        "work_order_id": work_order_id, "acquisition_source_commit": job_source,
+        "acquisition_dataset_id": summary[f"{prefix}_dataset_id"],
+        "dataset_manifest_sha256": summary[f"{prefix}_dataset_manifest_sha256"],
+        "entrypoint_sha256": summary[f"{prefix}_entrypoint_sha256"],
+        "corrected_graph_sha256": summary[f"{prefix}_request_graph_sha256"],
+        "science_runtime_sha256": summary["science_runtime_sha256"],
+        "dataset_record_count": 3205, "domain_list_sha256": summary[f"{prefix}_domain_list_sha256"],
+        "geometry_boundary_digest": summary[f"{prefix}_geometry_boundary_digest"],
+        "source_model_identity": summary[f"{prefix}_source_model_identity"],
+        "arc_segments_per_corner": 96, "resolution": "R64", "fr": 0.4,
+        "logical_provider_demand_count": 3205, "unique_provider_request_count": 3205,
+        "duplicate_logical_demand_count": 0, "completed_key_count": 3205,
+        "failed_key_count": 0, "provider_failure_count": 0,
+        "fresh_provider_execution_count": 3205, "provider_request_count": 3205,
+        "solver_executions": 3205, "native_solves": 3205, "cache_reuse_count": 0,
+        "mpb_execution": True, "native_retry_count": 0, "completion_state": "COMPLETE",
+    }
+    job = {
+        "job_id": "MEPHC-SCIENCE-" + "c" * 24, "work_order_id": work_order_id,
+        "source_commit": job_source, "action": "acquire", "state": "succeeded",
+        "native_run_id": "MEPHC-NATIVE-" + "d" * 24,
+        "result": {
+            "run_id": "MEPHC-NATIVE-" + "d" * 24, "state": "succeeded",
+            "process_started": True, "return_code": 0, "launcher_return_code": 0,
+            "result_summary": summary,
+        },
+    }
+    write_json(scope.state / "science-jobs" / f"{job['job_id']}.json", job)
+
+    def fake_git(_paths, *args, **kwargs):
+        if args[:2] == ("merge-base", "--is-ancestor"):
+            return subprocess.CompletedProcess(args, 0, "", "")
+        if args[:2] == ("diff", "--name-only"):
+            return subprocess.CompletedProcess(args, 0, binding_path + "\n", "")
+        if args[:2] == ("ls-tree", "--name-only"):
+            return subprocess.CompletedProcess(args, 0, "", "")
+        if args[:1] == ("show",):
+            return subprocess.CompletedProcess(args, 0, json.dumps(binding), "")
+        raise AssertionError(args)
+    monkeypatch.setattr(flow, "git", fake_git)
+    return scope, binding, {"job_source": job_source, "published_source": published_source, "binding_path": binding_path}
+
+
+def test_closeout_job_accepts_namespaced_d6r2_acquisition_binding(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope, _binding, refs = _d6r2_binding_fixture(tmp_path, monkeypatch)
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is True
+
+
+@pytest.mark.parametrize("mutation", [
+    "multiple_dataset_ids", "missing_manifest", "missing_entrypoint", "missing_graph",
+    "wrong_corrected_graph", "wrong_domain", "wrong_geometry", "wrong_source_model",
+    "wrong_dataset", "wrong_manifest", "wrong_source_commit", "wrong_record_count",
+    "incomplete",
+])
+def test_closeout_job_rejects_invalid_namespaced_d6r2_binding(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mutation: str,
+) -> None:
+    scope, binding, refs = _d6r2_binding_fixture(tmp_path, monkeypatch)
+    job_path = next((scope.state / "science-jobs").glob("MEPHC-SCIENCE-*.json"))
+    job = json.loads(job_path.read_text(encoding="utf-8"))
+    summary = job["result"]["result_summary"]
+    prefix = "fr04_corrected_r64"
+    if mutation == "multiple_dataset_ids":
+        summary["R64_dataset_id"] = "8" * 64
+    elif mutation == "missing_manifest":
+        summary.pop(f"{prefix}_dataset_manifest_sha256")
+    elif mutation == "missing_entrypoint":
+        summary.pop(f"{prefix}_entrypoint_sha256")
+    elif mutation == "missing_graph":
+        summary.pop(f"{prefix}_request_graph_sha256")
+    elif mutation == "wrong_corrected_graph":
+        binding["corrected_graph_sha256"] = "f" * 64
+    elif mutation == "wrong_domain":
+        binding["domain_list_sha256"] = "f" * 64
+    elif mutation == "wrong_geometry":
+        binding["geometry_boundary_digest"] = "f" * 64
+    elif mutation == "wrong_source_model":
+        binding["source_model_identity"] = "WRONG"
+    elif mutation == "wrong_dataset":
+        binding["acquisition_dataset_id"] = "f" * 64
+    elif mutation == "wrong_manifest":
+        binding["dataset_manifest_sha256"] = "f" * 64
+    elif mutation == "wrong_source_commit":
+        binding["acquisition_source_commit"] = "f" * 40
+    elif mutation == "wrong_record_count":
+        binding["dataset_record_count"] = 3204
+    elif mutation == "incomplete":
+        binding["completion_state"] = "PARTIAL"
+    write_json(job_path, job)
+    monkeypatch.setattr(flow, "git", lambda _paths, *args, **kwargs: (
+        subprocess.CompletedProcess(args, 0, "", "") if args[:2] == ("merge-base", "--is-ancestor")
+        else subprocess.CompletedProcess(args, 0, refs["binding_path"] + "\n", "") if args[:2] == ("diff", "--name-only")
+        else subprocess.CompletedProcess(args, 0, "", "") if args[:2] == ("ls-tree", "--name-only")
+        else subprocess.CompletedProcess(args, 0, json.dumps(binding), "")
+    ))
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is False
+
+
 @pytest.mark.parametrize("binding_duplicate", [None, 1])
 def test_closeout_job_derives_d3_duplicate_demand_count(
         tmp_path: Path, monkeypatch: pytest.MonkeyPatch, binding_duplicate: int | None,
