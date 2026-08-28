@@ -1,0 +1,58 @@
+{
+  "dataset": {
+    "acquisition_source_commit": "c8eeaa4e5fa78e25a5b7df07510b446b1f6d6738",
+    "dataset_id": "a2935beba40ef0c4b524198e6d2f44b93630bdff4c645e61a47d31187012b3db",
+    "manifest_sha256": "55828e4a0eb6e24914807e42d13fa113457ce080ffe37c947b3c0cd7af1281d7",
+    "record_count": 210
+  },
+  "holdout": {
+    "sample_id": "fr=0;grid_i=-34;grid_j=16;estimator=SOURCE_GRID",
+    "status": "RESERVED_PROSPECTIVE_HOLDOUT",
+    "used_as_current_evidence": false,
+    "values_fabricated": false
+  },
+  "nonexecuting": true,
+  "principle": "Treat solver-resolution convergence and stencil convergence as separate axes.",
+  "prior_c1_artifact_sha256": "41fd11c0c6b6812475cb81b71236ba3b3caaaee6db9cfa20be23e793e3f21641",
+  "schema": "mephc-r8-c2-prospective-validation-contract-v1",
+  "separate_future_questions": {
+    "Q1": "Is the historical 0.02 external-gap qualification policy empirically conservative or necessary for reliable rank1 association/curvature?",
+    "Q2": "Are the finite-difference Berry-curvature estimates themselves sufficiently converged in h?",
+    "separation_rule": "Q1 requires an external-gap qualification study; Q2 requires independent h-convergence evidence. Neither question is answered by the other metric."
+  },
+  "solver_resolution_axis": {
+    "R192_required": true,
+    "evaluate_resolutions": [
+      "R96",
+      "R128",
+      "R160",
+      "R192"
+    ],
+    "fixed_stencils": [
+      "1/72",
+      "1/144"
+    ],
+    "minimal_new_provider_request_estimate": 70,
+    "request_count_basis": "Eight current samples times nine point locations at one new resolution gives 72 logical demands; the two exact cross-sample duplicate relations reduce this to 70 unique requests.",
+    "scientific_reason": "Existing control-2 and outer-boundary sequences contain R128 overshoots, so three points do not establish the next-resolution behavior at fixed h."
+  },
+  "status": "DESIGNED_NOT_EXECUTED",
+  "stencil_axis": {
+    "current_stencils": [
+      "1/72",
+      "1/144"
+    ],
+    "fixed_resolutions": [
+      "R96",
+      "R128",
+      "R160"
+    ],
+    "minimal_new_provider_request_estimate": 96,
+    "request_count_basis": "Eight current samples times three fixed resolutions times four new off-center points; the center is reused and no current canonical point is assumed to match.",
+    "scientific_reason": "Two stencil values provide one interval difference and cannot test convergence or distinguish cancellation from a finite-stencil limit.",
+    "third_finer_stencil": "1/288",
+    "third_stencil_required": true
+  },
+  "terminal": "E9F_C2_QP_B_C2_C3_R8_C2_M1_CONVERGENCE_METHOD_AUDIT_COMPLETE",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-C2-M1-20260828-306"
+}

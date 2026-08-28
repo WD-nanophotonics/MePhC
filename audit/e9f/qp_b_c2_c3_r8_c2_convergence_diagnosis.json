@@ -1,0 +1,477 @@
+{
+  "base_sandbox_sha": "bdf8ca8d1aca6d6d6d0327826fa771d2b67c2cf9",
+  "c1_rescoring": false,
+  "counts": {
+    "abs_stencil_difference_expands_count": 3,
+    "both_stencil_resolution_contraction_count": 6,
+    "nonmonotonic_resolution_sequence_count": 4,
+    "sample_count": 8,
+    "srd_normalization_reversal_count": 4
+  },
+  "counts_by_role": {
+    "CALIBRATION_CONTROL": {
+      "abs_stencil_difference_expands_count": 0,
+      "both_stencil_resolution_contraction_count": 1,
+      "nonmonotonic_resolution_sequence_count": 1,
+      "sample_count": 2,
+      "srd_normalization_reversal_count": 1
+    },
+    "POLICY_CHALLENGE": {
+      "abs_stencil_difference_expands_count": 2,
+      "both_stencil_resolution_contraction_count": 4,
+      "nonmonotonic_resolution_sequence_count": 3,
+      "sample_count": 5,
+      "srd_normalization_reversal_count": 3
+    },
+    "STENCIL_DIAGNOSTIC": {
+      "abs_stencil_difference_expands_count": 1,
+      "both_stencil_resolution_contraction_count": 1,
+      "nonmonotonic_resolution_sequence_count": 0,
+      "sample_count": 1,
+      "srd_normalization_reversal_count": 0
+    }
+  },
+  "current_c1_verdict_unchanged": true,
+  "dataset": {
+    "acquisition_source_commit": "c8eeaa4e5fa78e25a5b7df07510b446b1f6d6738",
+    "dataset_id": "a2935beba40ef0c4b524198e6d2f44b93630bdff4c645e61a47d31187012b3db",
+    "manifest_sha256": "55828e4a0eb6e24914807e42d13fa113457ce080ffe37c947b3c0cd7af1281d7",
+    "record_count": 210
+  },
+  "execution": {
+    "mpb_execution": false,
+    "native_invocations": 0,
+    "provider_requests": 0,
+    "solver_executions": 0
+  },
+  "main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "mathematical_audit": {
+    "answer_to_monotonicity_question": "Solver-resolution convergence alone does not mathematically imply monotonic decrease of STENCIL_SRD across R.",
+    "axis_A_solver_resolution": {
+      "definition": "At each fixed h, study OMEGA_R(h) as R increases.",
+      "diagnostic": "A three-point overshoot or an expanding second increment is evidence about resolution behavior at fixed h.",
+      "mathematical_statement": "OMEGA_R(h) -> OMEGA_infinity(h) does not imply a monotone sequence in R."
+    },
+    "axis_B_finite_difference_stencil": {
+      "definition": "At each fixed R, study OMEGA_R(h) as h -> 0.",
+      "diagnostic": "The denominator varies with R, so a decreasing or increasing SRD is not a stencil-limit proof.",
+      "srd_definition": "STENCIL_SRD[R] = 2*abs(D_R)/(abs(OMEGA_R(h1))+abs(OMEGA_R(h2))).",
+      "stencil_difference": "D_R(h1,h2) = OMEGA_R(h1) - OMEGA_R(h2)."
+    },
+    "decision": "STENCIL_SRD_MONOTONIC_CONTRACTION_NOT_JUSTIFIED_AS_GENERAL_SOLVER_CONVERGENCE_REQUIREMENT",
+    "frozen_criterion": "STENCIL_SRD[R160] < STENCIL_SRD[R128]"
+  },
+  "method_audit_decision": "STENCIL_SRD_MONOTONIC_CONTRACTION_NOT_JUSTIFIED_AS_GENERAL_SOLVER_CONVERGENCE_REQUIREMENT",
+  "prior_c1_artifact_sha256": "41fd11c0c6b6812475cb81b71236ba3b3caaaee6db9cfa20be23e793e3f21641",
+  "prior_c1_verdict": {
+    "c1_rescoring": false,
+    "current_0p02_policy_calibration": "INCONCLUSIVE",
+    "threshold_change_authorized": false
+  },
+  "samples": {
+    "fr=0;grid_i=-10;grid_j=-3;estimator=SOURCE_GRID": {
+      "abs_stencil_delta": {
+        "R128": 0.021089674958866933,
+        "R160": 0.020317627915573233,
+        "R96": 0.021193275324039806
+      },
+      "abs_stencil_delta_ratio_160_over_128": 0.9633921791208498,
+      "abs_stencil_difference_classification": "ABS_STENCIL_DIFFERENCE_CONTRACTS",
+      "nonmonotonic_resolution_sequence": false,
+      "resolution_increment_contraction_at_both_stencils": true,
+      "role": "CALIBRATION_CONTROL",
+      "sample_id": "fr=0;grid_i=-10;grid_j=-3;estimator=SOURCE_GRID",
+      "signed_stencil_delta": {
+        "R128": 0.021089674958866933,
+        "R160": 0.020317627915573233,
+        "R96": 0.021193275324039806
+      },
+      "srd_normalization_reversal": false,
+      "stencil_srd": {
+        "R128": 0.005273504204847125,
+        "R160": 0.005066330928792239,
+        "R96": 0.005394955596552323
+      },
+      "stencil_srd_ratio_160_over_128": 0.9607143053257712,
+      "stencils": {
+        "1/144": {
+          "abs_increment_128_160": 0.010761193016879389,
+          "abs_increment_96_128": 0.07077458561972927,
+          "abs_increment_ratio_128_160_over_96_128": 0.15204883112561207,
+          "nonmonotonic_resolution_sequence": false,
+          "omega_R128": -4.009721502491367,
+          "omega_R160": -4.020482695508246,
+          "omega_R96": -3.9389469168716373,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_CONTRACTS"
+        },
+        "1/72": {
+          "abs_increment_128_160": 0.011533240060173089,
+          "abs_increment_96_128": 0.07087818598490214,
+          "abs_increment_ratio_128_160_over_96_128": 0.16271917656907584,
+          "nonmonotonic_resolution_sequence": false,
+          "omega_R128": -3.9886318275324997,
+          "omega_R160": -4.000165067592673,
+          "omega_R96": -3.9177536415475975,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_CONTRACTS"
+        }
+      },
+      "unresolved_numerical_behavior": []
+    },
+    "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID": {
+      "abs_stencil_delta": {
+        "R128": 0.4508405214219646,
+        "R160": 0.4467991372206779,
+        "R96": 0.4379014967300563
+      },
+      "abs_stencil_delta_ratio_160_over_128": 0.9910358896122733,
+      "abs_stencil_difference_classification": "ABS_STENCIL_DIFFERENCE_CONTRACTS",
+      "nonmonotonic_resolution_sequence": true,
+      "resolution_increment_contraction_at_both_stencils": true,
+      "role": "POLICY_CHALLENGE",
+      "sample_id": "fr=0;grid_i=-34;grid_j=-16;estimator=SOURCE_GRID",
+      "signed_stencil_delta": {
+        "R128": -0.4508405214219646,
+        "R160": -0.4467991372206779,
+        "R96": -0.4379014967300563
+      },
+      "srd_normalization_reversal": true,
+      "stencil_srd": {
+        "R128": 0.03578694927821401,
+        "R160": 0.036297457552595204,
+        "R96": 0.03891575372806515
+      },
+      "stencil_srd_ratio_160_over_128": 1.0142652079788197,
+      "stencils": {
+        "1/144": {
+          "abs_increment_128_160": 0.2865041443696654,
+          "abs_increment_96_128": 1.3388828229983858,
+          "abs_increment_ratio_128_160_over_96_128": 0.21398746734837365,
+          "nonmonotonic_resolution_sequence": true,
+          "omega_R128": -12.37248289993709,
+          "omega_R160": -12.085978755567425,
+          "omega_R96": -11.033600076938704,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_CONTRACTS"
+        },
+        "1/72": {
+          "abs_increment_128_160": 0.29054552857095217,
+          "abs_increment_96_128": 1.3518218476902941,
+          "abs_increment_ratio_128_160_over_96_128": 0.21492885994361952,
+          "nonmonotonic_resolution_sequence": true,
+          "omega_R128": -12.823323421359055,
+          "omega_R160": -12.532777892788102,
+          "omega_R96": -11.47150157366876,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_CONTRACTS"
+        }
+      },
+      "unresolved_numerical_behavior": [
+        "NONMONOTONIC_RESOLUTION_SEQUENCE"
+      ]
+    },
+    "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID": {
+      "abs_stencil_delta": {
+        "R128": 0.7359790725342705,
+        "R160": 0.7248547066271698,
+        "R96": 0.7400518656897503
+      },
+      "abs_stencil_delta_ratio_160_over_128": 0.9848849426264321,
+      "abs_stencil_difference_classification": "ABS_STENCIL_DIFFERENCE_CONTRACTS",
+      "nonmonotonic_resolution_sequence": true,
+      "resolution_increment_contraction_at_both_stencils": true,
+      "role": "POLICY_CHALLENGE",
+      "sample_id": "fr=0;grid_i=-34;grid_j=-17;estimator=SOURCE_GRID",
+      "signed_stencil_delta": {
+        "R128": -0.7359790725342705,
+        "R160": -0.7248547066271698,
+        "R96": -0.7400518656897503
+      },
+      "srd_normalization_reversal": true,
+      "stencil_srd": {
+        "R128": 0.032931332455303323,
+        "R160": 0.03340280108472533,
+        "R96": 0.03534470650424535
+      },
+      "stencil_srd_ratio_160_over_128": 1.0143167188895836,
+      "stencils": {
+        "1/144": {
+          "abs_increment_128_160": 0.642921497868528,
+          "abs_increment_96_128": 1.4128123875798906,
+          "abs_increment_ratio_128_160_over_96_128": 0.4550650203243441,
+          "nonmonotonic_resolution_sequence": true,
+          "omega_R128": -21.980910968539103,
+          "omega_R160": -21.337989470670575,
+          "omega_R96": -20.568098580959212,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_CONTRACTS"
+        },
+        "1/72": {
+          "abs_increment_128_160": 0.6540458637756288,
+          "abs_increment_96_128": 1.4087395944244108,
+          "abs_increment_ratio_128_160_over_96_128": 0.4642773344088918,
+          "nonmonotonic_resolution_sequence": true,
+          "omega_R128": -22.716890041073373,
+          "omega_R160": -22.062844177297745,
+          "omega_R96": -21.308150446648963,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_CONTRACTS"
+        }
+      },
+      "unresolved_numerical_behavior": [
+        "NONMONOTONIC_RESOLUTION_SEQUENCE"
+      ]
+    },
+    "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID": {
+      "abs_stencil_delta": {
+        "R128": 0.7346628237527817,
+        "R160": 0.7271281640471621,
+        "R96": 0.7419582434700516
+      },
+      "abs_stencil_delta_ratio_160_over_128": 0.989744057461447,
+      "abs_stencil_difference_classification": "ABS_STENCIL_DIFFERENCE_CONTRACTS",
+      "nonmonotonic_resolution_sequence": true,
+      "resolution_increment_contraction_at_both_stencils": true,
+      "role": "POLICY_CHALLENGE",
+      "sample_id": "fr=0;grid_i=-34;grid_j=17;estimator=SOURCE_GRID",
+      "signed_stencil_delta": {
+        "R128": -0.7346628237527817,
+        "R160": -0.7271281640471621,
+        "R96": -0.7419582434700516
+      },
+      "srd_normalization_reversal": true,
+      "stencil_srd": {
+        "R128": 0.032869429375047325,
+        "R160": 0.0334333197411788,
+        "R96": 0.0354360237186905
+      },
+      "stencil_srd_ratio_160_over_128": 1.0171554656363933,
+      "stencils": {
+        "1/144": {
+          "abs_increment_128_160": 0.5985701792172939,
+          "abs_increment_96_128": 1.4166276455075035,
+          "abs_increment_ratio_128_160_over_96_128": 0.42253176486814753,
+          "nonmonotonic_resolution_sequence": true,
+          "omega_R128": -21.98361406302429,
+          "omega_R160": -21.385043883806997,
+          "omega_R96": -20.566986417516787,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_CONTRACTS"
+        },
+        "1/72": {
+          "abs_increment_128_160": 0.6061048389229136,
+          "abs_increment_96_128": 1.4093322257902337,
+          "abs_increment_ratio_128_160_over_96_128": 0.4300652662526478,
+          "nonmonotonic_resolution_sequence": true,
+          "omega_R128": -22.718276886777073,
+          "omega_R160": -22.11217204785416,
+          "omega_R96": -21.30894466098684,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_CONTRACTS"
+        }
+      },
+      "unresolved_numerical_behavior": [
+        "NONMONOTONIC_RESOLUTION_SEQUENCE"
+      ]
+    },
+    "fr=0;grid_i=-34;grid_j=9;estimator=SOURCE_GRID": {
+      "abs_stencil_delta": {
+        "R128": 0.05429649922581614,
+        "R160": 0.05388910812256009,
+        "R96": 0.05051030027912384
+      },
+      "abs_stencil_delta_ratio_160_over_128": 0.9924969176822666,
+      "abs_stencil_difference_classification": "ABS_STENCIL_DIFFERENCE_CONTRACTS",
+      "nonmonotonic_resolution_sequence": true,
+      "resolution_increment_contraction_at_both_stencils": false,
+      "role": "CALIBRATION_CONTROL",
+      "sample_id": "fr=0;grid_i=-34;grid_j=9;estimator=SOURCE_GRID",
+      "signed_stencil_delta": {
+        "R128": 0.05429649922581614,
+        "R160": 0.05388910812256009,
+        "R96": 0.05051030027912384
+      },
+      "srd_normalization_reversal": true,
+      "stencil_srd": {
+        "R128": 0.025997567922237032,
+        "R160": 0.026059203802658134,
+        "R96": 0.024395215442912017
+      },
+      "stencil_srd_ratio_160_over_128": 1.0023708325565477,
+      "stencils": {
+        "1/144": {
+          "abs_increment_128_160": 0.02077681111521601,
+          "abs_increment_96_128": 0.01991508134773934,
+          "abs_increment_ratio_128_160_over_96_128": 1.043270210772927,
+          "nonmonotonic_resolution_sequence": true,
+          "omega_R128": -2.1156705063188364,
+          "omega_R160": -2.0948936952036203,
+          "omega_R96": -2.095755424971097,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_EXPANDS"
+        },
+        "1/72": {
+          "abs_increment_128_160": 0.02036942001195996,
+          "abs_increment_96_128": 0.01612888240104704,
+          "abs_increment_ratio_128_160_over_96_128": 1.262915774662579,
+          "nonmonotonic_resolution_sequence": true,
+          "omega_R128": -2.06137400709302,
+          "omega_R160": -2.0410045870810603,
+          "omega_R96": -2.045245124691973,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_EXPANDS"
+        }
+      },
+      "unresolved_numerical_behavior": [
+        "RESOLUTION_INCREMENT_CONTRACTION_FAILS_AT_ONE_OR_BOTH_STENCILS",
+        "NONMONOTONIC_RESOLUTION_SEQUENCE"
+      ]
+    },
+    "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID": {
+      "abs_stencil_delta": {
+        "R128": 0.4706342562122856,
+        "R160": 0.5075878109581069,
+        "R96": 0.4890459256507711
+      },
+      "abs_stencil_delta_ratio_160_over_128": 1.0785186251490222,
+      "abs_stencil_difference_classification": "ABS_STENCIL_DIFFERENCE_EXPANDS",
+      "nonmonotonic_resolution_sequence": false,
+      "resolution_increment_contraction_at_both_stencils": false,
+      "role": "POLICY_CHALLENGE",
+      "sample_id": "fr=0;grid_i=-4;grid_j=0;estimator=SOURCE_GRID",
+      "signed_stencil_delta": {
+        "R128": -0.4706342562122856,
+        "R160": -0.5075878109581069,
+        "R96": -0.4890459256507711
+      },
+      "srd_normalization_reversal": false,
+      "stencil_srd": {
+        "R128": 0.018134911164137794,
+        "R160": 0.018156296353467227,
+        "R96": 0.01937730009682182
+      },
+      "stencil_srd_ratio_160_over_128": 1.0011792276860845,
+      "stencils": {
+        "1/144": {
+          "abs_increment_128_160": 1.9862586098595827,
+          "abs_increment_96_128": 0.7229588036302381,
+          "abs_increment_ratio_128_160_over_96_128": 2.747402203121199,
+          "nonmonotonic_resolution_sequence": false,
+          "omega_R128": -25.71651974347312,
+          "omega_R160": -27.702778353332704,
+          "omega_R96": -24.993560939842883,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_EXPANDS"
+        },
+        "1/72": {
+          "abs_increment_128_160": 2.023212164605404,
+          "abs_increment_96_128": 0.7045471341917526,
+          "abs_increment_ratio_128_160_over_96_128": 2.871649129516944,
+          "nonmonotonic_resolution_sequence": false,
+          "omega_R128": -26.187153999685407,
+          "omega_R160": -28.21036616429081,
+          "omega_R96": -25.482606865493654,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_EXPANDS"
+        }
+      },
+      "unresolved_numerical_behavior": [
+        "ABS_STENCIL_DISCREPANCY_EXPANDS_R128_TO_R160",
+        "RESOLUTION_INCREMENT_CONTRACTION_FAILS_AT_ONE_OR_BOTH_STENCILS"
+      ]
+    },
+    "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID": {
+      "abs_stencil_delta": {
+        "R128": 0.18887090332674816,
+        "R160": 0.2078371328569304,
+        "R96": 0.17934176198490448
+      },
+      "abs_stencil_delta_ratio_160_over_128": 1.1004190121194608,
+      "abs_stencil_difference_classification": "ABS_STENCIL_DIFFERENCE_EXPANDS",
+      "nonmonotonic_resolution_sequence": false,
+      "resolution_increment_contraction_at_both_stencils": true,
+      "role": "POLICY_CHALLENGE",
+      "sample_id": "fr=0;grid_i=-5;grid_j=0;estimator=SOURCE_GRID",
+      "signed_stencil_delta": {
+        "R128": -0.18887090332674816,
+        "R160": -0.2078371328569304,
+        "R96": -0.17934176198490448
+      },
+      "srd_normalization_reversal": false,
+      "stencil_srd": {
+        "R128": 0.014984460797346994,
+        "R160": 0.015347367183389802,
+        "R96": 0.015592465296929111
+      },
+      "stencil_srd_ratio_160_over_128": 1.0242188485091877,
+      "stencils": {
+        "1/144": {
+          "abs_increment_128_160": 0.9282668955620554,
+          "abs_increment_96_128": 1.097864423259285,
+          "abs_increment_ratio_128_160_over_96_128": 0.8455205177395795,
+          "nonmonotonic_resolution_sequence": false,
+          "omega_R128": -12.510015644781006,
+          "omega_R160": -13.438282540343062,
+          "omega_R96": -11.412151221521722,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_CONTRACTS"
+        },
+        "1/72": {
+          "abs_increment_128_160": 0.9472331250922377,
+          "abs_increment_96_128": 1.1073935646011286,
+          "abs_increment_ratio_128_160_over_96_128": 0.8553717082809859,
+          "nonmonotonic_resolution_sequence": false,
+          "omega_R128": -12.698886548107755,
+          "omega_R160": -13.646119673199992,
+          "omega_R96": -11.591492983506626,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_CONTRACTS"
+        }
+      },
+      "unresolved_numerical_behavior": [
+        "ABS_STENCIL_DISCREPANCY_EXPANDS_R128_TO_R160"
+      ]
+    },
+    "fr=0;grid_i=-6;grid_j=-1;estimator=SOURCE_GRID": {
+      "abs_stencil_delta": {
+        "R128": 0.07425450022600266,
+        "R160": 0.08937590922227479,
+        "R96": 0.05702945104005863
+      },
+      "abs_stencil_delta_ratio_160_over_128": 1.2036429973974407,
+      "abs_stencil_difference_classification": "ABS_STENCIL_DIFFERENCE_EXPANDS",
+      "nonmonotonic_resolution_sequence": false,
+      "resolution_increment_contraction_at_both_stencils": true,
+      "role": "STENCIL_DIAGNOSTIC",
+      "sample_id": "fr=0;grid_i=-6;grid_j=-1;estimator=SOURCE_GRID",
+      "signed_stencil_delta": {
+        "R128": -0.07425450022600266,
+        "R160": -0.08937590922227479,
+        "R96": -0.05702945104005863
+      },
+      "srd_normalization_reversal": false,
+      "stencil_srd": {
+        "R128": 0.010258711137977407,
+        "R160": 0.011634476438319967,
+        "R96": 0.009036467262326901
+      },
+      "stencil_srd_ratio_160_over_128": 1.134107031754654,
+      "stencils": {
+        "1/144": {
+          "abs_increment_128_160": 0.4362373816393106,
+          "abs_increment_96_128": 0.9185435820803001,
+          "abs_increment_ratio_128_160_over_96_128": 0.4749228998490507,
+          "nonmonotonic_resolution_sequence": false,
+          "omega_R128": -7.201062735675269,
+          "omega_R160": -7.63730011731458,
+          "omega_R96": -6.282519153594969,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_CONTRACTS"
+        },
+        "1/72": {
+          "abs_increment_128_160": 0.4513587906355827,
+          "abs_increment_96_128": 0.9357686312662441,
+          "abs_increment_ratio_128_160_over_96_128": 0.48234015926011786,
+          "nonmonotonic_resolution_sequence": false,
+          "omega_R128": -7.275317235901272,
+          "omega_R160": -7.726676026536855,
+          "omega_R96": -6.339548604635028,
+          "second_absolute_resolution_increment": "RESOLUTION_INCREMENT_CONTRACTS"
+        }
+      },
+      "unresolved_numerical_behavior": [
+        "ABS_STENCIL_DISCREPANCY_EXPANDS_R128_TO_R160"
+      ]
+    }
+  },
+  "schema": "mephc-r8-c2-convergence-method-audit-v1",
+  "terminal": "E9F_C2_QP_B_C2_C3_R8_C2_M1_CONVERGENCE_METHOD_AUDIT_COMPLETE",
+  "threshold_change_authorized": false,
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-C2-M1-20260828-306"
+}
