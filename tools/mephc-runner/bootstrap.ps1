@@ -32,8 +32,7 @@ function Set-AtomicJson([string]$Path,[object]$Value) {
   try {
     for($attempt=0;$attempt -lt 40;$attempt++){
       try {
-        if(Test-Path -LiteralPath $Path -PathType Leaf){[IO.File]::Replace($temporary,$Path,$null)}
-        else{[IO.File]::Move($temporary,$Path)}
+        [IO.File]::Move($temporary,$Path,$true)
         return
       } catch [IO.IOException] {
         if($attempt -eq 39){throw}

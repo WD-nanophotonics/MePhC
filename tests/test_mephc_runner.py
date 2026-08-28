@@ -771,7 +771,7 @@ def test_bootstrap_runtime_pointer_uses_atomic_bounded_retry():
     bootstrap = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8-sig")
     atomic = bootstrap.split("function Set-AtomicJson", 1)[1].split("$Manifest=@()", 1)[0]
     assert "[IO.File]::WriteAllText($temporary" in atomic
-    assert "[IO.File]::Replace($temporary,$Path,$null)" in atomic
+    assert "[IO.File]::Move($temporary,$Path,$true)" in atomic
     assert "$attempt -lt 40" in atomic and "Start-Sleep -Milliseconds 50" in atomic
     assert bootstrap.count("Set-AtomicJson $previousCurrent") == 3
     assert "Set-Content -LiteralPath $previousCurrent" not in bootstrap
