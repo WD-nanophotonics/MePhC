@@ -122,10 +122,9 @@ def d8_inputs() -> None:
     if failed.get("band1_band2_failure_intersection_count") != 100 or failed.get("band1_only_failure_count") != 0 or failed.get("band2_only_failure_count") != 10:
         raise AcquisitionError("D8_RESIDUAL_SET_INVALID")
     expected_residuals = {"fr=0.4;grid_i=-35;grid_j=-16;estimator=SOURCE_GRID", "fr=0.4;grid_i=-35;grid_j=-15;estimator=SOURCE_GRID", "fr=0.4;grid_i=-35;grid_j=15;estimator=SOURCE_GRID", "fr=0.4;grid_i=-35;grid_j=16;estimator=SOURCE_GRID", "fr=0.4;grid_i=-33;grid_j=-17;estimator=SOURCE_GRID", "fr=0.4;grid_i=-33;grid_j=17;estimator=SOURCE_GRID", "fr=0.4;grid_i=-32;grid_j=-17;estimator=SOURCE_GRID", "fr=0.4;grid_i=-32;grid_j=17;estimator=SOURCE_GRID", "fr=0.4;grid_i=-5;grid_j=-1;estimator=SOURCE_GRID", "fr=0.4;grid_i=-5;grid_j=1;estimator=SOURCE_GRID"}
-    if set(failed.get("d8_residual_failed_sample_ids", [])) not in (expected_residuals, set()):
-        residual = set(failed.get("band2_only_failure_sample_ids", []))
-        if residual != expected_residuals:
-            raise AcquisitionError("D8_RESIDUAL_SAMPLE_SET_INVALID")
+    residual = set(failed.get("band2_only_failure_sample_ids", []))
+    if residual != expected_residuals:
+        raise AcquisitionError("D8_RESIDUAL_SAMPLE_SET_INVALID")
     if rank2.get("summary", {}).get("not_reported_count") != 10 or rank3.get("summary", {}).get("not_reported_count") != 10:
         raise AcquisitionError("D8_RESIDUAL_QUALIFICATION_INVALID")
 
@@ -157,7 +156,7 @@ def generate_graph(source_commit: str | None = None) -> dict[str, Any]:
                 requests.append({"request_key": request_key(cell, resolution, role, REFINED_H_DENOMINATOR, offset), "request_class": "refined"})
     if len(requests) != EXPECTED_REQUEST_COUNT or len({canonical(item["request_key"]) for item in requests}) != EXPECTED_REQUEST_COUNT or not refined_set:
         raise AcquisitionError("D9_REQUEST_GRAPH_CARDINALITY_INVALID")
-    graph = {"schema": "mephc-e9f-d9-fr04-residual-composite-request-graph-v1", "work_order_id": WORK_ORDER_ID, "source_commit": source_commit, "fr": FR, "target_cells": [list(cell) for cell in TARGET_CELLS], "refined_stencil_representatives": [list(cell) for cell in REFINED_REPRESENTATIVES], "resolutions": list(RESOLUTIONS), "odd_resolution_class": list(ODD_RESOLUTIONS), "even_resolution_class": list(EVEN_RESOLUTIONS), "primary_stencil": "1/144", "refined_stencil": "1/288", "logical_provider_demand_count": EXPECTED_REQUEST_COUNT, "unique_provider_request_count": EXPECTED_REQUEST_COUNT, "duplicate_provider_request_count": 0, "collision_group_count": 0, "unique_provider_requests": requests}
+    graph = {"schema": "mephc-e9f-d9-fr04-residual-composite-request-graph-v1", "work_order_id": WORK_ORDER_ID, "source_commit": BASE_SANDBOX_SHA, "fr": FR, "target_cells": [list(cell) for cell in TARGET_CELLS], "refined_stencil_representatives": [list(cell) for cell in REFINED_REPRESENTATIVES], "resolutions": list(RESOLUTIONS), "odd_resolution_class": list(ODD_RESOLUTIONS), "even_resolution_class": list(EVEN_RESOLUTIONS), "primary_stencil": "1/144", "refined_stencil": "1/288", "logical_provider_demand_count": EXPECTED_REQUEST_COUNT, "unique_provider_request_count": EXPECTED_REQUEST_COUNT, "duplicate_provider_request_count": 0, "collision_group_count": 0, "unique_provider_requests": requests}
     if GRAPH_PATH.is_file():
         existing = read_json(GRAPH_PATH)
         if canonical(existing) != canonical(graph):
@@ -203,7 +202,7 @@ def acquire() -> dict[str, Any]:
     counter = scientific_job.BudgetCounter(EXPECTED_REQUEST_COUNT, EXPECTED_REQUEST_COUNT)
     import meep as mp
     from mephc.mpb_spectral_provider import MPBLiveSpectralProvider
-    provider = MPBLiveSpectralProvider(geometry=list(embedding.make_solver_geometry(case)), geometry_lattice=embedding.make_lattice(), resolution=RESOLUTIONS[0], num_bands=NUM_BANDS, polarization=mp.TE, default_material=mp.Medium(epsilon=EPSILON), eigensolver_tolerance=EIGENSOLVER_TOLERANCE, deterministic=True, mesh_size=MESH_SIZE)
+    providers: dict[int, Any] = {}
     completed = 0
     for item in graph["unique_provider_requests"]:
         key = item["request_key"]
@@ -213,7 +212,11 @@ def acquire() -> dict[str, Any]:
             counter.consume_provider(); counter.consume_solver()
             coordinate = key["canonical_k_coordinate"]; denominator = int(coordinate["denominator"])
             q = tuple(float(value) / denominator for value in coordinate["numerator"])
-            provider.resolution = int(key["resolution_value"])
+            resolution = int(key["resolution_value"])
+            provider = providers.get(resolution)
+            if provider is None:
+                provider = MPBLiveSpectralProvider(geometry=list(embedding.make_solver_geometry(case)), geometry_lattice=embedding.make_lattice(), resolution=resolution, num_bands=NUM_BANDS, polarization=mp.TE, default_material=mp.Medium(epsilon=EPSILON), eigensolver_tolerance=EIGENSOLVER_TOLERANCE, deterministic=True, mesh_size=MESH_SIZE)
+                providers[resolution] = provider
             snapshot = provider.solve(q)
             payload = runtime.encode_snapshot(snapshot)
             decoded = runtime.decode_snapshot(payload)
