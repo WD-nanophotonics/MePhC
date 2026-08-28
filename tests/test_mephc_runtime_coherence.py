@@ -110,6 +110,7 @@ def test_attestation_detects_loaded_worker_and_source_staleness(tmp_path, monkey
     monkeypatch.setattr(module.config, "BROKER_HEARTBEAT", broker)
     monkeypatch.setattr(module.config, "state_epoch", lambda: "epoch-1")
     monkeypatch.setattr(module, "_source_head", lambda: source)
+    monkeypatch.setattr(module, "_source_blob_sha", lambda _source, _relative: admission_hash)
     monkeypatch.setenv("MEPHC_ADMISSION_MODULE_HASH", admission_hash)
     monkeypatch.setenv("MEPHC_ADMISSION_BUILD", admission_hash[:16])
     module.set_loaded_mcp_hash(mcp_hash)
@@ -133,6 +134,21 @@ def test_attestation_detects_loaded_worker_and_source_staleness(tmp_path, monkey
     stale_source = module.attest()
     assert "SOURCE_RUNTIME_FILES_MISMATCH" in stale_source["mismatches"]
     assert stale_source["safe_next_tool"] == "mephc_runtime_activate"
+
+
+def test_attestation_binds_admission_to_commit_blob_not_windows_worktree(tmp_path, monkeypatch):
+    module = load("coherence_admission_git_blob", RUNNER / "runtime_attestation.py")
+    source = "1" * 40
+    committed = b"line-one\nline-two\n"
+    working = b"line-one\r\nline-two\r\n"
+    admission_hash = __import__("hashlib").sha256(committed).hexdigest()
+    worktree = tmp_path / "control" / "tools" / "mephc-admission"
+    worktree.mkdir(parents=True); (worktree / "mephc_admission.py").write_bytes(working)
+    monkeypatch.setattr(module.config, "CONTROL_ROOT", tmp_path / "control")
+    monkeypatch.setattr(module.subprocess, "run", lambda *_args, **_kwargs:
+                        SimpleNamespace(returncode=0, stdout=committed))
+    assert module._source_blob_sha(source, "tools/mephc-admission/mephc_admission.py") == admission_hash
+    assert __import__("hashlib").sha256(working).hexdigest() != admission_hash
 
 
 def test_capabilities_finds_ready_job_missing_from_active_index(tmp_path, monkeypatch):

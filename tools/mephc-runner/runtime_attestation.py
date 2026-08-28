@@ -55,6 +55,21 @@ def _source_head() -> str | None:
         return None
 
 
+def _source_blob_sha(source: str | None, relative: str) -> str | None:
+    if not isinstance(source, str) or len(source) != 40:
+        return None
+    command = (["git", "-c", f"safe.directory={config.CONTROL_ROOT_WINDOWS}", "-C", config.CONTROL_ROOT_WINDOWS]
+               if os.name == "nt" else [str(config.WINDOWS_GIT_WSL), "-c",
+                                          f"safe.directory={config.CONTROL_ROOT_WINDOWS}",
+                                          "-C", config.CONTROL_ROOT_WINDOWS])
+    try:
+        result = subprocess.run([*command, "show", f"{source}:{relative}"], stdout=subprocess.PIPE,
+                                stderr=subprocess.DEVNULL, timeout=15, check=False)
+        return hashlib.sha256(result.stdout).hexdigest() if result.returncode == 0 else None
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+
+
 def attest() -> dict[str, Any]:
     current = _json(config.WINDOWS_RUNTIME_WSL / "current.json") or {}
     manifest_value: Any = None
@@ -69,6 +84,7 @@ def attest() -> dict[str, Any]:
     admission_hash = os.environ.get("MEPHC_ADMISSION_MODULE_HASH")
     admission_build = os.environ.get("MEPHC_ADMISSION_BUILD") or (admission_hash[:16] if admission_hash else None)
     admission_current = _json(config.WINDOWS_RUNTIME_WSL / "admission/current.json") or {}
+    source = _source_head()
     mismatches: list[str] = []
     if CURRENT_MCP_BUNDLE_HASH and not admission_hash:
         mismatches.append("ADMISSION_ATTESTATION_MISSING")
@@ -85,15 +101,13 @@ def attest() -> dict[str, Any]:
     if admission_hash:
         if admission_current.get("admission_sha256") != admission_hash:
             mismatches.append("ADMISSION_LOADED_MODULE_MISMATCH")
-        admission_source = config.CONTROL_ROOT / "tools/mephc-admission/mephc_admission.py"
-        try:
-            if admission_current.get("admission_sha256") != hashlib.sha256(admission_source.read_bytes()).hexdigest():
-                mismatches.append("ADMISSION_SOURCE_MISMATCH")
-        except OSError:
+        admission_source_sha = _source_blob_sha(source, "tools/mephc-admission/mephc_admission.py")
+        if admission_source_sha is None:
             mismatches.append("ADMISSION_SOURCE_UNAVAILABLE")
+        elif admission_current.get("admission_sha256") != admission_source_sha:
+            mismatches.append("ADMISSION_SOURCE_MISMATCH")
         if admission_current.get("source_commit") != current.get("source_commit"):
             mismatches.append("ADMISSION_SOURCE_COMMIT_MISMATCH")
-    source = _source_head()
     installed_source = current.get("source_commit")
     runtime_source_matches = worker.get("runtime_source_matches") if worker else None
     if runtime_source_matches is False: mismatches.append("SOURCE_RUNTIME_FILES_MISMATCH")
