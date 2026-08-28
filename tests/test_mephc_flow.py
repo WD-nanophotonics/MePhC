@@ -252,6 +252,42 @@ def test_closeout_after_response_only_consumes(tmp_path: Path, monkeypatch: pyte
     assert result["submission_count"] == 1
 
 
+def test_status_exposes_exact_pending_blocked_closeout_next_step(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope = paths(tmp_path)
+    work_order_id = "MEPHC-TEST-WORK-ORDER-0001"
+    install_active_order(scope, f"NEXT_WORK_ORDER_ID={work_order_id}\n", work_order_id)
+    prepared = closeout_prepared()
+    prepared["kind"] = "blocked"
+    prepared["message"] = prepared["message"].replace(
+        b"TERMINAL=COMPLETE", b"BLOCKED_CODE=RESULT_SUMMARY_UNSAFE\nTERMINAL=BLOCKED")
+    prepared["message_sha256"] = flow.sha256_bytes(prepared["message"])
+    prepared["request_hash"] = flow.sha256_bytes(flow.canonical_json({
+        "work_order_id": work_order_id, "kind": "blocked",
+        "message_sha256": prepared["message_sha256"],
+    }))
+    prepared["request_id"] = "MEPHC-FLOW-" + prepared["request_hash"][:24]
+    directory = scope.outbox / prepared["request_id"]
+    directory.mkdir()
+    (directory / "message.txt").write_bytes(prepared["message"])
+    write_json(directory / "request.json", flow.report_manifest(prepared))
+    write_json(directory / "receipt.json", {"state": "waiting_for_response"})
+    (directory / "events.jsonl").write_text('{"event":"request_submitted"}\n', encoding="utf-8")
+    monkeypatch.setattr(flow, "source_state", lambda _paths: {
+        "branch": "sandbox", "head": "a" * 40, "origin_main": flow.EXPECTED_MAIN,
+        "origin_sandbox": "a" * 40, "dirty": False,
+    })
+    value = flow.status(scope)
+    assert value["closeout_state"]["state"] == "waiting_for_response"
+    assert value["safe_next"] == "closeout-blocked --code RESULT_SUMMARY_UNSAFE"
+
+    (directory / "response.txt").write_text("NEXT_WORK_ORDER_ID=MEPHC-NEXT-WORK-ORDER-0002\n", encoding="utf-8")
+    write_json(directory / "receipt.json", {"state": "response_received"})
+    value = flow.status(scope)
+    assert value["closeout_state"]["state"] == "response_ready_to_consume"
+    assert value["safe_next"] == f"courier-reconcile --request-id {directory.name}"
+
+
 def test_canonical_closeout_is_bounded_and_path_free(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     scope = paths(tmp_path)
     head = "a" * 40

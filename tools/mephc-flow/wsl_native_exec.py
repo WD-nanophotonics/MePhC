@@ -13,10 +13,12 @@ from pathlib import Path
 RESULT_MARKER = b"MEPHC_NATIVE_RESULT_JSON="
 MAX_RESULT_BYTES = 65536
 TAIL_BYTES = MAX_RESULT_BYTES * 2 + len(RESULT_MARKER) + 4096
-FORBIDDEN_SUMMARY_TOKENS = (
-    "normalized_vectors", "raw H", "raw_h", "pickle", "/home/icy/",
-    "C:\\Users\\", "username", "machine", "pid",
-)
+FORBIDDEN_IDENTITY_KEYS = {
+    "pid", "process_id", "username", "user_name", "machine", "machine_name",
+    "hostname", "host_name",
+}
+FORBIDDEN_RAW_KEY_TOKENS = ("normalized_vectors", "raw_h", "pickle")
+FORBIDDEN_STRING_TOKENS = ("/home/icy/", "c:\\users\\", "normalized_vectors", "raw_h", "pickle")
 
 
 def atomic(path: Path, value: dict) -> None:
@@ -39,7 +41,8 @@ def _summary_is_safe(value: object) -> bool:
     if isinstance(value, dict):
         return all(
             isinstance(key, str)
-            and not any(token in key.lower() for token in FORBIDDEN_SUMMARY_TOKENS)
+            and key.lower() not in FORBIDDEN_IDENTITY_KEYS
+            and not any(token in key.lower() for token in FORBIDDEN_RAW_KEY_TOKENS)
             and _summary_is_safe(item)
             for key, item in value.items()
         )
@@ -47,7 +50,7 @@ def _summary_is_safe(value: object) -> bool:
         return all(_summary_is_safe(item) for item in value)
     if isinstance(value, str):
         lowered = value.lower()
-        return not any(token.lower() in lowered for token in FORBIDDEN_SUMMARY_TOKENS)
+        return not any(token in lowered for token in FORBIDDEN_STRING_TOKENS)
     return isinstance(value, (bool, int, float)) or value is None
 
 

@@ -129,6 +129,12 @@ effect cannot be uniquely reconciled. The legacy `report --message-file` and
 part of the low-reasoning Agent path. Do not use Browser, Chrome, Gmail, another
 Chat profile, another request ID, or another transport.
 
+Never end a task while `status.closeout_state` is `waiting_for_response` or
+`response_ready_to_consume`. Execute its exact `safe_next` command and keep the
+same task alive until the response is consumed. Do not replace this with manual
+sleep/status polling, and do not return a final answer while Courier is still
+handling the fixed request.
+
 ## Safety boundaries
 
 - Do not modify unrelated projects, arbitrary user directories, browser

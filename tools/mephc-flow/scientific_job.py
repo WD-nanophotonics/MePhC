@@ -327,7 +327,11 @@ def selftest(root: Path, state_root: Path, *, mpb_smoke: bool) -> dict[str, Any]
     verified = verify_dataset(store.state_root, manifest["dataset_id"])
     with tempfile.TemporaryDirectory(dir=state_root) as temporary:
         stdout = Path(temporary) / "stdout.log"
-        value = {"dataset_id": manifest["dataset_id"], "record_count": 1}
+        value = {
+            "machine_contract_status": "PASS", "dataset_id": manifest["dataset_id"],
+            "result_id": hashlib.sha256(canonical_bytes({"dataset_id": manifest["dataset_id"]})).hexdigest(),
+            "record_count": 1,
+        }
         stdout.write_bytes(helper.RESULT_MARKER + canonical_bytes(value) + b"\n")
         if helper.extract_result_summary(stdout) != value:
             raise ScientificJobError("SELFTEST_RESULT_CHANNEL_FAILED")

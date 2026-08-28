@@ -714,6 +714,43 @@ def closeout_status(paths: Paths) -> dict[str, Any]:
     return {"state": state, **summary, "safe_next": safe_next}
 
 
+def pending_closeout_status(paths: Paths, work_order_id: str) -> dict[str, Any] | None:
+    if not paths.outbox.is_dir():
+        return None
+    candidates: list[tuple[int, Path, dict[str, Any]]] = []
+    for directory in paths.outbox.glob("MEPHC-FLOW-*"):
+        if not directory.is_dir() or directory.is_symlink():
+            continue
+        manifest = read_json(directory / "request.json", default={})
+        if (not isinstance(manifest, dict) or manifest.get("flow_schema") != "mephc-fixed-closeout-v1"
+                or manifest.get("work_order_id") != work_order_id):
+            continue
+        candidates.append((directory.stat().st_mtime_ns, directory, manifest))
+    if not candidates:
+        return None
+    _, directory, manifest = max(candidates, key=lambda item: (item[0], item[1].name))
+    summary = request_summary(directory)
+    kind = manifest.get("report_kind")
+    blocked_code = None
+    if kind == "blocked":
+        message = (directory / "message.txt").read_text(encoding="utf-8-sig", errors="strict")
+        match = re.search(r"^BLOCKED_CODE=([A-Z][A-Z0-9_]{2,95})$", message, flags=re.MULTILINE)
+        if match is None:
+            raise FlowError("CLOSEOUT_BLOCKED_REQUEST_INVALID")
+        blocked_code = match.group(1)
+    if summary["response_received"]:
+        safe_next = f"courier-reconcile --request-id {directory.name}"
+        state = "response_ready_to_consume"
+    elif kind == "blocked":
+        safe_next = f"closeout-blocked --code {blocked_code}"
+        state = "waiting_for_response"
+    else:
+        safe_next = "closeout"
+        state = "waiting_for_response"
+    return {"state": state, **summary, "report_kind": kind, "blocked_code": blocked_code,
+            "safe_next": safe_next}
+
+
 def status(paths: Paths) -> dict[str, Any]:
     source = source_state(paths)
     try:
@@ -735,13 +772,16 @@ def status(paths: Paths) -> dict[str, Any]:
         for directory in paths.outbox.glob("MEPHC-FLOW-*"):
             if directory.is_dir():
                 requests.append(request_summary(directory))
-    closeout = closeout_status(paths) if work_order_id is not None else {"state": "unavailable", "safe_next": "resume"}
+    pending_closeout = pending_closeout_status(paths, work_order_id) if work_order_id is not None else None
+    closeout = pending_closeout or (closeout_status(paths) if work_order_id is not None
+                                   else {"state": "unavailable", "safe_next": "resume"})
     return {
         "schema": "mephc-flow-status-v1", "source": source,
         "active_work_order_id": work_order_id, "work_order_policy": policy,
         "effective_policy": effective, "pending_native_runs": runs,
         "flow_requests": sorted(requests, key=lambda item: str(item["request_id"])),
         "closeout_state": closeout,
+        "safe_next": closeout["safe_next"],
     }
 
 

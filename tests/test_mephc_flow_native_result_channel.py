@@ -91,3 +91,27 @@ def test_nonzero_child_preserves_stream_hashes_without_success_summary(tmp_path)
     assert state["result_error"] == "CHILD_RETURN_CODE_NONZERO"
     assert "result_summary" not in state
     assert state["return_code"] == 7
+
+
+def test_machine_contract_status_is_safe_but_identity_and_raw_state_are_not(tmp_path):
+    helper = load()
+    accepted = summary() | {"machine_contract_status": "PASS", "result_id": "r192-result"}
+    stdout, _ = write_streams(tmp_path, line(accepted) + b"\n", b"")
+    assert helper.extract_result_summary(stdout) == accepted
+
+    rejected = [
+        {"pid": 12}, {"process_id": 12}, {"username": "icy"}, {"user_name": "icy"},
+        {"machine": "host"}, {"machine_name": "host"}, {"hostname": "host"},
+        {"host_name": "host"}, {"path": "/home/icy/private"},
+        {"path": "C:\\Users\\icywo\\private"}, {"normalized_vectors": [1]},
+        {"raw_h": [1]}, {"payload_codec": "pickle"},
+    ]
+    for index, value in enumerate(rejected):
+        path = tmp_path / f"unsafe-{index}.log"
+        path.write_bytes(line(value) + b"\n")
+        try:
+            helper.extract_result_summary(path)
+        except ValueError as exc:
+            assert str(exc) == "RESULT_SUMMARY_UNSAFE"
+        else:
+            raise AssertionError(value)
