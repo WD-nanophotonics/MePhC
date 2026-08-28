@@ -318,20 +318,21 @@ def consume_cell(store: Any, runtime: Any, requests: dict[str, bytes], cell: tup
         raise
 
 
-def reduce_rows(plan: dict[str, Any], rows_by_band: dict[int, list[dict[str, Any]]]) -> tuple[dict[int, dict[str, Any]], dict[str, dict[str, Any]]]:
+def reduce_rows(plan: dict[str, Any], rows_by_band: dict[int, list[dict[str, Any]]], evidence_rows: list[dict[str, Any]]) -> tuple[dict[int, dict[str, Any]], dict[str, dict[str, Any]]]:
     reduced, summaries = {}, {}
     for band in BANDS:
         rows = rows_by_band[band]
         value = reduce_supplied_berry_rows(plan, rows, band)
         failed = [row for row in rows if row["STATUS"] == "NOT_REPORTED_WITH_REASON"]
-        gaps = [row["external_isolation_gap"] for row in rows if row["external_isolation_gap"] is not None]
+        evidence = [row for row in evidence_rows if row["band_index"] == band]
+        gaps = [row["external_isolation_gap"] for row in evidence if row["external_isolation_gap"] is not None]
         reasons: dict[str, int] = {}
-        for row in rows:
+        for row in evidence:
             for reason in row["reason_codes"]:
                 reasons[reason] = reasons.get(reason, 0) + 1
         complete = value["COMPLETE_STATUS"] == "COMPLETE"
         reduced[band] = value
-        summaries[str(band)] = {"zero_based_band": band, "qualified_count": len(rows) - len(failed), "not_reported_count": len(failed), "minimum_external_isolation_gap": min(gaps) if gaps else None, "reason_code_counts": dict(sorted(reasons.items())), "failed_sample_ids": [row["sample_id"] for row in rows if row["status"] == "NOT_REPORTED_WITH_REASON"], "source_grid_status": "COMPLETE" if complete else "INCOMPLETE_NOT_REPORTED", "source_grid_valley_chern": value.get("VALLEY_CHERN") if complete else None, "source_anchor_abs_error": abs(float(value["VALLEY_CHERN"]) - ANCHORS[band]) if complete else None, "source_anchor_sign_match": float(value["VALLEY_CHERN"]) * ANCHORS[band] > 0.0 if complete else None}
+        summaries[str(band)] = {"zero_based_band": band, "qualified_count": len(rows) - len(failed), "not_reported_count": len(failed), "minimum_external_isolation_gap": min(gaps) if gaps else None, "reason_code_counts": dict(sorted(reasons.items())), "failed_sample_ids": [row["sample_id"] for row in evidence if row["status"] == "NOT_REPORTED_WITH_REASON"], "source_grid_status": "COMPLETE" if complete else "INCOMPLETE_NOT_REPORTED", "source_grid_valley_chern": value.get("VALLEY_CHERN") if complete else None, "source_anchor_abs_error": abs(float(value["VALLEY_CHERN"]) - ANCHORS[band]) if complete else None, "source_anchor_sign_match": float(value["VALLEY_CHERN"]) * ANCHORS[band] > 0.0 if complete else None}
     return reduced, summaries
 
 
@@ -359,7 +360,7 @@ def analyze() -> dict[str, Any]:
             del snapshots
     if len(consumed) != RECORD_COUNT or len(evidence_rows) != RETAINED_CELL_COUNT * len(BANDS):
         raise AnalysisError("D7_CONSUMPTION_CARDINALITY_MISMATCH")
-    reduced, summaries = reduce_rows(plan, rows_by_band)
+    reduced, summaries = reduce_rows(plan, rows_by_band, evidence_rows)
     all_complete = all(item["source_grid_status"] == "COMPLETE" for item in summaries.values())
     first_sum = sum(float(item["source_grid_valley_chern"]) for item in summaries.values()) if all_complete else None
     final_sha = git_head()
