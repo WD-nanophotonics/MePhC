@@ -502,7 +502,7 @@ def d9r1_reconcile_existing_dataset(
     binding_sha = inputs.get("binding_sha256")
     graph_sha = inputs.get("request_graph_sha256")
     entrypoint_sha = inputs.get("entrypoint_sha256")
-    runtime_sha = inputs.get("science_runtime_sha256")
+    runtime_sha = inputs.get("science_runtime_sha256") or preflight.get("runtime_sha256")
     if (contract.get("work_order_id") not in {
                 "MEPHC-E9F-D9R1-FR04-RESIDUAL-COMPOSITE-RECON-COMPAT-20260829-338",
                 "MEPHC-E9F-D9R2-FR04-CLOSEOUT-PATCH-FIRST-20260829-339",
