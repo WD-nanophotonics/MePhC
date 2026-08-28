@@ -112,7 +112,9 @@ def test_science_preflight_conditionally_verifies_dataset(tmp_path: Path, monkey
 
     def prepare(value: dict):
         validated = scientific_job.validate_contract(value)
-        monkeypatch.setattr(flow, "active_machine_contract", lambda _paths: ({"work_order_id": validated["work_order_id"]}, validated))
+        monkeypatch.setattr(flow, "active_machine_contract", lambda _paths: ({
+            "work_order_id": validated["work_order_id"], "response_sha256": "f" * 64,
+        }, validated))
         monkeypatch.setattr(flow, "require_source", lambda *_args, **_kwargs: source)
         monkeypatch.setattr(flow, "ensure_checkout", lambda *_args: "/home/icy/checkout")
         monkeypatch.setattr(flow, "wsl", lambda *_args, **_kwargs: subprocess.CompletedProcess([], 0, "", ""))
@@ -138,7 +140,9 @@ def test_science_preflight_conditionally_verifies_dataset(tmp_path: Path, monkey
 def test_dataset_manifest_mismatch_still_fails_preflight(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     scope = _preflight_scope(tmp_path)
     value = scientific_job.validate_contract(contract(dataset=True, manifest=True))
-    monkeypatch.setattr(flow, "active_machine_contract", lambda _paths: ({"work_order_id": value["work_order_id"]}, value))
+    monkeypatch.setattr(flow, "active_machine_contract", lambda _paths: ({
+        "work_order_id": value["work_order_id"], "response_sha256": "f" * 64,
+    }, value))
     monkeypatch.setattr(flow, "require_source", lambda *_args, **_kwargs: {
         "head": "d" * 40, "origin_sandbox": "d" * 40, "origin_main": flow.EXPECTED_MAIN,
         "branch": "sandbox", "dirty": False,
