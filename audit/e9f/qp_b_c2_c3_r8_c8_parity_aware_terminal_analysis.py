@@ -202,7 +202,7 @@ def open_r224_dataset(c5: Any) -> tuple[dict[tuple[int, int, str, str], Any], di
     namespace = {
         "project_id": "MEPHC", "science_contract_id": "E9F_QP_B_C2_C3_R8_C5_R224",
         "source_commit": R224_SOURCE_COMMIT,
-        "work_order_id": "MEPHC-E9F-C2-C3-R8-C5-A1-20260828-312",
+        "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-C5-A1-20260828-312",
         "resolution": "R224", "entrypoint_sha256": R224_ENTRYPOINT_SHA256,
         "graph_sha256": R224_GRAPH_SHA256, "science_runtime_sha256": R224_RUNTIME_SHA256,
     }
@@ -805,4 +805,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
