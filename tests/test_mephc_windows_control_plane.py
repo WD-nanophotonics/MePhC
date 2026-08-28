@@ -304,6 +304,10 @@ def test_bootstraps_do_not_use_codex_mcp_cli_and_do_support_launcher_discovery()
     assert "codex mcp add" not in admission.lower()
     assert "codex mcp remove" not in admission.lower()
     assert "CODEX_HOME" in admission
+    assert "Set-AtomicJson (Join-Path $runtime 'current.json')" in admission
+    assert "[IO.File]::Move($temporary,$Path,$true)" in admission
+    assert "$attempt -lt 40" in admission
+    assert "Set-Content -LiteralPath (Join-Path $runtime 'current.json')" not in admission
 
 
 def test_transport_canary_is_argument_free_and_attachment_free():
