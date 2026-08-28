@@ -343,6 +343,39 @@ def test_activation_install_failure_restores_snapshot(monkeypatch, tmp_path):
     assert restored == [snapshot]
 
 
+def test_runtime_reload_preserves_terminal_recovery_job_but_blocks_live_job(monkeypatch):
+    module = load("coherence_reload_recovery_barrier", ADMISSION / "runtime_lifecycle.py")
+    recovery_id = "MEPHC-JOB-RECOVERY"
+    calls = []
+    monkeypatch.setattr(module, "_active_jobs", lambda: [
+        {"job_id":recovery_id, "state":"recovery_required", "safe_next_action":"recover"}
+    ])
+    monkeypatch.setattr(module, "_run", lambda command, **_kwargs:
+                        calls.append(command) or SimpleNamespace(returncode=0, stdout="", stderr=""))
+    monkeypatch.setattr(module, "_restart_broker", lambda: calls.append(["restart-broker"]))
+    monkeypatch.setattr(module, "_current", lambda: {"build_id":"fixed-build"})
+    monkeypatch.setattr(module, "_receipt", lambda _kind, value: value)
+    result = module.reload_installed()
+    assert result["preserved_recovery_required_count"] == 1
+    assert result["client_backend_rotation_required"] is True
+    assert calls
+
+    monkeypatch.setattr(module, "_active_jobs", lambda: [
+        {"job_id":"MEPHC-JOB-RUNNING", "state":"running"}
+    ])
+    with pytest.raises(module.LifecycleError) as caught:
+        module.reload_installed()
+    assert caught.value.code == "RUNTIME_RELOAD_ACTIVE_JOB"
+
+
+def test_runtime_reload_rejects_malformed_active_job(monkeypatch):
+    module = load("coherence_reload_malformed_barrier", ADMISSION / "runtime_lifecycle.py")
+    monkeypatch.setattr(module, "_active_jobs", lambda: [{"state":"recovery_required"}])
+    with pytest.raises(module.LifecycleError) as caught:
+        module.reload_installed()
+    assert caught.value.code == "RUNTIME_RELOAD_ACTIVE_JOB"
+
+
 def test_lifecycle_failure_detail_is_redacted_and_broker_restart_waits():
     module = load("coherence_lifecycle_detail", ADMISSION / "runtime_lifecycle.py")
     detail = module._redact_detail(str(module.CONTROL_ROOT / "tools") + "\n" + str(module.RUNTIME / "x"))

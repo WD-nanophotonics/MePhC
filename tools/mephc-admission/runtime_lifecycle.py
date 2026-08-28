@@ -89,6 +89,26 @@ def _active_jobs() -> list[dict[str, Any]]:
     return value.get("active_jobs", []) if isinstance(value, dict) else []
 
 
+def _reload_recovery_barrier(jobs: list[dict[str, Any]]) -> tuple[list[str], list[dict[str, Any]]]:
+    """Separate inert recovery evidence from jobs a reload could interrupt.
+
+    A change in ``recovery_required`` is already terminal and cannot execute
+    until an explicit typed recovery call.  Keeping it in the active index is
+    intentional, but treating it like a running job creates a deadlock when
+    that recovery requires newly loaded admission code.  Unknown or malformed
+    records continue to fail closed.
+    """
+    preserved: list[str] = []
+    blocking: list[dict[str, Any]] = []
+    for job in jobs:
+        if (isinstance(job, dict) and job.get("state") == "recovery_required"
+                and isinstance(job.get("job_id"), str) and job["job_id"]):
+            preserved.append(job["job_id"])
+        else:
+            blocking.append(job)
+    return preserved, blocking
+
+
 def _gate() -> dict[str, str]:
     if _git("status", "--porcelain", "--untracked-files=all"):
         raise LifecycleError("RUNTIME_ACTIVATION_DIRTY_SOURCE")
@@ -331,11 +351,16 @@ def _restore(snapshot: dict[str, Any]) -> None:
 
 
 def reload_installed() -> dict[str, Any]:
-    if _active_jobs(): raise LifecycleError("RUNTIME_RELOAD_ACTIVE_JOB")
+    preserved, blocking = _reload_recovery_barrier(_active_jobs())
+    if blocking: raise LifecycleError("RUNTIME_RELOAD_ACTIVE_JOB")
     first = _run(["wsl.exe", "-d", "Ubuntu", "-u", "root", "--", "systemctl", "restart", "mephc-runner.service"], timeout=60)
     if first.returncode: raise LifecycleError("RUNTIME_RELOAD_WORKER_FAILED", first.stderr[-1000:])
     _restart_broker()
-    return _receipt("reload", {"build_id":_current().get("build_id"),"client_backend_rotation_required":True})
+    preserved_digest = hashlib.sha256("\n".join(sorted(preserved)).encode("utf-8")).hexdigest()
+    return _receipt("reload", {"build_id":_current().get("build_id"),
+                                "client_backend_rotation_required":True,
+                                "preserved_recovery_required_count":len(preserved),
+                                "preserved_recovery_required_ids_sha256":preserved_digest})
 
 
 def activate() -> dict[str, Any]:
