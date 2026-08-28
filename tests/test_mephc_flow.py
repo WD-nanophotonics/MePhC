@@ -28,6 +28,7 @@ def paths(tmp_path: Path) -> flow.Paths:
         control=tmp_path / "control", state=tmp_path / "legacy" / "flow",
         outbox=tmp_path / "legacy" / "outbox", courier=tmp_path / "courier.cmd",
         legacy_state=tmp_path / "legacy", outbox_wsl=flow.OUTBOX_WSL,
+        science_state=tmp_path / "science", science_state_wsl=flow.SCIENCE_STATE_WSL,
     )
 
 
@@ -451,6 +452,17 @@ def test_science_selftest_accepts_bounded_mpb_logs_before_final_json(tmp_path: P
     result = flow.science_selftest(scope, mpb_smoke=True)
     assert result["runtime_sha256"] == "b" * 64
     assert result["stdout_size_bytes"] == len(output.encode("utf-8"))
+
+
+def test_science_selftest_accepts_mpb_logs_after_final_json(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope = paths(tmp_path)
+    head = "a" * 40
+    monkeypatch.setattr(flow, "require_source", lambda *_args, **_kwargs: {"head": head})
+    monkeypatch.setattr(flow, "ensure_checkout", lambda *_args, **_kwargs: f"/home/icy/checkouts/{head}")
+    payload = {"schema": "mephc-science-runtime-certification-v1", "runtime_sha256": "b" * 64}
+    output = json.dumps(payload) + "\nMPB elapsed time line\n"
+    monkeypatch.setattr(flow, "wsl", lambda *_args, **_kwargs: subprocess.CompletedProcess([], 0, output, ""))
+    assert flow.science_selftest(scope, mpb_smoke=True)["runtime_sha256"] == "b" * 64
 
 
 def test_science_job_id_binds_actual_execution_source() -> None:
