@@ -492,6 +492,7 @@ def d9r1_reconcile_existing_dataset(
         paths: Paths, contract: dict[str, Any], preflight: dict[str, Any],
 ) -> dict[str, Any]:
     """Reconcile the immutable D9 dataset and repair only closeout compatibility."""
+    d9r2 = contract.get("work_order_id") == "MEPHC-E9F-D9R2-FR04-CLOSEOUT-PATCH-FIRST-20260829-339"
     inputs = contract.get("inputs", {})
     target_work_order = inputs.get("target_work_order_id")
     execution_source = inputs.get("execution_source_commit")
@@ -502,7 +503,10 @@ def d9r1_reconcile_existing_dataset(
     graph_sha = inputs.get("request_graph_sha256")
     entrypoint_sha = inputs.get("entrypoint_sha256")
     runtime_sha = inputs.get("science_runtime_sha256")
-    if (contract.get("work_order_id") != "MEPHC-E9F-D9R1-FR04-RESIDUAL-COMPOSITE-RECON-COMPAT-20260829-338"
+    if (contract.get("work_order_id") not in {
+                "MEPHC-E9F-D9R1-FR04-RESIDUAL-COMPOSITE-RECON-COMPAT-20260829-338",
+                "MEPHC-E9F-D9R2-FR04-CLOSEOUT-PATCH-FIRST-20260829-339",
+            }
             or contract.get("action") != "infrastructure"
             or contract.get("budgets") != {"native_invocations": 0, "provider_requests": 0, "solver_executions": 0}
             or not all(isinstance(value, str) and SHA40.fullmatch(value)
@@ -512,8 +516,26 @@ def d9r1_reconcile_existing_dataset(
         raise FlowError("D9R1_RECONCILIATION_CONTRACT_INVALID", safe_next="report")
 
     source = require_source(paths, published=True)
-    if source["head"] != preflight.get("source_commit") or source["head"] != publication_source:
+    if (source["head"] != preflight.get("source_commit")
+            or (not d9r2 and source["head"] != publication_source)):
         raise FlowError("D9R1_RECONCILIATION_SOURCE_CHANGED", safe_next="status")
+    if d9r2:
+        patch_ancestry = git(paths, "merge-base", "--is-ancestor", publication_source, source["head"], check=False)
+        if patch_ancestry.returncode:
+            raise FlowError("D9R2_PATCH_SOURCE_ANCESTRY_INVALID")
+        patch_changes = [
+            line for line in git(paths, "diff", "--name-only", f"{publication_source}..{source['head']}").stdout.splitlines()
+            if line
+        ]
+        if not patch_changes or not set(patch_changes).issubset(set(contract.get("allowed_writes", []))):
+            raise FlowError("D9R2_PATCH_CHANGED_FILES_INVALID", ",".join(patch_changes))
+        pre_patch_flow_sha = "62218185a2bbe7f01674deede4c668f0d42f946778c9b7addde3a05c4377d3db"
+        post_patch_flow_sha = sha256_file(paths.control / "tools" / "mephc-flow" / "mephc_flow.py")
+        if post_patch_flow_sha == pre_patch_flow_sha:
+            raise FlowError("D9R2_PATCH_NOT_APPLIED")
+    else:
+        pre_patch_flow_sha = None
+        post_patch_flow_sha = None
     ancestry = git(paths, "merge-base", "--is-ancestor", execution_source, publication_source, check=False)
     if ancestry.returncode:
         raise FlowError("D9R1_EXECUTION_SOURCE_ANCESTRY_INVALID")
@@ -721,9 +743,12 @@ def d9r1_reconcile_existing_dataset(
         except Exception as exc:
             raise FlowError("D9R1_DATASET_RECORD_VERIFICATION_FAILED", f"{key_sha}:{type(exc).__name__}:{str(exc)[:200]}") from exc
         finally:
-            for name in ("decoded", "payload", "metadata"):
-                if name in locals():
-                    del locals()[name]
+            if "decoded" in locals():
+                del decoded
+            if "payload" in locals():
+                del payload
+            if "metadata" in locals():
+                del metadata
     if integrity_pass_count != 420:
         raise FlowError("D9R1_DATASET_RECORD_INTEGRITY_COUNT_INVALID")
 
@@ -750,7 +775,10 @@ def d9r1_reconcile_existing_dataset(
         raise FlowError("D9R1_PUBLIC_BINDING_VALUE_MISMATCH")
 
     reconciliation = {
-        "schema": "mephc-e9f-d9r1-fr04-residual-composite-dataset-reconciliation-v1",
+        "schema": (
+            "mephc-e9f-d9r2-fr04-closeout-patch-first-reconciliation-v1"
+            if d9r2 else "mephc-e9f-d9r1-fr04-residual-composite-dataset-reconciliation-v1"
+        ),
         "work_order_id": contract["work_order_id"], "base_sandbox_sha": contract["source_commit"],
         "final_sandbox_sha": source["head"], "origin_sandbox_sha": source["origin_sandbox"],
         "main_sha": EXPECTED_MAIN, "machine_contract_status": "PASS",
@@ -773,9 +801,25 @@ def d9r1_reconcile_existing_dataset(
         "pipeline_health": "HEALTHY", "blocked_by_infrastructure": False,
         "scientific_work_must_stop": False,
         "next_scientific_state": "FR04_RESIDUAL_COMPOSITE_10_CELL_MULTIRESOLUTION_DATASET_RECONCILED_READY_FOR_SOLVER_FREE_CONVERGENCE_AND_METHOD_VALIDATION",
-        "terminal": "E9F_D9R1_FR04_RESIDUAL_COMPOSITE_DATASET_RECONCILED_CLOSEOUT_COMPATIBILITY_FIXED",
+        "terminal": (
+            "E9F_D9R2_FR04_CLOSEOUT_PATCH_FIRST_RECONCILIATION_COMPLETE"
+            if d9r2 else "E9F_D9R1_FR04_RESIDUAL_COMPOSITE_DATASET_RECONCILED_CLOSEOUT_COMPATIBILITY_FIXED"
+        ),
     }
-    atomic_json(paths.control / "audit" / "e9f" / "d9r1_fr04_residual_composite_dataset_reconciliation.json", reconciliation)
+    if d9r2:
+        reconciliation.update({
+            "pre_patch_mephc_flow_sha256": pre_patch_flow_sha,
+            "post_patch_mephc_flow_sha256": post_patch_flow_sha,
+            "patch_publication_sha": source["head"],
+            "patch_changed_before_d9_closeout": True,
+            "reconciled_provider_failure_count": 0,
+            "d9_dataset_ready_for_d10": True,
+        })
+    output_name = (
+        "d9r2_fr04_residual_composite_dataset_reconciliation.json"
+        if d9r2 else "d9r1_fr04_residual_composite_dataset_reconciliation.json"
+    )
+    atomic_json(paths.control / "audit" / "e9f" / output_name, reconciliation)
     return {**reconciliation, "state": "succeeded", "safe_next": "publish"}
 
 
@@ -1223,10 +1267,15 @@ def acquire_binding_source_compatible(
         and "provider_failure_count" not in summary
     )
     if missing_d9_provider_failure_count:
-        reconciliation = read_json(
-            paths.control / "audit" / "e9f" / "d9r1_fr04_residual_composite_dataset_reconciliation.json",
-            default={},
-        )
+        reconciliation = {}
+        for name in (
+            "d9r1_fr04_residual_composite_dataset_reconciliation.json",
+            "d9r2_fr04_residual_composite_dataset_reconciliation.json",
+        ):
+            candidate = read_json(paths.control / "audit" / "e9f" / name, default={})
+            if isinstance(candidate, dict) and candidate:
+                reconciliation = candidate
+                break
         exact_accounting = {
             "failed_key_count": 0, "completed_key_count": 420,
             "logical_provider_demand_count": 420, "unique_provider_request_count": 420,
@@ -1900,7 +1949,10 @@ def science_analyze(paths: Paths) -> dict[str, Any]:
     preflight = science_preflight(paths)
     _, contract = active_machine_contract(paths)
     if (contract["kind"] == "INFRASTRUCTURE"
-            and contract["work_order_id"] == "MEPHC-E9F-D9R1-FR04-RESIDUAL-COMPOSITE-RECON-COMPAT-20260829-338"):
+            and contract["work_order_id"] in {
+                "MEPHC-E9F-D9R1-FR04-RESIDUAL-COMPOSITE-RECON-COMPAT-20260829-338",
+                "MEPHC-E9F-D9R2-FR04-CLOSEOUT-PATCH-FIRST-20260829-339",
+            }):
         return d9r1_reconcile_existing_dataset(paths, contract, preflight)
     if (contract["kind"] == "INFRASTRUCTURE"
             and contract["work_order_id"] == "MEPHC-E9F-D3-FR04-R64-RECON-COMPAT-20260828-324"):
