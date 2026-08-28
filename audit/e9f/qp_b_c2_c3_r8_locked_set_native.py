@@ -28,6 +28,7 @@ KEY_FIELDS = (
 )
 MAX_UNIQUE_REQUESTS = 210
 MAX_FRESH_SOLVER_EXECUTIONS = 210
+MAX_SUCCESS_STDOUT_BYTES = 65536
 OUTPUT_FIELDS = (
     "logical_provider_demands", "unique_provider_requests",
     "deduplicated_collisions", "cache_reuse_count",
@@ -288,17 +289,17 @@ def run(
     if provider_solve is None and checkpoint is None:
         try:
             runtime = load_science_runtime().create_r8_runtime()
-            results, reused, fresh = runtime.execute(plan)
+            summary = runtime.execute(plan)
         except Exception as exc:
             if isinstance(exc, EntrypointError):
                 raise
             raise EntrypointError("DIRECT_FLOW_SCIENCE_RUNTIME_FAILED", str(exc)) from exc
         return {
-            **verification,
-            "provider_request_count": len(plan),
-            "cache_reuse_count": reused,
-            "fresh_native_solver_execution_count": fresh,
-            "results": results,
+            "logical_provider_demand_count": verification["logical_provider_demand_count"],
+            "unique_provider_request_count": verification["unique_provider_request_count"],
+            "duplicate_logical_demand_count": verification["duplicate_logical_demand_count"],
+            "unique_request_count_by_resolution": verification["unique_request_count_by_resolution"],
+            **summary,
         }
     if provider_solve is None or checkpoint is None:
         raise EntrypointError("CALLER_RUNTIME_INJECTION_INCOMPLETE")
@@ -318,7 +319,11 @@ def main() -> int:
     except EntrypointError as exc:
         print(json.dumps({"error_code": exc.code, "detail": exc.detail}, sort_keys=True))
         return 2
-    print(json.dumps(result, sort_keys=True, default=str))
+    serialized = json.dumps(result, sort_keys=True, default=str)
+    if len(serialized.encode("utf-8")) > MAX_SUCCESS_STDOUT_BYTES:
+        print(json.dumps({"error_code": "SUCCESS_STDOUT_LIMIT_EXCEEDED"}, sort_keys=True))
+        return 2
+    print(serialized)
     return 0
 
 

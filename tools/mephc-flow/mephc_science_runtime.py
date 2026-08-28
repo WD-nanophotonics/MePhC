@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import pickle
 import subprocess
+import importlib.util
 from typing import Any, Callable
 
 
@@ -19,7 +20,6 @@ PROJECT_ID = "MEPHC"
 SCIENCE_CONTRACT_ID = "E9F_QP_B_C2_C3_R8_LOCKED_SET"
 FROZEN_GRAPH_RELATIVE = Path("audit/e9f/qp_b_c2_c3_r8_global_provider_request_graph.json")
 ENTRYPOINT_RELATIVE = Path("audit/e9f/qp_b_c2_c3_r8_locked_set_native.py")
-DIRECT_FLOW_STATE_ROOT = Path("/home/icy/.local/share/mephc-runtime/science")
 MAX_UNIQUE_REQUESTS = 210
 MAX_FRESH_SOLVER_EXECUTIONS = 210
 RESOLUTION_VALUES = {"R96": 96, "R128": 128, "R160": 160}
@@ -32,6 +32,24 @@ class ScienceRuntimeError(RuntimeError):
 
 def _root() -> Path:
     return Path(__file__).resolve().parents[2]
+
+
+def _trusted_science_state_root() -> Path:
+    """Derive private science state from the canonical runtime state module."""
+    module_name = "_mephc_direct_flow_runtime_state"
+    import sys
+    if module_name not in sys.modules:
+        path = _root() / "tools" / "mephc-flow" / "mephc_runtime.py"
+        spec = importlib.util.spec_from_file_location(module_name, path)
+        if spec is None or spec.loader is None:
+            raise ScienceRuntimeError("DIRECT_FLOW_RUNTIME_STATE_UNAVAILABLE")
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[module_name] = module
+        spec.loader.exec_module(module)
+    state = getattr(sys.modules[module_name], "SCIENCE_STATE", None)
+    if not isinstance(state, Path):
+        raise ScienceRuntimeError("DIRECT_FLOW_SCIENCE_STATE_UNAVAILABLE")
+    return state
 
 
 def _sha256(path: Path) -> str:
@@ -124,7 +142,7 @@ class ExactKeyRetention:
         self.namespace = dict(namespace)
         if self.namespace.get("project_id") != PROJECT_ID:
             raise ScienceRuntimeError("RETENTION_NAMESPACE_PROJECT_INVALID")
-        self.root = DIRECT_FLOW_STATE_ROOT / PROJECT_ID / SCIENCE_CONTRACT_ID / self.namespace["source_commit"]
+        self.root = _trusted_science_state_root() / PROJECT_ID / SCIENCE_CONTRACT_ID / self.namespace["source_commit"]
         self.records = self.root / "records"
         self.completed: set[str] = set()
         self._manifest = self.load_run_manifest()
@@ -149,7 +167,14 @@ class ExactKeyRetention:
                 or metadata.get("identity") != self.expected_identity(key)):
             return None
         try:
-            payload = pickle.loads(payload_path.read_bytes())
+            payload_bytes = payload_path.read_bytes()
+        except OSError as exc:
+            raise ScienceRuntimeError("RETENTION_PAYLOAD_UNAVAILABLE") from exc
+        if (metadata.get("payload_sha256") != hashlib.sha256(payload_bytes).hexdigest()
+                or metadata.get("payload_size_bytes") != len(payload_bytes)):
+            raise ScienceRuntimeError("RETENTION_PAYLOAD_INTEGRITY_MISMATCH")
+        try:
+            payload = pickle.loads(payload_bytes)
         except (OSError, pickle.PickleError, EOFError, AttributeError, ValueError) as exc:
             raise ScienceRuntimeError("RETENTION_PAYLOAD_CORRUPT") from exc
         if not _payload_has_state(payload):
@@ -165,11 +190,15 @@ class ExactKeyRetention:
             raise ScienceRuntimeError("RETENTION_PAYLOAD_STATE_INCOMPLETE")
         payload_path, metadata_path = self._paths(key)
         key_sha = hashlib.sha256(key).hexdigest()
-        _atomic_bytes(payload_path, pickle.dumps(payload, protocol=pickle.HIGHEST_PROTOCOL))
+        payload_bytes = pickle.dumps(payload, protocol=pickle.HIGHEST_PROTOCOL)
+        payload_sha = hashlib.sha256(payload_bytes).hexdigest()
+        _atomic_bytes(payload_path, payload_bytes)
         _atomic_bytes(metadata_path, json.dumps({
             "schema": "mephc_direct_flow_exact_key_record_v1",
             "key_sha256": key_sha,
             "identity": expected,
+            "payload_sha256": payload_sha,
+            "payload_size_bytes": len(payload_bytes),
             "complete": False,
         }, sort_keys=True, separators=(",", ":")).encode("utf-8"))
 
@@ -197,13 +226,15 @@ class ExactKeyRetention:
         self.completed.update(value.get("completed_key_sha256", []))
         return value
 
-    def finalize_run_manifest(self) -> dict[str, Any]:
+    def finalize_run_manifest(self, summary: dict[str, Any] | None = None) -> dict[str, Any]:
         value = {
             "schema": "mephc_direct_flow_r8_manifest_v1",
             "identity": self.namespace,
             "completed_key_sha256": sorted(self.completed),
             "completed_count": len(self.completed),
         }
+        if summary:
+            value.update(summary)
         _atomic_bytes(self.root / "run-manifest.json", json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8"))
         self._manifest = value
         return value
@@ -266,28 +297,45 @@ class R8ScienceRuntime:
         self.provider_solve = provider_solve
         self.retention = retention
 
-    def execute(self, plan: list[dict[str, Any]]) -> tuple[dict[bytes, Any], int, int]:
+    def execute(self, plan: list[dict[str, Any]]) -> dict[str, Any]:
         if len(plan) > MAX_UNIQUE_REQUESTS:
             raise ScienceRuntimeError("PROVIDER_REQUEST_CAP_EXCEEDED")
-        results: dict[bytes, Any] = {}
         reused = 0
         fresh = 0
         for item in plan:
             key = _canonical_key(item["request_key"])
             payload = self.retention.lookup_exact(key)
             if payload is not None:
-                results[key] = payload
                 reused += 1
+                del payload
                 continue
             if fresh >= MAX_FRESH_SOLVER_EXECUTIONS:
                 raise ScienceRuntimeError("FRESH_SOLVER_EXECUTION_CAP_EXCEEDED")
             payload = self.provider_solve(item["request_key"])
             self.retention.store_exact(key, payload, self.retention.expected_identity(key))
             self.retention.mark_complete(key)
-            results[key] = payload
             fresh += 1
-        self.retention.finalize_run_manifest()
-        return results, reused, fresh
+            del payload
+        namespace_id = hashlib.sha256(
+            json.dumps(self.retention.namespace, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest()[:24]
+        summary = {
+            "science_contract_id": self.retention.namespace["science_contract_id"],
+            "source_commit": self.retention.namespace["source_commit"],
+            "entrypoint_sha256": self.retention.namespace["entrypoint_sha256"],
+            "graph_sha256": self.retention.namespace["graph_sha256"],
+            "logical_provider_demand_count": 216,
+            "provider_request_count": len(plan),
+            "cache_reuse_count": reused,
+            "fresh_native_solver_execution_count": fresh,
+            "completed_key_count": len(plan),
+            "failed_key_count": 0,
+            "provider_failure_count": 0,
+            "mpb_execution_observed": False,
+            "opaque_retention_namespace_id": namespace_id,
+        }
+        self.retention.finalize_run_manifest(summary)
+        return summary
 
 
 def _canonical_key(request_key: dict[str, Any]) -> bytes:

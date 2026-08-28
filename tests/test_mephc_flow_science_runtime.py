@@ -34,6 +34,13 @@ def plan():
 
 class FakeRetention:
     def __init__(self):
+        self.namespace = {
+            "project_id": "MEPHC",
+            "science_contract_id": "E9F_C2_QP_B_C2_C3_R8_LOCKED_SET",
+            "source_commit": "a" * 40,
+            "entrypoint_sha256": "b" * 64,
+            "graph_sha256": "c" * 64,
+        }
         self.values = {}
         self.stored = []
         self.completed = []
@@ -52,8 +59,8 @@ class FakeRetention:
     def mark_complete(self, key):
         self.completed.append(key)
 
-    def finalize_run_manifest(self):
-        return {"completed_count": len(self.completed)}
+    def finalize_run_manifest(self, summary=None):
+        return {"completed_count": len(self.completed), **(summary or {})}
 
 
 def test_zero_argument_runtime_factory_constructs_official_context(monkeypatch):
@@ -121,7 +128,7 @@ def test_exact_key_retention_requires_full_identity_and_complete_state(monkeypat
         "entrypoint_sha256": "b" * 64,
         "graph_sha256": "c" * 64,
     }
-    monkeypatch.setattr(runtime, "DIRECT_FLOW_STATE_ROOT", tmp_path)
+    monkeypatch.setattr(runtime, "_trusted_science_state_root", lambda: tmp_path)
     retention = runtime.ExactKeyRetention(namespace)
     key = entrypoint.canonical_key(requests[0]["request_key"])
     payload = {"frequencies": [1.0], "normalized_vectors": [[1.0]]}
@@ -147,7 +154,7 @@ def test_incomplete_record_is_not_complete_after_reload(monkeypatch, tmp_path):
         "entrypoint_sha256": "f" * 64,
         "graph_sha256": "1" * 64,
     }
-    monkeypatch.setattr(runtime, "DIRECT_FLOW_STATE_ROOT", tmp_path)
+    monkeypatch.setattr(runtime, "_trusted_science_state_root", lambda: tmp_path)
     first = runtime.ExactKeyRetention(namespace)
     key = entrypoint.canonical_key(requests[1]["request_key"])
     first.store_exact(key, {"frequencies": [2.0], "normalized_vectors": [[1.0]]}, first.expected_identity(key))
@@ -155,10 +162,72 @@ def test_incomplete_record_is_not_complete_after_reload(monkeypatch, tmp_path):
     assert second.lookup_exact(key) is None
 
 
+def test_payload_byte_integrity_and_size_are_verified_before_reuse(monkeypatch, tmp_path):
+    runtime = load_runtime()
+    entrypoint, requests = plan()
+    namespace = {
+        "project_id": "MEPHC",
+        "science_contract_id": "E9F_C2_QP_B_C2_C3_R8_LOCKED_SET",
+        "source_commit": "2" * 40,
+        "entrypoint_sha256": "3" * 64,
+        "graph_sha256": "4" * 64,
+    }
+    monkeypatch.setattr(runtime, "_trusted_science_state_root", lambda: tmp_path)
+    retention = runtime.ExactKeyRetention(namespace)
+    key = entrypoint.canonical_key(requests[2]["request_key"])
+    payload = {"frequencies": [3.0], "normalized_vectors": [[1.0]]}
+    retention.store_exact(key, payload, retention.expected_identity(key))
+    retention.mark_complete(key)
+    payload_path, metadata_path = retention._paths(key)
+    payload_path.write_bytes(payload_path.read_bytes() + b"tamper")
+    with pytest.raises(runtime.ScienceRuntimeError, match="INTEGRITY_MISMATCH"):
+        retention.lookup_exact(key)
+    payload_path.write_bytes(__import__("pickle").dumps(payload, protocol=__import__("pickle").HIGHEST_PROTOCOL))
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    metadata["payload_size_bytes"] += 1
+    metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+    with pytest.raises(runtime.ScienceRuntimeError, match="INTEGRITY_MISMATCH"):
+        retention.lookup_exact(key)
+
+
+def test_production_summary_does_not_aggregate_payloads_or_exceed_stdout_limit(monkeypatch, capsys):
+    entrypoint = load_entrypoint()
+    runtime = entrypoint.load_science_runtime()
+    retention = FakeRetention()
+
+    def provider(_request):
+        return {
+            "frequencies": [1.0],
+            "normalized_vectors": ["raw-state-" + ("x" * 5000)],
+        }
+
+    monkeypatch.setattr(runtime, "_official_r8_provider_factory", lambda: provider)
+    monkeypatch.setattr(runtime, "_official_private_retention", lambda: retention)
+    monkeypatch.setattr(__import__("sys"), "argv", ["qp_b_c2_c3_r8_locked_set_native.py"])
+    assert entrypoint.main() == 0
+    stdout = capsys.readouterr().out
+    assert len(stdout.encode("utf-8")) <= entrypoint.MAX_SUCCESS_STDOUT_BYTES
+    assert "normalized_vectors" not in stdout
+    assert "raw-state-" not in stdout
+    assert "opaque_retention_namespace_id" in stdout
+
+
+def test_manifest_summary_is_bounded_and_root_is_canonical_runtime_derived(monkeypatch, tmp_path):
+    runtime = load_runtime()
+    retention = FakeRetention()
+    monkeypatch.setattr(runtime, "_trusted_science_state_root", lambda: tmp_path)
+    assert runtime._trusted_science_state_root() == tmp_path
+    context = runtime.R8ScienceRuntime(lambda _request: {"frequencies": [1.0], "normalized_vectors": [[1.0]]}, retention)
+    _, requests = plan()
+    summary = context.execute(requests[:1])
+    assert summary["completed_key_count"] == 1
+    assert "raw-state-" not in json.dumps(summary)
+
+
 def test_contract_declares_official_runtime_and_no_caller_surfaces():
     contract = json.loads((AUDIT / "qp_b_c2_c3_r8_native_entrypoint_contract.json").read_text(encoding="utf-8"))
     assert contract["runtime_provider_binding"] == "OFFICIAL_DIRECT_FLOW_FIXED_R8_MPB_PROVIDER"
-    assert contract["runtime_retention_binding"] == "OFFICIAL_DIRECT_FLOW_PRIVATE_EXACT_KEY_RETENTION"
+    assert contract["runtime_retention_binding"] == "OFFICIAL_DIRECT_FLOW_PRIVATE_EXACT_KEY_RETENTION_WITH_PAYLOAD_SHA256"
     assert contract["caller_callback_injection_required"] is False
     assert contract["caller_checkpoint_argument_required"] is False
     assert contract["cli_zero_argument_executable"] is True

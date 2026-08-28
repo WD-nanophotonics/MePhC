@@ -14,6 +14,7 @@ CONTROL = Path("/mnt/c/Users/icywo/PycharmProjects/MePhC-Windows")
 CACHE = Path("/home/icy/.cache/mephc-runner/MEPHC.git")
 CHECKOUTS = Path("/home/icy/.cache/mephc-runner/checkouts")
 CURRENT = Path("/home/icy/.local/share/mephc-runtime/current")
+SCIENCE_STATE = CURRENT.parent / "science"
 PYTHON = Path("/home/icy/miniconda3/envs/mp/bin/python")
 EXPECTED_MAIN = "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5"
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
