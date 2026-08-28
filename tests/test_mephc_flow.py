@@ -526,6 +526,41 @@ def test_closeout_job_accepts_exact_post_execution_acquisition_binding(tmp_path:
     assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is True
 
 
+@pytest.mark.parametrize("binding_duplicate", [None, 1])
+def test_closeout_job_derives_d3_duplicate_demand_count(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch, binding_duplicate: int | None,
+) -> None:
+    scope, binding, refs = _acquire_binding_fixture(tmp_path, monkeypatch)
+    job_path = next((scope.state / "science-jobs").glob("MEPHC-SCIENCE-*.json"))
+    job = json.loads(job_path.read_text(encoding="utf-8"))
+    summary = job["result"]["result_summary"]
+    summary.pop("duplicate_logical_demand_count")
+    summary["logical_provider_demand_count"] = 3205
+    summary["unique_provider_request_count"] = 3205
+    write_json(job_path, job)
+    if binding_duplicate is None:
+        binding.pop("duplicate_logical_demand_count")
+    else:
+        binding["duplicate_logical_demand_count"] = binding_duplicate
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is (binding_duplicate == 0)
+
+
+@pytest.mark.parametrize("logical, unique", [(34, 35), (35.0, 35), (35, True)])
+def test_closeout_job_rejects_invalid_d3_duplicate_derivation(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch, logical: object, unique: object,
+) -> None:
+    scope, binding, refs = _acquire_binding_fixture(tmp_path, monkeypatch)
+    job_path = next((scope.state / "science-jobs").glob("MEPHC-SCIENCE-*.json"))
+    job = json.loads(job_path.read_text(encoding="utf-8"))
+    summary = job["result"]["result_summary"]
+    summary.pop("duplicate_logical_demand_count")
+    summary["logical_provider_demand_count"] = logical
+    summary["unique_provider_request_count"] = unique
+    write_json(job_path, job)
+    binding["duplicate_logical_demand_count"] = 0
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is False
+
+
 @pytest.mark.parametrize("field", [
     "acquisition_source_commit", "acquisition_dataset_id", "dataset_manifest_sha256",
     "entrypoint_sha256", "graph_sha256", "science_runtime_sha256",
