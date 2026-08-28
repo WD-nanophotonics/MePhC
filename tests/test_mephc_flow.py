@@ -303,6 +303,24 @@ def test_infrastructure_closeout_uses_publish_evidence_without_science_job(
     assert b"REPORT_KIND=complete" in prepared["message"]
 
 
+def test_closeout_job_may_cross_only_fixed_flow_infrastructure(monkeypatch: pytest.MonkeyPatch) -> None:
+    def fake_git(_paths, *args, **_kwargs):
+        if args[:2] == ("merge-base", "--is-ancestor"):
+            return subprocess.CompletedProcess(args, 0, "", "")
+        return subprocess.CompletedProcess(args, 0, "tools/mephc-flow/mephc_flow.py\nAGENTS.md\n", "")
+
+    monkeypatch.setattr(flow, "git", fake_git)
+    assert flow.closeout_job_source_compatible(paths(Path("unused")), "a" * 40, "b" * 40) is True
+
+    def scientific_diff(_paths, *args, **_kwargs):
+        if args[:2] == ("merge-base", "--is-ancestor"):
+            return subprocess.CompletedProcess(args, 0, "", "")
+        return subprocess.CompletedProcess(args, 0, "audit/e9f/scientific_result.json\n", "")
+
+    monkeypatch.setattr(flow, "git", scientific_diff)
+    assert flow.closeout_job_source_compatible(paths(Path("unused")), "a" * 40, "b" * 40) is False
+
+
 def test_closeout_blocked_accepts_only_structured_code(tmp_path: Path) -> None:
     scope = paths(tmp_path)
     with pytest.raises(flow.FlowError, match="CLOSEOUT_BLOCKED_CODE_INVALID"):

@@ -554,6 +554,22 @@ def request_summary(directory: Path) -> dict[str, Any]:
     }
 
 
+def closeout_job_source_compatible(paths: Paths, job_source: str, published_source: str) -> bool:
+    if job_source == published_source:
+        return True
+    if not isinstance(job_source, str) or not SHA40.fullmatch(job_source):
+        return False
+    ancestor = git(paths, "merge-base", "--is-ancestor", job_source, published_source, check=False)
+    if ancestor.returncode:
+        return False
+    changed = [line for line in git(paths, "diff", "--name-only", f"{job_source}..{published_source}").stdout.splitlines() if line]
+    return bool(changed) and all(
+        path == "AGENTS.md" or path == "tools/mephc-flow/README.md"
+        or path == "tools/mephc-flow/mephc_flow.py" or path == "tests/test_mephc_flow.py"
+        for path in changed
+    )
+
+
 def successful_science_job(paths: Paths, work_order_id: str, source_commit: str) -> dict[str, Any] | None:
     root = paths.state / "science-jobs"
     matches: list[dict[str, Any]] = []
@@ -561,7 +577,8 @@ def successful_science_job(paths: Paths, work_order_id: str, source_commit: str)
         for item in root.glob("MEPHC-SCIENCE-*.json"):
             value = read_json(item, default={})
             if (isinstance(value, dict) and value.get("work_order_id") == work_order_id
-                    and value.get("source_commit") == source_commit and value.get("state") == "succeeded"):
+                    and value.get("state") == "succeeded"
+                    and closeout_job_source_compatible(paths, value.get("source_commit"), source_commit)):
                 matches.append(value)
     return max(matches, key=lambda item: float(item.get("completed_at", 0))) if matches else None
 
@@ -637,6 +654,7 @@ def canonical_closeout_report(paths: Paths, *, blocked_code: str | None = None) 
     if job is not None:
         lines.extend([
             f"SCIENCE_JOB_ID={job.get('job_id')}", f"SCIENCE_JOB_STATE={job.get('state')}",
+            f"SCIENCE_SOURCE_SHA={job.get('source_commit')}",
             f"SCIENCE_ACTION={job.get('action')}", f"SCIENCE_RETURN_CODE={job.get('return_code')}",
             f"NATIVE_INVOCATION_COUNT={job.get('native_invocation_count', result_summary.get('native_invocation_count', 0))}",
             f"PROVIDER_EXECUTION_COUNT={job.get('provider_executions', result_summary.get('provider_request_count', 0))}",
