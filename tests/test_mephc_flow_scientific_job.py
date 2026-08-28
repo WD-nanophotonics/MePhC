@@ -119,7 +119,7 @@ def test_science_preflight_conditionally_verifies_dataset(tmp_path: Path, monkey
         monkeypatch.setattr(flow, "ensure_checkout", lambda *_args: "/home/icy/checkout")
         monkeypatch.setattr(flow, "wsl", lambda *_args, **_kwargs: subprocess.CompletedProcess([], 0, "", ""))
         monkeypatch.setattr(flow, "science_runtime_hash", lambda *_args: "e" * 64)
-        (scope.science_state / "certifications").mkdir(parents=True)
+        (scope.science_state / "certifications").mkdir(parents=True, exist_ok=True)
         (scope.science_state / "certifications" / ("e" * 64 + ".json")).write_text(
             json.dumps({"schema": "mephc-science-runtime-certification-v1"}), encoding="utf-8"
         )
