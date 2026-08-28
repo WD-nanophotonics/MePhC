@@ -757,6 +757,16 @@ def test_windows_materializer_accepts_only_v2_or_admission_bound_v4(tmp_path, mo
             assert str(error.value) == "CHANGE_JOB_SCHEMA_REQUIRED"
 
 
+def test_bootstrap_allows_only_exact_build_with_single_unresolved_job_during_recovery_install():
+    bootstrap = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8-sig")
+    block = bootstrap.split("$recoveryMaintenanceHealthy=", 1)[1].split("if($recoveryMaintenanceHealthy)", 1)[0]
+    assert "$healthExit -eq 2" in block
+    assert "$errors.Count -eq 1" in block and "$errors[0] -eq 'UNRESOLVED_RUNNER_JOB'" in block
+    assert "$healthRecord.broker.broker_build_id -eq $BuildId" in block
+    assert "$healthRecord.worker.worker_build_id -eq $BuildId" in block
+    assert "$healthRecord.worker.installed_source_head -eq $SourceCommit" in block
+
+
 def test_recovery_without_journal_never_replays_materialize(tmp_path, monkeypatch):
     materializer = load("runner_windows_materializer_recovery", "windows_materializer.py")
     job = tmp_path / "job"; job.mkdir()

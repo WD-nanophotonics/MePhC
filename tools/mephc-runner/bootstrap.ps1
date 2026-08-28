@@ -77,7 +77,24 @@ if($Verify) {
     $healthExit=2
     for($healthIndex=0;$healthIndex -lt 20;$healthIndex++){
       Push-Location $Runtime
-      try { & $publicLauncher Health; $healthExit=$LASTEXITCODE } finally { Pop-Location }
+      try {
+        $healthOutput=@(& $publicLauncher Health)
+        $healthExit=$LASTEXITCODE
+      } finally { Pop-Location }
+      $healthOutput|Write-Output
+      $healthRecord=$null
+      try {if($healthOutput.Count -gt 0){$healthRecord=($healthOutput[-1]|ConvertFrom-Json)}}catch{$healthRecord=$null}
+      # A recovery-required transaction is precisely why a maintenance
+      # bootstrap may be necessary.  Permit that one semantic health error
+      # only when every newly installed runtime identity is exact; all stale,
+      # drift, service, root, interpreter, main or extra errors still fail.
+      $errors=if($null -ne $healthRecord){@($healthRecord.errors)}else{@()}
+      $recoveryMaintenanceHealthy=($healthExit -eq 2 -and $errors.Count -eq 1 -and
+        $errors[0] -eq 'UNRESOLVED_RUNNER_JOB' -and
+        $healthRecord.broker.broker_build_id -eq $BuildId -and
+        $healthRecord.worker.worker_build_id -eq $BuildId -and
+        $healthRecord.worker.installed_source_head -eq $SourceCommit)
+      if($recoveryMaintenanceHealthy){$healthExit=0}
       if($healthExit -eq 0){break}
       Start-Sleep -Milliseconds 500
     }
