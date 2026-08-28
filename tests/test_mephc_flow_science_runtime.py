@@ -239,6 +239,7 @@ def test_complete_dataset_is_immutable_and_cross_commit_consumer_is_read_only(mo
     assert len(calls) == 210
     assert summary["fresh_provider_execution_count"] == 210
     assert summary["fresh_mpb_execution_observed"] is True
+    assert summary["mpb_execution_observed"] is True
     assert summary["dataset_is_mpb_backed"] is True
     assert len(summary["acquisition_dataset_id"]) == 64
     binding = {
@@ -258,6 +259,7 @@ def test_complete_dataset_is_immutable_and_cross_commit_consumer_is_read_only(mo
     resumed_summary = resumed.execute(requests)
     assert resumed_summary["fresh_provider_execution_count"] == 0
     assert resumed_summary["fresh_mpb_execution_observed"] is False
+    assert resumed_summary["mpb_execution_observed"] is False
     assert resumed_summary["dataset_is_mpb_backed"] is True
     assert resumed_summary["acquisition_dataset_id"] == summary["acquisition_dataset_id"]
 

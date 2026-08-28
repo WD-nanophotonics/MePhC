@@ -522,12 +522,12 @@ class R8ScienceRuntime:
             "completed_key_count": len(plan),
             "fresh_provider_execution_count": fresh,
             "fresh_mpb_execution_observed": fresh_mpb_execution_observed,
+            "mpb_execution_observed": fresh_mpb_execution_observed,
             "dataset_is_mpb_backed": dataset["dataset_is_mpb_backed"],
             "acquisition_dataset_id": dataset["dataset_id"],
             "acquisition_dataset_manifest_sha256": dataset["manifest_sha256"],
             "failed_key_count": 0,
             "provider_failure_count": 0,
-            "mpb_execution_observed": False,
             "opaque_retention_namespace_id": namespace_id,
         }
         self.retention.finalize_run_manifest(summary)

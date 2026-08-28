@@ -323,7 +323,7 @@ def main() -> int:
     if len(serialized.encode("utf-8")) > MAX_SUCCESS_STDOUT_BYTES:
         print(json.dumps({"error_code": "SUCCESS_STDOUT_LIMIT_EXCEEDED"}, sort_keys=True))
         return 2
-    print(serialized)
+    print("MEPHC_NATIVE_RESULT_JSON=" + serialized)
     return 0
 
 
