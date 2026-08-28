@@ -162,6 +162,21 @@ def test_runtime_source_proofs_use_raw_git_blob_bytes():
     assert '"runtime_source_mismatch": _SOURCE_RUNTIME_MISMATCH' in worker
     assert '"source_blob_matches_manifest": source_matches' in worker
     assert '"runtime_source_mismatch": worker.get("runtime_source_mismatch")' in attestation
+    assert '["/usr/bin/git", "-c", f"safe.directory={config.CONTROL_ROOT}"' in attestation
+    assert '["/usr/bin/git", "-c", f"safe.directory={config.CONTROL_ROOT}"' in worker
+
+
+def test_wsl_blob_proof_uses_native_git_and_wsl_control_root(monkeypatch):
+    module = load("coherence_native_wsl_git", RUNNER / "runtime_attestation.py")
+    calls = []
+    monkeypatch.setattr(module.os, "name", "posix")
+    monkeypatch.setattr(module.config, "CONTROL_ROOT", Path("/mnt/c/canonical"))
+    monkeypatch.setattr(module.subprocess, "run", lambda command, **_kwargs:
+                        calls.append(command) or SimpleNamespace(returncode=0, stdout=b"blob\n"))
+    assert module._source_blob_sha("1" * 40, "tools/mephc-admission/mephc_admission.py")
+    assert calls[0][:5] == ["/usr/bin/git", "-c", "safe.directory=/mnt/c/canonical",
+                            "-C", "/mnt/c/canonical"]
+    assert str(module.config.WINDOWS_GIT_WSL) not in calls[0]
 
 
 def test_runtime_source_negative_bootstrap_cache_is_rechecked(tmp_path, monkeypatch):

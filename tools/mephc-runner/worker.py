@@ -705,9 +705,13 @@ def runtime_source_matches() -> bool:
             return False
         for name, digest in expected.items():
             installed = INSTALL_ROOT / name
+            git_command = (["git", "-c", f"safe.directory={config.CONTROL_ROOT_WINDOWS}",
+                            "-C", config.CONTROL_ROOT_WINDOWS]
+                           if os.name == "nt" else
+                           ["/usr/bin/git", "-c", f"safe.directory={config.CONTROL_ROOT}",
+                            "-C", str(config.CONTROL_ROOT)])
             source = subprocess.run(
-                [str(config.WINDOWS_GIT_WSL), "-c", f"safe.directory={config.CONTROL_ROOT_WINDOWS}",
-                 "-C", config.CONTROL_ROOT_WINDOWS, "-c", "core.autocrlf=false", "cat-file", "blob",
+                [*git_command, "-c", "core.autocrlf=false", "cat-file", "blob",
                  f"{source_head}:tools/mephc-runner/{name}"],
                 stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False, timeout=15,
             )

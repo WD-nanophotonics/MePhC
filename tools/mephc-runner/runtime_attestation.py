@@ -47,7 +47,8 @@ def _fresh(record: dict[str, Any] | None, seconds: int = 20) -> bool:
 
 def _source_head() -> str | None:
     command = (["git", "-c", f"safe.directory={config.CONTROL_ROOT_WINDOWS}", "-C", config.CONTROL_ROOT_WINDOWS]
-               if os.name == "nt" else [str(config.WINDOWS_GIT_WSL), "-c", f"safe.directory={config.CONTROL_ROOT_WINDOWS}", "-C", config.CONTROL_ROOT_WINDOWS])
+               if os.name == "nt" else ["/usr/bin/git", "-c", f"safe.directory={config.CONTROL_ROOT}",
+                                          "-C", str(config.CONTROL_ROOT)])
     try:
         result = subprocess.run([*command, "rev-parse", "HEAD"], text=True, capture_output=True, timeout=15, check=False)
         return result.stdout.strip() if result.returncode == 0 else None
@@ -58,10 +59,12 @@ def _source_head() -> str | None:
 def _source_blob_sha(source: str | None, relative: str) -> str | None:
     if not isinstance(source, str) or len(source) != 40:
         return None
+    # Use the Git binary native to the process platform.  Calling Windows Git
+    # through WSL interop can transform stdout at the process boundary, which
+    # makes a raw blob hash disagree with a byte-exact archive installation.
     command = (["git", "-c", f"safe.directory={config.CONTROL_ROOT_WINDOWS}", "-C", config.CONTROL_ROOT_WINDOWS]
-               if os.name == "nt" else [str(config.WINDOWS_GIT_WSL), "-c",
-                                          f"safe.directory={config.CONTROL_ROOT_WINDOWS}",
-                                          "-C", config.CONTROL_ROOT_WINDOWS])
+               if os.name == "nt" else ["/usr/bin/git", "-c", f"safe.directory={config.CONTROL_ROOT}",
+                                          "-C", str(config.CONTROL_ROOT)])
     try:
         result = subprocess.run([*command, "-c", "core.autocrlf=false", "cat-file", "blob",
                                  f"{source}:{relative}"], stdout=subprocess.PIPE,
