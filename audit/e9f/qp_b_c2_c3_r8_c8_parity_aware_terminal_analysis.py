@@ -360,7 +360,7 @@ def open_r256_dataset(c7: Any) -> tuple[dict[tuple[int, int, str, str], Any], di
     runtime = load_module("_r8_c8_r256_runtime", RUNTIME_PATH)
     scientific_job = load_module("_r8_c8_scientific_job", SCIENCE_JOB_PATH)
     namespace = {
-        "project_id": "MEPHC", "science_contract_id": "E9F_QP_B_C2_C3_R8_C7_A1",
+        "project_id": "MEPHC", "science_contract_id": "E9F_QP_B_C2_C3_R8_C7_A1_R256",
         "source_commit": R256_SOURCE_COMMIT,
         "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-C7-A1-20260828-315",
         "resolution": "R256", "entrypoint_sha256": R256_ENTRYPOINT_SHA256,
