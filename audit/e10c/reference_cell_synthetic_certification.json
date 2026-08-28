@@ -1,0 +1,57 @@
+{
+  "checks": {
+    "A_gauge_phase_preserves_normalized_overlap_magnitude": {
+      "normalized_overlap_magnitude": 1.0,
+      "status": "PASS"
+    },
+    "B_area_preserving_common_material_field_has_unit_overlap": {
+      "det_F": 1.0,
+      "overlap": 0.9999999999999999,
+      "status": "PASS"
+    },
+    "C_loop_reversal_flips_wilson_phase": {
+      "forward_phase": 0.7299999999999999,
+      "reverse_phase": -0.7299999999999999,
+      "status": "PASS"
+    },
+    "D_wrong_component_transform_is_rejected": {
+      "rule": "Do not apply F, F^-1, F^T, or F^-T to lab-Cartesian H components.",
+      "status": "PASS",
+      "wrong_transform_overlap_magnitude": 0.9526436722647607
+    },
+    "E_non_unit_jacobian_requires_scalar_unitary_factor": {
+      "jacobian": 1.87,
+      "normalized_norm": 1.0,
+      "omitted_factor_norm": 1.3674794331177345,
+      "status": "PASS"
+    },
+    "F_grid_shape_and_component_convention_mismatch_fails": {
+      "admissible_identity": [
+        "spatial_shape",
+        "resolution",
+        "lattice_size",
+        "component_order",
+        "lab_cartesian"
+      ],
+      "status": "PASS"
+    },
+    "G_material_metric_mismatch_fails": {
+      "rejected_mu": 2.0,
+      "required_mu": "mu=1 nonmagnetic",
+      "status": "PASS"
+    }
+  },
+  "common_grid": {
+    "component_count": 3,
+    "component_order": "supplied final axis order",
+    "spatial_shape": [
+      3,
+      3
+    ],
+    "weighting": "equal-weight normalized discrete vector L2"
+  },
+  "mpb_imported": false,
+  "overall_status": "PASS",
+  "schema": "mephc-e10c-reference-cell-synthetic-certification-v1",
+  "solver_free": true
+}
