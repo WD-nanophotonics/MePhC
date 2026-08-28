@@ -369,12 +369,29 @@ def science_preflight(paths: Paths) -> dict[str, Any]:
     order, contract = active_machine_contract(paths)
     source = require_source(paths, published=True)
     if contract["source_commit"] != source["head"]:
-        raise FlowError("WORK_ORDER_SOURCE_COMMIT_MISMATCH", safe_next="report")
+        ancestor = git(paths, "merge-base", "--is-ancestor", contract["source_commit"], source["head"], check=False)
+        if ancestor.returncode:
+            raise FlowError("WORK_ORDER_SOURCE_COMMIT_MISMATCH", safe_next="report")
+        changed_since_contract = {
+            line for line in git(paths, "diff", "--name-only", f"{contract['source_commit']}..{source['head']}").stdout.splitlines()
+            if line
+        }
+        if not changed_since_contract.issubset(set(contract["allowed_writes"])):
+            raise FlowError("WORK_ORDER_SOURCE_DIFF_OUT_OF_SCOPE", ",".join(sorted(changed_since_contract - set(contract["allowed_writes"]))))
     checkout = ensure_checkout(paths, source["head"])
     entrypoint = contract.get("entrypoint")
     if entrypoint is not None:
         tracked = wsl(["/usr/bin/git", "-C", checkout, "ls-files", "--error-unmatch", entrypoint], check=False)
         if tracked.returncode:
+            if source["head"] == contract["source_commit"] and entrypoint in contract["allowed_writes"]:
+                return {
+                    "schema": "mephc-science-preflight-v1", "ready_to_run": False,
+                    "ready_to_edit": True, "safe_next": "edit_scoped_files",
+                    "work_order_id": order["work_order_id"], "contract_sha256": contract["contract_sha256"],
+                    "base_source_commit": contract["source_commit"], "source_commit": source["head"],
+                    "entrypoint": entrypoint, "allowed_writes": contract["allowed_writes"],
+                    "job_created": False,
+                }
             raise FlowError("WORK_ORDER_ENTRYPOINT_NOT_TRACKED")
     runtime_sha = science_runtime_hash(paths, source["head"])
     certification_path = paths.science_state / "certifications" / f"{runtime_sha}.json"
@@ -405,7 +422,7 @@ def science_preflight(paths: Paths) -> dict[str, Any]:
     return {
         "schema": "mephc-science-preflight-v1", "ready_to_run": True,
         "work_order_id": order["work_order_id"], "contract_sha256": contract["contract_sha256"],
-        "source_commit": source["head"], "execution_checkout": checkout,
+        "base_source_commit": contract["source_commit"], "source_commit": source["head"], "execution_checkout": checkout,
         "runtime_sha256": runtime_sha, "required_capabilities": contract["required_capabilities"],
         "missing_capabilities": [], "entrypoint": entrypoint, "budgets": contract["budgets"],
         "certification": certification, "dataset_evidence": dataset_evidence,
@@ -782,10 +799,10 @@ def native_status(paths: Paths, run_id: str) -> dict[str, Any]:
             "safe_next": f"native-status {run_id}" if alive else "human-reconciliation-required"}
 
 
-def science_job_id(contract: dict[str, Any]) -> str:
+def science_job_id(contract: dict[str, Any], execution_source_commit: str) -> str:
     payload = {
         "contract_sha256": contract["contract_sha256"],
-        "source_commit": contract["source_commit"],
+        "source_commit": execution_source_commit,
         "entrypoint": contract["entrypoint"],
         "project": contract["project"],
         "action": contract["action"],
@@ -815,7 +832,7 @@ def science_acquire(paths: Paths) -> dict[str, Any]:
     _, contract = active_machine_contract(paths)
     if contract["kind"] != "SCIENCE" or contract["action"] != "acquire":
         raise FlowError("SCIENCE_ACQUIRE_ACTION_NOT_AUTHORIZED")
-    job_id = science_job_id(contract)
+    job_id = science_job_id(contract, preflight["source_commit"])
     job_path = paths.state / "science-jobs" / f"{job_id}.json"
     existing = read_json(job_path, default=None)
     if isinstance(existing, dict):
@@ -823,9 +840,9 @@ def science_acquire(paths: Paths) -> dict[str, Any]:
     record = {
         "schema": "mephc-scientific-job-v1", "job_id": job_id,
         "work_order_id": contract["work_order_id"], "contract_sha256": contract["contract_sha256"],
-        "source_commit": contract["source_commit"], "action": "acquire", "state": "dispatching",
+        "source_commit": preflight["source_commit"], "action": "acquire", "state": "dispatching",
         "created_at": time.time(), "provenance": {
-            "main_sha": EXPECTED_MAIN, "sandbox_sha": contract["source_commit"],
+            "main_sha": EXPECTED_MAIN, "sandbox_sha": preflight["source_commit"],
             "runtime_sha256": preflight["runtime_sha256"],
         },
     }
@@ -846,7 +863,7 @@ def science_analyze(paths: Paths) -> dict[str, Any]:
     _, contract = active_machine_contract(paths)
     if contract["kind"] != "SCIENCE" or contract["action"] != "analyze":
         raise FlowError("SCIENCE_ANALYZE_ACTION_NOT_AUTHORIZED")
-    job_id = science_job_id(contract)
+    job_id = science_job_id(contract, preflight["source_commit"])
     job_path = paths.state / "science-jobs" / f"{job_id}.json"
     existing = read_json(job_path, default=None)
     if isinstance(existing, dict):
@@ -854,10 +871,10 @@ def science_analyze(paths: Paths) -> dict[str, Any]:
     record = {
         "schema": "mephc-scientific-job-v1", "job_id": job_id,
         "work_order_id": contract["work_order_id"], "contract_sha256": contract["contract_sha256"],
-        "source_commit": contract["source_commit"], "action": "analyze", "state": "dispatching",
+        "source_commit": preflight["source_commit"], "action": "analyze", "state": "dispatching",
         "process_started": False, "provider_executions": 0, "solver_executions": 0,
         "created_at": time.time(), "provenance": {
-            "main_sha": EXPECTED_MAIN, "sandbox_sha": contract["source_commit"],
+            "main_sha": EXPECTED_MAIN, "sandbox_sha": preflight["source_commit"],
             "runtime_sha256": preflight["runtime_sha256"],
         },
     }

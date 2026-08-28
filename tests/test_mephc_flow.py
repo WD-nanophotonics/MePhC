@@ -275,3 +275,14 @@ def test_science_selftest_accepts_bounded_mpb_logs_before_final_json(tmp_path: P
     result = flow.science_selftest(scope, mpb_smoke=True)
     assert result["runtime_sha256"] == "b" * 64
     assert result["stdout_size_bytes"] == len(output.encode("utf-8"))
+
+
+def test_science_job_id_binds_actual_execution_source() -> None:
+    contract = {
+        "contract_sha256": "a" * 64, "source_commit": "b" * 40,
+        "entrypoint": "audit/e9f/run.py", "project": ".", "action": "analyze",
+    }
+    first = flow.science_job_id(contract, "c" * 40)
+    second = flow.science_job_id(contract, "d" * 40)
+    assert first != second
+    assert first == flow.science_job_id(contract, "c" * 40)
