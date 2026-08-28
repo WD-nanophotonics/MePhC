@@ -817,7 +817,7 @@ def acquire_binding_source_compatible(
     if len(changed) != 1:
         return False
     relative = changed[0].replace("\\", "/")
-    if (not relative.startswith("audit/") or not relative.endswith("_acquisition_binding.json")
+    if (not relative.startswith("audit/") or not relative.endswith("_binding.json")
             or any(token in relative.lower() for token in ("request_graph", "method_contract", "runtime", "provider"))):
         return False
     try:
@@ -861,6 +861,37 @@ def acquire_binding_source_compatible(
     summary = native.get("result_summary")
     if not isinstance(summary, dict):
         return False
+    if relative.endswith("_replay_binding.json"):
+        expected = {
+            "work_order_id": order["work_order_id"],
+            "acquisition_source_commit": job_source,
+            "acquisition_dataset_id": summary.get("validation_dataset_id"),
+            "dataset_manifest_sha256": summary.get("validation_dataset_manifest_sha256"),
+            "entrypoint_sha256": summary.get("validation_entrypoint_sha256"),
+            "science_runtime_sha256": summary.get("science_runtime_sha256"),
+            "corrected_graph_sha256": summary.get("corrected_graph_sha256"),
+            "dataset_record_count": summary.get("validation_dataset_record_count"),
+            "spectral_replay_pass": summary.get("spectral_replay_pass"),
+            "maximum_absolute_frequency_error": summary.get("maximum_absolute_frequency_error"),
+            "k_gap_band0_band1": summary.get("live_k_gap_band0_band1"),
+            "k_gap_band1_band2": summary.get("live_k_gap_band1_band2"),
+            "native_invocation_count": summary.get("native_invocation_count"),
+            "provider_request_count": summary.get("provider_request_count"),
+            "fresh_provider_execution_count": summary.get("fresh_provider_execution_count"),
+            "solver_executions": summary.get("solver_executions"),
+            "native_solves": summary.get("native_solves"),
+            "mpb_execution": summary.get("mpb_execution"),
+            "native_retry_count": summary.get("native_retry_count"),
+            "completion_state": "COMPLETE",
+        }
+        if any(expected[key] is None or binding.get(key) != expected[key] for key in expected):
+            return False
+        if binding.get("actual_frequencies") != summary.get("live_fr04_r64_six_band_spectrum"):
+            return False
+        if binding.get("reference_frequencies") != summary.get("reference_fr04_r64_tess96_six_band_spectrum"):
+            return False
+        return True
+
     if "duplicate_logical_demand_count" in summary:
         duplicate_count = summary.get("duplicate_logical_demand_count")
     else:

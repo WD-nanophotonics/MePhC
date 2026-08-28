@@ -618,6 +618,114 @@ def test_closeout_job_rejects_second_post_execution_file_and_preexisting_binding
     assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is False
 
 
+def _d5r3_binding_fixture(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[flow.Paths, dict, dict]:
+    scope = paths(tmp_path)
+    work_order_id = "MEPHC-E9F-D5R3-FR04-CORRECTED-K-REPLAY-20260829-329"
+    job_source, published_source = "a" * 40, "b" * 40
+    binding_path = "audit/e9f/d5r3_fr04_corrected_k_replay_binding.json"
+    order_text = "WORK_ORDER_CONTRACT_JSON=" + json.dumps({
+        "kind": "SCIENCE", "action": "acquire", "work_order_id": work_order_id,
+        "allowed_writes": [binding_path],
+    }) + "\n"
+    monkeypatch.setattr(flow, "active_work_order", lambda _paths: {
+        "work_order_id": work_order_id, "text": order_text,
+    })
+    spectrum = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]
+    summary = {
+        "work_order_id": work_order_id, "execution_source_commit": job_source,
+        "science_runtime_sha256": "1" * 64, "corrected_graph_sha256": "2" * 64,
+        "corrected_geometry_status": "PASS", "spectral_replay_pass": True,
+        "maximum_absolute_frequency_error": 0.0,
+        "live_k_gap_band0_band1": 0.1, "live_k_gap_band1_band2": 0.1,
+        "validation_dataset_id": "3" * 64, "validation_dataset_manifest_sha256": "4" * 64,
+        "validation_dataset_record_count": 1, "validation_entrypoint_sha256": "5" * 64,
+        "native_invocation_count": 1, "provider_request_count": 1,
+        "fresh_provider_execution_count": 1, "solver_executions": 1,
+        "native_solves": 1, "mpb_execution": True, "native_retry_count": 0,
+        "live_fr04_r64_six_band_spectrum": spectrum,
+        "reference_fr04_r64_tess96_six_band_spectrum": spectrum,
+    }
+    binding = {
+        "work_order_id": work_order_id, "acquisition_source_commit": job_source,
+        "acquisition_dataset_id": summary["validation_dataset_id"],
+        "dataset_manifest_sha256": summary["validation_dataset_manifest_sha256"],
+        "entrypoint_sha256": summary["validation_entrypoint_sha256"],
+        "science_runtime_sha256": summary["science_runtime_sha256"],
+        "corrected_graph_sha256": summary["corrected_graph_sha256"],
+        "dataset_record_count": 1, "spectral_replay_pass": True,
+        "maximum_absolute_frequency_error": 0.0, "k_gap_band0_band1": 0.1,
+        "k_gap_band1_band2": 0.1, "native_invocation_count": 1,
+        "provider_request_count": 1, "fresh_provider_execution_count": 1,
+        "solver_executions": 1, "native_solves": 1, "mpb_execution": True,
+        "native_retry_count": 0, "actual_frequencies": spectrum,
+        "reference_frequencies": spectrum, "completion_state": "COMPLETE",
+    }
+    job = {
+        "job_id": "MEPHC-SCIENCE-" + "c" * 24, "work_order_id": work_order_id,
+        "source_commit": job_source, "action": "acquire", "state": "succeeded",
+        "native_run_id": "MEPHC-NATIVE-" + "d" * 24,
+        "result": {
+            "run_id": "MEPHC-NATIVE-" + "d" * 24, "state": "succeeded",
+            "process_started": True, "return_code": 0, "launcher_return_code": 0,
+            "result_summary": summary,
+        },
+    }
+    write_json(scope.state / "science-jobs" / f"{job['job_id']}.json", job)
+
+    def fake_git(_paths, *args, **kwargs):
+        if args[:2] == ("merge-base", "--is-ancestor"):
+            return subprocess.CompletedProcess(args, 0, "", "")
+        if args[:2] == ("diff", "--name-only"):
+            return subprocess.CompletedProcess(args, 0, binding_path + "\n", "")
+        if args[:2] == ("ls-tree", "--name-only"):
+            return subprocess.CompletedProcess(args, 0, "", "")
+        if args[:1] == ("show",):
+            return subprocess.CompletedProcess(args, 0, json.dumps(binding), "")
+        raise AssertionError(args)
+    monkeypatch.setattr(flow, "git", fake_git)
+    return scope, binding, {"job_source": job_source, "published_source": published_source, "binding_path": binding_path}
+
+
+def test_closeout_job_accepts_d5r3_post_execution_replay_binding(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope, _binding, refs = _d5r3_binding_fixture(tmp_path, monkeypatch)
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is True
+
+
+@pytest.mark.parametrize("field", [
+    "entrypoint_sha256", "corrected_graph_sha256", "acquisition_dataset_id",
+    "dataset_manifest_sha256", "acquisition_source_commit",
+])
+def test_closeout_job_rejects_d5r3_binding_identity_drift(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, field: str) -> None:
+    scope, binding, refs = _d5r3_binding_fixture(tmp_path, monkeypatch)
+    binding[field] = "f" * 40 if field == "acquisition_source_commit" else "f" * 64
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is False
+
+
+def test_closeout_job_rejects_d5r3_missing_completion_state(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope, binding, refs = _d5r3_binding_fixture(tmp_path, monkeypatch)
+    binding.pop("completion_state")
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is False
+
+
+def test_closeout_job_rejects_d5r3_extra_post_execution_file(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope, _binding, refs = _d5r3_binding_fixture(tmp_path, monkeypatch)
+    monkeypatch.setattr(flow, "git", lambda _paths, *args, **kwargs: (
+        subprocess.CompletedProcess(args, 0, "", "") if args[:2] == ("merge-base", "--is-ancestor")
+        else subprocess.CompletedProcess(args, 0, refs["binding_path"] + "\naudit/e9f/extra.json\n", "") if args[:2] == ("diff", "--name-only")
+        else subprocess.CompletedProcess(args, 0, "", "")
+    ))
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is False
+
+
+def test_closeout_job_rejects_failed_d5r3_science_job(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope, _binding, refs = _d5r3_binding_fixture(tmp_path, monkeypatch)
+    job_path = next((scope.state / "science-jobs").glob("MEPHC-SCIENCE-*.json"))
+    job = json.loads(job_path.read_text(encoding="utf-8"))
+    job["state"] = "failed"
+    write_json(job_path, job)
+    assert flow.closeout_job_source_compatible(scope, refs["job_source"], refs["published_source"]) is False
+
+
 def test_closeout_blocked_accepts_only_structured_code(tmp_path: Path) -> None:
     scope = paths(tmp_path)
     with pytest.raises(flow.FlowError, match="CLOSEOUT_BLOCKED_CODE_INVALID"):
