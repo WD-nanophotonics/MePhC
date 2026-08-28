@@ -171,21 +171,28 @@ def verify_graph(graph: dict[str, Any]) -> dict[str, Any]:
         raise EntrypointError("GRAPH_DERIVED_DUPLICATE_COUNT_INVALID")
 
     expected_relations = {
-        (resolution, "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=" + resolution,
-         "H72_PLUS_Y", "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=" + resolution,
-         "H72_MINUS_Y")
+        (
+            resolution,
+            tuple(sorted((
+                ("fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=" + resolution, "H72_PLUS_Y"),
+                ("fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=" + resolution, "H72_MINUS_Y"),
+            )))
+        )
         for resolution in EXPECTED_RESOLUTIONS
     } | {
-        (resolution, "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=" + resolution,
-         "H72_PLUS_X", "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=" + resolution,
-         "H72_MINUS_X")
+        (
+            resolution,
+            tuple(sorted((
+                ("fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=" + resolution, "H72_PLUS_X"),
+                ("fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=" + resolution, "H72_MINUS_X"),
+            )))
+        )
         for resolution in EXPECTED_RESOLUTIONS
     }
-    actual_relations: set[tuple[str, str, str, str, str]] = set()
+    actual_relations: set[tuple[str, tuple[tuple[str, str], tuple[str, str]]]] = set()
     for key, refs in duplicate_groups.items():
         resolution = json.loads(key.decode("utf-8"))["resolution"]
-        ordered = sorted(refs)
-        actual_relations.add((resolution, ordered[0][0], ordered[0][1], ordered[1][0], ordered[1][1]))
+        actual_relations.add((resolution, tuple(sorted(refs))))
     if actual_relations != expected_relations:
         raise EntrypointError("GRAPH_EXPECTED_COLLISIONS_INVALID")
 
