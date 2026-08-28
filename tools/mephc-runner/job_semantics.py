@@ -22,7 +22,7 @@ def enrich(state: str, operation: str | None = None, error_code: str | None = No
     terminal_state = state if state in TERMINAL else None
     same_recovery = state == "recovery_required"
     retry = False
-    new_job = state in {"succeeded"}
+    new_job = state in {"succeeded"} or error_code == "CHANGE_NOT_STARTED_ABORTED"
     if state == "failed" and operation not in {"change", "courier", "retention_search", "native"}:
         new_job = True
     value = {

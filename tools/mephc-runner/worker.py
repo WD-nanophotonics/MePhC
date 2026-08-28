@@ -439,6 +439,31 @@ def failure_detail(job_dir: Path) -> str:
     return tail[-2000:] if tail else "PROCESS_LOG_EMPTY"
 
 
+def broker_rejected_before_materializer(job_dir: Path) -> dict[str, Any] | None:
+    """Prove that a change transaction never crossed the broker boundary."""
+    forbidden = ("change-journal.json", "change-attestation.json", "materializer-progress.json",
+                 "broker-dispatch.json", "broker-recovery-dispatch.json")
+    if any((job_dir / name).exists() for name in forbidden) or (job_dir / "change-backup-windows").exists():
+        return None
+    candidates = sorted((*job_dir.glob("materializer-recovery-state.json*"),
+                         *job_dir.glob("materializer-state.json*")),
+                        key=lambda path: path.stat().st_mtime_ns, reverse=True)
+    for candidate in candidates:
+        try:
+            record = read_object(candidate)
+        except Rejected:
+            continue
+        detail = record.get("detail")
+        if (record.get("error_code") == "CHANGE_BROKER_DISPATCH_FAILED"
+                and isinstance(detail, str) and "CHANGE_BROKER_VALIDATION_FAILED" in detail):
+            return {"broker_validation_failure_proved": True,
+                    "materializer_process_started": False,
+                    "journal_present": False,
+                    "attestation_present": False,
+                    "evidence_sha256": hashlib.sha256(candidate.read_bytes()).hexdigest()}
+    return None
+
+
 def relay_failure_code(job_dir: Path) -> str | None:
     allowed = {"CERTIFICATE_ENVIRONMENT_MISMATCH", "CERTIFICATE_EXECUTION_BINDING_MISMATCH"}
     try:
@@ -499,6 +524,15 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
                 handle.flush()
                 os.fsync(handle.fileno())
         attempt = previous_attempt + 1
+        if recovery and job["operation"] == "change":
+            no_start = broker_rejected_before_materializer(job_dir)
+            if no_start is not None:
+                state(job_dir, "failed", attempt=attempt, operation="change", return_code=1,
+                      error_code="CHANGE_NOT_STARTED_ABORTED", recovery="no_effect_verified",
+                      source_commit=job.get("source_commit"), safe_next_tool="mephc_work_order_preflight",
+                      **no_start)
+                event(job_dir, "change_not_started_aborted", attempt=attempt, **no_start)
+                return
         state(job_dir, "running", attempt=attempt, operation=job["operation"], recovery=recovery,
               phase="contract_validated", phase_started_at=now(), last_progress_at=now())
         event(job_dir, "runner_job_started", attempt=attempt, operation=job["operation"], recovery=recovery, job_sha256=immutable_sha)

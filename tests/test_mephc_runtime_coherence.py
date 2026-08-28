@@ -291,6 +291,28 @@ def test_recovery_required_status_has_one_safe_recovery_tool(tmp_path, monkeypat
     assert value["safe_next_tool"] == "mephc_recover"
 
 
+def test_broker_validation_failure_can_prove_change_never_started(tmp_path):
+    module = load("coherence_change_never_started", RUNNER / "worker.py")
+    job = tmp_path / "MEPHC-JOB-NOT-STARTED"; job.mkdir()
+    evidence = {"state":"recovery_required", "error_code":"CHANGE_BROKER_DISPATCH_FAILED",
+                "detail":"RuntimeError('CHANGE_BROKER_VALIDATION_FAILED')"}
+    (job / "materializer-recovery-state.json").write_text(json.dumps(evidence), encoding="utf-8")
+    proved = module.broker_rejected_before_materializer(job)
+    assert proved and proved["materializer_process_started"] is False
+    assert proved["journal_present"] is False and proved["attestation_present"] is False
+
+    (job / "broker-recovery-dispatch.json").write_text("{}", encoding="utf-8")
+    assert module.broker_rejected_before_materializer(job) is None
+
+
+def test_change_not_started_terminal_semantics_release_new_job_gate():
+    module = load("coherence_change_not_started_semantics", RUNNER / "job_semantics.py")
+    value = module.enrich("failed", "change", "CHANGE_NOT_STARTED_ABORTED")
+    assert value["same_job_recovery_allowed"] is False
+    assert value["retry_allowed"] is False
+    assert value["new_job_allowed"] is True
+
+
 def test_lifecycle_gate_accepts_only_published_clean_infrastructure(monkeypatch):
     module = load("coherence_lifecycle", ADMISSION / "runtime_lifecycle.py")
     head, installed = "2" * 40, "1" * 40
