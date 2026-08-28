@@ -571,6 +571,7 @@ def closeout_job_source_compatible(paths: Paths, job_source: str, published_sour
     return bool(changed) and all(
         path == "AGENTS.md" or path == "tools/mephc-flow/README.md"
         or path == "tools/mephc-flow/mephc_flow.py" or path == "tests/test_mephc_flow.py"
+        or path == "audit/e9f/qp_b_c2_c3_r8_c5_r224_state_reconciliation.json"
         for path in changed
     )
 

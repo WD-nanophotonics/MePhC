@@ -443,6 +443,16 @@ def test_closeout_job_may_cross_only_fixed_flow_infrastructure(monkeypatch: pyte
     monkeypatch.setattr(flow, "git", fake_git)
     assert flow.closeout_job_source_compatible(paths(Path("unused")), "a" * 40, "b" * 40) is True
 
+    def reconciliation_diff(_paths, *args, **_kwargs):
+        if args[:2] == ("merge-base", "--is-ancestor"):
+            return subprocess.CompletedProcess(args, 0, "", "")
+        return subprocess.CompletedProcess(
+            args, 0, "audit/e9f/qp_b_c2_c3_r8_c5_r224_state_reconciliation.json\n", ""
+        )
+
+    monkeypatch.setattr(flow, "git", reconciliation_diff)
+    assert flow.closeout_job_source_compatible(paths(Path("unused")), "a" * 40, "b" * 40) is True
+
     def scientific_diff(_paths, *args, **_kwargs):
         if args[:2] == ("merge-base", "--is-ancestor"):
             return subprocess.CompletedProcess(args, 0, "", "")
