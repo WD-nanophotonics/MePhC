@@ -241,7 +241,7 @@ def verify_geometry_and_reference() -> tuple[Any, dict[str, Any], dict[str, Any]
             or case.get("public_cartesian_to_mpb_roundtrip_error", math.inf) > 1.0e-12):
         raise ValidationError("CORRECT_GEOMETRY_BINDING_INVALID")
     direct = geometry.build_geometry(FR)
-    if direct.get("analytic_boundary_digest") != GEOMETRY_BOUNDARY_DIGEST:
+    if direct.get("boundary_digest") != GEOMETRY_BOUNDARY_DIGEST:
         raise ValidationError("CORRECT_GEOMETRY_DIGEST_INVALID")
     reference = read_json(REFERENCE_PATH)
     expected = reference.get("results", {}).get("FR0P4_R64_TESS96", {})
