@@ -64,6 +64,12 @@ def rebuild(jobs_root: Path) -> dict[str, dict[str, Any]]:
     for directory in sorted(jobs_root.iterdir()) if jobs_root.is_dir() else []:
         if not directory.is_dir():
             continue
+        job_path = directory / "job.json"
+        if not job_path.is_file() and not any((directory / marker).exists() for marker in ("READY", "CLAIMED", "state.json")):
+            # A process may have died after mkdir but before the durable job
+            # manifest. Preserve the directory as forensic residue, but it is
+            # not a durable job and must not become an active/orphan entry.
+            continue
         try:
             state_path = directory / "state.json"
             if state_path.stat().st_size > MAX_STATE_BYTES:
@@ -72,7 +78,7 @@ def rebuild(jobs_root: Path) -> dict[str, dict[str, Any]]:
         except (OSError, ValueError, json.JSONDecodeError):
             state = "unknown"
         try:
-            job = json.loads((directory / "job.json").read_text(encoding="utf-8"))
+            job = json.loads(job_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
             job = {}
         if state in VISIBLE:

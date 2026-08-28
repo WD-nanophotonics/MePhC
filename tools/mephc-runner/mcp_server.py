@@ -16,6 +16,8 @@ import workflow_resume
 import runtime_config as config
 import retention_inspector
 import runtime_attestation
+import admission_requests
+from runner_errors import RunnerRequestRejected, legacy_system_exit, validation_error
 
 ROOT = config.CONTROL_ROOT
 READ_ROOTS = {"audit", "mephc", "scripts", "tests", "tools"}
@@ -26,6 +28,9 @@ LOADED_MCP_MODULE_HASH = runtime_attestation.bundle_hash(Path(__file__).resolve(
                                                          runtime_attestation.MCP_BUNDLE_FILES)
 runtime_attestation.set_loaded_mcp_hash(LOADED_MCP_MODULE_HASH)
 CURRENT_ADMISSION_REQUEST_ID: str | None = None
+SIDE_EFFECT_TOOLS = {"mephc_doctor", "mephc_change", "mephc_validate", "mephc_submit",
+                     "mephc_retention_search", "mephc_report", "mephc_publish",
+                     "mephc_transport_canary", "mephc_native"}
 
 
 def bind_admission(directory: Path) -> None:
@@ -128,7 +133,8 @@ TOOLS = [
     {"name": "mephc_resume", "description": "Return the latest hash-bound supervisor work order, or create and dispatch exactly one durable status request and return its wait job. Never returns an idle work-order request to the agent.", "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False}},
     {"name": "mephc_change", "description": "Atomically materialize, test, and commit declared UTF-8 MePhC files. The Runner binds Git and image hashes itself.", "inputSchema": {"type": "object", "required": ["files", "tests", "commit_message"], "properties": {"files": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["path", "content_utf8"], "properties": {"path": {"type": "string"}, "content_utf8": {"type": "string"}}, "additionalProperties": False}}, "tests": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "commit_message": {"type": "string"}}, "additionalProperties": False}},
     {"name": "mephc_validate", "description": "Run declared solver-free prelive tests against the current committed SHA without changing or committing source.", "inputSchema": {"type": "object", "required": ["tests"], "properties": {"tests": {"type": "array", "minItems": 1, "items": {"type": "string"}}}, "additionalProperties": False}},
-    {"name": "mephc_submit", "description": "Submit a typed non-change MePhC operation.", "inputSchema": {"type": "object", "required": ["operation"], "properties": {"operation": {"type": "string", "enum": ["doctor", "worktree", "prelive", "native", "publish", "courier"]}, "arguments": {"type": "array", "items": {"type": "string"}}, "certificate_sha256": {"type": ["string", "null"]}}, "additionalProperties": False}},
+    {"name": "mephc_submit", "description": "Submit only a controlled worktree operation or recover an existing immutable Courier request.", "inputSchema": {"type": "object", "required": ["operation"], "properties": {"operation": {"type": "string", "enum": ["worktree", "courier"]}, "arguments": {"type": "array", "items": {"type": "string"}}, "certificate_sha256": {"type": ["string", "null"]}}, "additionalProperties": False}},
+    {"name": "mephc_native", "description": "Submit one work-order-authorized, registered native recipe. Accepts only its recipe ID.", "inputSchema": {"type": "object", "required": ["recipe_id"], "properties": {"recipe_id": {"type": "string"}}, "additionalProperties": False}},
     {"name": "mephc_status", "description": "Read one persisted job state.", "inputSchema": {"type": "object", "required": ["job_id"], "properties": {"job_id": {"type": "string"}}, "additionalProperties": False}},
     {"name": "mephc_wait", "description": "Wait without killing the persistent job.", "inputSchema": {"type": "object", "required": ["job_id"], "properties": {"job_id": {"type": "string"}, "timeout": {"type": "integer", "minimum": 1, "maximum": 4860}}, "additionalProperties": False}},
     {"name": "mephc_recover", "description": "Request the only state-approved recovery for an existing job.", "inputSchema": {"type": "object", "required": ["job_id"], "properties": {"job_id": {"type": "string"}}, "additionalProperties": False}},
@@ -148,6 +154,7 @@ REPORT_TOOLS = [
 ]
 
 READONLY_TOOLS = [
+    {"name": "mephc_request_status", "description": "Reconcile one side-effect call by its durable admission request ID without replaying it.", "inputSchema": {"type": "object", "required": ["admission_request_id"], "properties": {"admission_request_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"}}, "additionalProperties": False}},
     {"name": "mephc_inspect", "description": "Read only tracked UTF-8 MePhC source or audit evidence, or list a controlled tracked directory. Rejects runtime, Git internals, symlinks, credentials, path traversal, and untracked files.", "inputSchema": {"type": "object", "required": ["operation", "path"], "properties": {"operation": {"type": "string", "enum": ["list", "read"]}, "path": {"type": "string"}, "offset": {"type": "integer", "minimum": 0}, "max_bytes": {"type": "integer", "minimum": 1, "maximum": 65536}}, "additionalProperties": False}},
     {"name": "mephc_retention_inspect", "description": "Inspect an exact hash-matched retention JSON through an opaque locator. Rehashes bytes on every call and redacts host identity.", "inputSchema": {"type": "object", "required": ["job_id", "retention_id", "operation"], "properties": {"job_id": {"type": "string"}, "retention_id": {"type": "string"}, "operation": {"type": "string", "enum": ["metadata", "outline", "json_page", "numeric_summary"]}, "json_pointer": {"type": "string"}, "offset": {"type": "integer", "minimum": 0}, "limit": {"type": "integer", "minimum": 1, "maximum": 200}}, "additionalProperties": False}},
 ]
@@ -308,6 +315,14 @@ def invoke_captured(name, args):
 
 
 def invoke(name, args):
+    if name == "mephc_request_status":
+        try:
+            return admission_requests.status(args.get("admission_request_id") if isinstance(args, dict) else "")
+        except ValueError as exc:
+            return RunnerRequestRejected("ADMISSION_REQUEST_ID_INVALID", str(exc),
+                                         safe_next_tool="mephc_capabilities").as_dict()
+    if name == "mephc_internal_request_disconnect":
+        return admission_requests.disconnected(args.get("admission_request_id") if isinstance(args, dict) else "")
     if name == "mephc_runtime_attest":
         return runtime_attestation.attest()
     if name == "mephc_work_order_preflight":
@@ -317,6 +332,7 @@ def invoke(name, args):
                 "retry_allowed":False,"safe_next_tool":"mephc_runtime_attest"}
     if name == "mephc_capabilities":
         value = jobctl.capabilities()
+        value["unresolved_admission_requests"] = admission_requests.unresolved()
         value["read_only_evidence"] = {"tool": "mephc_inspect", "operations": ["list", "read"], "tracked_only": True}
         value["release_protocol"] = {"publish_tool": "mephc_publish", "agent_supplies_prelive_path": False}
         return value
@@ -390,6 +406,10 @@ def invoke(name, args):
                                   "mephc_recover" if state == "recovery_required" else
                                   "mephc_status" if state == "running" else "mephc_wait"}
     if name == "mephc_submit":
+        if not isinstance(args, dict) or args.get("operation") not in {"worktree", "courier"}:
+            return RunnerRequestRejected("SUBMIT_OPERATION_HAS_DEDICATED_TYPED_TOOL",
+                                         str(args.get("operation") if isinstance(args, dict) else ""),
+                                         safe_next_tool="mephc_work_order_preflight").as_dict()
         try:
             directory = jobctl.submit(args["operation"], args.get("arguments", []), args.get("certificate_sha256"))
         except jobctl.CertificateRejected as exc:
@@ -397,6 +417,14 @@ def invoke(name, args):
                     "job_created":False,"retry_allowed":False,"safe_next_tool":exc.safe_next_tool}
         bind_admission(directory)
         return {"job_id": directory.name, "state": "ready"}
+    if name == "mephc_native":
+        try:
+            directory = jobctl.submit_native(args.get("recipe_id") if isinstance(args, dict) else None)
+        except RunnerRequestRejected as exc:
+            return exc.as_dict()
+        bind_admission(directory)
+        return {"job_id": directory.name, "state": "ready", "job_created": True,
+                "safe_next_tool": "mephc_wait"}
     if name == "mephc_status":
         return jobctl.read_state(args["job_id"])
     if name == "mephc_wait":
@@ -424,7 +452,7 @@ def main():
             method = request.get("method")
             identifier = request.get("id")
             if method == "initialize":
-                reply(identifier, {"protocolVersion": request.get("params", {}).get("protocolVersion", "2025-03-26"), "capabilities": {"tools": {}}, "serverInfo": {"name": "mephc-runner", "version": "4.0.0"}})
+                reply(identifier, {"protocolVersion": request.get("params", {}).get("protocolVersion", "2025-03-26"), "capabilities": {"tools": {}}, "serverInfo": {"name": "mephc-runner", "version": "5.0.0"}})
             elif method == "ping":
                 reply(identifier, {})
             elif method == "tools/list":
@@ -434,7 +462,26 @@ def main():
                 global CURRENT_ADMISSION_REQUEST_ID
                 meta = params.get("_meta") if isinstance(params, dict) else None
                 CURRENT_ADMISSION_REQUEST_ID = meta.get("mephc_admission_request_id") if isinstance(meta, dict) else None
-                value = invoke_captured(params.get("name"), params.get("arguments") or {})
+                name = params.get("name")
+                arguments = params.get("arguments") or {}
+                jobctl.set_admission_request_id(CURRENT_ADMISSION_REQUEST_ID)
+                if CURRENT_ADMISSION_REQUEST_ID and name in SIDE_EFFECT_TOOLS:
+                    try: source_head = jobctl.git_head()
+                    except (Exception, SystemExit): source_head = None
+                    admission_requests.begin(CURRENT_ADMISSION_REQUEST_ID, name, arguments,
+                                             source_commit=source_head,
+                                             runner_build=runtime_attestation.attest().get("worker_build"),
+                                             state_epoch=config.state_epoch())
+                try:
+                    value = invoke_captured(name, arguments)
+                except RunnerRequestRejected as exc:
+                    value = exc.as_dict()
+                except ValueError as exc:
+                    value = validation_error(exc).as_dict()
+                except SystemExit as exc:
+                    value = legacy_system_exit(exc).as_dict()
+                if CURRENT_ADMISSION_REQUEST_ID and name in SIDE_EFFECT_TOOLS and isinstance(value, dict):
+                    admission_requests.response_ready(CURRENT_ADMISSION_REQUEST_ID, value)
                 reply(identifier, {"content": [{"type": "text", "text": json.dumps(value, sort_keys=True, ensure_ascii=False)}], "isError": False})
             elif identifier is not None:
                 reply(identifier, error=f"unsupported method: {method}")

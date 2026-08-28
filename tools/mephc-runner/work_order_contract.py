@@ -8,10 +8,12 @@ import re
 from typing import Any
 
 SCHEMA = "mephc-work-order-contract-v1"
+SCHEMA_V2 = "mephc-work-order-contract-v2"
 SHA64 = re.compile(r"^[0-9a-f]{64}$")
 IDENTIFIER = re.compile(r"^[A-Z0-9][A-Z0-9_.-]{2,127}$")
 CAPABILITY = re.compile(r"^[a-z][a-z0-9_.-]{2,95}$")
 WORK_ORDER = re.compile(r"^[A-Z][A-Z0-9._-]{2,127}$")
+RECIPE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{1,127}$")
 MACHINE_PREFIX = "WORK_ORDER_CONTRACT_JSON="
 POLICY_FORBIDDEN = {
     "shell", "arbitrary_shell", "wsl", "arbitrary_wsl", "browser",
@@ -52,27 +54,47 @@ def _bindings(value: Any) -> list[dict[str, str]]:
     return sorted(result, key=lambda item: item["retention_id"])
 
 
+def _native_recipes(value: Any) -> list[dict[str, Any]]:
+    if not isinstance(value, list) or len(value) > 16:
+        raise ContractError("WORK_ORDER_CONTRACT_SCHEMA_INVALID", "native_recipes")
+    result, seen = [], set()
+    for item in value:
+        if (not isinstance(item, dict) or set(item) != {"recipe_id", "recipe_sha256", "max_invocations"}
+                or not isinstance(item.get("recipe_id"), str) or not RECIPE.fullmatch(item["recipe_id"])
+                or not isinstance(item.get("recipe_sha256"), str) or not SHA64.fullmatch(item["recipe_sha256"])
+                or not isinstance(item.get("max_invocations"), int) or not 1 <= item["max_invocations"] <= 32
+                or item["recipe_id"] in seen):
+            raise ContractError("WORK_ORDER_CONTRACT_SCHEMA_INVALID", "native_recipes")
+        seen.add(item["recipe_id"])
+        result.append(dict(item))
+    return sorted(result, key=lambda item: item["recipe_id"])
+
+
 def validate(value: Any, expected_work_order_id: str | None = None) -> dict[str, Any]:
-    if not isinstance(value, dict) or set(value) != {
-        "schema", "work_order_id", "required_capabilities", "authorized_actions", "retention_bindings"
-    }:
+    schema = value.get("schema") if isinstance(value, dict) else None
+    required_keys = {"schema", "work_order_id", "required_capabilities", "authorized_actions", "retention_bindings"}
+    if schema == SCHEMA_V2:
+        required_keys.add("native_recipes")
+    if not isinstance(value, dict) or set(value) != required_keys:
         raise ContractError("WORK_ORDER_CONTRACT_SCHEMA_INVALID", "keys")
     work_order_id = value.get("work_order_id")
     if (not isinstance(work_order_id, str) or not WORK_ORDER.fullmatch(work_order_id)
             or expected_work_order_id is not None and work_order_id != expected_work_order_id
-            or value.get("schema") != SCHEMA):
+            or schema not in {SCHEMA, SCHEMA_V2}):
         raise ContractError("WORK_ORDER_CONTRACT_SCHEMA_INVALID", "identity")
     result = {
-        "schema": SCHEMA,
+        "schema": schema,
         "work_order_id": work_order_id,
         "required_capabilities": _strings(value["required_capabilities"], "required_capabilities"),
         "authorized_actions": _strings(value["authorized_actions"], "authorized_actions"),
         "retention_bindings": _bindings(value["retention_bindings"]),
+        "native_recipes": _native_recipes(value.get("native_recipes", [])),
         "contract_mode": "machine",
     }
-    result["contract_sha256"] = hashlib.sha256(_canonical({key: result[key] for key in (
-        "schema", "work_order_id", "required_capabilities", "authorized_actions", "retention_bindings"
-    )})).hexdigest()
+    hash_keys = ["schema", "work_order_id", "required_capabilities", "authorized_actions", "retention_bindings"]
+    if schema == SCHEMA_V2:
+        hash_keys.append("native_recipes")
+    result["contract_sha256"] = hashlib.sha256(_canonical({key: result[key] for key in hash_keys})).hexdigest()
     return result
 
 
@@ -105,11 +127,21 @@ def _legacy_contract(text: str, work_order_id: str) -> dict[str, Any]:
                 if IDENTIFIER.fullmatch(key) and SHA64.fullmatch(value)]
     required: list[str] = []
     authorized: list[str] = []
+    native_ids: list[str] = []
+    native_hashes: dict[str, str] = {}
+    native_budgets: dict[str, int] = {}
     for line in lines:
         if line.startswith("REQUIRED_TYPED_CAPABILITY="):
             required.append(line.split("=", 1)[1])
         elif line.startswith("AUTHORIZED_TYPED_ACTION="):
             authorized.append(line.split("=", 1)[1])
+        elif line.startswith("NATIVE_RECIPE_ID="):
+            native_ids.append(line.split("=", 1)[1])
+        elif line.startswith("NATIVE_RECIPE_SHA256=") and native_ids:
+            native_hashes[native_ids[-1]] = line.split("=", 1)[1]
+        elif line.startswith("NATIVE_MAX_INVOCATIONS=") and native_ids:
+            try: native_budgets[native_ids[-1]] = int(line.split("=", 1)[1])
+            except ValueError: pass
     if bindings:
         required.extend(("retention.search", "retention.inspect"))
     raw = {"schema": SCHEMA, "work_order_id": work_order_id,
@@ -117,6 +149,18 @@ def _legacy_contract(text: str, work_order_id: str) -> dict[str, Any]:
            "authorized_actions": sorted(set(item for item in authorized if CAPABILITY.fullmatch(item))),
            "retention_bindings": bindings}
     result = validate(raw, work_order_id)
+    result["native_recipes"] = [
+        {"recipe_id": recipe_id, "recipe_sha256": native_hashes[recipe_id],
+         "max_invocations": native_budgets.get(recipe_id, 1)}
+        for recipe_id in native_ids
+        if RECIPE.fullmatch(recipe_id) and SHA64.fullmatch(native_hashes.get(recipe_id, ""))
+           and 1 <= native_budgets.get(recipe_id, 1) <= 32
+    ]
+    if result["native_recipes"]:
+        result["contract_sha256"] = hashlib.sha256(_canonical({key: result[key] for key in (
+            "schema", "work_order_id", "required_capabilities", "authorized_actions",
+            "retention_bindings", "native_recipes"
+        )})).hexdigest()
     result["contract_mode"] = "legacy_adapter"
     return result
 

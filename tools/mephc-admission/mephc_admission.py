@@ -16,7 +16,8 @@ POWERSHELL = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "System32" / "W
 CONNECTOR = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "MePhCRunner" / "mephc-connector.ps1"
 BACKEND = ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(CONNECTOR)]
 TOOL_NAMES = ("mephc_capabilities", "mephc_doctor", "mephc_resume", "mephc_change",
-              "mephc_validate", "mephc_submit", "mephc_status", "mephc_wait", "mephc_recover",
+              "mephc_validate", "mephc_submit", "mephc_native", "mephc_request_status",
+              "mephc_status", "mephc_wait", "mephc_recover",
               "mephc_inspect", "mephc_retention_search", "mephc_retention_inspect",
               "mephc_runtime_attest", "mephc_runtime_reload", "mephc_runtime_activate",
               "mephc_work_order_preflight", "mephc_retention_worker_reload",
@@ -24,7 +25,7 @@ TOOL_NAMES = ("mephc_capabilities", "mephc_doctor", "mephc_resume", "mephc_chang
 AUDIT_LOG = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "MePhCRunner" / "admission" / "launch-audit.jsonl"
 READ_ONLY_TOOLS = {"mephc_capabilities", "mephc_inspect", "mephc_retention_inspect",
                    "mephc_runtime_attest", "mephc_work_order_preflight",
-                   "mephc_status", "mephc_wait"}
+                   "mephc_request_status", "mephc_status", "mephc_wait"}
 LOCAL_LIFECYCLE_TOOLS = {"mephc_runtime_reload": "reload", "mephc_runtime_activate": "activate",
                          "mephc_retention_worker_reload": "retention-worker-reload"}
 LIFECYCLE = Path(__file__).resolve().parent / "runtime_lifecycle.py"
@@ -142,7 +143,7 @@ def disconnect_data(request: dict[str, Any], request_identity: str) -> dict[str,
     return {"error_code": "BACKEND_DISCONNECTED", "tool": name,
             "job_id": job_id if isinstance(job_id, str) else None,
             "admission_request_id": request_identity, "retry_allowed": False,
-            "safe_next_tool": "mephc_status" if isinstance(job_id, str) else "mephc_capabilities"}
+            "safe_next_tool": "mephc_status" if isinstance(job_id, str) else "mephc_request_status"}
 
 
 def stop_backend(child: subprocess.Popen[str]) -> None:

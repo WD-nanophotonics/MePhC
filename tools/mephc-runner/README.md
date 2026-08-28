@@ -1,5 +1,12 @@
 # MePhC runner
 
+Side-effect calls are durably indexed by admission request ID before validation.
+After any transport disconnect, `mephc_request_status` reconciles the original
+request without replaying it. Native execution is exposed only as
+`mephc_native(recipe_id)` and is gated by the active work-order recipe digest,
+invocation budget, and a passing prelive for the exact source SHA. Generic
+`mephc_submit` no longer accepts doctor, prelive, native, or publish.
+
 This package is the machine-enforced Windows-control/WSL-work boundary for
 MePhC. The Windows source/control root is
 `C:\Users\icywo\PycharmProjects\MePhC-Windows`. The WSL worker accepts

@@ -165,27 +165,27 @@ def test_payload_tamper_fails_before_execution(tmp_path):
 
 def test_courier_path_must_be_mephc_outbox():
     jobctl = load("runner_jobctl_courier", "jobctl.py")
-    with pytest.raises(SystemExit, match="outside"):
+    with pytest.raises(jobctl.RunnerRequestRejected, match="OUTSIDE_OUTBOX"):
         jobctl.validate_arguments("courier", ["--request-directory", "/home/icy/TriLatt/outbox/request"])
 
 
 def test_courier_e2e_creation_argument_is_exact():
     jobctl = load("runner_jobctl_e2e", "jobctl.py")
     jobctl.validate_arguments("courier", ["--create-e2e"])
-    with pytest.raises(SystemExit):
+    with pytest.raises(jobctl.RunnerRequestRejected):
         jobctl.validate_arguments("courier", ["--create-e2e", "--certificate", "x"])
 
 def test_courier_status_creation_argument_is_exact(tmp_path, monkeypatch):
     jobctl = load("runner_jobctl_status", "jobctl.py")
     worker = load("runner_worker_status", "worker.py")
     jobctl.validate_arguments("courier", ["--create-status"])
-    with pytest.raises(SystemExit):
+    with pytest.raises(jobctl.RunnerRequestRejected):
         jobctl.validate_arguments("courier", ["--create-status", "extra"])
     assert worker.receipt_state({"operation":"courier","arguments":["--create-status"]}) is None
 
 def test_prelive_rejects_pytest_options():
     jobctl = load("runner_jobctl_prelive_options", "jobctl.py")
-    with pytest.raises(SystemExit, match="invalid prelive test target"):
+    with pytest.raises(jobctl.RunnerRequestRejected, match="PRELIVE_TEST_TARGET_INVALID"):
         jobctl.validate_arguments("prelive", ["--help"])
 
 def test_courier_explicit_read_only_recovery_is_typed(tmp_path, monkeypatch):
@@ -194,7 +194,7 @@ def test_courier_explicit_read_only_recovery_is_typed(tmp_path, monkeypatch):
     request = tmp_path / ".relayctl" / "outbox" / "MEPHC-E2E"
     monkeypatch.setattr(jobctl.config, "OUTBOX", request.parent)
     jobctl.validate_arguments("courier", ["--request-directory", str(request), "--recovery-only"])
-    with pytest.raises(SystemExit):
+    with pytest.raises(jobctl.RunnerRequestRejected):
         jobctl.validate_arguments("courier", ["--recovery-only", str(request)])
 
 def test_worker_duplicates_prelive_and_recovery_argument_gates():
@@ -237,11 +237,11 @@ def test_broker_allows_only_the_exact_root_agents_policy_file():
 
 def test_change_is_typed_and_native_arbitrary_argv_is_rejected():
     jobctl = load("runner_jobctl_change_gate", "jobctl.py")
-    with pytest.raises(SystemExit, match="typed JSON"):
+    with pytest.raises(jobctl.RunnerRequestRejected, match="CHANGE_TYPED_INTERFACE_REQUIRED"):
         jobctl.validate_arguments("change", [])
-    with pytest.raises(SystemExit, match="--recipe"):
+    with pytest.raises(jobctl.RunnerRequestRejected, match="NATIVE_TYPED_INTERFACE_REQUIRED"):
         jobctl.validate_arguments("native", ["python", "script.py"])
-    with pytest.raises(SystemExit, match="not registered"):
+    with pytest.raises(jobctl.RunnerRequestRejected, match="MISSING_NATIVE_RECIPE"):
         jobctl.validate_arguments("native", ["--recipe", "unknown"])
 
 
@@ -291,7 +291,11 @@ def test_courier_recovery_forces_read_only_and_limits_prebrowser(tmp_path):
 def test_connector_and_install_are_typed_and_versioned():
     mcp = load("runner_mcp_server", "mcp_server.py")
     names = {item["name"] for item in mcp.TOOLS}
-    assert names == {"mephc_capabilities","mephc_doctor","mephc_resume","mephc_change","mephc_validate","mephc_submit","mephc_status","mephc_wait","mephc_recover","mephc_retention_search"}
+    assert names == {"mephc_capabilities","mephc_doctor","mephc_resume","mephc_change","mephc_validate","mephc_submit","mephc_native","mephc_status","mephc_wait","mephc_recover","mephc_retention_search"}
+    submit = next(item for item in mcp.TOOLS if item["name"] == "mephc_submit")
+    assert submit["inputSchema"]["properties"]["operation"]["enum"] == ["worktree", "courier"]
+    native = next(item for item in mcp.TOOLS if item["name"] == "mephc_native")
+    assert set(native["inputSchema"]["properties"]) == {"recipe_id"}
     bootstrap = (SOURCE / "bootstrap.ps1").read_text(encoding="utf-8-sig")
     broker = (SOURCE / "mephc-runner.ps1").read_text(encoding="utf-8-sig")
     assert "/opt/mephc-runner/versions/$BuildId" in bootstrap

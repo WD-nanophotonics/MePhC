@@ -12,7 +12,7 @@ from typing import Any
 
 import runtime_config as config
 
-MCP_BUNDLE_FILES = ("mcp_server.py", "jobctl.py", "workflow.py", "work_order_contract.py", "runtime_attestation.py", "job_semantics.py")
+MCP_BUNDLE_FILES = ("mcp_server.py", "jobctl.py", "workflow.py", "work_order_contract.py", "runtime_attestation.py", "job_semantics.py", "runner_errors.py", "admission_requests.py")
 CURRENT_MCP_BUNDLE_HASH: str | None = None
 
 

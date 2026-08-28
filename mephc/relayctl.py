@@ -282,13 +282,34 @@ def native(root: Path, prelive_value: str, command: list[str]) -> Path:
     record = verify_prelive(root, prelive_value)
     directory = runtime(root) / "native" / f"native-{uuid.uuid4().hex}"
     directory.mkdir(parents=True)
-    result = subprocess.run(command, cwd=root, text=True, capture_output=True, env={**os.environ, "PYTHONPATH": str(root)})
-    (directory / "stdout.txt").write_text(result.stdout, encoding="utf-8")
-    (directory / "stderr.txt").write_text(result.stderr, encoding="utf-8")
+    command_hash = hashlib.sha256(json.dumps(command, separators=(",", ":"), ensure_ascii=False).encode("utf-8")).hexdigest()
+    job_directory = Path(os.environ["MEPHC_RUNNER_JOB_DIRECTORY"])
+    lifecycle_path = job_directory / "native-lifecycle.json"
+    lifecycle_time = int(time.time())
+    write_json(lifecycle_path, {"schema":"mephc-native-lifecycle-v1", "phase":"native_process_starting",
+                                "native_process_started":False, "command_sha256":command_hash,
+                                "phase_heartbeat_unix":lifecycle_time,
+                                "updated_at":time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(lifecycle_time))})
+    process = subprocess.Popen(command, cwd=root, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                               env={**os.environ, "PYTHONPATH": str(root)}, start_new_session=True)
+    lifecycle_time = int(time.time())
+    write_json(lifecycle_path, {"schema":"mephc-native-lifecycle-v1", "phase":"native_process_started",
+                                "native_process_started":True, "native_pid":process.pid,
+                                "command_sha256":command_hash, "phase_heartbeat_unix":lifecycle_time,
+                                "updated_at":time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(lifecycle_time))})
+    stdout, stderr = process.communicate()
+    (directory / "stdout.txt").write_text(stdout, encoding="utf-8")
+    (directory / "stderr.txt").write_text(stderr, encoding="utf-8")
+    lifecycle_time = int(time.time())
+    write_json(lifecycle_path, {"schema":"mephc-native-lifecycle-v1", "phase":"native_process_exited",
+                                "native_process_started":True, "native_pid":process.pid,
+                                "command_sha256":command_hash, "returncode":process.returncode,
+                                "phase_heartbeat_unix":lifecycle_time,
+                                "updated_at":time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(lifecycle_time))})
     return write_json(directory / "checkpoint.json", {
         "version": 1, "kind": "native-checkpoint", "project_id": PROJECT_ID,
         "prelive_sha": record["prelive_sha"], "source_sha256": record["source_sha256"],
-        "command": command, "returncode": result.returncode, "created_at": int(time.time()),
+        "command_sha256": command_hash, "returncode": process.returncode, "created_at": int(time.time()),
     })
 
 

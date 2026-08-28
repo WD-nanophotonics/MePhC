@@ -33,6 +33,7 @@ import workflow
 import job_semantics
 import runtime_attestation
 import work_order_contract
+import admission_requests
 
 ROOT = config.CONTROL_ROOT
 PYTHON = config.PYTHON
@@ -197,6 +198,16 @@ def command_for(job: dict[str, Any], execution_root: Path | None = None, recover
     if job["operation"] == "retention_search":
         return [str(PYTHON), str(RETENTION_INSPECTOR), "search", str(JOBS / job["job_id"]),
                 str(execution_root)]
+    if job["operation"] == "native":
+        recipe_id = job["native_binding"]["recipe_id"]
+        recipe = read_object(NATIVE_RECIPES).get("recipes", {}).get(recipe_id)
+        if not isinstance(recipe, dict) or set(recipe) != {"argv"} or not isinstance(recipe.get("argv"), list):
+            raise Rejected("NATIVE_RECIPE_INVALID", recipe_id)
+        argv = recipe["argv"]
+        if not argv or not all(isinstance(value, str) and value and "\x00" not in value for value in argv):
+            raise Rejected("NATIVE_RECIPE_INVALID", recipe_id)
+        prelive = config.STATE_ROOT / "prelive" / job["native_binding"]["prelive_id"]
+        return [str(relayctl), "native", "--prelive", str(prelive), "--", *argv]
     return [str(relayctl), job["operation"], *job["arguments"]]
 def inside(path: Path, parent: Path, code: str) -> Path:
     resolved = path.resolve(strict=False)
@@ -232,7 +243,8 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
     job = read_object(job_dir / "job.json")
     v2 = job.get("schema") == "mephc-runner-job-v2"
     v3 = job.get("schema") == "mephc-runner-job-v3"
-    modern = v2 or v3
+    v4 = job.get("schema") == "mephc-runner-job-v4"
+    modern = v2 or v3 or v4
     expected_head_for_job(job, modern)
     required = ({"schema", "job_id", "project_id", "operation", "arguments",
                  "expected_control_root", "source_commit", "expected_origin_main", "state_epoch",
@@ -245,7 +257,13 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
         required.add("courier_binding")
     if v3:
         required.update({"retention_query", "active_work_order_id", "query_sha256", "runner_build"})
-    if set(job) != required or job.get("schema") not in {"mephc-runner-job-v1", "mephc-runner-job-v2", "mephc-runner-job-v3"}:
+    if v4:
+        required.add("admission_request_id")
+        if job.get("operation") == "retention_search":
+            required.update({"retention_query", "active_work_order_id", "query_sha256", "runner_build"})
+        if job.get("operation") == "native":
+            required.update({"active_work_order_id", "work_order_contract_sha256", "native_binding"})
+    if set(job) != required or job.get("schema") not in {"mephc-runner-job-v1", "mephc-runner-job-v2", "mephc-runner-job-v3", "mephc-runner-job-v4"}:
         raise Rejected("JOB_SCHEMA_MISMATCH", f"keys={sorted(job)}")
     if not isinstance(job.get("job_id"), str) or not JOB_ID.fullmatch(job["job_id"]):
         raise Rejected("JOB_ID_INVALID", repr(job.get("job_id")))
@@ -318,7 +336,7 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
             )["contract_sha256"]
         except (work_order_contract.ContractError, TypeError) as exc:
             raise Rejected("RUNNER_CONTRACT_WORK_ORDER_INVALID", str(exc)) from exc
-        if (not v3 or arguments or not isinstance(query, dict)
+        if (not (v3 or v4) or arguments or not isinstance(query, dict)
                 or set(query) != {"bindings", "deadline_seconds", "work_order_id", "work_order_contract_sha256", "runner_build"}
                 or query.get("work_order_id") != job.get("active_work_order_id")
                 or query.get("runner_build") != job.get("runner_build")
@@ -331,8 +349,30 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
     if job["operation"] == "native":
         if len(arguments) != 2 or arguments[0] != "--recipe":
             raise Rejected("NATIVE_RECIPE_INVALID", repr(arguments))
-        if arguments[1] not in read_object(NATIVE_RECIPES).get("recipes", {}):
+        registry_recipe = read_object(NATIVE_RECIPES).get("recipes", {}).get(arguments[1])
+        if registry_recipe is None:
             raise Rejected("NATIVE_RECIPE_INVALID", arguments[1])
+        binding = job.get("native_binding")
+        active = workflow.active()
+        if (not v4 or not isinstance(binding, dict)
+                or binding.get("recipe_id") != arguments[1]
+                or not active or active.get("active_work_order_id") != job.get("active_work_order_id")):
+            raise Rejected("NATIVE_WORK_ORDER_BINDING_INVALID", arguments[1])
+        try:
+            contract = work_order_contract.parse(active["work_order_text"], active["active_work_order_id"])
+        except (work_order_contract.ContractError, KeyError, TypeError) as exc:
+            raise Rejected("NATIVE_WORK_ORDER_BINDING_INVALID", str(exc)) from exc
+        declared = next((item for item in contract.get("native_recipes", [])
+                         if item.get("recipe_id") == arguments[1]), None)
+        registry_digest = hashlib.sha256(json.dumps(registry_recipe, sort_keys=True, separators=(",", ":"),
+                                                       ensure_ascii=False).encode("utf-8")).hexdigest()
+        if (contract.get("contract_sha256") != job.get("work_order_contract_sha256")
+                or not declared or binding.get("recipe_sha256") != declared.get("recipe_sha256")
+                or binding.get("max_invocations") != declared.get("max_invocations")
+                or binding.get("registered_recipe_sha256") != registry_digest
+                or registry_digest != declared.get("recipe_sha256")
+                or binding.get("prelive_source_commit") != job.get("source_commit")):
+            raise Rejected("NATIVE_WORK_ORDER_BINDING_INVALID", arguments[1])
 
     if job["operation"] == "courier":
         if arguments in (["--create-e2e"], ["--create-attachment-e2e"], ["--create-status"]):
@@ -342,7 +382,7 @@ def validate(job_dir: Path, recovery: bool = False) -> tuple[dict[str, Any], str
                       and arguments[2] == "--recovery-only")):
             raise Rejected("COURIER_ARGUMENTS_INVALID", repr(arguments))
         else:
-            outbox = config.OUTBOX if v2 else Path("/home/icy/MePhC/.relayctl/outbox")
+            outbox = config.OUTBOX if modern else Path("/home/icy/MePhC/.relayctl/outbox")
             request_dir = inside(Path(arguments[1]), outbox, "COURIER_REQUEST_OUTSIDE_OUTBOX")
             request = read_object(request_dir / "request.json")
             if request.get("project_id") != "MEPHC":
@@ -421,6 +461,9 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
               phase_started_at=now(), last_progress_at=now())
         event(job_dir, "worker_started", recovery=recovery)
         job, immutable_sha, execution_root = validate(job_dir, recovery=recovery)
+        if isinstance(job.get("admission_request_id"), str):
+            admission_requests.update(job["admission_request_id"], phase="worker_started",
+                                      dispatch_reached=True, job_id=job["job_id"], job_created=True)
         event(job_dir, "contract_validated", operation=job["operation"], job_sha256=immutable_sha)
         state(job_dir, "running", operation=job["operation"], recovery=recovery,
               phase="contract_validated", phase_started_at=now(), last_progress_at=now())
@@ -471,6 +514,7 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
             "MEPHC_EXECUTION_ROOT": str(config.CHECKOUTS),
             "MEPHC_GIT_CACHE": str(config.GIT_CACHE),
             "MEPHC_RUNNER_JOB_ID": job["job_id"],
+            "MEPHC_RUNNER_JOB_DIRECTORY": str(job_dir),
             "MEPHC_RUNNER_BUILD": runner_build_id(),
             "MEPHC_STATE_EPOCH": config.state_epoch(),
             "MEPHC_INSTALLED_SOURCE_HEAD": current_installed_source(),
@@ -483,6 +527,10 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
             event(job_dir, "retention_operation_entered")
             state(job_dir, "running", attempt=attempt, operation=job["operation"], recovery=recovery,
                   phase="retention_operation_entered", phase_started_at=now(), last_progress_at=now())
+        if job["operation"] == "native":
+            event(job_dir, "native_recipe_validated", recipe_id=job["native_binding"]["recipe_id"])
+            state(job_dir, "running", attempt=attempt, operation="native", recovery=False,
+                  phase="native_process_starting", phase_started_at=now(), last_progress_at=now())
         with (job_dir / "process.log").open("a", encoding="utf-8", newline="\n") as log:
             process = subprocess.Popen(
                 command,
@@ -526,6 +574,8 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
         if job["operation"] == "courier" and job["arguments"][:1] == ["--request-directory"]:
             verify_courier_binding(job)
         courier_state = receipt_state(job)
+        if job["operation"] == "native":
+            event(job_dir, "native_process_exited", return_code=return_code)
         if return_code == 0:
             if job["operation"] == "retention_search":
                 event(job_dir, "retention_search_completed")
@@ -578,6 +628,17 @@ def execute(job_dir: Path, recovery: bool = False) -> None:
         detail = bounded_detail(repr(exc))
         state(job_dir, "failed", error_code="RUNNER_INTERNAL_ERROR", detail=detail)
         event(job_dir, "runner_internal_error", detail=detail)
+    finally:
+        try:
+            final_job = read_object(job_dir / "job.json")
+            request_id = final_job.get("admission_request_id")
+            final_state = read_object(job_dir / "state.json")
+            if isinstance(request_id, str):
+                admission_requests.update(request_id, phase="terminal" if final_state.get("state") in job_semantics.TERMINAL else final_state.get("phase"),
+                                          dispatch_reached=True, error_code=final_state.get("error_code"),
+                                          failure_layer=job_semantics.failure_layer(final_state.get("error_code")))
+        except (OSError, Rejected, ValueError, json.JSONDecodeError):
+            pass
 
 
 def repair_interrupted() -> None:
@@ -611,7 +672,7 @@ def repair_interrupted() -> None:
 
 def runner_build_id() -> str:
     names = ("worker.py","jobctl.py","workflow.py","workflow_resume.py","work_order_contract.py",
-             "runtime_attestation.py","job_semantics.py","runtime_config.py","active_index.py",
+             "runtime_attestation.py","job_semantics.py","runner_errors.py","admission_requests.py","runtime_config.py","active_index.py",
              "reconcile_stale_ready.py",
              "quarantine_oversized_state.py","checkout_manager.py","retention_inspector.py",
              "user_runtime.py","home_cleanup.py","migrate_state.py","migrate_canary_metadata.py",

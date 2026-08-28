@@ -61,10 +61,47 @@ function Start-McpChild {
   return $child
 }
 
-function Emit-ChildRestartError([string]$Line) {
+function Get-AdmissionRequestId([string]$Line) {
+  try {
+    $request=$Line|ConvertFrom-Json
+    return [string]$request.params._meta.mephc_admission_request_id
+  } catch { return '' }
+}
+
+function Reconcile-AdmissionRequest($Child,[string]$AdmissionRequestId) {
+  if([string]::IsNullOrWhiteSpace($AdmissionRequestId)){return $null}
+  $internalId="disconnect-$AdmissionRequestId"
+  $request=@{jsonrpc='2.0';id=$internalId;method='tools/call';params=@{
+    name='mephc_internal_request_disconnect';arguments=@{admission_request_id=$AdmissionRequestId}
+  }}|ConvertTo-Json -Compress -Depth 6
+  try {
+    $Child.StandardInput.WriteLine($request)
+    $Child.StandardInput.Flush()
+    $response=$Child.StandardOutput.ReadLine()
+    if($null -eq $response){return $null}
+    $parsed=$response|ConvertFrom-Json
+    $content=$parsed.result.content[0].text
+    if($content){return $content|ConvertFrom-Json}
+  } catch { return $null }
+  return $null
+}
+
+function Emit-ChildRestartError([string]$Line,$Reconciliation) {
   $identifier=$null
   try {$identifier=($Line|ConvertFrom-Json).id} catch {}
-  @{jsonrpc='2.0';id=$identifier;error=@{code=-32001;message='MCP_CHILD_EXITED_AFTER_REQUEST: child restarted; inspect durable state before any non-idempotent retry'}}|ConvertTo-Json -Compress
+  $requestId=Get-AdmissionRequestId $Line
+  $data=@{error_code='MCP_CHILD_EXITED_AFTER_REQUEST';admission_request_id=$requestId;
+          retry_allowed=$false;safe_next_tool='mephc_request_status';reconciliation=$Reconciliation}
+  if($null -ne $Reconciliation){
+    $data.job_id=$Reconciliation.job_id
+    $data.job_created=$Reconciliation.job_created
+    $data.dispatch_reached=$Reconciliation.dispatch_reached
+    $data.native_process_started=$Reconciliation.native_process_started
+    $data.terminal_state=$Reconciliation.terminal_state
+    $data.failure_layer=$Reconciliation.failure_layer
+    $data.failure_code=$Reconciliation.failure_code
+  }
+  @{jsonrpc='2.0';id=$identifier;error=@{code=-32001;message='MCP_CHILD_EXITED_AFTER_REQUEST';data=$data}}|ConvertTo-Json -Compress -Depth 8
 }
 
 $child=$null
@@ -89,10 +126,11 @@ try {
     if(-not $expectsResponse){continue}
     $response=$child.StandardOutput.ReadLine()
     if($null -eq $response) {
-      [Console]::Out.WriteLine((Emit-ChildRestartError $line))
-      [Console]::Out.Flush()
       $child.Dispose()
       $child=Start-McpChild
+      $reconciliation=Reconcile-AdmissionRequest $child (Get-AdmissionRequestId $line)
+      [Console]::Out.WriteLine((Emit-ChildRestartError $line $reconciliation))
+      [Console]::Out.Flush()
       continue
     }
     [Console]::Out.WriteLine($response)

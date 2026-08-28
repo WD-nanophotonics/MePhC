@@ -6,7 +6,7 @@ $Runtime=Join-Path $env:LOCALAPPDATA 'MePhCRunner'
 $Python='/home/icy/miniconda3/envs/mp/bin/python'
 $Files=@(
   'worker.py','jobctl.py','workflow.py','workflow_resume.py','work_order_contract.py',
-  'runtime_attestation.py','job_semantics.py','runtime_config.py','active_index.py',
+  'runtime_attestation.py','job_semantics.py','runner_errors.py','admission_requests.py','runtime_config.py','active_index.py',
   'reconcile_stale_ready.py',
   'quarantine_oversized_state.py','checkout_manager.py','retention_inspector.py',
   'user_runtime.py','home_cleanup.py','migrate_state.py','migrate_canary_metadata.py',

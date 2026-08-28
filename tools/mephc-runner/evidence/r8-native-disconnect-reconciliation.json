@@ -1,0 +1,54 @@
+{
+  "schema": "mephc-infrastructure-reconciliation-v1",
+  "incident": "R8_NATIVE_MCP_CHILD_EXIT",
+  "active_work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-20260828-291",
+  "source_commit": "9ae796d4481f44d5c3d521153a3fcf022c3b1134",
+  "installed_source_commit": "e0ffd24470405e2a5f9b458f476e3940977f6469",
+  "installed_build_id": "ac6f5a7de8df3b6e",
+  "installed_native_registry_sha256": "288d1662e1e17e547ef5602ad735b8c018421d13c821a907613df403b0ddba85",
+  "installed_native_registry_recipe_count": 0,
+  "frozen_evidence_sha256": {
+    "windows_current_json": "27b50350cbf5500c9da71265a1a164d95155fab9a3ef24d938884358b4fb1acc",
+    "windows_install_manifest_json": "654553b9708bfd99edf5667d31da4155bf6ff31749fb48f6b139299da2fc532e",
+    "windows_admission_audit_jsonl": "66eef78aa385c237db922f6afcb4f2dc7ef01b8f3919993a716145db3825444d",
+    "windows_broker_heartbeat_json": "0871ef5506a3c167522bf83fca46baf2ff48f32f1ac18a1a7a198e351f3751fe",
+    "wsl_worker_heartbeat_json": "1334fbefa0edcc7065f6d847f7031619155bcd246c1e402e82e101ffadcca9d7",
+    "wsl_active_jobs_json": "462ea325cb89cf259b72b4627ba97cbaf82a63aa3d6d8bb241c16137eae3d82a",
+    "wsl_workflow_ledger_json": "117c531ecb5904f5c534f6b3b69a37563d49353b6f2fa7e519687d4ce1326472"
+  },
+  "frozen_process_identity": {
+    "broker_role": "transport_broker",
+    "broker_pid": 30616,
+    "broker_supervisor_pid": 17956,
+    "worker_role": "shared_durable_worker",
+    "worker_pid": 2777533,
+    "worker_start_id": "c8955a9afb0f42618ad82cc420f6a01c",
+    "worker_build_id": "ac6f5a7de8df3b6e"
+  },
+  "matching_jobs": [
+    {
+      "job_id": "MEPHC-JOB-20260828-033128-82C4AB25ADDF",
+      "operation": "prelive",
+      "terminal_state": "succeeded"
+    },
+    {
+      "job_id": "MEPHC-JOB-20260828-033149-FDE967E248BB",
+      "operation": "publish",
+      "terminal_state": "succeeded"
+    }
+  ],
+  "matching_native_job_count": 0,
+  "matching_native_checkpoint_count": 0,
+  "matching_native_start_marker_count": 0,
+  "preexisting_unbound_directory": {
+    "job_id": "MEPHC-JOB-20260828-031732-3A88AE688EF3",
+    "created_at": "2026-08-27T18:17:32Z",
+    "minutes_before_r8_source_prelive": 14,
+    "directory_entry_count": 0,
+    "job_manifest_present": false,
+    "relationship_to_r8_native": "none"
+  },
+  "reconciliation": "NATIVE_REQUEST_REJECTED_BEFORE_JOB",
+  "native_replay_permitted": false,
+  "r8_report_sent": false
+}

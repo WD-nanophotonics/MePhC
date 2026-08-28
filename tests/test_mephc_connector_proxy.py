@@ -9,6 +9,9 @@ def test_connector_uses_persistent_windows_stdio_proxy():
     bootstrap = (ROOT / "bootstrap.ps1").read_text(encoding="utf-8-sig")
     for token in ("$info.Arguments=", "RedirectStandardInput=$true", "RedirectStandardOutput=$true", "RedirectStandardError=$false", "if($child.HasExited)", "Start-McpChild", "StandardOutput.ReadLine()", "MCP_CHILD_EXITED_AFTER_REQUEST", "$child.Kill()"):
         assert token in proxy
+    for token in ("Get-AdmissionRequestId", "Reconcile-AdmissionRequest", "mephc_internal_request_disconnect",
+                  "safe_next_tool='mephc_request_status'", "admission_request_id=$requestId"):
+        assert token in proxy
     assert "ArgumentList" not in proxy
     assert "Kill($true)" not in proxy
     assert "mephc-connector.ps1" in command

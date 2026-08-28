@@ -4,6 +4,14 @@
 from __future__ import annotations
 
 import argparse
+try:
+    import fcntl
+except ModuleNotFoundError:
+    class _Fcntl:
+        LOCK_EX = 0
+        @staticmethod
+        def flock(*_args): return None
+    fcntl = _Fcntl()
 import hashlib
 import json
 import os
@@ -24,6 +32,8 @@ import active_index
 import job_semantics
 import runtime_attestation
 import work_order_contract
+import admission_requests
+from runner_errors import RunnerRequestRejected
 
 ROOT = config.CONTROL_ROOT
 INSTALL_ROOT = Path(__file__).resolve().parent
@@ -34,6 +44,18 @@ NATIVE_RECIPES = INSTALL_ROOT / "native-recipes.json"
 TERMINAL = {"succeeded", "failed", "recovery_required"}
 OPERATIONS = {"doctor", "worktree", "prelive", "native", "publish", "courier", "change", "retention_search"}
 SHA64 = re.compile(r"^[0-9a-f]{64}$")
+CURRENT_ADMISSION_REQUEST_ID: str | None = None
+
+
+def set_admission_request_id(value: str | None) -> None:
+    global CURRENT_ADMISSION_REQUEST_ID
+    CURRENT_ADMISSION_REQUEST_ID = value
+
+
+def reject(error_code: str, detail: str = "", *, safe_next_tool: str = "mephc_work_order_preflight",
+           new_job_allowed: bool = False) -> None:
+    raise RunnerRequestRejected(error_code, detail, safe_next_tool=safe_next_tool,
+                                new_job_allowed=new_job_allowed)
 
 
 class ChangeRejected(ValueError):
@@ -90,7 +112,7 @@ def git_head() -> str:
         timeout=15,
     )
     if completed.returncode:
-        raise SystemExit(f"cannot resolve MePhC HEAD: {completed.stderr.strip()}")
+        reject("SOURCE_HEAD_UNAVAILABLE", completed.stderr.strip(), safe_next_tool="mephc_runtime_attest")
     return completed.stdout.strip()
 
 
@@ -102,9 +124,9 @@ def job_v2_base(job_id: str, operation: str, arguments: list[str], certificate: 
     head = git_head()
     origin_main = git_origin_main()
     if origin_main != config.EXPECTED_ORIGIN_MAIN:
-        raise SystemExit(f"origin/main moved: {origin_main}")
-    return {
-        "schema": "mephc-runner-job-v2",
+        reject("ORIGIN_MAIN_MOVED", origin_main, safe_next_tool="mephc_work_order_preflight")
+    value = {
+        "schema": "mephc-runner-job-v4" if CURRENT_ADMISSION_REQUEST_ID else "mephc-runner-job-v2",
         "job_id": job_id,
         "project_id": "MEPHC",
         "operation": operation,
@@ -116,12 +138,15 @@ def job_v2_base(job_id: str, operation: str, arguments: list[str], certificate: 
         "certificate_sha256": certificate,
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
+    if CURRENT_ADMISSION_REQUEST_ID:
+        value["admission_request_id"] = CURRENT_ADMISSION_REQUEST_ID
+    return value
 
 
 def latest_certificate_sha256() -> str:
     candidates = sorted(CERTIFICATES.glob("*.json"), key=lambda path: path.stat().st_mtime_ns, reverse=True)
     if not candidates:
-        raise SystemExit("no relayctl doctor certificate exists")
+        reject("ENVIRONMENT_CERTIFICATE_REQUIRED", safe_next_tool="mephc_doctor")
     return hashlib.sha256(candidates[0].read_bytes()).hexdigest()
 
 
@@ -192,17 +217,17 @@ def courier_binding(arguments: list[str]) -> dict[str, str] | None:
     request_path = request_dir / "request.json"
     request = json.loads(request_path.read_text(encoding="utf-8"))
     if request.get("project_id") != "MEPHC" or request.get("attachments") != []:
-        raise SystemExit("courier request must be attachment-free MEPHC")
+        reject("COURIER_REQUEST_SCHEMA_INVALID", "attachment-free MEPHC required", safe_next_tool="mephc_report")
     message_name = request.get("message_file")
     if not isinstance(message_name, str) or Path(message_name).name != message_name:
-        raise SystemExit("courier message_file must be a basename")
+        reject("COURIER_MESSAGE_FILE_INVALID", safe_next_tool="mephc_report")
     message_path = request_dir / message_name
     certificate_value = request.get("relay_certificate")
     if not isinstance(certificate_value, str):
-        raise SystemExit("courier request certificate missing")
+        reject("COURIER_CERTIFICATE_MISSING", safe_next_tool="mephc_report")
     certificate_path = Path(certificate_value)
     if not certificate_path.is_file():
-        raise SystemExit("courier request certificate unavailable")
+        reject("COURIER_CERTIFICATE_UNAVAILABLE", safe_next_tool="mephc_report")
     return {
         "request_id": str(request.get("request_id", "")),
         "request_sha256": hashlib.sha256(request_path.read_bytes()).hexdigest(),
@@ -213,11 +238,11 @@ def courier_binding(arguments: list[str]) -> dict[str, str] | None:
 
 def validate_arguments(operation: str, arguments: list[str]) -> None:
     if operation == "doctor" and arguments:
-        raise SystemExit("doctor accepts no relayctl arguments")
+        reject("DOCTOR_ARGUMENTS_FORBIDDEN", safe_next_tool="mephc_doctor")
     if operation == "change":
-        raise SystemExit("change requires the typed JSON interface")
+        reject("CHANGE_TYPED_INTERFACE_REQUIRED", safe_next_tool="mephc_change")
     if operation == "retention_search":
-        raise SystemExit("retention_search requires the typed JSON interface")
+        reject("RETENTION_TYPED_INTERFACE_REQUIRED", safe_next_tool="mephc_retention_search")
     if operation == "prelive":
         for target in arguments:
             file_part = target.split("::", 1)[0]
@@ -225,36 +250,115 @@ def validate_arguments(operation: str, arguments: list[str]) -> None:
             if (target.startswith("-") or relative.is_absolute() or ".." in relative.parts
                     or relative.parts[:1] != ("tests",) or relative.suffix != ".py"
             or not (config.CONTROL_ROOT / relative).is_file()):
-                raise SystemExit(f"invalid prelive test target: {target}")
+                reject("PRELIVE_TEST_TARGET_INVALID", target, safe_next_tool="mephc_validate")
     if operation == "courier":
         if arguments in (["--create-e2e"], ["--create-attachment-e2e"], ["--create-status"]):
             return
         ordinary = len(arguments) == 2 and arguments[0] == "--request-directory"
         recovery = len(arguments) == 3 and arguments[0] == "--request-directory" and arguments[2] == "--recovery-only"
         if not (ordinary or recovery):
-            raise SystemExit("courier requires --request-directory <MePhC outbox path> [--recovery-only]")
+            reject("COURIER_EXISTING_REQUEST_REQUIRED", safe_next_tool="mephc_report")
         request = Path(arguments[1]).resolve(strict=False)
         try:
             outbox = (ROOT / ".relayctl" / "outbox") if os.name == "nt" else config.OUTBOX
             request.relative_to(outbox.resolve())
         except ValueError as exc:
-            raise SystemExit("courier request is outside the MePhC outbox") from exc
+            raise RunnerRequestRejected("COURIER_REQUEST_OUTSIDE_OUTBOX", str(request),
+                                        safe_next_tool="mephc_report") from exc
     if operation == "native":
         if len(arguments) != 2 or arguments[0] != "--recipe":
-            raise SystemExit("native requires --recipe <registered-id>")
+            reject("NATIVE_TYPED_INTERFACE_REQUIRED", safe_next_tool="mephc_native")
         registry = json.loads(NATIVE_RECIPES.read_text(encoding="utf-8"))
         if arguments[1] not in registry.get("recipes", {}):
-            raise SystemExit(f"native recipe is not registered: {arguments[1]}")
+            reject("WORK_ORDER_BLOCKED_MISSING_NATIVE_RECIPE", arguments[1],
+                   safe_next_tool="mephc_work_order_preflight")
+
+
+def _recipe_digest(recipe: Any) -> str:
+    return hashlib.sha256(json.dumps(recipe, sort_keys=True, separators=(",", ":"),
+                                     ensure_ascii=False).encode("utf-8")).hexdigest()
+
+
+def _successful_prelive_for(head: str) -> str | None:
+    candidates: list[Path] = []
+    for path in (config.STATE_ROOT / "prelive").glob("prelive-*.json"):
+        try:
+            value = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if value.get("kind") == "prelive-attestation" and value.get("test_returncode") == 0 and value.get("prelive_sha") == head:
+            candidates.append(path)
+    return max(candidates, key=lambda item: item.stat().st_mtime_ns).name if candidates else None
+
+
+def _submit_native_locked(recipe_id: object) -> Path:
+    registry = json.loads(NATIVE_RECIPES.read_text(encoding="utf-8"))
+    recipes = registry.get("recipes") if isinstance(registry, dict) else None
+    if not isinstance(recipes, dict) or not recipes:
+        reject("WORK_ORDER_BLOCKED_MISSING_NATIVE_RECIPE", safe_next_tool="mephc_work_order_preflight")
+    if not isinstance(recipe_id, str) or recipe_id not in recipes:
+        reject("NATIVE_RECIPE_NOT_REGISTERED", str(recipe_id), safe_next_tool="mephc_work_order_preflight")
+    active = workflow.active()
+    if not active:
+        reject("NATIVE_ACTIVE_WORK_ORDER_REQUIRED", safe_next_tool="mephc_resume")
+    contract = work_order_contract.parse(active.get("work_order_text", ""), active.get("active_work_order_id", ""))
+    authorized = {item["recipe_id"]: item for item in contract.get("native_recipes", [])}
+    binding = authorized.get(recipe_id)
+    if binding is None:
+        reject("WORK_ORDER_BLOCKED_MISSING_NATIVE_RECIPE", recipe_id, safe_next_tool="mephc_work_order_preflight")
+    digest = _recipe_digest(recipes[recipe_id])
+    if digest != binding["recipe_sha256"]:
+        reject("NATIVE_RECIPE_HASH_MISMATCH", recipe_id, safe_next_tool="mephc_work_order_preflight")
+    head = git_head()
+    prelive = _successful_prelive_for(head)
+    if prelive is None:
+        reject("NATIVE_PRELIVE_REQUIRED", head, safe_next_tool="mephc_validate")
+    used = 0
+    for directory in JOBS.iterdir() if JOBS.is_dir() else []:
+        try: job = json.loads((directory / "job.json").read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError): continue
+        if (job.get("operation") == "native" and job.get("active_work_order_id") == active.get("active_work_order_id")
+                and job.get("native_binding", {}).get("recipe_id") == recipe_id):
+            used += 1
+    if used >= binding["max_invocations"]:
+        reject("NATIVE_INVOCATION_BUDGET_EXHAUSTED", recipe_id, safe_next_tool="mephc_request_status")
+    certificate = select_environment_certificate(head)
+    job_id = f"MEPHC-JOB-{time.strftime('%Y%m%d-%H%M%S')}-{secrets.token_hex(6).upper()}"
+    job_dir = JOBS / job_id
+    record = job_v2_base(job_id, "native", ["--recipe", recipe_id], certificate)
+    record.update({"active_work_order_id": active["active_work_order_id"],
+                   "work_order_contract_sha256": contract["contract_sha256"],
+                   "native_binding": {**binding, "registered_recipe_sha256": digest,
+                                      "prelive_id": prelive, "prelive_source_commit": head}})
+    job_dir.mkdir(parents=True, exist_ok=False, mode=0o700)
+    finalize_job(job_dir, record, "native")
+    emit("runner_native_submitted", job_id=job_id, recipe_id=recipe_id)
+    return job_dir
+
+
+def submit_native(recipe_id: object) -> Path:
+    RUNTIME.mkdir(parents=True, exist_ok=True)
+    with (RUNTIME / "native-submit.lock").open("a+", encoding="utf-8") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        return _submit_native_locked(recipe_id)
+
+
+def finalize_job(job_dir: Path, record: dict[str, Any], operation: str) -> None:
+    record["payload_sha256"] = hashlib.sha256(canonical(record)).hexdigest()
+    atomic_write(job_dir / "job.json", (json.dumps(record, sort_keys=True, indent=2, ensure_ascii=False) + "\n").encode("utf-8"))
+    admission_requests.bind_job(CURRENT_ADMISSION_REQUEST_ID, record["job_id"])
+    atomic_write(job_dir / "READY", (record["payload_sha256"] + "\n").encode("ascii"))
+    active_index.update(JOBS.parent, record["job_id"], "ready", operation)
 
 
 
 def submit(operation: str, arguments: list[str], certificate_sha256: str | None) -> Path:
     if operation not in OPERATIONS:
-        raise SystemExit(f"operation not allowed: {operation}")
+        reject("OPERATION_NOT_ALLOWED", operation)
     validate_arguments(operation, arguments)
     blocker = unresolved_change()
     if blocker and operation in {"worktree", "native", "publish", "courier"}:
-        raise SystemExit(f"CHANGE_RECOVERY_BLOCKS_SIDE_EFFECTS:{blocker}")
+        reject("CHANGE_RECOVERY_BLOCKS_SIDE_EFFECTS", blocker, safe_next_tool="mephc_status")
     if operation == "doctor":
         certificate = ""
     elif operation == "courier":
@@ -262,18 +366,15 @@ def submit(operation: str, arguments: list[str], certificate_sha256: str | None)
     else:
         certificate = select_environment_certificate(requested_sha256=certificate_sha256)
     if operation != "doctor" and not SHA64.fullmatch(certificate):
-        raise SystemExit("certificate SHA-256 is invalid")
+        reject("CERTIFICATE_SHA256_INVALID", safe_next_tool="mephc_doctor")
     job_id = f"MEPHC-JOB-{time.strftime('%Y%m%d-%H%M%S')}-{secrets.token_hex(6).upper()}"
     job_dir = JOBS / job_id
-    job_dir.mkdir(parents=True, exist_ok=False, mode=0o700)
     record: dict[str, Any] = job_v2_base(job_id, operation, arguments, certificate)
     binding = courier_binding(arguments) if operation == "courier" else None
     if binding is not None:
         record["courier_binding"] = binding
-    record["payload_sha256"] = hashlib.sha256(canonical(record)).hexdigest()
-    atomic_write(job_dir / "job.json", (json.dumps(record, sort_keys=True, indent=2, ensure_ascii=False) + "\n").encode("utf-8"))
-    atomic_write(job_dir / "READY", (record["payload_sha256"] + "\n").encode("ascii"))
-    active_index.update(JOBS.parent, job_id, "ready", operation)
+    job_dir.mkdir(parents=True, exist_ok=False, mode=0o700)
+    finalize_job(job_dir, record, operation)
     emit("runner_job_submitted", job_id=job_id, job_directory=str(job_dir), payload_sha256=record["payload_sha256"])
     return job_dir
 
@@ -348,15 +449,12 @@ def submit_retention_search(bindings: object) -> tuple[Path, bool]:
     certificate = select_environment_certificate(head)
     job_id = f"MEPHC-JOB-{time.strftime('%Y%m%d-%H%M%S')}-{secrets.token_hex(6).upper()}"
     job_dir = JOBS / job_id
-    job_dir.mkdir(parents=True, exist_ok=False, mode=0o700)
     record = job_v2_base(job_id, "retention_search", [], certificate)
-    record.update({"schema": "mephc-runner-job-v3", "retention_query": query,
+    record.update({"schema": "mephc-runner-job-v4" if CURRENT_ADMISSION_REQUEST_ID else "mephc-runner-job-v3", "retention_query": query,
                    "active_work_order_id": work_order_id, "query_sha256": query_sha,
                    "runner_build": runner_build})
-    record["payload_sha256"] = hashlib.sha256(canonical(record)).hexdigest()
-    atomic_write(job_dir / "job.json", (json.dumps(record, sort_keys=True, indent=2) + "\n").encode())
-    atomic_write(job_dir / "READY", (record["payload_sha256"] + "\n").encode("ascii"))
-    active_index.update(JOBS.parent, job_id, "ready", "retention_search")
+    job_dir.mkdir(parents=True, exist_ok=False, mode=0o700)
+    finalize_job(job_dir, record, "retention_search")
     emit("runner_retention_search_submitted", job_id=job_id, query_sha256=query_sha)
     return job_dir, False
 def git_ref(ref: str) -> str:
@@ -367,19 +465,19 @@ def git_ref(ref: str) -> str:
     completed = subprocess.run([*command, "rev-parse", ref], text=True, encoding="utf-8",
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=15)
     if completed.returncode:
-        raise SystemExit(f"cannot resolve MePhC {ref}: {completed.stderr.strip()}")
+        reject("SOURCE_REF_UNAVAILABLE", f"{ref}:{completed.stderr.strip()}", safe_next_tool="mephc_runtime_attest")
     return completed.stdout.strip()
 
 
 def change_path(value: object) -> Path:
     if not isinstance(value, str) or not value or "\x00" in value:
-        raise SystemExit("change path is invalid")
+        reject("CHANGE_PATH_INVALID", safe_next_tool="mephc_change")
     relative = Path(value)
     if relative.is_absolute() or ".." in relative.parts or relative.parts[:1] == (".relayctl",):
-        raise SystemExit("change path is outside the controlled source root")
+        reject("CHANGE_PATH_OUTSIDE_CONTROL_ROOT", safe_next_tool="mephc_change")
     target = config.CONTROL_ROOT / relative
     if target.is_symlink():
-        raise SystemExit("change symlink is forbidden")
+        reject("CHANGE_SYMLINK_FORBIDDEN", safe_next_tool="mephc_change")
     return target
 
 
@@ -388,25 +486,25 @@ def submit_change(change: dict[str, Any]) -> Path:
     if blocker:
         raise ChangeRejected("CHANGE_RECOVERY_BLOCKS_SIDE_EFFECTS", safe_next_tool="mephc_status")
     if not isinstance(change, dict) or set(change) != {"files", "tests", "commit_message"}:
-        raise SystemExit("change payload schema mismatch")
+        reject("CHANGE_PAYLOAD_SCHEMA_MISMATCH", safe_next_tool="mephc_change")
     files = change.get("files")
     if not isinstance(files, list) or not files:
-        raise SystemExit("change files must be non-empty")
+        reject("CHANGE_FILES_REQUIRED", safe_next_tool="mephc_change")
     records: list[dict[str, str]] = []
     noop_files: list[str] = []
     for item in files:
         if not isinstance(item, dict) or set(item) != {"path", "content_utf8"}:
-            raise SystemExit("invalid change file record")
+            reject("CHANGE_FILE_RECORD_INVALID", safe_next_tool="mephc_change")
         target = change_path(item["path"])
         content = item["content_utf8"]
         if not isinstance(content, str):
-            raise SystemExit("change content must be UTF-8 text")
+            reject("CHANGE_CONTENT_UTF8_REQUIRED", safe_next_tool="mephc_change")
         try:
             encoded = content.encode("utf-8")
         except UnicodeEncodeError as exc:
-            raise SystemExit("change content is not UTF-8") from exc
+            raise RunnerRequestRejected("CHANGE_CONTENT_UTF8_INVALID", safe_next_tool="mephc_change") from exc
         if target.exists() and not target.is_file():
-            raise SystemExit("change target must be a regular file")
+            reject("CHANGE_TARGET_NOT_REGULAR_FILE", safe_next_tool="mephc_change")
         preimage = hashlib.sha256(target.read_bytes()).hexdigest() if target.exists() else "MISSING"
         postimage = hashlib.sha256(encoded).hexdigest()
         if preimage == postimage:
@@ -419,19 +517,16 @@ def submit_change(change: dict[str, Any]) -> Path:
                              safe_next_tool="mephc_validate" if all_noop else "mephc_change")
     tests = change.get("tests")
     if not isinstance(tests, list) or not tests or not all(isinstance(value, str) for value in tests):
-        raise SystemExit("change tests must be non-empty")
+        reject("CHANGE_TESTS_REQUIRED", safe_next_tool="mephc_change")
     if not isinstance(change.get("commit_message"), str) or not change["commit_message"].strip():
-        raise SystemExit("change commit message is required")
+        reject("CHANGE_COMMIT_MESSAGE_REQUIRED", safe_next_tool="mephc_change")
     materialized = {"expected_main": git_ref("origin/main"), "files": records, "tests": tests, "commit_message": change["commit_message"]}
     job_id = f"MEPHC-JOB-{time.strftime('%Y%m%d-%H%M%S')}-{secrets.token_hex(6).upper()}"
     job_dir = JOBS / job_id
-    job_dir.mkdir(parents=True, exist_ok=False, mode=0o700)
     record = job_v2_base(job_id, "change", [], select_environment_certificate())
     record["change"] = materialized
-    record["payload_sha256"] = hashlib.sha256(canonical(record)).hexdigest()
-    atomic_write(job_dir / "job.json", (json.dumps(record, sort_keys=True, indent=2, ensure_ascii=False) + "\n").encode("utf-8"))
-    atomic_write(job_dir / "READY", (record["payload_sha256"] + "\n").encode("ascii"))
-    active_index.update(JOBS.parent, job_id, "ready", "change")
+    job_dir.mkdir(parents=True, exist_ok=False, mode=0o700)
+    finalize_job(job_dir, record, "change")
     emit("runner_job_submitted", job_id=job_id, job_directory=str(job_dir), payload_sha256=record["payload_sha256"])
     return job_dir
 
@@ -466,10 +561,10 @@ def read_state(job_id: str) -> dict[str, Any]:
     else:
         value = json.loads(path.read_text(encoding="utf-8"))
         if not isinstance(value, dict):
-            raise SystemExit(f"invalid state file: {path}")
+            reject("JOB_STATE_INVALID", path.name, safe_next_tool="mephc_status")
     directory = JOBS / job_id
     progress = None
-    for name in ("materializer-progress.json", "client-progress.json", "retention-progress.json"):
+    for name in ("materializer-progress.json", "client-progress.json", "retention-progress.json", "native-lifecycle.json"):
         candidate = directory / name
         if candidate.is_file():
             try:
@@ -503,6 +598,11 @@ def read_state(job_id: str) -> dict[str, Any]:
                    "safe_next_tool": value.get("safe_next_tool") or
                                      ("mephc_recover" if value.get("state") == "recovery_required" else
                                       "none" if terminal else "mephc_status")})
+    if progress and progress.get("schema") == "mephc-native-lifecycle-v1":
+        result["native_process_started"] = bool(progress.get("native_process_started"))
+        result["native_process_identity"] = {"platform":"wsl", "role":"registered_native_recipe",
+                                             "pid":progress.get("native_pid")}
+        result["native_command_sha256"] = progress.get("command_sha256")
     return result
 
 
@@ -522,7 +622,7 @@ def read_basic_state(job_id: str) -> dict[str, Any]:
                 "size_bytes": path.stat().st_size}
     value = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(value, dict):
-        raise SystemExit(f"invalid state file: {path}")
+        reject("JOB_STATE_INVALID", path.name, safe_next_tool="mephc_status")
     return value
 
 
@@ -636,14 +736,15 @@ def capabilities() -> dict[str, Any]:
     head = git_head()
     attestation = runtime_attestation.attest()
     certificate_status = environment_certificate_status(head)
-    return {"schema":"mephc-runner-capabilities-v4","project_id":"MEPHC",
+    return {"schema":"mephc-runner-capabilities-v5","project_id":"MEPHC",
             "control_root":config.CONTROL_ROOT_WINDOWS,"state_root":str(config.STATE_ROOT),
             "execution_root_policy":str(config.CHECKOUTS / "<commit-sha>"),
             "source_head":head,"execution_head":None,
             "admission_scope":{"kind":"exact_inherited_windows_cwd","root":config.CONTROL_ROOT_WINDOWS},
             "state_epoch":config.state_epoch(),"operations":sorted(OPERATIONS|{
                 "resume","transport_canary","validate","runtime_attest","runtime_reload",
-                "runtime_activate","retention_worker_reload","work_order_preflight"}),
+                "runtime_activate","retention_worker_reload","work_order_preflight",
+                "native_typed","request_status"}),
             "inspect_limits":{"default_bytes":16384,"max_bytes":65536},
             "retention_interface":{"search_deadline_seconds":config.RETENTION_SEARCH_TIMEOUT_SECONDS,
                                    "page_limit":200,"page_max_bytes":65536,
@@ -698,14 +799,29 @@ def work_order_preflight() -> dict[str, Any]:
         "retention.search", "retention.inspect", "runtime.attest", "runtime.reload", "runtime.activate",
         "runtime.retention_worker_reload",
         "source.change", "source.validate", "sandbox.publish", "workflow.report", "job.status", "job.recover",
+        "native.execute", "request.status",
     }
     required = set(contract["required_capabilities"])
     missing = sorted(required - available)
     conflicts = work_order_contract.authority_conflicts(contract)
     attestation = runtime_attestation.attest()
     certificate_status = environment_certificate_status()
+    try:
+        registry = json.loads(NATIVE_RECIPES.read_text(encoding="utf-8"))
+        registered = registry.get("recipes", {}) if isinstance(registry, dict) else {}
+    except (OSError, json.JSONDecodeError):
+        registered = {}
+    native_bindings = contract.get("native_recipes", [])
+    native_errors = []
+    for binding in native_bindings:
+        recipe = registered.get(binding["recipe_id"]) if isinstance(registered, dict) else None
+        if recipe is None:
+            native_errors.append({"recipe_id":binding["recipe_id"],"error_code":"WORK_ORDER_BLOCKED_MISSING_NATIVE_RECIPE"})
+        elif _recipe_digest(recipe) != binding["recipe_sha256"]:
+            native_errors.append({"recipe_id":binding["recipe_id"],"error_code":"NATIVE_RECIPE_HASH_MISMATCH"})
     status = ("AUTHORITY_CONFLICT_USER_CONSTRAINT_VS_WORK_ORDER" if conflicts else
               "WORK_ORDER_BLOCKED_MISSING_TYPED_CAPABILITY" if missing else
+              "WORK_ORDER_BLOCKED_MISSING_NATIVE_RECIPE" if native_errors else
               "RUNTIME_ATTESTATION_INCOHERENT" if not attestation["coherent"] else
               "ENVIRONMENT_CERTIFICATE_REQUIRED" if not certificate_status["valid"] else "READY")
     return {"schema":"mephc-work-order-preflight-v1","status":status,
@@ -713,8 +829,9 @@ def work_order_preflight() -> dict[str, Any]:
             "contract_mode":contract["contract_mode"],"required_capabilities":sorted(required),
             "available_capabilities":sorted(available),"missing_capabilities":missing,
             "authority_conflicts":conflicts,"runtime_attestation":attestation,
+            "native_recipe_preflight":{"registered_count":len(registered),"bindings":native_bindings,"errors":native_errors},
             "environment_certificate":certificate_status,"retry_allowed":False,
-            "safe_next_tool":"mephc_resume" if conflicts or missing else
+            "safe_next_tool":"mephc_resume" if conflicts or missing or native_errors else
                              attestation["safe_next_tool"] if not attestation["coherent"] else
                              certificate_status["safe_next_tool"] if not certificate_status["valid"] else "execute_work_order"}
 def resume() -> dict[str, Any]:
@@ -776,14 +893,14 @@ def request_recovery(job_id: str) -> None:
         if job.get("operation")=="change" and not permitted and not (directory/"change-journal.json").exists() and not (directory/"change-attestation.json").exists():
             prewrite_evidence=prewrite_recovery_evidence(directory,job)
             permitted=bool(prewrite_evidence.get("permitted"))
-    if not permitted: raise SystemExit(f"job is not recoverable: {value.get('state')};evidence={json.dumps(prewrite_evidence,sort_keys=True)}")
+    if not permitted: reject("JOB_RECOVERY_NOT_ALLOWED", str(value.get("state")), safe_next_tool="mephc_status")
     if value.get("state")=="failed" and job.get("operation")=="change":
         attempt=int(value.get("attempt",1))
         for name in ("materializer-recovery-state.json","broker-recovery-dispatch.json","MATERIALIZE_RECOVER_READY"):
             source=directory/name
             if source.exists():
                 archived=directory/f"{name}.attempt-{attempt}"
-                if archived.exists(): raise SystemExit(f"recovery attempt archive already exists: {archived.name}")
+                if archived.exists(): reject("RECOVERY_ARCHIVE_ALREADY_EXISTS", archived.name, safe_next_tool="mephc_status")
                 os.replace(source,archived)
     atomic_write(directory/"RECOVER",(time.strftime("%Y-%m-%dT%H:%M:%SZ",time.gmtime())+"\n").encode("ascii"))
     emit("runner_recovery_requested",job_id=job_id)
@@ -816,5 +933,9 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except RunnerRequestRejected as exc:
+        emit("runner_request_rejected", **exc.as_dict())
+        raise SystemExit(2)
 

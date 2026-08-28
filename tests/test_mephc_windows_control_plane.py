@@ -89,7 +89,7 @@ def test_admission_disconnect_policy_retries_only_read_only_tools():
     unknown = admission.disconnect_data(change, "request-token")
     assert unknown == {"error_code": "BACKEND_DISCONNECTED", "tool": "mephc_change",
                        "job_id": None, "admission_request_id": "request-token",
-                       "retry_allowed": False, "safe_next_tool": "mephc_capabilities"}
+                       "retry_allowed": False, "safe_next_tool": "mephc_request_status"}
     known = admission.disconnect_data(status, "status-token")
     assert known["job_id"] == "MEPHC-JOB-TEST" and known["safe_next_tool"] == "mephc_status"
     source = (ADMISSION / "mephc_admission.py").read_text(encoding="utf-8")
