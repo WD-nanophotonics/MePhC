@@ -1,0 +1,3276 @@
+{
+  "schema": "mephc_e9f_qp_b_c2_c3_r8_c3_r192_request_graph_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-C3-A1-20260828-307",
+  "base_sandbox_sha": "56f7e51a2cb910a7187d982366a492c9cb17bd09",
+  "expected_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "canonical_coordinate_unit": "1/144 of source-grid q coordinate",
+  "canonical_center_formula": "CENTER=(4*i,4*j)",
+  "canonical_stencil_offsets": {
+    "H72": [
+      "(+2,0)",
+      "(-2,0)",
+      "(0,+2)",
+      "(0,-2)"
+    ],
+    "H144": [
+      "(+1,0)",
+      "(-1,0)",
+      "(0,+1)",
+      "(0,-1)"
+    ]
+  },
+  "exact_request_key_fields": [
+    "fr",
+    "resolution",
+    "canonical_k_coordinate_units_1_over_144",
+    "source_model_identity",
+    "provider_configuration_identity",
+    "band_request_configuration"
+  ],
+  "cross_resolution_deduplication_allowed": false,
+  "logical_provider_demand_count_per_resolution": 72,
+  "unique_request_count_by_resolution": {
+    "R192": 70
+  },
+  "global_unique_provider_request_count": 70,
+  "duplicate_logical_demand_count": 2,
+  "logical_demands": [
+    {
+      "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -10,
+        "j": -3
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "CENTER",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -40,
+          "j": -12
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -40,
+        "j_units": -12,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -10,
+        "j": -3
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H72_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -38,
+          "j": -12
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -38,
+        "j_units": -12,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -10,
+        "j": -3
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H72_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -42,
+          "j": -12
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -42,
+        "j_units": -12,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -10,
+        "j": -3
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H72_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -40,
+          "j": -10
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -40,
+        "j_units": -10,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -10,
+        "j": -3
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H72_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -40,
+          "j": -14
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -40,
+        "j_units": -14,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -10,
+        "j": -3
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H144_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -39,
+          "j": -12
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -39,
+        "j_units": -12,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -10,
+        "j": -3
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H144_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -41,
+          "j": -12
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -41,
+        "j_units": -12,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -10,
+        "j": -3
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H144_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -40,
+          "j": -11
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -40,
+        "j_units": -11,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -10,
+        "j": -3
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H144_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -40,
+          "j": -13
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -40,
+        "j_units": -13,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 9
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "CENTER",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 36
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": 36,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 9
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H72_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -134,
+          "j": 36
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -134,
+        "j_units": 36,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 9
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H72_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -138,
+          "j": 36
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -138,
+        "j_units": 36,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 9
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H72_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 38
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": 38,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 9
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H72_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 34
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": 34,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 9
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H144_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -135,
+          "j": 36
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -135,
+        "j_units": 36,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 9
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H144_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -137,
+          "j": 36
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -137,
+        "j_units": 36,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 9
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H144_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 37
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": 37,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 9
+      },
+      "role": "CALIBRATION_CONTROL",
+      "resolution": "R192",
+      "point": "H144_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 35
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": 35,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+      "sample_grid": {
+        "i": -6,
+        "j": -1
+      },
+      "role": "STENCIL_DIAGNOSTIC",
+      "resolution": "R192",
+      "point": "CENTER",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -24,
+          "j": -4
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -24,
+        "j_units": -4,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+      "sample_grid": {
+        "i": -6,
+        "j": -1
+      },
+      "role": "STENCIL_DIAGNOSTIC",
+      "resolution": "R192",
+      "point": "H72_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -22,
+          "j": -4
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -22,
+        "j_units": -4,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+      "sample_grid": {
+        "i": -6,
+        "j": -1
+      },
+      "role": "STENCIL_DIAGNOSTIC",
+      "resolution": "R192",
+      "point": "H72_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -26,
+          "j": -4
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -26,
+        "j_units": -4,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+      "sample_grid": {
+        "i": -6,
+        "j": -1
+      },
+      "role": "STENCIL_DIAGNOSTIC",
+      "resolution": "R192",
+      "point": "H72_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -24,
+          "j": -2
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -24,
+        "j_units": -2,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+      "sample_grid": {
+        "i": -6,
+        "j": -1
+      },
+      "role": "STENCIL_DIAGNOSTIC",
+      "resolution": "R192",
+      "point": "H72_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -24,
+          "j": -6
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -24,
+        "j_units": -6,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+      "sample_grid": {
+        "i": -6,
+        "j": -1
+      },
+      "role": "STENCIL_DIAGNOSTIC",
+      "resolution": "R192",
+      "point": "H144_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -23,
+          "j": -4
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -23,
+        "j_units": -4,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+      "sample_grid": {
+        "i": -6,
+        "j": -1
+      },
+      "role": "STENCIL_DIAGNOSTIC",
+      "resolution": "R192",
+      "point": "H144_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -25,
+          "j": -4
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -25,
+        "j_units": -4,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+      "sample_grid": {
+        "i": -6,
+        "j": -1
+      },
+      "role": "STENCIL_DIAGNOSTIC",
+      "resolution": "R192",
+      "point": "H144_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -24,
+          "j": -3
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -24,
+        "j_units": -3,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+      "sample_grid": {
+        "i": -6,
+        "j": -1
+      },
+      "role": "STENCIL_DIAGNOSTIC",
+      "resolution": "R192",
+      "point": "H144_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -24,
+          "j": -5
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -24,
+        "j_units": -5,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -16
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "CENTER",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -64
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": -64,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -16
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -134,
+          "j": -64
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -134,
+        "j_units": -64,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -16
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -138,
+          "j": -64
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -138,
+        "j_units": -64,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -16
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -62
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": -62,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -16
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -66
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": -66,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -16
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -135,
+          "j": -64
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -135,
+        "j_units": -64,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -16
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -137,
+          "j": -64
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -137,
+        "j_units": -64,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -16
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -63
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": -63,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -16
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -65
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": -65,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "CENTER",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": -68,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -134,
+          "j": -68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -134,
+        "j_units": -68,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -138,
+          "j": -68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -138,
+        "j_units": -68,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -66
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": -66,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -70
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": -70,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -135,
+          "j": -68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -135,
+        "j_units": -68,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -137,
+          "j": -68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -137,
+        "j_units": -68,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -67
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": -67,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": -17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -69
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": -69,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "CENTER",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": 68,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -134,
+          "j": 68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -134,
+        "j_units": 68,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -138,
+          "j": 68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -138,
+        "j_units": 68,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 70
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": 70,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 66
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": 66,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -135,
+          "j": 68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -135,
+        "j_units": 68,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -137,
+          "j": 68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -137,
+        "j_units": 68,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 69
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": 69,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -34,
+        "j": 17
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 67
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -136,
+        "j_units": 67,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -5,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "CENTER",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -20,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -20,
+        "j_units": 0,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -5,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -18,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -18,
+        "j_units": 0,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -5,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -22,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -22,
+        "j_units": 0,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -5,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -20,
+          "j": 2
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -20,
+        "j_units": 2,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -5,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -20,
+          "j": -2
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -20,
+        "j_units": -2,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -5,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -19,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -19,
+        "j_units": 0,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -5,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -21,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -21,
+        "j_units": 0,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -5,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -20,
+          "j": 1
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -20,
+        "j_units": 1,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -5,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -20,
+          "j": -1
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -20,
+        "j_units": -1,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -4,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "CENTER",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -16,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -16,
+        "j_units": 0,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -4,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -14,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -14,
+        "j_units": 0,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -4,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -18,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -18,
+        "j_units": 0,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -4,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -16,
+          "j": 2
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -16,
+        "j_units": 2,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -4,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H72_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -16,
+          "j": -2
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -16,
+        "j_units": -2,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -4,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_PLUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -15,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -15,
+        "j_units": 0,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -4,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_MINUS_X",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -17,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -17,
+        "j_units": 0,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -4,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_PLUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -16,
+          "j": 1
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -16,
+        "j_units": 1,
+        "denominator": 144
+      }
+    },
+    {
+      "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "sample_grid": {
+        "i": -4,
+        "j": 0
+      },
+      "role": "POLICY_CHALLENGE",
+      "resolution": "R192",
+      "point": "H144_MINUS_Y",
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -16,
+          "j": -1
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "canonical_q_rational": {
+        "i_units": -16,
+        "j_units": -1,
+        "denominator": 144
+      }
+    }
+  ],
+  "unique_provider_requests": [
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -40,
+          "j": -12
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "CENTER"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -38,
+          "j": -12
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H72_PLUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -42,
+          "j": -12
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H72_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -40,
+          "j": -10
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H72_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -40,
+          "j": -14
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H72_MINUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -39,
+          "j": -12
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H144_PLUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -41,
+          "j": -12
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H144_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -40,
+          "j": -11
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H144_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -40,
+          "j": -13
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-10;grid_j=-3;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H144_MINUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 36
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "CENTER"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -134,
+          "j": 36
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H72_PLUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -138,
+          "j": 36
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H72_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 38
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H72_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 34
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H72_MINUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -135,
+          "j": 36
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H144_PLUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -137,
+          "j": 36
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H144_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 37
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H144_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 35
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=9;role=CALIBRATION_CONTROL;resolution=R192",
+          "point": "H144_MINUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -24,
+          "j": -4
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+          "point": "CENTER"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -22,
+          "j": -4
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+          "point": "H72_PLUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -26,
+          "j": -4
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+          "point": "H72_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -24,
+          "j": -2
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+          "point": "H72_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -24,
+          "j": -6
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+          "point": "H72_MINUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -23,
+          "j": -4
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+          "point": "H144_PLUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -25,
+          "j": -4
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+          "point": "H144_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -24,
+          "j": -3
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+          "point": "H144_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -24,
+          "j": -5
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-6;grid_j=-1;role=STENCIL_DIAGNOSTIC;resolution=R192",
+          "point": "H144_MINUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -64
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "CENTER"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -134,
+          "j": -64
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_PLUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -138,
+          "j": -64
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -62
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -66
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_MINUS_Y"
+        },
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -135,
+          "j": -64
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_PLUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -137,
+          "j": -64
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -63
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -65
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_MINUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "CENTER"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -134,
+          "j": -68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_PLUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -138,
+          "j": -68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -70
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_MINUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -135,
+          "j": -68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_PLUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -137,
+          "j": -68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -67
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": -69
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_MINUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "CENTER"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -134,
+          "j": 68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_PLUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -138,
+          "j": 68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 70
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 66
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_MINUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -135,
+          "j": 68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_PLUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -137,
+          "j": 68
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 69
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -136,
+          "j": 67
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-34;grid_j=17;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_MINUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -20,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "CENTER"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -18,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_PLUS_X"
+        },
+        {
+          "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -22,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -20,
+          "j": 2
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -20,
+          "j": -2
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_MINUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -19,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_PLUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -21,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -20,
+          "j": 1
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -20,
+          "j": -1
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_MINUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -16,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "CENTER"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -14,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_PLUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -16,
+          "j": 2
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -16,
+          "j": -2
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H72_MINUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -15,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_PLUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -17,
+          "j": 0
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_MINUS_X"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -16,
+          "j": 1
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_PLUS_Y"
+        }
+      ]
+    },
+    {
+      "request_key": {
+        "fr": 0,
+        "resolution": "R192",
+        "canonical_k_coordinate_units_1_over_144": {
+          "i": -16,
+          "j": -1
+        },
+        "source_model_identity": "FROZEN_QP_B_SOURCE_MODEL",
+        "provider_configuration_identity": "FROZEN_QP_B_PROVIDER_CONFIGURATION",
+        "band_request_configuration": "FROZEN_QP_B_LOCKED_BAND_REQUEST"
+      },
+      "logical_demand_refs": [
+        {
+          "pair_id": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+          "point": "H144_MINUS_Y"
+        }
+      ]
+    }
+  ],
+  "duplicate_relations": [
+    {
+      "resolution": "R192",
+      "left_pair": "fr=0;grid_i=-34;grid_j=-16;role=POLICY_CHALLENGE;resolution=R192",
+      "left_point": "H72_MINUS_Y",
+      "right_pair": "fr=0;grid_i=-34;grid_j=-17;role=POLICY_CHALLENGE;resolution=R192",
+      "right_point": "H72_PLUS_Y"
+    },
+    {
+      "resolution": "R192",
+      "left_pair": "fr=0;grid_i=-5;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "left_point": "H72_PLUS_X",
+      "right_pair": "fr=0;grid_i=-4;grid_j=0;role=POLICY_CHALLENGE;resolution=R192",
+      "right_point": "H72_MINUS_X"
+    }
+  ],
+  "mechanically_verified": {
+    "additional_exact_collisions": 0,
+    "all_solver_relevant_keys_equal_for_collisions": true,
+    "expected_collision_relations_match": true,
+    "each_unique_request_is_endpoint_or_center_of_locked_gate": true
+  },
+  "stage_a_status": "PASS",
+  "native_execution_started": false,
+  "mpb_execution_started": false
+}

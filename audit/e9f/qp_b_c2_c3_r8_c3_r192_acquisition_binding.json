@@ -1,0 +1,13 @@
+{
+  "schema": "mephc_e9f_qp_b_c2_c3_r8_c3_r192_acquisition_binding_v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-C3-A1-20260828-307",
+  "parent_dataset_id": "a2935beba40ef0c4b524198e6d2f44b93630bdff4c645e61a47d31187012b3db",
+  "parent_dataset_manifest_sha256": "55828e4a0eb6e24914807e42d13fa113457ce080ffe37c947b3c0cd7af1281d7",
+  "resolution": "R192",
+  "logical_provider_demand_count": 72,
+  "unique_provider_request_count": 70,
+  "duplicate_logical_demand_count": 2,
+  "holdout_used": false,
+  "third_stencil_executed": false,
+  "completion_state": "PENDING_NATIVE_ACQUISITION"
+}
