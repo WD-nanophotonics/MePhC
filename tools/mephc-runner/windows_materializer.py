@@ -14,6 +14,7 @@ CONTROL_ROOT = Path(r"C:\Users\icywo\PycharmProjects\MePhC-Windows")
 EXPECTED_ORIGIN_MAIN = "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5"
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
 ALLOWED_TOP = {"audit", "tests", "tools", "mephc", "scripts", "docs", ".codex", ".agents"}
+ADMISSION_REQUEST_ID = re.compile(r"^[0-9a-f]{32}$")
 
 
 class MaterializeError(RuntimeError):
@@ -88,9 +89,14 @@ def target_for(value: str) -> Path:
 def materialize(job_dir: Path) -> dict:
     progress(job_dir, "validating")
     job = json.loads((job_dir / "job.json").read_text(encoding="utf-8"))
-    if (job.get("schema") != "mephc-runner-job-v2" or job.get("operation") != "change"
+    schema = job.get("schema")
+    admission_binding_valid = (schema == "mephc-runner-job-v2"
+                               or (schema == "mephc-runner-job-v4"
+                                   and isinstance(job.get("admission_request_id"), str)
+                                   and ADMISSION_REQUEST_ID.fullmatch(job["admission_request_id"])))
+    if (not admission_binding_valid or job.get("operation") != "change"
             or job.get("expected_control_root", "").casefold() != str(CONTROL_ROOT).casefold()):
-        raise MaterializeError("CHANGE_JOB_V2_REQUIRED")
+        raise MaterializeError("CHANGE_JOB_SCHEMA_REQUIRED")
     base = job.get("source_commit")
     if not isinstance(base, str) or not SHA40.fullmatch(base) or git("rev-parse", "HEAD") != base:
         raise MaterializeError("HEAD_MOVED")

@@ -715,6 +715,48 @@ def test_broker_timeout_fault_injection_marks_recovery_without_replay(tmp_path, 
     assert calls[1][0:2] == ("transact", "CHANGE_MATERIALIZER_TIMEOUT")
 
 
+def test_windows_broker_accepts_admission_bound_v4_change(tmp_path):
+    broker = load("runner_windows_broker_v4_change", "windows_broker.py")
+    job_dir = tmp_path / "MEPHC-JOB-V4"; job_dir.mkdir()
+    record = {"schema": "mephc-runner-job-v4", "operation": "change", "project_id": "MEPHC",
+              "job_id": job_dir.name, "expected_control_root": str(broker.CONTROL_ROOT),
+              "admission_request_id": "a" * 32}
+    raw = json.dumps(record).encode("utf-8")
+    (job_dir / "job.json").write_bytes(raw)
+    marker = job_dir / "MATERIALIZE_READY"
+    marker.write_text(json.dumps({"mode": "transact", "job_sha256": hashlib.sha256(raw).hexdigest()}),
+                      encoding="utf-8")
+    assert broker.validate(job_dir, marker, "transact")["schema"] == "mephc-runner-job-v4"
+    record["admission_request_id"] = "invalid"
+    raw = json.dumps(record).encode("utf-8"); (job_dir / "job.json").write_bytes(raw)
+    marker.write_text(json.dumps({"mode": "transact", "job_sha256": hashlib.sha256(raw).hexdigest()}),
+                      encoding="utf-8")
+    with pytest.raises(RuntimeError, match="CHANGE_BROKER_VALIDATION_FAILED"):
+        broker.validate(job_dir, marker, "transact")
+
+
+def test_windows_materializer_accepts_only_v2_or_admission_bound_v4(tmp_path, monkeypatch):
+    materializer = load("runner_windows_materializer_v4_change", "windows_materializer.py")
+    job_dir = tmp_path / "job"; job_dir.mkdir()
+    monkeypatch.setattr(materializer, "CONTROL_ROOT", tmp_path)
+    monkeypatch.setattr(materializer, "git", lambda *args, **_kwargs: "")
+    base = {"operation": "change", "expected_control_root": str(tmp_path), "source_commit": "a" * 40}
+    for schema, request_id, accepted in (("mephc-runner-job-v2", None, True),
+                                         ("mephc-runner-job-v4", "b" * 32, True),
+                                         ("mephc-runner-job-v4", "bad", False),
+                                         ("mephc-runner-job-v3", None, False)):
+        record = {**base, "schema": schema}
+        if request_id is not None:
+            record["admission_request_id"] = request_id
+        (job_dir / "job.json").write_text(json.dumps(record), encoding="utf-8")
+        with pytest.raises(materializer.MaterializeError) as error:
+            materializer.materialize(job_dir)
+        if accepted:
+            assert str(error.value) == "HEAD_MOVED"
+        else:
+            assert str(error.value) == "CHANGE_JOB_SCHEMA_REQUIRED"
+
+
 def test_recovery_without_journal_never_replays_materialize(tmp_path, monkeypatch):
     materializer = load("runner_windows_materializer_recovery", "windows_materializer.py")
     job = tmp_path / "job"; job.mkdir()

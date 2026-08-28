@@ -15,6 +15,7 @@ import subprocess
 import sys
 import time
 import secrets
+import re
 from pathlib import Path
 
 CONTROL_ROOT = Path(r"C:\Users\icywo\PycharmProjects\MePhC-Windows")
@@ -26,6 +27,7 @@ WORKER_HEALTH = RUNTIME / "broker-worker-health.json"
 LOCK = RUNTIME / "broker.lock"
 MATERIALIZER = RUNTIME / "windows_materializer.py"
 TIMEOUT_SECONDS = int(os.environ.get("MEPHC_MATERIALIZER_TIMEOUT_SECONDS", "300"))
+ADMISSION_REQUEST_ID = re.compile(r"^[0-9a-f]{32}$")
 if os.name == "nt":
     import msvcrt
     KERNEL32 = ctypes.WinDLL("kernel32", use_last_error=True)
@@ -142,7 +144,12 @@ def validate(job_dir: Path, marker: Path, mode: str) -> dict:
     job_raw = (job_dir / "job.json").read_bytes()
     request = json.loads(marker.read_text(encoding="utf-8"))
     job = json.loads(job_raw)
-    if (job.get("schema") != "mephc-runner-job-v2" or job.get("operation") != "change"
+    schema = job.get("schema")
+    admission_binding_valid = (schema == "mephc-runner-job-v2"
+                               or (schema == "mephc-runner-job-v4"
+                                   and isinstance(job.get("admission_request_id"), str)
+                                   and ADMISSION_REQUEST_ID.fullmatch(job["admission_request_id"])))
+    if (not admission_binding_valid or job.get("operation") != "change"
             or job.get("project_id") != "MEPHC" or job.get("job_id") != job_dir.name
             or str(job.get("expected_control_root", "")).casefold() != str(CONTROL_ROOT).casefold()
             or request.get("mode") != mode
