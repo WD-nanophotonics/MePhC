@@ -262,3 +262,16 @@ def test_science_cli_exposes_only_fixed_actions() -> None:
     assert parser.parse_args(["science-analyze"]).command == "science-analyze"
     assert parser.parse_args(["science-status", "MEPHC-SCIENCE-abcdef"]).job_id.startswith("MEPHC-SCIENCE-")
     assert parser.parse_args(["dataset-verify", "a" * 64]).dataset_id == "a" * 64
+
+
+def test_science_selftest_accepts_bounded_mpb_logs_before_final_json(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope = paths(tmp_path)
+    head = "a" * 40
+    monkeypatch.setattr(flow, "require_source", lambda *_args, **_kwargs: {"head": head})
+    monkeypatch.setattr(flow, "ensure_checkout", lambda *_args, **_kwargs: f"/home/icy/checkouts/{head}")
+    payload = {"schema": "mephc-science-runtime-certification-v1", "runtime_sha256": "b" * 64}
+    output = "Initializing eigensolver\nfrequency progress\n" + json.dumps(payload) + "\n"
+    monkeypatch.setattr(flow, "wsl", lambda *_args, **_kwargs: subprocess.CompletedProcess([], 0, output, ""))
+    result = flow.science_selftest(scope, mpb_smoke=True)
+    assert result["runtime_sha256"] == "b" * 64
+    assert result["stdout_size_bytes"] == len(output.encode("utf-8"))

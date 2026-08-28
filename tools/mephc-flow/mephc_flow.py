@@ -349,11 +349,20 @@ def science_selftest(paths: Paths, *, mpb_smoke: bool) -> dict[str, Any]:
     result = wsl(argv, cwd=checkout, timeout=3600, check=False)
     if result.returncode:
         raise FlowError("SCIENCE_RUNTIME_SELFTEST_FAILED", (result.stderr or result.stdout)[-8000:])
+    lines = [line for line in result.stdout.splitlines() if line.strip()]
     try:
-        value = json.loads(result.stdout)
+        value = json.loads(lines[-1]) if lines else None
     except json.JSONDecodeError as exc:
         raise FlowError("SCIENCE_RUNTIME_SELFTEST_OUTPUT_INVALID") from exc
-    return {**value, "source_commit": source["head"], "execution_checkout": checkout}
+    if not isinstance(value, dict):
+        raise FlowError("SCIENCE_RUNTIME_SELFTEST_OUTPUT_INVALID")
+    return {
+        **value, "source_commit": source["head"], "execution_checkout": checkout,
+        "stdout_sha256": sha256_bytes(result.stdout.encode("utf-8")),
+        "stdout_size_bytes": len(result.stdout.encode("utf-8")),
+        "stderr_sha256": sha256_bytes(result.stderr.encode("utf-8")),
+        "stderr_size_bytes": len(result.stderr.encode("utf-8")),
+    }
 
 
 def science_preflight(paths: Paths) -> dict[str, Any]:
