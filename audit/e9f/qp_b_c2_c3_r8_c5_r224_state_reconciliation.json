@@ -1,0 +1,51 @@
+{
+  "schema": "mephc-r8-c5-r224-state-reconciliation-v1",
+  "work_order_id": "MEPHC-E9F-C2-QP-B-C2-C3-R8-C5-I1-20260828-313",
+  "reconciliation_status": "VERIFIED_COMPLETE_DATASET_RESULT_RECOVERED",
+  "source_commit": "f9e4561e34423c5d90389c7a54f40bf59c057718",
+  "native_rerun": false,
+  "mpb_retry": false,
+  "recomputation": false,
+  "science_job": {
+    "job_id": "MEPHC-SCIENCE-cf2ae60c39d65d2fe9d733de",
+    "state": "succeeded",
+    "action": "acquire",
+    "native_run_id": "MEPHC-NATIVE-7f463479e470b790e77940df",
+    "record_sha256": "5507f405617bd14408a10f9765ce3280cb722a054646ea2717caebca688a9697"
+  },
+  "native_result": {
+    "state": "succeeded",
+    "process_started": true,
+    "return_code": 0,
+    "launcher_return_code": 0,
+    "cost": 1,
+    "record_sha256": "c45a46549304109304b99388322fd177994ef33e49fa715049a4c42df3bbef40"
+  },
+  "dataset": {
+    "namespace_sha256": "d247bf45c563c62625788514434d2904042ce639cb4bf817817f15c64b9fe7df",
+    "acquisition_dataset_id": "df64679167793d7797330d234c3d7ec7525070d6699066aa609409a121af6d3e",
+    "acquisition_manifest_sha256": "0a32c402376bb11ab88e772fa8c40d695e11e8dea6645087a7410bb9bfd37335",
+    "dataset_id": "574097e09e10a4dcd951b068eeef89dc208899600656a525bed265e790c168cd",
+    "dataset_manifest_sha256": "dd913ff7b640e911363c28b3f471a521cc0fea86d7a616a4fb26ab562fcb8bdd",
+    "completion_state": "COMPLETE",
+    "record_count": 35,
+    "json_record_count": 35,
+    "payload_count": 35,
+    "resolution": "R224",
+    "acquisition_source_commit": "f9e4561e34423c5d90389c7a54f40bf59c057718"
+  },
+  "file_integrity": {
+    "acquisition_manifest_file_sha256": "f9cf2317a39fe9b61cc7219c6febe5b784a994cbe19f13bcdc5975a051071d47",
+    "dataset_manifest_file_sha256": "1a8f7471f92c0205240fb96c989447b6a1f39b980be1d4cd232933fb7cdc0f66"
+  },
+  "result_summary_projection": {
+    "status": "AUTHORITATIVE_NESTED_NATIVE_RESULT",
+    "native_invocation_count": 1,
+    "provider_request_count": 35,
+    "native_solves": 35,
+    "failed_key_count": 0,
+    "provider_failure_count": 0,
+    "cache_reuse_count": 0,
+    "mpb_execution": true
+  }
+}

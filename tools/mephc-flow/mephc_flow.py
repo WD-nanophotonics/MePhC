@@ -601,6 +601,57 @@ def scalar_result(value: Any) -> bool:
     return False
 
 
+def closeout_result_projection(job: dict[str, Any]) -> dict[str, Any]:
+    """Return the authoritative bounded result fields for closeout reporting.
+
+    Acquire science jobs persist the Native record under ``result``.  The
+    science-job envelope is not itself a Native result and must not be used
+    to infer execution metrics.  Analyze jobs retain their historical
+    top-level result summary and continue through the existing projection.
+    """
+    if job.get("action") != "acquire":
+        result_summary = job.get("result_summary", {})
+        if not isinstance(result_summary, dict):
+            raise FlowError("CLOSEOUT_RESULT_SUMMARY_INVALID")
+        return {
+            "return_code": job.get("return_code"),
+            "native_invocation_count": job.get("native_invocation_count",
+                                              result_summary.get("native_invocation_count", 0)),
+            "provider_executions": job.get("provider_executions",
+                                            result_summary.get("provider_request_count", 0)),
+            "solver_executions": job.get("solver_executions",
+                                          result_summary.get("native_solves", 0)),
+            "result_summary": result_summary,
+        }
+
+    native_run_id = job.get("native_run_id")
+    if not isinstance(native_run_id, str) or not native_run_id.startswith("MEPHC-NATIVE-"):
+        raise FlowError("CLOSEOUT_ACQUIRE_NATIVE_RUN_ID_MISSING")
+    native = job.get("result")
+    if not isinstance(native, dict) or native.get("run_id") != native_run_id:
+        raise FlowError("CLOSEOUT_ACQUIRE_NATIVE_RESULT_MISSING")
+    if native.get("state") != "succeeded":
+        raise FlowError("CLOSEOUT_ACQUIRE_NATIVE_RESULT_NOT_SUCCEEDED")
+    if native.get("process_started") is not True:
+        raise FlowError("CLOSEOUT_ACQUIRE_NATIVE_PROCESS_NOT_STARTED")
+    if native.get("return_code") != 0 or native.get("launcher_return_code") != 0:
+        raise FlowError("CLOSEOUT_ACQUIRE_NATIVE_RETURN_CODE_INVALID")
+    result_summary = native.get("result_summary")
+    if not isinstance(result_summary, dict):
+        raise FlowError("CLOSEOUT_ACQUIRE_RESULT_SUMMARY_MISSING")
+    if native.get("work_order_id") != job.get("work_order_id"):
+        raise FlowError("CLOSEOUT_ACQUIRE_NATIVE_WORK_ORDER_MISMATCH")
+    if native.get("source_commit") != job.get("source_commit"):
+        raise FlowError("CLOSEOUT_ACQUIRE_NATIVE_SOURCE_MISMATCH")
+    return {
+        "return_code": native["return_code"],
+        "native_invocation_count": native.get("cost", 0),
+        "provider_executions": result_summary.get("provider_request_count", 0),
+        "solver_executions": result_summary.get("native_solves", 0),
+        "result_summary": result_summary,
+    }
+
+
 def report_artifacts(paths: Paths, order_text: str, head: str) -> list[dict[str, Any]]:
     contract = machine_contract(order_text)
     allowed = contract.get("allowed_writes", []) if isinstance(contract, dict) else []
@@ -637,9 +688,11 @@ def canonical_closeout_report(paths: Paths, *, blocked_code: str | None = None) 
     job = successful_science_job(paths, order["work_order_id"], source["head"])
     if blocked_code is None and work_class == "SCIENCE" and job is None:
         raise FlowError("CLOSEOUT_SUCCESSFUL_JOB_REQUIRED", safe_next="science-status")
-    result_summary = job.get("result_summary", {}) if isinstance(job, dict) else {}
-    if not isinstance(result_summary, dict):
-        raise FlowError("CLOSEOUT_RESULT_SUMMARY_INVALID")
+    projection = closeout_result_projection(job) if isinstance(job, dict) else {
+        "return_code": None, "native_invocation_count": 0,
+        "provider_executions": 0, "solver_executions": 0, "result_summary": {},
+    }
+    result_summary = projection["result_summary"]
     artifacts = report_artifacts(paths, order["text"], source["head"])
     lines = [
         "SCHEMA=mephc-fixed-closeout-v1",
@@ -660,10 +713,11 @@ def canonical_closeout_report(paths: Paths, *, blocked_code: str | None = None) 
         lines.extend([
             f"SCIENCE_JOB_ID={job.get('job_id')}", f"SCIENCE_JOB_STATE={job.get('state')}",
             f"SCIENCE_SOURCE_SHA={job.get('source_commit')}",
-            f"SCIENCE_ACTION={job.get('action')}", f"SCIENCE_RETURN_CODE={job.get('return_code')}",
-            f"NATIVE_INVOCATION_COUNT={job.get('native_invocation_count', result_summary.get('native_invocation_count', 0))}",
-            f"PROVIDER_EXECUTION_COUNT={job.get('provider_executions', result_summary.get('provider_request_count', 0))}",
-            f"SOLVER_EXECUTION_COUNT={job.get('solver_executions', result_summary.get('native_solves', 0))}",
+            f"SCIENCE_ACTION={job.get('action')}",
+            f"SCIENCE_RETURN_CODE={projection['return_code']}",
+            f"NATIVE_INVOCATION_COUNT={projection['native_invocation_count']}",
+            f"PROVIDER_EXECUTION_COUNT={projection['provider_executions']}",
+            f"SOLVER_EXECUTION_COUNT={projection['solver_executions']}",
         ])
     for key in sorted(result_summary):
         value = result_summary[key]

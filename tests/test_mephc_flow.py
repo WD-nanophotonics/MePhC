@@ -318,6 +318,100 @@ def test_canonical_closeout_is_bounded_and_path_free(tmp_path: Path, monkeypatch
     assert "attachments" not in text.lower()
 
 
+def acquire_job_for_projection(**native_updates: object) -> dict:
+    native = {
+        "run_id": "MEPHC-NATIVE-test",
+        "state": "succeeded",
+        "process_started": True,
+        "return_code": 0,
+        "launcher_return_code": 0,
+        "cost": 1,
+        "work_order_id": "MEPHC-TEST-WORK-ORDER-0001",
+        "source_commit": "a" * 40,
+        "result_summary": {
+            "schema": "mephc-r8-c5-r224-acquisition-v1",
+            "provider_request_count": 35,
+            "native_solves": 35,
+        },
+    }
+    native.update(native_updates)
+    return {
+        "action": "acquire",
+        "work_order_id": "MEPHC-TEST-WORK-ORDER-0001",
+        "source_commit": "a" * 40,
+        "native_run_id": "MEPHC-NATIVE-test",
+        "result": native,
+    }
+
+
+def test_closeout_result_projection_uses_nested_acquire_native_result() -> None:
+    projection = flow.closeout_result_projection(acquire_job_for_projection())
+    assert projection["return_code"] == 0
+    assert projection["native_invocation_count"] == 1
+    assert projection["provider_executions"] == 35
+    assert projection["solver_executions"] == 35
+    assert projection["result_summary"]["schema"] == "mephc-r8-c5-r224-acquisition-v1"
+
+
+@pytest.mark.parametrize(
+    ("updates", "code"),
+    [
+        ({"native_run_id": None}, "CLOSEOUT_ACQUIRE_NATIVE_RUN_ID_MISSING"),
+        ({"process_started": False}, "CLOSEOUT_ACQUIRE_NATIVE_PROCESS_NOT_STARTED"),
+        ({"return_code": 1}, "CLOSEOUT_ACQUIRE_NATIVE_RETURN_CODE_INVALID"),
+        ({"state": "failed"}, "CLOSEOUT_ACQUIRE_NATIVE_RESULT_NOT_SUCCEEDED"),
+        ({"result_summary": None}, "CLOSEOUT_ACQUIRE_RESULT_SUMMARY_MISSING"),
+    ],
+)
+def test_closeout_result_projection_rejects_non_authoritative_acquire_state(
+        updates: dict[str, object], code: str) -> None:
+    job = acquire_job_for_projection()
+    if "native_run_id" in updates:
+        job["native_run_id"] = updates["native_run_id"]
+    else:
+        job["result"].update(updates)
+    with pytest.raises(flow.FlowError, match=code):
+        flow.closeout_result_projection(job)
+
+
+def test_closeout_result_projection_preserves_analyze_top_level_result() -> None:
+    job = {
+        "action": "analyze",
+        "return_code": 0,
+        "result_summary": {"decision": "PASS", "provider_request_count": 0, "native_solves": 0},
+    }
+    projection = flow.closeout_result_projection(job)
+    assert projection["return_code"] == 0
+    assert projection["result_summary"]["decision"] == "PASS"
+
+
+def test_canonical_closeout_reports_nested_acquire_metrics(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope = paths(tmp_path)
+    head = "a" * 40
+    work_order_id = "MEPHC-TEST-WORK-ORDER-0001"
+    order_text = ("NEXT_WORK_ORDER_ID=" + work_order_id + "\nWORK_ORDER_CLASS=SCIENCE\n"
+                  'WORK_ORDER_CONTRACT_JSON={"kind":"SCIENCE","allowed_writes":[]}\n')
+    monkeypatch.setattr(flow, "require_source", lambda *_args, **_kwargs: {
+        "branch": "sandbox", "head": head, "origin_main": flow.EXPECTED_MAIN,
+        "origin_sandbox": head, "dirty": False,
+    })
+    monkeypatch.setattr(flow, "active_work_order", lambda _paths: {
+        "work_order_id": work_order_id, "text": order_text,
+    })
+    write_json(scope.state / "publish" / f"{head}.json", {
+        "return_code": 0, "published_sandbox": head, "tests": ["tests/test_mephc_flow.py"],
+    })
+    job = acquire_job_for_projection()
+    job.update({"job_id": "MEPHC-SCIENCE-test", "state": "succeeded"})
+    write_json(scope.state / "science-jobs" / "MEPHC-SCIENCE-test.json", job)
+    text = flow.canonical_closeout_report(scope)["message"].decode("utf-8")
+    assert "SCIENCE_RETURN_CODE=0" in text
+    assert "NATIVE_INVOCATION_COUNT=1" in text
+    assert "PROVIDER_EXECUTION_COUNT=35" in text
+    assert "SOLVER_EXECUTION_COUNT=35" in text
+
+
 def test_infrastructure_closeout_uses_publish_evidence_without_science_job(
         tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     scope = paths(tmp_path)
