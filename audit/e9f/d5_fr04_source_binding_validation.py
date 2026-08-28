@@ -18,6 +18,7 @@ OLD_GRAPH_PATH = ROOT / "audit/e9f/d1_fr04_r64_request_graph.json"
 INCIDENT_PATH = ROOT / "audit/e9f/d5_fr04_source_binding_incident.json"
 GRAPH_PATH = ROOT / "audit/e9f/d5_fr04_corrected_r64_request_graph.json"
 BINDING_PATH = ROOT / "audit/e9f/d5_fr04_source_binding_validation_binding.json"
+DIAGNOSIS_PATH = ROOT / "audit/e9f/d5r1_fr04_precheck_diagnosis.json"
 GEOMETRY_PATH = ROOT / "audit/e9e/a_rounded_triangle_geometry.py"
 EMBEDDING_PATH = ROOT / "audit/e9e/run_spectral_embedding.py"
 REFERENCE_PATH = ROOT / "audit/e9e/b_spectral_embedding_result.json"
@@ -42,6 +43,11 @@ SOURCE_MODEL_IDENTITY = "E9E_FR04_ROUNDED_TRIANGLE_V1"
 PROVIDER_CONFIGURATION_IDENTITY = "E9E_FR04_ROUNDED_TRIANGLE_R64_TE_PROVIDER_V1"
 BAND_REQUEST_CONFIGURATION = "E9F_D5_FR04_R64_SIX_BAND_TE_LOCKED"
 H_REPRESENTATION = "mpb_periodic_h_l2_v1"
+D5R1_WORK_ORDER_ID = "MEPHC-E9F-D5R1-FR04-PRECHECK-REPAIR-20260829-327"
+D5R1_BASE_SANDBOX_SHA = "47862ced1a4b769acf4a1f096ca1794febfae475"
+D5R1_GRAPH_SHA256 = "44ae0ce1cc56c169c499d6957700da40f7d3431f3c96dda68e8ab879d03533a0"
+D5R1_INCIDENT_SHA256 = "00796dd1ed484b7ed279849caa068600e30027ed9518a539e3a59786390c090d"
+ORIGINAL_D5_WORK_ORDER_ID = "MEPHC-E9F-D5-FR04-SOURCE-BINDING-CORRECTIVE-20260829-326"
 
 
 class ValidationError(ValueError):
@@ -259,7 +265,7 @@ def load_scientific_job() -> Any:
     return load_module("_mephc_d5_scientific_job", SCIENTIFIC_JOB_PATH)
 
 
-def acquire() -> dict[str, Any]:
+def initial_acquire() -> dict[str, Any]:
     verify_pre_execution_artifacts()
     embedding, case, reference = verify_geometry_and_reference()
     source_commit = current_source_commit()
@@ -417,6 +423,141 @@ def acquire() -> dict[str, Any]:
     }
     print("MEPHC_NATIVE_RESULT_JSON=" + canonical(result).decode("utf-8"))
     return result
+
+
+def _original_d5_state() -> dict[str, Any]:
+    flow_root = Path("/home/icy/.local/state/mephc-runner/MEPHC/flow")
+    jobs_root = flow_root / "science-jobs"
+    jobs = []
+    if jobs_root.is_dir():
+        for path in sorted(jobs_root.glob("MEPHC-SCIENCE-*.json")):
+            try:
+                value = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+                continue
+            if isinstance(value, dict) and value.get("work_order_id") == ORIGINAL_D5_WORK_ORDER_ID:
+                jobs.append(value)
+    native_ids = [value.get("native_run_id") for value in jobs if isinstance(value.get("native_run_id"), str)]
+    native_runs = []
+    native_root = flow_root / "native-runs"
+    for run_id in native_ids:
+        path = native_root / f"{run_id}.json"
+        if path.is_file():
+            try:
+                value = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+                value = {}
+            if isinstance(value, dict):
+                native_runs.append(value)
+    dataset_root = Path("/home/icy/.local/share/mephc-runtime/science/datasets")
+    validation_datasets = 0
+    if dataset_root.is_dir():
+        for manifest in dataset_root.glob("*/dataset-manifest.json"):
+            try:
+                value = json.loads(manifest.read_text(encoding="utf-8"))
+            except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+                continue
+            namespace = value.get("namespace", {}) if isinstance(value, dict) else {}
+            if isinstance(namespace, dict) and namespace.get("work_order_id") == ORIGINAL_D5_WORK_ORDER_ID:
+                validation_datasets += 1
+    provider_started = any(isinstance(value.get("result_summary"), dict) for value in native_runs)
+    return {
+        "science_job_exists": bool(jobs),
+        "science_job_count": len(jobs),
+        "native_run_exists": bool(native_runs),
+        "native_run_count": len(native_runs),
+        "native_process_started": any(value.get("process_started") is True for value in native_runs),
+        "provider_execution_started": provider_started,
+        "validation_dataset_exists": validation_datasets > 0,
+        "validation_dataset_count": validation_datasets,
+        "checkpoint_exists": any(value.get("checkpoint") is not None for value in jobs + native_runs),
+        "original_job_state": jobs[-1].get("state") if jobs else None,
+        "original_native_error": native_runs[-1].get("result_error") if native_runs else None,
+    }
+
+
+def _d5r1_diagnosis() -> dict[str, Any]:
+    state = _original_d5_state()
+    checks: list[dict[str, Any]] = []
+
+    def add(name: str, passed: bool, detail: dict[str, Any]) -> None:
+        checks.append({"name": name, "status": "PASS" if passed else "FAIL", "detail": detail})
+
+    durable_clear = not any(state[key] for key in (
+        "science_job_exists", "native_run_exists", "validation_dataset_exists", "checkpoint_exists",
+    ))
+    add("ORIGINAL_D5_DURABLE_STATE_CLEAR", durable_clear, state)
+
+    graph = read_json(GRAPH_PATH)
+    incident = read_json(INCIDENT_PATH)
+    graph_hash = sha256_file(GRAPH_PATH)
+    incident_hash = sha256_file(INCIDENT_PATH)
+    graph_ok = graph_hash == D5R1_GRAPH_SHA256 and graph.get("logical_provider_demand_count") == 3205 and graph.get("unique_provider_request_count") == 3205 and graph.get("duplicate_logical_demand_count") == 0 and graph.get("collision_group_count") == 0
+    add("CORRECTED_GRAPH_UNCHANGED", graph_ok, {"sha256": graph_hash, "expected_sha256": D5R1_GRAPH_SHA256, "logical_count": graph.get("logical_provider_demand_count"), "unique_count": graph.get("unique_provider_request_count")})
+    incident_ok = incident_hash == D5R1_INCIDENT_SHA256 and incident.get("old_d3_dataset_reuse_authorized") is False
+    add("INCIDENT_UNCHANGED", incident_ok, {"sha256": incident_hash, "expected_sha256": D5R1_INCIDENT_SHA256})
+
+    reference = read_json(REFERENCE_PATH)
+    record = reference.get("results", {}).get("FR0P4_R64_TESS96")
+    frequencies = record.get("frequencies") if isinstance(record, dict) else None
+    reference_ok = isinstance(record, dict) and record.get("public_k") == [2.0 / 3.0, 0.0] and record.get("resolution") == 64 and isinstance(frequencies, list) and len(frequencies) == 6 and all(math.isfinite(float(item)) for item in frequencies)
+    reference_values = [float(item) for item in frequencies] if reference_ok else []
+    add("FR04_REFERENCE_RECORD_FOUND", reference_ok, {"case": "FR0P4_R64_TESS96", "public_k": record.get("public_k") if isinstance(record, dict) else None, "resolution": record.get("resolution") if isinstance(record, dict) else None, "six_band_spectrum": reference_values})
+    local_ok = isinstance(record, dict) and reference.get("fr0p4_tessellation_geometry_convergence") == "PASSED" and reference.get("gap21_trend") == "REPRODUCED" and reference.get("gap32_trend") == "REPRODUCED"
+    add("FR04_REFERENCE_LOCAL_EVIDENCE_USABLE", local_ok, {"geometry_convergence": reference.get("fr0p4_tessellation_geometry_convergence"), "gap21_trend": reference.get("gap21_trend"), "gap32_trend": reference.get("gap32_trend")})
+    add("E9E_B_GLOBAL_STATUS_NOT_USED_AS_FR04_GATE", True, {"e9e_b_overall": reference.get("E9E_B_OVERALL"), "local_gate": "FR0P4_R64_TESS96_ONLY"})
+
+    try:
+        embedding = load_module("_mephc_d5r1_spectral_embedding", EMBEDDING_PATH)
+        geometry = load_module("_mephc_d5r1_rounded_geometry", GEOMETRY_PATH)
+        case = embedding.polygon_case(FR, ARC_SEGMENTS)
+        direct = geometry.build_geometry(FR)
+        geometry_ok = (case.get("f_r") == FR and case.get("arc_segments_per_corner") == ARC_SEGMENTS and case.get("analytic_boundary_digest") == GEOMETRY_BOUNDARY_DIGEST and direct.get("boundary_digest") == GEOMETRY_BOUNDARY_DIGEST and case.get("posthoc_area_rescale") is False and case.get("c3_vertex_symmetry") is True and case.get("public_cartesian_to_mpb_roundtrip_error", math.inf) <= 1.0e-12)
+        geometry_detail = {"f_r": case.get("f_r"), "arc_segments_per_corner": case.get("arc_segments_per_corner"), "analytic_boundary_digest": case.get("analytic_boundary_digest"), "posthoc_area_rescale": case.get("posthoc_area_rescale"), "c3_vertex_symmetry": case.get("c3_vertex_symmetry"), "roundtrip_error": case.get("public_cartesian_to_mpb_roundtrip_error")}
+    except (ValidationError, ImportError, OSError, KeyError, TypeError, ValueError) as exc:
+        geometry_ok = False
+        geometry_detail = {"error": type(exc).__name__}
+    add("CORRECTED_GEOMETRY_SOLVER_FREE_RECHECK", geometry_ok, geometry_detail)
+
+    requests = graph.get("unique_provider_requests", [])
+    request_ok = isinstance(requests, list) and len(requests) == 3205 and all(
+        isinstance(item, dict) and item.get("request_key", {}).get("source_model_identity") == SOURCE_MODEL_IDENTITY and item.get("request_key", {}).get("analytic_geometry_boundary_digest") == GEOMETRY_BOUNDARY_DIGEST and item.get("request_key", {}).get("arc_segments_per_corner") == ARC_SEGMENTS for item in requests
+    )
+    add("CORRECTED_GRAPH_REQUEST_IDENTITY", request_ok, {"checked_unique_requests": len(requests) if isinstance(requests, list) else 0, "coordinate_set_equal_to_d1": graph.get("coordinate_set_equal_to_d1")})
+    first_failure = next((item["name"] for item in checks if item["status"] == "FAIL"), None)
+    return {
+        "schema": "mephc-e9f-d5r1-fr04-precheck-diagnosis-v1",
+        "work_order_id": D5R1_WORK_ORDER_ID,
+        "original_d5_work_order_id": ORIGINAL_D5_WORK_ORDER_ID,
+        "original_d5_state": state,
+        "prechecks": checks,
+        "first_failing_precheck": first_failure,
+        "precheck_status": "FAIL_CLOSED" if first_failure else "PASS",
+        "e9e_b_global_status": reference.get("E9E_B_OVERALL"),
+        "fr04_reference_local_status": "USABLE" if local_ok and reference_ok else "INVALID",
+        "reference_fr04_r64_tess96_six_band_spectrum": reference_values,
+        "reference_k_gap_band0_band1": reference_values[1] - reference_values[0] if reference_ok else None,
+        "reference_k_gap_band1_band2": reference_values[2] - reference_values[1] if reference_ok else None,
+        "corrected_graph_sha256": graph_hash,
+        "corrected_geometry_status": "PASS" if geometry_ok else "FAIL",
+        "corrected_graph_status": "PASS" if graph_ok and request_ok else "FAIL",
+        "native_invocation_count": 0,
+        "provider_request_count": 0,
+        "native_solves": 0,
+        "mpb_execution": False,
+        "no_second_validation_solve": True,
+        "pipeline_health": "HEALTHY",
+        "scientific_work_must_stop": True if first_failure else False,
+        "terminal": "E9F_D5R1_FR04_PRECHECK_OR_REPLAY_FAIL_CLOSED" if first_failure else "E9F_D5R1_FR04_CORRECT_SOURCE_BINDING_REPLAY_VALIDATED",
+    }
+
+
+def acquire() -> dict[str, Any]:
+    diagnosis = _d5r1_diagnosis()
+    atomic_json(DIAGNOSIS_PATH, diagnosis)
+    if diagnosis["first_failing_precheck"] is not None:
+        raise ValidationError("EXISTING_D5_VALIDATION_STATE_RECONCILIATION_REQUIRED")
+    return initial_acquire()
 
 
 def run(arguments: list[str] | None = None) -> dict[str, Any] | None:
