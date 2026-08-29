@@ -282,6 +282,29 @@ def test_closeout_consumes_post_submission_capture_despite_wrong_envelope(monkey
     assert evidence["envelope_mismatch_tolerated"] is True
 
 
+def test_capture_binding_accepts_courier_fingerprint_when_request_schema_omits_it(tmp_path: Path):
+    scope = paths(tmp_path)
+    request_id = "MEPHC-FLOW-236ef7bc1fe8b37773c1c728"
+    directory = scope.outbox / request_id
+    directory.mkdir(parents=True)
+    (directory / "request.json").write_text(json.dumps({
+        "project_id": "MEPHC", "request_id": request_id,
+        "work_order_id": "MEPHC-THIN-TEST-00000007",
+    }), encoding="utf-8")
+    raw = b"This content can't be shown"
+    (directory / "latest-response.raw.txt").write_bytes(raw)
+    (directory / "latest-response-capture.json").write_text(json.dumps({
+        "project_id": "MEPHC", "request_id": request_id,
+        "fingerprint": "courier-computed-fingerprint",
+        "raw_path": "latest-response.raw.txt",
+        "raw_sha256": hashlib.sha256(raw).hexdigest(),
+        "latest_user_turn_found": True, "post_submission_reply_found": True,
+    }), encoding="utf-8")
+    captured = flow.captured_response(scope, directory)
+    assert captured is not None
+    assert captured[1] == "This content can't be shown"
+
+
 def test_terminal_job_maps_to_one_closeout_action(monkeypatch, tmp_path: Path):
     scope = paths(tmp_path)
     work_order = "MEPHC-THIN-TEST-00000003"

@@ -421,9 +421,11 @@ def captured_response(paths: Paths, directory: Path) -> tuple[Path, str] | None:
     if not isinstance(manifest, dict) or manifest.get("post_submission_reply_found") is not True:
         return None
     request = read_json(directory / "request.json", {})
+    request_fingerprint = request.get("fingerprint")
     if (manifest.get("project_id") != PROJECT_ID
             or manifest.get("request_id") != request.get("request_id")
-            or manifest.get("fingerprint") != request.get("fingerprint")):
+            or (isinstance(request_fingerprint, str)
+                and manifest.get("fingerprint") != request_fingerprint)):
         raise FlowError("CAPTURED_RESPONSE_BINDING_MISMATCH")
     name = manifest.get("raw_path")
     if not isinstance(name, str) or Path(name).name != name:
