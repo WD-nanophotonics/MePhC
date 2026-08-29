@@ -70,8 +70,13 @@ def main() -> int:
     require("E8B_TWO_INCLUSION_REFERENCE_FRACTIONAL_CELL_V1" not in provider, "E8B_REFERENCE_LITERAL_REMAINS")
     require("local_affine_reference_cell_contract" in provider and "local_affine_state_identity" in provider, "PROVIDER_IDENTITY_BINDING_MISSING")
     require("contract != expected_contract" in acquisition and "lattice_size=" in acquisition, "COMPLETE_PRE_PERSISTENCE_CONTRACT_GUARD_MISSING")
-    require("spatial_shape" in acquisition and "component_order" in acquisition and "lattice_size" in acquisition,
-            "COMPLETE_PRE_PERSISTENCE_CONTRACT_FIELDS_MISSING")
+    require("local_affine_reference_cell_contract" in acquisition and "lattice_size=" in acquisition,
+            "COMPLETE_PRE_PERSISTENCE_CONTRACT_CALL_MISSING")
+    require(all(field in provider for field in (
+        "representation", "bloch_phase_excluded", "resolution", "spatial_shape",
+        "lattice_size", "component_order", "component_basis", "mu_contract",
+        "orientation_sign", "fractional_material_indexing_identity", "reference_cell_identity")),
+            "COMPLETE_REFERENCE_CELL_CONTRACT_FIELDS_MISSING")
     require("import meep" not in tests and "from meep" not in tests,
             "SOLVER_FREE_TEST_IMPORT_FORBIDDEN")
 
