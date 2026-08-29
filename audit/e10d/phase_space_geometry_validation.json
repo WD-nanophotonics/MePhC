@@ -1,0 +1,101 @@
+{
+  "analytic_two_level": {
+    "band": "rank1 normalized spinor",
+    "c": 0.7,
+    "d": 0.8,
+    "estimates": [
+      -0.27747878898530826,
+      -0.27732993194831057
+    ],
+    "expected": -0.27728036385365623,
+    "formula": "Omega_qs=-c*d*sin(2*c*q_x)",
+    "q_x": 0.37
+  },
+  "checks": {
+    "analytic_nonzero_two_level_status": "PASS",
+    "fail_closed_metadata_mismatch_status": "PASS",
+    "fixed_q_frequency_derivative_status": "PASS",
+    "gauge_invariance_status": "PASS",
+    "no_phase_unwrapping": true,
+    "orientation_reversal_status": "PASS",
+    "rank1_mixed_curvature_kernel_status": "PASS",
+    "rank1_zero_curvature_status": "PASS",
+    "rankn_trace_mixed_curvature_kernel_status": "PASS",
+    "rankn_u2_gauge_status": "PASS",
+    "reference_cell_admissibility_kernel_status": "PASS"
+  },
+  "fixed_q_frequency_derivative": 0.0,
+  "input_hashes": {
+    "audit/e10b/mixed_curvature_estimator_contract.json": "a11b4dcca3900c48c963c3d9fdfbdba72fd3621b658a4fde19944847e0e253a3",
+    "audit/e10c/mpb_h_field_semantics_contract.json": "409d14ec90dcb8d9b8675fab5983361bcdcb9cc0dee5922613446c1492dc1730",
+    "audit/e10c/reference_cell_extension_feasibility.json": "6a9d33865f376a1ca34aac285e8f55c3d505c264363cfb5f2a780734d4eaa8d0",
+    "audit/e10c/reference_cell_hilbert_contract.json": "3ba6c26c8e2cc0ec9589798da825032bf3051ff1219564498ac139caf8ca7125",
+    "audit/e10c/reference_cell_synthetic_certification.json": "b2ed2224bd65ccf131f3a3fea5fbe4a633d6d5a39b1c5427cedb84612e9487ec"
+  },
+  "mismatch_checks": {
+    "bloch_phase": "PASS",
+    "component_basis": "PASS",
+    "component_order": "PASS",
+    "fractional_indexing": "PASS",
+    "lattice_size": "PASS",
+    "mu_contract": "PASS",
+    "orientation": "PASS",
+    "reference_cell": "PASS",
+    "resolution": "PASS",
+    "spatial_shape": "PASS"
+  },
+  "mpb_execution": false,
+  "rank1": {
+    "interpretation": "SCALAR_RANK1_MIXED_CURVATURE",
+    "maximum_link_principal_angle": 0.036249882798751965,
+    "minimum_link_singular_value": 0.9993430449428005,
+    "omega_qs": -0.2773557491731547,
+    "orientation": "CCW",
+    "phase": 0.001248100871279196,
+    "rank": 1,
+    "signed_area_qs": 0.0045
+  },
+  "rank1_reverse": {
+    "interpretation": "SCALAR_RANK1_MIXED_CURVATURE",
+    "maximum_link_principal_angle": 0.036249882798751965,
+    "minimum_link_singular_value": 0.9993430449428005,
+    "omega_qs": 0.2773557491731542,
+    "orientation": "CW_REVERSE",
+    "phase": -0.0012481008712791938,
+    "rank": 1,
+    "signed_area_qs": 0.0045
+  },
+  "rankn_trace": {
+    "interpretation": "TRACE_OR_U1_SUBSPACE_GEOMETRY_ONLY",
+    "maximum_link_principal_angle": 0.036249882798751965,
+    "minimum_link_singular_value": 0.9993430449428005,
+    "omega_qs": -0.2773557491731547,
+    "orientation": "CCW",
+    "phase": 0.001248100871279196,
+    "rank": 2,
+    "signed_area_qs": 0.0045
+  },
+  "rankn_trace_gauge": {
+    "interpretation": "TRACE_OR_U1_SUBSPACE_GEOMETRY_ONLY",
+    "maximum_link_principal_angle": 0.03624988279876422,
+    "minimum_link_singular_value": 0.9993430449428,
+    "omega_qs": -0.27735574917317024,
+    "orientation": "CCW",
+    "phase": 0.001248100871279266,
+    "rank": 2,
+    "signed_area_qs": 0.0045
+  },
+  "schema": "mephc-e10d-phase-space-geometry-validation-v1",
+  "solver_free": true,
+  "work_order_id": "MEPHC-E10D-PHASE-SPACE-GEOMETRY-KERNEL-20260829-345",
+  "zero_curvature": {
+    "interpretation": "SCALAR_RANK1_MIXED_CURVATURE",
+    "maximum_link_principal_angle": 0.0,
+    "minimum_link_singular_value": 1.0,
+    "omega_qs": -0.0,
+    "orientation": "CCW",
+    "phase": 0.0,
+    "rank": 1,
+    "signed_area_qs": 0.006
+  }
+}
