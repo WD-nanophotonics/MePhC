@@ -1,0 +1,44 @@
+{
+  "checks": {
+    "analytic_anomalous_velocity_status": "PASS",
+    "analytic_mixed_curvature_velocity_status": "PASS",
+    "constant_coefficient_trajectory_status": "PASS",
+    "first_order_expansion_status": "PASS",
+    "local_bloch_monitor_status": "PASS",
+    "no_solver_import_status": "PASS",
+    "physical_normalization_conversion_status": "PASS",
+    "pointwise_exact_coupled_solver_status": "PASS",
+    "qualification_propagation_status": "PASS",
+    "rank1_scope_fail_closed_status": "PASS",
+    "trajectory_integrator_status": "PASS",
+    "transverse_shift_observable_status": "PASS"
+  },
+  "diagnostics": {
+    "anomalous_transverse_velocity": -0.21,
+    "constant_endpoint": [
+      0.30000000000000004,
+      0.19999999999999998
+    ],
+    "first_order_residuals": [
+      0.00014292756321207983,
+      3.5754623958825204e-05,
+      8.941500346890288e-06
+    ],
+    "integrator": "CLASSICAL_RK4_FIXED_STEP_V1"
+  },
+  "input_hashes": {
+    "e10d_provenance_reconciliation": "audit/e10d/e10d_provenance_reconciliation.json",
+    "e10d_provenance_reconciliation_sha256": "3c49292d1683f13064d2d546ac5ff6870e93ad2690f7389898523e934faa1fea",
+    "phase_space_geometry_module": "mephc/phase_space_geometry.py",
+    "phase_space_geometry_module_sha256": "e19683d6765163cc49cfd4ce1c35d5ddf6835c44ec9a65ab2ec400ad940ac2a6",
+    "phase_space_geometry_validation": "audit/e10d/phase_space_geometry_validation.json",
+    "phase_space_geometry_validation_sha256": "8274d1ef6d58581d1f163e90f1fbd4509e2d665de2cdaaa88498b42f050b03e8"
+  },
+  "mpb_execution": false,
+  "native_invocation_count": 0,
+  "provider_request_count": 0,
+  "schema": "mephc-e10e-one-parameter-phase-space-trajectory-validation-v1",
+  "solver_executions": 0,
+  "solver_free": true,
+  "work_order_id": "MEPHC-E10E-ONE-PARAMETER-PHASE-SPACE-TRAJECTORY-KERNEL-20260829-347"
+}

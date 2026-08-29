@@ -1,0 +1,73 @@
+{
+  "exports": [
+    "PhysicalNormalization",
+    "LocalRank1PhaseSpacePoint",
+    "q_to_k_phys",
+    "k_phys_to_q",
+    "normalized_frequency_to_omega",
+    "grad_q_frequency_to_group_velocity",
+    "partial_s_normalized_frequency_to_partial_s_omega",
+    "omega_qq_to_omega_kk",
+    "omega_qs_to_omega_ks",
+    "monitor_local_bloch",
+    "solve_pointwise_dynamics",
+    "first_order_dynamics",
+    "integrate_trajectory",
+    "transverse_shift"
+  ],
+  "module": "mephc/phase_space_dynamics.py",
+  "module_sha256": "f2458de0a1bbd05874e09ab4066317c7d40374f0483e290fff47b9e07e208a55",
+  "result_summary": {
+    "analytic_anomalous_velocity_status": "PASS",
+    "analytic_mixed_curvature_velocity_status": "PASS",
+    "base_sandbox_sha": "b441ea07d6073d0d66b10648c1070ca9d00ba3be",
+    "blocked_by_infrastructure": false,
+    "constant_coefficient_trajectory_status": "PASS",
+    "diagnostics": {
+      "anomalous_transverse_velocity": -0.21,
+      "constant_endpoint": [
+        0.30000000000000004,
+        0.19999999999999998
+      ],
+      "first_order_residuals": [
+        0.00014292756321207983,
+        3.5754623958825204e-05,
+        8.941500346890288e-06
+      ],
+      "integrator": "CLASSICAL_RK4_FIXED_STEP_V1"
+    },
+    "e10d_provenance_status": "PASS_EXPLICIT_RECONCILED_IDENTITIES",
+    "e10e_next_step": "READY_FOR_LOCAL_AFFINE_STATE_PROVIDER_AND_BOUNDED_LIVE_PREFLIGHT_CONTRACT",
+    "final_sandbox_sha": "b441ea07d6073d0d66b10648c1070ca9d00ba3be",
+    "first_order_expansion_status": "PASS",
+    "kernel_module_path": "mephc/phase_space_dynamics.py",
+    "kernel_module_sha256": "f2458de0a1bbd05874e09ab4066317c7d40374f0483e290fff47b9e07e208a55",
+    "local_bloch_monitor_status": "PASS",
+    "machine_contract_status": "PASS",
+    "main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+    "mpb_execution": false,
+    "native_invocation_count": 0,
+    "native_solves": 0,
+    "next_live_solver_authorization": false,
+    "next_scientific_state": "E10E_TRAJECTORY_KERNEL_VALIDATED_READY_FOR_LOCAL_AFFINE_STATE_PROVIDER",
+    "no_solver_import_status": "PASS",
+    "origin_sandbox_sha": "b441ea07d6073d0d66b10648c1070ca9d00ba3be",
+    "phase_space_trajectory_kernel_ready": true,
+    "physical_normalization_conversion_status": "PASS",
+    "pipeline_health": "HEALTHY",
+    "pointwise_exact_coupled_solver_status": "PASS",
+    "provider_request_count": 0,
+    "qualification_propagation_status": "PASS",
+    "rank1_scope_fail_closed_status": "PASS",
+    "return_to_supervisor": true,
+    "schema": "mephc-e10e-one-parameter-phase-space-trajectory-kernel-v1",
+    "scientific_work_must_stop": false,
+    "terminal": "E10E_ONE_PARAMETER_PHASE_SPACE_TRAJECTORY_KERNEL_COMPLETE",
+    "trajectory_integrator_status": "PASS",
+    "transverse_shift_observable_status": "PASS",
+    "weighted_berry_gradient_observable_role": "DESCRIPTOR_ONLY_NO_OBSERVABLE_MAPPING_ESTABLISHED",
+    "work_order_id": "MEPHC-E10E-ONE-PARAMETER-PHASE-SPACE-TRAJECTORY-KERNEL-20260829-347"
+  },
+  "schema": "mephc-e10e-one-parameter-phase-space-trajectory-api-v1",
+  "work_order_id": "MEPHC-E10E-ONE-PARAMETER-PHASE-SPACE-TRAJECTORY-KERNEL-20260829-347"
+}

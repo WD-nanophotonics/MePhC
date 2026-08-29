@@ -1,0 +1,75 @@
+{
+  "coupled_equations": [
+    "(I-Omega_rk)k_dot=-grad_r_omega",
+    "(I+Omega_kr)r_dot=v_g-Omega_kk*k_dot"
+  ],
+  "first_order_diagnostic": "k_dot=-grad_r_omega; r_dot=v_g-Omega_kk*k_dot-Omega_kr*v_g+O(|grad_s|^2)",
+  "input_hashes": {
+    "e10d_provenance_reconciliation": "audit/e10d/e10d_provenance_reconciliation.json",
+    "e10d_provenance_reconciliation_sha256": "3c49292d1683f13064d2d546ac5ff6870e93ad2690f7389898523e934faa1fea",
+    "phase_space_geometry_module": "mephc/phase_space_geometry.py",
+    "phase_space_geometry_module_sha256": "e19683d6765163cc49cfd4ce1c35d5ddf6835c44ec9a65ab2ec400ad940ac2a6",
+    "phase_space_geometry_validation": "audit/e10d/phase_space_geometry_validation.json",
+    "phase_space_geometry_validation_sha256": "8274d1ef6d58581d1f163e90f1fbd4509e2d665de2cdaaa88498b42f050b03e8"
+  },
+  "integrator": "CLASSICAL_RK4_FIXED_STEP_V1 with k_phys as the internal momentum variable",
+  "local_bloch_policy": "a/L_def<=0.05 and a*||grad_r s||<=0.05; diagnostic synthetic identity is explicit",
+  "no_solver_boundary": "supplied local scalar data only; no geometry, provider, MPB, solver, or dataset execution",
+  "normalization": "q=ak_phys/(2pi); omega=2pi*c*freq_normalized/a; v_g=c*grad_q_freq",
+  "rankn_trajectory_supported": false,
+  "result_summary": {
+    "analytic_anomalous_velocity_status": "PASS",
+    "analytic_mixed_curvature_velocity_status": "PASS",
+    "base_sandbox_sha": "b441ea07d6073d0d66b10648c1070ca9d00ba3be",
+    "blocked_by_infrastructure": false,
+    "constant_coefficient_trajectory_status": "PASS",
+    "diagnostics": {
+      "anomalous_transverse_velocity": -0.21,
+      "constant_endpoint": [
+        0.30000000000000004,
+        0.19999999999999998
+      ],
+      "first_order_residuals": [
+        0.00014292756321207983,
+        3.5754623958825204e-05,
+        8.941500346890288e-06
+      ],
+      "integrator": "CLASSICAL_RK4_FIXED_STEP_V1"
+    },
+    "e10d_provenance_status": "PASS_EXPLICIT_RECONCILED_IDENTITIES",
+    "e10e_next_step": "READY_FOR_LOCAL_AFFINE_STATE_PROVIDER_AND_BOUNDED_LIVE_PREFLIGHT_CONTRACT",
+    "final_sandbox_sha": "b441ea07d6073d0d66b10648c1070ca9d00ba3be",
+    "first_order_expansion_status": "PASS",
+    "kernel_module_path": "mephc/phase_space_dynamics.py",
+    "kernel_module_sha256": "f2458de0a1bbd05874e09ab4066317c7d40374f0483e290fff47b9e07e208a55",
+    "local_bloch_monitor_status": "PASS",
+    "machine_contract_status": "PASS",
+    "main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+    "mpb_execution": false,
+    "native_invocation_count": 0,
+    "native_solves": 0,
+    "next_live_solver_authorization": false,
+    "next_scientific_state": "E10E_TRAJECTORY_KERNEL_VALIDATED_READY_FOR_LOCAL_AFFINE_STATE_PROVIDER",
+    "no_solver_import_status": "PASS",
+    "origin_sandbox_sha": "b441ea07d6073d0d66b10648c1070ca9d00ba3be",
+    "phase_space_trajectory_kernel_ready": true,
+    "physical_normalization_conversion_status": "PASS",
+    "pipeline_health": "HEALTHY",
+    "pointwise_exact_coupled_solver_status": "PASS",
+    "provider_request_count": 0,
+    "qualification_propagation_status": "PASS",
+    "rank1_scope_fail_closed_status": "PASS",
+    "return_to_supervisor": true,
+    "schema": "mephc-e10e-one-parameter-phase-space-trajectory-kernel-v1",
+    "scientific_work_must_stop": false,
+    "terminal": "E10E_ONE_PARAMETER_PHASE_SPACE_TRAJECTORY_KERNEL_COMPLETE",
+    "trajectory_integrator_status": "PASS",
+    "transverse_shift_observable_status": "PASS",
+    "weighted_berry_gradient_observable_role": "DESCRIPTOR_ONLY_NO_OBSERVABLE_MAPPING_ESTABLISHED",
+    "work_order_id": "MEPHC-E10E-ONE-PARAMETER-PHASE-SPACE-TRAJECTORY-KERNEL-20260829-347"
+  },
+  "schema": "mephc-e10e-one-parameter-phase-space-trajectory-kernel-contract-v1",
+  "scope": "RANK1_ISOLATED_BAND_SCALAR_CURVATURE_ONLY",
+  "transverse_shift": "dot(r_target-r_reference,(-e_long_y,e_long_x)) with explicit unit e_long",
+  "work_order_id": "MEPHC-E10E-ONE-PARAMETER-PHASE-SPACE-TRAJECTORY-KERNEL-20260829-347"
+}
