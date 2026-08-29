@@ -145,13 +145,19 @@ def _metadata(snapshot: MPBHEnvelopeSnapshot) -> dict[str, Any]:
         result.update(caller)
     nested = _mapping(result.get("representation_provenance"))
     if nested:
-        result.update(nested)
+        for key, value in nested.items():
+            if key not in result:
+                result[key] = value
     settings = _mapping(result.get("solver_settings"))
     if settings:
-        result.update(settings)
+        for key, value in settings.items():
+            if key not in result:
+                result[key] = value
     contract = _mapping(result.get("local_affine_reference_cell_contract"))
     if contract:
-        result.update(contract)
+        for key, value in contract.items():
+            if key not in result:
+                result[key] = value
     return result
 
 
