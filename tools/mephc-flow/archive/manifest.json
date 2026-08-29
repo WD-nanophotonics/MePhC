@@ -1,0 +1,14 @@
+{
+  "schema": "mephc-thin-flow-retirement-archive-v1",
+  "source_commit": "054dd532ff2b56c08cbeea8e01c9ecbe5c52c0ab",
+  "files": [
+    {"path": "mephc_flow_legacy.py", "sha256": "b0147fa6e866e7c3afd8a7f3c883cb91aa60b150d3574483c731f63be9e379c3"},
+    {"path": "mephc_science_runtime_legacy.py", "sha256": "b05303522bca2945314704f5e97ae6a83662b31682fed07ec9021536830d281d"},
+    {"path": "README.md", "sha256": "5bda98bf9c2c4e1103becb02d72a39c154807fb298c4e96c957ad76b51d5f688"},
+    {"path": "reconcile_r8_native_result_legacy.py", "sha256": "867108e80293a2836e07b5c8ff9fcd9f2ce184176ade087306c6cd044398db7e"},
+    {"path": "tests/legacy_test_mephc_flow_legacy.py", "sha256": "cea5e5216c4e0fb9e73e27d42924d01bcf4057962dbe957226eb44f069f1f188"},
+    {"path": "tests/legacy_test_mephc_flow_r8_result_reconciliation_legacy.py", "sha256": "3f0d6797ed6a35112b2d09e819fbc86eb7d6df289c72653d603c97be34bec4ae"},
+    {"path": "tests/legacy_test_mephc_flow_science_runtime.py", "sha256": "1b11155970aafff38547bd48b8fee776953806ef6f7329c5bfa630f8d45c3370"},
+    {"path": "tests/legacy_test_mephc_flow_scientific_job_legacy.py", "sha256": "f5bad66d94b61c667ffc44e6bd993c9a4461634a04eb9b2e25861653e06b830d"}
+  ]
+}

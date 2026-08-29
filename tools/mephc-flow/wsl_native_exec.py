@@ -10,9 +10,7 @@ import subprocess
 import time
 from pathlib import Path
 
-RESULT_MARKER = b"MEPHC_NATIVE_RESULT_JSON="
 MAX_RESULT_BYTES = 65536
-TAIL_BYTES = MAX_RESULT_BYTES * 2 + len(RESULT_MARKER) + 4096
 FORBIDDEN_IDENTITY_KEYS = {
     "pid", "process_id", "username", "user_name", "machine", "machine_name",
     "hostname", "host_name",
@@ -54,33 +52,9 @@ def _summary_is_safe(value: object) -> bool:
     return isinstance(value, (bool, int, float)) or value is None
 
 
-def extract_result_summary(stdout_path: Path) -> dict:
-    with stdout_path.open("rb") as handle:
-        handle.seek(0, os.SEEK_END)
-        size = handle.tell()
-        handle.seek(max(0, size - TAIL_BYTES), os.SEEK_SET)
-        tail = handle.read(TAIL_BYTES)
-    lines = [line.strip() for line in tail.splitlines() if line.strip().startswith(RESULT_MARKER)]
-    if len(lines) != 1:
-        raise ValueError("RESULT_SUMMARY_MARKER_COUNT_INVALID")
-    payload = lines[0][len(RESULT_MARKER):]
-    if len(payload) > MAX_RESULT_BYTES:
-        raise ValueError("RESULT_SUMMARY_OVERSIZED")
-    try:
-        summary = json.loads(payload.decode("utf-8"))
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise ValueError("RESULT_SUMMARY_MALFORMED") from exc
-    if not isinstance(summary, dict) or not _summary_is_safe(summary):
-        raise ValueError("RESULT_SUMMARY_UNSAFE")
-    canonical = json.dumps(summary, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
-    if canonical != payload:
-        raise ValueError("RESULT_SUMMARY_NOT_CANONICAL")
-    return summary
-
-
 def finalize_child_result(
     record: dict, stdout_path: Path, stderr_path: Path, return_code: int,
-    counters_path: Path | None = None,
+    counters_path: Path | None = None, result_path: Path | None = None,
 ) -> dict:
     stdout = stream_stats(stdout_path)
     stderr = stream_stats(stderr_path)
@@ -108,8 +82,21 @@ def finalize_child_result(
         result.update({"state": "failed", "result_error": "CHILD_RETURN_CODE_NONZERO"})
         return result
     try:
-        summary = extract_result_summary(stdout_path)
-    except ValueError as exc:
+        if result_path is None or not result_path.is_file():
+            raise ValueError("RESULT_FILE_MISSING")
+        raw = result_path.read_bytes()
+        if len(raw) > MAX_RESULT_BYTES:
+            raise ValueError("RESULT_SUMMARY_OVERSIZED")
+        summary = json.loads(raw.decode("utf-8"))
+        if not isinstance(summary, dict) or not _summary_is_safe(summary):
+            raise ValueError("RESULT_SUMMARY_UNSAFE")
+        expected = record.get("expected_output", {}).get("result_schema")
+        if expected and summary.get("schema") != expected:
+            raise ValueError("RESULT_SCHEMA_MISMATCH")
+        canonical = json.dumps(summary, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+        if raw.strip() != canonical:
+            raise ValueError("RESULT_SUMMARY_NOT_CANONICAL")
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
         result.update({"state": "failed", "result_error": str(exc)})
         result.pop("result_summary", None)
         return result
@@ -122,6 +109,8 @@ def main() -> int:
     parser.add_argument("--state", required=True)
     parser.add_argument("--checkout", required=True)
     parser.add_argument("--project", required=True)
+    parser.add_argument("--input-bundle")
+    parser.add_argument("--result-path")
     parser.add_argument("argv", nargs=argparse.REMAINDER)
     args = parser.parse_args()
     argv = args.argv[1:] if args.argv and args.argv[0] == "--" else args.argv
@@ -140,6 +129,12 @@ def main() -> int:
         environment["MEPHC_SOLVER_EXECUTION_BUDGET"] = str(value["solver_execution_budget"])
     if isinstance(value.get("science_contract_sha256"), str):
         environment["MEPHC_SCIENCE_CONTRACT_SHA256"] = value["science_contract_sha256"]
+    if args.input_bundle:
+        environment["MEPHC_INPUT_BUNDLE"] = args.input_bundle
+    if args.result_path:
+        result_path = Path(args.result_path)
+        result_path.parent.mkdir(parents=True, exist_ok=True)
+        environment["MEPHC_RESULT_PATH"] = args.result_path
     initial_counters = {
         "schema": "mephc-native-execution-counters-v1",
         "actual_provider_execution_count": 0,
@@ -149,15 +144,28 @@ def main() -> int:
     }
     atomic(counters_path, initial_counters)
     environment["MEPHC_EXECUTION_COUNTERS_PATH"] = str(counters_path)
-    with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
-        process = subprocess.Popen(argv, cwd=args.project, env=environment, shell=False,
-                                   stdout=stdout, stderr=stderr)
-        stat = Path(f"/proc/{process.pid}/stat").read_text(encoding="ascii").split()
-        value.update({"state": "running", "process_started": True, "pid": process.pid,
-                      "linux_start_ticks": stat[21], "started_at": time.time()})
+    try:
+        with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
+            process = subprocess.Popen(argv, cwd=args.project, env=environment, shell=False,
+                                       stdout=stdout, stderr=stderr)
+            stat = Path(f"/proc/{process.pid}/stat").read_text(encoding="ascii").split()
+            native_count = 1 if int(value.get("native_invocation_budget", 0)) > 0 else 0
+            value.update({"state": "running", "process_started": True, "pid": process.pid,
+                          "linux_start_ticks": stat[21], "started_at": time.time(),
+                          "actual_native_invocation_count": native_count})
+            atomic(state_path, value)
+            return_code = process.wait()
+    except OSError as exc:
+        value.update({"state": "failed", "process_started": False,
+                      "actual_native_invocation_count": 0,
+                      "result_error": f"PROCESS_START_FAILED:{type(exc).__name__}",
+                      "completed_at": time.time()})
         atomic(state_path, value)
-        return_code = process.wait()
-    final = finalize_child_result(value, stdout_path, stderr_path, return_code, counters_path)
+        return 2
+    final = finalize_child_result(
+        value, stdout_path, stderr_path, return_code, counters_path,
+        Path(args.result_path) if args.result_path else None,
+    )
     final.pop("pid", None)
     final.pop("linux_start_ticks", None)
     atomic(state_path, final)

@@ -192,7 +192,6 @@ class BudgetCounter:
 def runtime_hash(root: Path) -> str:
     files = [
         root / "tools" / "mephc-flow" / "scientific_job.py",
-        root / "tools" / "mephc-flow" / "mephc_science_runtime.py",
         root / "tools" / "mephc-flow" / "wsl_native_exec.py",
     ]
     accumulator = hashlib.sha256()
@@ -323,7 +322,36 @@ def verify_dataset(state_root: Path, dataset_id: str) -> dict[str, Any]:
         "dataset_id": dataset_id,
         "manifest_sha256": manifest["manifest_sha256"],
         "record_count": manifest["record_count"],
+        "record_key_sha256": [record["key_sha256"] for record in manifest["records"]],
         "state": "verified",
+    }
+
+
+def resolve_dataset_record(
+    state_root: Path, dataset_id: str, manifest_sha256: str, record_key_sha256: str,
+) -> dict[str, Any]:
+    """Resolve one immutable record without reconstructing its namespace."""
+    if not all(SHA64(value) for value in (dataset_id, manifest_sha256, record_key_sha256)):
+        raise ScientificJobError("DATASET_BINDING_INVALID")
+    verified = verify_dataset(state_root, dataset_id)
+    if verified["manifest_sha256"] != manifest_sha256:
+        raise ScientificJobError("DATASET_MANIFEST_BINDING_MISMATCH")
+    index = json.loads((state_root / "dataset-index" / f"{dataset_id}.json").read_text(encoding="utf-8"))
+    root = state_root / "datasets" / index["namespace_sha256"]
+    manifest = json.loads((root / "dataset-manifest.json").read_text(encoding="utf-8"))
+    records = [item for item in manifest["records"] if item.get("key_sha256") == record_key_sha256]
+    if len(records) != 1:
+        raise ScientificJobError("DATASET_RECORD_KEY_NOT_FOUND")
+    metadata = records[0]
+    payload = (root / "records" / f"{record_key_sha256}.payload").read_bytes()
+    if (hashlib.sha256(payload).hexdigest() != metadata.get("payload_sha256")
+            or len(payload) != metadata.get("payload_size_bytes")):
+        raise ScientificJobError("DATASET_RECORD_INTEGRITY_MISMATCH")
+    return {
+        "payload": payload,
+        "payload_sha256": metadata["payload_sha256"],
+        "payload_size_bytes": metadata["payload_size_bytes"],
+        "identity": metadata.get("identity", {}),
     }
 
 
@@ -343,28 +371,25 @@ def selftest(root: Path, state_root: Path, *, mpb_smoke: bool) -> dict[str, Any]
     import mephc
     if Path(mephc.__file__).resolve().parents[1] != root:
         raise ScientificJobError("SELFTEST_SOURCE_MODULE_ROOT_MISMATCH")
-    runtime = load_module("_mephc_science_runtime_selftest", root / "tools" / "mephc-flow" / "mephc_science_runtime.py")
     helper = load_module("_mephc_native_helper_selftest", root / "tools" / "mephc-flow" / "wsl_native_exec.py")
-    import numpy as np
-    from mephc.mpb_spectral import adapt_mpb_h_envelopes
 
     runtime_sha = runtime_hash(root)
     namespace = {"project_id": "MEPHC", "science_contract_id": "RUNTIME_SELFTEST", "runtime_sha256": runtime_sha}
     store = ImmutableDatasetStore(state_root / "selftests" / runtime_sha, namespace)
-    snapshot = adapt_mpb_h_envelopes(
-        (0.0, 0.0), [0.5], np.ones((1, 1, 1, 3), dtype=np.complex128),
-        provenance={"representation": runtime.H_REPRESENTATION, "metadata_shape": {"immutable": True}},
-    )
-    encoded = runtime.encode_snapshot(snapshot)
-    decoded = runtime.decode_snapshot(encoded)
-    if (decoded.provenance.get("representation") != runtime.H_REPRESENTATION
-            or decoded.provenance["caller_provenance"]["metadata_shape"]["immutable"] is not True
-            or type(decoded.provenance).__name__ != "mappingproxy"):
+    payload_value = {
+        "schema": "mephc-thin-selftest-payload-v1",
+        "finite_scalars": [0.0, 1.0],
+        "immutable_metadata": {"tested": True},
+    }
+    encoded = canonical_bytes(payload_value)
+    decoded = json.loads(encoded)
+    if decoded != payload_value:
         raise ScientificJobError("SELFTEST_CODEC_ROUNDTRIP_FAILED")
     key = canonical_bytes({"kind": "fake-provider", "index": 0})
     store.put(key, encoded, {"kind": "fake-provider"})
     restored, _ = store.get(key)
-    runtime.decode_snapshot(restored)
+    if json.loads(restored) != payload_value:
+        raise ScientificJobError("SELFTEST_CHECKPOINT_RELOAD_FAILED")
     manifest = store.finalize(1, {"runtime_sha256": runtime_sha, "fake_provider": True})
     verified = verify_dataset(store.state_root, manifest["dataset_id"])
     with tempfile.TemporaryDirectory(dir=state_root) as temporary:
@@ -374,8 +399,15 @@ def selftest(root: Path, state_root: Path, *, mpb_smoke: bool) -> dict[str, Any]
             "result_id": hashlib.sha256(canonical_bytes({"dataset_id": manifest["dataset_id"]})).hexdigest(),
             "record_count": 1,
         }
-        stdout.write_bytes(helper.RESULT_MARKER + canonical_bytes(value) + b"\n")
-        if helper.extract_result_summary(stdout) != value:
+        stderr = Path(temporary) / "stderr.log"
+        result_file = Path(temporary) / "result.json"
+        stdout.write_bytes(b"selftest\n")
+        stderr.write_bytes(b"")
+        result_file.write_bytes(canonical_bytes(value))
+        native = helper.finalize_child_result(
+            {"state": "running"}, stdout, stderr, 0, result_path=result_file,
+        )
+        if native.get("result_summary") != value:
             raise ScientificJobError("SELFTEST_RESULT_CHANNEL_FAILED")
 
     forbidden_solver_modules = sorted(
@@ -385,34 +417,14 @@ def selftest(root: Path, state_root: Path, *, mpb_smoke: bool) -> dict[str, Any]
     if forbidden_solver_modules:
         raise ScientificJobError("SOLVER_FREE_SELFTEST_IMPORTED_NATIVE_MODULE")
 
-    smoke = {"executed": False, "reused": False}
     if mpb_smoke:
-        smoke_root = state_root / "selftests" / runtime_sha / "mpb-smoke"
-        smoke_record = smoke_root / "result.json"
-        if smoke_record.exists():
-            smoke = json.loads(smoke_record.read_text(encoding="utf-8"))
-            smoke["reused"] = True
-        else:
-            provider = runtime._build_live_provider("R96")
-            result = provider.solve((0.0, 0.0))
-            payload = runtime.encode_snapshot(result)
-            smoke_store = ImmutableDatasetStore(smoke_root, {
-                "project_id": "MEPHC", "science_contract_id": "RUNTIME_MPB_SMOKE",
-                "runtime_sha256": runtime_sha, "resolution": "R96", "k_point": [0.0, 0.0],
-            })
-            smoke_store.put(b"R96:0:0", payload, {"resolution": "R96", "k_point": [0.0, 0.0]})
-            smoke_manifest = smoke_store.finalize(1, {"mpb_smoke": True})
-            smoke = {
-                "executed": True, "reused": False, "resolution": "R96", "k_point": [0.0, 0.0],
-                "dataset_id": smoke_manifest["dataset_id"], "manifest_sha256": smoke_manifest["manifest_sha256"],
-                "solver_executions": 1,
-            }
-            atomic_json(smoke_record, smoke)
+        raise ScientificJobError("MPB_SMOKE_MACHINE_CONTRACT_REQUIRED")
+    smoke = {"executed": False, "reused": False}
     certification = {
         "schema": CERT_SCHEMA,
         "runtime_sha256": runtime_sha,
         "python": platform.python_version(),
-        "payload_codec_schema": runtime.RETENTION_PAYLOAD_CODEC_SCHEMA,
+        "payload_codec_schema": "canonical-json-v1",
         "fake_provider_tested": True,
         "solver_free_import_isolation": True,
         "payload_codec_tested": True,
