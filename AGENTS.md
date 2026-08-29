@@ -21,6 +21,11 @@ from the surrounding prose. Do not call
 the retired `mephc_*` MCP tools, doctor, prelive, runtime activation, broker,
 worker, certificates, or durable change jobs.
 
+`status` is intentionally bounded. Use `status --history-limit N` only for a
+small recent window (`0 <= N <= 20`). Never recursively `grep`, `find`, or
+enumerate durable state; use the fixed status/reconciliation command for the
+exact request or job.
+
 Authority precedence is:
 
 1. Current user instructions and constraints.
@@ -64,7 +69,10 @@ Use:
 mephc-flow.cmd publish --tests tests/<solver-free-test>.py [...]
 ```
 
-This command requires a clean committed `sandbox`, verifies the fixed
+When the worktree contains only current-contract `allowed_writes`, this command
+stages those exact paths and creates one deterministic scoped commit. Any
+out-of-contract path, rename, or concurrent drift fails before publication.
+It then requires a clean committed `sandbox`, verifies the fixed
 `origin/main`, runs the declared tests in the exact ext4 SHA checkout, and
 fast-forwards `origin/sandbox`. It has no certificate, prelive, installed-build
 or activation dependency. Never push or promote `main` without a separate,
@@ -101,10 +109,34 @@ job ID. Never infer from a missing foreground process and never resubmit an
 uncertain scientific job. A completed immutable dataset makes every later
 recovery solver-free.
 
+Legacy `SCIENCE_CORRECTIVE` receipts are normalized to `kind=SCIENCE`,
+`mode=CORRECTIVE`, `action=corrective` with zero Native/provider/solver budget.
+They may close out without a new science job only from one published,
+work-order-bound reconciliation artifact proving no rerun and zero new
+execution. Actual provider, solver, and durable dataset-record counts persist
+across child failures. Acquisition preflight requires the fake-provider chain
+and solver-free import isolation; solver-free tests must not load `meep`, MPB,
+or MPI.
+
 SCIENCE work orders cannot modify `tools/mephc-flow`; INFRASTRUCTURE work
 orders cannot advance scientific conclusions. Two consecutive infrastructure
 repairs for one scientific milestone set `WORKFLOW_OVERHEAD_EXCESSIVE=true`
 and require one convergent framework repair instead of more local patches.
+
+## Supervised stability runs
+
+Only the high-capability supervisor uses:
+
+```text
+mephc-flow.cmd supervision-start --target 10 --batch-size 2
+mephc-flow.cmd supervision-status
+mephc-flow.cmd supervision-advance --verdict PASS|RESET_AFTER_FRAMEWORK_FIX
+```
+
+Every uniquely consumed closeout is recorded. After two work orders,
+`science-preflight` returns `SUPERVISION_BATCH_REVIEW_REQUIRED` until the batch
+is audited and advanced. The executing Agent stops at that structured boundary;
+it must not bypass supervision or create another worker.
 
 ## Courier reporting
 

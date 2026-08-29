@@ -93,6 +93,24 @@ def test_nonzero_child_preserves_stream_hashes_without_success_summary(tmp_path)
     assert state["return_code"] == 7
 
 
+def test_nonzero_child_preserves_actual_execution_counters(tmp_path):
+    helper = load()
+    stdout, stderr = write_streams(tmp_path, b"failed after solve", b"traceback")
+    counters = tmp_path / "run.counters.json"
+    counters.write_text(json.dumps({
+        "actual_provider_execution_count": 1,
+        "actual_solver_execution_count": 1,
+        "actual_dataset_record_count": 0,
+        "last_counter_update_at": 123.5,
+    }), encoding="utf-8")
+    state = helper.finalize_child_result({"state": "running"}, stdout, stderr, 7, counters)
+    assert state["state"] == "failed"
+    assert state["actual_provider_execution_count"] == 1
+    assert state["actual_solver_execution_count"] == 1
+    assert state["actual_dataset_record_count"] == 0
+    assert state["last_counter_update_at"] == 123.5
+
+
 def test_machine_contract_status_is_safe_but_identity_and_raw_state_are_not(tmp_path):
     helper = load()
     accepted = summary() | {"machine_contract_status": "PASS", "result_id": "r192-result"}

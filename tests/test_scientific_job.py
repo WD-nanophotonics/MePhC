@@ -71,6 +71,35 @@ def test_budget_counter_fails_before_extra_provider_or_solver():
         counter.consume_solver()
 
 
+def test_durable_actual_counters_survive_failure_boundaries(tmp_path, monkeypatch):
+    module = load_module("scientific_job_durable_counters")
+    counters = tmp_path / "counters.json"
+    monkeypatch.setenv("MEPHC_EXECUTION_COUNTERS_PATH", str(counters))
+    counter = module.BudgetCounter(1, 1)
+    counter.consume_provider()
+    counter.consume_solver()
+    store = module.ImmutableDatasetStore(tmp_path / "state", {"science_contract_id": "COUNTERS"})
+    store.put(b"key", b"payload", {"identity": "fixed"})
+    value = json.loads(counters.read_text())
+    assert value["actual_provider_execution_count"] == 1
+    assert value["actual_solver_execution_count"] == 1
+    assert value["actual_dataset_record_count"] == 1
+    assert isinstance(value["last_counter_update_at"], float)
+
+
+def test_corrective_contract_is_science_zero_budget():
+    module = load_module("scientific_job_corrective")
+    value = contract(
+        action="corrective", entrypoint=None, mode="CORRECTIVE",
+        original_work_order_class="SCIENCE_CORRECTIVE",
+        budgets={"native_invocations": 0, "provider_requests": 0, "solver_executions": 0},
+        expected_output={"dataset_schema": None, "result_schema": "corrective-v1"},
+    )
+    validated = module.validate_contract(value)
+    assert validated["kind"] == "SCIENCE"
+    assert validated["mode"] == "CORRECTIVE"
+
+
 def test_dataset_is_exact_key_immutable_and_integrity_checked(tmp_path):
     module = load_module("scientific_job_dataset")
     store = module.ImmutableDatasetStore(tmp_path, {"science_contract_id": "TEST", "source_commit": "a" * 40})
@@ -111,6 +140,8 @@ def test_solver_free_selftest_covers_codec_checkpoint_result_and_dataset(tmp_pat
     assert result["checkpoint_tested"] is True
     assert result["result_channel_tested"] is True
     assert result["dataset_consumer_tested"] is True
+    assert result["solver_free_import_isolation"] is True
+    assert "meep" not in sys.modules
     assert result["mpb_smoke"] == {"executed": False, "reused": False}
     assert (tmp_path / "certifications" / f"{result['runtime_sha256']}.json").is_file()
 

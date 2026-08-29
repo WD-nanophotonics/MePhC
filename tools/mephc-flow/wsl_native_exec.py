@@ -78,7 +78,10 @@ def extract_result_summary(stdout_path: Path) -> dict:
     return summary
 
 
-def finalize_child_result(record: dict, stdout_path: Path, stderr_path: Path, return_code: int) -> dict:
+def finalize_child_result(
+    record: dict, stdout_path: Path, stderr_path: Path, return_code: int,
+    counters_path: Path | None = None,
+) -> dict:
     stdout = stream_stats(stdout_path)
     stderr = stream_stats(stderr_path)
     result = dict(record)
@@ -90,6 +93,17 @@ def finalize_child_result(record: dict, stdout_path: Path, stderr_path: Path, re
         "return_code": return_code,
         "completed_at": time.time(),
     })
+    counters = {}
+    if counters_path is not None and counters_path.is_file():
+        try:
+            candidate = json.loads(counters_path.read_text(encoding="utf-8"))
+            if isinstance(candidate, dict):
+                counters = candidate
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+            counters = {"counter_error": "EXECUTION_COUNTER_STATE_INVALID"}
+    for key in ("actual_provider_execution_count", "actual_solver_execution_count",
+                "actual_dataset_record_count", "last_counter_update_at"):
+        result[key] = counters.get(key, 0 if key != "last_counter_update_at" else None)
     if return_code != 0:
         result.update({"state": "failed", "result_error": "CHILD_RETURN_CODE_NONZERO"})
         return result
@@ -112,6 +126,7 @@ def main() -> int:
     args = parser.parse_args()
     argv = args.argv[1:] if args.argv and args.argv[0] == "--" else args.argv
     state_path = Path(args.state)
+    counters_path = state_path.with_suffix(".counters.json")
     value = json.loads(state_path.read_text(encoding="utf-8"))
     stdout_path = state_path.with_suffix(".stdout.log")
     stderr_path = state_path.with_suffix(".stderr.log")
@@ -125,6 +140,15 @@ def main() -> int:
         environment["MEPHC_SOLVER_EXECUTION_BUDGET"] = str(value["solver_execution_budget"])
     if isinstance(value.get("science_contract_sha256"), str):
         environment["MEPHC_SCIENCE_CONTRACT_SHA256"] = value["science_contract_sha256"]
+    initial_counters = {
+        "schema": "mephc-native-execution-counters-v1",
+        "actual_provider_execution_count": 0,
+        "actual_solver_execution_count": 0,
+        "actual_dataset_record_count": 0,
+        "last_counter_update_at": time.time(),
+    }
+    atomic(counters_path, initial_counters)
+    environment["MEPHC_EXECUTION_COUNTERS_PATH"] = str(counters_path)
     with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
         process = subprocess.Popen(argv, cwd=args.project, env=environment, shell=False,
                                    stdout=stdout, stderr=stderr)
@@ -133,7 +157,7 @@ def main() -> int:
                       "linux_start_ticks": stat[21], "started_at": time.time()})
         atomic(state_path, value)
         return_code = process.wait()
-    final = finalize_child_result(value, stdout_path, stderr_path, return_code)
+    final = finalize_child_result(value, stdout_path, stderr_path, return_code, counters_path)
     final.pop("pid", None)
     final.pop("linux_start_ticks", None)
     atomic(state_path, final)

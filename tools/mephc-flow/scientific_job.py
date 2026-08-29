@@ -19,7 +19,7 @@ CONTRACT_SCHEMA = "mephc-science-work-order-v1"
 DATASET_SCHEMA = "mephc-scientific-dataset-v1"
 RECORD_SCHEMA = "mephc-scientific-record-v1"
 CERT_SCHEMA = "mephc-science-runtime-certification-v1"
-ACTIONS = {"acquire", "analyze", "infrastructure"}
+ACTIONS = {"acquire", "analyze", "corrective", "infrastructure"}
 KINDS = {"SCIENCE", "INFRASTRUCTURE"}
 CAPABILITIES = {
     "exact_checkout", "sandbox_publication", "native_execution", "mpb",
@@ -73,7 +73,8 @@ def validate_contract(value: Any) -> dict[str, Any]:
         "project", "entrypoint", "inputs", "budgets", "required_capabilities",
         "allowed_writes", "expected_output", "acceptance_criteria", "forbidden",
     }
-    if set(value) != required:
+    optional = {"mode", "original_work_order_class", "parent_work_order_id"}
+    if not required.issubset(value) or set(value) - required - optional:
         raise ScientificJobError("WORK_ORDER_CONTRACT_FIELDS_INVALID")
     if value["kind"] not in KINDS or value["action"] not in ACTIONS:
         raise ScientificJobError("WORK_ORDER_CONTRACT_CLASS_INVALID")
@@ -97,7 +98,7 @@ def validate_contract(value: Any) -> dict[str, Any]:
         raise ScientificJobError("WORK_ORDER_BUDGET_FIELDS_INVALID")
     if any(type(item) is not int or item < 0 for item in budgets.values()):
         raise ScientificJobError("WORK_ORDER_BUDGET_INVALID")
-    if value["action"] == "analyze" and any(budgets.values()):
+    if value["action"] in {"analyze", "corrective"} and any(budgets.values()):
         raise ScientificJobError("SOLVER_FREE_ANALYSIS_BUDGET_NONZERO")
     if value["action"] == "acquire" and budgets["native_invocations"] != 1:
         raise ScientificJobError("ACQUISITION_INVOCATION_BUDGET_INVALID")
@@ -125,13 +126,45 @@ def validate_contract(value: Any) -> dict[str, Any]:
                 raise ScientificJobError("ANALYSIS_DATASET_MANIFEST_INVALID")
         elif output["dataset_schema"] is not None:
             raise ScientificJobError("ARTIFACT_ONLY_ANALYSIS_DATASET_SCHEMA_REQUIRED_NULL")
+    if value["action"] == "corrective":
+        if value["kind"] != "SCIENCE" or value.get("mode", "CORRECTIVE") != "CORRECTIVE":
+            raise ScientificJobError("CORRECTIVE_CONTRACT_CLASS_INVALID")
+        if any(budgets.values()) or output["dataset_schema"] is not None:
+            raise ScientificJobError("CORRECTIVE_CONTRACT_EXECUTION_FORBIDDEN")
     if value["kind"] == "SCIENCE" and any(
         path.startswith("tools/mephc-flow/") for path in value["allowed_writes"]
     ):
         raise ScientificJobError("SCIENCE_CONTRACT_INFRASTRUCTURE_WRITE_FORBIDDEN")
     result = json.loads(json.dumps(value))
+    result.setdefault("mode", "CORRECTIVE" if value["action"] == "corrective" else "STANDARD")
+    result.setdefault("original_work_order_class", value["kind"])
     result["contract_sha256"] = digest(value)
     return result
+
+
+def _counter_state_path() -> Path | None:
+    raw = os.environ.get("MEPHC_EXECUTION_COUNTERS_PATH")
+    return Path(raw) if raw else None
+
+
+def _update_execution_counters(**increments: int) -> dict[str, Any]:
+    path = _counter_state_path()
+    if path is None:
+        return {}
+    try:
+        value = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ScientificJobError("EXECUTION_COUNTER_STATE_INVALID") from exc
+    for key in ("actual_provider_execution_count", "actual_solver_execution_count",
+                "actual_dataset_record_count"):
+        current = value.get(key, 0)
+        if type(current) is not int or current < 0:
+            raise ScientificJobError("EXECUTION_COUNTER_STATE_INVALID")
+        value[key] = current + increments.get(key, 0)
+    value["schema"] = "mephc-native-execution-counters-v1"
+    value["last_counter_update_at"] = time.time()
+    atomic_json(path, value)
+    return value
 
 
 class BudgetCounter:
@@ -147,11 +180,13 @@ class BudgetCounter:
         if self.provider_count >= self.provider_limit:
             raise ScientificJobError("PROVIDER_REQUEST_BUDGET_EXCEEDED")
         self.provider_count += 1
+        _update_execution_counters(actual_provider_execution_count=1)
 
     def consume_solver(self) -> None:
         if self.solver_count >= self.solver_limit:
             raise ScientificJobError("SOLVER_EXECUTION_BUDGET_EXCEEDED")
         self.solver_count += 1
+        _update_execution_counters(actual_solver_execution_count=1)
 
 
 def runtime_hash(root: Path) -> str:
@@ -203,6 +238,7 @@ class ImmutableDatasetStore:
         atomic_bytes(payload_path, payload)
         atomic_json(metadata_path, {**metadata, "complete": False})
         atomic_json(metadata_path, metadata)
+        _update_execution_counters(actual_dataset_record_count=1)
         return metadata
 
     def get(self, key: bytes) -> tuple[bytes, dict[str, Any]]:
@@ -342,6 +378,13 @@ def selftest(root: Path, state_root: Path, *, mpb_smoke: bool) -> dict[str, Any]
         if helper.extract_result_summary(stdout) != value:
             raise ScientificJobError("SELFTEST_RESULT_CHANNEL_FAILED")
 
+    forbidden_solver_modules = sorted(
+        name for name in sys.modules
+        if name == "meep" or name.startswith("meep.") or name == "mpi4py" or name.startswith("mpi4py.")
+    )
+    if forbidden_solver_modules:
+        raise ScientificJobError("SOLVER_FREE_SELFTEST_IMPORTED_NATIVE_MODULE")
+
     smoke = {"executed": False, "reused": False}
     if mpb_smoke:
         smoke_root = state_root / "selftests" / runtime_sha / "mpb-smoke"
@@ -371,6 +414,7 @@ def selftest(root: Path, state_root: Path, *, mpb_smoke: bool) -> dict[str, Any]
         "python": platform.python_version(),
         "payload_codec_schema": runtime.RETENTION_PAYLOAD_CODEC_SCHEMA,
         "fake_provider_tested": True,
+        "solver_free_import_isolation": True,
         "payload_codec_tested": True,
         "checkpoint_tested": True,
         "result_channel_tested": True,

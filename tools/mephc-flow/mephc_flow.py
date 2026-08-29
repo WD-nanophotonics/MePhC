@@ -385,6 +385,50 @@ def machine_contract(text: str) -> dict[str, Any]:
     return {}
 
 
+def _csv_values(values: dict[str, list[str]], key: str) -> list[str]:
+    raw = (values.get(key) or [""])[-1]
+    return [item.strip().replace("\\", "/") for item in raw.split(",") if item.strip()]
+
+
+def normalized_work_order_contract(order: dict[str, Any]) -> dict[str, Any]:
+    """Return the machine contract, including the one strict corrective adapter.
+
+    The adapter deliberately accepts only zero-execution SCIENCE_CORRECTIVE
+    receipts with an exact source SHA and explicit allowed writes.  It does not
+    turn arbitrary legacy prose into executable science work.
+    """
+    explicit = machine_contract(order["text"])
+    if explicit:
+        return explicit
+    values = key_values(order["text"])
+    original_class = (values.get("WORK_ORDER_CLASS") or [""])[-1].upper()
+    if original_class != "SCIENCE_CORRECTIVE":
+        return {}
+    source = (values.get("EXPECTED_SOURCE_SHA") or values.get("BASE_SANDBOX_SHA") or [""])[-1]
+    allowed = _csv_values(values, "ALLOWED_WRITES")
+    budgets = {
+        "native_invocations": int((values.get("NATIVE_INVOCATION_BUDGET") or ["-1"])[-1]),
+        "provider_requests": int((values.get("PROVIDER_REQUEST_BUDGET") or ["-1"])[-1]),
+        "solver_executions": int((values.get("SOLVER_EXECUTION_BUDGET") or ["-1"])[-1]),
+    }
+    if not SHA40.fullmatch(source) or not allowed or any(budgets.values()):
+        raise FlowError("LEGACY_CORRECTIVE_CONTRACT_INVALID")
+    if any((PurePosixPath(item).is_absolute() or ".." in PurePosixPath(item).parts) for item in allowed):
+        raise FlowError("LEGACY_CORRECTIVE_ALLOWED_WRITES_INVALID")
+    return {
+        "schema": "mephc-science-work-order-v1", "kind": "SCIENCE",
+        "mode": "CORRECTIVE", "original_work_order_class": original_class,
+        "work_order_id": order["work_order_id"], "source_commit": source,
+        "action": "corrective", "project": ".", "entrypoint": None,
+        "inputs": {"legacy_response_sha256": order["response_sha256"]},
+        "budgets": budgets,
+        "required_capabilities": ["exact_checkout", "sandbox_publication", "automatic_provenance"],
+        "allowed_writes": allowed,
+        "expected_output": {"dataset_schema": None, "result_schema": "mephc-science-corrective-v1"},
+        "acceptance_criteria": [], "forbidden": _csv_values(values, "FORBIDDEN_ACTIONS"),
+    }
+
+
 def science_module(paths: Paths):
     name = "_mephc_scientific_job_control"
     path = paths.control / "tools" / "mephc-flow" / "scientific_job.py"
@@ -399,7 +443,7 @@ def science_module(paths: Paths):
 
 def active_machine_contract(paths: Paths) -> tuple[dict[str, Any], dict[str, Any]]:
     order = active_work_order(paths)
-    value = machine_contract(order["text"])
+    value = normalized_work_order_contract(order)
     module = science_module(paths)
     try:
         contract = module.validate_contract(value)
@@ -439,6 +483,101 @@ def science_authorization(paths: Paths, order: dict[str, Any], contract: dict[st
     }
 
 
+def supervision_path(paths: Paths) -> Path:
+    return paths.state / "supervision.json"
+
+
+def supervision_state(paths: Paths) -> dict[str, Any]:
+    value = read_json(supervision_path(paths), default={})
+    if not isinstance(value, dict) or value.get("schema") != "mephc-supervision-v1":
+        return {"schema": "mephc-supervision-v1", "active": False, "target": 0,
+                "batch_size": 0, "stable_count": 0, "batch": [], "reviewed": [],
+                "failure_signatures": {}, "coverage": {"solver_free": False,
+                "native": False, "corrective": False}, "completed": False}
+    return value
+
+
+def supervision_start(paths: Paths, target: int, batch_size: int) -> dict[str, Any]:
+    if type(target) is not int or not 1 <= target <= 100:
+        raise FlowError("SUPERVISION_TARGET_INVALID")
+    if type(batch_size) is not int or not 1 <= batch_size <= 10 or batch_size > target:
+        raise FlowError("SUPERVISION_BATCH_SIZE_INVALID")
+    prior = supervision_state(paths)
+    if prior.get("active") and not prior.get("completed"):
+        if prior.get("target") == target and prior.get("batch_size") == batch_size:
+            return prior
+        raise FlowError("SUPERVISION_ALREADY_ACTIVE")
+    value = {"schema": "mephc-supervision-v1", "active": True, "target": target,
+             "batch_size": batch_size, "stable_count": 0, "batch": [], "reviewed": [],
+             "failure_signatures": {}, "coverage": {"solver_free": False,
+             "native": False, "corrective": False}, "completed": False,
+             "started_at": time.time(), "updated_at": time.time()}
+    atomic_json(supervision_path(paths), value)
+    return value
+
+
+def supervision_status(paths: Paths) -> dict[str, Any]:
+    value = supervision_state(paths)
+    batch = value.get("batch", [])
+    return {**value, "batch_review_required": bool(value.get("active") and
+            len(batch) >= value.get("batch_size", 0)),
+            "remaining": max(0, int(value.get("target", 0)) - int(value.get("stable_count", 0)))}
+
+
+def _record_supervised_closeout(paths: Paths, prepared: dict[str, Any], summary: dict[str, Any]) -> None:
+    value = supervision_state(paths)
+    if not value.get("active") or value.get("completed"):
+        return
+    request_id = prepared["request_id"]
+    all_records = list(value.get("batch", [])) + list(value.get("reviewed", []))
+    if any(item.get("request_id") == request_id for item in all_records):
+        return
+    mode = prepared.get("work_order_mode", "STANDARD")
+    native_count = int(prepared.get("actual_counts", {}).get("native", 0))
+    record = {
+        "work_order_id": prepared["work_order_id"], "request_id": request_id,
+        "work_order_class": prepared["work_order_class"], "mode": mode,
+        "source_commit": prepared["source_commit"],
+        "submission_count": summary.get("submission_count"),
+        "actual_counts": prepared.get("actual_counts", {}),
+        "qualified_candidate": prepared["work_order_class"] == "SCIENCE",
+        "framework_modified": prepared.get("framework_modified", False),
+        "completed_at": time.time(),
+    }
+    value.setdefault("batch", []).append(record)
+    coverage = value.setdefault("coverage", {})
+    coverage["corrective"] = bool(coverage.get("corrective") or mode == "CORRECTIVE")
+    coverage["native"] = bool(coverage.get("native") or native_count > 0)
+    coverage["solver_free"] = bool(coverage.get("solver_free") or
+                                   (prepared["work_order_class"] == "SCIENCE" and native_count == 0))
+    value["updated_at"] = time.time()
+    atomic_json(supervision_path(paths), value)
+
+
+def supervision_advance(paths: Paths, verdict: str) -> dict[str, Any]:
+    value = supervision_state(paths)
+    if not value.get("active") or len(value.get("batch", [])) < value.get("batch_size", 0):
+        raise FlowError("SUPERVISION_BATCH_NOT_READY")
+    if verdict not in {"PASS", "RESET_AFTER_FRAMEWORK_FIX"}:
+        raise FlowError("SUPERVISION_VERDICT_INVALID")
+    batch = value["batch"]
+    if verdict == "PASS":
+        qualified = sum(1 for item in batch if item.get("qualified_candidate") and
+                        item.get("submission_count") == 1 and not item.get("framework_modified"))
+        value["stable_count"] = int(value.get("stable_count", 0)) + qualified
+    else:
+        value["stable_count"] = 0
+    value.setdefault("reviewed", []).extend({**item, "verdict": verdict} for item in batch)
+    value["batch"] = []
+    coverage = value.get("coverage", {})
+    value["completed"] = bool(value["stable_count"] >= value["target"] and
+                              all(coverage.get(key) for key in ("solver_free", "native", "corrective")))
+    value["active"] = not value["completed"]
+    value["updated_at"] = time.time()
+    atomic_json(supervision_path(paths), value)
+    return supervision_status(paths)
+
+
 def science_selftest(paths: Paths, *, mpb_smoke: bool) -> dict[str, Any]:
     source = require_source(paths, published=True)
     checkout = ensure_checkout(paths, source["head"])
@@ -472,6 +611,9 @@ def science_selftest(paths: Paths, *, mpb_smoke: bool) -> dict[str, Any]:
 
 
 def science_preflight(paths: Paths) -> dict[str, Any]:
+    supervision = supervision_status(paths)
+    if supervision.get("batch_review_required"):
+        raise FlowError("SUPERVISION_BATCH_REVIEW_REQUIRED", safe_next="supervision-status")
     order, contract = active_machine_contract(paths)
     source = require_source(paths, published=True)
     control_plane_changes = {
@@ -491,6 +633,16 @@ def science_preflight(paths: Paths) -> dict[str, Any]:
         if not changed_since_contract.issubset(permitted_changes):
             raise FlowError("WORK_ORDER_SOURCE_DIFF_OUT_OF_SCOPE", ",".join(sorted(changed_since_contract - permitted_changes)))
     checkout = ensure_checkout(paths, source["head"])
+    if contract["action"] == "corrective":
+        return {
+            "schema": "mephc-science-preflight-v1", "ready_to_run": True,
+            "ready_to_edit": False, "safe_next": "closeout",
+            "work_order_id": order["work_order_id"], "contract_sha256": contract["contract_sha256"],
+            "base_source_commit": contract["source_commit"], "source_commit": source["head"],
+            "execution_checkout": checkout, "entrypoint": None,
+            "mode": "CORRECTIVE", "allowed_writes": contract["allowed_writes"],
+            "authorization": science_authorization(paths, order, contract), "job_created": False,
+        }
     entrypoint = contract.get("entrypoint")
     if entrypoint is not None:
         tracked = wsl(["/usr/bin/git", "-C", checkout, "ls-files", "--error-unmatch", entrypoint], check=False)
@@ -513,7 +665,11 @@ def science_preflight(paths: Paths) -> dict[str, Any]:
     if certification.get("schema") != "mephc-science-runtime-certification-v1":
         raise FlowError("SCIENCE_RUNTIME_SELFTEST_REQUIRED", safe_next="science-selftest")
     if contract["action"] == "acquire" and certification.get("mpb_smoke", {}).get("executed") is not True:
-        raise FlowError("SCIENCE_RUNTIME_MPB_SMOKE_REQUIRED", safe_next="science-selftest")
+        raise FlowError("SCIENCE_RUNTIME_MPB_SMOKE_REQUIRED", safe_next="science-selftest --mpb-smoke")
+    if contract["action"] == "acquire" and (
+            certification.get("fake_provider_tested") is not True
+            or certification.get("solver_free_import_isolation") is not True):
+        raise FlowError("ACQUISITION_FAKE_PROVIDER_PREFLIGHT_REQUIRED", safe_next="science-selftest --mpb-smoke")
     available = {
         "exact_checkout", "sandbox_publication", "native_execution", "mpb",
         "private_retention", "cross_commit_dataset_read", "result_channel",
@@ -1558,8 +1714,8 @@ def closeout_result_projection(job: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def report_artifacts(paths: Paths, order_text: str, head: str) -> list[dict[str, Any]]:
-    contract = machine_contract(order_text)
+def report_artifacts(paths: Paths, order: dict[str, Any], head: str) -> list[dict[str, Any]]:
+    contract = normalized_work_order_contract(order)
     allowed = contract.get("allowed_writes", []) if isinstance(contract, dict) else []
     if not isinstance(allowed, list):
         raise FlowError("WORK_ORDER_ALLOWED_WRITES_INVALID")
@@ -1577,14 +1733,53 @@ def report_artifacts(paths: Paths, order_text: str, head: str) -> list[dict[str,
     return artifacts
 
 
+def corrective_evidence(paths: Paths, order: dict[str, Any], contract: dict[str, Any], head: str) -> dict[str, Any]:
+    matches: list[dict[str, Any]] = []
+    for relative in contract["allowed_writes"]:
+        candidate = paths.control / relative
+        if candidate.suffix != ".json" or not candidate.is_file() or candidate.is_symlink():
+            continue
+        value = read_json(candidate, default={})
+        if isinstance(value, dict) and value.get("work_order_id") == order["work_order_id"]:
+            matches.append({"path": relative, "value": value})
+    if len(matches) != 1:
+        raise FlowError("CORRECTIVE_RECONCILIATION_EVIDENCE_NOT_UNIQUE")
+    evidence = matches[0]["value"]
+    required_zero = {
+        "native_invocation_count": 0, "provider_request_count": 0,
+        "solver_execution_count": 0, "mpb_execution": False,
+    }
+    if any(evidence.get(key) != expected for key, expected in required_zero.items()):
+        raise FlowError("CORRECTIVE_NEW_EXECUTION_COUNT_NONZERO")
+    original = {
+        "native": int(bool(evidence.get("original_native_run_created"))),
+        "provider": evidence.get("original_provider_execution_count"),
+        "solver": evidence.get("original_solver_execution_count"),
+        "dataset": evidence.get("original_dataset_record_count"),
+    }
+    if any(type(original[key]) is not int or original[key] < 0 for key in original):
+        raise FlowError("CORRECTIVE_ORIGINAL_EXECUTION_COUNTS_INVALID")
+    if evidence.get("e10f_live_acquisition_executed") is not False:
+        raise FlowError("CORRECTIVE_ORIGINAL_JOB_REPLAYED")
+    tracked = git(paths, "ls-tree", "--name-only", head, "--", matches[0]["path"], check=False)
+    if tracked.returncode or matches[0]["path"] not in tracked.stdout.splitlines():
+        raise FlowError("CORRECTIVE_EVIDENCE_NOT_PUBLISHED")
+    return {"artifact": matches[0]["path"], "original_counts": original,
+            "new_counts": {"native": 0, "provider": 0, "solver": 0, "dataset": 0},
+            "result_summary": {key: value for key, value in evidence.items() if scalar_result(value)}}
+
+
 def canonical_closeout_report(paths: Paths, *, blocked_code: str | None = None) -> dict[str, Any]:
     if blocked_code is not None and not BLOCKED_CODE.fullmatch(blocked_code):
         raise FlowError("CLOSEOUT_BLOCKED_CODE_INVALID")
     source = require_source(paths, published=True)
     order = active_work_order(paths)
-    contract = machine_contract(order["text"])
+    contract = normalized_work_order_contract(order)
     values = key_values(order["text"])
-    work_class = str(contract.get("kind") or (values.get("WORK_ORDER_CLASS") or ["INFRASTRUCTURE"])[-1]).upper()
+    original_class = str(contract.get("original_work_order_class") or
+                         (values.get("WORK_ORDER_CLASS") or [contract.get("kind", "INFRASTRUCTURE")])[-1]).upper()
+    work_class = str(contract.get("kind") or original_class).upper()
+    work_mode = str(contract.get("mode") or ("CORRECTIVE" if original_class == "SCIENCE_CORRECTIVE" else "STANDARD")).upper()
     if work_class not in {"SCIENCE", "INFRASTRUCTURE"}:
         raise FlowError("CLOSEOUT_WORK_ORDER_CLASS_INVALID")
     publish_evidence = read_json(paths.state / "publish" / f"{source['head']}.json", default={})
@@ -1592,18 +1787,25 @@ def canonical_closeout_report(paths: Paths, *, blocked_code: str | None = None) 
             or publish_evidence.get("published_sandbox") != source["head"]):
         raise FlowError("CLOSEOUT_PUBLISH_EVIDENCE_REQUIRED", safe_next="publish")
     job = successful_science_job(paths, order["work_order_id"], source["head"])
-    if blocked_code is None and work_class == "SCIENCE" and job is None:
+    corrective = corrective_evidence(paths, order, contract, source["head"]) if work_mode == "CORRECTIVE" else None
+    if blocked_code is None and work_class == "SCIENCE" and job is None and corrective is None:
         raise FlowError("CLOSEOUT_SUCCESSFUL_JOB_REQUIRED", safe_next="science-status")
     projection = closeout_result_projection(job) if isinstance(job, dict) else {
         "return_code": None, "native_invocation_count": 0,
         "provider_executions": 0, "solver_executions": 0, "result_summary": {},
     }
+    if corrective is not None:
+        projection = {"return_code": 0, "native_invocation_count": 0,
+                      "provider_executions": 0, "solver_executions": 0,
+                      "result_summary": corrective["result_summary"]}
     result_summary = projection["result_summary"]
-    artifacts = report_artifacts(paths, order["text"], source["head"])
+    artifacts = report_artifacts(paths, order, source["head"])
     lines = [
         "SCHEMA=mephc-fixed-closeout-v1",
         f"WORK_ORDER_ID={order['work_order_id']}",
         f"WORK_ORDER_CLASS={work_class}",
+        f"WORK_ORDER_MODE={work_mode}",
+        f"ORIGINAL_WORK_ORDER_CLASS={original_class}",
         f"REPORT_KIND={'blocked' if blocked_code else 'complete'}",
         "CODE_CHANGE=SANDBOX_ONLY",
         f"BASE_MAIN_SHA={EXPECTED_MAIN}",
@@ -1624,6 +1826,15 @@ def canonical_closeout_report(paths: Paths, *, blocked_code: str | None = None) 
             f"NATIVE_INVOCATION_COUNT={projection['native_invocation_count']}",
             f"PROVIDER_EXECUTION_COUNT={projection['provider_executions']}",
             f"SOLVER_EXECUTION_COUNT={projection['solver_executions']}",
+        ])
+    elif corrective is not None:
+        lines.extend([
+            "SCIENCE_ACTION=corrective", "SCIENCE_RETURN_CODE=0",
+            "NATIVE_INVOCATION_COUNT=0", "PROVIDER_EXECUTION_COUNT=0",
+            "SOLVER_EXECUTION_COUNT=0", "DATASET_RECORD_COUNT=0",
+            f"ORIGINAL_PROVIDER_EXECUTION_COUNT={corrective['original_counts']['provider']}",
+            f"ORIGINAL_SOLVER_EXECUTION_COUNT={corrective['original_counts']['solver']}",
+            f"ORIGINAL_DATASET_RECORD_COUNT={corrective['original_counts']['dataset']}",
         ])
     for key in sorted(result_summary):
         value = result_summary[key]
@@ -1678,8 +1889,15 @@ def canonical_closeout_report(paths: Paths, *, blocked_code: str | None = None) 
         "work_order_id": order["work_order_id"], "kind": kind, "message_sha256": message_hash,
     }))
     return {
-        "work_order_id": order["work_order_id"], "work_order_class": work_class, "kind": kind,
+        "work_order_id": order["work_order_id"], "work_order_class": work_class,
+        "work_order_mode": work_mode, "original_work_order_class": original_class, "kind": kind,
         "source_commit": source["head"], "job_id": job.get("job_id") if job else None,
+        "actual_counts": {"native": projection["native_invocation_count"],
+                          "provider": projection["provider_executions"],
+                          "solver": projection["solver_executions"],
+                          "dataset": (corrective or {}).get("new_counts", {}).get("dataset", 0)},
+        "framework_modified": any(artifact["path"].startswith("tools/mephc-flow/")
+                                  or artifact["path"] == "AGENTS.md" for artifact in artifacts),
         "artifacts": artifacts, "message": message, "message_sha256": message_hash,
         "request_hash": request_hash, "request_id": "MEPHC-FLOW-" + request_hash[:24],
     }
@@ -1732,7 +1950,7 @@ def pending_closeout_status(paths: Paths, work_order_id: str) -> dict[str, Any] 
             raise FlowError("CLOSEOUT_BLOCKED_REQUEST_INVALID")
         blocked_code = match.group(1)
     if summary["response_received"]:
-        safe_next = f"courier-reconcile --request-id {directory.name}"
+        safe_next = (f"closeout-blocked --code {blocked_code}" if kind == "blocked" else "closeout")
         state = "response_ready_to_consume"
     elif kind == "blocked":
         safe_next = f"closeout-blocked --code {blocked_code}"
@@ -1744,7 +1962,9 @@ def pending_closeout_status(paths: Paths, work_order_id: str) -> dict[str, Any] 
             "safe_next": safe_next}
 
 
-def status(paths: Paths) -> dict[str, Any]:
+def status(paths: Paths, history_limit: int = 5) -> dict[str, Any]:
+    if type(history_limit) is not int or not 0 <= history_limit <= 20:
+        raise FlowError("STATUS_HISTORY_LIMIT_INVALID")
     source = source_state(paths)
     try:
         order = active_work_order(paths)
@@ -1760,11 +1980,25 @@ def status(paths: Paths) -> dict[str, Any]:
             value = read_json(item, default={})
             if isinstance(value, dict) and value.get("state") not in {"succeeded", "failed"}:
                 runs.append({key: value.get(key) for key in ("run_id", "work_order_id", "state", "pid")})
-    requests = []
+    requests: list[tuple[int, dict[str, Any]]] = []
     if paths.outbox.is_dir():
         for directory in paths.outbox.glob("MEPHC-FLOW-*"):
             if directory.is_dir():
-                requests.append(request_summary(directory))
+                requests.append((directory.stat().st_mtime_ns, request_summary(directory)))
+    requests.sort(key=lambda item: (item[0], str(item[1].get("request_id"))), reverse=True)
+    recent_jobs: list[tuple[float, dict[str, Any]]] = []
+    job_root = paths.state / "science-jobs"
+    if job_root.is_dir():
+        for item in job_root.glob("MEPHC-SCIENCE-*.json"):
+            value = read_json(item, default={})
+            if isinstance(value, dict):
+                recent_jobs.append((float(value.get("completed_at") or value.get("created_at") or 0), {
+                    key: value.get(key) for key in (
+                        "job_id", "work_order_id", "action", "state", "source_commit",
+                        "actual_provider_execution_count", "actual_solver_execution_count",
+                        "actual_dataset_record_count", "last_counter_update_at")
+                }))
+    recent_jobs.sort(key=lambda item: item[0], reverse=True)
     pending_closeout = pending_closeout_status(paths, work_order_id) if work_order_id is not None else None
     closeout = pending_closeout or (closeout_status(paths) if work_order_id is not None
                                    else {"state": "unavailable", "safe_next": "resume"})
@@ -1772,7 +2006,10 @@ def status(paths: Paths) -> dict[str, Any]:
         "schema": "mephc-flow-status-v1", "source": source,
         "active_work_order_id": work_order_id, "work_order_policy": policy,
         "effective_policy": effective, "pending_native_runs": runs,
-        "flow_requests": sorted(requests, key=lambda item: str(item["request_id"])),
+        "flow_request_count": len(requests),
+        "flow_requests": [item[1] for item in requests[:history_limit]],
+        "recent_science_jobs": [item[1] for item in recent_jobs[:history_limit]],
+        "supervision": supervision_status(paths),
         "closeout_state": closeout,
         "safe_next": closeout["safe_next"],
     }
@@ -1801,10 +2038,53 @@ def validate_test_path(value: str) -> str:
     return str(candidate) + ("::" + selector if selector else "")
 
 
+def _dirty_paths(paths: Paths) -> list[str]:
+    result = git(paths, "status", "--porcelain=v1", "--untracked-files=all")
+    changed: list[str] = []
+    for line in result.stdout.splitlines():
+        if len(line) < 4:
+            raise FlowError("GIT_STATUS_OUTPUT_INVALID")
+        raw = line[3:]
+        if " -> " in raw:
+            raise FlowError("SCOPED_PUBLISH_RENAME_FORBIDDEN")
+        changed.append(raw.replace("\\", "/"))
+    return changed
+
+
+def prepare_scoped_commit(paths: Paths) -> dict[str, Any] | None:
+    changed = _dirty_paths(paths)
+    if not changed:
+        return None
+    order = active_work_order(paths)
+    contract = normalized_work_order_contract(order)
+    if not contract:
+        raise FlowError("SCOPED_PUBLISH_MACHINE_CONTRACT_REQUIRED")
+    allowed = set(contract.get("allowed_writes", []))
+    outside = sorted(set(changed) - allowed)
+    if outside:
+        raise FlowError("SCOPED_PUBLISH_OUT_OF_SCOPE", ",".join(outside))
+    git(paths, "add", "--", *sorted(changed))
+    staged = [item for item in git(paths, "diff", "--cached", "--name-only").stdout.splitlines() if item]
+    if set(staged) != set(changed):
+        raise FlowError("SCOPED_PUBLISH_STAGING_MISMATCH")
+    remaining = _dirty_paths(paths)
+    if sorted(remaining) != sorted(changed):
+        raise FlowError("SCOPED_PUBLISH_WORKTREE_DRIFT")
+    message = f"work-order({order['work_order_id']}): scoped update"
+    commit = git(paths, "-c", "commit.gpgsign=false", "commit", "-m", message, check=False)
+    if commit.returncode:
+        raise FlowError("SCOPED_PUBLISH_COMMIT_FAILED", (commit.stderr or commit.stdout)[-4000:])
+    if _dirty_paths(paths):
+        raise FlowError("SCOPED_PUBLISH_POST_COMMIT_DIRTY")
+    return {"work_order_id": order["work_order_id"], "changed_files": staged,
+            "source_commit": git(paths, "rev-parse", "HEAD").stdout.strip()}
+
+
 def publish(paths: Paths, tests: list[str]) -> dict[str, Any]:
     if not tests:
         raise FlowError("TESTS_REQUIRED")
     tests = [validate_test_path(value) for value in tests]
+    scoped_commit = prepare_scoped_commit(paths)
     source = require_source(paths)
     remote_main, remote_sandbox = remote_refs(paths)
     if remote_main != EXPECTED_MAIN:
@@ -1846,7 +2126,8 @@ def publish(paths: Paths, tests: list[str]) -> dict[str, Any]:
     evidence.update({"published_at": time.time(), "published_sandbox": verified_sandbox})
     atomic_json(evidence_path, evidence)
     return {"state": "published", "source_commit": source["head"], "origin_main": verified_main,
-            "origin_sandbox": verified_sandbox, "execution_checkout": checkout, "tests": tests}
+            "origin_sandbox": verified_sandbox, "execution_checkout": checkout, "tests": tests,
+            "scoped_commit": scoped_commit}
 
 
 def native_payload(
@@ -2052,7 +2333,11 @@ def science_acquire(paths: Paths) -> dict[str, Any]:
         preflight["execution_checkout"], [CONDA_PYTHON_WSL, contract["entrypoint"]], contract,
     )
     final = {**record, "state": result.get("state"), "native_run_id": result.get("run_id"),
-             "result": result, "completed_at": time.time()}
+             "result": result, "completed_at": time.time(),
+             "actual_provider_execution_count": result.get("actual_provider_execution_count", 0),
+             "actual_solver_execution_count": result.get("actual_solver_execution_count", 0),
+             "actual_dataset_record_count": result.get("actual_dataset_record_count", 0),
+             "last_counter_update_at": result.get("last_counter_update_at")}
     atomic_json(job_path, final)
     safe_next = "closeout" if final.get("state") == "succeeded" else f"science-status {job_id}"
     return {**final, "reused": False, "safe_next": safe_next}
@@ -2181,6 +2466,9 @@ def science_analyze(paths: Paths) -> dict[str, Any]:
     elif evidence["allowed_output_not_committed"]:
         final.update({"state": "failed", "result_error": "ANALYSIS_OUTPUT_NOT_COMMITTED"})
     final.update({"provider_executions": 0, "solver_executions": 0,
+                  "actual_provider_execution_count": final.get("actual_provider_execution_count", 0),
+                  "actual_solver_execution_count": final.get("actual_solver_execution_count", 0),
+                  "actual_dataset_record_count": final.get("actual_dataset_record_count", 0),
                   "launcher_return_code": result.returncode,
                   "analysis_workspace_evidence": f"analysis-workspace:{job_id}"})
     atomic_json(job_path, final)
@@ -2287,6 +2575,7 @@ def finish_closeout(paths: Paths, prepared: dict[str, Any]) -> dict[str, Any]:
     summary = request_summary(directory)
     if summary["response_received"]:
         consumed = consume_response(paths, directory)
+        _record_supervised_closeout(paths, prepared, summary)
         return {"state": "response_received", **summary, **consumed,
                 "closeout_state": "complete", "message_sha256": prepared["message_sha256"],
                 "safe_next": "resume", "next_work_order_id": consumed["work_order_id"]}
@@ -2310,12 +2599,14 @@ def finish_closeout(paths: Paths, prepared: dict[str, Any]) -> dict[str, Any]:
         })
         if final["response_received"]:
             consumed = consume_response(paths, directory)
+            _record_supervised_closeout(paths, prepared, final)
             result = {"state": "response_received", **final, **consumed,
                       "return_code": dispatched.returncode, "safe_next": "resume"}
         else:
             result = {"state": "courier_stopped", **final, "return_code": dispatched.returncode,
                       "safe_next": f"closeout"}
     if result.get("response_received"):
+        _record_supervised_closeout(paths, prepared, result)
         result.update({"closeout_state": "complete", "message_sha256": prepared["message_sha256"],
                        "safe_next": "resume", "next_work_order_id": result.get("work_order_id")})
     else:
@@ -2428,7 +2719,8 @@ def parser() -> argparse.ArgumentParser:
     start_cmd = commands.add_parser("start")
     start_cmd.add_argument("--report-policy", choices=sorted(REPORT_POLICIES))
     start_cmd.add_argument("--native-cap", type=int)
-    commands.add_parser("status")
+    status_cmd = commands.add_parser("status")
+    status_cmd.add_argument("--history-limit", type=int, default=5)
     commands.add_parser("resume")
     commands.add_parser("science-preflight")
     selftest_cmd = commands.add_parser("science-selftest")
@@ -2455,6 +2747,12 @@ def parser() -> argparse.ArgumentParser:
     commands.add_parser("closeout")
     blocked_cmd = commands.add_parser("closeout-blocked")
     blocked_cmd.add_argument("--code", required=True)
+    supervision_start_cmd = commands.add_parser("supervision-start")
+    supervision_start_cmd.add_argument("--target", type=int, required=True)
+    supervision_start_cmd.add_argument("--batch-size", type=int, required=True)
+    commands.add_parser("supervision-status")
+    supervision_advance_cmd = commands.add_parser("supervision-advance")
+    supervision_advance_cmd.add_argument("--verdict", choices=["PASS", "RESET_AFTER_FRAMEWORK_FIX"], required=True)
     commands.add_parser("reconcile-r8-native-result")
     reconcile_cmd = commands.add_parser("courier-reconcile")
     reconcile_cmd.add_argument("--request-id", required=True)
@@ -2467,7 +2765,7 @@ def main(argv: list[str] | None = None, *, paths: Paths = Paths()) -> int:
         if args.command == "start":
             value = start(paths, args.report_policy, args.native_cap)
         elif args.command == "status":
-            value = status(paths)
+            value = status(paths, args.history_limit)
         elif args.command == "resume":
             value = resume(paths)
         elif args.command == "science-preflight":
@@ -2495,6 +2793,12 @@ def main(argv: list[str] | None = None, *, paths: Paths = Paths()) -> int:
             value = closeout(paths)
         elif args.command == "closeout-blocked":
             value = closeout_blocked(paths, args.code)
+        elif args.command == "supervision-start":
+            value = supervision_start(paths, args.target, args.batch_size)
+        elif args.command == "supervision-status":
+            value = supervision_status(paths)
+        elif args.command == "supervision-advance":
+            value = supervision_advance(paths, args.verdict)
         elif args.command == "reconcile-r8-native-result":
             helper = f"{CONTROL_ROOT_WSL}/tools/mephc-flow/reconcile_r8_native_result.py"
             result = wsl([CONDA_PYTHON_WSL, helper], timeout=3600, check=False)

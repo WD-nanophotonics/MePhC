@@ -425,7 +425,7 @@ def test_status_exposes_exact_pending_blocked_closeout_next_step(
     write_json(directory / "receipt.json", {"state": "response_received"})
     value = flow.status(scope)
     assert value["closeout_state"]["state"] == "response_ready_to_consume"
-    assert value["safe_next"] == f"courier-reconcile --request-id {directory.name}"
+    assert value["safe_next"] == "closeout-blocked --code RESULT_SUMMARY_UNSAFE"
 
 
 def test_canonical_closeout_is_bounded_and_path_free(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -1221,3 +1221,72 @@ def test_science_job_id_binds_actual_execution_source() -> None:
     second = flow.science_job_id(contract, "d" * 40)
     assert first != second
     assert first == flow.science_job_id(contract, "c" * 40)
+
+
+def test_legacy_science_corrective_normalizes_to_zero_budget_contract(tmp_path: Path) -> None:
+    scope = paths(tmp_path)
+    work_order = "MEPHC-TEST-CORRECTIVE-0001"
+    install_active_order(scope, (
+        f"NEXT_WORK_ORDER_ID={work_order}\nWORK_ORDER_CLASS=SCIENCE_CORRECTIVE\n"
+        f"EXPECTED_SOURCE_SHA={'a' * 40}\nNATIVE_INVOCATION_BUDGET=0\n"
+        "PROVIDER_REQUEST_BUDGET=0\nSOLVER_EXECUTION_BUDGET=0\n"
+        "ALLOWED_WRITES=audit/e10f/reconciliation.json\nFORBIDDEN_ACTIONS=NATIVE_EXECUTION,MPB\n"
+    ), work_order)
+    order = flow.active_work_order(scope)
+    contract = flow.normalized_work_order_contract(order)
+    assert contract["kind"] == "SCIENCE"
+    assert contract["mode"] == "CORRECTIVE"
+    assert contract["action"] == "corrective"
+    assert contract["original_work_order_class"] == "SCIENCE_CORRECTIVE"
+    assert contract["budgets"] == {"native_invocations": 0, "provider_requests": 0, "solver_executions": 0}
+
+
+def test_status_is_bounded_and_reports_total_request_count(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope = paths(tmp_path)
+    install_active_order(scope, "NEXT_WORK_ORDER_ID=MEPHC-TEST-WORK-ORDER-0001\n")
+    for index in range(8):
+        directory = scope.outbox / f"MEPHC-FLOW-{index:024d}"
+        directory.mkdir()
+        write_json(directory / "request.json", {"project_id": "MEPHC", "request_id": directory.name})
+        write_json(directory / "receipt.json", {"state": "response_timeout"})
+    monkeypatch.setattr(flow, "source_state", lambda _paths: {
+        "branch": "sandbox", "head": "a" * 40, "origin_main": flow.EXPECTED_MAIN,
+        "origin_sandbox": "a" * 40, "dirty": False,
+    })
+    monkeypatch.setattr(flow, "closeout_status", lambda _paths: {"state": "not_ready", "safe_next": "status"})
+    value = flow.status(scope, history_limit=3)
+    assert value["flow_request_count"] == 8
+    assert len(value["flow_requests"]) == 3
+
+
+def test_supervision_pauses_every_two_and_reset_clears_streak(tmp_path: Path) -> None:
+    scope = paths(tmp_path)
+    flow.supervision_start(scope, 10, 2)
+    for index in range(2):
+        prepared = {"request_id": f"MEPHC-FLOW-{index:024d}",
+                    "work_order_id": f"MEPHC-SCIENCE-{index:04d}",
+                    "work_order_class": "SCIENCE", "work_order_mode": "STANDARD",
+                    "source_commit": "a" * 40, "actual_counts": {"native": index},
+                    "framework_modified": False}
+        flow._record_supervised_closeout(scope, prepared, {"submission_count": 1})
+    assert flow.supervision_status(scope)["batch_review_required"] is True
+    advanced = flow.supervision_advance(scope, "PASS")
+    assert advanced["stable_count"] == 2
+    assert advanced["batch"] == []
+    for index in range(2, 4):
+        flow._record_supervised_closeout(scope, {
+            "request_id": f"MEPHC-FLOW-{index:024d}", "work_order_id": f"MEPHC-SCIENCE-{index:04d}",
+            "work_order_class": "SCIENCE", "work_order_mode": "CORRECTIVE",
+            "source_commit": "b" * 40, "actual_counts": {"native": 0}, "framework_modified": False,
+        }, {"submission_count": 1})
+    assert flow.supervision_advance(scope, "RESET_AFTER_FRAMEWORK_FIX")["stable_count"] == 0
+
+
+def test_scoped_publish_rejects_out_of_contract_file_before_staging(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope = paths(tmp_path)
+    monkeypatch.setattr(flow, "_dirty_paths", lambda _paths: ["unrelated.txt"])
+    monkeypatch.setattr(flow, "active_work_order", lambda _paths: {"work_order_id": "MEPHC-TEST-0001", "text": "", "response_sha256": "a" * 64})
+    monkeypatch.setattr(flow, "normalized_work_order_contract", lambda _order: {"allowed_writes": ["audit/result.json"]})
+    with pytest.raises(flow.FlowError, match="SCOPED_PUBLISH_OUT_OF_SCOPE"):
+        flow.prepare_scoped_commit(scope)
