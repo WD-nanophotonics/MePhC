@@ -58,6 +58,14 @@ def test_public_cli_is_only_four_commands():
             parser.parse_args([retired])
 
 
+def test_closeout_launcher_is_zero_argument_and_fixed():
+    launcher = (ROOT / "mephc-closeout.cmd").read_text(encoding="utf-8").lower()
+    assert 'if not "%~1"==""' in launcher
+    assert 'mephc-flow.cmd" closeout' in launcher
+    for forbidden in ("%*", "courier-reconcile", "message-file", "browser", "chrome"):
+        assert forbidden not in launcher
+
+
 def test_awaiting_and_terminated_are_distinct(monkeypatch, tmp_path: Path):
     scope = paths(tmp_path)
     monkeypatch.setattr(flow, "source", lambda _: {"branch": "sandbox", "head": "a" * 40,

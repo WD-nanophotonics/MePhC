@@ -1,0 +1,20 @@
+# The wrapper rejects every argument before invoking the fixed receipt-bound
+# closeout, so a prefix match cannot broaden its behavior.
+prefix_rule(
+    pattern = ["cmd", "/c", "mephc-closeout.cmd"],
+    decision = "allow",
+    justification = "Run the zero-argument receipt-bound MePhC closeout under the user's standing authorization.",
+    match = ["cmd /c mephc-closeout.cmd"],
+    not_match = [
+        "cmd /c mephc-flow.cmd closeout",
+        "cmd /c another-closeout.cmd",
+    ],
+)
+
+prefix_rule(
+    pattern = ["cmd.exe", "/c", "mephc-closeout.cmd"],
+    decision = "allow",
+    justification = "Run the zero-argument receipt-bound MePhC closeout under the user's standing authorization.",
+    match = ["cmd.exe /c mephc-closeout.cmd"],
+    not_match = ["cmd.exe /c mephc-flow.cmd closeout"],
+)
