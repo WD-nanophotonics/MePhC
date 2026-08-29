@@ -20,7 +20,7 @@ def test_failure_classifier_requires_completed_solver_and_post_solve_validation(
     module = load_module()
     result = module.classify_failure(
         "Finished solving for bands 1 to 6\ntmfreqs:",
-        "LocalAffineStateProviderError: LOCAL_AFFINE_KAPPA_BINDING_MISMATCH",
+        "LocalAffineProviderError: LOCAL_AFFINE_KAPPA_BINDING_MISMATCH",
         'snapshot.provenance.get("mpb_reciprocal_k_point")',
         "snapshot = provider.solve(spec)\nrecord = store.put(key, payload, record_identity)",
     )
