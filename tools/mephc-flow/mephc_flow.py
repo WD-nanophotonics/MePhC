@@ -636,10 +636,10 @@ def canonical_report(paths: Paths, order: dict[str, Any], job: dict[str, Any]) -
             "kind": kind, "message": message, "message_sha256": digest(message)}
 
 
-def courier(paths: Paths, operation: str, directory: Path, *, recovery: bool = False) -> subprocess.CompletedProcess[str]:
+def courier(paths: Paths, operation: str, directory: Path) -> subprocess.CompletedProcess[str]:
+    if operation not in {"validate", "courier_dispatch", "courier_recover"}:
+        raise FlowError("COURIER_OPERATION_INVALID")
     argv = ["cmd.exe", "/d", "/s", "/c", str(paths.courier), operation, str(directory)]
-    if recovery:
-        argv.append("--recovery-only")
     return run(argv, timeout=4860, check=False)
 
 
@@ -685,9 +685,9 @@ def closeout_once(paths: Paths) -> dict[str, Any]:
     if isinstance(retry, dict) and now < float(retry.get("next_retry_at", 0)):
         return {"state": "AWAITING_REPLY", **summary, "next_retry_at": retry["next_retry_at"],
                 "safe_next": "closeout"}
-    operation = "run"
-    recovery = summary["submission_count"] > 0 or summary["receipt_state"] is not None
-    result = courier(paths, operation, directory, recovery=recovery)
+    operation = ("courier_recover" if summary["submission_count"] > 0
+                 or summary["receipt_state"] is not None else "courier_dispatch")
+    result = courier(paths, operation, directory)
     final = request_summary(directory)
     if final["response_received"]:
         return consume_response(paths, directory)

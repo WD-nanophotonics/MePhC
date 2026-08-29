@@ -134,14 +134,14 @@ def test_closeout_reuses_one_request_and_backs_off(monkeypatch, tmp_path: Path):
     (directory / "receipt.json").write_text(json.dumps({"state": "response_timeout"}), encoding="utf-8")
     (directory / "events.jsonl").write_text('{"event":"request_submitted"}\n', encoding="utf-8")
     monkeypatch.setattr(flow, "active_order", lambda _: {"work_order_id": work_order, "text": ""})
-    calls = {"count": 0}
-    monkeypatch.setattr(flow, "courier", lambda *a, **k: (
-        calls.__setitem__("count", calls["count"] + 1) or subprocess.CompletedProcess([], 2, "", "")))
+    calls = []
+    monkeypatch.setattr(flow, "courier", lambda _p, operation, _d: (
+        calls.append(operation) or subprocess.CompletedProcess([], 2, "", "")))
     first = flow.closeout(scope)
     second = flow.closeout(scope)
     assert first["state"] == second["state"] == "AWAITING_REPLY"
     assert first["submission_count"] == second["submission_count"] == 1
-    assert calls["count"] == 1
+    assert calls == ["courier_recover"]
     assert len(list(scope.outbox.iterdir())) == 1
 
 
@@ -242,7 +242,7 @@ def test_hundred_complete_fake_provider_and_courier_cycles(monkeypatch, tmp_path
         return subprocess.CompletedProcess([], 0, "", "")
 
     def fake_courier(_paths, operation, directory, **_kwargs):
-        if operation == "run":
+        if operation in {"courier_dispatch", "courier_recover"}:
             events = directory / "events.jsonl"
             if not events.exists():
                 events.write_text('{"event":"request_submitted"}\n', encoding="utf-8")
