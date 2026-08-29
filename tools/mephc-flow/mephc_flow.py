@@ -700,12 +700,9 @@ def closeout_once(paths: Paths) -> dict[str, Any]:
             "safe_next": "closeout"}
 
 
-def closeout(paths: Paths, *, wait: bool = False) -> dict[str, Any]:
-    while True:
-        value = closeout_once(paths)
-        if not wait or value.get("state") != "AWAITING_REPLY":
-            return value
-        time.sleep(max(1.0, float(value.get("next_retry_at", time.time() + 30)) - time.time()))
+def closeout(paths: Paths) -> dict[str, Any]:
+    """Run at most one bounded Courier operation for the fixed request."""
+    return closeout_once(paths)
 
 
 def parser() -> argparse.ArgumentParser:
@@ -720,10 +717,8 @@ def main(argv: list[str] | None = None, paths: Paths | None = None) -> int:
     args = parser().parse_args(argv)
     scope = paths or Paths()
     try:
-        if args.command == "closeout":
-            value = closeout(scope, wait=True)
-        else:
-            value = {"status": state_view, "resume": resume, "execute": execute}[args.command](scope)
+        value = {"status": state_view, "resume": resume, "execute": execute,
+                 "closeout": closeout}[args.command](scope)
         print(json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False))
         return 0 if value.get("state") not in {"HARD_BLOCKED"} else 2
     except FlowError as exc:
