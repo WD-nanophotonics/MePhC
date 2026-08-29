@@ -27,6 +27,14 @@ Authority precedence is:
 2. The receipt-bound active Chat work order.
 3. This project policy and `mephc-flow` defaults.
 
+Work-order-scoped limits expire when the receipt-bound next work order is
+consumed. Never carry a previous work order's `zero Native`, provider, solver,
+or MPB limit into the current contract. A cross-work-order Native prohibition
+must be an explicit current user/session instruction; persist it mechanically
+with `mephc-flow.cmd start --native-cap 0`. Treat the current preflight
+`authorization` object and effective session policy as authoritative instead
+of reconstructing permission from old relay prose.
+
 Do not ask the user to paste relay prompts or responses. An empty local queue
 does not mean the workflow is complete.
 
@@ -42,6 +50,13 @@ Agents edit the Windows `sandbox` worktree directly using normal repository
 tools. Keep changes within the active work order and preserve unrelated user
 changes. Scientific conclusion-producing code and compact evidence must be
 committed and published for audit.
+
+Tracked artifacts may bind their input/source commit and contract SHA, but
+must not embed the SHA of the commit that contains those same bytes. Final
+`origin/sandbox` provenance belongs to publish evidence and the canonical
+closeout report. Solver-free entrypoints are verified in disposable ext4 job
+workspaces; their generated tracked artifacts must already match the published
+commit byte-for-byte. Never write runtime evidence into an exact checkout.
 
 Use:
 

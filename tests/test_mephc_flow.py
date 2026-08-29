@@ -160,6 +160,145 @@ def test_non_arbitrary_native_is_one_tracked_python_entrypoint(monkeypatch: pyte
         flow.validate_native_argv(policy, "/home/icy/checkouts/a", ["python", "-c", "print(1)"])
 
 
+def test_dirty_checkout_with_active_job_fails_before_quarantine(tmp_path: Path) -> None:
+    scope = paths(tmp_path)
+    commit = "a" * 40
+    write_json(scope.state / "science-jobs" / "MEPHC-SCIENCE-active.json", {
+        "source_commit": commit, "state": "running",
+    })
+    with pytest.raises(flow.FlowError, match="EXECUTION_CHECKOUT_RECONCILIATION_REQUIRED"):
+        flow.quarantine_dirty_checkout(scope, commit, f"/checkouts/{commit}", " M audit/result.json")
+
+
+def test_dirty_checkout_quarantine_preserves_patch_and_manifest(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    scope = paths(tmp_path)
+    commit = "a" * 40
+    calls = []
+
+    def fake_wsl(argv, **_kwargs):
+        calls.append(argv)
+        if "diff" in argv:
+            return subprocess.CompletedProcess(argv, 0, "diff --git a/a b/a\n", "")
+        if argv[0:2] == ["/usr/bin/test", "-L"]:
+            return subprocess.CompletedProcess(argv, 1, "", "")
+        if argv[0:2] == ["/usr/bin/test", "-f"]:
+            return subprocess.CompletedProcess(argv, 0, "", "")
+        if argv[0] == "/usr/bin/sha256sum":
+            return subprocess.CompletedProcess(argv, 0, f"{'c' * 64}  {argv[1]}\n", "")
+        if argv[0] == "/usr/bin/stat":
+            return subprocess.CompletedProcess(argv, 0, "17\n", "")
+        return subprocess.CompletedProcess(argv, 0, "", "")
+
+    monkeypatch.setattr(flow, "wsl", fake_wsl)
+    result = flow.quarantine_dirty_checkout(
+        scope, commit, f"/checkouts/{commit}", " M audit/result.json",
+    )
+    assert result["active_reference_proved_absent"] is True
+    incident_root = next((scope.science_state / "checkout-incidents" / commit).iterdir())
+    assert (incident_root / "dirty.patch").read_text() == "diff --git a/a b/a\n"
+    manifest = json.loads((incident_root / "manifest.json").read_text())
+    assert manifest["source_commit"] == commit
+    assert manifest["dirty_files"][0]["sha256"] == "c" * 64
+    assert any(argv[0] == "/usr/bin/mv" for argv in calls)
+
+
+def test_analysis_workspace_detects_allowed_output_not_committed(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    scope = paths(tmp_path)
+
+    def fake_wsl(argv, **_kwargs):
+        joined = " ".join(argv)
+        if "diff --name-only --no-renames HEAD" in joined:
+            return subprocess.CompletedProcess(argv, 0, "audit/result.json\n", "")
+        if "diff --cached" in joined or "ls-files --others" in joined:
+            return subprocess.CompletedProcess(argv, 0, "", "")
+        if argv[0:2] == ["/usr/bin/test", "-L"]:
+            return subprocess.CompletedProcess(argv, 1, "", "")
+        if argv[0:2] == ["/usr/bin/test", "-f"]:
+            return subprocess.CompletedProcess(argv, 0, "", "")
+        if argv[0] == "/usr/bin/sha256sum":
+            digest = "a" * 64 if argv[1].startswith("/workspace/") else "b" * 64
+            return subprocess.CompletedProcess(argv, 0, f"{digest}  {argv[1]}\n", "")
+        raise AssertionError(argv)
+
+    monkeypatch.setattr(flow, "wsl", fake_wsl)
+    result = flow.analysis_workspace_evidence(
+        scope, "/workspace/job", "/checkout/head", "MEPHC-SCIENCE-test", ["audit/result.json"],
+    )
+    assert result["out_of_scope"] == []
+    assert result["allowed_output_not_committed"] == ["audit/result.json"]
+    persisted = json.loads((scope.state / "analysis-workspaces" / "MEPHC-SCIENCE-test.json").read_text())
+    assert persisted["changed_files"][0]["matches_committed"] is False
+
+
+def test_science_analyze_uses_disposable_workspace_not_exact_checkout(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    scope = paths(tmp_path)
+    contract = {
+        "kind": "SCIENCE", "action": "analyze", "work_order_id": "MEPHC-TEST-WORK-ORDER-0001",
+        "contract_sha256": "c" * 64, "entrypoint": "audit/run.py", "project": ".",
+        "allowed_writes": ["audit/result.json"],
+    }
+    monkeypatch.setattr(flow, "science_preflight", lambda _paths: {
+        "source_commit": "a" * 40, "execution_checkout": "/exact/checkout", "runtime_sha256": "r" * 64,
+    })
+    monkeypatch.setattr(flow, "active_machine_contract", lambda _paths: ({}, contract))
+    monkeypatch.setattr(flow, "create_analysis_workspace", lambda *_args: "/disposable/workspace")
+    monkeypatch.setattr(flow, "analysis_workspace_evidence", lambda *_args: {
+        "out_of_scope": [], "allowed_output_not_committed": [],
+    })
+    removed = []
+    monkeypatch.setattr(flow, "remove_analysis_workspace", lambda value: removed.append(value))
+    monkeypatch.setattr(flow, "science_job_metrics", lambda *_args, **_kwargs: None)
+    calls = []
+
+    def fake_wsl(argv, **_kwargs):
+        calls.append(argv)
+        if "--project" in argv:
+            job_path = next((scope.state / "science-jobs").glob("*.json"))
+            value = json.loads(job_path.read_text())
+            value.update({"state": "succeeded", "return_code": 0})
+            write_json(job_path, value)
+        return subprocess.CompletedProcess(argv, 0, "", "")
+
+    monkeypatch.setattr(flow, "wsl", fake_wsl)
+    result = flow.science_analyze(scope)
+    launch = next(argv for argv in calls if "--project" in argv)
+    assert launch[launch.index("--project") + 1] == "/disposable/workspace"
+    assert launch[launch.index("--checkout") + 1] == "/exact/checkout"
+    assert removed == ["/disposable/workspace"]
+    assert result["state"] == "succeeded"
+
+
+def test_zero_native_cap_is_persistent_and_overrides_new_contract(tmp_path: Path) -> None:
+    scope = paths(tmp_path)
+    install_active_order(scope, "NEXT_WORK_ORDER_ID=MEPHC-TEST-WORK-ORDER-0001\n"
+                         "NATIVE_SOLVES_AUTHORIZED=true\nNATIVE_SOLVE_BUDGET=1\n")
+    started = flow.start(scope, None, 0)
+    assert started["effective_native_budget"] == 0
+    order = flow.active_work_order(scope)
+    contract = {"action": "acquire", "budgets": {
+        "native_invocations": 1, "provider_requests": 4, "solver_executions": 4,
+    }}
+    with pytest.raises(flow.FlowError, match="USER_NATIVE_CAP_EXCEEDED"):
+        flow.science_authorization(scope, order, contract)
+
+
+def test_current_contract_does_not_inherit_old_zero_native_prose(tmp_path: Path) -> None:
+    scope = paths(tmp_path)
+    order = {"text": "OLD_WORK_ORDER_ZERO_NATIVE=true\n"}
+    contract = {"action": "acquire", "budgets": {
+        "native_invocations": 1, "provider_requests": 4, "solver_executions": 4,
+    }}
+    authorization = flow.science_authorization(scope, order, contract)
+    assert authorization["native_authorized"] is True
+    assert authorization["historical_work_order_constraints_inherited"] is False
+
+
 def test_existing_report_is_never_resent(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     scope = paths(tmp_path)
     install_active_order(scope, "NEXT_WORK_ORDER_ID=MEPHC-TEST-WORK-ORDER-0001\n")

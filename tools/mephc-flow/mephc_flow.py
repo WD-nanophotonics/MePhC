@@ -89,6 +89,13 @@ def atomic_json(path: Path, value: dict[str, Any]) -> None:
     os.replace(temporary, path)
 
 
+def atomic_bytes(path: Path, value: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    temporary.write_bytes(value)
+    os.replace(temporary, path)
+
+
 def read_json(path: Path, *, default: Any = None) -> Any:
     try:
         return json.loads(path.read_text(encoding="utf-8-sig"))
@@ -175,6 +182,76 @@ def remote_refs(paths: Paths) -> tuple[str, str]:
         raise FlowError("REMOTE_REFS_INCOMPLETE") from exc
 
 
+TERMINAL_PROCESS_STATES = {"succeeded", "failed", "recovery_required", "orphaned", "aborted"}
+
+
+def checkout_has_active_reference(paths: Paths, commit: str) -> bool:
+    """Fail closed when durable state says a process may still use this commit."""
+    for directory in (paths.state / "science-jobs", paths.state / "native-runs"):
+        if not directory.is_dir():
+            continue
+        for path in directory.glob("*.json"):
+            value = read_json(path, default={})
+            if not isinstance(value, dict) or value.get("source_commit") != commit:
+                continue
+            if value.get("state") not in TERMINAL_PROCESS_STATES:
+                return True
+    return False
+
+
+def quarantine_dirty_checkout(paths: Paths, commit: str, checkout: str, status: str) -> dict[str, Any]:
+    if checkout_has_active_reference(paths, commit):
+        raise FlowError("EXECUTION_CHECKOUT_RECONCILIATION_REQUIRED", safe_next="science-status")
+    diff = wsl(["/usr/bin/git", "-C", checkout, "diff", "--binary"], check=False)
+    if diff.returncode:
+        raise FlowError("EXECUTION_CHECKOUT_EVIDENCE_FAILED")
+    diff_bytes = diff.stdout.encode("utf-8")
+    incident_digest = sha256_bytes(status.encode("utf-8") + b"\n" + diff_bytes)
+    incident_id = f"{int(time.time())}-{incident_digest[:16]}"
+    incident_relative = Path("checkout-incidents") / commit / incident_id
+    incident_unc = paths.science_state / incident_relative
+    quarantine_wsl = f"{paths.science_state_wsl}/checkout-incidents/{commit}/{incident_id}/worktree"
+    incident_unc.mkdir(parents=True, exist_ok=False)
+    atomic_bytes(incident_unc / "dirty.patch", diff_bytes)
+    dirty_files: list[dict[str, Any]] = []
+    for line in status.splitlines():
+        relative = line[3:] if len(line) > 3 else ""
+        if " -> " in relative:
+            relative = relative.split(" -> ", 1)[1]
+        pure = PurePosixPath(relative)
+        item: dict[str, Any] = {"status": line[:2], "path": relative}
+        if not relative or pure.is_absolute() or ".." in pure.parts:
+            item["evidence"] = "UNPARSED_PATH_RETAINED_IN_QUARANTINE"
+        else:
+            target = f"{checkout}/{relative}"
+            if wsl(["/usr/bin/test", "-L", target], check=False).returncode == 0:
+                item["evidence"] = "SYMLINK_RETAINED_WITHOUT_DEREFERENCE"
+            elif wsl(["/usr/bin/test", "-f", target], check=False).returncode == 0:
+                fields = wsl(["/usr/bin/sha256sum", target]).stdout.split()
+                item["sha256"] = fields[0]
+                item["size_bytes"] = int(wsl(["/usr/bin/stat", "-c", "%s", target]).stdout.strip())
+            else:
+                item["evidence"] = "DELETION_OR_NONREGULAR_PATH"
+        dirty_files.append(item)
+    manifest = {
+        "schema": "mephc-execution-checkout-incident-v1",
+        "source_commit": commit,
+        "checkout": f"opaque-checkout:{commit}",
+        "git_status": status.splitlines(),
+        "dirty_files": dirty_files,
+        "diff_sha256": sha256_bytes(diff_bytes),
+        "diff_size_bytes": len(diff_bytes),
+        "active_reference_proved_absent": True,
+        "quarantined_at": time.time(),
+        "quarantine_locator": f"checkout-incident:{commit}:{incident_id}",
+    }
+    atomic_json(incident_unc / "manifest.json", manifest)
+    wsl(["/usr/bin/mkdir", "-p", str(PurePosixPath(quarantine_wsl).parent)])
+    wsl(["/usr/bin/mv", checkout, quarantine_wsl])
+    wsl(["/usr/bin/git", "-C", GIT_CACHE_WSL, "worktree", "prune", "--expire", "now"])
+    return manifest
+
+
 def ensure_checkout(paths: Paths, commit: str) -> str:
     if not SHA40.fullmatch(commit):
         raise FlowError("SOURCE_HEAD_INVALID")
@@ -192,6 +269,11 @@ def ensure_checkout(paths: Paths, commit: str) -> str:
         wsl(["/usr/bin/git", "-C", GIT_CACHE_WSL, "worktree", "add", "--detach", checkout, commit])
     actual = wsl(["/usr/bin/git", "-C", checkout, "rev-parse", "HEAD"]).stdout.strip()
     dirty = wsl(["/usr/bin/git", "-C", checkout, "status", "--porcelain", "--untracked-files=all"]).stdout.strip()
+    if actual == commit and dirty:
+        quarantine_dirty_checkout(paths, commit, checkout, dirty)
+        wsl(["/usr/bin/git", "-C", GIT_CACHE_WSL, "worktree", "add", "--detach", checkout, commit])
+        actual = wsl(["/usr/bin/git", "-C", checkout, "rev-parse", "HEAD"]).stdout.strip()
+        dirty = wsl(["/usr/bin/git", "-C", checkout, "status", "--porcelain", "--untracked-files=all"]).stdout.strip()
     fstype = wsl(["/usr/bin/findmnt", "-n", "-o", "FSTYPE", "--target", checkout]).stdout.strip().lower()
     if actual != commit or dirty:
         raise FlowError("EXECUTION_CHECKOUT_MISMATCH")
@@ -341,6 +423,22 @@ def science_runtime_hash(paths: Paths, commit: str) -> str:
     return accumulator.hexdigest()
 
 
+def science_authorization(paths: Paths, order: dict[str, Any], contract: dict[str, Any]) -> dict[str, Any]:
+    effective = effective_policy(paths, order)
+    native_authorized = contract["action"] == "acquire" and contract["budgets"]["native_invocations"] > 0
+    if native_authorized and isinstance(effective["user_native_cap"], int):
+        if contract["budgets"]["native_invocations"] > effective["user_native_cap"]:
+            raise FlowError("USER_NATIVE_CAP_EXCEEDED", safe_next="status")
+    return {
+        "native_authorized": native_authorized,
+        "provider_authorized": native_authorized and contract["budgets"]["provider_requests"] > 0,
+        "solver_authorized": native_authorized and contract["budgets"]["solver_executions"] > 0,
+        "budgets": contract["budgets"],
+        "persistent_user_native_cap": effective["user_native_cap"],
+        "historical_work_order_constraints_inherited": False,
+    }
+
+
 def science_selftest(paths: Paths, *, mpb_smoke: bool) -> dict[str, Any]:
     source = require_source(paths, published=True)
     checkout = ensure_checkout(paths, source["head"])
@@ -384,8 +482,12 @@ def science_preflight(paths: Paths) -> dict[str, Any]:
             line for line in git(paths, "diff", "--name-only", f"{contract['source_commit']}..{source['head']}").stdout.splitlines()
             if line
         }
-        if not changed_since_contract.issubset(set(contract["allowed_writes"])):
-            raise FlowError("WORK_ORDER_SOURCE_DIFF_OUT_OF_SCOPE", ",".join(sorted(changed_since_contract - set(contract["allowed_writes"]))))
+        control_plane_changes = {
+            "AGENTS.md", "tools/mephc-flow/mephc_flow.py", "tests/test_mephc_flow.py",
+        }
+        permitted_changes = set(contract["allowed_writes"]) | control_plane_changes
+        if not changed_since_contract.issubset(permitted_changes):
+            raise FlowError("WORK_ORDER_SOURCE_DIFF_OUT_OF_SCOPE", ",".join(sorted(changed_since_contract - permitted_changes)))
     checkout = ensure_checkout(paths, source["head"])
     entrypoint = contract.get("entrypoint")
     if entrypoint is not None:
@@ -424,6 +526,7 @@ def science_preflight(paths: Paths) -> dict[str, Any]:
             raise FlowError("WORK_ORDER_DATASET_MANIFEST_MISMATCH")
     publish_evidence = read_json(paths.state / "publish" / f"{source['head']}.json", default={})
     changed_files = [line for line in git(paths, "diff", "--name-only", f"{EXPECTED_MAIN}..{source['head']}").stdout.splitlines() if line]
+    authorization = science_authorization(paths, order, contract)
     atomic_json(paths.state / "contracts" / f"{contract['contract_sha256']}.json", {
         **contract, "receipt_response_sha256": order["response_sha256"], "validated_at": time.time(),
     })
@@ -433,6 +536,7 @@ def science_preflight(paths: Paths) -> dict[str, Any]:
         "base_source_commit": contract["source_commit"], "source_commit": source["head"], "execution_checkout": checkout,
         "runtime_sha256": runtime_sha, "required_capabilities": contract["required_capabilities"],
         "missing_capabilities": [], "entrypoint": entrypoint, "budgets": contract["budgets"],
+        "authorization": authorization,
         "certification": certification, "dataset_evidence": dataset_evidence,
         "automatic_provenance": {
             "main_sha": EXPECTED_MAIN, "sandbox_sha": source["head"],
@@ -1082,18 +1186,23 @@ def effective_policy(paths: Paths, order: dict[str, Any] | None = None) -> dict[
     current = session(paths)
     declared: dict[str, Any] = {}
     if order is not None:
-        declared = work_order_policy(order["text"])
+        declared = work_order_policy(order.get("text", ""))
     policy = current.get("user_report_policy") or declared.get("report_policy") or "adaptive"
     chat_cap = declared.get("native_budget")
     user_cap = current.get("user_native_cap")
-    effective_cap = min(chat_cap, user_cap) if isinstance(chat_cap, int) and isinstance(user_cap, int) else chat_cap
+    if isinstance(chat_cap, int) and isinstance(user_cap, int):
+        effective_cap = min(chat_cap, user_cap)
+    elif isinstance(user_cap, int):
+        effective_cap = user_cap
+    else:
+        effective_cap = chat_cap
     return {"report_policy": policy, "chat_native_budget": chat_cap, "user_native_cap": user_cap, "effective_native_budget": effective_cap}
 
 
 def start(paths: Paths, report_policy: str | None, native_cap: int | None) -> dict[str, Any]:
     if report_policy is not None and report_policy not in REPORT_POLICIES:
         raise FlowError("REPORT_POLICY_INVALID")
-    if native_cap is not None and native_cap < 1:
+    if native_cap is not None and native_cap < 0:
         raise FlowError("NATIVE_CAP_INVALID")
     value = {
         "schema": "mephc-flow-session-v1", "created_at": time.time(),
@@ -1945,6 +2054,70 @@ def science_acquire(paths: Paths) -> dict[str, Any]:
     return {**final, "reused": False, "safe_next": safe_next}
 
 
+def create_analysis_workspace(paths: Paths, commit: str, job_id: str) -> str:
+    workspace = f"{paths.science_state_wsl}/analysis-workspaces/{job_id}"
+    if wsl(["/usr/bin/test", "-e", workspace], check=False).returncode == 0:
+        raise FlowError("ANALYSIS_WORKSPACE_ALREADY_EXISTS", safe_next=f"science-status {job_id}")
+    wsl(["/usr/bin/mkdir", "-p", str(PurePosixPath(workspace).parent)])
+    wsl(["/usr/bin/git", "-C", GIT_CACHE_WSL, "worktree", "add", "--detach", workspace, commit])
+    return workspace
+
+
+def analysis_workspace_evidence(
+        paths: Paths, workspace: str, checkout: str, job_id: str, allowed_writes: Sequence[str],
+) -> dict[str, Any]:
+    commands = (
+        ["/usr/bin/git", "-C", workspace, "diff", "--name-only", "--no-renames", "HEAD"],
+        ["/usr/bin/git", "-C", workspace, "diff", "--cached", "--name-only", "--no-renames", "HEAD"],
+        ["/usr/bin/git", "-C", workspace, "ls-files", "--others", "--exclude-standard"],
+    )
+    changed: set[str] = set()
+    for argv in commands:
+        result = wsl(argv, check=False)
+        if result.returncode:
+            raise FlowError("ANALYSIS_WORKSPACE_INSPECTION_FAILED", safe_next=f"science-status {job_id}")
+        changed.update(line.strip().replace("\\", "/") for line in result.stdout.splitlines() if line.strip())
+    allowed = set(allowed_writes)
+    details: list[dict[str, Any]] = []
+    for relative in sorted(changed):
+        pure = PurePosixPath(relative)
+        if pure.is_absolute() or ".." in pure.parts:
+            raise FlowError("ANALYSIS_WORKSPACE_PATH_INVALID", relative)
+        generated = f"{workspace}/{relative}"
+        committed = f"{checkout}/{relative}"
+        if wsl(["/usr/bin/test", "-L", generated], check=False).returncode == 0:
+            raise FlowError("ANALYSIS_WORKSPACE_SYMLINK_FORBIDDEN", relative)
+        generated_probe = wsl(["/usr/bin/test", "-f", generated], check=False)
+        committed_probe = wsl(["/usr/bin/test", "-f", committed], check=False)
+        generated_sha = None
+        committed_sha = None
+        if generated_probe.returncode == 0:
+            generated_sha = wsl(["/usr/bin/sha256sum", generated]).stdout.split()[0]
+        if committed_probe.returncode == 0:
+            committed_sha = wsl(["/usr/bin/sha256sum", committed]).stdout.split()[0]
+        details.append({
+            "path": relative, "allowed": relative in allowed,
+            "generated_sha256": generated_sha, "committed_sha256": committed_sha,
+            "matches_committed": generated_sha is not None and generated_sha == committed_sha,
+        })
+    out_of_scope = sorted(item["path"] for item in details if not item["allowed"])
+    not_committed = sorted(item["path"] for item in details if item["allowed"] and not item["matches_committed"])
+    evidence = {
+        "schema": "mephc-analysis-workspace-evidence-v1", "job_id": job_id,
+        "changed_files": details, "out_of_scope": out_of_scope,
+        "allowed_output_not_committed": not_committed, "recorded_at": time.time(),
+    }
+    atomic_json(paths.state / "analysis-workspaces" / f"{job_id}.json", evidence)
+    return evidence
+
+
+def remove_analysis_workspace(workspace: str) -> None:
+    result = wsl(["/usr/bin/git", "-C", GIT_CACHE_WSL, "worktree", "remove", "--force", workspace], check=False)
+    if result.returncode:
+        raise FlowError("ANALYSIS_WORKSPACE_CLEANUP_REQUIRED")
+    wsl(["/usr/bin/git", "-C", GIT_CACHE_WSL, "worktree", "prune", "--expire", "now"])
+
+
 def science_analyze(paths: Paths) -> dict[str, Any]:
     preflight = science_preflight(paths)
     _, contract = active_machine_contract(paths)
@@ -1977,17 +2150,40 @@ def science_analyze(paths: Paths) -> dict[str, Any]:
     }
     atomic_json(job_path, record)
     science_job_metrics(paths, contract, created=True)
+    workspace = create_analysis_workspace(paths, preflight["source_commit"], job_id)
     helper = f"{preflight['execution_checkout']}/tools/mephc-flow/wsl_native_exec.py"
-    result = wsl([
-        CONDA_PYTHON_WSL, helper, "--state", f"{FLOW_STATE_WSL}/science-jobs/{job_id}.json",
-        "--checkout", preflight["execution_checkout"], "--project", preflight["execution_checkout"],
-        "--", CONDA_PYTHON_WSL, contract["entrypoint"],
-    ], timeout=24 * 3600, check=False)
+    launch_completed = False
+    try:
+        result = wsl([
+            CONDA_PYTHON_WSL, helper, "--state", f"{FLOW_STATE_WSL}/science-jobs/{job_id}.json",
+            "--checkout", preflight["execution_checkout"], "--project", workspace,
+            "--", CONDA_PYTHON_WSL, "-B", contract["entrypoint"],
+        ], timeout=24 * 3600, check=False)
+        launch_completed = True
+        evidence = analysis_workspace_evidence(
+            paths, workspace, preflight["execution_checkout"], job_id, contract["allowed_writes"],
+        )
+    finally:
+        if launch_completed:
+            remove_analysis_workspace(workspace)
+    exact_status = wsl([
+        "/usr/bin/git", "-C", preflight["execution_checkout"], "status", "--porcelain", "--untracked-files=all",
+    ]).stdout.strip()
+    if exact_status:
+        raise FlowError("EXECUTION_CHECKOUT_MUTATED_DURING_ANALYSIS", safe_next="status")
     final = read_json(job_path, default=record)
+    if evidence["out_of_scope"]:
+        final.update({"state": "failed", "result_error": "ANALYSIS_WRITE_OUT_OF_SCOPE"})
+    elif evidence["allowed_output_not_committed"]:
+        final.update({"state": "failed", "result_error": "ANALYSIS_OUTPUT_NOT_COMMITTED"})
     final.update({"provider_executions": 0, "solver_executions": 0,
-                  "launcher_return_code": result.returncode})
+                  "launcher_return_code": result.returncode,
+                  "analysis_workspace_evidence": f"analysis-workspace:{job_id}"})
     atomic_json(job_path, final)
-    safe_next = "closeout" if final.get("state") == "succeeded" else f"science-status {job_id}"
+    if final.get("result_error") == "ANALYSIS_OUTPUT_NOT_COMMITTED":
+        safe_next = "edit_scoped_files"
+    else:
+        safe_next = "closeout" if final.get("state") == "succeeded" else f"science-status {job_id}"
     return {**final, "reused": False, "safe_next": safe_next}
 
 
