@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -330,12 +331,9 @@ def test_existing_report_is_never_resent(tmp_path: Path, monkeypatch: pytest.Mon
 
 
 def closeout_prepared() -> dict:
-    message = b"SCHEMA=mephc-fixed-closeout-v1\nWORK_ORDER_ID=MEPHC-TEST-WORK-ORDER-0001\nTERMINAL=COMPLETE\n"
+    message = b"SCHEMA=mephc-fixed-closeout-v2\nWORK_ORDER_ID=MEPHC-TEST-WORK-ORDER-0001\nTERMINAL=COMPLETE\n"
     message_hash = flow.sha256_bytes(message)
-    request_hash = flow.sha256_bytes(flow.canonical_json({
-        "work_order_id": "MEPHC-TEST-WORK-ORDER-0001", "kind": "complete",
-        "message_sha256": message_hash,
-    }))
+    request_hash = flow.fixed_closeout_request_hash("MEPHC-TEST-WORK-ORDER-0001")
     return {
         "work_order_id": "MEPHC-TEST-WORK-ORDER-0001", "work_order_class": "SCIENCE",
         "kind": "complete", "source_commit": "a" * 40, "job_id": "MEPHC-SCIENCE-test",
@@ -375,6 +373,58 @@ def test_closeout_repeated_call_has_one_submission(tmp_path: Path, monkeypatch: 
     assert operations.count(("run", True)) == 1
 
 
+def test_work_order_can_bind_only_one_closeout_kind(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope = paths(tmp_path)
+    complete = closeout_prepared()
+
+    def fake_courier(_paths, operation, directory, *, recovery=False):
+        if operation == "run" and not recovery:
+            (directory / "events.jsonl").write_text('{"event":"request_submitted"}\n', encoding="utf-8")
+            write_json(directory / "receipt.json", {"state": "response_timeout"})
+        return subprocess.CompletedProcess([], 0, "", "")
+
+    monkeypatch.setattr(flow, "courier_command", fake_courier)
+    flow.finish_closeout(scope, complete)
+    blocked = {**complete, "kind": "blocked"}
+    blocked["message"] = complete["message"].replace(
+        b"TERMINAL=COMPLETE", b"BLOCKED_CODE=FIXED_BLOCKER\nTERMINAL=BLOCKED")
+    blocked["message_sha256"] = flow.sha256_bytes(blocked["message"])
+    with pytest.raises(flow.FlowError, match="WORK_ORDER_CLOSEOUT_ALREADY_BOUND") as captured:
+        flow.finish_closeout(scope, blocked)
+    assert captured.value.safe_next == "closeout"
+    assert len(list(scope.outbox.glob("MEPHC-FLOW-*"))) == 1
+
+
+def test_fixed_closeout_request_identity_depends_only_on_work_order() -> None:
+    work_order_id = "MEPHC-TEST-WORK-ORDER-0001"
+    first = flow.fixed_closeout_request_hash(work_order_id)
+    second = flow.fixed_closeout_request_hash(work_order_id)
+    assert first == second
+    assert first != flow.fixed_closeout_request_hash("MEPHC-TEST-WORK-ORDER-0002")
+
+
+def test_closeout_coordinates_newest_pending_request_before_active_order(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope = paths(tmp_path)
+    prepared = closeout_prepared()
+    directory = scope.outbox / prepared["request_id"]
+    directory.mkdir(parents=True)
+    (directory / "message.txt").write_bytes(prepared["message"])
+    write_json(directory / "request.json", flow.report_manifest(prepared))
+    write_json(directory / "flow-closeout.json", flow.closeout_prepared_metadata(prepared))
+    write_json(directory / "receipt.json", {"state": "waiting_for_response"})
+    (directory / "events.jsonl").write_text('{"event":"request_submitted"}\n', encoding="utf-8")
+    install_active_order(scope, "NEXT_WORK_ORDER_ID=MEPHC-DIFFERENT-WORK-ORDER-0002\n",
+                         "MEPHC-DIFFERENT-WORK-ORDER-0002")
+    monkeypatch.setattr(flow, "courier_reconcile", lambda _paths, request_id: {
+        "request_id": request_id, "response_received": False, "submission_count": 1,
+    })
+    result = flow.closeout(scope)
+    assert result["request_id"] == prepared["request_id"]
+    assert result["submission_count"] == 1
+    assert len(list(scope.outbox.glob("MEPHC-FLOW-*"))) == 1
+
+
 def test_closeout_after_response_only_consumes(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     scope = paths(tmp_path)
     prepared = closeout_prepared()
@@ -392,6 +442,31 @@ def test_closeout_after_response_only_consumes(tmp_path: Path, monkeypatch: pyte
     assert result["submission_count"] == 1
 
 
+def test_consume_response_rejects_reused_successor_work_order_id(tmp_path: Path) -> None:
+    scope = paths(tmp_path)
+    prepared = closeout_prepared()
+    directory = scope.outbox / prepared["request_id"]
+    directory.mkdir(parents=True)
+    (directory / "message.txt").write_bytes(prepared["message"])
+    write_json(directory / "request.json", flow.report_manifest(prepared))
+    write_json(directory / "receipt.json", {"state": "response_received"})
+    (directory / "response.txt").write_text(
+        "NEXT_WORK_ORDER_ID=MEPHC-TEST-WORK-ORDER-0001\n", encoding="utf-8")
+    with pytest.raises(flow.FlowError, match="SUCCESSOR_WORK_ORDER_ID_REUSED"):
+        flow.consume_response(scope, directory)
+
+    (directory / "response.txt").write_text(
+        "NEXT_WORK_ORDER_ID=MEPHC-NEXT-WORK-ORDER-0002\n", encoding="utf-8")
+    prior = scope.outbox / "MEPHC-FLOW-prior"
+    prior.mkdir()
+    write_json(prior / "request.json", {
+        "project_id": flow.PROJECT_ID, "request_id": prior.name,
+        "work_order_id": "MEPHC-NEXT-WORK-ORDER-0002",
+    })
+    with pytest.raises(flow.FlowError, match="SUCCESSOR_WORK_ORDER_ID_REUSED"):
+        flow.consume_response(scope, directory)
+
+
 def test_status_exposes_exact_pending_blocked_closeout_next_step(
         tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     scope = paths(tmp_path)
@@ -403,14 +478,15 @@ def test_status_exposes_exact_pending_blocked_closeout_next_step(
         b"TERMINAL=COMPLETE", b"BLOCKED_CODE=RESULT_SUMMARY_UNSAFE\nTERMINAL=BLOCKED")
     prepared["message_sha256"] = flow.sha256_bytes(prepared["message"])
     prepared["request_hash"] = flow.sha256_bytes(flow.canonical_json({
-        "work_order_id": work_order_id, "kind": "blocked",
-        "message_sha256": prepared["message_sha256"],
+        "project_id": flow.PROJECT_ID, "work_order_id": work_order_id,
+        "flow_schema": "mephc-fixed-closeout-v2",
     }))
     prepared["request_id"] = "MEPHC-FLOW-" + prepared["request_hash"][:24]
     directory = scope.outbox / prepared["request_id"]
     directory.mkdir()
     (directory / "message.txt").write_bytes(prepared["message"])
     write_json(directory / "request.json", flow.report_manifest(prepared))
+    write_json(directory / "flow-closeout.json", flow.closeout_prepared_metadata(prepared))
     write_json(directory / "receipt.json", {"state": "waiting_for_response"})
     (directory / "events.jsonl").write_text('{"event":"request_submitted"}\n', encoding="utf-8")
     monkeypatch.setattr(flow, "source_state", lambda _paths: {
@@ -1146,7 +1222,11 @@ def test_resume_discovers_and_consumes_newest_receipt_bound_response(tmp_path: P
     directory.mkdir()
     write_json(directory / "request.json", {"project_id": "MEPHC", "request_id": directory.name})
     write_json(directory / "receipt.json", {"state": "response_received", "request_id": directory.name})
-    (directory / "response.txt").write_text("NEXT_WORK_ORDER_ID=MEPHC-NEW-ORDER-0002\n", encoding="utf-8")
+    newest_response = directory / "response.txt"
+    newest_response.write_text("NEXT_WORK_ORDER_ID=MEPHC-NEW-ORDER-0002\n", encoding="utf-8")
+    old_response = scope.outbox / "MEPHC-OLD-REQUEST" / "response.txt"
+    old_mtime = old_response.stat().st_mtime_ns
+    os.utime(newest_response, ns=(old_mtime + 1_000_000, old_mtime + 1_000_000))
     assert flow.resume(scope)["work_order_id"] == "MEPHC-NEW-ORDER-0002"
 
 
@@ -1280,6 +1360,30 @@ def test_supervision_pauses_every_two_and_reset_clears_streak(tmp_path: Path) ->
             "source_commit": "b" * 40, "actual_counts": {"native": 0}, "framework_modified": False,
         }, {"submission_count": 1})
     assert flow.supervision_advance(scope, "RESET_AFTER_FRAMEWORK_FIX")["stable_count"] == 0
+
+
+def test_supervision_rejects_two_requests_for_one_work_order(tmp_path: Path) -> None:
+    scope = paths(tmp_path)
+    flow.supervision_start(scope, 10, 2)
+    base = {
+        "work_order_id": "MEPHC-SCIENCE-0001", "work_order_class": "SCIENCE",
+        "work_order_mode": "STANDARD", "source_commit": "a" * 40,
+        "actual_counts": {"native": 0}, "framework_modified": False,
+    }
+    flow._record_supervised_closeout(scope, {**base, "request_id": "MEPHC-FLOW-first"},
+                                     {"submission_count": 1})
+    flow._record_supervised_closeout(scope, {**base, "request_id": "MEPHC-FLOW-second"},
+                                     {"submission_count": 1})
+    value = flow.supervision_status(scope)
+    assert len(value["batch"]) == 1
+    assert value["batch_review_required"] is True
+    assert value["protocol_violations"][0]["failure_code"] == "WORK_ORDER_MULTIPLE_CLOSEOUTS"
+    with pytest.raises(flow.FlowError, match="SUPERVISION_PROTOCOL_VIOLATION_REQUIRES_RESET"):
+        flow.supervision_advance(scope, "PASS")
+    reset = flow.supervision_advance(scope, "RESET_AFTER_FRAMEWORK_FIX")
+    assert reset["stable_count"] == 0
+    assert reset["protocol_violations"] == []
+    assert reset["reviewed_protocol_violations"][0]["work_order_id"] == "MEPHC-SCIENCE-0001"
 
 
 def test_blocked_closeout_projects_failed_job_durable_counts() -> None:

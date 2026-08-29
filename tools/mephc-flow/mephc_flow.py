@@ -40,6 +40,7 @@ CONDA_PYTHON_WSL = "/home/icy/miniconda3/envs/mp/bin/python"
 COURIER = Path(r"C:\Users\icywo\PycharmProjects\GmailCourier\scripts\chat-courier.cmd")
 REPORT_POLICIES = {"adaptive", "per-work-order", "milestone", "final-only"}
 REPORT_KINDS = {"milestone", "complete", "blocked"}
+FIXED_CLOSEOUT_SCHEMAS = {"mephc-fixed-closeout-v1", "mephc-fixed-closeout-v2"}
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
 SHA64 = re.compile(r"^[0-9a-f]{64}$")
 WORK_ORDER = re.compile(r"^MEPHC-[A-Z0-9][A-Z0-9._-]{7,159}$")
@@ -80,6 +81,15 @@ def sha256_file(path: Path) -> str:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def fixed_closeout_request_hash(work_order_id: str) -> str:
+    if not WORK_ORDER.fullmatch(work_order_id):
+        raise FlowError("WORK_ORDER_ID_INVALID")
+    return sha256_bytes(canonical_json({
+        "project_id": PROJECT_ID, "work_order_id": work_order_id,
+        "flow_schema": "mephc-fixed-closeout-v2",
+    }))
 
 
 def atomic_json(path: Path, value: dict[str, Any]) -> None:
@@ -331,6 +341,17 @@ def consume_response(paths: Paths, directory: Path) -> dict[str, Any]:
         raise FlowError("RESPONSE_NOT_RECEIPT_BOUND")
     text = response.read_text(encoding="utf-8-sig")
     work_order_id = response_work_order(text)
+    completed_work_order_id = request.get("work_order_id")
+    if work_order_id == completed_work_order_id:
+        raise FlowError("SUCCESSOR_WORK_ORDER_ID_REUSED", safe_next="human-intervention-required")
+    if paths.outbox.is_dir():
+        for prior_directory in paths.outbox.glob("MEPHC-FLOW-*"):
+            if prior_directory == directory or not prior_directory.is_dir() or prior_directory.is_symlink():
+                continue
+            prior = read_json(prior_directory / "request.json", default={})
+            if (isinstance(prior, dict) and prior.get("project_id") == PROJECT_ID
+                    and prior.get("work_order_id") == work_order_id):
+                raise FlowError("SUCCESSOR_WORK_ORDER_ID_REUSED", safe_next="human-intervention-required")
     digest = sha256_file(response)
     value = {
         "schema": "mephc-workflow-ledger-v2", "workflow_state": "available",
@@ -519,8 +540,20 @@ def supervision_start(paths: Paths, target: int, batch_size: int) -> dict[str, A
 def supervision_status(paths: Paths) -> dict[str, Any]:
     value = supervision_state(paths)
     batch = value.get("batch", [])
-    return {**value, "batch_review_required": bool(value.get("active") and
-            len(batch) >= value.get("batch_size", 0)),
+    seen: dict[str, str] = {}
+    detected: list[dict[str, Any]] = []
+    for item in batch:
+        work_order_id, request_id = item.get("work_order_id"), item.get("request_id")
+        if isinstance(work_order_id, str) and isinstance(request_id, str):
+            prior = seen.setdefault(work_order_id, request_id)
+            if prior != request_id:
+                detected.append({"failure_code": "WORK_ORDER_MULTIPLE_CLOSEOUTS",
+                                 "work_order_id": work_order_id,
+                                 "request_ids": sorted({prior, request_id})})
+    violations = list(value.get("protocol_violations", [])) + detected
+    return {**value, "protocol_violations": violations,
+            "batch_review_required": bool(value.get("active") and
+            (violations or len(batch) >= value.get("batch_size", 0))),
             "remaining": max(0, int(value.get("target", 0)) - int(value.get("stable_count", 0)))}
 
 
@@ -531,6 +564,19 @@ def _record_supervised_closeout(paths: Paths, prepared: dict[str, Any], summary:
     request_id = prepared["request_id"]
     all_records = list(value.get("batch", [])) + list(value.get("reviewed", []))
     if any(item.get("request_id") == request_id for item in all_records):
+        return
+    duplicate = next((item for item in all_records
+                      if item.get("work_order_id") == prepared["work_order_id"]), None)
+    if duplicate is not None:
+        violation = {"failure_code": "WORK_ORDER_MULTIPLE_CLOSEOUTS",
+                     "work_order_id": prepared["work_order_id"],
+                     "request_ids": sorted({str(duplicate.get("request_id")), request_id}),
+                     "detected_at": time.time()}
+        if violation["request_ids"] not in [item.get("request_ids")
+                                             for item in value.setdefault("protocol_violations", [])]:
+            value["protocol_violations"].append(violation)
+            value["updated_at"] = time.time()
+            atomic_json(supervision_path(paths), value)
         return
     mode = prepared.get("work_order_mode", "STANDARD")
     native_count = int(prepared.get("actual_counts", {}).get("native", 0))
@@ -556,10 +602,15 @@ def _record_supervised_closeout(paths: Paths, prepared: dict[str, Any], summary:
 
 def supervision_advance(paths: Paths, verdict: str) -> dict[str, Any]:
     value = supervision_state(paths)
-    if not value.get("active") or len(value.get("batch", [])) < value.get("batch_size", 0):
+    current = supervision_status(paths)
+    violations = current.get("protocol_violations", [])
+    if (not value.get("active") or
+            (len(value.get("batch", [])) < value.get("batch_size", 0) and not violations)):
         raise FlowError("SUPERVISION_BATCH_NOT_READY")
     if verdict not in {"PASS", "RESET_AFTER_FRAMEWORK_FIX"}:
         raise FlowError("SUPERVISION_VERDICT_INVALID")
+    if verdict == "PASS" and violations:
+        raise FlowError("SUPERVISION_PROTOCOL_VIOLATION_REQUIRES_RESET")
     batch = value["batch"]
     if verdict == "PASS":
         qualified = sum(1 for item in batch if item.get("qualified_candidate") and
@@ -567,6 +618,9 @@ def supervision_advance(paths: Paths, verdict: str) -> dict[str, Any]:
         value["stable_count"] = int(value.get("stable_count", 0)) + qualified
     else:
         value["stable_count"] = 0
+        if violations:
+            value.setdefault("reviewed_protocol_violations", []).extend(violations)
+            value["protocol_violations"] = []
     value.setdefault("reviewed", []).extend({**item, "verdict": verdict} for item in batch)
     value["batch"] = []
     coverage = value.get("coverage", {})
@@ -1848,7 +1902,7 @@ def canonical_closeout_report(paths: Paths, *, blocked_code: str | None = None) 
     result_summary = projection["result_summary"]
     artifacts = report_artifacts(paths, order, source["head"])
     lines = [
-        "SCHEMA=mephc-fixed-closeout-v1",
+        "SCHEMA=mephc-fixed-closeout-v2",
         f"WORK_ORDER_ID={order['work_order_id']}",
         f"WORK_ORDER_CLASS={work_class}",
         f"WORK_ORDER_MODE={work_mode}",
@@ -1932,9 +1986,7 @@ def canonical_closeout_report(paths: Paths, *, blocked_code: str | None = None) 
     message = ("\n".join(lines) + "\n").encode("utf-8")
     message_hash = sha256_bytes(message)
     kind = "blocked" if blocked_code else "complete"
-    request_hash = sha256_bytes(canonical_json({
-        "work_order_id": order["work_order_id"], "kind": kind, "message_sha256": message_hash,
-    }))
+    request_hash = fixed_closeout_request_hash(order["work_order_id"])
     return {
         "work_order_id": order["work_order_id"], "work_order_class": work_class,
         "work_order_mode": work_mode, "original_work_order_class": original_class, "kind": kind,
@@ -1981,7 +2033,7 @@ def pending_closeout_status(paths: Paths, work_order_id: str) -> dict[str, Any] 
         if not directory.is_dir() or directory.is_symlink():
             continue
         manifest = read_json(directory / "request.json", default={})
-        if (not isinstance(manifest, dict) or manifest.get("flow_schema") != "mephc-fixed-closeout-v1"
+        if (not isinstance(manifest, dict) or manifest.get("flow_schema") not in FIXED_CLOSEOUT_SCHEMAS
                 or manifest.get("work_order_id") != work_order_id):
             continue
         candidates.append((directory.stat().st_mtime_ns, directory, manifest))
@@ -2008,6 +2060,62 @@ def pending_closeout_status(paths: Paths, work_order_id: str) -> dict[str, Any] 
         state = "waiting_for_response"
     return {"state": state, **summary, "report_kind": kind, "blocked_code": blocked_code,
             "safe_next": safe_next}
+
+
+def closeout_prepared_metadata(prepared: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "schema": "mephc-closeout-binding-v2",
+        "work_order_id": prepared["work_order_id"],
+        "request_id": prepared["request_id"],
+        "kind": prepared["kind"],
+        "message_sha256": prepared["message_sha256"],
+        "request_hash": prepared["request_hash"],
+        "work_order_class": prepared["work_order_class"],
+        "work_order_mode": prepared.get("work_order_mode", "STANDARD"),
+        "source_commit": prepared["source_commit"],
+        "job_id": prepared.get("job_id"),
+        "actual_counts": prepared.get("actual_counts", {}),
+        "framework_modified": prepared.get("framework_modified", False),
+    }
+
+
+def prepared_from_closeout_directory(directory: Path) -> dict[str, Any]:
+    manifest = read_json(directory / "request.json", default={})
+    metadata = read_json(directory / "flow-closeout.json", default={})
+    if (not isinstance(manifest, dict) or manifest.get("flow_schema") != "mephc-fixed-closeout-v2"
+            or not isinstance(metadata, dict) or metadata.get("schema") != "mephc-closeout-binding-v2"):
+        raise FlowError("CLOSEOUT_BINDING_INVALID")
+    message = (directory / "message.txt").read_bytes()
+    if (sha256_bytes(message) != manifest.get("message_sha256")
+            or metadata.get("message_sha256") != manifest.get("message_sha256")
+            or metadata.get("request_id") != directory.name
+            or manifest.get("request_id") != directory.name
+            or metadata.get("work_order_id") != manifest.get("work_order_id")):
+        raise FlowError("CLOSEOUT_BINDING_INVALID")
+    return {**metadata, "message": message}
+
+
+def latest_pending_closeout(paths: Paths) -> tuple[Path, dict[str, Any]] | None:
+    """Return only the newest unconsumed v2 closeout, regardless of active order."""
+    if not paths.outbox.is_dir():
+        return None
+    candidates: list[Path] = []
+    for directory in paths.outbox.glob("MEPHC-FLOW-*"):
+        if not directory.is_dir() or directory.is_symlink():
+            continue
+        manifest = read_json(directory / "request.json", default={})
+        if isinstance(manifest, dict) and manifest.get("flow_schema") == "mephc-fixed-closeout-v2":
+            candidates.append(directory)
+    if not candidates:
+        return None
+    directory = max(candidates, key=lambda item: (item.stat().st_mtime_ns, item.name))
+    summary = request_summary(directory)
+    if summary.get("response_received"):
+        current = ledger(paths)
+        response_wsl = f"{paths.outbox_wsl.rstrip('/')}/{directory.name}/response.txt"
+        if current.get("active_response_path") == response_wsl:
+            return None
+    return directory, prepared_from_closeout_directory(directory)
 
 
 def status(paths: Paths, history_limit: int = 5) -> dict[str, Any]:
@@ -2047,7 +2155,10 @@ def status(paths: Paths, history_limit: int = 5) -> dict[str, Any]:
                         "actual_dataset_record_count", "last_counter_update_at")
                 }))
     recent_jobs.sort(key=lambda item: item[0], reverse=True)
-    pending_closeout = pending_closeout_status(paths, work_order_id) if work_order_id is not None else None
+    global_pending = latest_pending_closeout(paths)
+    pending_closeout = (pending_closeout_status(paths, global_pending[1]["work_order_id"])
+                        if global_pending is not None else
+                        pending_closeout_status(paths, work_order_id) if work_order_id is not None else None)
     closeout = pending_closeout or (closeout_status(paths) if work_order_id is not None
                                    else {"state": "unavailable", "safe_next": "resume"})
     return {
@@ -2571,7 +2682,7 @@ def report_manifest(prepared: dict[str, Any]) -> dict[str, Any]:
         "version": 1, "project_id": PROJECT_ID, "request_id": prepared["request_id"],
         "message_file": "message.txt", "attachments": [], "workflow_window_seconds": 600,
         "queue_wait_seconds": 3600, "task_difficulty": "normal", "instruction_level": "normal",
-        "flow_schema": "mephc-fixed-closeout-v1", "work_order_id": prepared["work_order_id"],
+        "flow_schema": "mephc-fixed-closeout-v2", "work_order_id": prepared["work_order_id"],
         "report_kind": prepared["kind"], "message_sha256": prepared["message_sha256"],
         "idempotency_key": prepared["request_hash"],
     }
@@ -2598,6 +2709,7 @@ def validate_and_create_closeout_request(paths: Paths, prepared: dict[str, Any])
     staging.mkdir(parents=False, exist_ok=False)
     (staging / "message.txt").write_bytes(prepared["message"])
     atomic_json(staging / "request.json", report_manifest(prepared))
+    atomic_json(staging / "flow-closeout.json", closeout_prepared_metadata(prepared))
     try:
         os.replace(staging, directory)
     except FileExistsError:
@@ -2611,6 +2723,15 @@ def verify_closeout_request(directory: Path, prepared: dict[str, Any]) -> None:
     prior = read_json(directory / "request.json", default={})
     expected = (prepared["work_order_id"], prepared["kind"], prepared["message_sha256"])
     actual = (prior.get("work_order_id"), prior.get("report_kind"), prior.get("message_sha256"))
+    if prior.get("work_order_id") == prepared["work_order_id"] and actual != expected:
+        kind = prior.get("report_kind")
+        safe_next = "closeout"
+        if kind == "blocked":
+            message = (directory / "message.txt").read_text(encoding="utf-8-sig", errors="strict")
+            match = re.search(r"^BLOCKED_CODE=([A-Z][A-Z0-9_]{2,95})$", message, flags=re.MULTILINE)
+            if match is not None:
+                safe_next = f"closeout-blocked --code {match.group(1)}"
+        raise FlowError("WORK_ORDER_CLOSEOUT_ALREADY_BOUND", safe_next=safe_next)
     if actual != expected or prior.get("request_id") != prepared["request_id"]:
         raise FlowError("REQUEST_IDEMPOTENCY_CONFLICT")
 
@@ -2667,10 +2788,16 @@ def finish_closeout(paths: Paths, prepared: dict[str, Any]) -> dict[str, Any]:
 
 
 def closeout(paths: Paths) -> dict[str, Any]:
+    pending = latest_pending_closeout(paths)
+    if pending is not None:
+        return finish_closeout(paths, pending[1])
     return finish_closeout(paths, canonical_closeout_report(paths))
 
 
 def closeout_blocked(paths: Paths, code: str) -> dict[str, Any]:
+    pending = latest_pending_closeout(paths)
+    if pending is not None:
+        return finish_closeout(paths, pending[1])
     return finish_closeout(paths, canonical_closeout_report(paths, blocked_code=code))
 
 

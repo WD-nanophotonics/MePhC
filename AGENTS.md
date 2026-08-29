@@ -162,6 +162,15 @@ not accept message text, files, attachments, targets, paths, or browser options.
 Repeat `closeout` after an interruption; it can only submit an unsubmitted
 request once or reconcile the same submitted request.
 
+The first fixed closeout attempt binds the entire work order to exactly one
+request ID. A later `closeout` and `closeout-blocked` call for that same work
+order must coordinate the already-bound request; changing the report kind or
+message cannot create a second request. Any older submitted closeout awaiting
+response or response consumption takes precedence over the active successor
+work order. A receipt may advance only to a work-order ID that has never been
+used by an earlier local request; repeated successor IDs fail closed for human
+reconciliation.
+
 For a genuine fail-closed work-order blocker use only a structured code:
 
 ```text
