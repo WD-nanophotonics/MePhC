@@ -60,6 +60,20 @@ def test_science_contract_cannot_write_framework_and_analysis_is_zero_budget():
     assert module.validate_contract(analysis)["action"] == "analyze"
 
 
+def test_acquisition_may_be_result_only_but_always_requires_result_schema():
+    module = load_module("scientific_job_result_only_acquisition")
+    result_only = contract(
+        expected_output={"dataset_schema": None, "result_schema": "certification-v1"},
+    )
+    validated = module.validate_contract(result_only)
+    assert validated["action"] == "acquire"
+    assert validated["expected_output"]["dataset_schema"] is None
+    with pytest.raises(module.ScientificJobError, match="ACQUISITION_RESULT_SCHEMA_REQUIRED"):
+        module.validate_contract(
+            contract(expected_output={"dataset_schema": None, "result_schema": None})
+        )
+
+
 def test_budget_counter_fails_before_extra_provider_or_solver():
     module = load_module("scientific_job_budget")
     counter = module.BudgetCounter(1, 1)

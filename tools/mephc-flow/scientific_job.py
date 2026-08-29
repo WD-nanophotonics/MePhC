@@ -113,8 +113,10 @@ def validate_contract(value: Any) -> dict[str, Any]:
         raise ScientificJobError("WORK_ORDER_OUTPUT_SCHEMA_INVALID")
     if any(item is not None and not isinstance(item, str) for item in output.values()):
         raise ScientificJobError("WORK_ORDER_OUTPUT_SCHEMA_INVALID")
-    if value["action"] == "acquire" and not all(isinstance(output[item], str) and output[item] for item in output):
-        raise ScientificJobError("ACQUISITION_OUTPUT_SCHEMA_REQUIRED")
+    if value["action"] == "acquire" and (
+        not isinstance(output["result_schema"], str) or not output["result_schema"]
+    ):
+        raise ScientificJobError("ACQUISITION_RESULT_SCHEMA_REQUIRED")
     if value["action"] == "analyze":
         if not isinstance(output["result_schema"], str) or not output["result_schema"]:
             raise ScientificJobError("ANALYSIS_RESULT_SCHEMA_REQUIRED")
