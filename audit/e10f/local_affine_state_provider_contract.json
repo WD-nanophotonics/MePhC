@@ -1,0 +1,15 @@
+{
+  "schema": "mephc-e10f-local-affine-state-provider-contract-v1",
+  "model_id": "E8B_TWO_INCLUSION_AREA_PRESERVING_AFFINE_V1",
+  "reference_cell_id": "E8B_TWO_INCLUSION_REFERENCE_FRACTIONAL_CELL_V1",
+  "public_input": "physical normalized q; provider computes kappa=A(s)^T q",
+  "solver_configuration": {"resolution": 64, "num_bands": 6, "polarization": "TM", "eigensolver_tolerance": 1e-7, "mesh_size": 3, "deterministic": true, "phase_callback": null},
+  "h_representation": "mpb_periodic_h_l2_v1",
+  "bloch_phase_excluded": true,
+  "component_basis": "LAB_CARTESIAN",
+  "mu_contract": "MU1_NONMAGNETIC",
+  "orientation_sign": 1,
+  "no_reduction": true,
+  "no_cache": true,
+  "no_retry": true
+}
