@@ -92,7 +92,7 @@ def main() -> int:
         "next_scientific_state": "LOCAL_AFFINE_POLARIZATION_IDENTITY_CERTIFIED_READY_TO_REISSUE_FROZEN_13_STATE_ACQUISITION",
         "return_to_supervisor": True, "terminal": "LOCALAFFINE_P3_POLARIZATION_IDENTITY_IMPLEMENTATION_COMPLETE",
     }
-    print(json.dumps(result, sort_keys=True, separators=(",", ":")))
+    print("MEPHC_NATIVE_RESULT_JSON=" + json.dumps(result, sort_keys=True, separators=(",", ":")))
     return 0
 
 
