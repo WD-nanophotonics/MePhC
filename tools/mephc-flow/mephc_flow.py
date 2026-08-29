@@ -470,6 +470,10 @@ def resume(paths: Paths) -> dict[str, Any]:
     if view["state"] in {"AWAITING_WORK_ORDER", "TERMINATED"}:
         return view
     order, contract = active_contract(paths)
+    try:
+        validate_input_bindings(paths, contract)
+    except FlowError as exc:
+        return pre_execution_block(paths, contract, exc.code)
     return {"schema": "mephc-thin-flow-resume-v1", "state": "READY",
             "work_order_id": order["work_order_id"], "contract": contract,
             "safe_next": "execute"}
@@ -570,6 +574,22 @@ def dataset_bindings(contract: dict[str, Any]) -> list[dict[str, str]]:
     return result
 
 
+def validate_input_bindings(paths: Paths, contract: dict[str, Any]) -> list[dict[str, Any]]:
+    """Resolve every historical input before editing, publication or Native."""
+    bindings = dataset_bindings(contract)
+    if not bindings:
+        return []
+    module = science_module(paths)
+    resolved = []
+    for binding in bindings:
+        try:
+            record = module.resolve_dataset_record(paths.science_state, **binding)
+        except module.ScientificJobError as exc:
+            raise FlowError(str(exc)) from exc
+        resolved.append({key: value for key, value in record.items() if key != "payload"})
+    return resolved
+
+
 def prepare_inputs(paths: Paths, contract: dict[str, Any], job_id: str) -> tuple[Path, str]:
     module = science_module(paths)
     resolved = []
@@ -597,6 +617,26 @@ def job_id(contract: dict[str, Any], commit: str) -> str:
     return "MEPHC-SCIENCE-" + digest({"work_order_id": contract["work_order_id"],
                                       "contract_sha256": contract["contract_sha256"],
                                       "source_commit": commit, "action": contract["action"]})[:24]
+
+
+def pre_execution_block(paths: Paths, contract: dict[str, Any], failure_code: str) -> dict[str, Any]:
+    """Persist a zero-execution terminal result against the published source."""
+    value = require_source(paths, published=True)
+    identifier = job_id(contract, value["head"])
+    final = {
+        "schema": "mephc-thin-job-v1", "job_id": identifier,
+        "work_order_id": contract["work_order_id"],
+        "contract_sha256": contract["contract_sha256"],
+        "source_commit": value["head"], "action": contract["action"],
+        "state": "blocked", "failure_code": failure_code,
+        "actual_native_invocation_count": 0,
+        "actual_provider_execution_count": 0,
+        "actual_solver_execution_count": 0,
+        "actual_dataset_record_count": 0,
+        "created_at": time.time(), "completed_at": time.time(),
+    }
+    atomic_json(paths.state / "science-jobs" / f"{identifier}.json", final)
+    return execution_view(final)
 
 
 def execution_view(job: dict[str, Any]) -> dict[str, Any]:
@@ -648,6 +688,10 @@ def execute(paths: Paths) -> dict[str, Any]:
     if view["state"] != "READY":
         return view
     _, contract = active_contract(paths)
+    try:
+        validate_input_bindings(paths, contract)
+    except FlowError as exc:
+        return pre_execution_block(paths, contract, exc.code)
     publication = publish(paths, contract)
     identifier = job_id(contract, publication["source_commit"])
     job_path = paths.state / "science-jobs" / f"{identifier}.json"

@@ -15,8 +15,9 @@ FORBIDDEN_IDENTITY_KEYS = {
     "pid", "process_id", "username", "user_name", "machine", "machine_name",
     "hostname", "host_name",
 }
+FORBIDDEN_RAW_KEYS = {"normalized_vectors", "raw_h", "pickle"}
 FORBIDDEN_RAW_KEY_TOKENS = ("normalized_vectors", "raw_h", "pickle")
-FORBIDDEN_STRING_TOKENS = ("/home/icy/", "c:\\users\\", "normalized_vectors", "raw_h", "pickle")
+FORBIDDEN_STRING_TOKENS = ("/home/icy/", "c:\\users\\")
 
 
 def atomic(path: Path, value: dict) -> None:
@@ -40,7 +41,12 @@ def _summary_is_safe(value: object) -> bool:
         return all(
             isinstance(key, str)
             and key.lower() not in FORBIDDEN_IDENTITY_KEYS
-            and not any(token in key.lower() for token in FORBIDDEN_RAW_KEY_TOKENS)
+            and key.lower() not in FORBIDDEN_RAW_KEYS
+            # Names such as raw_h_payload_retained are safe when they carry a
+            # bounded scalar.  Containers or encoded strings under a raw-data
+            # name remain forbidden.
+            and (not any(token in key.lower() for token in FORBIDDEN_RAW_KEY_TOKENS)
+                 or isinstance(item, (bool, int, float)) or item is None)
             and _summary_is_safe(item)
             for key, item in value.items()
         )

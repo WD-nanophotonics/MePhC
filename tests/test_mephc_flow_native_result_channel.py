@@ -93,3 +93,31 @@ def test_private_identity_and_raw_arrays_are_rejected(tmp_path):
         )
         assert state["state"] == "failed"
         assert state["result_error"] == "RESULT_SUMMARY_UNSAFE"
+
+
+def test_bounded_raw_data_status_scalars_are_allowed_but_payloads_are_not(tmp_path):
+    helper = load()
+    stdout, stderr = streams(tmp_path)
+    result = tmp_path / "safe-status.json"
+    safe = {"schema": "thin-result-v1", "raw_h_payload_retained": False,
+            "normalized_vectors_retained": False, "status": "PASS"}
+    write_result(result, safe)
+    state = helper.finalize_child_result(
+        {"state": "running", "expected_output": {"result_schema": "thin-result-v1"}},
+        stdout, stderr, 0, result_path=result,
+    )
+    assert state["state"] == "succeeded"
+    assert state["result_summary"] == safe
+
+    for index, unsafe in enumerate((
+        {"schema": "thin-result-v1", "raw_h_payload": [1, 2]},
+        {"schema": "thin-result-v1", "normalized_vectors_blob": "encoded"},
+    )):
+        path = tmp_path / f"unsafe-payload-{index}.json"
+        write_result(path, unsafe)
+        rejected = helper.finalize_child_result(
+            {"state": "running", "expected_output": {"result_schema": "thin-result-v1"}},
+            stdout, stderr, 0, result_path=path,
+        )
+        assert rejected["state"] == "failed"
+        assert rejected["result_error"] == "RESULT_SUMMARY_UNSAFE"

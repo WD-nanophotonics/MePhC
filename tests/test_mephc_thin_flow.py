@@ -110,6 +110,10 @@ def test_missing_dataset_blocks_before_native(monkeypatch, tmp_path: Path):
     monkeypatch.setattr(flow, "publish", lambda *_: {"source_commit": "d" * 40,
                                                       "checkout": "/home/icy/checkout", "tests": []})
     monkeypatch.setattr(flow, "science_module", lambda _: science)
+    monkeypatch.setattr(flow, "source", lambda _: {
+        "branch": "sandbox", "head": "d" * 40, "origin_main": flow.EXPECTED_MAIN,
+        "origin_sandbox": "d" * 40, "dirty": False,
+    })
     called = {"wsl": 0}
     monkeypatch.setattr(flow, "wsl", lambda *a, **k: called.__setitem__("wsl", called["wsl"] + 1))
     result = flow.execute(scope)
@@ -120,6 +124,25 @@ def test_missing_dataset_blocks_before_native(monkeypatch, tmp_path: Path):
     assert result["execution"]["actual_provider_execution_count"] == 0
     assert result["execution"]["actual_solver_execution_count"] == 0
     assert called["wsl"] == 0
+
+
+def test_resume_rejects_legacy_dataset_before_edit_publish_or_native(monkeypatch, tmp_path: Path):
+    scope = paths(tmp_path)
+    value = contract(inputs={"tests": ["tests/test_mephc_thin_flow.py"],
+                             "p11_trace_dataset_id": "a" * 64})
+    monkeypatch.setattr(flow, "state_view", lambda _: {"state": "READY"})
+    monkeypatch.setattr(flow, "active_contract", lambda _: ({"work_order_id": value["work_order_id"]}, value))
+    monkeypatch.setattr(flow, "source", lambda _: {
+        "branch": "sandbox", "head": "d" * 40, "origin_main": flow.EXPECTED_MAIN,
+        "origin_sandbox": "d" * 40, "dirty": False,
+    })
+    published = {"called": False}
+    monkeypatch.setattr(flow, "publish", lambda *_: published.__setitem__("called", True))
+    result = flow.resume(scope)
+    assert result["state"] == "READY_TO_CLOSE"
+    assert result["execution"]["failure_code"] == "DATASET_BINDINGS_V2_REQUIRED"
+    assert result["execution"]["actual_native_invocation_count"] == 0
+    assert published["called"] is False
 
 
 def test_closeout_reuses_one_request_and_resends_at_most_once(monkeypatch, tmp_path: Path):
