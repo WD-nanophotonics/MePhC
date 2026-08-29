@@ -154,7 +154,7 @@ class MPBLiveSpectralProvider:
         polarization = self.polarization if self.polarization is not None else mp.TE
         default_material = self.default_material if self.default_material is not None else mp.air
         return mpb.ModeSolver(
-            geometry=self.geometry,
+            geometry=list(self.geometry),
             geometry_lattice=self.geometry_lattice,
             k_points=[reciprocal_k_point],
             resolution=self.resolution,
