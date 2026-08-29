@@ -60,7 +60,8 @@ def main() -> int:
     require(sha256_file(acquisition_path) != P1_ACQUISITION_SHA, "P1_ACQUISITION_PATCH_NOT_UPDATED")
     require(exact_git_blob(BASE_SANDBOX_SHA, "tools/mephc-flow/mephc_science_runtime.py") == RUNTIME_BLOB_SHA,
             "SCIENCE_RUNTIME_REPOSITORY_BLOB_CHANGED")
-    require("sha256(runtime_content) == RUNTIME_SHA" not in Path(__file__).read_text(encoding="utf-8"),
+    forbidden_runtime_equality = "sha256(runtime_content)" + " == RUNTIME_SHA"
+    require(forbidden_runtime_equality not in Path(__file__).read_text(encoding="utf-8"),
             "P1_RAW_RUNTIME_EQUALITY_REMAINS")
     require(RUNTIME_IDENTITY_SHA == "9c135953ca3bd91e9e0e386ce523466216dbe86be3579cd4c5c3d1b7d064d080",
             "SCIENCE_RUNTIME_IDENTITY_CONSTANT_INVALID")
