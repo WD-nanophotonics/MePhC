@@ -60,7 +60,7 @@ def _contract_value(state: Any, name: str, default: Any) -> Any:
 
 def canonical_local_affine_state_identity(state: Any, *, resolution: int = 64,
                                            num_bands: int = 6,
-                                           polarization: str = "TM",
+                                           polarization_identity: str = "TM",
                                            eigensolver_tolerance: float = 1e-7,
                                            mesh_size: int = 3,
                                            deterministic: bool = True) -> dict[str, Any]:
@@ -76,7 +76,7 @@ def canonical_local_affine_state_identity(state: Any, *, resolution: int = 64,
         "geometry_digest": str(_state_value(state, "geometry_digest")),
         "resolution": int(resolution),
         "num_bands": int(num_bands),
-        "polarization": str(polarization),
+        "polarization": polarization_identity,
         "eigensolver_tolerance": float(eigensolver_tolerance),
         "mesh_size": int(mesh_size),
         "deterministic": bool(deterministic),
@@ -93,7 +93,7 @@ def canonical_local_affine_state_identity(state: Any, *, resolution: int = 64,
     if identity["reference_cell_id"] != identity["reference_cell_identity"]:
         raise LocalAffineProviderError("REFERENCE_CELL_IDENTITY_MISMATCH:reference_cell_identity")
     for name, expected in (("resolution", int(resolution)), ("num_bands", int(num_bands)),
-                           ("polarization", str(polarization)), ("mesh_size", int(mesh_size)),
+                           ("polarization", polarization_identity), ("mesh_size", int(mesh_size)),
                            ("deterministic", bool(deterministic))):
         if hasattr(state, name) and getattr(state, name) != expected:
             raise LocalAffineProviderError(f"LOCAL_AFFINE_STATE_CONTRACT_MISMATCH:{name}")
@@ -237,12 +237,20 @@ class LocalAffineStateProvider:
     mesh_size: int = 3
     deterministic: bool = True
     polarization: Any = None
+    polarization_identity: str | None = None
     default_material: Any = None
 
     def solve(self, state: Any) -> MPBHEnvelopeSnapshot:
+        if self.polarization is None:
+            raise LocalAffineProviderError("SOLVER_POLARIZATION_HANDLE_MISSING")
+        if not isinstance(self.polarization_identity, str) or not self.polarization_identity.strip():
+            raise LocalAffineProviderError("POLARIZATION_IDENTITY_MISSING")
+        state_polarization = _state_value(state, "polarization")
+        if state_polarization != self.polarization_identity:
+            raise LocalAffineProviderError("STATE_POLARIZATION_IDENTITY_MISMATCH")
         identity = canonical_local_affine_state_identity(
             state, resolution=self.resolution, num_bands=self.num_bands,
-            polarization="TM" if self.polarization is None else str(self.polarization),
+            polarization_identity=self.polarization_identity,
             eigensolver_tolerance=self.eigensolver_tolerance,
             mesh_size=self.mesh_size, deterministic=self.deterministic,
         )
@@ -273,6 +281,7 @@ class LocalAffineStateProvider:
             "local_affine_state_identity": dict(identity),
             "local_affine_state_identity_sha256": digest_local_affine_state_identity(identity),
             "local_affine_reference_cell_contract": contract,
+            "local_affine_solver_polarization_identity": self.polarization_identity,
         })
         return MPBHEnvelopeSnapshot(
             k_point=snapshot.k_point, frequencies=snapshot.frequencies, h_fields=snapshot.h_fields,

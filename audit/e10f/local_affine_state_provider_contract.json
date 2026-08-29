@@ -24,11 +24,21 @@
   "solver_configuration": {
     "resolution": 64,
     "num_bands": 6,
-    "polarization": "TM",
+    "polarization": "opaque runtime object forwarded unchanged",
+    "polarization_identity": "explicit semantic string; for the frozen TM program: TM",
     "eigensolver_tolerance": 1e-7,
     "mesh_size": 3,
     "deterministic": true,
     "phase_callback": null
+  },
+  "polarization_identity_contract": {
+    "solver_polarization_handle": "opaque runtime object",
+    "canonical_polarization_identity": "explicit semantic string",
+    "state_identity_polarization": "must equal canonical identity",
+    "implicit_runtime_object_string_inference_forbidden": true,
+    "missing_handle_or_semantic_identity": "fails closed before underlying provider construction",
+    "returned_provenance": "local_affine_solver_polarization_identity",
+    "underlying_solver_polarization_provenance": "preserved unchanged"
   },
   "acquisition_pre_persistence_verification": {
     "identity": "local_affine_state_identity",

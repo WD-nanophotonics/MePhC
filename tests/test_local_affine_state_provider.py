@@ -27,6 +27,18 @@ class Lattice:
     size = Size()
 
 
+class OpaquePolarization:
+    def __str__(self):
+        return "opaque-runtime-handle-not-TM"
+
+
+OPAQUE_POLARIZATION = OpaquePolarization()
+
+
+def configured_provider():
+    return LocalAffineStateProvider(polarization=OPAQUE_POLARIZATION, polarization_identity="TM")
+
+
 def synthetic_state(**changes):
     values = {
         "model_id": "GENERIC_LOCAL_AFFINE_MODEL",
@@ -37,6 +49,7 @@ def synthetic_state(**changes):
         "F_s": ((1.0, 0.0), (0.0, 1.0)),
         "A_s": ((1.0, 0.0), (0.0, 1.0)),
         "derived_kappa": (0.125, -0.375),
+        "polarization": "TM",
         "geometry_digest": "geometry-digest",
         "geometry": (),
         "geometry_lattice": Lattice(),
@@ -122,7 +135,7 @@ def test_success_binds_identity_and_preserves_payload_and_provenance(monkeypatch
     state = synthetic_state()
     source = snapshot(state, caller={"mpb_reciprocal_k_point": [0.125, -0.375, 0.0], "tag": "source"})
     install_fake_provider(monkeypatch, source)
-    result = LocalAffineStateProvider().solve(state)
+    result = configured_provider().solve(state)
     assert result is not source
     assert np.array_equal(result.frequencies, source.frequencies)
     assert np.array_equal(result.h_fields, source.h_fields)
@@ -142,7 +155,7 @@ def test_complete_reference_cell_contract_is_accepted_and_bound(monkeypatch):
     contract = local_affine_reference_cell_contract(
         state, spatial_shape=(64, 64), identity=identity, lattice_size=(1.0, 1.0))
     install_fake_provider(monkeypatch, replace_provenance(source, local_affine_reference_cell_contract=contract))
-    result = LocalAffineStateProvider().solve(state)
+    result = configured_provider().solve(state)
     assert result.to_dict()["provenance"]["local_affine_reference_cell_contract"] == contract
 
 
@@ -158,7 +171,7 @@ def test_tampered_reference_cell_contract_fails_closed(monkeypatch, key):
     contract[key] = "tampered" if key not in {"spatial_shape", "lattice_size"} else ([1, 1] if key == "spatial_shape" else [2, 1])
     install_fake_provider(monkeypatch, replace_provenance(source, local_affine_reference_cell_contract=contract))
     with pytest.raises(LocalAffineProviderError, match="REFERENCE_CELL_CONTRACT"):
-        LocalAffineStateProvider().solve(state)
+        configured_provider().solve(state)
 
 
 @pytest.mark.parametrize("key", [
@@ -172,7 +185,7 @@ def test_missing_mandatory_underlying_metadata_fails_closed(monkeypatch, key):
     provenance.pop(key)
     install_fake_provider(monkeypatch, rebuild_snapshot(source, provenance))
     with pytest.raises(LocalAffineProviderError, match="MANDATORY_METADATA"):
-        LocalAffineStateProvider().solve(state)
+        configured_provider().solve(state)
 
 
 def test_missing_underlying_solver_resolution_fails_closed(monkeypatch):
@@ -182,7 +195,7 @@ def test_missing_underlying_solver_resolution_fails_closed(monkeypatch):
     caller.pop("solver_settings")
     install_fake_provider(monkeypatch, replace_provenance(source, caller_provenance=caller))
     with pytest.raises(LocalAffineProviderError, match="SOLVER_RESOLUTION"):
-        LocalAffineStateProvider().solve(state)
+        configured_provider().solve(state)
 
 
 @pytest.mark.parametrize(
@@ -205,7 +218,7 @@ def test_state_contract_mismatches_fail_closed(monkeypatch, changes, match):
     state = synthetic_state(**changes)
     install_fake_provider(monkeypatch, None)
     with pytest.raises(LocalAffineProviderError, match=match):
-        LocalAffineStateProvider().solve(state)
+        configured_provider().solve(state)
 
 
 @pytest.mark.parametrize(
@@ -227,7 +240,7 @@ def test_provider_result_metadata_mismatches_fail_closed(monkeypatch, metadata, 
     state = synthetic_state()
     install_fake_provider(monkeypatch, snapshot(state, metadata=metadata))
     with pytest.raises(LocalAffineProviderError, match=match):
-        LocalAffineStateProvider().solve(state)
+        configured_provider().solve(state)
 
 
 def test_wrong_geometry_identity_in_provider_result_fails_closed(monkeypatch):
@@ -236,21 +249,21 @@ def test_wrong_geometry_identity_in_provider_result_fails_closed(monkeypatch):
     identity["geometry_digest"] = "wrong"
     install_fake_provider(monkeypatch, snapshot(state, metadata={"local_affine_state_identity": identity}))
     with pytest.raises(LocalAffineProviderError, match="STATE_IDENTITY"):
-        LocalAffineStateProvider().solve(state)
+        configured_provider().solve(state)
 
 
 def test_top_level_reciprocal_mismatch_fails_closed(monkeypatch):
     state = synthetic_state()
     install_fake_provider(monkeypatch, snapshot(state, top=(0.2, -0.375, 0.0)))
     with pytest.raises(LocalAffineProviderError, match="RECIPROCAL"):
-        LocalAffineStateProvider().solve(state)
+        configured_provider().solve(state)
 
 
 def test_caller_reciprocal_disagreement_fails_closed(monkeypatch):
     state = synthetic_state()
     install_fake_provider(monkeypatch, snapshot(state, caller={"mpb_reciprocal_k_point": [0.2, -0.375, 0.0]}))
     with pytest.raises(LocalAffineProviderError, match="CALLER_RECIPROCAL"):
-        LocalAffineStateProvider().solve(state)
+        configured_provider().solve(state)
 
 
 def test_nonfinite_frequency_is_rejected_by_snapshot_adapter():
@@ -275,7 +288,50 @@ def test_nonfinite_and_nonunit_normalized_vectors_fail_closed(monkeypatch):
     )
     install_fake_provider(monkeypatch, bad)
     with pytest.raises(LocalAffineProviderError, match="NONUNIT"):
-        LocalAffineStateProvider().solve(state)
+        configured_provider().solve(state)
+
+
+def test_opaque_solver_handle_is_forwarded_and_semantic_identity_is_explicit(monkeypatch):
+    state = synthetic_state()
+    source = snapshot(state, caller={"solver_settings": {"resolution": 64, "polarization": "opaque-runtime-handle"}})
+    observed = {}
+
+    class FakeProvider:
+        def __init__(self, **kwargs):
+            observed.update(kwargs)
+
+        def solve(self, _q):
+            return source
+
+    monkeypatch.setattr(provider_module, "MPBLiveSpectralProvider", FakeProvider)
+    result = configured_provider().solve(state)
+    assert observed["polarization"] is OPAQUE_POLARIZATION
+    assert str(observed["polarization"]) != "TM"
+    assert result.provenance["local_affine_solver_polarization_identity"] == "TM"
+    assert result.provenance["caller_provenance"]["solver_settings"]["polarization"] == "opaque-runtime-handle"
+    assert np.array_equal(result.h_fields, source.h_fields)
+
+
+def test_missing_solver_handle_fails_closed_before_provider_construction(monkeypatch):
+    state = synthetic_state()
+    monkeypatch.setattr(provider_module, "MPBLiveSpectralProvider", lambda **_: pytest.fail("constructed"))
+    with pytest.raises(LocalAffineProviderError, match="SOLVER_POLARIZATION_HANDLE_MISSING"):
+        LocalAffineStateProvider(polarization=None, polarization_identity="TM").solve(state)
+
+
+@pytest.mark.parametrize("identity", [None, "", "   "])
+def test_missing_polarization_identity_fails_closed_before_provider_construction(monkeypatch, identity):
+    state = synthetic_state()
+    monkeypatch.setattr(provider_module, "MPBLiveSpectralProvider", lambda **_: pytest.fail("constructed"))
+    with pytest.raises(LocalAffineProviderError, match="POLARIZATION_IDENTITY_MISSING"):
+        LocalAffineStateProvider(polarization=OPAQUE_POLARIZATION, polarization_identity=identity).solve(state)
+
+
+def test_state_polarization_must_match_semantic_identity(monkeypatch):
+    state = synthetic_state(polarization="TE")
+    monkeypatch.setattr(provider_module, "MPBLiveSpectralProvider", lambda **_: pytest.fail("constructed"))
+    with pytest.raises(LocalAffineProviderError, match="STATE_POLARIZATION_IDENTITY_MISMATCH"):
+        configured_provider().solve(state)
 
 
 def test_meep_remains_absent_before_and_after_provider_tests():
