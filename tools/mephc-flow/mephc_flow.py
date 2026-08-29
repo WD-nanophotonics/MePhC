@@ -2571,6 +2571,9 @@ def verify_closeout_request(directory: Path, prepared: dict[str, Any]) -> None:
 
 def finish_closeout(paths: Paths, prepared: dict[str, Any]) -> dict[str, Any]:
     directory = paths.outbox / prepared["request_id"]
+    supervision = supervision_status(paths)
+    if (supervision.get("batch_review_required") and not directory.exists()):
+        raise FlowError("SUPERVISION_BATCH_REVIEW_REQUIRED", safe_next="supervision-status")
     if not directory.exists():
         directory = validate_and_create_closeout_request(paths, prepared)
     verify_closeout_request(directory, prepared)

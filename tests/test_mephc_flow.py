@@ -1282,6 +1282,23 @@ def test_supervision_pauses_every_two_and_reset_clears_streak(tmp_path: Path) ->
     assert flow.supervision_advance(scope, "RESET_AFTER_FRAMEWORK_FIX")["stable_count"] == 0
 
 
+def test_supervision_batch_boundary_blocks_new_closeout_request(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scope = paths(tmp_path)
+    flow.supervision_start(scope, 10, 2)
+    for index in range(2):
+        flow._record_supervised_closeout(scope, {
+            "request_id": f"MEPHC-FLOW-{index:024d}", "work_order_id": f"MEPHC-SCIENCE-{index:04d}",
+            "work_order_class": "SCIENCE", "work_order_mode": "STANDARD",
+            "source_commit": "a" * 40, "actual_counts": {"native": 0}, "framework_modified": False,
+        }, {"submission_count": 1})
+    prepared = closeout_prepared()
+    monkeypatch.setattr(flow, "courier_command", lambda *_args, **_kwargs: pytest.fail("must not dispatch"))
+    with pytest.raises(flow.FlowError, match="SUPERVISION_BATCH_REVIEW_REQUIRED"):
+        flow.finish_closeout(scope, prepared)
+    assert not (scope.outbox / prepared["request_id"]).exists()
+
+
 def test_scoped_publish_rejects_out_of_contract_file_before_staging(
         tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     scope = paths(tmp_path)
