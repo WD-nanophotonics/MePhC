@@ -616,10 +616,10 @@ def science_preflight(paths: Paths) -> dict[str, Any]:
         raise FlowError("SUPERVISION_BATCH_REVIEW_REQUIRED", safe_next="supervision-status")
     order, contract = active_machine_contract(paths)
     source = require_source(paths, published=True)
-    control_plane_changes = {
-        "AGENTS.md", "tools/mephc-flow/mephc_flow.py", "tests/test_mephc_flow.py",
-        "tests/test_mephc_flow_scientific_job.py",
-    }
+    def control_plane_change(relative: str) -> bool:
+        return (relative == "AGENTS.md" or relative.startswith("tools/mephc-flow/")
+                or relative.startswith("tests/test_mephc_flow")
+                or relative == "tests/test_scientific_job.py")
     changed_since_contract: set[str] = set()
     if contract["source_commit"] != source["head"]:
         ancestor = git(paths, "merge-base", "--is-ancestor", contract["source_commit"], source["head"], check=False)
@@ -629,9 +629,11 @@ def science_preflight(paths: Paths) -> dict[str, Any]:
             line for line in git(paths, "diff", "--name-only", f"{contract['source_commit']}..{source['head']}").stdout.splitlines()
             if line
         }
-        permitted_changes = set(contract["allowed_writes"]) | control_plane_changes
-        if not changed_since_contract.issubset(permitted_changes):
-            raise FlowError("WORK_ORDER_SOURCE_DIFF_OUT_OF_SCOPE", ",".join(sorted(changed_since_contract - permitted_changes)))
+        out_of_scope = sorted(relative for relative in changed_since_contract
+                              if relative not in set(contract["allowed_writes"])
+                              and not control_plane_change(relative))
+        if out_of_scope:
+            raise FlowError("WORK_ORDER_SOURCE_DIFF_OUT_OF_SCOPE", ",".join(out_of_scope))
     checkout = ensure_checkout(paths, source["head"])
     if contract["action"] == "corrective":
         return {
@@ -648,7 +650,7 @@ def science_preflight(paths: Paths) -> dict[str, Any]:
         tracked = wsl(["/usr/bin/git", "-C", checkout, "ls-files", "--error-unmatch", entrypoint], check=False)
         if tracked.returncode:
             if (entrypoint in contract["allowed_writes"]
-                    and changed_since_contract.issubset(control_plane_changes)):
+                    and all(control_plane_change(relative) for relative in changed_since_contract)):
                 return {
                     "schema": "mephc-science-preflight-v1", "ready_to_run": False,
                     "ready_to_edit": True, "safe_next": "edit_scoped_files",
