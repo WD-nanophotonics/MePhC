@@ -238,13 +238,29 @@ def request_summary(directory: Path) -> dict[str, Any]:
     request = read_json(directory / "request.json", {})
     receipt = read_json(directory / "receipt.json", {})
     events = directory / "events.jsonl"
-    submissions = 0
+    submissions = 0; captures = 0
     if events.is_file():
-        submissions = sum('"event":"request_submitted"' in line.replace(" ", "")
-                          for line in events.read_text(encoding="utf-8-sig", errors="replace").splitlines())
+        lines = events.read_text(encoding="utf-8-sig", errors="replace").splitlines()
+        submissions = sum('"event":"request_submitted"' in line.replace(" ", "") for line in lines)
+        captures = sum('"event":"latest_response_captured"' in line.replace(" ", "") for line in lines)
+    capture = read_json(directory / "latest-response-capture.json", {})
+    found_user = capture.get("latest_user_turn_found") if isinstance(capture, dict) else None
+    found_reply = capture.get("post_submission_reply_found") if isinstance(capture, dict) else None
+    response_received = (directory / "response.txt").is_file()
+    if response_received:
+        recovery_action = "none"
+    elif submissions < 1 or captures < 1:
+        recovery_action = "read"
+    elif submissions == 1:
+        recovery_action = "resend_once"
+    else:
+        recovery_action = "none"
     return {"request_id": request.get("request_id", directory.name),
             "receipt_state": receipt.get("state"), "submission_count": submissions,
-            "response_received": (directory / "response.txt").is_file()}
+            "response_received": response_received, "capture_attempt_count": captures,
+            "latest_user_turn_found": found_user,
+            "post_submission_reply_found": found_reply,
+            "recovery_action": recovery_action}
 
 
 def request_for_work_order(paths: Paths, work_order_id: str) -> Path | None:
@@ -361,6 +377,85 @@ def consume_response(paths: Paths, directory: Path) -> dict[str, Any]:
         "active_response_sha256": response_sha, "pending_job_id": None, "updated_at": time.time()})
     return {"state": "READY", "work_order_id": successor, "response_sha256": response_sha,
             "safe_next": "resume"}
+
+
+def _captured_body(text: str) -> str:
+    """Extract an optional Courier envelope without using it as authorization."""
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n").strip()
+    begin, end = "BEGIN_RESPONSE", "END_RESPONSE"
+    lines = normalized.split("\n")
+    if begin in lines:
+        start = lines.index(begin) + 1
+        try:
+            stop = lines.index(end, start)
+        except ValueError:
+            raise FlowError("CAPTURED_RESPONSE_INCOMPLETE")
+        body = "\n".join(lines[start:stop]).strip()
+        if not body:
+            raise FlowError("CAPTURED_RESPONSE_EMPTY")
+        return body
+    if not normalized:
+        raise FlowError("CAPTURED_RESPONSE_EMPTY")
+    return normalized
+
+
+def captured_response(paths: Paths, directory: Path) -> tuple[Path, str] | None:
+    manifest = read_json(directory / "latest-response-capture.json", {})
+    if not isinstance(manifest, dict) or manifest.get("post_submission_reply_found") is not True:
+        return None
+    request = read_json(directory / "request.json", {})
+    if (manifest.get("project_id") != PROJECT_ID
+            or manifest.get("request_id") != request.get("request_id")
+            or manifest.get("fingerprint") != request.get("fingerprint")):
+        raise FlowError("CAPTURED_RESPONSE_BINDING_MISMATCH")
+    name = manifest.get("raw_path")
+    if not isinstance(name, str) or Path(name).name != name:
+        raise FlowError("CAPTURED_RESPONSE_PATH_INVALID")
+    path = directory / name
+    try:
+        raw = path.read_bytes()
+    except OSError as exc:
+        raise FlowError("CAPTURED_RESPONSE_UNAVAILABLE") from exc
+    if digest(raw) != manifest.get("raw_sha256"):
+        raise FlowError("CAPTURED_RESPONSE_SHA_MISMATCH")
+    return path, _captured_body(raw.decode("utf-8-sig"))
+
+
+def consume_captured_response(paths: Paths, directory: Path) -> dict[str, Any] | None:
+    captured = captured_response(paths, directory)
+    if captured is None:
+        return None
+    raw_path, body = captured
+    if re.search(r"^WORKFLOW_TERMINATED=true$", body, re.MULTILINE):
+        atomic_json(paths.legacy_state / "runner" / "workflow-ledger.json", {
+            "schema": "mephc-workflow-ledger-v2", "workflow_state": "terminated",
+            "pending_job_id": None, "updated_at": time.time()})
+        atomic_json(directory / "thin-captured-reply.json", {
+            "schema": "mephc-thin-captured-reply-v1", "terminal": True,
+            "raw_sha256": digest(raw_path.read_bytes()), "consumed_at": time.time()})
+        return {"state": "TERMINATED", "safe_next": None}
+    match = re.search(r"^NEXT_WORK_ORDER_ID=([^\r\n]+)$", body, re.MULTILINE)
+    successor = match.group(1).strip() if match else ""
+    request = read_json(directory / "request.json", {})
+    if not WORK_ORDER.fullmatch(successor) or successor == request.get("work_order_id"):
+        return None
+    # A science successor must carry the machine contract before it can move
+    # the ledger.  This is content validation after the browser has closed.
+    if "WORK_ORDER_CONTRACT_JSON=" not in body:
+        return None
+    response_sha = digest(raw_path.read_bytes())
+    atomic_json(paths.legacy_state / "runner" / "workflow-ledger.json", {
+        "schema": "mephc-workflow-ledger-v2", "workflow_state": "available",
+        "active_work_order_id": successor,
+        "active_response_path": f"{OUTBOX_WSL}/{directory.name}/{raw_path.name}",
+        "active_response_sha256": response_sha, "pending_job_id": None,
+        "updated_at": time.time()})
+    atomic_json(directory / "thin-captured-reply.json", {
+        "schema": "mephc-thin-captured-reply-v1", "terminal": False,
+        "successor_work_order_id": successor, "raw_sha256": response_sha,
+        "envelope_mismatch_tolerated": True, "consumed_at": time.time()})
+    return {"state": "READY", "work_order_id": successor,
+            "response_sha256": response_sha, "safe_next": "resume"}
 
 
 def resume(paths: Paths) -> dict[str, Any]:
@@ -637,7 +732,8 @@ def canonical_report(paths: Paths, order: dict[str, Any], job: dict[str, Any]) -
 
 
 def courier(paths: Paths, operation: str, directory: Path) -> subprocess.CompletedProcess[str]:
-    if operation not in {"validate", "courier_dispatch", "courier_recover"}:
+    if operation not in {"validate", "courier_dispatch", "courier_recover",
+                          "courier_capture_latest", "courier_resend_once"}:
         raise FlowError("COURIER_OPERATION_INVALID")
     argv = ["cmd.exe", "/d", "/s", "/c", str(paths.courier), operation, str(directory)]
     return run(argv, timeout=4860, check=False)
@@ -691,6 +787,29 @@ def closeout_once(paths: Paths) -> dict[str, Any]:
     final = request_summary(directory)
     if final["response_received"]:
         return consume_response(paths, directory)
+    # The regular recovery is the first read-only confirmation.  Re-open once
+    # with the exact outbound user-turn marker and capture whatever Chat has
+    # already completed, independent of its optional reply envelope.
+    courier(paths, "courier_capture_latest", directory)
+    final = request_summary(directory)
+    consumed = consume_captured_response(paths, directory)
+    if consumed is not None:
+        return consumed
+    # A duplicate Chat report is cheap and explicitly bounded.  Keep the same
+    # request identity and permit exactly one second user turn.
+    if final["submission_count"] == 1:
+        courier(paths, "courier_resend_once", directory)
+        final = request_summary(directory)
+        if final["response_received"]:
+            return consume_response(paths, directory)
+        courier(paths, "courier_capture_latest", directory)
+        final = request_summary(directory)
+        consumed = consume_captured_response(paths, directory)
+        if consumed is not None:
+            return consumed
+    if final["submission_count"] >= 2:
+        return {"state": "HARD_BLOCKED", **final,
+                "error_code": "COURIER_BOUNDED_RECOVERY_EXHAUSTED", "safe_next": None}
     attempt = int(retry.get("attempt", 0)) + 1 if isinstance(retry, dict) else 1
     delay = min(900, 30 * (2 ** min(attempt - 1, 5)))
     atomic_json(retry_path, {"schema": "mephc-thin-closeout-wait-v1", "attempt": attempt,
@@ -701,7 +820,7 @@ def closeout_once(paths: Paths) -> dict[str, Any]:
 
 
 def closeout(paths: Paths) -> dict[str, Any]:
-    """Run at most one bounded Courier operation for the fixed request."""
+    """Run one bounded recovery ladder for the fixed request."""
     return closeout_once(paths)
 
 

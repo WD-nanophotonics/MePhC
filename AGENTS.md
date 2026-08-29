@@ -33,9 +33,13 @@ TERMINATED        -> stop
 HARD_BLOCKED      -> ask the user
 ```
 
-Always follow the returned `state` and `safe_next`. Do not reconstruct a state
-machine from prose. Continue `closeout -> resume -> execute -> closeout` until
-Chat explicitly terminates or the flow returns `HARD_BLOCKED`.
+Always follow the returned `state` and `safe_next`. Current user instructions
+override workflow defaults. Continue `closeout -> resume -> execute -> closeout`
+until Chat explicitly terminates or the flow exhausts its bounded recovery.
+Do not stop on the first ordinary UI, transport, permission or parsing error:
+read-only checks may repeat, verifiable Git/test operations may retry once, and
+`closeout` owns one automatic same-request Courier resend. Native/provider/
+solver work is never blindly repeated; reconcile its durable ID instead.
 
 ## Execute semantics
 
@@ -68,9 +72,13 @@ framework, retry Native, or create a second job.
 ## Closeout semantics
 
 `closeout` derives complete/blocked status mechanically from the terminal job.
-One work order has exactly one deterministic Courier request. A repeated call
-can only consume a reply or reconcile that same request; it cannot resubmit or
-change report kind. `response_timeout` means `AWAITING_REPLY`, not failure.
+One work order has exactly one deterministic Courier request. It first performs
+normal recovery, then one exact user-turn-anchored read-only capture. A missing
+or wrong reply envelope is only an offline warning when the post-submission
+reply contains a valid successor contract. If recovery still fails, `closeout`
+may resend the same immutable report once under the same request ID. Total
+submission count is capped at two; it can never create a replacement request
+or rerun scientific work. Only exhaustion of this ladder is hard-blocking.
 
 Do not use Browser, Chrome, Gmail, another profile, another request, or another
 transport. Only login, target, validation, or transport hard errors require the

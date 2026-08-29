@@ -122,7 +122,7 @@ def test_missing_dataset_blocks_before_native(monkeypatch, tmp_path: Path):
     assert called["wsl"] == 0
 
 
-def test_closeout_reuses_one_request_and_backs_off(monkeypatch, tmp_path: Path):
+def test_closeout_reuses_one_request_and_resends_at_most_once(monkeypatch, tmp_path: Path):
     scope = paths(tmp_path)
     work_order = "MEPHC-THIN-TEST-00000002"
     request_id, _ = flow.fixed_request_id(work_order)
@@ -130,19 +130,58 @@ def test_closeout_reuses_one_request_and_backs_off(monkeypatch, tmp_path: Path):
     directory.mkdir(parents=True)
     (directory / "request.json").write_text(json.dumps({
         "project_id": "MEPHC", "request_id": request_id, "work_order_id": work_order,
+        "fingerprint": "fixed",
     }), encoding="utf-8")
     (directory / "receipt.json").write_text(json.dumps({"state": "response_timeout"}), encoding="utf-8")
     (directory / "events.jsonl").write_text('{"event":"request_submitted"}\n', encoding="utf-8")
     monkeypatch.setattr(flow, "active_order", lambda _: {"work_order_id": work_order, "text": ""})
     calls = []
-    monkeypatch.setattr(flow, "courier", lambda _p, operation, _d: (
-        calls.append(operation) or subprocess.CompletedProcess([], 2, "", "")))
+    def bounded_courier(_p, operation, target):
+        calls.append(operation)
+        if operation == "courier_resend_once":
+            with (target / "events.jsonl").open("a", encoding="utf-8") as handle:
+                handle.write('{"event":"request_submitted"}\n')
+        return subprocess.CompletedProcess([], 2, "", "")
+    monkeypatch.setattr(flow, "courier", bounded_courier)
     first = flow.closeout(scope)
     second = flow.closeout(scope)
-    assert first["state"] == second["state"] == "AWAITING_REPLY"
-    assert first["submission_count"] == second["submission_count"] == 1
-    assert calls == ["courier_recover"]
+    assert first["state"] == second["state"] == "HARD_BLOCKED"
+    assert first["submission_count"] == second["submission_count"] == 2
+    assert calls == ["courier_recover", "courier_capture_latest", "courier_resend_once",
+                     "courier_capture_latest", "courier_recover", "courier_capture_latest"]
     assert len(list(scope.outbox.iterdir())) == 1
+
+
+def test_closeout_consumes_post_submission_capture_despite_wrong_envelope(monkeypatch, tmp_path: Path):
+    scope = paths(tmp_path)
+    work_order = "MEPHC-THIN-TEST-00000005"
+    successor = "MEPHC-THIN-TEST-00000006"
+    request_id, _ = flow.fixed_request_id(work_order)
+    directory = scope.outbox / request_id
+    directory.mkdir(parents=True)
+    request = {"project_id": "MEPHC", "request_id": request_id,
+               "work_order_id": work_order, "fingerprint": "fixed"}
+    (directory / "request.json").write_text(json.dumps(request), encoding="utf-8")
+    (directory / "receipt.json").write_text(json.dumps({"state": "response_protocol_error"}), encoding="utf-8")
+    (directory / "events.jsonl").write_text('{"event":"request_submitted"}\n', encoding="utf-8")
+    body = ("CHAT_COURIER_REPLY/1\nPROJECT_ID=MEPHC\nREQUEST_ID=WRONG\nBEGIN_RESPONSE\n"
+            f"NEXT_WORK_ORDER_ID={successor}\n"
+            "WORK_ORDER_CONTRACT_JSON={}\nEND_RESPONSE\n")
+    raw = body.encode()
+    (directory / "latest-response.raw.txt").write_bytes(raw)
+    (directory / "latest-response-capture.json").write_text(json.dumps({
+        "project_id": "MEPHC", "request_id": request_id, "fingerprint": "fixed",
+        "raw_path": "latest-response.raw.txt", "raw_sha256": hashlib.sha256(raw).hexdigest(),
+        "latest_user_turn_found": True, "post_submission_reply_found": True,
+    }), encoding="utf-8")
+    monkeypatch.setattr(flow, "active_order", lambda _: {"work_order_id": work_order, "text": ""})
+    monkeypatch.setattr(flow, "courier", lambda *_: subprocess.CompletedProcess([], 1, "", ""))
+    result = flow.closeout(scope)
+    assert result["state"] == "READY"
+    assert result["work_order_id"] == successor
+    assert not (directory / "response.txt").exists()
+    evidence = json.loads((directory / "thin-captured-reply.json").read_text())
+    assert evidence["envelope_mismatch_tolerated"] is True
 
 
 def test_terminal_job_maps_to_one_closeout_action(monkeypatch, tmp_path: Path):
