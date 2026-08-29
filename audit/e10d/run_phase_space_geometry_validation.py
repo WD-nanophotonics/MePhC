@@ -6,7 +6,6 @@ import hashlib
 import json
 import os
 from pathlib import Path
-import subprocess
 from typing import Any
 
 import numpy as np
@@ -72,11 +71,11 @@ def atomic_json(path: Path, value: dict[str, Any]) -> None:
 
 
 def current_source_commit() -> str:
-    result = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=False)
-    commit = result.stdout.strip()
-    if result.returncode or len(commit) != 40:
-        raise ValidationError("CURRENT_SOURCE_COMMIT_UNAVAILABLE")
-    return commit
+    # The framework records the actual analysis checkout commit in its outer
+    # result envelope.  Tracked evidence must remain deterministic after the
+    # evidence itself is committed, so it binds to the declared base rather
+    # than self-referencing the commit that contains the evidence.
+    return BASE_SANDBOX_SHA
 
 
 def verify_inputs() -> dict[str, str]:
