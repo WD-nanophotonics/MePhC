@@ -66,6 +66,23 @@ def test_closeout_launcher_is_zero_argument_and_fixed():
         assert forbidden not in launcher
 
 
+def test_agents_protocol_has_fixed_bounded_supervisor_escalation():
+    policy = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+    required = (
+        "HARD_BLOCKED      -> escalate to the fixed supervisor task",
+        "01a04136-7e60-75c3-88cf-156581a3733e",
+        "01a0480e-b79d-75c3-ac80-5db601b32d67",
+        "send_message_to_thread",
+        "ESCALATION_ID=MEPHC-ESCALATION:<work-order-id>:<failure-code>",
+        "ACTUAL_COUNTS=<native/provider/solver/dataset>",
+        "UNCERTAIN_SIDE_EFFECT=<true|false>",
+        "retry the identical message once",
+        "do not modify files",
+        "Do not create, fork, or wake any other worker or supervisor",
+    )
+    assert all(item in policy for item in required)
+
+
 def test_awaiting_and_terminated_are_distinct(monkeypatch, tmp_path: Path):
     scope = paths(tmp_path)
     monkeypatch.setattr(flow, "source", lambda _: {"branch": "sandbox", "head": "a" * 40,

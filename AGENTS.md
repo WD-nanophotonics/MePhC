@@ -30,7 +30,7 @@ RUNNING           -> execute (reconcile the same durable run; never resubmit)
 READY_TO_CLOSE    -> closeout
 AWAITING_REPLY    -> closeout
 TERMINATED        -> stop
-HARD_BLOCKED      -> ask the user
+HARD_BLOCKED      -> escalate to the fixed supervisor task
 ```
 
 Always follow the returned `state` and `safe_next`. Current user instructions
@@ -40,6 +40,55 @@ Do not stop on the first ordinary UI, transport, permission or parsing error:
 read-only checks may repeat, verifiable Git/test operations may retry once, and
 `closeout` owns one automatic same-request Courier resend. Native/provider/
 solver work is never blindly repeated; reconcile its durable ID instead.
+
+## Automatic supervisor escalation
+
+The fixed high-capability supervisor task is
+`01a04136-7e60-75c3-88cf-156581a3733e` on host `local`. The only Luna worker
+is `01a0480e-b79d-75c3-ac80-5db601b32d67`.
+Do not create, fork, or wake any other worker or supervisor.
+
+Escalate only after bounded local diagnosis when one of these is true:
+
+- Thin Flow remains `HARD_BLOCKED` after its built-in recovery;
+- the unique `safe_next` cannot run because of a tool, approval, or environment
+  failure;
+- a Native or Courier side effect cannot be uniquely reconciled; or
+- the same framework failure recurs after one verified recovery attempt.
+
+Do not escalate a scientific negative result, a valid solver-free fail-closed,
+`READY_TO_CLOSE`, normal Courier waiting, or `TERMINATED`.
+
+Use the Codex `send_message_to_thread` tool to send the supervisor one concise
+structured message. Do not use Courier or add a flow command for escalation.
+The message must contain these exact fields:
+
+```text
+ESCALATION_ID=MEPHC-ESCALATION:<work-order-id>:<failure-code>
+SOURCE_TASK_ID=01a0480e-b79d-75c3-ac80-5db601b32d67
+WORK_ORDER_ID=<id-or-null>
+STATE=<state>
+FAILURE_CODE=<structured-code>
+SOURCE_SHA=<sha-or-null>
+JOB_ID=<id-or-null>
+REQUEST_ID=<id-or-null>
+NATIVE_RUN_ID=<id-or-null>
+ACTUAL_COUNTS=<native/provider/solver/dataset>
+RECOVERY_ATTEMPTED=<bounded-actions>
+UNCERTAIN_SIDE_EFFECT=<true|false>
+REQUESTED_SUPERVISOR_ACTION=<diagnose-and-resume|reconcile|framework-fix>
+```
+
+Send to the fixed supervisor task with `hostId=local`. If the task-message call
+returns a definite transport failure, retry the identical message once. After
+successful delivery, end the Luna turn and remain idle: do not modify files,
+retry work, ask the user, or create another task. If the second delivery attempt
+also fails definitively, report only that task-to-task communication hard error
+to the user and stop.
+
+When the supervisor later sends a continuation, re-read `AGENTS.md`, run bounded
+`status`, and follow the existing work order and original durable IDs. Never
+replace an uncertain Native run or Courier request.
 
 ## Execute semantics
 
@@ -88,8 +137,9 @@ The launcher rejects every argument and cannot select message text, a request,
 a destination, a profile, or a transport.
 
 Do not use Browser, Chrome, Gmail, another profile, another request, or another
-transport. Only login, target, validation, or transport hard errors require the
-user.
+transport. Escalate login, target, validation, transport, destructive-action,
+`main`-promotion, or genuine user-choice blockers to the fixed supervisor
+first; only the supervisor decides whether the user must be contacted.
 
 ## Boundaries
 
