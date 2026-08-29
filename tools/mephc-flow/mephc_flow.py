@@ -1652,6 +1652,23 @@ def successful_science_job(paths: Paths, work_order_id: str, source_commit: str)
     return max(matches, key=lambda item: float(item.get("completed_at", 0))) if matches else None
 
 
+def latest_science_job(paths: Paths, work_order_id: str, source_commit: str) -> dict[str, Any] | None:
+    """Return the latest source-compatible job, including a failed terminal job.
+
+    Blocked closeout needs the durable execution counters from the failed job;
+    treating a blocked report as having zero executions makes supervision lie.
+    """
+    root = paths.state / "science-jobs"
+    matches: list[dict[str, Any]] = []
+    if root.is_dir():
+        for item in root.glob("MEPHC-SCIENCE-*.json"):
+            value = read_json(item, default={})
+            if (isinstance(value, dict) and value.get("work_order_id") == work_order_id
+                    and closeout_job_source_compatible(paths, value.get("source_commit"), source_commit)):
+                matches.append(value)
+    return max(matches, key=lambda item: float(item.get("completed_at", 0))) if matches else None
+
+
 def scalar_result(value: Any) -> bool:
     if value is None or isinstance(value, bool) or isinstance(value, int):
         return True
@@ -1713,6 +1730,26 @@ def closeout_result_projection(job: dict[str, Any]) -> dict[str, Any]:
         "provider_executions": result_summary.get("provider_request_count", 0),
         "solver_executions": result_summary.get("native_solves", 0),
         "result_summary": result_summary,
+    }
+
+
+def blocked_closeout_result_projection(job: dict[str, Any]) -> dict[str, Any]:
+    """Project only durable counters from a failed job; never infer success."""
+    native = job.get("result")
+    native_count = 0
+    return_code = None
+    if isinstance(native, dict):
+        if native.get("process_started") is True:
+            cost = native.get("cost", 1)
+            native_count = cost if type(cost) is int and cost >= 0 else 1
+        return_code = native.get("return_code")
+    return {
+        "return_code": return_code,
+        "native_invocation_count": native_count,
+        "provider_executions": int(job.get("actual_provider_execution_count", 0)),
+        "solver_executions": int(job.get("actual_solver_execution_count", 0)),
+        "dataset_records": int(job.get("actual_dataset_record_count", 0)),
+        "result_summary": {},
     }
 
 
@@ -1789,13 +1826,21 @@ def canonical_closeout_report(paths: Paths, *, blocked_code: str | None = None) 
             or publish_evidence.get("published_sandbox") != source["head"]):
         raise FlowError("CLOSEOUT_PUBLISH_EVIDENCE_REQUIRED", safe_next="publish")
     job = successful_science_job(paths, order["work_order_id"], source["head"])
+    if blocked_code is not None and job is None:
+        job = latest_science_job(paths, order["work_order_id"], source["head"])
     corrective = corrective_evidence(paths, order, contract, source["head"]) if work_mode == "CORRECTIVE" else None
     if blocked_code is None and work_class == "SCIENCE" and job is None and corrective is None:
         raise FlowError("CLOSEOUT_SUCCESSFUL_JOB_REQUIRED", safe_next="science-status")
-    projection = closeout_result_projection(job) if isinstance(job, dict) else {
-        "return_code": None, "native_invocation_count": 0,
-        "provider_executions": 0, "solver_executions": 0, "result_summary": {},
-    }
+    if isinstance(job, dict):
+        projection = (blocked_closeout_result_projection(job)
+                      if blocked_code and job.get("state") != "succeeded"
+                      else closeout_result_projection(job))
+    else:
+        projection = {
+            "return_code": None, "native_invocation_count": 0,
+            "provider_executions": 0, "solver_executions": 0,
+            "dataset_records": 0, "result_summary": {},
+        }
     if corrective is not None:
         projection = {"return_code": 0, "native_invocation_count": 0,
                       "provider_executions": 0, "solver_executions": 0,
@@ -1897,7 +1942,8 @@ def canonical_closeout_report(paths: Paths, *, blocked_code: str | None = None) 
         "actual_counts": {"native": projection["native_invocation_count"],
                           "provider": projection["provider_executions"],
                           "solver": projection["solver_executions"],
-                          "dataset": (corrective or {}).get("new_counts", {}).get("dataset", 0)},
+                          "dataset": ((corrective or {}).get("new_counts", {}).get("dataset", 0)
+                                      if corrective is not None else projection.get("dataset_records", 0))},
         "framework_modified": any(artifact["path"].startswith("tools/mephc-flow/")
                                   or artifact["path"] == "AGENTS.md" for artifact in artifacts),
         "artifacts": artifacts, "message": message, "message_sha256": message_hash,

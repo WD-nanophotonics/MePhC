@@ -1282,6 +1282,24 @@ def test_supervision_pauses_every_two_and_reset_clears_streak(tmp_path: Path) ->
     assert flow.supervision_advance(scope, "RESET_AFTER_FRAMEWORK_FIX")["stable_count"] == 0
 
 
+def test_blocked_closeout_projects_failed_job_durable_counts() -> None:
+    projection = flow.blocked_closeout_result_projection({
+        "state": "failed",
+        "actual_provider_execution_count": 1,
+        "actual_solver_execution_count": 1,
+        "actual_dataset_record_count": 0,
+        "result": {"process_started": True, "cost": 1, "return_code": 1},
+    })
+    assert projection == {
+        "return_code": 1,
+        "native_invocation_count": 1,
+        "provider_executions": 1,
+        "solver_executions": 1,
+        "dataset_records": 0,
+        "result_summary": {},
+    }
+
+
 def test_supervision_batch_boundary_blocks_new_closeout_request(
         tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     scope = paths(tmp_path)
