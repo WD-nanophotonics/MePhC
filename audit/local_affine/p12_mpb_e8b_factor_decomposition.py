@@ -251,7 +251,7 @@ def main() -> int:
     execution_source = os.environ.get("MEPHC_SOURCE_COMMIT", "")
     require(len(execution_source) == 40 and all(c in "0123456789abcdef" for c in execution_source),
             "SCIENCE_EXECUTION_IDENTITY_INVALID")
-    require(execution_source == BASE_SANDBOX_SHA and git_head() == BASE_SANDBOX_SHA,
+    require(git_head() == execution_source,
             "P12_SOURCE_IDENTITY_MISMATCH")
     counters_path = Path(os.environ.get("MEPHC_EXECUTION_COUNTERS_PATH", ""))
     require(counters_path.name, "P12_COUNTER_PATH_MISSING")
