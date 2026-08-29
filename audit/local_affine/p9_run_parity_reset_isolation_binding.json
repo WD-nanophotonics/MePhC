@@ -1,0 +1,37 @@
+{
+  "schema": "mephc-local-affine-p9-run-parity-reset-isolation-binding-v1",
+  "WORK_ORDER_ID": "MEPHC-LOCALAFFINE-P9-RUN-PARITY-RESET-ISOLATION-20260829-373",
+  "BASE_INPUT_COMMIT": "dc6e03f3e4b083af25e06a7bd450486654c144be",
+  "IMPLEMENTATION_SOURCE_IDENTITY": "19eb7186eda4aabf8bb0f4bbadb63cc6a2a2124f",
+  "SCIENCE_EXECUTION_IDENTITY": "19eb7186eda4aabf8bb0f4bbadb63cc6a2a2124f",
+  "P8_TRACE_DATASET_ID": "9c74b13662559004303d288f448ddc5aadf08c891d8b7bc8e62b5c602b8c000c",
+  "P8_TRACE_MANIFEST_SHA256": "988e6ad1a8ecc882d65107f03062ae45d0bdfe05e9273163fc15aa72922e5681",
+  "PROVIDER_MODULE_IDENTITY": "e83aa9768b53ad5e0f151636982e91a1193b269cf4e5baef1da1a0ca33965128",
+  "REQUEST_GRAPH_IDENTITY": "b33771c08eff0c989c10ae3bd80704d6eaeb71659c40931479c42055a6746ed4",
+  "SCIENTIFIC_STATE_SET_IDENTITY": "d38510a2a29996334dccb8fc697d6cec20179a7e510e11cea90806e8560d7549",
+  "SCIENCE_JOB_ID": "MEPHC-SCIENCE-ca76d3a1e37694de651170ed",
+  "NATIVE_RUN_ID": "MEPHC-NATIVE-58dbeae7d49025a6585572c7",
+  "PROBE_A_RESULT": {
+    "probe_id": "TM_RESET_TRUE",
+    "return_code": -11,
+    "sigsegv": true,
+    "last_stage_marker": "P9_STAGE|TM_RESET_TRUE|RUN_PARITY|ENTER",
+    "frequency_extraction_success": false,
+    "finite_six_frequencies": false,
+    "top_faulthandler_frame": "Fatal Python error: Segmentation fault"
+  },
+  "PROBE_B_RESULT": {
+    "probe_id": "NO_PARITY_RESET_TRUE",
+    "return_code": -11,
+    "sigsegv": true,
+    "last_stage_marker": "P9_STAGE|NO_PARITY_RESET_TRUE|RUN_PARITY|ENTER",
+    "frequency_extraction_success": false,
+    "finite_six_frequencies": false,
+    "top_faulthandler_frame": "Fatal Python error: Segmentation fault"
+  },
+  "DIAGNOSTIC_TRACE_DATASET_ID": "386987b790d65f2b5b82a41c4903607ca1addfb137af27e6b379bf3d26f10e4f",
+  "DIAGNOSTIC_TRACE_MANIFEST_SHA256": "b97b3b5631b319f3de36269b2710257b5eb1573017054fa26938a07db0cbedcb",
+  "RUN_PARITY_FAILURE_CLASS": "GENERAL_E8B_MPB_RUN_PATH",
+  "ROOT_CAUSE_STATUS": "LOCALIZED_NOT_ESTABLISHED",
+  "RECOMMENDED_PROVIDER_REPAIR": "NONE_PENDING_E8B_RUN_PATH_DIAGNOSIS"
+}
