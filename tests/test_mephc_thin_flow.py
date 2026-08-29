@@ -83,6 +83,56 @@ def test_agents_protocol_has_fixed_bounded_supervisor_escalation():
     assert all(item in policy for item in required)
 
 
+@pytest.mark.parametrize(
+    "chat_error",
+    [
+        "Connection interrupted. Waiting for the complete answer",
+        "This content can’t be shown\nWe’re especially careful with cybersecurity requests.",
+    ],
+)
+def test_chat_error_response_reenters_same_request_capture(tmp_path: Path, chat_error: str):
+    directory = tmp_path / "MEPHC-FLOW-test"
+    directory.mkdir()
+    (directory / "request.json").write_text(
+        json.dumps({"request_id": directory.name}), encoding="utf-8"
+    )
+    (directory / "receipt.json").write_text(
+        json.dumps({"state": "response_received"}), encoding="utf-8"
+    )
+    (directory / "events.jsonl").write_text(
+        '{"event":"request_submitted"}\n', encoding="utf-8"
+    )
+    (directory / "response.txt").write_text(chat_error, encoding="utf-8")
+    summary = flow.request_summary(directory)
+    assert summary["submission_count"] == 1
+    assert summary["response_received"] is False
+    assert summary["invalid_response_capture"] is True
+    assert summary["recovery_action"] == "read"
+
+
+def test_valid_successor_response_is_accepted(tmp_path: Path):
+    directory = tmp_path / "MEPHC-FLOW-test"
+    directory.mkdir()
+    (directory / "request.json").write_text(
+        json.dumps({"request_id": directory.name}), encoding="utf-8"
+    )
+    (directory / "receipt.json").write_text(
+        json.dumps({"state": "response_received"}), encoding="utf-8"
+    )
+    (directory / "events.jsonl").write_text(
+        '{"event":"request_submitted"}\n', encoding="utf-8"
+    )
+    (directory / "response.txt").write_text(
+        "NEXT_WORK_ORDER_ID=MEPHC-THIN-NEXT-00000001\n"
+        "WORK_ORDER_CONTRACT_JSON={}\n",
+        encoding="utf-8",
+    )
+    summary = flow.request_summary(directory)
+    assert summary["response_received"] is True
+    assert summary["invalid_response_capture"] is False
+    assert summary["recovery_action"] == "none"
+
+
 def test_awaiting_and_terminated_are_distinct(monkeypatch, tmp_path: Path):
     scope = paths(tmp_path)
     monkeypatch.setattr(flow, "source", lambda _: {"branch": "sandbox", "head": "a" * 40,

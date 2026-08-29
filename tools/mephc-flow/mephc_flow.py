@@ -246,7 +246,23 @@ def request_summary(directory: Path) -> dict[str, Any]:
     capture = read_json(directory / "latest-response-capture.json", {})
     found_user = capture.get("latest_user_turn_found") if isinstance(capture, dict) else None
     found_reply = capture.get("post_submission_reply_found") if isinstance(capture, dict) else None
-    response_received = (directory / "response.txt").is_file()
+    response_path = directory / "response.txt"
+    invalid_response_capture = False
+    if response_path.is_file():
+        try:
+            response_text = response_path.read_text(encoding="utf-8-sig").replace("\r\n", "\n")
+            terminated = bool(re.search(r"^WORKFLOW_TERMINATED=true$", response_text, re.MULTILINE))
+            successor_match = re.search(
+                r"^NEXT_WORK_ORDER_ID=([^\n]+)$", response_text, re.MULTILINE
+            )
+            successor_valid = bool(
+                successor_match
+                and WORK_ORDER.fullmatch(successor_match.group(1).strip())
+            )
+            invalid_response_capture = not terminated and not successor_valid
+        except OSError:
+            invalid_response_capture = True
+    response_received = response_path.is_file() and not invalid_response_capture
     if response_received:
         recovery_action = "none"
     elif submissions < 1 or captures < 1:
@@ -260,6 +276,7 @@ def request_summary(directory: Path) -> dict[str, Any]:
             "response_received": response_received, "capture_attempt_count": captures,
             "latest_user_turn_found": found_user,
             "post_submission_reply_found": found_reply,
+            "invalid_response_capture": invalid_response_capture,
             "recovery_action": recovery_action}
 
 
