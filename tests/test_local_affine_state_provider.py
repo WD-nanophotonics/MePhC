@@ -13,6 +13,7 @@ from mephc.local_affine_state_provider import (
     LocalAffineStateProvider,
     canonical_local_affine_state_identity,
     digest_local_affine_state_identity,
+    local_affine_reference_cell_contract,
 )
 from mephc.mpb_spectral import MPBHEnvelopeSnapshot, adapt_mpb_h_envelopes
 
@@ -56,6 +57,7 @@ def snapshot(state, *, top=None, caller=None, metadata=None):
     provenance = {"mpb_k_point": list(top or (*identity["derived_kappa"], 0.0))}
     if caller is not None:
         provenance.update(caller)
+    provenance.setdefault("solver_settings", {"resolution": 64})
     if metadata:
         provenance.update(metadata)
     return adapt_mpb_h_envelopes(
@@ -67,6 +69,10 @@ def snapshot(state, *, top=None, caller=None, metadata=None):
 def replace_provenance(value, **updates):
     provenance = dict(value.provenance)
     provenance.update(updates)
+    return rebuild_snapshot(value, provenance)
+
+
+def rebuild_snapshot(value, provenance):
     return MPBHEnvelopeSnapshot(
         k_point=value.k_point, frequencies=value.frequencies, h_fields=value.h_fields,
         raw_norms=value.raw_norms, normalized_vectors=value.normalized_vectors,
@@ -77,6 +83,12 @@ def replace_provenance(value, **updates):
         orthogonality_tolerance=value.orthogonality_tolerance,
         raw_eigenstates=value.raw_eigenstates, provenance=provenance, e_fields=value.e_fields,
     )
+
+
+def drop_provenance(value, key):
+    provenance = dict(value.provenance)
+    provenance.pop(key, None)
+    return rebuild_snapshot(value, provenance)
 
 
 def install_fake_provider(monkeypatch, result):
@@ -123,6 +135,56 @@ def test_success_binds_identity_and_preserves_payload_and_provenance(monkeypatch
     assert result.provenance["local_affine_reference_cell_contract"]["reference_cell_identity"] == state.reference_cell_id
 
 
+def test_complete_reference_cell_contract_is_accepted_and_bound(monkeypatch):
+    state = synthetic_state()
+    source = snapshot(state)
+    identity = canonical_local_affine_state_identity(state)
+    contract = local_affine_reference_cell_contract(
+        state, spatial_shape=(64, 64), identity=identity, lattice_size=(1.0, 1.0))
+    install_fake_provider(monkeypatch, replace_provenance(source, local_affine_reference_cell_contract=contract))
+    result = LocalAffineStateProvider().solve(state)
+    assert result.to_dict()["provenance"]["local_affine_reference_cell_contract"] == contract
+
+
+@pytest.mark.parametrize("key", [
+    "representation", "spatial_shape", "lattice_size", "component_order",
+])
+def test_tampered_reference_cell_contract_fails_closed(monkeypatch, key):
+    state = synthetic_state()
+    source = snapshot(state)
+    identity = canonical_local_affine_state_identity(state)
+    contract = local_affine_reference_cell_contract(
+        state, spatial_shape=(64, 64), identity=identity, lattice_size=(1.0, 1.0))
+    contract[key] = "tampered" if key not in {"spatial_shape", "lattice_size"} else ([1, 1] if key == "spatial_shape" else [2, 1])
+    install_fake_provider(monkeypatch, replace_provenance(source, local_affine_reference_cell_contract=contract))
+    with pytest.raises(LocalAffineProviderError, match="REFERENCE_CELL_CONTRACT"):
+        LocalAffineStateProvider().solve(state)
+
+
+@pytest.mark.parametrize("key", [
+    "representation", "spatial_shape", "component_count", "component_order",
+    "periodic_h_envelope", "bloch_phase_excluded", "mpb_k_point",
+])
+def test_missing_mandatory_underlying_metadata_fails_closed(monkeypatch, key):
+    state = synthetic_state()
+    source = snapshot(state)
+    provenance = dict(source.provenance)
+    provenance.pop(key)
+    install_fake_provider(monkeypatch, rebuild_snapshot(source, provenance))
+    with pytest.raises(LocalAffineProviderError, match="MANDATORY_METADATA"):
+        LocalAffineStateProvider().solve(state)
+
+
+def test_missing_underlying_solver_resolution_fails_closed(monkeypatch):
+    state = synthetic_state()
+    source = snapshot(state)
+    caller = dict(source.to_dict()["provenance"]["caller_provenance"])
+    caller.pop("solver_settings")
+    install_fake_provider(monkeypatch, replace_provenance(source, caller_provenance=caller))
+    with pytest.raises(LocalAffineProviderError, match="SOLVER_RESOLUTION"):
+        LocalAffineStateProvider().solve(state)
+
+
 @pytest.mark.parametrize(
     "changes, match",
     [
@@ -158,7 +220,7 @@ def test_state_contract_mismatches_fail_closed(monkeypatch, changes, match):
         ({"component_basis": "wrong"}, "COMPONENT_BASIS"),
         ({"mu_contract": "wrong"}, "MU_CONTRACT"),
         ({"orientation_sign": -1}, "ORIENTATION_SIGN"),
-        ({"resolution": 32}, "RESOLUTION"),
+        ({"solver_settings": {"resolution": 32}}, "RESOLUTION"),
     ],
 )
 def test_provider_result_metadata_mismatches_fail_closed(monkeypatch, metadata, match):

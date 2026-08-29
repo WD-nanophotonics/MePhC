@@ -109,14 +109,22 @@ def digest_local_affine_state_identity(identity: Mapping[str, Any]) -> str:
 
 
 def local_affine_reference_cell_contract(state: Any, *, spatial_shape: tuple[int, int],
-                                         identity: Mapping[str, Any]) -> dict[str, Any]:
+                                         identity: Mapping[str, Any],
+                                         lattice_size: tuple[float, float] | None = None) -> dict[str, Any]:
+    if lattice_size is None:
+        lattice_size = (float(spatial_shape[0]) / identity["resolution"],
+                        float(spatial_shape[1]) / identity["resolution"])
+    expected_shape = np.asarray(lattice_size, dtype=float) * identity["resolution"]
+    if expected_shape.shape != (2,) or not np.all(np.isfinite(expected_shape)):
+        raise LocalAffineProviderError("REFERENCE_CELL_LATTICE_SIZE_INVALID")
+    if not np.allclose(expected_shape, spatial_shape, rtol=0.0, atol=1e-12):
+        raise LocalAffineProviderError("REFERENCE_CELL_LATTICE_SIZE_MISMATCH")
     return {
         "representation": identity["h_representation"],
         "bloch_phase_excluded": identity["bloch_phase_excluded"],
         "resolution": identity["resolution"],
         "spatial_shape": [int(spatial_shape[0]), int(spatial_shape[1])],
-        "lattice_size": [float(spatial_shape[0]) / identity["resolution"],
-                         float(spatial_shape[1]) / identity["resolution"]],
+        "lattice_size": [float(lattice_size[0]), float(lattice_size[1])],
         "component_order": LOCAL_AFFINE_COMPONENT_ORDER,
         "component_basis": identity["component_basis"],
         "mu_contract": identity["mu_contract"],
@@ -164,10 +172,26 @@ def _validate_reciprocal(snapshot: MPBHEnvelopeSnapshot, expected: tuple[float, 
 
 
 def _validate_snapshot(snapshot: MPBHEnvelopeSnapshot, *, expected_shape: tuple[int, int],
-                       identity: Mapping[str, Any]) -> None:
+                       identity: Mapping[str, Any], expected_contract: Mapping[str, Any]) -> None:
     if not isinstance(snapshot, MPBHEnvelopeSnapshot):
         raise LocalAffineProviderError("PROVIDER_RESULT_TYPE_MISMATCH")
     metadata = _metadata(snapshot)
+    provenance = _mapping(snapshot.provenance)
+    if provenance is None:
+        raise LocalAffineProviderError("PROVIDER_RESULT_PROVENANCE_MISSING")
+    required = ("representation", "spatial_shape", "component_count", "component_order",
+                "periodic_h_envelope", "bloch_phase_excluded", "mpb_k_point")
+    if any(key not in provenance for key in required):
+        raise LocalAffineProviderError("PROVIDER_RESULT_MANDATORY_METADATA_MISSING")
+    caller = _mapping(provenance.get("caller_provenance"))
+    settings = _mapping(provenance.get("solver_settings"))
+    if settings is None and caller is not None:
+        settings = _mapping(caller.get("solver_settings"))
+    if settings is None or "resolution" not in settings:
+        raise LocalAffineProviderError("PROVIDER_RESULT_SOLVER_RESOLUTION_MISSING")
+    augmented_contract = snapshot.to_dict()["provenance"].get("local_affine_reference_cell_contract")
+    if augmented_contract is not None and augmented_contract != dict(expected_contract):
+        raise LocalAffineProviderError("PROVIDER_RESULT_REFERENCE_CELL_CONTRACT_MISMATCH")
     expected = {
         "representation": identity["h_representation"],
         "periodic_h_envelope": True,
@@ -229,6 +253,12 @@ class LocalAffineStateProvider:
             raise LocalAffineProviderError("LOCAL_AFFINE_KAPPA_BINDING_MISMATCH:derived_kappa")
         lattice = _state_value(state, "geometry_lattice")
         expected_shape = _spatial_shape(lattice, self.resolution)
+        size = getattr(lattice, "size", None)
+        if size is None or not all(hasattr(size, axis) for axis in ("x", "y")):
+            raise LocalAffineProviderError("REFERENCE_CELL_LATTICE_SIZE_MISSING")
+        lattice_size = (float(size.x), float(size.y))
+        contract = local_affine_reference_cell_contract(
+            state, spatial_shape=expected_shape, identity=identity, lattice_size=lattice_size)
         provider = MPBLiveSpectralProvider(
             geometry=_state_value(state, "geometry"), geometry_lattice=lattice,
             resolution=self.resolution, num_bands=self.num_bands,
@@ -237,8 +267,7 @@ class LocalAffineStateProvider:
             mesh_size=self.mesh_size, phase_callback=None,
         )
         snapshot = provider.solve(tuple(identity["public_q"]))
-        _validate_snapshot(snapshot, expected_shape=expected_shape, identity=identity)
-        contract = local_affine_reference_cell_contract(state, spatial_shape=expected_shape, identity=identity)
+        _validate_snapshot(snapshot, expected_shape=expected_shape, identity=identity, expected_contract=contract)
         provenance = dict(snapshot.provenance)
         provenance.update({
             "local_affine_state_identity": dict(identity),

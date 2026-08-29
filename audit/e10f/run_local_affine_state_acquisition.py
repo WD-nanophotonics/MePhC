@@ -11,7 +11,7 @@ import sys
 import numpy as np
 
 from audit.e10f.e8b_local_affine_model import canonical_state_identity, digest_state_identity, geometry_anchor_status, make_state
-from mephc.local_affine_state_provider import LocalAffineStateProvider
+from mephc.local_affine_state_provider import LocalAffineStateProvider, local_affine_reference_cell_contract
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -62,23 +62,19 @@ def write_graph(rows: list[dict]) -> str:
 def verify_provider_result_before_persistence(snapshot, spec) -> None:
     """Bind the provider result before any immutable-store write is attempted."""
     identity = canonical_state_identity(spec)
-    provenance = dict(snapshot.provenance)
+    provenance = snapshot.to_dict()["provenance"]
     if provenance.get("local_affine_state_identity") != identity:
         raise RuntimeError("LOCAL_AFFINE_STATE_IDENTITY_MISMATCH_BEFORE_PERSISTENCE")
     if provenance.get("local_affine_state_identity_sha256") != digest_state_identity(identity):
         raise RuntimeError("LOCAL_AFFINE_STATE_IDENTITY_DIGEST_MISMATCH_BEFORE_PERSISTENCE")
     contract = provenance.get("local_affine_reference_cell_contract")
-    required_contract = {
-        "representation": identity["h_representation"],
-        "bloch_phase_excluded": True,
-        "resolution": identity["resolution"],
-        "component_basis": identity["component_basis"],
-        "mu_contract": identity["mu_contract"],
-        "orientation_sign": identity["orientation_sign"],
-        "fractional_material_indexing_identity": identity["fractional_material_indexing_identity"],
-        "reference_cell_identity": identity["reference_cell_identity"],
-    }
-    if not isinstance(contract, dict) or any(contract.get(key) != value for key, value in required_contract.items()):
+    lattice = getattr(spec.geometry_lattice, "size", None)
+    if lattice is None or not all(hasattr(lattice, axis) for axis in ("x", "y")):
+        raise RuntimeError("LOCAL_AFFINE_LATTICE_SIZE_MISSING_BEFORE_PERSISTENCE")
+    expected_contract = local_affine_reference_cell_contract(
+        spec, spatial_shape=tuple(snapshot.spatial_shape), identity=identity,
+        lattice_size=(float(lattice.x), float(lattice.y)))
+    if not isinstance(contract, dict) or contract != expected_contract:
         raise RuntimeError("LOCAL_AFFINE_REFERENCE_CELL_CONTRACT_MISMATCH_BEFORE_PERSISTENCE")
     reciprocal = provenance.get("mpb_k_point")
     if not isinstance(reciprocal, (list, tuple)) or len(reciprocal) != 3:
