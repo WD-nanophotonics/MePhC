@@ -503,6 +503,7 @@ def science_preflight(paths: Paths) -> dict[str, Any]:
                     "work_order_id": order["work_order_id"], "contract_sha256": contract["contract_sha256"],
                     "base_source_commit": contract["source_commit"], "source_commit": source["head"],
                     "entrypoint": entrypoint, "allowed_writes": contract["allowed_writes"],
+                    "authorization": science_authorization(paths, order, contract),
                     "job_created": False,
                 }
             raise FlowError("WORK_ORDER_ENTRYPOINT_NOT_TRACKED")

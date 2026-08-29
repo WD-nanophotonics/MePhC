@@ -162,6 +162,8 @@ def test_control_plane_patch_preserves_ready_to_edit_for_missing_entrypoint(
     assert result["ready_to_run"] is False
     assert result["ready_to_edit"] is True
     assert result["safe_next"] == "edit_scoped_files"
+    assert result["authorization"]["native_authorized"] is False
+    assert result["authorization"]["historical_work_order_constraints_inherited"] is False
 
 
 def test_dataset_manifest_mismatch_still_fails_preflight(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
