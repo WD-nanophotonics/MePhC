@@ -1,0 +1,23 @@
+{
+  "collision_group_count": 0,
+  "logical_state_count": 13,
+  "schema": "mephc-local-affine-p2r1-frozen-13-state-request-graph-v1",
+  "state_count": 13,
+  "states": [
+    {"public_q": [0.0, -0.6166666666666667], "role": "CENTER", "s": 0.0, "state_id": "STATE_01"},
+    {"public_q": [0.001, -0.6166666666666667], "role": "PRIMARY_PLUS_QX", "s": 0.0, "state_id": "STATE_02"},
+    {"public_q": [-0.001, -0.6166666666666667], "role": "PRIMARY_MINUS_QX", "s": 0.0, "state_id": "STATE_03"},
+    {"public_q": [0.0, -0.6156666666666667], "role": "PRIMARY_PLUS_QY", "s": 0.0, "state_id": "STATE_04"},
+    {"public_q": [0.0, -0.6176666666666667], "role": "PRIMARY_MINUS_QY", "s": 0.0, "state_id": "STATE_05"},
+    {"public_q": [0.0, -0.6166666666666667], "role": "PRIMARY_PLUS_S", "s": 0.02, "state_id": "STATE_06"},
+    {"public_q": [0.0, -0.6166666666666667], "role": "PRIMARY_MINUS_S", "s": -0.02, "state_id": "STATE_07"},
+    {"public_q": [0.0005, -0.6166666666666667], "role": "REFINED_PLUS_QX", "s": 0.0, "state_id": "STATE_08"},
+    {"public_q": [-0.0005, -0.6166666666666667], "role": "REFINED_MINUS_QX", "s": 0.0, "state_id": "STATE_09"},
+    {"public_q": [0.0, -0.6161666666666667], "role": "REFINED_PLUS_QY", "s": 0.0, "state_id": "STATE_10"},
+    {"public_q": [0.0, -0.6171666666666667], "role": "REFINED_MINUS_QY", "s": 0.0, "state_id": "STATE_11"},
+    {"public_q": [0.0, -0.6166666666666667], "role": "REFINED_PLUS_S", "s": 0.01, "state_id": "STATE_12"},
+    {"public_q": [0.0, -0.6166666666666667], "role": "REFINED_MINUS_S", "s": -0.01, "state_id": "STATE_13"}
+  ],
+  "unique_state_count": 13,
+  "work_order_id": "MEPHC-LOCALAFFINE-P2R1-FROZEN-13-STATE-LIVE-ACQUISITION-20260829-362"
+}
