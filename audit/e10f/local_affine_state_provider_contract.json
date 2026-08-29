@@ -1,14 +1,43 @@
 {
-  "schema": "mephc-e10f-local-affine-state-provider-contract-v1",
-  "model_id": "E8B_TWO_INCLUSION_AREA_PRESERVING_AFFINE_V1",
-  "reference_cell_id": "E8B_TWO_INCLUSION_REFERENCE_FRACTIONAL_CELL_V1",
+  "schema": "mephc-local-affine-state-provider-contract-v2",
+  "boundary": "generic local-affine state provider; model-specific geometry is supplied by an adapter",
+  "canonical_identity_fields": [
+    "model_id", "reference_cell_id", "public_q", "s", "F_s", "A_s", "derived_kappa",
+    "geometry_digest", "resolution", "num_bands", "polarization", "eigensolver_tolerance",
+    "mesh_size", "deterministic", "h_representation", "bloch_phase_excluded", "component_basis",
+    "mu_contract", "orientation_sign", "fractional_material_indexing_identity",
+    "reference_cell_identity", "bloch_phase_convention"
+  ],
   "public_input": "physical normalized q; provider computes kappa=A(s)^T q",
-  "solver_configuration": {"resolution": 64, "num_bands": 6, "polarization": "TM", "eigensolver_tolerance": 1e-7, "mesh_size": 3, "deterministic": true, "phase_callback": null},
-  "h_representation": "mpb_periodic_h_l2_v1",
-  "bloch_phase_excluded": true,
-  "component_basis": "LAB_CARTESIAN",
-  "mu_contract": "MU1_NONMAGNETIC",
-  "orientation_sign": 1,
+  "canonical_reciprocal_path": "snapshot.provenance[mpb_k_point]",
+  "optional_caller_detail_reciprocal_path": "snapshot.provenance[caller_provenance][mpb_reciprocal_k_point]",
+  "reference_cell_compatibility_contract": {
+    "representation": "mpb_periodic_h_l2_v1",
+    "bloch_phase_excluded": true,
+    "component_order": "supplied final axis order",
+    "component_basis": "LAB_CARTESIAN",
+    "mu_contract": "MU1_NONMAGNETIC",
+    "orientation_sign": 1,
+    "fractional_material_indexing_identity": "SAME_FRACTIONAL_IX_IY_MATERIAL_COORDINATES",
+    "reference_cell_identity": "must equal reference_cell_id"
+  },
+  "solver_configuration": {
+    "resolution": 64,
+    "num_bands": 6,
+    "polarization": "TM",
+    "eigensolver_tolerance": 1e-7,
+    "mesh_size": 3,
+    "deterministic": true,
+    "phase_callback": null
+  },
+  "acquisition_pre_persistence_verification": {
+    "identity": "local_affine_state_identity",
+    "identity_digest": "local_affine_state_identity_sha256",
+    "reference_cell_contract": "local_affine_reference_cell_contract",
+    "reciprocal_metadata": "canonical top-level mpb_k_point",
+    "guard_location": "before store.put"
+  },
+  "live_certification": "pending; this contract work order performs no live provider request or solver execution",
   "no_reduction": true,
   "no_cache": true,
   "no_retry": true

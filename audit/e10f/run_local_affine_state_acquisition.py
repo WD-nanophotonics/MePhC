@@ -59,6 +59,34 @@ def write_graph(rows: list[dict]) -> str:
     return hashlib.sha256(GRAPH.read_bytes()).hexdigest()
 
 
+def verify_provider_result_before_persistence(snapshot, spec) -> None:
+    """Bind the provider result before any immutable-store write is attempted."""
+    identity = canonical_state_identity(spec)
+    provenance = dict(snapshot.provenance)
+    if provenance.get("local_affine_state_identity") != identity:
+        raise RuntimeError("LOCAL_AFFINE_STATE_IDENTITY_MISMATCH_BEFORE_PERSISTENCE")
+    if provenance.get("local_affine_state_identity_sha256") != digest_state_identity(identity):
+        raise RuntimeError("LOCAL_AFFINE_STATE_IDENTITY_DIGEST_MISMATCH_BEFORE_PERSISTENCE")
+    contract = provenance.get("local_affine_reference_cell_contract")
+    required_contract = {
+        "representation": identity["h_representation"],
+        "bloch_phase_excluded": True,
+        "resolution": identity["resolution"],
+        "component_basis": identity["component_basis"],
+        "mu_contract": identity["mu_contract"],
+        "orientation_sign": identity["orientation_sign"],
+        "fractional_material_indexing_identity": identity["fractional_material_indexing_identity"],
+        "reference_cell_identity": identity["reference_cell_identity"],
+    }
+    if not isinstance(contract, dict) or any(contract.get(key) != value for key, value in required_contract.items()):
+        raise RuntimeError("LOCAL_AFFINE_REFERENCE_CELL_CONTRACT_MISMATCH_BEFORE_PERSISTENCE")
+    reciprocal = provenance.get("mpb_k_point")
+    if not isinstance(reciprocal, (list, tuple)) or len(reciprocal) != 3:
+        raise RuntimeError("CANONICAL_RECIPROCAL_METADATA_MISSING_BEFORE_PERSISTENCE")
+    if not np.allclose(np.asarray(reciprocal[:2], dtype=float), np.asarray(identity["derived_kappa"]), rtol=0.0, atol=1e-9) or float(reciprocal[2]) != 0.0:
+        raise RuntimeError("CANONICAL_RECIPROCAL_METADATA_MISMATCH_BEFORE_PERSISTENCE")
+
+
 def main() -> int:
     if not geometry_anchor_status():
         raise RuntimeError("E10F_LOCAL_AFFINE_GEOMETRY_BINDING_FAIL_CLOSED")
@@ -88,6 +116,7 @@ def main() -> int:
     for state_id, role, q, strain in STATES:
         spec = make_state(q, strain)
         snapshot = provider.solve(spec)
+        verify_provider_result_before_persistence(snapshot, spec)
         frequencies = np.asarray(snapshot.frequencies, dtype=float)
         if frequencies.size != 6 or not np.all(np.isfinite(frequencies)) or not np.all(frequencies > 0.0):
             raise RuntimeError("PERIODIC_H_SNAPSHOT_INVALID")

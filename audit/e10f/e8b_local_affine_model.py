@@ -9,6 +9,10 @@ from typing import Any
 import numpy as np
 
 from audit.e8b.e8b_geometry import solver_geometry, state
+from mephc.local_affine_state_provider import (
+    canonical_local_affine_state_identity,
+    digest_local_affine_state_identity,
+)
 
 
 MODEL_ID = "E8B_TWO_INCLUSION_AREA_PRESERVING_AFFINE_V1"
@@ -37,6 +41,25 @@ class AffineGeometryState:
     geometry: tuple[Any, ...]
     geometry_lattice: Any
 
+    resolution: int = 64
+    num_bands: int = 6
+    polarization: str = "TM"
+    eigensolver_tolerance: float = 1e-7
+    mesh_size: int = 3
+    deterministic: bool = True
+    h_representation: str = "mpb_periodic_h_l2_v1"
+    bloch_phase_excluded: bool = True
+    component_basis: str = "LAB_CARTESIAN"
+    mu_contract: str = "MU1_NONMAGNETIC"
+    orientation_sign: int = 1
+    fractional_material_indexing_identity: str = "SAME_FRACTIONAL_IX_IY_MATERIAL_COORDINATES"
+    reference_cell_identity: str = REFERENCE_CELL_ID
+    bloch_phase_convention: str = "EXCLUDED_PERIODIC_H_ENVELOPE"
+
+    @property
+    def public_q(self) -> tuple[float, float]:
+        return self.q
+
 
 def make_state(q: tuple[float, float], s: float) -> AffineGeometryState:
     raw = state(float(s))
@@ -55,20 +78,8 @@ def make_state(q: tuple[float, float], s: float) -> AffineGeometryState:
 
 
 def canonical_state_identity(spec: AffineGeometryState, *, resolution: int = 64) -> dict[str, Any]:
-    return {
-        "model_id": spec.model_id, "reference_cell_id": spec.reference_cell_id,
-        "public_q": list(spec.q), "s": spec.s, "F_s": [list(row) for row in spec.F_s],
-        "A_s": [list(row) for row in spec.A_s], "derived_kappa": list(spec.derived_kappa),
-        "geometry_digest": spec.geometry_digest, "resolution": resolution,
-        "num_bands": 6, "polarization": "TM", "eigensolver_tolerance": 1e-7,
-        "mesh_size": 3, "deterministic": True, "h_representation": "mpb_periodic_h_l2_v1",
-        "bloch_phase_excluded": True, "component_basis": "LAB_CARTESIAN",
-        "mu_contract": "MU1_NONMAGNETIC", "orientation_sign": 1,
-        "fractional_material_indexing_identity": "SAME_FRACTIONAL_IX_IY_MATERIAL_COORDINATES",
-        "reference_cell_identity": spec.reference_cell_id,
-        "bloch_phase_convention": "EXCLUDED_PERIODIC_H_ENVELOPE",
-    }
+    return canonical_local_affine_state_identity(spec, resolution=resolution)
 
 
 def digest_state_identity(identity: dict[str, Any]) -> str:
-    return hashlib.sha256(json.dumps(identity, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    return digest_local_affine_state_identity(identity)
