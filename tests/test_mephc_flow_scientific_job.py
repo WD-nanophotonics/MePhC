@@ -137,6 +137,33 @@ def test_science_preflight_conditionally_verifies_dataset(tmp_path: Path, monkey
     assert calls == ["dataset"]
 
 
+def test_control_plane_patch_preserves_ready_to_edit_for_missing_entrypoint(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    scope = _preflight_scope(tmp_path)
+    value = scientific_job.validate_contract(contract())
+    monkeypatch.setattr(flow, "active_machine_contract", lambda _paths: ({
+        "work_order_id": value["work_order_id"], "response_sha256": "f" * 64,
+    }, value))
+    monkeypatch.setattr(flow, "require_source", lambda *_args, **_kwargs: {
+        "head": "e" * 40, "origin_sandbox": "e" * 40, "origin_main": flow.EXPECTED_MAIN,
+        "branch": "sandbox", "dirty": False,
+    })
+    monkeypatch.setattr(flow, "ensure_checkout", lambda *_args: "/home/icy/checkout")
+
+    def fake_git(_paths, *args, **_kwargs):
+        if args[:2] == ("diff", "--name-only"):
+            return subprocess.CompletedProcess(args, 0, "tools/mephc-flow/mephc_flow.py\ntests/test_mephc_flow.py\n", "")
+        return subprocess.CompletedProcess(args, 0, "", "")
+
+    monkeypatch.setattr(flow, "git", fake_git)
+    monkeypatch.setattr(flow, "wsl", lambda *_args, **_kwargs: subprocess.CompletedProcess([], 1, "", ""))
+    result = flow.science_preflight(scope)
+    assert result["ready_to_run"] is False
+    assert result["ready_to_edit"] is True
+    assert result["safe_next"] == "edit_scoped_files"
+
+
 def test_dataset_manifest_mismatch_still_fails_preflight(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     scope = _preflight_scope(tmp_path)
     value = scientific_job.validate_contract(contract(dataset=True, manifest=True))

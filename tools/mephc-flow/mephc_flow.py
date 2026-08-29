@@ -474,6 +474,11 @@ def science_selftest(paths: Paths, *, mpb_smoke: bool) -> dict[str, Any]:
 def science_preflight(paths: Paths) -> dict[str, Any]:
     order, contract = active_machine_contract(paths)
     source = require_source(paths, published=True)
+    control_plane_changes = {
+        "AGENTS.md", "tools/mephc-flow/mephc_flow.py", "tests/test_mephc_flow.py",
+        "tests/test_mephc_flow_scientific_job.py",
+    }
+    changed_since_contract: set[str] = set()
     if contract["source_commit"] != source["head"]:
         ancestor = git(paths, "merge-base", "--is-ancestor", contract["source_commit"], source["head"], check=False)
         if ancestor.returncode:
@@ -481,9 +486,6 @@ def science_preflight(paths: Paths) -> dict[str, Any]:
         changed_since_contract = {
             line for line in git(paths, "diff", "--name-only", f"{contract['source_commit']}..{source['head']}").stdout.splitlines()
             if line
-        }
-        control_plane_changes = {
-            "AGENTS.md", "tools/mephc-flow/mephc_flow.py", "tests/test_mephc_flow.py",
         }
         permitted_changes = set(contract["allowed_writes"]) | control_plane_changes
         if not changed_since_contract.issubset(permitted_changes):
@@ -493,7 +495,8 @@ def science_preflight(paths: Paths) -> dict[str, Any]:
     if entrypoint is not None:
         tracked = wsl(["/usr/bin/git", "-C", checkout, "ls-files", "--error-unmatch", entrypoint], check=False)
         if tracked.returncode:
-            if source["head"] == contract["source_commit"] and entrypoint in contract["allowed_writes"]:
+            if (entrypoint in contract["allowed_writes"]
+                    and changed_since_contract.issubset(control_plane_changes)):
                 return {
                     "schema": "mephc-science-preflight-v1", "ready_to_run": False,
                     "ready_to_edit": True, "safe_next": "edit_scoped_files",
