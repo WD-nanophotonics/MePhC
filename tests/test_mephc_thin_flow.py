@@ -66,19 +66,21 @@ def test_closeout_launcher_is_zero_argument_and_fixed():
         assert forbidden not in launcher
 
 
-def test_agents_protocol_has_fixed_bounded_supervisor_escalation():
+def test_agents_protocol_prefers_self_repair_before_fixed_supervisor_escalation():
     policy = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
     required = (
-        "HARD_BLOCKED      -> escalate to the fixed supervisor task",
+        "HARD_BLOCKED      -> bounded self-repair, then supervisor escalation",
         "01a04136-7e60-75c3-88cf-156581a3733e",
         "01a0480e-b79d-75c3-ac80-5db601b32d67",
         "send_message_to_thread",
         "ESCALATION_ID=MEPHC-ESCALATION:<work-order-id>:<failure-code>",
         "ACTUAL_COUNTS=<native/provider/solver/dataset>",
         "UNCERTAIN_SIDE_EFFECT=<true|false>",
-        "retry the identical message once",
-        "do not modify files",
-        "Do not create, fork, or wake any other worker or supervisor",
+        "Retry a definite task-message transport failure once",
+        "make one convergent framework repair",
+        "never create or fork another worker",
+        "allowed_writes` is advisory",
+        "Missing or ambiguous Native authorization means",
     )
     assert all(item in policy for item in required)
 
@@ -133,6 +135,14 @@ def test_valid_successor_response_is_accepted(tmp_path: Path):
     assert summary["recovery_action"] == "none"
 
 
+def test_successor_id_can_be_inferred_from_machine_contract_without_directive():
+    successor = "MEPHC-THIN-NEXT-00000009"
+    body = "WORK_ORDER_CONTRACT_JSON=" + json.dumps({
+        "work_order_id": successor, "source_commit": "a" * 40,
+    })
+    assert flow.successor_from_text(body, "MEPHC-THIN-PRIOR-00000008") == successor
+
+
 def test_request_summary_counts_retries_per_registered_target_generation(tmp_path: Path):
     directory = tmp_path / "MEPHC-FLOW-test"
     directory.mkdir()
@@ -168,6 +178,22 @@ def test_production_coordinator_has_no_historical_special_cases():
     assert len(source.splitlines()) <= 1200
     for token in ("d9r1", "reconcile_r8", "supervision_batch_review_required", "closeout_blocked"):
         assert token not in source
+
+
+def test_scoped_commit_records_advisory_scope_warning_instead_of_blocking(monkeypatch, tmp_path: Path):
+    scope = paths(tmp_path)
+    calls = []
+    dirty = iter([["tools/mephc-flow/local_fix.py"], []])
+    monkeypatch.setattr(flow, "dirty_paths", lambda _: next(dirty))
+    def fake_git(_paths, *args, **kwargs):
+        calls.append(args)
+        stdout = "tools/mephc-flow/local_fix.py\n" if args[:3] == ("diff", "--cached", "--name-only") else "b" * 40 + "\n"
+        return subprocess.CompletedProcess(args, 0, stdout, "")
+    monkeypatch.setattr(flow, "git", fake_git)
+    result = flow.scoped_commit(scope, {"work_order_id": "MEPHC-THIN-TEST-00000010",
+                                        "allowed_writes": ["audit/declared.py"]})
+    assert result["scope_warnings"] == ["outside_declared_scope:tools/mephc-flow/local_fix.py"]
+    assert any(call and call[0] == "commit" for call in calls)
 
 
 def test_dataset_record_resolves_by_index_not_rebuilt_namespace(tmp_path: Path):

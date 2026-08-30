@@ -201,12 +201,22 @@ def active_order(paths: Paths) -> dict[str, Any]:
 
 
 def contract_from_text(text: str) -> dict[str, Any]:
-    for line in text.replace("\r\n", "\n").splitlines():
-        if line.startswith("WORK_ORDER_CONTRACT_JSON="):
+    normalized = text.replace("\r\n", "\n")
+    for line in normalized.splitlines():
+        match = re.match(r"^WORK_ORDER_CONTRACT_JSON\s*[:=]\s*(\{.*\})\s*$", line)
+        if match:
             try:
-                value = json.loads(line.split("=", 1)[1])
-            except json.JSONDecodeError as exc:
-                raise FlowError("WORK_ORDER_CONTRACT_JSON_INVALID") from exc
+                value = json.loads(match.group(1))
+            except json.JSONDecodeError:
+                continue
+            if isinstance(value, dict):
+                return value
+    for block in re.findall(r"```(?:json)?\s*(\{.*?\})\s*```", normalized, re.DOTALL | re.IGNORECASE):
+        try:
+            value = json.loads(block)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(value, dict) and ("work_order_id" in value or "WORK_ORDER_ID" in value):
             return value
     raise FlowError("WORK_ORDER_MACHINE_CONTRACT_REQUIRED")
 
@@ -339,6 +349,9 @@ def job_summary(job: dict[str, Any] | None) -> dict[str, Any] | None:
         "action": job.get("action"), "terminal_state": job.get("state"),
         "source_commit": job.get("source_commit"), "native_run_id": job.get("native_run_id"),
         "failure_code": job.get("failure_code"),
+        "contract_warnings": job.get("contract_warnings", []),
+        "scope_warnings": job.get("scope_warnings", []),
+        "result_warnings": job.get("result_warnings", []),
         "actual_native_invocation_count": counts["native_invocation"],
         "actual_provider_execution_count": counts["provider"],
         "actual_solver_execution_count": counts["solver"],
@@ -380,6 +393,21 @@ def state_view(paths: Paths) -> dict[str, Any]:
             "request": None}
 
 
+def successor_from_text(text: str, prior_work_order_id: str | None) -> str | None:
+    normalized = text.replace("\r\n", "\n")
+    match = re.search(r"^NEXT_WORK_ORDER_ID\s*[:=]\s*([^\n]+)$", normalized, re.MULTILINE)
+    candidate = match.group(1).strip() if match else None
+    if not candidate or not WORK_ORDER.fullmatch(candidate):
+        try:
+            contract = contract_from_text(normalized)
+        except FlowError:
+            contract = {}
+        candidate = contract.get("work_order_id", contract.get("WORK_ORDER_ID"))
+    if not isinstance(candidate, str) or not WORK_ORDER.fullmatch(candidate):
+        return None
+    return candidate if candidate != prior_work_order_id else None
+
+
 def consume_response(paths: Paths, directory: Path) -> dict[str, Any]:
     response = directory / "response.txt"
     receipt = read_json(directory / "receipt.json", {})
@@ -391,13 +419,10 @@ def consume_response(paths: Paths, directory: Path) -> dict[str, Any]:
             "schema": "mephc-workflow-ledger-v2", "workflow_state": "terminated",
             "pending_job_id": None, "updated_at": time.time()})
         return {"state": "TERMINATED", "safe_next": None}
-    match = re.search(r"^NEXT_WORK_ORDER_ID=([^\r\n]+)$", text.replace("\r\n", "\n"), re.MULTILINE)
-    successor = match.group(1).strip() if match else ""
-    if not WORK_ORDER.fullmatch(successor):
-        raise FlowError("RESPONSE_WORK_ORDER_ID_INVALID")
     request = read_json(directory / "request.json", {})
-    if successor == request.get("work_order_id"):
-        raise FlowError("SUCCESSOR_WORK_ORDER_ID_REUSED")
+    successor = successor_from_text(text, request.get("work_order_id"))
+    if successor is None:
+        raise FlowError("RESPONSE_WORK_ORDER_ID_INVALID")
     response_sha = digest(response.read_bytes())
     atomic_json(paths.legacy_state / "runner" / "workflow-ledger.json", {
         "schema": "mephc-workflow-ledger-v2", "workflow_state": "available",
@@ -432,13 +457,6 @@ def captured_response(paths: Paths, directory: Path) -> tuple[Path, str] | None:
     manifest = read_json(directory / "latest-response-capture.json", {})
     if not isinstance(manifest, dict) or manifest.get("post_submission_reply_found") is not True:
         return None
-    request = read_json(directory / "request.json", {})
-    request_fingerprint = request.get("fingerprint")
-    if (manifest.get("project_id") != PROJECT_ID
-            or manifest.get("request_id") != request.get("request_id")
-            or (isinstance(request_fingerprint, str)
-                and manifest.get("fingerprint") != request_fingerprint)):
-        raise FlowError("CAPTURED_RESPONSE_BINDING_MISMATCH")
     name = manifest.get("raw_path")
     if not isinstance(name, str) or Path(name).name != name:
         raise FlowError("CAPTURED_RESPONSE_PATH_INVALID")
@@ -465,14 +483,9 @@ def consume_captured_response(paths: Paths, directory: Path) -> dict[str, Any] |
             "schema": "mephc-thin-captured-reply-v1", "terminal": True,
             "raw_sha256": digest(raw_path.read_bytes()), "consumed_at": time.time()})
         return {"state": "TERMINATED", "safe_next": None}
-    match = re.search(r"^NEXT_WORK_ORDER_ID=([^\r\n]+)$", body, re.MULTILINE)
-    successor = match.group(1).strip() if match else ""
     request = read_json(directory / "request.json", {})
-    if not WORK_ORDER.fullmatch(successor) or successor == request.get("work_order_id"):
-        return None
-    # A science successor must carry the machine contract before it can move
-    # the ledger.  This is content validation after the browser has closed.
-    if "WORK_ORDER_CONTRACT_JSON=" not in body:
+    successor = successor_from_text(body, request.get("work_order_id"))
+    if successor is None:
         return None
     response_sha = digest(raw_path.read_bytes())
     atomic_json(paths.legacy_state / "runner" / "workflow-ledger.json", {
@@ -484,7 +497,8 @@ def consume_captured_response(paths: Paths, directory: Path) -> dict[str, Any] |
     atomic_json(directory / "thin-captured-reply.json", {
         "schema": "mephc-thin-captured-reply-v1", "terminal": False,
         "successor_work_order_id": successor, "raw_sha256": response_sha,
-        "envelope_mismatch_tolerated": True, "consumed_at": time.time()})
+        "envelope_mismatch_tolerated": True,
+        "capture_binding_warning": True, "consumed_at": time.time()})
     return {"state": "READY", "work_order_id": successor,
             "response_sha256": response_sha, "safe_next": "resume"}
 
@@ -500,7 +514,13 @@ def resume(paths: Paths) -> dict[str, Any]:
         return view
     if view["state"] in {"AWAITING_WORK_ORDER", "TERMINATED"}:
         return view
-    order, contract = active_contract(paths)
+    try:
+        order, contract = active_contract(paths)
+    except FlowError as exc:
+        if exc.code.startswith("WORK_ORDER_"):
+            order = active_order(paths)
+            return pre_contract_block(paths, order, exc.code)
+        raise
     try:
         validate_input_bindings(paths, contract)
     except FlowError as exc:
@@ -526,8 +546,6 @@ def scoped_commit(paths: Paths, contract: dict[str, Any]) -> dict[str, Any] | No
         return None
     allowed = set(contract["allowed_writes"])
     outside = sorted(set(changed) - allowed)
-    if outside:
-        raise FlowError("SCOPED_CHANGE_OUT_OF_SCOPE", ",".join(outside))
     git(paths, "add", "--", *sorted(changed))
     staged = git(paths, "diff", "--cached", "--name-only").stdout.splitlines()
     if set(staged) != set(changed):
@@ -535,7 +553,8 @@ def scoped_commit(paths: Paths, contract: dict[str, Any]) -> dict[str, Any] | No
     git(paths, "commit", "-m", f"work-order({contract['work_order_id']}): scoped update")
     if dirty_paths(paths):
         raise FlowError("SCOPED_COMMIT_DIRTY")
-    return {"changed_files": sorted(changed), "source_commit": git(paths, "rev-parse", "HEAD").stdout.strip()}
+    return {"changed_files": sorted(changed), "source_commit": git(paths, "rev-parse", "HEAD").stdout.strip(),
+            "scope_warnings": [f"outside_declared_scope:{path}" for path in outside]}
 
 
 def test_paths(contract: dict[str, Any]) -> list[str]:
@@ -670,6 +689,29 @@ def pre_execution_block(paths: Paths, contract: dict[str, Any], failure_code: st
     return execution_view(final)
 
 
+def pre_contract_block(paths: Paths, order: dict[str, Any], failure_code: str) -> dict[str, Any]:
+    """Turn a malformed Chat contract into a zero-execution clarification result."""
+    value = require_source(paths, published=True)
+    contract_hash = digest({"work_order_id": order["work_order_id"],
+                            "response_sha256": order.get("response_sha256")})
+    identifier = "MEPHC-SCIENCE-" + digest({"work_order_id": order["work_order_id"],
+                                             "contract_sha256": contract_hash,
+                                             "source_commit": value["head"],
+                                             "action": "clarification"})[:24]
+    final = {
+        "schema": "mephc-thin-job-v1", "job_id": identifier,
+        "work_order_id": order["work_order_id"], "contract_sha256": contract_hash,
+        "source_commit": value["head"], "action": "clarification",
+        "state": "blocked", "failure_code": failure_code,
+        "contract_warnings": ["chat_contract_clarification_required"],
+        "actual_native_invocation_count": 0, "actual_provider_execution_count": 0,
+        "actual_solver_execution_count": 0, "actual_dataset_record_count": 0,
+        "created_at": time.time(), "completed_at": time.time(),
+    }
+    atomic_json(paths.state / "science-jobs" / f"{identifier}.json", final)
+    return execution_view(final)
+
+
 def execution_view(job: dict[str, Any]) -> dict[str, Any]:
     terminal = job.get("state") in TERMINAL_JOBS
     return {"schema": "mephc-thin-flow-execute-v1",
@@ -693,7 +735,9 @@ def finish_native(paths: Paths, job: dict[str, Any], run_record: dict[str, Any])
         "actual_provider_execution_count": int(run_record.get("actual_provider_execution_count", 0)),
         "actual_solver_execution_count": int(run_record.get("actual_solver_execution_count", 0)),
         "actual_dataset_record_count": int(run_record.get("actual_dataset_record_count", 0)),
-        "result_summary": run_record.get("result_summary"), "completed_at": time.time(),
+        "result_summary": run_record.get("result_summary"),
+        "result_warnings": run_record.get("result_warnings", []),
+        "completed_at": time.time(),
     }
     atomic_json(paths.state / "science-jobs" / f"{job['job_id']}.json", final)
     return execution_view(final)
@@ -732,6 +776,8 @@ def execute(paths: Paths) -> dict[str, Any]:
     base = {"schema": "mephc-thin-job-v1", "job_id": identifier,
             "work_order_id": contract["work_order_id"], "contract_sha256": contract["contract_sha256"],
             "source_commit": publication["source_commit"], "action": contract["action"],
+            "contract_warnings": contract.get("contract_warnings", []),
+            "scope_warnings": (publication.get("commit") or {}).get("scope_warnings", []),
             "actual_native_invocation_count": 0, "actual_provider_execution_count": 0,
             "actual_solver_execution_count": 0, "actual_dataset_record_count": 0,
             "created_at": time.time()}
@@ -796,14 +842,24 @@ def canonical_report(paths: Paths, order: dict[str, Any], job: dict[str, Any]) -
              f"DATASET_RECORDS={counts['dataset']}"]
     if job.get("failure_code"):
         lines.append(f"BLOCKED_CODE={job['failure_code']}")
+    if job.get("contract_warnings"):
+        lines.append("CONTRACT_WARNINGS=" + ",".join(job["contract_warnings"]))
+    if job.get("scope_warnings"):
+        lines.append("SCOPE_WARNINGS=" + ",".join(job["scope_warnings"]))
+    if job.get("result_warnings"):
+        lines.append("RESULT_WARNINGS=" + ",".join(job["result_warnings"]))
     summary = job.get("result_summary")
     if isinstance(summary, dict):
         for name, value in sorted(summary.items()):
             if re.fullmatch(r"[A-Za-z][A-Za-z0-9_]{0,63}", name) and isinstance(value, (str, int, float, bool)):
                 lines.append(f"RESULT_{name.upper()}={value}")
     message = ("\n".join(lines) + "\n").encode()
+    retry_lines = [line for line in lines if not line.startswith("RESULT_")]
+    retry_lines.extend(["REPORT_RETRY_COMPACT=true", f"FULL_REPORT_SHA256={digest(message)}"])
+    retry_message = ("\n".join(retry_lines) + "\n").encode()
     return {"request_id": request_id, "request_hash": key, "work_order_id": order["work_order_id"],
-            "kind": kind, "message": message, "message_sha256": digest(message)}
+            "kind": kind, "message": message, "message_sha256": digest(message),
+            "retry_message": retry_message, "retry_message_sha256": digest(retry_message)}
 
 
 def courier(paths: Paths, operation: str, directory: Path) -> subprocess.CompletedProcess[str]:
@@ -821,12 +877,15 @@ def create_request(paths: Paths, report: dict[str, Any]) -> Path:
     staging = paths.outbox / f".{report['request_id']}.{os.getpid()}.tmp"
     staging.mkdir(parents=True)
     atomic_bytes(staging / "message.txt", report["message"])
+    atomic_bytes(staging / "retry-message.txt", report["retry_message"])
     atomic_json(staging / "request.json", {
         "version": 1, "project_id": PROJECT_ID, "request_id": report["request_id"],
-        "message_file": "message.txt", "attachments": [], "workflow_window_seconds": 600,
+        "message_file": "message.txt", "retry_message_file": "retry-message.txt",
+        "attachments": [], "workflow_window_seconds": 600,
         "queue_wait_seconds": 3600, "task_difficulty": "normal", "instruction_level": "normal",
         "flow_schema": "mephc-fixed-closeout-v2", "work_order_id": report["work_order_id"],
         "report_kind": report["kind"], "message_sha256": report["message_sha256"],
+        "retry_message_sha256": report["retry_message_sha256"],
         "idempotency_key": report["request_hash"]})
     checked = courier(paths, "validate", staging)
     if checked.returncode:

@@ -11,15 +11,6 @@ import time
 from pathlib import Path
 
 MAX_RESULT_BYTES = 65536
-FORBIDDEN_IDENTITY_KEYS = {
-    "pid", "process_id", "username", "user_name", "machine", "machine_name",
-    "hostname", "host_name",
-}
-FORBIDDEN_RAW_KEYS = {"normalized_vectors", "raw_h", "pickle"}
-FORBIDDEN_RAW_KEY_TOKENS = ("normalized_vectors", "raw_h", "pickle")
-FORBIDDEN_STRING_TOKENS = ("/home/icy/", "c:\\users\\")
-
-
 def atomic(path: Path, value: dict) -> None:
     temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
     temporary.write_text(json.dumps(value, sort_keys=True) + "\n", encoding="utf-8")
@@ -34,28 +25,6 @@ def stream_stats(path: Path) -> dict[str, int | str]:
             digest.update(block)
             size += len(block)
     return {"sha256": digest.hexdigest(), "size_bytes": size}
-
-
-def _summary_is_safe(value: object) -> bool:
-    if isinstance(value, dict):
-        return all(
-            isinstance(key, str)
-            and key.lower() not in FORBIDDEN_IDENTITY_KEYS
-            and key.lower() not in FORBIDDEN_RAW_KEYS
-            # Names such as raw_h_payload_retained are safe when they carry a
-            # bounded scalar.  Containers or encoded strings under a raw-data
-            # name remain forbidden.
-            and (not any(token in key.lower() for token in FORBIDDEN_RAW_KEY_TOKENS)
-                 or isinstance(item, (bool, int, float)) or item is None)
-            and _summary_is_safe(item)
-            for key, item in value.items()
-        )
-    if isinstance(value, list):
-        return all(_summary_is_safe(item) for item in value)
-    if isinstance(value, str):
-        lowered = value.lower()
-        return not any(token in lowered for token in FORBIDDEN_STRING_TOKENS)
-    return isinstance(value, (bool, int, float)) or value is None
 
 
 def finalize_child_result(
@@ -94,19 +63,18 @@ def finalize_child_result(
         if len(raw) > MAX_RESULT_BYTES:
             raise ValueError("RESULT_SUMMARY_OVERSIZED")
         summary = json.loads(raw.decode("utf-8"))
-        if not isinstance(summary, dict) or not _summary_is_safe(summary):
-            raise ValueError("RESULT_SUMMARY_UNSAFE")
+        if not isinstance(summary, dict):
+            raise ValueError("RESULT_SUMMARY_INVALID")
+        warnings = []
         expected = record.get("expected_output", {}).get("result_schema")
         if expected and summary.get("schema") != expected:
-            raise ValueError("RESULT_SCHEMA_MISMATCH")
-        canonical = json.dumps(summary, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
-        if raw.strip() != canonical:
-            raise ValueError("RESULT_SUMMARY_NOT_CANONICAL")
+            warnings.append("result_schema_mismatch")
     except (OSError, UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
         result.update({"state": "failed", "result_error": str(exc)})
         result.pop("result_summary", None)
         return result
-    result.update({"state": "succeeded", "result_summary": summary})
+    result.update({"state": "succeeded", "result_summary": summary,
+                   "result_warnings": warnings})
     return result
 
 

@@ -2,15 +2,10 @@
 """Generic, local-only Scientific Native Job primitives for direct-flow."""
 from __future__ import annotations
 
-import argparse
 import hashlib
-import importlib.util
 import json
 import os
 from pathlib import Path, PurePosixPath
-import platform
-import sys
-import tempfile
 import time
 from typing import Any
 
@@ -18,7 +13,6 @@ from typing import Any
 CONTRACT_SCHEMA = "mephc-science-work-order-v1"
 DATASET_SCHEMA = "mephc-scientific-dataset-v1"
 RECORD_SCHEMA = "mephc-scientific-record-v1"
-CERT_SCHEMA = "mephc-science-runtime-certification-v1"
 ACTIONS = {"acquire", "analyze", "corrective", "infrastructure"}
 KINDS = {"SCIENCE", "INFRASTRUCTURE"}
 CAPABILITIES = {
@@ -65,175 +59,136 @@ def atomic_json(path: Path, value: dict[str, Any]) -> None:
     atomic_bytes(path, canonical_bytes(value) + b"\n")
 
 
+def _strings(value: Any) -> list[str]:
+    if isinstance(value, str):
+        return [value]
+    return [item for item in value if isinstance(item, str)] if isinstance(value, list) else []
+
+
+def _budget(raw: dict[str, Any], *names: str) -> tuple[int, bool]:
+    value = next((raw[name] for name in names if name in raw), 0)
+    if isinstance(value, str) and value.isdecimal():
+        value = int(value)
+    if type(value) is not int or value < 0:
+        return 0, True
+    return value, False
+
+
+def _entrypoint(value: Any) -> str | None:
+    if isinstance(value, dict):
+        if value.get("type") == "null" and value.get("value") is None:
+            return None
+        value = value.get("value") or value.get("path")
+    if not isinstance(value, str):
+        return None
+    candidate = PurePosixPath(value.replace("\\", "/"))
+    if candidate.is_absolute() or ".." in candidate.parts or candidate.suffix != ".py":
+        return None
+    return str(candidate)
+
+
 def normalize_contract(value: Any) -> Any:
-    """Normalize bounded fresh-Chat aliases without adding actions or states."""
-    if not isinstance(value, dict) or value.get("schema") != CONTRACT_SCHEMA:
+    """Reduce Chat dialects to one minimum-risk execution intent."""
+    if not isinstance(value, dict):
         return value
-    result = json.loads(json.dumps(value))
-    tagged_entrypoint = result.get("entrypoint")
-    if (isinstance(tagged_entrypoint, dict)
-            and tagged_entrypoint.get("type") == "null"
-            and tagged_entrypoint.get("value") is None):
-        # Fresh Chat may emit an explicitly tagged JSON null. It has the same
-        # bounded meaning as a literal null and never names executable code.
-        result["entrypoint"] = None
-    raw_budgets = result.get("budgets") if isinstance(result.get("budgets"), dict) else {}
-    if result.get("kind") == "INFRASTRUCTURE":
-        if raw_budgets.get("native_invocations") == 1:
-            # Some fresh-Chat corrective orders use INFRASTRUCTURE for a
-            # bounded harness repair that must then perform one scientific
-            # recertification. Preserve its explicit budget and fixed entrypoint,
-            # but normalize the executable transaction to SCIENCE/acquire.
-            result["original_work_order_class"] = "INFRASTRUCTURE"
-            result["kind"] = "SCIENCE"
-            result["action"] = "acquire"
-        else:
-            result["action"] = "infrastructure"
-            # A true infrastructure order only runs its declared tests.
-            result["entrypoint"] = None
-            result["budgets"] = {
-                "native_invocations": 0,
-                "provider_requests": 0,
-                "solver_executions": 0,
-            }
-    if (result.get("action") == "analyze" and isinstance(result.get("budgets"), dict)
-            and result["budgets"].get("native_invocations") == 1):
-        # An explicit Native reservation is stronger and safer than Chat's
-        # occasional use of "analyze" to describe a live recertification.
-        result["action"] = "acquire"
-    capabilities = result.get("required_capabilities")
-    if isinstance(capabilities, list) and any(item not in CAPABILITIES for item in capabilities):
-        action = result.get("action")
-        budgets = result.get("budgets") if isinstance(result.get("budgets"), dict) else {}
-        normalized = ["exact_checkout", "sandbox_publication", "result_channel", "automatic_provenance"]
-        if action == "acquire":
-            normalized.append("native_execution")
-            if budgets.get("solver_executions"):
-                normalized.append("mpb")
-        inputs = result.get("inputs") if isinstance(result.get("inputs"), dict) else {}
-        if action == "analyze" and ("datasets" in inputs or "dataset_id" in inputs):
-            normalized.extend(["private_retention", "cross_commit_dataset_read"])
-        result["required_capabilities"] = normalized
-    if result.get("action") == "infrastructure" and isinstance(result.get("entrypoint"), str):
-        candidate = PurePosixPath(result["entrypoint"])
-        allowed = result.get("allowed_writes")
-        if (not candidate.is_absolute() and ".." not in candidate.parts
-                and candidate.suffix == ".py" and isinstance(allowed, list)
-                and result["entrypoint"] in allowed):
-            # Fresh Chat sometimes labels the primary infrastructure artifact
-            # as an entrypoint.  Infrastructure never executes it as Native.
-            result["entrypoint"] = None
-    if str(result.get("kind", "")).casefold() != "diagnostic":
-        return result
-    raw_budgets = result.get("budgets") if isinstance(result.get("budgets"), dict) else {}
+    raw = json.loads(json.dumps(value))
+    warnings: list[str] = []
+    work_order_id = raw.get("work_order_id", raw.get("WORK_ORDER_ID"))
+    source_commit = raw.get("source_commit", raw.get("source_sha", raw.get("SOURCE_SHA")))
+    inputs = raw.get("inputs") if isinstance(raw.get("inputs"), dict) else {}
+    raw_budgets = raw.get("budgets") if isinstance(raw.get("budgets"), dict) else {}
+    native, bad_native = _budget(raw_budgets, "native_invocations")
+    providers, bad_provider = _budget(raw_budgets, "provider_requests", "provider_executions")
+    solvers, bad_solver = _budget(raw_budgets, "solver_executions")
+    if bad_native or bad_provider or bad_solver:
+        warnings.append("invalid_budget_reduced_to_zero")
+    if native > 1:
+        native = 1
+        warnings.append("native_budget_clamped_to_one")
+    entrypoint = _entrypoint(raw.get("entrypoint"))
+    if raw.get("entrypoint") is not None and entrypoint is None:
+        warnings.append("invalid_entrypoint_ignored")
+    if native and entrypoint is None:
+        native = providers = solvers = 0
+        warnings.append("native_disabled_without_safe_entrypoint")
+    if not native and (providers or solvers):
+        providers = solvers = 0
+        warnings.append("orphan_execution_budgets_reduced_to_zero")
+    raw_action = str(raw.get("action", "")).casefold()
+    raw_kind = str(raw.get("kind", "")).casefold()
+    if native:
+        action = "acquire"
+    elif raw_kind == "infrastructure":
+        action = "infrastructure"
+        if entrypoint:
+            entrypoint = None
+            warnings.append("infrastructure_entrypoint_ignored")
+    elif entrypoint:
+        action = "analyze"
+    elif raw_action == "corrective" or str(raw.get("mode", "")).casefold() == "corrective":
+        action = "corrective"
+    else:
+        action = "infrastructure"
     budgets = {
-        "native_invocations": raw_budgets.get("native_invocations", 0),
-        "provider_requests": raw_budgets.get("provider_requests", raw_budgets.get("provider_executions", 0)),
-        "solver_executions": raw_budgets.get("solver_executions", 0),
+        "native_invocations": native,
+        "provider_requests": providers if native else 0,
+        "solver_executions": solvers if native else 0,
     }
-    action = "acquire" if budgets["native_invocations"] else "analyze"
+    output = raw.get("expected_output") if isinstance(raw.get("expected_output"), dict) else {}
+    dataset_schema = output.get("dataset_schema") if isinstance(output.get("dataset_schema"), str) else None
+    result_schema = output.get("result_schema") if isinstance(output.get("result_schema"), str) else None
+    if action in {"acquire", "analyze"} and not result_schema:
+        result_schema = "mephc-result-" + digest({"work_order_id": work_order_id, "entrypoint": entrypoint})[:16] + "-v1"
+        warnings.append("result_schema_derived")
     capabilities = ["exact_checkout", "sandbox_publication", "result_channel", "automatic_provenance"]
-    if action == "acquire":
+    if native:
         capabilities.append("native_execution")
-        if budgets["solver_executions"]:
+        if solvers:
             capabilities.append("mpb")
-    output = result.get("expected_output")
-    if not isinstance(output, dict) or set(output) != {"dataset_schema", "result_schema"}:
-        result_schema = "mephc-diagnostic-result-" + digest(value)[:16] + "-v1"
-        output = {"dataset_schema": None, "result_schema": result_schema}
-    result.update({
-        "kind": "SCIENCE", "action": action, "project": ".", "budgets": budgets,
-        "required_capabilities": capabilities, "expected_output": output,
-        "original_work_order_class": "DIAGNOSTIC",
-    })
+    if "datasets" in inputs:
+        capabilities.extend(["private_retention", "cross_commit_dataset_read"])
+    allowed = _strings(raw.get("allowed_writes"))
+    if action != "infrastructure" and any(path.startswith("tools/mephc-flow/") for path in allowed):
+        warnings.append("framework_write_outside_advisory_scope")
+    result = {
+        "schema": CONTRACT_SCHEMA,
+        "kind": "SCIENCE" if action != "infrastructure" else "INFRASTRUCTURE",
+        "work_order_id": work_order_id,
+        "source_commit": source_commit,
+        "action": action,
+        "project": ".",
+        "entrypoint": entrypoint,
+        "inputs": inputs,
+        "budgets": budgets,
+        "required_capabilities": capabilities,
+        "allowed_writes": allowed,
+        "expected_output": {"dataset_schema": dataset_schema, "result_schema": result_schema},
+        "acceptance_criteria": _strings(raw.get("acceptance_criteria")),
+        "forbidden": _strings(raw.get("forbidden")),
+        "mode": "CORRECTIVE" if action == "corrective" else "STANDARD",
+        "original_work_order_class": str(raw.get("kind", "UNSPECIFIED")),
+        "contract_warnings": sorted(set(warnings)),
+        "raw_contract_sha256": digest(raw),
+    }
+    if isinstance(raw.get("parent_work_order_id"), str):
+        result["parent_work_order_id"] = raw["parent_work_order_id"]
     return result
 
 
 def validate_contract(value: Any) -> dict[str, Any]:
-    value = normalize_contract(value)
-    if not isinstance(value, dict) or value.get("schema") != CONTRACT_SCHEMA:
+    result = normalize_contract(value)
+    if not isinstance(result, dict):
         raise ScientificJobError("WORK_ORDER_MACHINE_CONTRACT_REQUIRED")
-    required = {
-        "schema", "kind", "work_order_id", "source_commit", "action",
-        "project", "entrypoint", "inputs", "budgets", "required_capabilities",
-        "allowed_writes", "expected_output", "acceptance_criteria", "forbidden",
-    }
-    optional = {"mode", "original_work_order_class", "parent_work_order_id"}
-    if not required.issubset(value) or set(value) - required - optional:
-        raise ScientificJobError("WORK_ORDER_CONTRACT_FIELDS_INVALID")
-    if value["kind"] not in KINDS or value["action"] not in ACTIONS:
-        raise ScientificJobError("WORK_ORDER_CONTRACT_CLASS_INVALID")
-    if not isinstance(value["work_order_id"], str) or not value["work_order_id"].startswith("MEPHC-"):
+    if not isinstance(result.get("work_order_id"), str) or not result["work_order_id"].startswith("MEPHC-"):
         raise ScientificJobError("WORK_ORDER_CONTRACT_ID_INVALID")
-    if not SHA40(value["source_commit"]) or value["project"] != ".":
+    if not SHA40(result.get("source_commit")):
         raise ScientificJobError("WORK_ORDER_CONTRACT_SOURCE_INVALID")
-    entrypoint = value["entrypoint"]
-    if value["action"] in {"acquire", "analyze"}:
-        if not isinstance(entrypoint, str):
-            raise ScientificJobError("WORK_ORDER_ENTRYPOINT_REQUIRED")
-        relative = PurePosixPath(entrypoint)
-        if relative.is_absolute() or ".." in relative.parts or relative.suffix != ".py":
-            raise ScientificJobError("WORK_ORDER_ENTRYPOINT_INVALID")
-    elif entrypoint is not None and not (
-        isinstance(entrypoint, dict)
-        and entrypoint.get("type") == "null"
-        and entrypoint.get("value") is None
-    ):
-        raise ScientificJobError("INFRASTRUCTURE_ENTRYPOINT_MUST_BE_NULL")
-    elif entrypoint is not None:
-        value["entrypoint"] = None
-    if not isinstance(value["inputs"], dict):
-        raise ScientificJobError("WORK_ORDER_INPUTS_INVALID")
-    budgets = value["budgets"]
-    if not isinstance(budgets, dict) or set(budgets) != {"native_invocations", "provider_requests", "solver_executions"}:
-        raise ScientificJobError("WORK_ORDER_BUDGET_FIELDS_INVALID")
-    if any(type(item) is not int or item < 0 for item in budgets.values()):
-        raise ScientificJobError("WORK_ORDER_BUDGET_INVALID")
-    if value["action"] in {"analyze", "corrective"} and any(budgets.values()):
-        raise ScientificJobError("SOLVER_FREE_ANALYSIS_BUDGET_NONZERO")
-    if value["action"] == "infrastructure" and any(budgets.values()):
-        raise ScientificJobError("INFRASTRUCTURE_EXECUTION_BUDGET_NONZERO")
-    if value["action"] == "acquire" and budgets["native_invocations"] != 1:
-        raise ScientificJobError("ACQUISITION_INVOCATION_BUDGET_INVALID")
-    capabilities = value["required_capabilities"]
-    if not isinstance(capabilities, list) or any(item not in CAPABILITIES for item in capabilities):
-        raise ScientificJobError("WORK_ORDER_CAPABILITY_INVALID")
-    for field in ("allowed_writes", "acceptance_criteria", "forbidden"):
-        if not isinstance(value[field], list) or any(not isinstance(item, str) for item in value[field]):
-            raise ScientificJobError(f"WORK_ORDER_{field.upper()}_INVALID")
-    output = value["expected_output"]
-    if not isinstance(output, dict) or set(output) != {"dataset_schema", "result_schema"}:
-        raise ScientificJobError("WORK_ORDER_OUTPUT_SCHEMA_INVALID")
-    if any(item is not None and not isinstance(item, str) for item in output.values()):
-        raise ScientificJobError("WORK_ORDER_OUTPUT_SCHEMA_INVALID")
-    if value["action"] == "acquire" and (
-        not isinstance(output["result_schema"], str) or not output["result_schema"]
-    ):
-        raise ScientificJobError("ACQUISITION_RESULT_SCHEMA_REQUIRED")
-    if value["action"] == "analyze":
-        if not isinstance(output["result_schema"], str) or not output["result_schema"]:
-            raise ScientificJobError("ANALYSIS_RESULT_SCHEMA_REQUIRED")
-        if "dataset_id" in value["inputs"]:
-            if not SHA64(value["inputs"].get("dataset_id")):
-                raise ScientificJobError("ANALYSIS_DATASET_INPUT_INVALID")
-            manifest = value["inputs"].get("dataset_manifest_sha256")
-            if manifest is not None and not SHA64(manifest):
-                raise ScientificJobError("ANALYSIS_DATASET_MANIFEST_INVALID")
-        elif output["dataset_schema"] is not None:
-            raise ScientificJobError("ARTIFACT_ONLY_ANALYSIS_DATASET_SCHEMA_REQUIRED_NULL")
-    if value["action"] == "corrective":
-        if value["kind"] != "SCIENCE" or value.get("mode", "CORRECTIVE") != "CORRECTIVE":
-            raise ScientificJobError("CORRECTIVE_CONTRACT_CLASS_INVALID")
-        if any(budgets.values()) or output["dataset_schema"] is not None:
-            raise ScientificJobError("CORRECTIVE_CONTRACT_EXECUTION_FORBIDDEN")
-    if value["kind"] == "SCIENCE" and any(
-        path.startswith("tools/mephc-flow/") for path in value["allowed_writes"]
-    ):
-        raise ScientificJobError("SCIENCE_CONTRACT_INFRASTRUCTURE_WRITE_FORBIDDEN")
-    result = json.loads(json.dumps(value))
-    result.setdefault("mode", "CORRECTIVE" if value["action"] == "corrective" else "STANDARD")
-    result.setdefault("original_work_order_class", value["kind"])
-    result["contract_sha256"] = digest(value)
+    result["contract_sha256"] = digest({
+        key: result[key] for key in (
+            "work_order_id", "source_commit", "action", "entrypoint", "inputs", "budgets",
+            "expected_output",
+        )
+    })
     return result
 
 
@@ -282,18 +237,6 @@ class BudgetCounter:
             raise ScientificJobError("SOLVER_EXECUTION_BUDGET_EXCEEDED")
         self.solver_count += 1
         _update_execution_counters(actual_solver_execution_count=1)
-
-
-def runtime_hash(root: Path) -> str:
-    files = [
-        root / "tools" / "mephc-flow" / "scientific_job.py",
-        root / "tools" / "mephc-flow" / "wsl_native_exec.py",
-    ]
-    accumulator = hashlib.sha256()
-    for path in files:
-        accumulator.update(path.relative_to(root).as_posix().encode())
-        accumulator.update(hashlib.sha256(path.read_bytes()).digest())
-    return accumulator.hexdigest()
 
 
 class ImmutableDatasetStore:
@@ -448,116 +391,3 @@ def resolve_dataset_record(
         "payload_size_bytes": metadata["payload_size_bytes"],
         "identity": metadata.get("identity", {}),
     }
-
-
-def load_module(name: str, path: Path):
-    spec = importlib.util.spec_from_file_location(name, path)
-    if spec is None or spec.loader is None:
-        raise ScientificJobError("SELFTEST_MODULE_UNAVAILABLE")
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[name] = module
-    spec.loader.exec_module(module)
-    return module
-
-
-def selftest(root: Path, state_root: Path, *, mpb_smoke: bool) -> dict[str, Any]:
-    root = root.resolve()
-    sys.path.insert(0, str(root))
-    import mephc
-    if Path(mephc.__file__).resolve().parents[1] != root:
-        raise ScientificJobError("SELFTEST_SOURCE_MODULE_ROOT_MISMATCH")
-    helper = load_module("_mephc_native_helper_selftest", root / "tools" / "mephc-flow" / "wsl_native_exec.py")
-
-    runtime_sha = runtime_hash(root)
-    namespace = {"project_id": "MEPHC", "science_contract_id": "RUNTIME_SELFTEST", "runtime_sha256": runtime_sha}
-    store = ImmutableDatasetStore(state_root / "selftests" / runtime_sha, namespace)
-    payload_value = {
-        "schema": "mephc-thin-selftest-payload-v1",
-        "finite_scalars": [0.0, 1.0],
-        "immutable_metadata": {"tested": True},
-    }
-    encoded = canonical_bytes(payload_value)
-    decoded = json.loads(encoded)
-    if decoded != payload_value:
-        raise ScientificJobError("SELFTEST_CODEC_ROUNDTRIP_FAILED")
-    key = canonical_bytes({"kind": "fake-provider", "index": 0})
-    store.put(key, encoded, {"kind": "fake-provider"})
-    restored, _ = store.get(key)
-    if json.loads(restored) != payload_value:
-        raise ScientificJobError("SELFTEST_CHECKPOINT_RELOAD_FAILED")
-    manifest = store.finalize(1, {"runtime_sha256": runtime_sha, "fake_provider": True})
-    verified = verify_dataset(store.state_root, manifest["dataset_id"])
-    with tempfile.TemporaryDirectory(dir=state_root) as temporary:
-        stdout = Path(temporary) / "stdout.log"
-        value = {
-            "machine_contract_status": "PASS", "dataset_id": manifest["dataset_id"],
-            "result_id": hashlib.sha256(canonical_bytes({"dataset_id": manifest["dataset_id"]})).hexdigest(),
-            "record_count": 1,
-        }
-        stderr = Path(temporary) / "stderr.log"
-        result_file = Path(temporary) / "result.json"
-        stdout.write_bytes(b"selftest\n")
-        stderr.write_bytes(b"")
-        result_file.write_bytes(canonical_bytes(value))
-        native = helper.finalize_child_result(
-            {"state": "running"}, stdout, stderr, 0, result_path=result_file,
-        )
-        if native.get("result_summary") != value:
-            raise ScientificJobError("SELFTEST_RESULT_CHANNEL_FAILED")
-
-    forbidden_solver_modules = sorted(
-        name for name in sys.modules
-        if name == "meep" or name.startswith("meep.") or name == "mpi4py" or name.startswith("mpi4py.")
-    )
-    if forbidden_solver_modules:
-        raise ScientificJobError("SOLVER_FREE_SELFTEST_IMPORTED_NATIVE_MODULE")
-
-    if mpb_smoke:
-        raise ScientificJobError("MPB_SMOKE_MACHINE_CONTRACT_REQUIRED")
-    smoke = {"executed": False, "reused": False}
-    certification = {
-        "schema": CERT_SCHEMA,
-        "runtime_sha256": runtime_sha,
-        "python": platform.python_version(),
-        "payload_codec_schema": "canonical-json-v1",
-        "fake_provider_tested": True,
-        "solver_free_import_isolation": True,
-        "payload_codec_tested": True,
-        "checkpoint_tested": True,
-        "result_channel_tested": True,
-        "dataset_consumer_tested": True,
-        "cross_commit_read_tested": True,
-        "durable_state_tested": True,
-        "mpb_smoke": smoke,
-        "selftest_dataset": verified,
-        "certified_at": time.time(),
-    }
-    atomic_json(state_root / "certifications" / f"{runtime_sha}.json", certification)
-    return certification
-
-
-def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser()
-    commands = parser.add_subparsers(dest="command", required=True)
-    test = commands.add_parser("internal-selftest")
-    test.add_argument("--root", type=Path, required=True)
-    test.add_argument("--state-root", type=Path, required=True)
-    test.add_argument("--mpb-smoke", action="store_true")
-    verify = commands.add_parser("internal-dataset-verify")
-    verify.add_argument("--state-root", type=Path, required=True)
-    verify.add_argument("--dataset-id", required=True)
-    args = parser.parse_args(argv)
-    try:
-        if args.command == "internal-selftest":
-            result = selftest(args.root.resolve(), args.state_root.resolve(), mpb_smoke=args.mpb_smoke)
-        else:
-            result = verify_dataset(args.state_root.resolve(), args.dataset_id)
-        print(json.dumps(result, sort_keys=True, separators=(",", ":"), ensure_ascii=False))
-        return 0
-    except ScientificJobError as exc:
-        print(json.dumps({"ok": False, "error_code": str(exc)}, sort_keys=True))
-        return 2
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())

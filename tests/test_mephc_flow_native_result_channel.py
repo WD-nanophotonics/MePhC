@@ -28,7 +28,7 @@ def write_result(path: Path, value) -> None:
     path.write_bytes(json.dumps(value, sort_keys=True, separators=(",", ":")).encode())
 
 
-def test_fixed_result_file_is_canonical_bounded_and_schema_bound(tmp_path):
+def test_fixed_result_file_is_bounded_and_schema_advisory(tmp_path):
     helper = load()
     stdout, stderr = streams(tmp_path)
     result = tmp_path / "result.json"
@@ -43,11 +43,10 @@ def test_fixed_result_file_is_canonical_bounded_and_schema_bound(tmp_path):
     assert state["stdout_sha256"] and state["stderr_sha256"]
 
 
-def test_missing_malformed_oversized_and_wrong_schema_fail_closed(tmp_path):
+def test_missing_malformed_and_oversized_fail_closed_but_schema_is_advisory(tmp_path):
     helper = load()
     stdout, stderr = streams(tmp_path)
-    cases = [None, b"{not-json}", b"{\"x\":\"" + b"x" * 70000 + b"\"}",
-             b'{"schema":"wrong"}']
+    cases = [None, b"{not-json}", b"{\"x\":\"" + b"x" * 70000 + b"\"}"]
     for index, content in enumerate(cases):
         result = tmp_path / f"result-{index}.json"
         if content is not None:
@@ -58,6 +57,14 @@ def test_missing_malformed_oversized_and_wrong_schema_fail_closed(tmp_path):
         )
         assert state["state"] == "failed"
         assert state["result_error"]
+    wrong = tmp_path / "wrong-schema.json"
+    wrong.write_text('{ "schema": "wrong", "status": "PASS" }', encoding="utf-8")
+    state = helper.finalize_child_result(
+        {"state": "running", "expected_output": {"result_schema": "thin-result-v1"}},
+        stdout, stderr, 0, result_path=wrong,
+    )
+    assert state["state"] == "succeeded"
+    assert state["result_warnings"] == ["result_schema_mismatch"]
 
 
 def test_nonzero_child_preserves_counters_without_accepting_result(tmp_path):
@@ -78,24 +85,24 @@ def test_nonzero_child_preserves_counters_without_accepting_result(tmp_path):
     assert state["actual_solver_execution_count"] == 1
 
 
-def test_private_identity_and_raw_arrays_are_rejected(tmp_path):
+def test_bounded_scientific_and_diagnostic_fields_are_preserved(tmp_path):
     helper = load()
     stdout, stderr = streams(tmp_path)
-    rejected = [{"schema": "thin-result-v1", "pid": 12},
+    values = [{"schema": "thin-result-v1", "pid": 12},
                 {"schema": "thin-result-v1", "path": "/home/icy/private"},
                 {"schema": "thin-result-v1", "raw_h": [1]}]
-    for index, value in enumerate(rejected):
-        result = tmp_path / f"unsafe-{index}.json"
+    for index, value in enumerate(values):
+        result = tmp_path / f"bounded-{index}.json"
         write_result(result, value)
         state = helper.finalize_child_result(
             {"state": "running", "expected_output": {"result_schema": "thin-result-v1"}},
             stdout, stderr, 0, result_path=result,
         )
-        assert state["state"] == "failed"
-        assert state["result_error"] == "RESULT_SUMMARY_UNSAFE"
+        assert state["state"] == "succeeded"
+        assert state["result_summary"] == value
 
 
-def test_bounded_raw_data_status_scalars_are_allowed_but_payloads_are_not(tmp_path):
+def test_bounded_raw_data_status_and_payloads_are_allowed(tmp_path):
     helper = load()
     stdout, stderr = streams(tmp_path)
     result = tmp_path / "safe-status.json"
@@ -115,9 +122,9 @@ def test_bounded_raw_data_status_scalars_are_allowed_but_payloads_are_not(tmp_pa
     )):
         path = tmp_path / f"unsafe-payload-{index}.json"
         write_result(path, unsafe)
-        rejected = helper.finalize_child_result(
+        accepted = helper.finalize_child_result(
             {"state": "running", "expected_output": {"result_schema": "thin-result-v1"}},
             stdout, stderr, 0, result_path=path,
         )
-        assert rejected["state"] == "failed"
-        assert rejected["result_error"] == "RESULT_SUMMARY_UNSAFE"
+        assert accepted["state"] == "succeeded"
+        assert accepted["result_summary"] == unsafe

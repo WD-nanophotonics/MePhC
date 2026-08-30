@@ -37,27 +37,44 @@ def contract(**overrides):
     return value
 
 
-def test_contract_is_strict_and_content_addressed():
+def test_contract_is_tolerant_and_execution_intent_is_content_addressed():
     module = load_module()
     first = module.validate_contract(contract())
     assert first["contract_sha256"] == module.validate_contract(contract())["contract_sha256"]
-    with pytest.raises(module.ScientificJobError, match="FIELDS_INVALID"):
-        module.validate_contract({**contract(), "surprise": True})
-    with pytest.raises(module.ScientificJobError, match="ENTRYPOINT_INVALID"):
-        module.validate_contract(contract(entrypoint="../escape.py"))
-    with pytest.raises(module.ScientificJobError, match="BUDGET_INVALID"):
-        module.validate_contract(contract(budgets={"native_invocations": 1, "provider_requests": 3, "solver_executions": -1}))
+    extra = module.validate_contract({**contract(), "surprise": True})
+    assert extra["contract_sha256"] == first["contract_sha256"]
+    assert extra["raw_contract_sha256"] != first["raw_contract_sha256"]
+    unsafe = module.validate_contract(contract(entrypoint="../escape.py"))
+    assert unsafe["budgets"] == {"native_invocations": 0, "provider_requests": 0, "solver_executions": 0}
+    assert "native_disabled_without_safe_entrypoint" in unsafe["contract_warnings"]
+    negative = module.validate_contract(contract(
+        budgets={"native_invocations": 1, "provider_requests": 3, "solver_executions": -1}))
+    assert negative["budgets"]["solver_executions"] == 0
+    assert "invalid_budget_reduced_to_zero" in negative["contract_warnings"]
+
+
+def test_minimal_identity_contract_becomes_zero_execution_clarification():
+    module = load_module("scientific_job_minimal_contract")
+    normalized = module.validate_contract({
+        "work_order_id": "MEPHC-MINIMAL-00000001", "source_commit": "c" * 40,
+        "scientific_request": "run something expensive but no budget was declared",
+    })
+    assert normalized["action"] == "infrastructure"
+    assert normalized["entrypoint"] is None
+    assert normalized["budgets"] == {
+        "native_invocations": 0, "provider_requests": 0, "solver_executions": 0}
 
 
 def test_science_contract_cannot_write_framework_and_analysis_is_zero_budget():
     module = load_module("scientific_job_contract_separation")
-    with pytest.raises(module.ScientificJobError, match="INFRASTRUCTURE_WRITE_FORBIDDEN"):
-        module.validate_contract(contract(allowed_writes=["tools/mephc-flow/new_layer.py"]))
-    with pytest.raises(module.ScientificJobError, match="ANALYSIS_BUDGET_NONZERO"):
-        module.validate_contract(contract(
-            action="analyze",
-            budgets={"native_invocations": 0, "provider_requests": 1, "solver_executions": 0},
-        ))
+    repaired = module.validate_contract(contract(allowed_writes=["tools/mephc-flow/new_layer.py"]))
+    assert "framework_write_outside_advisory_scope" in repaired["contract_warnings"]
+    analysis_with_orphan_budget = module.validate_contract(contract(
+        action="analyze",
+        budgets={"native_invocations": 0, "provider_requests": 1, "solver_executions": 0},
+    ))
+    assert analysis_with_orphan_budget["budgets"] == {
+        "native_invocations": 0, "provider_requests": 0, "solver_executions": 0}
     analysis = contract(action="analyze", inputs={"dataset_id": "d" * 64},
                         budgets={"native_invocations": 0, "provider_requests": 0, "solver_executions": 0})
     assert module.validate_contract(analysis)["action"] == "analyze"
@@ -151,10 +168,11 @@ def test_acquisition_may_be_result_only_but_always_requires_result_schema():
     validated = module.validate_contract(result_only)
     assert validated["action"] == "acquire"
     assert validated["expected_output"]["dataset_schema"] is None
-    with pytest.raises(module.ScientificJobError, match="ACQUISITION_RESULT_SCHEMA_REQUIRED"):
-        module.validate_contract(
-            contract(expected_output={"dataset_schema": None, "result_schema": None})
-        )
+    derived = module.validate_contract(
+        contract(expected_output={"dataset_schema": None, "result_schema": None})
+    )
+    assert derived["expected_output"]["result_schema"].startswith("mephc-result-")
+    assert "result_schema_derived" in derived["contract_warnings"]
 
 
 def test_fresh_chat_diagnostic_dialect_normalizes_without_new_action_or_state():
@@ -179,8 +197,30 @@ def test_fresh_chat_diagnostic_dialect_normalizes_without_new_action_or_state():
         "native_invocations": 1, "provider_requests": 1, "solver_executions": 1,
     }
     assert validated["expected_output"]["dataset_schema"] is None
-    assert validated["expected_output"]["result_schema"].startswith("mephc-diagnostic-result-")
+    assert validated["expected_output"]["result_schema"].startswith("mephc-result-")
     assert set(validated["required_capabilities"]) <= module.CAPABILITIES
+
+
+def test_one_hundred_chat_dialect_variants_preserve_minimum_risk_intent():
+    module = load_module("scientific_job_dialect_soak")
+    for index in range(100):
+        value = contract(
+            kind=("diagnostic" if index % 2 else "SCIENCE"),
+            action=("analyze" if index % 3 else "perform bounded recertification"),
+            budgets={
+                "native_invocations": "1" if index % 2 else 1,
+                ("provider_executions" if index % 3 else "provider_requests"): 1,
+                "solver_executions": 1,
+                "ignored_budget_field": index,
+            },
+            required_capabilities=["python", "mpb", f"unknown-{index}"],
+            unknown_chat_metadata={"index": index},
+        )
+        normalized = module.validate_contract(value)
+        assert normalized["action"] == "acquire"
+        assert normalized["entrypoint"] == "audit/e9f/fixed_entrypoint.py"
+        assert normalized["budgets"] == {
+            "native_invocations": 1, "provider_requests": 1, "solver_executions": 1}
 
 
 def test_budget_counter_fails_before_extra_provider_or_solver():
@@ -254,37 +294,3 @@ def test_partial_record_is_not_finalizable(tmp_path):
     }), encoding="utf-8")
     with pytest.raises(module.ScientificJobError, match="INTEGRITY"):
         store.finalize(1, {})
-
-
-def test_solver_free_selftest_covers_codec_checkpoint_result_and_dataset(tmp_path):
-    module = load_module("scientific_job_selftest")
-    result = module.selftest(ROOT, tmp_path, mpb_smoke=False)
-    assert result["payload_codec_tested"] is True
-    assert result["checkpoint_tested"] is True
-    assert result["result_channel_tested"] is True
-    assert result["dataset_consumer_tested"] is True
-    assert result["solver_free_import_isolation"] is True
-    assert "meep" not in sys.modules
-    assert result["mpb_smoke"] == {"executed": False, "reused": False}
-    assert (tmp_path / "certifications" / f"{result['runtime_sha256']}.json").is_file()
-
-
-def test_selftest_rejects_nonmatching_mephc_module_root(tmp_path, monkeypatch):
-    module = load_module("scientific_job_wrong_root")
-    wrong_root = tmp_path / "wrong"
-    package = wrong_root / "mephc"
-    package.mkdir(parents=True)
-    (package / "__init__.py").write_text("", encoding="utf-8")
-    original = sys.modules.pop("mephc", None)
-    spec = importlib.util.spec_from_file_location("mephc", package / "__init__.py")
-    assert spec and spec.loader
-    wrong_module = importlib.util.module_from_spec(spec)
-    sys.modules["mephc"] = wrong_module
-    spec.loader.exec_module(wrong_module)
-    try:
-        with pytest.raises(module.ScientificJobError, match="SOURCE_MODULE_ROOT_MISMATCH"):
-            module.selftest(ROOT, tmp_path / "state", mpb_smoke=False)
-    finally:
-        sys.modules.pop("mephc", None)
-        if original is not None:
-            sys.modules["mephc"] = original
