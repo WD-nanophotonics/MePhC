@@ -140,6 +140,12 @@ def _graph_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _canonical_sha256_hex(value: Any) -> str:
+    if not isinstance(value, str) or len(value) != 64 or any(char.lower() not in _HEX64 for char in value):
+        raise ValueError("P90_GRAPH_SHA256_HEX_INVALID")
+    return value.lower()
+
+
 def _expected_graph_metadata(binding: Mapping[str, Any] | None, binding_index: int | None) -> dict[str, Any]:
     if binding_index is None or not 0 <= binding_index < 19:
         return {"group": None, "sha": None, "state_id": None, "role": None}
@@ -187,7 +193,11 @@ def validate_binding_plan_graphs(plan: Mapping[str, Any]) -> None:
         _require(isinstance(binding, dict), "P86_BINDING_INVALID")
         expected = _expected_graph_metadata(binding, binding_index)
         observed = binding.get("request_graph_sha256")
-        if not isinstance(observed, str) or observed.lower() != expected["sha"]:
+        try:
+            observed_canonical = _canonical_sha256_hex(observed)
+        except ValueError:
+            observed_canonical = None
+        if observed_canonical != expected["sha"]:
             _raise_descriptor_graph_mismatch(
                 descriptor_index=None,
                 binding_index=binding_index,
@@ -260,7 +270,13 @@ def validate_runtime_contract(bundle: dict[str, Any], plan: dict[str, Any]) -> N
         identity = descriptor["identity"]
         observed_graph = identity.get("request_graph_sha256") if isinstance(identity, Mapping) else None
         expected = _expected_graph_metadata(binding, binding_index)
-        if not isinstance(identity, Mapping) or observed_graph != binding["request_graph_sha256"] or not isinstance(observed_graph, str) or observed_graph.lower() != expected["sha"]:
+        try:
+            observed_graph_canonical = _canonical_sha256_hex(observed_graph)
+            binding_graph_canonical = _canonical_sha256_hex(binding["request_graph_sha256"])
+        except ValueError:
+            observed_graph_canonical = None
+            binding_graph_canonical = None
+        if not isinstance(identity, Mapping) or observed_graph_canonical != binding_graph_canonical or observed_graph_canonical != expected["sha"]:
             _raise_descriptor_graph_mismatch(
                 descriptor_index=descriptor_index,
                 binding_index=binding_index,
@@ -308,7 +324,7 @@ def _validate_snapshot_identity(snapshot: Any, item: dict[str, Any], binding: di
     identity = item["identity"]
     canonical_identity = _validate_identity_digest(identity, binding)
     _require(identity["payload_sha256"] == item["payload_sha256"], "P86_IDENTITY_PAYLOAD_HASH_MISMATCH")
-    _require(identity["request_graph_sha256"] == _graph_sha(graph_path), "P86_REQUEST_GRAPH_HASH_MISMATCH")
+    _require(_canonical_sha256_hex(identity["request_graph_sha256"]) == _graph_sha(graph_path), "P86_REQUEST_GRAPH_HASH_MISMATCH")
     provenance = _normalize_runtime_provenance(snapshot.provenance)
     _require(tuple(snapshot.spatial_shape) == (64, 64) and snapshot.component_count == 3, "P86_SNAPSHOT_SHAPE_INVALID")
     frequencies = np.asarray(snapshot.frequencies, dtype=float)
