@@ -1,0 +1,60 @@
+{
+  "schema": "mephc-local-affine-p101-symmetry-closure-ledger-v1",
+  "work_order_id": "MEPHC-LOCALAFFINE-P101-ANTIUNITARY-SYMMETRY-AND-TRAJECTORY-READINESS-CLOSURE-20260830-465",
+  "symmetry_premises": [
+    {"premise": "mirror_lattice_basis_exchange", "status": "PASS", "evidence": "M_y @ A0 = A0 @ S_swap", "source": "audit/e8b/e8b_geometry.py"},
+    {"premise": "inclusion_centers_mirror_invariant", "status": "PASS", "evidence": "both centers are individually fixed by M_y", "source": "audit/e8b/e8b_geometry.py"},
+    {"premise": "real_scalar_material", "status": "PASS", "evidence": "epsilon background/inclusion are real scalars", "source": "audit/e8b/e8b_geometry.py"},
+    {"premise": "deformation_mirror_commutation", "status": "PASS", "evidence": {"-0.02": true, "0.0": true, "0.02": true}, "source": "audit/e8b/e8b_geometry.py"},
+    {"premise": "time_reversal_coordinate_action", "status": "PASS", "evidence": "(q_x,q_y,s) -> (-q_x,-q_y,s)", "source": "local-affine coordinate definition"},
+    {"premise": "combined_antiunitary_coordinate_action", "status": "PASS", "evidence": "(q_x,q_y,s) -> (-q_x,q_y,s)", "source": "local-affine coordinate definition"},
+    {"premise": "rank_one_isolation", "status": "PASS", "evidence": {"P85_minimum_gap": 0.062389888324785675, "P97_minimum_gap": 0.06238988841542023, "threshold": 0.05}, "source": "P101 receipt-bound evidence"}
+  ],
+  "geometry_proof": {
+    "mirror_matrix": [[1.0, 0.0], [0.0, -1.0]],
+    "basis_exchange_matrix": [[0.0, 1.0], [1.0, 0.0]],
+    "basis_relation": "M_y @ A0 = A0 @ S_swap",
+    "inclusion_centers_on_mirror_axis": true,
+    "inclusion_centers_individually_invariant": true,
+    "real_scalar_material_distribution": true,
+    "deformation": "F(s)=diag(exp(s),exp(-s))",
+    "deformation_commutes_with_mirror": {"-0.02": true, "0.0": true, "0.02": true},
+    "circular_s0_and_affine_elliptical_symmetry": true,
+    "source": "audit/e8b/e8b_geometry.py"
+  },
+  "antiunitary_proof": {
+    "coordinate_action": {
+      "spatial_mirror_M_y": "(q_x,q_y,s) -> (q_x,-q_y,s)",
+      "time_reversal_T": "(q_x,q_y,s) -> (-q_x,-q_y,s)",
+      "combined_Theta_M_y_T": "(q_x,q_y,s) -> (-q_x,q_y,s)"
+    },
+    "q_center": [0.0, -0.6166666666666667],
+    "q_x_center_is_zero": true,
+    "qy_s_diamond_center_line_Theta_invariant": true,
+    "curvature_parity": {
+      "R": [-1, 1, 1],
+      "law": "Omega_{q_i s}(q) -> -R_i R_s Omega_{q_i s}(R q)",
+      "Omega_qx_s_at_qx0": "+Omega_qx_s: symmetry allowed",
+      "Omega_qy_s_at_qx0": "-Omega_qy_s: forced zero"
+    },
+    "isolated_rank_one_conclusion": "Omega_qy_s(q_x=0)=0 exactly",
+    "omega_qx_s_symmetry_allowed": true,
+    "omega_qy_s_symmetry_forced_zero": true
+  },
+  "rank1_isolation_certified": true,
+  "numerical_residual_classification": "P91_P100_qy_s_values_are_discrete_solver_estimator_symmetry_breaking_residuals_not_physical_Omega_qy_s",
+  "solver_precision_evidence": {
+    "qy_forward_phase_1e7": -5.854978056205052e-10,
+    "qy_forward_phase_1e9": 1.7908782096176523e-11,
+    "qx_forward_phase_relative_change": 0.00018597439894373603
+  },
+  "trajectory_readiness": {
+    "status": "BLOCKED_BY_MISSING_INPUTS",
+    "available_inputs": ["rank1_isolation_from_P85_P97_gap_evidence", "mixed_curvature_solver_evidence_from_P91_P100", "trajectory_kernel_contract"],
+    "available_input_sources": {"trajectory_kernel_contract": "audit/e10e/phase_space_trajectory_kernel_contract.json", "trajectory_implementation": "mephc/phase_space_dynamics.py", "geometry_evidence": "audit/e8b/e8b_geometry.py"},
+    "missing_inputs": ["local_deformation_profile_or_gradient", "ordinary_Berry_curvature_Omega_qx_qy", "group_velocity_grad_q_frequency", "physical_normalization_reference_length_and_wave_speed", "trajectory_initial_conditions", "trajectory_integration_controls"],
+    "missing_input_count": 6,
+    "no_defaults_or_zero_substitutions": true,
+    "trajectory_executed": false
+  }
+}
