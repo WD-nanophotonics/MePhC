@@ -419,6 +419,15 @@ def _reverse_orientation_diagnostics(name: str, forward: Any, reverse: Any) -> d
     }
 
 
+def _machine_precision_tolerance(value: float, derived: float) -> float:
+    return math.ulp(float(value)) + math.ulp(float(derived))
+
+
+def _reverse_omega_tolerance(signed_area_qs: float) -> float:
+    _require(math.isfinite(float(signed_area_qs)) and float(signed_area_qs) != 0.0, "P82_SIGNED_AREA_ZERO_OR_NONFINITE")
+    return 1e-12 / abs(float(signed_area_qs))
+
+
 def _diamond(states: dict[str, HState], prefix: str, axis: int, h_q: float, h_s: float) -> Any:
     return make_mixed_diamond(
         plus_q=states[f"{prefix}_PLUS_Q{'X' if axis == 0 else 'Y'}"], minus_q=states[f"{prefix}_MINUS_Q{'X' if axis == 0 else 'Y'}"],
@@ -442,7 +451,16 @@ def reduce_states(states: dict[str, HState]) -> dict[str, Any]:
         left, right = forward[name], reverse[name]
         _require(all(math.isfinite(float(value)) for value in (left.phase, left.omega_qs, left.signed_area_qs, left.minimum_link_singular_value, left.maximum_link_principal_angle, right.phase, right.omega_qs, right.signed_area_qs, right.minimum_link_singular_value, right.maximum_link_principal_angle)), "P72_NONFINITE_WILSON_RESULT")
         diagnostics = _reverse_orientation_diagnostics(name, left, right)
-        if not (math.isclose(right.omega_qs, -left.omega_qs, rel_tol=0.0, abs_tol=1e-12) and math.isclose(right.phase, -left.phase, rel_tol=0.0, abs_tol=1e-12)):
+        _require(left.signed_area_qs != 0.0 and right.signed_area_qs != 0.0, "P82_SIGNED_AREA_ZERO_OR_NONFINITE")
+        _require(left.signed_area_qs == right.signed_area_qs, "P82_SIGNED_AREA_FORWARD_REVERSE_MISMATCH")
+        omega_tolerance = _reverse_omega_tolerance(float(left.signed_area_qs))
+        diagnostics[f"reverse_diag_{name}_omega_reverse_abs_tolerance"] = omega_tolerance
+        if not math.isclose(right.phase, -left.phase, rel_tol=0.0, abs_tol=1e-12):
+            raise ReverseOrientationDiagnosticError(diamond=name, diagnostics=diagnostics)
+        for phase, omega in ((left.phase, left.omega_qs), (right.phase, right.omega_qs)):
+            derived_omega = -float(phase) / float(left.signed_area_qs)
+            _require(abs(float(omega) - derived_omega) <= _machine_precision_tolerance(float(omega), derived_omega), "P82_OMEGA_PHASE_CONSISTENCY_MISMATCH")
+        if not math.isclose(right.omega_qs, -left.omega_qs, rel_tol=0.0, abs_tol=omega_tolerance):
             raise ReverseOrientationDiagnosticError(diamond=name, diagnostics=diagnostics)
     derivative_primary = fixed_q_frequency_derivative(states["PRIMARY_PLUS_S"], states["PRIMARY_MINUS_S"], band_index=0, h_s=0.02)
     derivative_refined = fixed_q_frequency_derivative(states["REFINED_PLUS_S"], states["REFINED_MINUS_S"], band_index=0, h_s=0.01)

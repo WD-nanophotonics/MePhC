@@ -20,7 +20,8 @@ def _module():
     return module
 
 
-def _curvature(phase, omega, *, area=0.25, singular=0.8, angle=0.4):
+def _curvature(phase, omega, *, area=None, singular=0.8, angle=0.4):
+    area = -phase / omega if area is None and omega else (1.0 if area is None else area)
     return SimpleNamespace(
         phase=phase,
         omega_qs=omega,
@@ -53,8 +54,9 @@ def test_exact_sign_reversal_and_e10d_like_values_are_accepted(monkeypatch):
 @pytest.mark.parametrize("residual", [0.5e-12, 2.0e-12])
 def test_direct_abs_tol_boundary_is_preserved_and_diagnosed(monkeypatch, residual):
     module = _module()
-    forward = _curvature(0.1, 0.2)
-    reverse = _curvature(-0.1 + residual, -0.2)
+    forward = _curvature(0.1, 0.2, area=-0.5)
+    reverse_phase = -0.1 + residual
+    reverse = _curvature(reverse_phase, -reverse_phase / -0.5, area=-0.5)
     if residual < 1e-12:
         result = _run_four_pairs(module, monkeypatch, forward, reverse)
         assert result["scientific_acceptance_status"] == "PASS"
@@ -68,7 +70,7 @@ def test_direct_abs_tol_boundary_is_preserved_and_diagnosed(monkeypatch, residua
         assert result["failure_code"] == "P72_REVERSE_ORIENTATION_SIGN_MISMATCH"
         assert result["reverse_diag_failed_diamond"] == "primary_qx"
         assert result["reverse_diag_primary_qx_forward_phase"] == 0.1
-        assert result["reverse_diag_primary_qx_reverse_omega_qs"] == -0.2
+        assert result["reverse_diag_primary_qx_reverse_omega_qs"] == pytest.approx(-0.2, abs=1e-11)
         assert result["native_invocation_count"] == 1
         assert result["provider_execution_count"] == 0
         assert result["solver_execution_count"] == 0
@@ -80,8 +82,8 @@ def test_direct_abs_tol_boundary_is_preserved_and_diagnosed(monkeypatch, residua
 def test_principal_branch_diagnostic_does_not_replace_direct_sign_rule(monkeypatch):
     module = _module()
     phase = math.pi - 1e-6
-    forward = _curvature(phase, 0.2)
-    reverse = _curvature(phase, -0.2)
+    forward = _curvature(phase, -phase, area=1.0)
+    reverse = _curvature(phase, phase, area=1.0)
     with pytest.raises(module.ReverseOrientationDiagnosticError) as caught:
         _run_four_pairs(module, monkeypatch, forward, reverse)
     result = module._future_result("FAIL", failed_stage="bundle-or-reduction", diagnostic=caught.value)
