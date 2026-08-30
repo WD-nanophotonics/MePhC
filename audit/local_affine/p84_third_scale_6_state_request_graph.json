@@ -1,0 +1,16 @@
+{
+  "collision_group_count": 0,
+  "logical_state_count": 6,
+  "schema": "mephc-local-affine-p84-third-scale-6-state-request-graph-v1",
+  "state_count": 6,
+  "states": [
+    {"public_q": [0.00025, -0.6166666666666667], "role": "THIRD_PLUS_QX", "s": 0.0, "state_id": "STATE_14"},
+    {"public_q": [-0.00025, -0.6166666666666667], "role": "THIRD_MINUS_QX", "s": 0.0, "state_id": "STATE_15"},
+    {"public_q": [0.0, -0.6164166666666667], "role": "THIRD_PLUS_QY", "s": 0.0, "state_id": "STATE_16"},
+    {"public_q": [0.0, -0.6169166666666667], "role": "THIRD_MINUS_QY", "s": 0.0, "state_id": "STATE_17"},
+    {"public_q": [0.0, -0.6166666666666667], "role": "THIRD_PLUS_S", "s": 0.005, "state_id": "STATE_18"},
+    {"public_q": [0.0, -0.6166666666666667], "role": "THIRD_MINUS_S", "s": -0.005, "state_id": "STATE_19"}
+  ],
+  "unique_state_count": 6,
+  "work_order_id": "MEPHC-LOCALAFFINE-P84-THIRD-SCALE-SIX-STATE-ACQUISITION-PREPARATION-20260830-448"
+}
