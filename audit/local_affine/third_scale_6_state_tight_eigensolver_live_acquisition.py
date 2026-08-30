@@ -7,6 +7,7 @@ import json
 import math
 import os
 from collections.abc import Mapping
+from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
@@ -14,7 +15,7 @@ import numpy as np
 
 from audit.e10f.e8b_local_affine_model import canonical_state_identity, digest_state_identity, make_state
 from audit.local_affine.local_affine_snapshot_codec import encode_snapshot
-from mephc.local_affine_state_provider import LocalAffineStateProvider, local_affine_reference_cell_contract
+from mephc.local_affine_state_provider import LocalAffineStateProvider, canonical_local_affine_state_identity, local_affine_reference_cell_contract
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -156,6 +157,23 @@ def vector_digest(vectors: Any) -> str:
     return hashlib.sha256(canonical(values)).hexdigest()
 
 
+def make_tight_state(public_q: Any, s: float) -> Any:
+    base = make_state(tuple(public_q), float(s))
+    return replace(base, eigensolver_tolerance=SOLVER_CONFIGURATION["eigensolver_tolerance"])
+
+
+def canonical_tight_state_identity(spec: Any) -> dict[str, Any]:
+    return canonical_local_affine_state_identity(
+        spec,
+        resolution=SOLVER_CONFIGURATION["resolution"],
+        num_bands=SOLVER_CONFIGURATION["num_bands"],
+        polarization_identity=SOLVER_CONFIGURATION["polarization"],
+        eigensolver_tolerance=SOLVER_CONFIGURATION["eigensolver_tolerance"],
+        mesh_size=SOLVER_CONFIGURATION["mesh_size"],
+        deterministic=SOLVER_CONFIGURATION["deterministic"],
+    )
+
+
 def validate_snapshot(snapshot: Any, spec: Any, identity: dict[str, Any]) -> dict[str, Any]:
     require(tuple(snapshot.spatial_shape) == (64, 64) and snapshot.component_count == 3, "SNAPSHOT_SHAPE_INVALID")
     frequencies = np.asarray(snapshot.frequencies, dtype=float)
@@ -254,8 +272,8 @@ def main() -> int:
         state_id = item["state_id"]
         stage = "STATE_CONSTRUCTION"
         try:
-            spec = make_state(tuple(item["public_q"]), float(item["s"]))
-            identity_before = canonical_state_identity(spec)
+            spec = make_tight_state(item["public_q"], float(item["s"]))
+            identity_before = canonical_tight_state_identity(spec)
             require(identity_before["public_q"] == list(item["public_q"]) and identity_before["s"] == float(item["s"]), "STATE_IDENTITY_INPUT_INVALID")
             require(isinstance(spec.geometry, tuple), "STATE_GEOMETRY_NOT_TUPLE")
             stage = "PROVIDER_SOLVE"
@@ -263,7 +281,7 @@ def main() -> int:
             counter.consume_solver()
             snapshot = provider.solve(spec)
             stage = "SNAPSHOT_VALIDATION"
-            identity_after = canonical_state_identity(spec)
+            identity_after = canonical_tight_state_identity(spec)
             require(identity_before == identity_after and isinstance(spec.geometry, tuple), "STATE_IDENTITY_MUTATED")
             evidence = validate_snapshot(snapshot, spec, identity_before)
             gap = evidence["frequencies"][1] - evidence["frequencies"][0]
