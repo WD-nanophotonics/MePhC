@@ -84,7 +84,26 @@ def load_bundle() -> tuple[dict[str, Any], Path]:
     _require(bundle.get("schema") == "mephc-input-bundle-v1", "P66_INPUT_BUNDLE_SCHEMA_INVALID")
     datasets = bundle.get("datasets")
     _require(isinstance(datasets, list) and len(datasets) == 13, "P66_DATASET_BINDINGS_COUNT_INVALID")
+    _require(isinstance(bundle.get("work_order_id"), str) and bundle["work_order_id"], "P69_WORK_ORDER_ID_INVALID")
     return bundle, bundle_path
+
+
+def validate_runtime_contract(bundle: dict[str, Any], plan: dict[str, Any]) -> dict[str, Any]:
+    """Return provenance for the bounded bundle-to-reduction transaction."""
+    _require(bundle.get("schema") == "mephc-input-bundle-v1", "P69_INPUT_SCHEMA_INVALID")
+    _require(bundle.get("work_order_id") != plan["source_work_order_id"], "P69_SUCCESSOR_WORK_ORDER_MUST_BE_DISTINCT")
+    datasets = bundle.get("datasets")
+    _require(isinstance(datasets, list) and len(datasets) == plan["record_count"], "P69_RECORD_COUNT_INVALID")
+    keys = [item.get("record_key_sha256") for item in datasets if isinstance(item, dict)]
+    _require(len(keys) == len(set(keys)) == plan["unique_record_key_count"], "P69_RECORD_KEY_SET_INVALID")
+    return {
+        "input_work_order_id": bundle["work_order_id"],
+        "source_work_order_id": plan["source_work_order_id"],
+        "source_dataset_id": plan["source_dataset_id"],
+        "source_manifest_sha256": plan["source_manifest_sha256"],
+        "record_count": len(datasets),
+        "binding_plan_schema": plan["schema"],
+    }
 
 
 def _payload_bytes(bundle_path: Path, item: dict[str, Any]) -> bytes:
@@ -193,6 +212,7 @@ def reduce_states(states: dict[str, HState]) -> dict[str, Any]:
     reverse_ok = all(math.isclose(reverse[axis].omega_qs, -primary[axis].omega_qs, rel_tol=0.0, abs_tol=1e-12) for axis in (0, 1))
     return {
         "schema": "mephc-local-affine-p66-solver-free-reduction-v1",
+        "runtime_status": "BUNDLE_BOUND_SOLVER_FREE_REDUCTION",
         "state_count": len(states),
         "rank1_band_index": 0,
         "primary": primary_out,
@@ -215,11 +235,13 @@ def main() -> int:
     try:
         bundle, bundle_path = load_bundle()
         plan = load_binding_plan()
-        _require(bundle.get("work_order_id"), "P66_WORK_ORDER_ID_MISSING")
+        provenance = validate_runtime_contract(bundle, plan)
         result = reduce_states(resolve_states(bundle, bundle_path, plan))
+        result["provenance"] = provenance
     except Exception as exc:
         result = {
             "schema": "mephc-local-affine-p66-solver-free-reduction-v1",
+            "runtime_status": "BUNDLE_BOUND_SOLVER_FREE_REDUCTION",
             "scientific_acceptance_status": "FAIL",
             "failure_code": type(exc).__name__ + ":" + str(exc),
             "native_invocation_count": 0, "provider_request_count": 0,
