@@ -70,6 +70,10 @@ def normalize_contract(value: Any) -> Any:
     if not isinstance(value, dict) or value.get("schema") != CONTRACT_SCHEMA:
         return value
     result = json.loads(json.dumps(value))
+    if result.get("entrypoint") == {"type": "null", "value": None}:
+        # Fresh Chat may emit an explicitly tagged JSON null. It has the same
+        # bounded meaning as a literal null and never names executable code.
+        result["entrypoint"] = None
     raw_budgets = result.get("budgets") if isinstance(result.get("budgets"), dict) else {}
     if (result.get("kind") == "INFRASTRUCTURE"
             and all(raw_budgets.get(name) == 0 for name in (
