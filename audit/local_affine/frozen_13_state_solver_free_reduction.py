@@ -146,14 +146,51 @@ def _validate_identity_digest(identity: dict[str, Any], binding: dict[str, Any])
     return canonical_identity
 
 
+def validate_snapshot_structure(snapshot: Any) -> None:
+    _require(tuple(snapshot.spatial_shape) == (64, 64) and snapshot.component_count == 3, "P72_SNAPSHOT_SHAPE_INVALID")
+    frequencies = np.asarray(snapshot.frequencies, dtype=float)
+    raw_norms = np.asarray(snapshot.raw_norms, dtype=float)
+    _require(frequencies.shape == (6,) and bool(np.all(np.isfinite(frequencies))) and bool(np.all(frequencies > 0.0)), "P72_FREQUENCIES_INVALID")
+    _require(raw_norms.shape == (6,) and bool(np.all(np.isfinite(raw_norms))) and bool(np.all(raw_norms > 0.0)), "P72_RAW_NORMS_INVALID")
+    _require(len(snapshot.normalized_vectors) == 6, "P72_VECTOR_COUNT_INVALID")
+    for vector in snapshot.normalized_vectors:
+        values = np.asarray(vector, dtype=np.complex128)
+        _require(values.ndim == 1 and bool(np.all(np.isfinite(values))) and math.isclose(float(np.linalg.norm(values)), 1.0, rel_tol=0.0, abs_tol=1e-10), "P72_VECTOR_INVALID")
+    gram = np.asarray(snapshot.gram_matrix, dtype=np.complex128)
+    _require(gram.shape == (6, 6) and bool(np.all(np.isfinite(gram))), "P72_GRAM_INVALID")
+    provenance = dict(getattr(snapshot, "provenance", {}))
+    _require(provenance.get("representation") == "mpb_periodic_h_l2_v1", "P72_REPRESENTATION_INVALID")
+    reference = provenance.get("local_affine_reference_cell_contract")
+    fields = ("representation", "bloch_phase_excluded", "resolution", "spatial_shape", "lattice_size", "component_order", "component_basis", "mu_contract", "orientation_sign", "fractional_material_indexing_identity", "reference_cell_identity")
+    _require(isinstance(reference, dict) and all(field in reference for field in fields), "P72_REFERENCE_CELL_FIELD_MISSING")
+    _require(reference["representation"] == "mpb_periodic_h_l2_v1" and reference["bloch_phase_excluded"] is True and reference["resolution"] == 64 and reference["spatial_shape"] == [64, 64], "P72_REFERENCE_CELL_IDENTITY_INVALID")
+    _require(reference["component_order"] == "supplied final axis order" and reference["component_basis"] == "LAB_CARTESIAN" and reference["mu_contract"] == "MU1_NONMAGNETIC" and reference["orientation_sign"] == 1, "P72_REFERENCE_CELL_PHYSICS_INVALID")
+
+
 def _validate_snapshot_identity(snapshot: Any, item: dict[str, Any], binding: dict[str, Any]) -> dict[str, Any]:
     identity = item["identity"]
     canonical_identity = _validate_identity_digest(identity, binding)
+    validate_snapshot_structure(snapshot)
     _require(identity["payload_sha256"] == item["payload_sha256"], "P71_IDENTITY_PAYLOAD_HASH_MISMATCH")
     _require(identity["request_graph_sha256"] == hashlib.sha256(GRAPH_PATH.read_bytes()).hexdigest(), "P71_REQUEST_GRAPH_HASH_MISMATCH")
     provenance = dict(getattr(snapshot, "provenance", {}))
+    _require(tuple(snapshot.spatial_shape) == (64, 64) and snapshot.component_count == 3, "P72_SNAPSHOT_SHAPE_INVALID")
+    frequencies_array = np.asarray(snapshot.frequencies, dtype=float)
+    raw_norms_array = np.asarray(snapshot.raw_norms, dtype=float)
+    _require(frequencies_array.shape == (6,) and bool(np.all(np.isfinite(frequencies_array))) and bool(np.all(frequencies_array > 0.0)), "P72_FREQUENCIES_INVALID")
+    _require(raw_norms_array.shape == (6,) and bool(np.all(np.isfinite(raw_norms_array))) and bool(np.all(raw_norms_array > 0.0)), "P72_RAW_NORMS_INVALID")
+    _require(len(snapshot.normalized_vectors) == 6, "P72_VECTOR_COUNT_INVALID")
+    for vector in snapshot.normalized_vectors:
+        values = np.asarray(vector, dtype=np.complex128)
+        _require(values.ndim == 1 and bool(np.all(np.isfinite(values))) and math.isclose(float(np.linalg.norm(values)), 1.0, rel_tol=0.0, abs_tol=1e-10), "P72_VECTOR_INVALID")
+    gram = np.asarray(snapshot.gram_matrix, dtype=np.complex128)
+    _require(gram.shape == (6, 6) and bool(np.all(np.isfinite(gram))), "P72_GRAM_INVALID")
     reference = provenance.get("local_affine_reference_cell_contract")
     _require(isinstance(reference, dict), "P71_REFERENCE_CELL_CONTRACT_MISSING")
+    reference_fields = ("representation", "bloch_phase_excluded", "resolution", "spatial_shape", "lattice_size", "component_order", "component_basis", "mu_contract", "orientation_sign", "fractional_material_indexing_identity", "reference_cell_identity")
+    _require(all(field in reference for field in reference_fields), "P72_REFERENCE_CELL_FIELD_MISSING")
+    _require(reference["representation"] == "mpb_periodic_h_l2_v1" and reference["bloch_phase_excluded"] is True and reference["resolution"] == 64 and reference["spatial_shape"] == [64, 64], "P72_REFERENCE_CELL_IDENTITY_INVALID")
+    _require(reference["component_order"] == "supplied final axis order" and reference["component_basis"] == "LAB_CARTESIAN" and reference["mu_contract"] == "MU1_NONMAGNETIC" and reference["orientation_sign"] == 1, "P72_REFERENCE_CELL_PHYSICS_INVALID")
     _require(hashlib.sha256(_canonical(reference)).hexdigest() == identity["reference_cell_contract_sha256"], "P71_REFERENCE_CELL_DIGEST_MISMATCH")
     _require(provenance.get("mpb_k_point") == identity["reciprocal_metadata"], "P71_RECIPROCAL_METADATA_MISMATCH")
     frequencies = [float(value) for value in np.asarray(snapshot.frequencies, dtype=float)]
@@ -179,6 +216,9 @@ def _identity(item: dict[str, Any], snapshot: Any, binding: dict[str, Any]) -> P
         orientation_sign=int(reference["orientation_sign"]), fractional_material_indexing_identity=str(reference["fractional_material_indexing_identity"]), reference_cell_identity=str(reference["reference_cell_identity"]),
     )
     solver_identity = hashlib.sha256(_canonical(_SOLVER_CONFIGURATION)).hexdigest()
+    f_matrix = np.asarray(canonical_identity["F_s"], dtype=float)
+    _require(f_matrix.shape == (2, 2) and bool(np.all(np.isfinite(f_matrix))), "P72_F_S_INVALID")
+    _require(float(np.linalg.det(f_matrix)) > 0.0, "P72_DET_F_NONPOSITIVE")
     return PhaseSpaceStateIdentity(
         public_q=_finite_vector(canonical_identity["public_q"], 2, "P71_PUBLIC_Q_INVALID"), s=float(canonical_identity["s"]),
         derived_kappa=_finite_vector(canonical_identity["derived_kappa"], 2, "P71_DERIVED_KAPPA_INVALID"),
@@ -199,7 +239,13 @@ def resolve_states(bundle: dict[str, Any], bundle_path: Path, plan: dict[str, An
         identity = _identity(item, snapshot, binding)
         states[binding["role"]] = h_state_from_normalized_vectors(identity, snapshot.normalized_vectors[0], frequencies=(float(snapshot.frequencies[0]),), band_indices=(0,))
     _require(len(states) == 13, "P71_STATE_ROLE_SET_INVALID")
+    validate_cross_state_reference_cells(states)
     return states
+
+
+def validate_cross_state_reference_cells(states: dict[str, HState]) -> None:
+    reference_keys = {state.identity.reference_cell.compatibility_key() for state in states.values()}
+    _require(len(reference_keys) == 1, "P72_REFERENCE_CELL_CROSS_STATE_MISMATCH")
 
 
 def _diamond(states: dict[str, HState], prefix: str, axis: int, h_q: float, h_s: float) -> Any:
@@ -213,18 +259,51 @@ def _diamond(states: dict[str, HState], prefix: str, axis: int, h_q: float, h_s:
 def reduce_states(states: dict[str, HState]) -> dict[str, Any]:
     roles = {"CENTER", "PRIMARY_PLUS_QX", "PRIMARY_MINUS_QX", "PRIMARY_PLUS_QY", "PRIMARY_MINUS_QY", "PRIMARY_PLUS_S", "PRIMARY_MINUS_S", "REFINED_PLUS_QX", "REFINED_MINUS_QX", "REFINED_PLUS_QY", "REFINED_MINUS_QY", "REFINED_PLUS_S", "REFINED_MINUS_S"}
     _require(set(states) == roles, "P71_STATE_ROLE_SET_INVALID")
-    primary = {axis: rank1_mixed_curvature(_diamond(states, "PRIMARY", axis, 0.001, 0.02)) for axis in (0, 1)}
-    refined = {axis: rank1_mixed_curvature(_diamond(states, "REFINED", axis, 0.0005, 0.01)) for axis in (0, 1)}
-    reverse = {axis: reverse_mixed_curvature(_diamond(states, "PRIMARY", axis, 0.001, 0.02)) for axis in (0, 1)}
+    diamonds = {
+        "primary_qx": _diamond(states, "PRIMARY", 0, 0.001, 0.02),
+        "primary_qy": _diamond(states, "PRIMARY", 1, 0.001, 0.02),
+        "refined_qx": _diamond(states, "REFINED", 0, 0.0005, 0.01),
+        "refined_qy": _diamond(states, "REFINED", 1, 0.0005, 0.01),
+    }
+    forward = {name: rank1_mixed_curvature(diamond) for name, diamond in diamonds.items()}
+    reverse = {name: reverse_mixed_curvature(diamond) for name, diamond in diamonds.items()}
+    for name in diamonds:
+        left, right = forward[name], reverse[name]
+        _require(all(math.isfinite(float(value)) for value in (left.phase, left.omega_qs, left.signed_area_qs, left.minimum_link_singular_value, left.maximum_link_principal_angle, right.phase, right.omega_qs, right.signed_area_qs, right.minimum_link_singular_value, right.maximum_link_principal_angle)), "P72_NONFINITE_WILSON_RESULT")
+        _require(math.isclose(right.omega_qs, -left.omega_qs, rel_tol=0.0, abs_tol=1e-12) and math.isclose(right.phase, -left.phase, rel_tol=0.0, abs_tol=1e-12), "P72_REVERSE_ORIENTATION_SIGN_MISMATCH")
     derivative_primary = fixed_q_frequency_derivative(states["PRIMARY_PLUS_S"], states["PRIMARY_MINUS_S"], band_index=0, h_s=0.02)
     derivative_refined = fixed_q_frequency_derivative(states["REFINED_PLUS_S"], states["REFINED_MINUS_S"], band_index=0, h_s=0.01)
-    deltas = {f"q{axis}": abs(primary[axis].omega_qs - refined[axis].omega_qs) for axis in (0, 1)}
-    reverse_ok = all(math.isclose(reverse[axis].omega_qs, -primary[axis].omega_qs, rel_tol=0.0, abs_tol=1e-12) for axis in (0, 1))
-    return {"schema": RESULT_SCHEMA, "runtime_status": "BUNDLE_BOUND_SOLVER_FREE_REDUCTION", "state_count": len(states), "rank1_band_index": 0, "primary": {f"q{axis}": value.to_dict() for axis, value in primary.items()}, "refined": {f"q{axis}": value.to_dict() for axis, value in refined.items()}, "primary_refined_abs_delta_omega_qs": deltas, "fixed_q_frequency_derivative": {"primary": derivative_primary, "refined": derivative_refined}, "reverse_sign_check": {"status": "PASS" if reverse_ok else "FAIL", "expected": "reverse omega_qs = -forward omega_qs"}, "finite_result": all(math.isfinite(float(value)) for value in (*deltas.values(), derivative_primary, derivative_refined)), "scientific_acceptance_status": "PASS" if reverse_ok else "FAIL", "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "mpb_execution": False, "field_payload_retained": False}
+    def relative_delta(left: float, right: float) -> float | None:
+        denominator = abs(left) + abs(right)
+        return None if denominator <= 0.0 else 2.0 * abs(left - right) / denominator
+
+    scalars = {
+        "omega_qx_s_primary": forward["primary_qx"].omega_qs, "omega_qx_s_refined": forward["refined_qx"].omega_qs,
+        "omega_qy_s_primary": forward["primary_qy"].omega_qs, "omega_qy_s_refined": forward["refined_qy"].omega_qs,
+        "domega_ds_primary": derivative_primary, "domega_ds_refined": derivative_refined,
+    }
+    absolute = {
+        "abs_delta_omega_qx_s": abs(scalars["omega_qx_s_primary"] - scalars["omega_qx_s_refined"]),
+        "abs_delta_omega_qy_s": abs(scalars["omega_qy_s_primary"] - scalars["omega_qy_s_refined"]),
+        "abs_delta_domega_ds": abs(derivative_primary - derivative_refined),
+    }
+    relative = {
+        "relative_delta_omega_qx_s": relative_delta(scalars["omega_qx_s_primary"], scalars["omega_qx_s_refined"]),
+        "relative_delta_omega_qy_s": relative_delta(scalars["omega_qy_s_primary"], scalars["omega_qy_s_refined"]),
+        "relative_delta_domega_ds": relative_delta(derivative_primary, derivative_refined),
+    }
+    result = {"schema": RESULT_SCHEMA, "runtime_status": "BUNDLE_BOUND_SOLVER_FREE_REDUCTION", "state_count": len(states), "rank1_band_index": 0, "two_scale_reduction_status": "ESTIMATES_AVAILABLE", "scientific_acceptance_status": "PASS", "reverse_diamond_count": 4, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "mpb_execution": False, "field_payload_retained": False, **scalars, **absolute, **relative}
+    for name, value in forward.items():
+        result[f"forward_wilson_phase_{name}"] = value.phase
+        result[f"minimum_link_singular_value_{name}"] = value.minimum_link_singular_value
+        result[f"maximum_link_principal_angle_{name}"] = value.maximum_link_principal_angle
+    for name, value in reverse.items():
+        result[f"reverse_wilson_phase_{name}"] = value.phase
+    return result
 
 
 def _future_result(status: str, *, failed_stage: str | None = None, failure_code: str | None = None, exception_type: str | None = None) -> dict[str, Any]:
-    result = {"schema": RESULT_SCHEMA, "status": status, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "mpb_execution": False, "field_payload_retained": False}
+    result = {"schema": RESULT_SCHEMA, "status": status, "scientific_acceptance_status": "PASS" if status == "PASS" else "FAIL", "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "mpb_execution": False, "field_payload_retained": False}
     if failed_stage is not None:
         result.update({"failed_stage": failed_stage, "failure_code": failure_code or "P71_REDUCTION_FAILED", "exception_type": exception_type or "ValueError"})
     return result
