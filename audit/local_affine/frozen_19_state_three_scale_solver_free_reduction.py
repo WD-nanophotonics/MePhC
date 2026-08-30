@@ -60,6 +60,60 @@ def _require(condition: bool, code: str) -> None:
         raise ValueError(code)
 
 
+def _bounded_scalar(value: Any, *, limit: int = 128) -> str | None:
+    if value is None:
+        return None
+    if not isinstance(value, str):
+        return None
+    return value if len(value) <= limit else value[: limit - 3] + "..."
+
+
+class DescriptorGraphMismatchError(ValueError):
+    """Bounded evidence for a graph identity mismatch before reduction."""
+
+    code = "P86_DESCRIPTOR_GRAPH_MISMATCH"
+
+    def __init__(
+        self,
+        *,
+        descriptor_index: int | None,
+        record_key_sha256: str | None,
+        dataset_id: str | None,
+        expected_state_id: str | None,
+        expected_role: str | None,
+        expected_graph_group: str | None,
+        expected_request_graph_sha256: str | None,
+        observed_request_graph_sha256: str | None,
+        observed_request_graph_source: str,
+        binding_index: int | None = None,
+    ) -> None:
+        self.descriptor_index = descriptor_index
+        self.record_key_sha256 = _bounded_scalar(record_key_sha256)
+        self.dataset_id = _bounded_scalar(dataset_id)
+        self.expected_state_id = _bounded_scalar(expected_state_id)
+        self.expected_role = _bounded_scalar(expected_role)
+        self.expected_graph_group = _bounded_scalar(expected_graph_group)
+        self.expected_request_graph_sha256 = _bounded_scalar(expected_request_graph_sha256)
+        self.observed_request_graph_sha256 = _bounded_scalar(observed_request_graph_sha256)
+        self.observed_request_graph_source = _bounded_scalar(observed_request_graph_source) or "unknown"
+        self.binding_index = binding_index
+        super().__init__(self.code)
+
+    def as_diagnostic(self) -> dict[str, Any]:
+        return {
+            "descriptor_index": self.descriptor_index,
+            "record_key_sha256": self.record_key_sha256,
+            "dataset_id": self.dataset_id,
+            "expected_state_id": self.expected_state_id,
+            "expected_role": self.expected_role,
+            "expected_graph_group": self.expected_graph_group,
+            "expected_request_graph_sha256": self.expected_request_graph_sha256,
+            "observed_request_graph_sha256": self.observed_request_graph_sha256,
+            "observed_request_graph_source": self.observed_request_graph_source,
+            "binding_index": self.binding_index,
+        }
+
+
 def _normalize_runtime_provenance(value: Any) -> Any:
     if isinstance(value, Mapping):
         normalized: dict[str, Any] = {}
@@ -86,6 +140,65 @@ def _graph_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _expected_graph_metadata(binding: Mapping[str, Any] | None, binding_index: int | None) -> dict[str, Any]:
+    if binding_index is None or not 0 <= binding_index < 19:
+        return {"group": None, "sha": None, "state_id": None, "role": None}
+    graph_path = P64_GRAPH_PATH if binding_index < 13 else P85_GRAPH_PATH
+    state_id = binding.get("state_id") if isinstance(binding, Mapping) else None
+    role = binding.get("role") if isinstance(binding, Mapping) else None
+    group = "P64_13_STATE" if binding_index < 13 else "P85_6_STATE"
+    return {
+        "group": group,
+        "sha": _graph_sha(graph_path),
+        "state_id": state_id if isinstance(state_id, str) else None,
+        "role": role if isinstance(role, str) else None,
+    }
+
+
+def _raise_descriptor_graph_mismatch(
+    *,
+    descriptor_index: int | None,
+    binding_index: int | None,
+    binding: Mapping[str, Any] | None,
+    record_key_sha256: Any,
+    dataset_id: Any,
+    observed_request_graph_sha256: Any,
+    observed_request_graph_source: str,
+) -> None:
+    expected = _expected_graph_metadata(binding, binding_index)
+    raise DescriptorGraphMismatchError(
+        descriptor_index=descriptor_index,
+        record_key_sha256=record_key_sha256 if isinstance(record_key_sha256, str) else None,
+        dataset_id=dataset_id if isinstance(dataset_id, str) else None,
+        expected_state_id=expected["state_id"],
+        expected_role=expected["role"],
+        expected_graph_group=expected["group"],
+        expected_request_graph_sha256=expected["sha"],
+        observed_request_graph_sha256=observed_request_graph_sha256 if isinstance(observed_request_graph_sha256, str) else None,
+        observed_request_graph_source=observed_request_graph_source,
+        binding_index=binding_index,
+    )
+
+
+def validate_binding_plan_graphs(plan: Mapping[str, Any]) -> None:
+    bindings = plan.get("bindings")
+    _require(isinstance(bindings, list), "P86_BINDING_LIST_INVALID")
+    for binding_index, binding in enumerate(bindings):
+        _require(isinstance(binding, dict), "P86_BINDING_INVALID")
+        expected = _expected_graph_metadata(binding, binding_index)
+        observed = binding.get("request_graph_sha256")
+        if not isinstance(observed, str) or observed.lower() != expected["sha"]:
+            _raise_descriptor_graph_mismatch(
+                descriptor_index=None,
+                binding_index=binding_index,
+                binding=binding,
+                record_key_sha256=binding.get("record_key_sha256"),
+                dataset_id=binding.get("dataset_id"),
+                observed_request_graph_sha256=observed,
+                observed_request_graph_source="binding_plan",
+            )
+
+
 def load_binding_plan() -> dict[str, Any]:
     plan = json.loads(PLAN_PATH.read_text(encoding="utf-8"))
     _require(plan.get("schema") == PLAN_SCHEMA, "P86_BINDING_PLAN_SCHEMA_INVALID")
@@ -97,13 +210,11 @@ def load_binding_plan() -> dict[str, Any]:
     bindings = plan.get("bindings")
     _require(isinstance(bindings, list) and len(bindings) == 19, "P86_BINDING_LIST_INVALID")
     _require([item.get("state_id") for item in bindings] == [f"STATE_{index:02d}" for index in range(1, 20)], "P86_BINDING_ORDER_INVALID")
-    graph_shas = {str(P64_GRAPH_PATH): _graph_sha(P64_GRAPH_PATH), str(P85_GRAPH_PATH): _graph_sha(P85_GRAPH_PATH)}
+    validate_binding_plan_graphs(plan)
     keys: set[str] = set()
     for index, binding in enumerate(bindings):
         _require(isinstance(binding, dict), "P86_BINDING_INVALID")
         _require((binding.get("dataset_id"), binding.get("manifest_sha256")) in dataset_pairs, "P86_BINDING_DATASET_PAIR_INVALID")
-        graph_path = P64_GRAPH_PATH if index < 13 else P85_GRAPH_PATH
-        _require(binding.get("request_graph_sha256", "").lower() == graph_shas[str(graph_path)], "P86_BINDING_GRAPH_SHA_INVALID")
         key = binding.get("record_key_sha256")
         _require(isinstance(key, str) and len(key) == 64 and set(key.lower()) <= _HEX64, "P86_RECORD_KEY_FORMAT_INVALID")
         key_work_order = P64_WORK_ORDER_ID if index < 13 else P85_WORK_ORDER_ID
@@ -135,14 +246,30 @@ def validate_runtime_contract(bundle: dict[str, Any], plan: dict[str, Any]) -> N
     _require(len(keys) == len(set(keys)) == 19, "P86_DESCRIPTOR_KEYS_NOT_UNIQUE")
     bindings = {item["record_key_sha256"]: item for item in plan["bindings"]}
     _require(set(keys) == set(bindings), "P86_DESCRIPTOR_BINDING_SET_INVALID")
-    for descriptor in datasets:
+    validate_binding_plan_graphs(plan)
+    binding_indexes = {item["record_key_sha256"]: index for index, item in enumerate(plan["bindings"])}
+    for descriptor_index, descriptor in enumerate(datasets):
         _require(isinstance(descriptor, dict), "P86_DESCRIPTOR_INVALID")
-        binding = bindings.get(descriptor.get("record_key_sha256"))
+        record_key = descriptor.get("record_key_sha256")
+        binding = bindings.get(record_key)
         _require(binding is not None, "P86_DESCRIPTOR_BINDING_MISSING")
+        binding_index = binding_indexes[record_key]
         for field in ("dataset_id", "manifest_sha256", "record_key_sha256", "payload_sha256", "payload_size_bytes", "identity", "payload_file"):
             _require(field in descriptor, f"P86_DESCRIPTOR_MISSING:{field}")
         _require(descriptor["dataset_id"] == binding["dataset_id"] and descriptor["manifest_sha256"] == binding["manifest_sha256"], "P86_DESCRIPTOR_DATASET_MISMATCH")
-        _require(descriptor["identity"].get("request_graph_sha256") == binding["request_graph_sha256"], "P86_DESCRIPTOR_GRAPH_MISMATCH")
+        identity = descriptor["identity"]
+        observed_graph = identity.get("request_graph_sha256") if isinstance(identity, Mapping) else None
+        expected = _expected_graph_metadata(binding, binding_index)
+        if not isinstance(identity, Mapping) or observed_graph != binding["request_graph_sha256"] or not isinstance(observed_graph, str) or observed_graph.lower() != expected["sha"]:
+            _raise_descriptor_graph_mismatch(
+                descriptor_index=descriptor_index,
+                binding_index=binding_index,
+                binding=binding,
+                record_key_sha256=record_key,
+                dataset_id=descriptor.get("dataset_id"),
+                observed_request_graph_sha256=observed_graph,
+                observed_request_graph_source="descriptor_identity",
+            )
         _require(isinstance(descriptor["payload_file"], str) and Path(descriptor["payload_file"]).name == descriptor["payload_file"], "P86_PAYLOAD_DESCRIPTOR_INVALID")
 
 
@@ -338,10 +465,12 @@ def reduce_states(states: dict[str, HState]) -> dict[str, Any]:
     return result
 
 
-def _future_result(status: str, *, failed_stage: str | None = None, failure_code: str | None = None, exception_type: str | None = None) -> dict[str, Any]:
+def _future_result(status: str, *, failed_stage: str | None = None, failure_code: str | None = None, exception_type: str | None = None, diagnostic: DescriptorGraphMismatchError | None = None) -> dict[str, Any]:
     result = {"schema": RESULT_SCHEMA, "status": status, "scientific_acceptance_status": "PASS" if status == "PASS" else "FAIL", "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "mpb_execution": False, "field_payload_retained": False}
     if failed_stage is not None:
-        result.update({"failed_stage": failed_stage, "failure_code": failure_code or "P86_REDUCTION_FAILED", "exception_type": exception_type or "ValueError"})
+        result.update({"failed_stage": failed_stage, "failure_code": failure_code or (diagnostic.code if diagnostic is not None else "P86_REDUCTION_FAILED"), "exception_type": exception_type or (type(diagnostic).__name__ if diagnostic is not None else "ValueError")})
+    if diagnostic is not None:
+        result.update(diagnostic.as_diagnostic())
     return result
 
 
@@ -355,7 +484,13 @@ def main() -> int:
         states = resolve_states(bundle, bundle_path, plan)
         result = reduce_states(states)
     except Exception as exc:
-        result = _future_result("FAIL", failed_stage="bundle-or-reduction", failure_code=str(exc), exception_type=type(exc).__name__)
+        result = _future_result(
+            "FAIL",
+            failed_stage="bundle-or-reduction",
+            failure_code=exc.code if isinstance(exc, DescriptorGraphMismatchError) else str(exc),
+            exception_type=type(exc).__name__,
+            diagnostic=exc if isinstance(exc, DescriptorGraphMismatchError) else None,
+        )
     Path(result_path).write_text(json.dumps(result, sort_keys=True, separators=(",", ":"), allow_nan=False), encoding="utf-8")
     return 0
 
