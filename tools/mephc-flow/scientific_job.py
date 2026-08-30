@@ -88,6 +88,15 @@ def normalize_contract(value: Any) -> Any:
         if action == "analyze" and ("datasets" in inputs or "dataset_id" in inputs):
             normalized.extend(["private_retention", "cross_commit_dataset_read"])
         result["required_capabilities"] = normalized
+    if result.get("action") == "infrastructure" and isinstance(result.get("entrypoint"), str):
+        candidate = PurePosixPath(result["entrypoint"])
+        allowed = result.get("allowed_writes")
+        if (not candidate.is_absolute() and ".." not in candidate.parts
+                and candidate.suffix == ".py" and isinstance(allowed, list)
+                and result["entrypoint"] in allowed):
+            # Fresh Chat sometimes labels the primary infrastructure artifact
+            # as an entrypoint.  Infrastructure never executes it as Native.
+            result["entrypoint"] = None
     if str(result.get("kind", "")).casefold() != "diagnostic":
         return result
     raw_budgets = result.get("budgets") if isinstance(result.get("budgets"), dict) else {}
@@ -150,6 +159,8 @@ def validate_contract(value: Any) -> dict[str, Any]:
         raise ScientificJobError("WORK_ORDER_BUDGET_INVALID")
     if value["action"] in {"analyze", "corrective"} and any(budgets.values()):
         raise ScientificJobError("SOLVER_FREE_ANALYSIS_BUDGET_NONZERO")
+    if value["action"] == "infrastructure" and any(budgets.values()):
+        raise ScientificJobError("INFRASTRUCTURE_EXECUTION_BUDGET_NONZERO")
     if value["action"] == "acquire" and budgets["native_invocations"] != 1:
         raise ScientificJobError("ACQUISITION_INVOCATION_BUDGET_INVALID")
     capabilities = value["required_capabilities"]

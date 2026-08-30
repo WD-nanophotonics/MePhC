@@ -89,6 +89,25 @@ def test_fresh_chat_capability_aliases_reduce_to_action_budget_minimum():
     ]
 
 
+def test_infrastructure_primary_artifact_is_not_executed_as_native_entrypoint():
+    module = load_module("scientific_job_infrastructure_artifact")
+    value = contract(
+        kind="INFRASTRUCTURE", action="infrastructure",
+        entrypoint="tools/harness_fix.py", allowed_writes=["tools/harness_fix.py"],
+        budgets={"native_invocations": 0, "provider_requests": 0, "solver_executions": 0},
+        expected_output={"dataset_schema": None, "result_schema": "infra-result-v1"},
+    )
+    validated = module.validate_contract(value)
+    assert validated["entrypoint"] is None
+    with pytest.raises(module.ScientificJobError, match="ENTRYPOINT_MUST_BE_NULL"):
+        module.validate_contract({**value, "allowed_writes": ["tools/other.py"]})
+    with pytest.raises(module.ScientificJobError, match="INFRASTRUCTURE_EXECUTION_BUDGET_NONZERO"):
+        module.validate_contract({
+            **value,
+            "budgets": {"native_invocations": 1, "provider_requests": 0, "solver_executions": 0},
+        })
+
+
 def test_acquisition_may_be_result_only_but_always_requires_result_schema():
     module = load_module("scientific_job_result_only_acquisition")
     result_only = contract(
