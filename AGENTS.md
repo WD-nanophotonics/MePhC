@@ -44,6 +44,12 @@ A missing contract-declared file, a missing test, or `TESTS_FAILED` is ordinary
 implementation work; repair it locally and execute again. Do not reinterpret
 these cases as uncertain Native side effects.
 
+Before `execute`, inspect the current contract's tracked entrypoint and tests.
+If either is missing, implement it in this sandbox first. An
+`ENTRYPOINT_IMPLEMENTATION_REQUIRED`, `TEST_IMPLEMENTATION_REQUIRED`, or
+`TESTS_FAILED` response remains `READY`: repair once and invoke `execute`
+again. Never close out or escalate that local implementation state.
+
 ## Risk-based autonomy
 
 Hard invariants are limited to work-order/request/run identity, Git SHA and

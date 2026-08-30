@@ -43,10 +43,10 @@ def test_fixed_result_file_is_bounded_and_schema_advisory(tmp_path):
     assert state["stdout_sha256"] and state["stderr_sha256"]
 
 
-def test_missing_malformed_and_oversized_fail_closed_but_schema_is_advisory(tmp_path):
+def test_missing_and_malformed_fail_but_oversized_is_externalized(tmp_path):
     helper = load()
     stdout, stderr = streams(tmp_path)
-    cases = [None, b"{not-json}", b"{\"x\":\"" + b"x" * 70000 + b"\"}"]
+    cases = [None, b"{not-json}"]
     for index, content in enumerate(cases):
         result = tmp_path / f"result-{index}.json"
         if content is not None:
@@ -57,6 +57,18 @@ def test_missing_malformed_and_oversized_fail_closed_but_schema_is_advisory(tmp_
         )
         assert state["state"] == "failed"
         assert state["result_error"]
+    oversized = tmp_path / "oversized.json"
+    write_result(oversized, {"schema": "thin-result-v1", "status": "PASS", "values": list(range(20000))})
+    state = helper.finalize_child_result(
+        {"state": "running", "expected_output": {"result_schema": "thin-result-v1"}},
+        stdout, stderr, 0, result_path=oversized,
+    )
+    assert state["state"] == "succeeded"
+    assert state["result_summary"]["status"] == "PASS"
+    assert state["result_summary"]["result_externalized"] is True
+    assert state["result_artifact"]["sha256"]
+    assert state["result_artifact"]["size_bytes"] > helper.MAX_INLINE_RESULT_BYTES
+    assert state["result_warnings"] == ["result_summary_externalized"]
     wrong = tmp_path / "wrong-schema.json"
     wrong.write_text('{ "schema": "wrong", "status": "PASS" }', encoding="utf-8")
     state = helper.finalize_child_result(

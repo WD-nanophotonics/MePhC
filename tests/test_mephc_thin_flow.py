@@ -126,6 +126,62 @@ def test_tests_failed_is_local_ready_not_hard_blocked(monkeypatch, tmp_path: Pat
     assert result["native_started"] is False
 
 
+@pytest.mark.parametrize(
+    ("missing", "code"),
+    [("entrypoint", "ENTRYPOINT_IMPLEMENTATION_REQUIRED"),
+     ("test", "TEST_IMPLEMENTATION_REQUIRED")],
+)
+def test_missing_local_implementation_stays_ready_before_publish(monkeypatch, tmp_path: Path,
+                                                                 missing: str, code: str):
+    scope = paths(tmp_path)
+    scope.control.mkdir(parents=True)
+    value = contract()
+    if missing != "entrypoint":
+        entrypoint = scope.control / value["entrypoint"]
+        entrypoint.parent.mkdir(parents=True)
+        entrypoint.write_text("pass\n", encoding="utf-8")
+    if missing != "test":
+        test = scope.control / value["inputs"]["tests"][0]
+        test.parent.mkdir(parents=True, exist_ok=True)
+        test.write_text("def test_ok(): assert True\n", encoding="utf-8")
+    monkeypatch.setattr(flow, "state_view", lambda _: {"state": "READY"})
+    monkeypatch.setattr(flow, "active_contract", lambda _: ({"work_order_id": value["work_order_id"]}, value))
+    monkeypatch.setattr(flow, "publish", lambda *_: pytest.fail("must fail before publication"))
+    with pytest.raises(flow.FlowError, match=code):
+        flow.execute(scope)
+
+
+def test_oversized_terminal_result_is_reconciled_without_execution(monkeypatch, tmp_path: Path):
+    scope = paths(tmp_path)
+    scope.control.mkdir(parents=True)
+    helper_source = ROOT / "tools" / "mephc-flow" / "wsl_native_exec.py"
+    helper_target = scope.control / "tools" / "mephc-flow" / "wsl_native_exec.py"
+    helper_target.parent.mkdir(parents=True)
+    helper_target.write_bytes(helper_source.read_bytes())
+    job_id = "MEPHC-SCIENCE-" + "a" * 24
+    run_id = "MEPHC-NATIVE-" + "b" * 24
+    job = {"job_id": job_id, "native_run_id": run_id, "state": "failed",
+           "failure_code": "RESULT_SUMMARY_OVERSIZED", "actual_native_invocation_count": 1}
+    run_root = scope.state / "native-runs"
+    run_root.mkdir(parents=True)
+    (run_root / f"{run_id}.json").write_text(json.dumps({
+        "run_id": run_id, "state": "failed", "result_error": "RESULT_SUMMARY_OVERSIZED",
+        "expected_output": {"result_schema": "thin-result-v1"},
+        "actual_native_invocation_count": 1,
+    }), encoding="utf-8")
+    result_path = scope.science_state / "results" / f"{job_id}.json"
+    result_path.parent.mkdir(parents=True)
+    result_path.write_text(json.dumps({
+        "schema": "thin-result-v1", "status": "PASS", "values": list(range(20000)),
+    }), encoding="utf-8")
+    repaired = flow.reconcile_oversized_result(scope, job)
+    assert repaired["state"] == "succeeded"
+    assert repaired["reconciled_without_execution"] is True
+    assert repaired["actual_native_invocation_count"] == 1
+    assert repaired["result_summary"]["status"] == "PASS"
+    assert repaired["result_artifact"]["sha256"]
+
+
 def test_main_identity_failure_remains_hard_blocked(monkeypatch, tmp_path: Path, capsys):
     scope = paths(tmp_path)
     monkeypatch.setattr(flow, "execute", lambda _: (_ for _ in ()).throw(
@@ -348,6 +404,7 @@ def test_missing_dataset_blocks_before_native(monkeypatch, tmp_path: Path):
                       "record_key_sha256": "c" * 64}],
     })
     monkeypatch.setattr(flow, "state_view", lambda _: {"state": "READY"})
+    monkeypatch.setattr(flow, "require_local_implementation", lambda *_: None)
     monkeypatch.setattr(flow, "active_contract", lambda _: ({"work_order_id": value["work_order_id"]}, value))
     monkeypatch.setattr(flow, "publish", lambda *_: {"source_commit": "d" * 40,
                                                       "checkout": "/home/icy/checkout", "tests": []})
@@ -600,6 +657,7 @@ def test_hundred_complete_fake_provider_and_courier_cycles(monkeypatch, tmp_path
         return order(None), value
 
     monkeypatch.setattr(flow, "state_view", lambda _: {"state": "READY"})
+    monkeypatch.setattr(flow, "require_local_implementation", lambda *_: None)
     monkeypatch.setattr(flow, "active_order", order)
     monkeypatch.setattr(flow, "active_contract", validated_contract)
     monkeypatch.setattr(flow, "publish", lambda _p, value: {

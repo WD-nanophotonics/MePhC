@@ -241,6 +241,14 @@ def science_module(paths: Paths):
     return module
 
 
+def native_helper_module(paths: Paths):
+    module_path = paths.control / "tools" / "mephc-flow" / "wsl_native_exec.py"
+    spec = importlib.util.spec_from_file_location("mephc_thin_native_helper", module_path)
+    if spec is None or spec.loader is None: raise FlowError("NATIVE_HELPER_UNAVAILABLE")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
 def active_contract(paths: Paths) -> tuple[dict[str, Any], dict[str, Any]]:
     order = active_order(paths)
     module = science_module(paths)
@@ -611,6 +619,15 @@ def test_paths(contract: dict[str, Any]) -> list[str]:
         result.append(str(candidate))
     return result
 
+def require_local_implementation(paths: Paths, contract: dict[str, Any]) -> None:
+    """Keep missing implementation inputs in READY, before commit or durable jobs."""
+    for relative in test_paths(contract):
+        if not (paths.control / Path(relative)).is_file(): raise FlowError("TEST_IMPLEMENTATION_REQUIRED", relative)
+    entrypoint = contract.get("entrypoint")
+    if (contract.get("action") not in {"corrective", "infrastructure"}
+            and (not isinstance(entrypoint, str) or not (paths.control / Path(entrypoint)).is_file())):
+        raise FlowError("ENTRYPOINT_IMPLEMENTATION_REQUIRED", str(entrypoint))
+
 
 def publish(paths: Paths, contract: dict[str, Any]) -> dict[str, Any]:
     commit = scoped_commit(paths, contract)
@@ -778,11 +795,39 @@ def finish_native(paths: Paths, job: dict[str, Any], run_record: dict[str, Any])
         "actual_solver_execution_count": int(run_record.get("actual_solver_execution_count", 0)),
         "actual_dataset_record_count": int(run_record.get("actual_dataset_record_count", 0)),
         "result_summary": run_record.get("result_summary"),
+        "result_artifact": run_record.get("result_artifact"),
         "result_warnings": run_record.get("result_warnings", []),
         "completed_at": time.time(),
     }
     atomic_json(paths.state / "science-jobs" / f"{job['job_id']}.json", final)
     return execution_view(final)
+
+
+def reconcile_oversized_result(paths: Paths, job: dict[str, Any]) -> dict[str, Any]:
+    """Upgrade an old oversized-result failure without rerunning its child process."""
+    if job.get("state") != "failed" or job.get("failure_code") != "RESULT_SUMMARY_OVERSIZED":
+        return job
+    run_id = job.get("native_run_id")
+    if not isinstance(run_id, str):
+        return job
+    run_path = paths.state / "native-runs" / f"{run_id}.json"
+    run_record = read_json(run_path, None)
+    result_path = paths.science_state / "results" / f"{job['job_id']}.json"
+    if not isinstance(run_record, dict) or run_record.get("result_error") != "RESULT_SUMMARY_OVERSIZED":
+        return job
+    try:
+        expected = run_record.get("expected_output", {}).get("result_schema")
+        summary, artifact, warnings = native_helper_module(paths).load_result(result_path, expected)
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError, ValueError):
+        return job
+    repaired_run = {**run_record, "state": "succeeded", "result_summary": summary,
+                    "result_artifact": artifact, "result_warnings": warnings, "reconciled_without_execution": True}
+    repaired_run.pop("result_error", None)
+    repaired_job = {**job, "state": "succeeded", "failure_code": None, "result_summary": summary,
+                    "result_artifact": artifact, "result_warnings": warnings, "reconciled_without_execution": True}
+    for target, value in ((run_path, repaired_run),
+                          (paths.state / "science-jobs" / f"{job['job_id']}.json", repaired_job)): atomic_json(target, value)
+    return repaired_job
 
 
 def native_record(job: dict[str, Any], contract: dict[str, Any], run_id: str) -> dict[str, Any]:
@@ -845,6 +890,7 @@ def execute(paths: Paths) -> dict[str, Any]:
     if view["state"] != "READY":
         return view
     _, contract = active_contract(paths)
+    require_local_implementation(paths, contract)
     try:
         validate_input_bindings(paths, contract)
     except FlowError as exc:
@@ -1033,6 +1079,7 @@ def closeout_once(paths: Paths, requested: dict[str, str | None] | None = None) 
         job = current_job(paths, order["work_order_id"])
         if not job or job.get("state") not in TERMINAL_JOBS:
             raise FlowError("TERMINAL_JOB_REQUIRED")
+        job = reconcile_oversized_result(paths, job)
         try:
             _, contract = active_contract(paths)
         except FlowError:

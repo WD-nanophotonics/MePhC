@@ -10,7 +10,8 @@ import subprocess
 import time
 from pathlib import Path
 
-MAX_RESULT_BYTES = 65536
+MAX_INLINE_RESULT_BYTES = 65536
+MAX_RESULT_ARTIFACT_BYTES = 64 * 1024 * 1024
 def atomic(path: Path, value: dict) -> None:
     temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
     temporary.write_text(json.dumps(value, sort_keys=True) + "\n", encoding="utf-8")
@@ -25,6 +26,38 @@ def stream_stats(path: Path) -> dict[str, int | str]:
             digest.update(block)
             size += len(block)
     return {"sha256": digest.hexdigest(), "size_bytes": size}
+
+
+def load_result(path: Path, expected_schema: str | None = None) -> tuple[dict, dict, list[str]]:
+    """Load a fixed result artifact and derive a bounded Chat-facing summary."""
+    if not path.is_file():
+        raise ValueError("RESULT_FILE_MISSING")
+    stats = stream_stats(path)
+    if stats["size_bytes"] > MAX_RESULT_ARTIFACT_BYTES:
+        raise ValueError("RESULT_ARTIFACT_TOO_LARGE")
+    raw = path.read_bytes()
+    value = json.loads(raw.decode("utf-8"))
+    if not isinstance(value, dict):
+        raise ValueError("RESULT_SUMMARY_INVALID")
+    warnings = []
+    if expected_schema and value.get("schema") != expected_schema:
+        warnings.append("result_schema_mismatch")
+    artifact = {"sha256": stats["sha256"], "size_bytes": stats["size_bytes"],
+                "json_type": "object", "schema": value.get("schema")}
+    if stats["size_bytes"] <= MAX_INLINE_RESULT_BYTES:
+        return value, artifact, warnings
+    summary = {}
+    for name in sorted(value):
+        item = value[name]
+        if isinstance(item, (str, int, float, bool)) or item is None:
+            encoded = json.dumps(item, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+            if len(summary) < 32 and len(encoded) <= 2048:
+                summary[name] = item
+    summary.update({"result_externalized": True, "result_artifact_sha256": stats["sha256"],
+                    "result_artifact_size_bytes": stats["size_bytes"],
+                    "result_top_level_key_count": len(value)})
+    warnings.append("result_summary_externalized")
+    return summary, artifact, warnings
 
 
 def finalize_child_result(
@@ -59,21 +92,14 @@ def finalize_child_result(
     try:
         if result_path is None or not result_path.is_file():
             raise ValueError("RESULT_FILE_MISSING")
-        raw = result_path.read_bytes()
-        if len(raw) > MAX_RESULT_BYTES:
-            raise ValueError("RESULT_SUMMARY_OVERSIZED")
-        summary = json.loads(raw.decode("utf-8"))
-        if not isinstance(summary, dict):
-            raise ValueError("RESULT_SUMMARY_INVALID")
-        warnings = []
         expected = record.get("expected_output", {}).get("result_schema")
-        if expected and summary.get("schema") != expected:
-            warnings.append("result_schema_mismatch")
+        summary, artifact, warnings = load_result(result_path, expected)
     except (OSError, UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
         result.update({"state": "failed", "result_error": str(exc)})
         result.pop("result_summary", None)
         return result
     result.update({"state": "succeeded", "result_summary": summary,
+                   "result_artifact": artifact,
                    "result_warnings": warnings})
     return result
 
