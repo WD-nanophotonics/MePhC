@@ -1,0 +1,39 @@
+{
+  "schema": "mephc-local-affine-p98-third-scale-solver-precision-12-record-binding-plan-v1",
+  "record_count": 12,
+  "unique_record_key_count": 12,
+  "request_graph_path": "audit/local_affine/p84_third_scale_6_state_request_graph.json",
+  "request_graph_sha256": "0cb8065036bf1b9e18f1c6688c708ddffa27af49059e9bd95b2c4c592605b61e",
+  "groups": {
+    "baseline_1e7": {
+      "work_order_id": "MEPHC-LOCALAFFINE-P85-THIRD-SCALE-SIX-STATE-LIVE-ACQUISITION-20260830-449",
+      "dataset_id": "4276d93556b41344fa7a6d7b5a71ddcb31e25e3e4de990dcccbac7e7b61cbe07",
+      "manifest_sha256": "d93e7bf5177b57ecfeee575908c4cdb160cab77fb6c647848f71129f6c815761",
+      "science_source_commit": "81fbb1fb121c4ca8e6a67cd16e472ea2abbdd011",
+      "solver_configuration": {"resolution": 64, "num_bands": 6, "polarization": "TM", "eigensolver_tolerance": 1e-7, "mesh_size": 3, "deterministic": true, "phase_callback": null},
+      "records": [
+        {"state_id": "STATE_14", "role": "THIRD_PLUS_QX", "public_q": [0.00025, -0.6166666666666667], "s": 0.0, "record_key_sha256": "43e0834e18f86ef84f82ae9e7133a201399d9a422bf014f844f3931a58528fdf"},
+        {"state_id": "STATE_15", "role": "THIRD_MINUS_QX", "public_q": [-0.00025, -0.6166666666666667], "s": 0.0, "record_key_sha256": "55093f7e97ba29fc15be6065556ebc83c03f20ca285fc7f876ffdbe3543416be"},
+        {"state_id": "STATE_16", "role": "THIRD_PLUS_QY", "public_q": [0.0, -0.6164166666666667], "s": 0.0, "record_key_sha256": "c12607106ed66337ddbcc8de45d9b564db564cd94db4779a2a4e97f3f9aef9c9"},
+        {"state_id": "STATE_17", "role": "THIRD_MINUS_QY", "public_q": [0.0, -0.6169166666666667], "s": 0.0, "record_key_sha256": "d2e4bda6d3927381c5c7736d25fec7b4bb786648c1bfd58da54039ac5f5f5ac4"},
+        {"state_id": "STATE_18", "role": "THIRD_PLUS_S", "public_q": [0.0, -0.6166666666666667], "s": 0.005, "record_key_sha256": "64b6811958291e5b8d6c71bdb03f171ddbdd1f9f9961d52e625ef1b718d87af7"},
+        {"state_id": "STATE_19", "role": "THIRD_MINUS_S", "public_q": [0.0, -0.6166666666666667], "s": -0.005, "record_key_sha256": "d3d5d9f3025f41731cc02f1b3b48d0748a323d5308312459a20431eec539b60c"}
+      ]
+    },
+    "tight_1e9": {
+      "work_order_id": "MEPHC-LOCALAFFINE-P97-THIRD-SCALE-TIGHT-EIGENSOLVER-LIVE-ACQUISITION-RETRY-20260830-461",
+      "dataset_id": "28d35c6ba759ccca3cf55f3fdf50e1f20b8e1f4716d94926104788db90e49263",
+      "manifest_sha256": "917093b7b2eb953858ed8bbe44521c3982032c243678adea50460c4a1e4f1a72",
+      "science_source_commit": "6f1a05cd03a1bce4bf69164e6dbab3f477ecae36",
+      "solver_configuration": {"resolution": 64, "num_bands": 6, "polarization": "TM", "eigensolver_tolerance": 1e-9, "mesh_size": 3, "deterministic": true, "phase_callback": null},
+      "records": [
+        {"state_id": "STATE_14", "role": "THIRD_PLUS_QX", "public_q": [0.00025, -0.6166666666666667], "s": 0.0, "record_key_sha256": "2598b1043cacdf75c221cc5aaa7fef02f81de23c4f188dc6e3f58290a814ad98"},
+        {"state_id": "STATE_15", "role": "THIRD_MINUS_QX", "public_q": [-0.00025, -0.6166666666666667], "s": 0.0, "record_key_sha256": "16707574a6e366d2b64cedf9b09eb447caaac5c107e5b6ef0550304a5ef301ab"},
+        {"state_id": "STATE_16", "role": "THIRD_PLUS_QY", "public_q": [0.0, -0.6164166666666667], "s": 0.0, "record_key_sha256": "fbec88a525553327cde3e19049624bc7985215a9c85db2cc8cf88e00aa345f6b"},
+        {"state_id": "STATE_17", "role": "THIRD_MINUS_QY", "public_q": [0.0, -0.6169166666666667], "s": 0.0, "record_key_sha256": "fcda21bf34fbea166425634a3e926a96b90abe3faf4cdb947d43b563bff27c66"},
+        {"state_id": "STATE_18", "role": "THIRD_PLUS_S", "public_q": [0.0, -0.6166666666666667], "s": 0.005, "record_key_sha256": "79c8f437391859947f86c7a3c93e83ec95a987d0f73c46f6b69c9e5eba1f9737"},
+        {"state_id": "STATE_19", "role": "THIRD_MINUS_S", "public_q": [0.0, -0.6166666666666667], "s": -0.005, "record_key_sha256": "19905624480bdd8b1b58a2495b6c03c57fe44d5dddeb3ff54d1e8e2d70da4c9a"}
+      ]
+    }
+  }
+}
