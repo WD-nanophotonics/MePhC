@@ -5,6 +5,7 @@ import hashlib
 import json
 import math
 import os
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
@@ -37,6 +38,41 @@ _SOLVER_CONFIGURATION = {
     "eigensolver_tolerance": 1e-7, "mesh_size": 3,
     "deterministic": True, "phase_callback": None,
 }
+_REQUIRED_REFERENCE_CELL_FIELDS = (
+    "representation", "bloch_phase_excluded", "resolution", "spatial_shape",
+    "lattice_size", "component_order", "component_basis", "mu_contract",
+    "orientation_sign", "fractional_material_indexing_identity",
+    "reference_cell_identity",
+)
+
+
+class ReferenceCellContractDiagnosticError(ValueError):
+    """Bounded reference-cell metadata failure that preserves state context."""
+
+    def __init__(
+        self,
+        code: str,
+        *,
+        state_id: Any,
+        role: Any,
+        observed_type: str,
+        missing_fields: tuple[str, ...] = (),
+        observed_keys: tuple[str, ...] = (),
+    ) -> None:
+        self.code = code
+        self.state_id = str(state_id) if state_id is not None else "<unknown>"
+        self.role = str(role) if role is not None else None
+        self.observed_type = observed_type
+        self.missing_fields = missing_fields
+        self.observed_keys = observed_keys
+        details = [code, f"state_id={self.state_id}", f"observed_type={observed_type}"]
+        if self.role is not None:
+            details.append(f"role={self.role}")
+        if missing_fields:
+            details.append(f"missing_fields={','.join(missing_fields)}")
+        if observed_keys:
+            details.append(f"observed_keys={','.join(observed_keys)}")
+        super().__init__(";".join(details))
 
 
 def _canonical(value: Any) -> bytes:
@@ -146,7 +182,27 @@ def _validate_identity_digest(identity: dict[str, Any], binding: dict[str, Any])
     return canonical_identity
 
 
-def validate_snapshot_structure(snapshot: Any) -> None:
+def _reference_cell_contract(snapshot: Any, *, state_id: Any = None, role: Any = None) -> Mapping[str, Any]:
+    provenance = dict(getattr(snapshot, "provenance", {}))
+    reference = provenance.get("local_affine_reference_cell_contract")
+    observed_type = type(reference).__name__
+    if not isinstance(reference, Mapping):
+        code = "P71_REFERENCE_CELL_CONTRACT_MISSING" if reference is None else "P74_REFERENCE_CELL_CONTRACT_NOT_MAPPING"
+        raise ReferenceCellContractDiagnosticError(
+            code, state_id=state_id, role=role, observed_type=observed_type,
+        )
+    observed_keys = tuple(sorted(str(key) for key in reference.keys()))
+    missing_fields = tuple(sorted(set(_REQUIRED_REFERENCE_CELL_FIELDS) - set(reference)))
+    if missing_fields:
+        raise ReferenceCellContractDiagnosticError(
+            "P72_REFERENCE_CELL_FIELD_MISSING", state_id=state_id, role=role,
+            observed_type=observed_type, missing_fields=missing_fields,
+            observed_keys=observed_keys,
+        )
+    return reference
+
+
+def validate_snapshot_structure(snapshot: Any, *, state_id: Any = None, role: Any = None) -> None:
     _require(tuple(snapshot.spatial_shape) == (64, 64) and snapshot.component_count == 3, "P72_SNAPSHOT_SHAPE_INVALID")
     frequencies = np.asarray(snapshot.frequencies, dtype=float)
     raw_norms = np.asarray(snapshot.raw_norms, dtype=float)
@@ -160,9 +216,7 @@ def validate_snapshot_structure(snapshot: Any) -> None:
     _require(gram.shape == (6, 6) and bool(np.all(np.isfinite(gram))), "P72_GRAM_INVALID")
     provenance = dict(getattr(snapshot, "provenance", {}))
     _require(provenance.get("representation") == "mpb_periodic_h_l2_v1", "P72_REPRESENTATION_INVALID")
-    reference = provenance.get("local_affine_reference_cell_contract")
-    fields = ("representation", "bloch_phase_excluded", "resolution", "spatial_shape", "lattice_size", "component_order", "component_basis", "mu_contract", "orientation_sign", "fractional_material_indexing_identity", "reference_cell_identity")
-    _require(isinstance(reference, dict) and all(field in reference for field in fields), "P72_REFERENCE_CELL_FIELD_MISSING")
+    reference = _reference_cell_contract(snapshot, state_id=state_id, role=role)
     _require(reference["representation"] == "mpb_periodic_h_l2_v1" and reference["bloch_phase_excluded"] is True and reference["resolution"] == 64 and reference["spatial_shape"] == [64, 64], "P72_REFERENCE_CELL_IDENTITY_INVALID")
     _require(reference["component_order"] == "supplied final axis order" and reference["component_basis"] == "LAB_CARTESIAN" and reference["mu_contract"] == "MU1_NONMAGNETIC" and reference["orientation_sign"] == 1, "P72_REFERENCE_CELL_PHYSICS_INVALID")
 
@@ -170,7 +224,7 @@ def validate_snapshot_structure(snapshot: Any) -> None:
 def _validate_snapshot_identity(snapshot: Any, item: dict[str, Any], binding: dict[str, Any]) -> dict[str, Any]:
     identity = item["identity"]
     canonical_identity = _validate_identity_digest(identity, binding)
-    validate_snapshot_structure(snapshot)
+    validate_snapshot_structure(snapshot, state_id=identity.get("state_id"), role=identity.get("role"))
     _require(identity["payload_sha256"] == item["payload_sha256"], "P71_IDENTITY_PAYLOAD_HASH_MISMATCH")
     _require(identity["request_graph_sha256"] == hashlib.sha256(GRAPH_PATH.read_bytes()).hexdigest(), "P71_REQUEST_GRAPH_HASH_MISMATCH")
     provenance = dict(getattr(snapshot, "provenance", {}))
@@ -185,10 +239,7 @@ def _validate_snapshot_identity(snapshot: Any, item: dict[str, Any], binding: di
         _require(values.ndim == 1 and bool(np.all(np.isfinite(values))) and math.isclose(float(np.linalg.norm(values)), 1.0, rel_tol=0.0, abs_tol=1e-10), "P72_VECTOR_INVALID")
     gram = np.asarray(snapshot.gram_matrix, dtype=np.complex128)
     _require(gram.shape == (6, 6) and bool(np.all(np.isfinite(gram))), "P72_GRAM_INVALID")
-    reference = provenance.get("local_affine_reference_cell_contract")
-    _require(isinstance(reference, dict), "P71_REFERENCE_CELL_CONTRACT_MISSING")
-    reference_fields = ("representation", "bloch_phase_excluded", "resolution", "spatial_shape", "lattice_size", "component_order", "component_basis", "mu_contract", "orientation_sign", "fractional_material_indexing_identity", "reference_cell_identity")
-    _require(all(field in reference for field in reference_fields), "P72_REFERENCE_CELL_FIELD_MISSING")
+    reference = _reference_cell_contract(snapshot, state_id=identity.get("state_id"), role=identity.get("role"))
     _require(reference["representation"] == "mpb_periodic_h_l2_v1" and reference["bloch_phase_excluded"] is True and reference["resolution"] == 64 and reference["spatial_shape"] == [64, 64], "P72_REFERENCE_CELL_IDENTITY_INVALID")
     _require(reference["component_order"] == "supplied final axis order" and reference["component_basis"] == "LAB_CARTESIAN" and reference["mu_contract"] == "MU1_NONMAGNETIC" and reference["orientation_sign"] == 1, "P72_REFERENCE_CELL_PHYSICS_INVALID")
     _require(hashlib.sha256(_canonical(reference)).hexdigest() == identity["reference_cell_contract_sha256"], "P71_REFERENCE_CELL_DIGEST_MISMATCH")
@@ -302,10 +353,18 @@ def reduce_states(states: dict[str, HState]) -> dict[str, Any]:
     return result
 
 
-def _future_result(status: str, *, failed_stage: str | None = None, failure_code: str | None = None, exception_type: str | None = None) -> dict[str, Any]:
+def _future_result(status: str, *, failed_stage: str | None = None, failure_code: str | None = None, exception_type: str | None = None, diagnostic: ReferenceCellContractDiagnosticError | None = None) -> dict[str, Any]:
     result = {"schema": RESULT_SCHEMA, "status": status, "scientific_acceptance_status": "PASS" if status == "PASS" else "FAIL", "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "mpb_execution": False, "field_payload_retained": False}
     if failed_stage is not None:
         result.update({"failed_stage": failed_stage, "failure_code": failure_code or "P71_REDUCTION_FAILED", "exception_type": exception_type or "ValueError"})
+    if diagnostic is not None:
+        result.update({
+            "failed_state_id": diagnostic.state_id,
+            "reference_cell_missing_fields": ",".join(diagnostic.missing_fields),
+            "reference_cell_observed_keys": ",".join(diagnostic.observed_keys),
+        })
+        if diagnostic.observed_type != "dict" or not diagnostic.missing_fields:
+            result["reference_cell_observed_type"] = diagnostic.observed_type
     return result
 
 
@@ -320,7 +379,11 @@ def main() -> int:
         result = reduce_states(resolve_states(bundle, bundle_path, plan))
         result["provenance"] = provenance
     except Exception as exc:
-        result = _future_result("FAIL", failed_stage="bundle-or-reduction", failure_code=str(exc), exception_type=type(exc).__name__)
+        diagnostic = exc if isinstance(exc, ReferenceCellContractDiagnosticError) else None
+        result = _future_result(
+            "FAIL", failed_stage="bundle-or-reduction", failure_code=diagnostic.code if diagnostic is not None else str(exc),
+            exception_type=type(exc).__name__, diagnostic=diagnostic,
+        )
     Path(result_path).write_text(json.dumps(result, sort_keys=True, separators=(",", ":"), allow_nan=False), encoding="utf-8")
     return 0
 
