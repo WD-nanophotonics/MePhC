@@ -1,0 +1,36 @@
+{
+  "schema": "mephc-local-affine-p103-trajectory-local-coefficient-contract-v1",
+  "work_order_id": "MEPHC-LOCALAFFINE-P103-TRAJECTORY-LOCAL-COEFFICIENT-STAGE-PREPARATION-20260830-467",
+  "request_graph_path": "audit/local_affine/p2_frozen_13_state_request_graph.json",
+  "request_graph_sha256": "73df70ca5eecd728f07d6f6a954324c211366923ab5ef963107743baebc485c1",
+  "dataset_id": "ac421aedcaf748bb0367b92083298e4f4c1d8095f2b5c66b5f2c371b082c8652",
+  "manifest_sha256": "4c48e0719531848755b58d8cfed1164677fcbe61d3201165cfd87eabde79108d",
+  "bindings": [
+    {"state_id": "STATE_02", "role": "PRIMARY_PLUS_QX", "public_q": [0.001, -0.6166666666666667], "s": 0.0, "record_key_sha256": "53bc3d9464dddba0990613c03a934abad72d73d14cc9ad12745cfb163d8707f1"},
+    {"state_id": "STATE_03", "role": "PRIMARY_MINUS_QX", "public_q": [-0.001, -0.6166666666666667], "s": 0.0, "record_key_sha256": "b29debee90c407f34a9f12152e9a8c4b41466caffc12fbf99c4f687e8d33b516"},
+    {"state_id": "STATE_04", "role": "PRIMARY_PLUS_QY", "public_q": [0.0, -0.6156666666666667], "s": 0.0, "record_key_sha256": "b4c665307ff58660e86e16b2b54958b22c6a5c10c987240cf8d6bef33d5d4ee8"},
+    {"state_id": "STATE_05", "role": "PRIMARY_MINUS_QY", "public_q": [0.0, -0.6176666666666667], "s": 0.0, "record_key_sha256": "8c54126fe1aa4f7137c411d50a44847153828efd6dd4373c8eee5c47ae6e4608"},
+    {"state_id": "STATE_08", "role": "REFINED_PLUS_QX", "public_q": [0.0005, -0.6166666666666667], "s": 0.0, "record_key_sha256": "9f457757c2a33d8a3f59190343f68e471c9fa46c45078b44832ffc3f53d16ce0"},
+    {"state_id": "STATE_09", "role": "REFINED_MINUS_QX", "public_q": [-0.0005, -0.6166666666666667], "s": 0.0, "record_key_sha256": "4181c91db3c4018734fea99b3a3963d3041b7b5accb4067a665374796205071d"},
+    {"state_id": "STATE_10", "role": "REFINED_PLUS_QY", "public_q": [0.0, -0.6161666666666668], "s": 0.0, "record_key_sha256": "dc5b3afed9f4a2b551bbe4fb87803dca26bf5188e07f256bde0f9c4345f5334f"},
+    {"state_id": "STATE_11", "role": "REFINED_MINUS_QY", "public_q": [0.0, -0.6171666666666668], "s": 0.0, "record_key_sha256": "12f4fcc39346962a04026dfedd67bd7a4290fcd629d5d5f934f9f9e52fbfd434"}
+  ],
+  "solver_configuration": {"resolution": 64, "num_bands": 6, "polarization": "TM", "eigensolver_tolerance": 1e-7, "mesh_size": 3, "deterministic": true, "phase_callback": null},
+  "formulas": {
+    "grad_q_freq_x_primary": "(freq_STATE_02-freq_STATE_03)/(2*0.001)",
+    "grad_q_freq_y_primary": "(freq_STATE_04-freq_STATE_05)/(2*0.001)",
+    "grad_q_freq_x_refined": "(freq_STATE_08-freq_STATE_09)/(2*0.0005)",
+    "grad_q_freq_y_refined": "(freq_STATE_10-freq_STATE_11)/(2*0.0005)",
+    "ordinary_curvature": "-arg(det(W_CCW))/signed_area_qxqy",
+    "primary_signed_area_qxqy": 0.000002,
+    "refined_signed_area_qxqy": 0.0000005,
+    "reverse_omega_tolerance": "1e-12/abs(signed_area_qxqy)"
+  },
+  "accepted_mixed_coefficients": {"Omega_qx_s": -0.19127165880040325, "Omega_qy_s": 0.0, "partial_s_freq": 0.009029604372262634},
+  "trajectory_inputs": {
+    "science_derived_available": ["grad_q_freq", "ordinary_Berry_curvature_Omega_qx_qy", "mixed_curvature_Omega_qx_s", "mixed_curvature_Omega_qy_s", "partial_s_freq"],
+    "scenario_parameter_required": ["local_deformation_profile_or_gradient", "physical_normalization_reference_length_and_wave_speed", "trajectory_initial_conditions", "trajectory_integration_controls"]
+  },
+  "future_result_schema": "mephc-local-affine-trajectory-local-coefficient-extraction-v1",
+  "future_budget": {"native_invocations": 1, "provider_requests": 0, "solver_executions": 0}
+}
