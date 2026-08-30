@@ -124,6 +124,17 @@ def solver_free_reduction_ready(record_count: int, rank1_pass: bool) -> bool:
     return record_count == 13 and rank1_pass
 
 
+def validate_acquisition_budgets(budgets: Any) -> bool:
+    require(
+        isinstance(budgets, dict)
+        and budgets.get("native_invocations") == 1
+        and budgets.get("provider_requests") == 13
+        and budgets.get("solver_executions") == 13,
+        "ACQUISITION_BUDGET_NOT_1_13_13",
+    )
+    return True
+
+
 def vector_digest(vectors: Any) -> str:
     values = [[[float(item.real), float(item.imag)] for item in np.asarray(vector, dtype=np.complex128)] for vector in vectors]
     return hashlib.sha256(canonical(values)).hexdigest()
@@ -172,7 +183,7 @@ def main() -> int:
     bundle = load_bundle()
     graph, graph_sha = load_graph(bundle)
     budgets = bundle.get("budgets") or (bundle.get("contract") or {}).get("budgets") or (bundle.get("inputs") or {}).get("budgets")
-    require(isinstance(budgets, dict) and budgets.get("native_invocations") == 13 and budgets.get("provider_requests") == 13 and budgets.get("solver_executions") == 13, "ACQUISITION_BUDGET_NOT_THIRTEEN")
+    validate_acquisition_budgets(budgets)
     source_commit = os.environ.get("MEPHC_SOURCE_COMMIT")
     require(isinstance(source_commit, str) and source_commit, "SCIENCE_SOURCE_COMMIT_MISSING")
     namespace = supplied_namespace(bundle)
