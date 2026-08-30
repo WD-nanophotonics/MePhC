@@ -111,7 +111,17 @@ def test_compare_reports_two_independent_groups_and_descriptive_ratios(monkeypat
         states[role] = SimpleNamespace(identity=identity, ambient_dimension=2, rank=1, vector_for_band=lambda _: np.array([1.0 + 0j, 0j]), frequency_for_band=lambda _: 1.0)
     baseline_values = {"omega_qx_s": -0.19123609378280565, "omega_qy_s": 0.00023419912224820208, "domega_ds": 0.009029822613718097, "forward_wilson_phase_baseline_qx": 4.780902344570142e-07, "forward_wilson_phase_baseline_qy": -5.854978056205052e-10}
     baseline_values.update({"reverse_wilson_phase_baseline_qx": -4.780902344570142e-07, "reverse_wilson_phase_baseline_qy": 5.854978056205052e-10})
+    baseline_values.update({
+        "minimum_link_singular_value_baseline_qx": 0.99, "minimum_link_singular_value_baseline_qy": 0.99,
+        "maximum_link_principal_angle_baseline_qx": 0.1, "maximum_link_principal_angle_baseline_qy": 0.1,
+    })
     tight_values = dict(baseline_values)
+    for field in (
+        "forward_wilson_phase_baseline_qx", "forward_wilson_phase_baseline_qy",
+        "minimum_link_singular_value_baseline_qx", "minimum_link_singular_value_baseline_qy",
+        "maximum_link_principal_angle_baseline_qx", "maximum_link_principal_angle_baseline_qy",
+    ):
+        tight_values[field.replace("baseline", "tight")] = tight_values.pop(field)
     tight_values["omega_qx_s"] += 1e-6
     tight_values["omega_qy_s"] += 1e-7
     tight_values["domega_ds"] += 1e-7

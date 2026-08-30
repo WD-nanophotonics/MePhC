@@ -238,6 +238,50 @@ def _fidelity(left: HState, right: HState) -> tuple[float, float]:
     return float(fidelity), float(1.0 - fidelity * fidelity)
 
 
+def _direct_comparison(value: float, reference: float) -> str:
+    return "SMALLER" if value < reference else "LARGER" if value > reference else "EQUAL"
+
+
+def project_result_scalars(result: dict[str, Any]) -> dict[str, Any]:
+    baseline = result["baseline"]
+    tight = result["tight"]
+    result.update({
+        "baseline_omega_qx_s": baseline["omega_qx_s"], "tight_omega_qx_s": tight["omega_qx_s"],
+        "baseline_omega_qy_s": baseline["omega_qy_s"], "tight_omega_qy_s": tight["omega_qy_s"],
+        "baseline_domega_ds": baseline["domega_ds"], "tight_domega_ds": tight["domega_ds"],
+        "baseline_forward_phase_qx": baseline["forward_wilson_phase_baseline_qx"], "tight_forward_phase_qx": tight["forward_wilson_phase_tight_qx"],
+        "baseline_forward_phase_qy": baseline["forward_wilson_phase_baseline_qy"], "tight_forward_phase_qy": tight["forward_wilson_phase_tight_qy"],
+    })
+    result["solver_abs_delta_qx_s"] = result["solver_precision_absolute_difference"]["qx_s"]
+    result["solver_abs_delta_qy_s"] = result["solver_precision_absolute_difference"]["qy_s"]
+    result["solver_abs_delta_domega_ds"] = result["solver_precision_absolute_difference"]["domega_ds"]
+    result["solver_abs_delta_forward_phase_qx"] = abs(result["tight_forward_phase_qx"] - result["baseline_forward_phase_qx"])
+    result["solver_abs_delta_forward_phase_qy"] = abs(result["tight_forward_phase_qy"] - result["baseline_forward_phase_qy"])
+    relative = result["solver_precision_symmetric_relative_difference"]
+    result.update({"solver_relative_delta_qx_s": relative["qx_s"], "solver_relative_delta_qy_s": relative["qy_s"], "solver_relative_delta_domega_ds": relative["domega_ds"]})
+    ratios = result["solver_sensitivity_to_geometric_refinement_ratio"]
+    result.update({"solver_to_geometric_ratio_qx_s": ratios["qx_s"], "solver_to_geometric_ratio_qy_s": ratios["qy_s"], "solver_to_geometric_ratio_domega_ds": ratios["domega_ds"]})
+    result.update({
+        "solver_vs_geometric_qx_s": _direct_comparison(result["solver_abs_delta_qx_s"], _P91_REFINEMENT["qx_s"]),
+        "solver_vs_geometric_qy_s": _direct_comparison(result["solver_abs_delta_qy_s"], _P91_REFINEMENT["qy_s"]),
+        "solver_vs_geometric_domega_ds": _direct_comparison(result["solver_abs_delta_domega_ds"], _P91_REFINEMENT["domega_ds"]),
+        "solver_phase_delta_to_baseline_abs_qx": result["solver_abs_delta_forward_phase_qx"] / abs(result["baseline_forward_phase_qx"]) if result["baseline_forward_phase_qx"] != 0.0 else None,
+        "solver_phase_delta_to_baseline_abs_qy": result["solver_abs_delta_forward_phase_qy"] / abs(result["baseline_forward_phase_qy"]) if result["baseline_forward_phase_qy"] != 0.0 else None,
+    })
+    max_infidelity_role = max(result["statewise_infidelity"], key=lambda role: (result["statewise_infidelity"][role], role))
+    max_frequency_role = max(result["frequency_difference_absolute"], key=lambda role: (result["frequency_difference_absolute"][role], role))
+    result["maximum_infidelity_state_id"] = max_infidelity_role
+    result["maximum_infidelity_role"] = max_infidelity_role
+    result["maximum_absolute_frequency_difference_state_id"] = max_frequency_role
+    result["maximum_absolute_frequency_difference_role"] = max_frequency_role
+    for axis in ("qx", "qy"):
+        result[f"baseline_minimum_link_singular_value_{axis}"] = baseline[f"minimum_link_singular_value_baseline_{axis}"]
+        result[f"tight_minimum_link_singular_value_{axis}"] = tight[f"minimum_link_singular_value_tight_{axis}"]
+        result[f"baseline_maximum_link_principal_angle_{axis}"] = baseline[f"maximum_link_principal_angle_baseline_{axis}"]
+        result[f"tight_maximum_link_principal_angle_{axis}"] = tight[f"maximum_link_principal_angle_tight_{axis}"]
+    return result
+
+
 def compare_groups(baseline: Mapping[str, HState], tight: Mapping[str, HState], baseline_plan: Mapping[str, Any], tight_plan: Mapping[str, Any]) -> dict[str, Any]:
     for role in ("THIRD_PLUS_QX", "THIRD_MINUS_QX", "THIRD_PLUS_QY", "THIRD_MINUS_QY", "THIRD_PLUS_S", "THIRD_MINUS_S"):
         require(baseline[role].identity.public_q == tight[role].identity.public_q and baseline[role].identity.s == tight[role].identity.s, "P98_PAIR_COORDINATE_MISMATCH")
@@ -262,7 +306,7 @@ def compare_groups(baseline: Mapping[str, HState], tight: Mapping[str, HState], 
     refinement = {"omega_qx_s": _P91_REFINEMENT["qx_s"], "omega_qy_s": _P91_REFINEMENT["qy_s"], "domega_ds": _P91_REFINEMENT["domega_ds"]}
     ratios = {label: (None if refinement[label] <= 0.0 else differences[label] / refinement[label]) for label in differences}
     labels = {"qx_s": "omega_qx_s", "qy_s": "omega_qy_s", "domega_ds": "domega_ds"}
-    return {
+    return project_result_scalars({
         "schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "state_pair_count": 6, "configuration_count": 2, "rank1_band_index": 0,
         "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "mpb_execution": False, "field_payload_retained": False,
         "baseline": baseline_reduction, "tight": tight_reduction, "frequency_difference_tight_minus_baseline": frequency_differences,
@@ -271,7 +315,7 @@ def compare_groups(baseline: Mapping[str, HState], tight: Mapping[str, HState], 
         "solver_precision_absolute_difference": {name: differences[source] for name, source in labels.items()},
         "solver_precision_symmetric_relative_difference": {name: relative[source] for name, source in labels.items()},
         "solver_sensitivity_to_geometric_refinement_ratio": {name: ratios[source] for name, source in labels.items()},
-    }
+    })
 
 
 def failure_result(exc: Exception, *, provider_count: int = 0, solver_count: int = 0, dataset_count: int = 0) -> dict[str, Any]:
