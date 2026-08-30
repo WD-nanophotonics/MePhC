@@ -99,25 +99,33 @@ def test_infrastructure_primary_artifact_is_not_executed_as_native_entrypoint():
     )
     validated = module.validate_contract(value)
     assert validated["entrypoint"] is None
-    with pytest.raises(module.ScientificJobError, match="ENTRYPOINT_MUST_BE_NULL"):
-        module.validate_contract({**value, "allowed_writes": ["tools/other.py"]})
-    with pytest.raises(module.ScientificJobError, match="INFRASTRUCTURE_EXECUTION_BUDGET_NONZERO"):
-        module.validate_contract({
-            **value,
-            "budgets": {"native_invocations": 1, "provider_requests": 0, "solver_executions": 0},
-        })
+    assert module.validate_contract({**value, "allowed_writes": ["tools/other.py"]})["entrypoint"] is None
+    executable = module.validate_contract({
+        **value,
+        "budgets": {"native_invocations": 1, "provider_requests": 1, "solver_executions": 1},
+    })
+    assert executable["kind"] == "SCIENCE"
+    assert executable["action"] == "acquire"
+    assert executable["entrypoint"] == "tools/harness_fix.py"
+    assert executable["budgets"] == {
+        "native_invocations": 1,
+        "provider_requests": 1,
+        "solver_executions": 1,
+    }
 
 
 def test_zero_budget_infrastructure_named_analyze_is_solver_free_infrastructure():
     module = load_module("scientific_job_infrastructure_analyze_alias")
     value = contract(
-        kind="INFRASTRUCTURE", action="analyze", entrypoint=None,
+        kind="INFRASTRUCTURE", action="analyze",
+        entrypoint="audit/local_affine/stale_science_entrypoint.py",
         allowed_writes=[],
         budgets={"native_invocations": 0, "provider_requests": 0, "solver_executions": 0},
         expected_output={"dataset_schema": None, "result_schema": None},
     )
     validated = module.validate_contract(value)
     assert validated["action"] == "infrastructure"
+    assert validated["entrypoint"] is None
 
 
 def test_tagged_null_entrypoint_is_literal_null_for_infrastructure():
@@ -132,7 +140,6 @@ def test_tagged_null_entrypoint_is_literal_null_for_infrastructure():
     )
     validated = module.validate_contract(value)
     assert validated["action"] == "infrastructure"
-    assert validated["entrypoint"] is None
     assert validated["entrypoint"] is None
 
 

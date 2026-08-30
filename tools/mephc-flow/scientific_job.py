@@ -70,16 +70,32 @@ def normalize_contract(value: Any) -> Any:
     if not isinstance(value, dict) or value.get("schema") != CONTRACT_SCHEMA:
         return value
     result = json.loads(json.dumps(value))
-    if result.get("entrypoint") == {"type": "null", "value": None}:
+    tagged_entrypoint = result.get("entrypoint")
+    if (isinstance(tagged_entrypoint, dict)
+            and tagged_entrypoint.get("type") == "null"
+            and tagged_entrypoint.get("value") is None):
         # Fresh Chat may emit an explicitly tagged JSON null. It has the same
         # bounded meaning as a literal null and never names executable code.
         result["entrypoint"] = None
     raw_budgets = result.get("budgets") if isinstance(result.get("budgets"), dict) else {}
-    if (result.get("kind") == "INFRASTRUCTURE"
-            and all(raw_budgets.get(name) == 0 for name in (
-                "native_invocations", "provider_requests", "solver_executions"
-            ))):
-        result["action"] = "infrastructure"
+    if result.get("kind") == "INFRASTRUCTURE":
+        if raw_budgets.get("native_invocations") == 1:
+            # Some fresh-Chat corrective orders use INFRASTRUCTURE for a
+            # bounded harness repair that must then perform one scientific
+            # recertification. Preserve its explicit budget and fixed entrypoint,
+            # but normalize the executable transaction to SCIENCE/acquire.
+            result["original_work_order_class"] = "INFRASTRUCTURE"
+            result["kind"] = "SCIENCE"
+            result["action"] = "acquire"
+        else:
+            result["action"] = "infrastructure"
+            # A true infrastructure order only runs its declared tests.
+            result["entrypoint"] = None
+            result["budgets"] = {
+                "native_invocations": 0,
+                "provider_requests": 0,
+                "solver_executions": 0,
+            }
     if (result.get("action") == "analyze" and isinstance(result.get("budgets"), dict)
             and result["budgets"].get("native_invocations") == 1):
         # An explicit Native reservation is stronger and safer than Chat's
@@ -158,8 +174,14 @@ def validate_contract(value: Any) -> dict[str, Any]:
         relative = PurePosixPath(entrypoint)
         if relative.is_absolute() or ".." in relative.parts or relative.suffix != ".py":
             raise ScientificJobError("WORK_ORDER_ENTRYPOINT_INVALID")
-    elif entrypoint is not None:
+    elif entrypoint is not None and not (
+        isinstance(entrypoint, dict)
+        and entrypoint.get("type") == "null"
+        and entrypoint.get("value") is None
+    ):
         raise ScientificJobError("INFRASTRUCTURE_ENTRYPOINT_MUST_BE_NULL")
+    elif entrypoint is not None:
+        value["entrypoint"] = None
     if not isinstance(value["inputs"], dict):
         raise ScientificJobError("WORK_ORDER_INPUTS_INVALID")
     budgets = value["budgets"]
