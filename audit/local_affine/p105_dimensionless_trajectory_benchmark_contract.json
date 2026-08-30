@@ -1,0 +1,88 @@
+{
+  "schema": "mephc-local-affine-p105-dimensionless-trajectory-benchmark-contract-v1",
+  "work_order_id": "MEPHC-LOCALAFFINE-P105-DIMENSIONLESS-TRAJECTORY-BENCHMARK-AND-E10E-DYNAMICS-CLOSURE-20260830-469",
+  "classification": "CANONICAL_DIMENSIONLESS_VALIDATION_ONLY_NOT_A_PHYSICAL_DEVICE_PREDICTION",
+  "source_provenance": {
+    "p64_work_order_id": "MEPHC-LOCALAFFINE-P64-FROZEN-13-STATE-LIVE-ACQUISITION-20260830-428",
+    "p103_semantics": "audit/local_affine/p103_local_trajectory_coefficient_contract.json",
+    "e10e_kernel_contract": "audit/e10e/phase_space_trajectory_kernel_contract.json",
+    "production_rhs": "mephc.phase_space_dynamics.integrate_trajectory"
+  },
+  "coefficient_reconstruction": {
+    "records": ["STATE_02", "STATE_03", "STATE_04", "STATE_05", "STATE_08", "STATE_09", "STATE_10", "STATE_11"],
+    "rank1_band_index": 0,
+    "primary_h_q": 0.001,
+    "refined_h_q": 0.0005,
+    "gradient_formulas": {
+      "primary_x": "(freq_STATE_02-freq_STATE_03)/(2*0.001)",
+      "primary_y": "(freq_STATE_04-freq_STATE_05)/(2*0.001)",
+      "refined_x": "(freq_STATE_08-freq_STATE_09)/(2*0.0005)",
+      "refined_y": "(freq_STATE_10-freq_STATE_11)/(2*0.0005)"
+    },
+    "ordinary_curvature": {
+      "loop": "PLUS_QX -> PLUS_QY -> MINUS_QX -> MINUS_QY -> PLUS_QX",
+      "formula": "-principal_arg(det(W_CCW))/(2*h_q*h_q)",
+      "reverse_check": "reverse_phase=-forward_phase; reverse_omega=-forward_omega",
+      "no_phase_unwrapping": true
+    },
+    "certified_mixed_coefficients": {
+      "omega_qx_s": -0.19127165880040325,
+      "omega_qy_s": 0.0,
+      "partial_s_freq": 0.009029604372262634
+    }
+  },
+  "normalization": {
+    "rho": "rho=r/a_ref",
+    "q": "q=a_ref*k_phys/(2*pi)",
+    "tau": "tau=c_ref*t/a_ref",
+    "omega_phys": "omega_phys=2*pi*c_ref*freq_normalized/a_ref",
+    "group_velocity": "v_g=c_ref*grad_q(freq_normalized)",
+    "dimensionless_units": "a_ref=c_ref=1 only as dimensionless benchmark units",
+    "sign_and_factor_regression": "q_to_k=2*pi/a_ref; k_to_q=a_ref/(2*pi); v_g has positive sign"
+  },
+  "scenario_selection": {
+    "seed": {
+      "rho_initial": [0.0, 0.0],
+      "q_initial": [0.0, -0.6166666666666667],
+      "deformation_gradient_rho": [0.001, 0.0],
+      "tau_start": 0.0,
+      "tau_stop": 1.0,
+      "rk4_steps": 100
+    },
+    "deterministic_reduction": "tau_stop candidates 1,0.5,0.25,0.125,0.0625, then gradient powers of two",
+    "final": {
+      "reference_length_a": 1.0,
+      "reference_wave_speed_c": 1.0,
+      "rho_initial": [0.0, 0.0],
+      "q_initial": [0.0, -0.6166666666666667],
+      "deformation_gradient_rho": [0.001, 0.0],
+      "tau_start": 0.0,
+      "tau_stop": 0.5,
+      "rk4_steps": 100
+    },
+    "selection_reason": "tau_stop=1 exits the declared rho local envelope; tau_stop=0.5 is the first deterministic candidate within it"
+  },
+  "local_domain_rule": {
+    "a_over_L_def": "a_ref*norm(grad_rho_s)",
+    "a_times_grad_s": "a_ref*norm(grad_rho_s)",
+    "rho_norm_max": 0.05,
+    "abs_s_max": 0.05,
+    "rule": "all observed values must be <=0.05"
+  },
+  "controls": {
+    "zero_gradient": "grad_rho_s=[0,0]",
+    "Omega_qx_qy_off": "ordinary curvature set to zero while mixed coefficients remain",
+    "Omega_qs_off": "Omega_qx_s,Omega_qy_s,partial_s_freq set to zero while ordinary curvature remains"
+  },
+  "trajectory": {
+    "equations": ["(I-Omega_rk)k_dot=-grad_r_omega", "(I+Omega_kr)r_dot=v_g-Omega_kk*k_dot"],
+    "integrator": "CLASSICAL_RK4_FIXED_STEP_V1",
+    "rhs_requirement": "every RK4 RHS evaluation calls mephc.phase_space_dynamics.integrate_trajectory production primitive",
+    "analytic_reference": "independent constant-coefficient closed-form linear endpoint",
+    "observables": ["terminal rho", "terminal q", "transverse displacement", "longitudinal displacement", "scale differences", "counterfactual differences", "analytic-numeric residual", "maximum qx/qy/s excursion"]
+  },
+  "future_result_schema": "mephc-local-affine-dimensionless-trajectory-benchmark-v1",
+  "future_budget": {"native_invocations": 1, "provider_requests": 0, "solver_executions": 0, "dataset_writes": 0},
+  "future_runtime_mutates_tracked_files": false,
+  "no_physical_prediction": true
+}
