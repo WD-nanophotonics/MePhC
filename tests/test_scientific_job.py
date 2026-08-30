@@ -53,6 +53,26 @@ def test_contract_is_tolerant_and_execution_intent_is_content_addressed():
     assert "invalid_budget_reduced_to_zero" in negative["contract_warnings"]
 
 
+def test_query_preferences_are_soft_normalized_and_do_not_change_execution_identity():
+    module = load_module("scientific_job_query_preferences")
+    base = module.validate_contract(contract())
+    preferred = module.validate_contract(contract(query_preferences={
+        "task_difficulty": "challenge", "instruction_level": "manual_book",
+        "report_policy": "milestone",
+    }))
+    assert preferred["query_preferences"] == {
+        "task_difficulty": "challenge", "instruction_level": "manual_book",
+        "report_policy": "milestone",
+    }
+    assert preferred["contract_sha256"] == base["contract_sha256"]
+    invalid = module.validate_contract(contract(query_preferences={
+        "task_difficulty": "impossible", "report_policy": 7,
+    }))
+    assert invalid["query_preferences"] == {}
+    assert "invalid_query_preference_ignored:task_difficulty" in invalid["contract_warnings"]
+    assert "invalid_query_preference_ignored:report_policy" in invalid["contract_warnings"]
+
+
 def test_minimal_identity_contract_becomes_zero_execution_clarification():
     module = load_module("scientific_job_minimal_contract")
     normalized = module.validate_contract({

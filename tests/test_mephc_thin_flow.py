@@ -57,6 +57,13 @@ def test_public_cli_is_only_four_commands():
         with pytest.raises(SystemExit):
             parser.parse_args([retired])
 
+    selected = parser.parse_args([
+        "closeout", "--task-difficulty", "challenge",
+        "--instruction-level", "manual_book", "--report-policy", "milestone",
+    ])
+    assert (selected.task_difficulty, selected.instruction_level, selected.report_policy) == (
+        "challenge", "manual_book", "milestone")
+
 
 def test_closeout_launcher_is_zero_argument_and_fixed():
     launcher = (ROOT / "mephc-closeout.cmd").read_text(encoding="utf-8").lower()
@@ -222,6 +229,77 @@ def test_production_coordinator_has_no_historical_special_cases():
     assert len(source.splitlines()) <= 1200
     for token in ("d9r1", "reconcile_r8", "supervision_batch_review_required", "closeout_blocked"):
         assert token not in source
+
+
+@pytest.mark.parametrize("difficulty", ["normal", "hard", "challenge"])
+@pytest.mark.parametrize("detail", ["normal", "detailed", "manual_book"])
+def test_query_preference_explicit_matrix_overrides_contract(difficulty: str, detail: str):
+    value = contract(query_preferences={
+        "task_difficulty": "normal", "instruction_level": "normal",
+        "report_policy": "final-only",
+    })
+    selected = flow.adaptive_query_preferences(value, {
+        "work_order_id": value["work_order_id"], "action": "acquire", "state": "succeeded",
+    }, {
+        "task_difficulty": difficulty, "instruction_level": detail,
+        "report_policy": "milestone",
+    })
+    assert selected == {
+        "task_difficulty": difficulty, "instruction_level": detail,
+        "report_policy": "milestone",
+    }
+
+
+def test_query_preference_precedence_and_adaptive_modes():
+    ordinary = {"work_order_id": "MEPHC-SCIENCE-P1", "action": "acquire", "state": "succeeded"}
+    assert flow.adaptive_query_preferences(None, ordinary, {}) == {
+        "task_difficulty": "hard", "instruction_level": "detailed",
+        "report_policy": "milestone",
+    }
+    corrective = {"work_order_id": "MEPHC-P2-RECERTIFICATION", "action": "corrective",
+                  "state": "succeeded"}
+    assert flow.adaptive_query_preferences(None, corrective, {}) == {
+        "task_difficulty": "challenge", "instruction_level": "manual_book",
+        "report_policy": "milestone",
+    }
+    ambiguous = {"work_order_id": "MEPHC-SCIENCE-P3", "action": "acquire", "state": "blocked",
+                 "actual_native_invocation_count": 0}
+    assert flow.adaptive_query_preferences(None, ambiguous, {})["instruction_level"] == "manual_book"
+    declared = contract(query_preferences={
+        "task_difficulty": "normal", "instruction_level": "normal",
+        "report_policy": "per-work-order",
+    })
+    assert flow.adaptive_query_preferences(declared, ordinary, {}) == declared["query_preferences"]
+    selected = flow.adaptive_query_preferences(declared, ordinary, {
+        "task_difficulty": "adaptive", "instruction_level": "detailed",
+        "report_policy": "final-only",
+    })
+    assert selected == {"task_difficulty": "normal", "instruction_level": "detailed",
+                        "report_policy": "final-only"}
+
+
+def test_query_preferences_do_not_change_fixed_request_or_report_body(monkeypatch, tmp_path: Path):
+    scope = paths(tmp_path)
+    order = {"work_order_id": "MEPHC-THIN-PREFERENCE-0001"}
+    job = {"work_order_id": order["work_order_id"], "action": "acquire", "state": "succeeded",
+           "source_commit": "a" * 40, "job_id": "MEPHC-SCIENCE-PREFERENCE",
+           "changed_files": ["audit/result.json"], "tests": ["tests/test_result.py"]}
+    monkeypatch.setattr(flow, "tracked_artifact_sha256", lambda *_: "b" * 64)
+    first = flow.canonical_report(scope, order, job, {
+        "task_difficulty": "normal", "instruction_level": "normal",
+        "report_policy": "per-work-order",
+    })
+    second = flow.canonical_report(scope, order, job, {
+        "task_difficulty": "challenge", "instruction_level": "manual_book",
+        "report_policy": "milestone",
+    })
+    assert first["request_id"] == second["request_id"]
+    assert first["message_sha256"] == second["message_sha256"]
+    text = first["message"].decode()
+    assert "CHANGED_FILES=audit/result.json" in text
+    assert f"ARTIFACT_SHA256=audit/result.json:{'b' * 64}" in text
+    assert "TESTS=tests/test_result.py" in text
+    assert "TEST_RETURN_CODE=0" in text
 
 
 def test_scoped_commit_records_advisory_scope_warning_instead_of_blocking(monkeypatch, tmp_path: Path):

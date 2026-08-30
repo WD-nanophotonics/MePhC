@@ -44,6 +44,9 @@ SHA64 = re.compile(r"^[0-9a-f]{64}$")
 WORK_ORDER = re.compile(r"^MEPHC-[A-Z0-9][A-Z0-9._-]{7,159}$")
 HARD_RECEIPTS = {"login_error", "target_error", "hard_error", "validation_failed", "request_rejected"}
 TERMINAL_JOBS = {"succeeded", "failed", "blocked"}
+TASK_DIFFICULTIES = {"normal", "hard", "challenge", "adaptive"}
+INSTRUCTION_LEVELS = {"normal", "detailed", "manual_book", "adaptive"}
+REPORT_POLICIES = {"adaptive", "per-work-order", "milestone", "final-only"}
 HARD_INVARIANT_ERRORS = {
     "ACTIVE_RESPONSE_BINDING_INVALID", "ACTIVE_RESPONSE_SHA_MISMATCH",
     "ACTIVE_WORK_ORDER_UNAVAILABLE", "CONTROL_BRANCH_NOT_SANDBOX",
@@ -852,11 +855,14 @@ def execute(paths: Paths) -> dict[str, Any]:
     existing = read_json(job_path)
     if isinstance(existing, dict):
         return execution_view(existing)
+    commit_evidence = publication.get("commit") or {}
     base = {"schema": "mephc-thin-job-v1", "job_id": identifier,
             "work_order_id": contract["work_order_id"], "contract_sha256": contract["contract_sha256"],
             "source_commit": publication["source_commit"], "action": contract["action"],
             "contract_warnings": contract.get("contract_warnings", []),
-            "scope_warnings": (publication.get("commit") or {}).get("scope_warnings", []),
+            "scope_warnings": commit_evidence.get("scope_warnings", []),
+            "changed_files": commit_evidence.get("changed_files", []),
+            "tests": publication.get("tests", []),
             "actual_native_invocation_count": 0, "actual_provider_execution_count": 0,
             "actual_solver_execution_count": 0, "actual_dataset_record_count": 0,
             "created_at": time.time()}
@@ -895,7 +901,51 @@ def fixed_request_id(work_order_id: str) -> tuple[str, str]:
     return "MEPHC-FLOW-" + key[:24], key
 
 
-def canonical_report(paths: Paths, order: dict[str, Any], job: dict[str, Any]) -> dict[str, Any]:
+def adaptive_query_preferences(contract: dict[str, Any] | None, job: dict[str, Any],
+                               requested: dict[str, str | None]) -> dict[str, str]:
+    declared = contract.get("query_preferences", {}) if isinstance(contract, dict) else {}
+    work_order = str(job.get("work_order_id", "")).upper()
+    action = str(job.get("action", "")).casefold()
+    corrective = (action in {"corrective", "infrastructure"}
+                  or any(word in work_order for word in ("CORRECTIVE", "DIAGNOSTIC", "RECERTIFICATION")))
+    ambiguity = (job.get("state") == "blocked" and actual_counts(job)["native_invocation"] == 0)
+    defaults = {
+        "task_difficulty": "challenge" if corrective else "hard",
+        "instruction_level": "manual_book" if corrective or ambiguity else "detailed",
+        "report_policy": "milestone",
+    }
+    choices = {
+        "task_difficulty": TASK_DIFFICULTIES,
+        "instruction_level": INSTRUCTION_LEVELS,
+        "report_policy": REPORT_POLICIES,
+    }
+    result = {}
+    for name in choices:
+        selected = requested.get(name)
+        if selected in {None, "adaptive"}:
+            selected = declared.get(name)
+        if selected in {None, "adaptive"} or selected not in choices[name]:
+            selected = defaults[name]
+        result[name] = selected
+    return result
+
+
+def tracked_artifact_sha256(paths: Paths, source_commit: str, relative: str) -> str | None:
+    candidate = PurePosixPath(relative)
+    if candidate.is_absolute() or ".." in candidate.parts:
+        return None
+    argv = ["git", "-c", f"safe.directory={paths.control}", "-C", str(paths.control),
+            "cat-file", "blob", f"{source_commit}:{relative}"]
+    try:
+        completed = subprocess.run(argv, capture_output=True, timeout=30,
+                                   creationflags=CREATE_NO_WINDOW)
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    return hashlib.sha256(completed.stdout).hexdigest() if completed.returncode == 0 else None
+
+
+def canonical_report(paths: Paths, order: dict[str, Any], job: dict[str, Any],
+                     preferences: dict[str, str]) -> dict[str, Any]:
     request_id, key = fixed_request_id(order["work_order_id"])
     counts = actual_counts(job)
     kind = "complete" if job.get("state") == "succeeded" else "blocked"
@@ -913,6 +963,19 @@ def canonical_report(paths: Paths, order: dict[str, Any], job: dict[str, Any]) -
         lines.append("SCOPE_WARNINGS=" + ",".join(job["scope_warnings"]))
     if job.get("result_warnings"):
         lines.append("RESULT_WARNINGS=" + ",".join(job["result_warnings"]))
+    changed = [path for path in job.get("changed_files", []) if isinstance(path, str)][:16]
+    tests = [path for path in job.get("tests", []) if isinstance(path, str)][:16]
+    if changed:
+        lines.append("CHANGED_FILES=" + ",".join(changed))
+        artifacts = []
+        for path in changed:
+            value = tracked_artifact_sha256(paths, str(job.get("source_commit", "")), path)
+            if value:
+                artifacts.append(f"{path}:{value}")
+        if artifacts:
+            lines.append("ARTIFACT_SHA256=" + ",".join(artifacts))
+    if tests:
+        lines.extend(["TESTS=" + ",".join(tests), "TEST_RETURN_CODE=0"])
     summary = job.get("result_summary")
     if isinstance(summary, dict):
         for name, value in sorted(summary.items()):
@@ -924,7 +987,8 @@ def canonical_report(paths: Paths, order: dict[str, Any], job: dict[str, Any]) -
     retry_message = ("\n".join(retry_lines) + "\n").encode()
     return {"request_id": request_id, "request_hash": key, "work_order_id": order["work_order_id"],
             "kind": kind, "message": message, "message_sha256": digest(message),
-            "retry_message": retry_message, "retry_message_sha256": digest(retry_message)}
+            "retry_message": retry_message, "retry_message_sha256": digest(retry_message),
+            **preferences}
 
 
 def courier(paths: Paths, operation: str, directory: Path) -> subprocess.CompletedProcess[str]:
@@ -947,7 +1011,8 @@ def create_request(paths: Paths, report: dict[str, Any]) -> Path:
         "version": 1, "project_id": PROJECT_ID, "request_id": report["request_id"],
         "message_file": "message.txt", "retry_message_file": "retry-message.txt",
         "attachments": [], "workflow_window_seconds": 600,
-        "queue_wait_seconds": 3600, "task_difficulty": "normal", "instruction_level": "normal",
+        "queue_wait_seconds": 3600, "task_difficulty": report["task_difficulty"],
+        "instruction_level": report["instruction_level"], "report_policy": report["report_policy"],
         "flow_schema": "mephc-fixed-closeout-v2", "work_order_id": report["work_order_id"],
         "report_kind": report["kind"], "message_sha256": report["message_sha256"],
         "retry_message_sha256": report["retry_message_sha256"],
@@ -961,14 +1026,19 @@ def create_request(paths: Paths, report: dict[str, Any]) -> Path:
     return directory
 
 
-def closeout_once(paths: Paths) -> dict[str, Any]:
+def closeout_once(paths: Paths, requested: dict[str, str | None] | None = None) -> dict[str, Any]:
     order = active_order(paths)
     directory = request_for_work_order(paths, order["work_order_id"])
     if directory is None:
         job = current_job(paths, order["work_order_id"])
         if not job or job.get("state") not in TERMINAL_JOBS:
             raise FlowError("TERMINAL_JOB_REQUIRED")
-        directory = create_request(paths, canonical_report(paths, order, job))
+        try:
+            _, contract = active_contract(paths)
+        except FlowError:
+            contract = None
+        preferences = adaptive_query_preferences(contract, job, requested or {})
+        directory = create_request(paths, canonical_report(paths, order, job, preferences))
     summary = request_summary(directory)
     if summary["receipt_state"] in HARD_RECEIPTS:
         return {"state": "HARD_BLOCKED", **summary, "safe_next": None}
@@ -1018,16 +1088,20 @@ def closeout_once(paths: Paths) -> dict[str, Any]:
             "safe_next": "closeout"}
 
 
-def closeout(paths: Paths) -> dict[str, Any]:
+def closeout(paths: Paths, requested: dict[str, str | None] | None = None) -> dict[str, Any]:
     """Run one bounded recovery ladder for the fixed request."""
-    return closeout_once(paths)
+    return closeout_once(paths, requested)
 
 
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(prog="mephc-flow")
     commands = result.add_subparsers(dest="command", required=True)
-    for name in ("status", "resume", "execute", "closeout"):
+    for name in ("status", "resume", "execute"):
         commands.add_parser(name)
+    closeout_command = commands.add_parser("closeout")
+    closeout_command.add_argument("--task-difficulty", choices=sorted(TASK_DIFFICULTIES))
+    closeout_command.add_argument("--instruction-level", choices=sorted(INSTRUCTION_LEVELS))
+    closeout_command.add_argument("--report-policy", choices=sorted(REPORT_POLICIES))
     return result
 
 
@@ -1060,8 +1134,13 @@ def main(argv: list[str] | None = None, paths: Paths | None = None) -> int:
     args = parser().parse_args(argv)
     scope = paths or Paths()
     try:
-        value = {"status": state_view, "resume": resume, "execute": execute,
-                 "closeout": closeout}[args.command](scope)
+        if args.command == "closeout":
+            value = closeout(scope, {"task_difficulty": args.task_difficulty,
+                                     "instruction_level": args.instruction_level,
+                                     "report_policy": args.report_policy})
+        else:
+            value = {"status": state_view, "resume": resume,
+                     "execute": execute}[args.command](scope)
         print(json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False))
         return 0 if value.get("state") not in {"HARD_BLOCKED"} else 2
     except FlowError as exc:

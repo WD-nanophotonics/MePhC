@@ -150,6 +150,21 @@ def normalize_contract(value: Any) -> Any:
     allowed = _strings(raw.get("allowed_writes"))
     if action != "infrastructure" and any(path.startswith("tools/mephc-flow/") for path in allowed):
         warnings.append("framework_write_outside_advisory_scope")
+    raw_query = raw.get("query_preferences") if isinstance(raw.get("query_preferences"), dict) else {}
+    query_preferences: dict[str, str] = {}
+    query_enums = {
+        "task_difficulty": {"normal", "hard", "challenge", "adaptive"},
+        "instruction_level": {"normal", "detailed", "manual_book", "adaptive"},
+        "report_policy": {"adaptive", "per-work-order", "milestone", "final-only"},
+    }
+    for name, choices in query_enums.items():
+        preference = raw_query.get(name)
+        if preference is None:
+            continue
+        if isinstance(preference, str) and preference in choices:
+            query_preferences[name] = preference
+        else:
+            warnings.append(f"invalid_query_preference_ignored:{name}")
     result = {
         "schema": CONTRACT_SCHEMA,
         "kind": "SCIENCE" if action != "infrastructure" else "INFRASTRUCTURE",
@@ -169,6 +184,7 @@ def normalize_contract(value: Any) -> Any:
         "original_work_order_class": str(raw.get("kind", "UNSPECIFIED")),
         "contract_warnings": sorted(set(warnings)),
         "raw_contract_sha256": digest(raw),
+        "query_preferences": query_preferences,
     }
     if isinstance(raw.get("parent_work_order_id"), str):
         result["parent_work_order_id"] = raw["parent_work_order_id"]

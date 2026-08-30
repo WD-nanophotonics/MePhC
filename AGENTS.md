@@ -118,6 +118,22 @@ chronologically matched reply contains a successor work-order ID. A response
 format or safety-filter failure permits one equivalent compact resend under
 the same request. It never reruns science.
 
+The zero-argument closeout uses adaptive milestone Query preferences. Ordinary
+science requests `hard + detailed + milestone`; corrective, diagnostic or
+recertification work requests `challenge + manual_book + milestone`, asking
+Chat to combine local implementation, tests and recertification with the next
+substantive objective. When a different span is genuinely useful, the same
+`closeout` command may use only these optional preference flags:
+
+```text
+--task-difficulty normal|hard|challenge|adaptive
+--instruction-level normal|detailed|manual_book|adaptive
+--report-policy adaptive|per-work-order|milestone|final-only
+```
+
+They affect only the next Query's difficulty, detail and requested span. They
+cannot change its report body, request ID, Chat target, budget or transport.
+
 Completion provenance remains:
 
 ```text
