@@ -82,6 +82,15 @@
     "observables": ["terminal rho", "terminal q", "transverse displacement", "longitudinal displacement", "scale differences", "counterfactual differences", "analytic-numeric residual", "maximum qx/qy/s excursion"]
   },
   "future_result_schema": "mephc-local-affine-dimensionless-trajectory-benchmark-v1",
+  "transport_compaction": {
+    "diagnosis": "P108 wrote a 69770-byte result artifact; the tracked validator is tools/mephc-flow/wsl_native_exec.py:load_result, which uses MAX_INLINE_RESULT_BYTES=65536 and MAX_RESULT_ARTIFACT_BYTES=67108864. The failure was serialized inline size, not top-level field count or nested scientific validity.",
+    "success_projection": "compact scalar/string fields only; omit per-step trajectories, per-link diagnostics, duplicated nested scale objects, and verbose provenance",
+    "failure_projection": "bounded schema/status/failure/budget/boolean fields",
+    "validator_path": "tools/mephc-flow/wsl_native_exec.py:load_result -> finalize_child_result",
+    "max_inline_result_bytes": 65536,
+    "max_result_artifact_bytes": 67108864,
+    "preserve_scientific_precision": true
+  },
   "future_budget": {"native_invocations": 1, "provider_requests": 0, "solver_executions": 0, "dataset_writes": 0},
   "future_runtime_mutates_tracked_files": false,
   "no_physical_prediction": true

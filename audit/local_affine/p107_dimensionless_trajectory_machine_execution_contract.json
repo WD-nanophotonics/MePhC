@@ -22,6 +22,13 @@
   "normalization": {"rho":"rho=r/a_ref","q":"q=a_ref*k_phys/(2*pi)","tau":"tau=c_ref*t/a_ref","omega_phys":"omega_phys=2*pi*c_ref*freq_normalized/a_ref","v_g":"v_g=c_ref*grad_q(freq_normalized)","dimensionless_units":"a_ref=c_ref=1 only for this validation benchmark"},
   "controls": ["zero_gradient","Omega_qx_qy_off","Omega_qs_off"],
   "required_output_fields": ["primary","refined","controls","analytic_reference","terminal_primary","terminal_refined","transverse_displacement","longitudinal_displacement","scale_differences","counterfactual_differences","analytic_numeric_residual","maximum_excursion","local_domain","normalization_regression"],
+  "result_projection": {
+    "success": ["schema","status","scientific_acceptance_status","state_count","coefficient_scale_count","rank1_band_index","native_invocation_count","provider_execution_count","solver_execution_count","dataset_record_count","mpb_execution","field_payload_retained","benchmark_classification","machine_contract_status","normalization_status","zero_gradient_control_status","mixed_off_counterfactual_status","ordinary_off_counterfactual_status","local_validity_status","trajectory_kernel_certification_status","primary_omega_qx_qy","refined_omega_qx_qy","primary_grad_q_freq_x","primary_grad_q_freq_y","refined_grad_q_freq_x","refined_grad_q_freq_y","omega_qx_s","omega_qy_s","partial_s_freq","primary_transverse_displacement","refined_transverse_displacement","primary_refined_abs_delta_transverse","primary_longitudinal_displacement","refined_longitudinal_displacement","maximum_abs_qx_excursion","maximum_abs_qy_excursion","maximum_abs_s","analytic_numeric_max_residual","final_tau_stop","final_deformation_gradient_x","final_deformation_gradient_y","source_commit_used","post_native_checkout_unchanged"],
+    "failure": ["schema","status","scientific_acceptance_status","failed_stage","failure_code","exception_type","native_invocation_count","provider_execution_count","solver_execution_count","dataset_record_count","mpb_execution","field_payload_retained"],
+    "omitted": ["per_step_trajectories","per_link_diagnostics","verbose_provenance","duplicated_nested_scale_objects"],
+    "max_inline_result_bytes": 65536,
+    "actual_validator": "tools/mephc-flow/wsl_native_exec.py:load_result -> finalize_child_result"
+  },
   "no_source_mutation": true,
   "future_runtime_mutates_tracked_files": false
 }

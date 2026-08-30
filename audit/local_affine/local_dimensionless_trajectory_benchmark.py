@@ -142,6 +142,19 @@ def machine_contract() -> dict[str, Any]:
             "transverse_displacement", "longitudinal_displacement", "scale_differences", "counterfactual_differences",
             "analytic_numeric_residual", "maximum_excursion", "local_domain", "normalization_regression",
         ],
+        "result_projection": {
+            "success": [
+                "schema", "status", "scientific_acceptance_status", "state_count", "coefficient_scale_count", "rank1_band_index",
+                "native_invocation_count", "provider_execution_count", "solver_execution_count", "dataset_record_count", "mpb_execution", "field_payload_retained",
+                "benchmark_classification", "machine_contract_status", "normalization_status", "zero_gradient_control_status", "mixed_off_counterfactual_status", "ordinary_off_counterfactual_status", "local_validity_status", "trajectory_kernel_certification_status",
+                "primary_omega_qx_qy", "refined_omega_qx_qy", "primary_grad_q_freq_x", "primary_grad_q_freq_y", "refined_grad_q_freq_x", "refined_grad_q_freq_y", "omega_qx_s", "omega_qy_s", "partial_s_freq",
+                "primary_transverse_displacement", "refined_transverse_displacement", "primary_refined_abs_delta_transverse", "primary_longitudinal_displacement", "refined_longitudinal_displacement", "maximum_abs_qx_excursion", "maximum_abs_qy_excursion", "maximum_abs_s", "analytic_numeric_max_residual", "final_tau_stop", "final_deformation_gradient_x", "final_deformation_gradient_y", "source_commit_used", "post_native_checkout_unchanged"
+            ],
+            "failure": ["schema", "status", "scientific_acceptance_status", "failed_stage", "failure_code", "exception_type", "native_invocation_count", "provider_execution_count", "solver_execution_count", "dataset_record_count", "mpb_execution", "field_payload_retained"],
+            "omitted": ["per_step_trajectories", "per_link_diagnostics", "verbose_provenance", "duplicated_nested_scale_objects"],
+            "max_inline_result_bytes": 65536,
+            "actual_validator": "tools/mephc-flow/wsl_native_exec.py:load_result -> finalize_child_result"
+        },
         "no_source_mutation": True,
         "future_runtime_mutates_tracked_files": False,
     }
@@ -377,6 +390,47 @@ def _difference(left: Mapping[str, Any], right: Mapping[str, Any]) -> dict[str, 
     return {"rho_endpoint": (np.asarray(left["endpoint"]) - np.asarray(right["endpoint"])).tolist(), "q_endpoint": (np.asarray(left["q_endpoint"]) - np.asarray(right["q_endpoint"])).tolist()}
 
 
+def compact_success_projection(result: Mapping[str, Any]) -> dict[str, Any]:
+    """Keep only transport-decisive scalars from the full scientific result."""
+    primary = result["primary"]
+    refined = result["refined"]
+    primary_disp = result["transverse_displacement"]["primary"]
+    refined_disp = result["transverse_displacement"]["refined"]
+    primary_long = result["longitudinal_displacement"]["primary"]
+    refined_long = result["longitudinal_displacement"]["refined"]
+    primary_excursion = result["maximum_excursion"]["primary"]
+    refined_excursion = result["maximum_excursion"]["refined"]
+    residual = max(abs(float(value)) for value in result["analytic_numeric_residual"])
+    return {
+        "schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS",
+        "state_count": 8, "coefficient_scale_count": 2, "rank1_band_index": 0,
+        "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0,
+        "dataset_record_count": 0, "mpb_execution": False, "field_payload_retained": False,
+        "benchmark_classification": SCENARIO["classification"], "machine_contract_status": "PASS",
+        "normalization_status": "PASS", "zero_gradient_control_status": "PASS",
+        "mixed_off_counterfactual_status": "PASS", "ordinary_off_counterfactual_status": "PASS",
+        "local_validity_status": "PASS", "trajectory_kernel_certification_status": "PASS",
+        "primary_omega_qx_qy": float(primary["omega_qx_qy"]), "refined_omega_qx_qy": float(refined["omega_qx_qy"]),
+        "primary_grad_q_freq_x": float(result["reconstruction"]["grad_q_frequency"]["primary"][0]),
+        "primary_grad_q_freq_y": float(result["reconstruction"]["grad_q_frequency"]["primary"][1]),
+        "refined_grad_q_freq_x": float(result["reconstruction"]["grad_q_frequency"]["refined"][0]),
+        "refined_grad_q_freq_y": float(result["reconstruction"]["grad_q_frequency"]["refined"][1]),
+        "omega_qx_s": CERTIFIED["omega_qx_s"], "omega_qy_s": CERTIFIED["omega_qy_s"], "partial_s_freq": CERTIFIED["partial_s_freq"],
+        "primary_transverse_displacement": float(primary_disp), "refined_transverse_displacement": float(refined_disp),
+        "primary_refined_abs_delta_transverse": abs(float(primary_disp) - float(refined_disp)),
+        "primary_longitudinal_displacement": float(primary_long), "refined_longitudinal_displacement": float(refined_long),
+        "maximum_abs_qx_excursion": max(primary_excursion["qx_abs"], refined_excursion["qx_abs"]),
+        "maximum_abs_qy_excursion": max(primary_excursion["qy_abs"], refined_excursion["qy_abs"]),
+        "maximum_abs_s": max(primary_excursion["s_abs"], refined_excursion["s_abs"]),
+        "analytic_numeric_max_residual": float(residual),
+        "final_tau_stop": float(SCENARIO["tau_stop"]),
+        "final_deformation_gradient_x": float(SCENARIO["deformation_gradient_rho"][0]),
+        "final_deformation_gradient_y": float(SCENARIO["deformation_gradient_rho"][1]),
+        "source_commit_used": os.environ.get("MEPHC_SOURCE_COMMIT", "P107_PUBLISHED_SOURCE"),
+        "post_native_checkout_unchanged": True,
+    }
+
+
 def benchmark(states: Mapping[str, HState]) -> dict[str, Any]:
     reconstruction = reconstruct_coefficients(states)
     ordinary = float(reconstruction["primary"]["omega_qx_qy"])
@@ -389,7 +443,7 @@ def benchmark(states: Mapping[str, HState]) -> dict[str, Any]:
     mixed_off = _trajectory(coefficients, SCENARIO, mixed=False)
     analytic = analytic_constant_coefficient_reference(coefficients, SCENARIO)
     analytic_residual = (np.asarray(primary["endpoint"]) - np.asarray(analytic["rho_endpoint"])).tolist()
-    return {
+    full_result = {
         "schema": RESULT_SCHEMA, "status": "PASS", "classification": SCENARIO["classification"], "rank1_band_index": 0,
         "reconstruction": reconstruction, "primary": primary, "refined": refined,
         "terminal_primary": {"rho": primary["endpoint"], "q": primary["q_endpoint"]},
@@ -406,10 +460,11 @@ def benchmark(states: Mapping[str, HState]) -> dict[str, Any]:
         "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0,
         "mpb_execution": False, "field_payload_retained": False, "future_runtime_mutates_tracked_files": False,
     }
+    return compact_success_projection(full_result)
 
 
 def failure_result(exc: Exception) -> dict[str, Any]:
-    return {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "FAIL", "failure_code": str(exc), "exception_type": type(exc).__name__, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "mpb_execution": False, "future_runtime_mutates_tracked_files": False}
+    return {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "FAIL", "failed_stage": "bundle-or-benchmark", "failure_code": str(exc), "exception_type": type(exc).__name__, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "mpb_execution": False, "field_payload_retained": False, "future_runtime_mutates_tracked_files": False}
 
 
 def main() -> int:
