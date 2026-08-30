@@ -75,6 +75,19 @@ def normalize_contract(value: Any) -> Any:
         # An explicit Native reservation is stronger and safer than Chat's
         # occasional use of "analyze" to describe a live recertification.
         result["action"] = "acquire"
+    capabilities = result.get("required_capabilities")
+    if isinstance(capabilities, list) and any(item not in CAPABILITIES for item in capabilities):
+        action = result.get("action")
+        budgets = result.get("budgets") if isinstance(result.get("budgets"), dict) else {}
+        normalized = ["exact_checkout", "sandbox_publication", "result_channel", "automatic_provenance"]
+        if action == "acquire":
+            normalized.append("native_execution")
+            if budgets.get("solver_executions"):
+                normalized.append("mpb")
+        inputs = result.get("inputs") if isinstance(result.get("inputs"), dict) else {}
+        if action == "analyze" and ("datasets" in inputs or "dataset_id" in inputs):
+            normalized.extend(["private_retention", "cross_commit_dataset_read"])
+        result["required_capabilities"] = normalized
     if str(result.get("kind", "")).casefold() != "diagnostic":
         return result
     raw_budgets = result.get("budgets") if isinstance(result.get("budgets"), dict) else {}

@@ -73,6 +73,22 @@ def test_live_recertification_named_analyze_follows_its_explicit_native_budget()
     assert module.validate_contract(value)["action"] == "acquire"
 
 
+def test_fresh_chat_capability_aliases_reduce_to_action_budget_minimum():
+    module = load_module("scientific_job_capability_aliases")
+    value = contract(
+        action="analyze",
+        expected_output={"dataset_schema": None, "result_schema": "recertification-v1"},
+        budgets={"native_invocations": 1, "provider_requests": 1, "solver_executions": 1},
+        required_capabilities=["python", "meep", "mpb", "faulthandler"],
+    )
+    validated = module.validate_contract(value)
+    assert validated["action"] == "acquire"
+    assert validated["required_capabilities"] == [
+        "exact_checkout", "sandbox_publication", "result_channel",
+        "automatic_provenance", "native_execution", "mpb",
+    ]
+
+
 def test_acquisition_may_be_result_only_but_always_requires_result_schema():
     module = load_module("scientific_job_result_only_acquisition")
     result_only = contract(
