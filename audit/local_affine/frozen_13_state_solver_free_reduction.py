@@ -75,6 +75,32 @@ class ReferenceCellContractDiagnosticError(ValueError):
         super().__init__(";".join(details))
 
 
+class ReferenceCellIdentityDiagnosticError(ValueError):
+    """Bounded reference-cell identity value/type failure with state context."""
+
+    def __init__(
+        self,
+        code: str,
+        *,
+        state_id: Any,
+        role: Any,
+        mismatch_fields: tuple[str, ...],
+        observed_values: dict[str, Any],
+        observed_types: dict[str, str],
+    ) -> None:
+        self.code = code
+        self.state_id = str(state_id) if state_id is not None else "<unknown>"
+        self.role = str(role) if role is not None else "<unknown>"
+        self.mismatch_fields = tuple(sorted(mismatch_fields))
+        self.observed_values = observed_values
+        self.observed_types = observed_types
+        details = [
+            code, f"state_id={self.state_id}", f"role={self.role}",
+            f"mismatch_fields={','.join(self.mismatch_fields)}",
+        ]
+        super().__init__(";".join(details))
+
+
 def _canonical(value: Any) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode()
 
@@ -202,6 +228,47 @@ def _reference_cell_contract(snapshot: Any, *, state_id: Any = None, role: Any =
     return reference
 
 
+def _bounded_identity_value(field: str, value: Any) -> Any:
+    if field == "spatial_shape":
+        if isinstance(value, (list, tuple)) and len(value) == 2:
+            return ",".join(str(item)[:32] for item in value)
+        return f"{type(value).__name__}:{_bounded_text(value)}"
+    if isinstance(value, str):
+        return value[:128]
+    if value is None or isinstance(value, (bool, int, float)):
+        return value
+    return f"{type(value).__name__}:{_bounded_text(value)}"
+
+
+def _bounded_text(value: Any) -> str:
+    try:
+        text = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
+    except (TypeError, ValueError):
+        text = type(value).__name__
+    return text[:128]
+
+
+def _validate_reference_cell_identity_values(reference: Mapping[str, Any], *, state_id: Any, role: Any) -> None:
+    expected = {
+        "representation": "mpb_periodic_h_l2_v1",
+        "bloch_phase_excluded": True,
+        "resolution": 64,
+        "spatial_shape": [64, 64],
+    }
+    mismatch_fields = tuple(sorted(
+        field for field, expected_value in expected.items()
+        if type(reference[field]) is not type(expected_value) or reference[field] != expected_value
+    ))
+    if mismatch_fields:
+        observed_values = {field: _bounded_identity_value(field, reference[field]) for field in expected}
+        observed_types = {field: type(reference[field]).__name__ for field in expected}
+        raise ReferenceCellIdentityDiagnosticError(
+            "P72_REFERENCE_CELL_IDENTITY_INVALID", state_id=state_id, role=role,
+            mismatch_fields=mismatch_fields, observed_values=observed_values,
+            observed_types=observed_types,
+        )
+
+
 def validate_snapshot_structure(snapshot: Any, *, state_id: Any = None, role: Any = None) -> None:
     _require(tuple(snapshot.spatial_shape) == (64, 64) and snapshot.component_count == 3, "P72_SNAPSHOT_SHAPE_INVALID")
     frequencies = np.asarray(snapshot.frequencies, dtype=float)
@@ -217,7 +284,7 @@ def validate_snapshot_structure(snapshot: Any, *, state_id: Any = None, role: An
     provenance = dict(getattr(snapshot, "provenance", {}))
     _require(provenance.get("representation") == "mpb_periodic_h_l2_v1", "P72_REPRESENTATION_INVALID")
     reference = _reference_cell_contract(snapshot, state_id=state_id, role=role)
-    _require(reference["representation"] == "mpb_periodic_h_l2_v1" and reference["bloch_phase_excluded"] is True and reference["resolution"] == 64 and reference["spatial_shape"] == [64, 64], "P72_REFERENCE_CELL_IDENTITY_INVALID")
+    _validate_reference_cell_identity_values(reference, state_id=state_id, role=role)
     _require(reference["component_order"] == "supplied final axis order" and reference["component_basis"] == "LAB_CARTESIAN" and reference["mu_contract"] == "MU1_NONMAGNETIC" and reference["orientation_sign"] == 1, "P72_REFERENCE_CELL_PHYSICS_INVALID")
 
 
@@ -240,7 +307,7 @@ def _validate_snapshot_identity(snapshot: Any, item: dict[str, Any], binding: di
     gram = np.asarray(snapshot.gram_matrix, dtype=np.complex128)
     _require(gram.shape == (6, 6) and bool(np.all(np.isfinite(gram))), "P72_GRAM_INVALID")
     reference = _reference_cell_contract(snapshot, state_id=identity.get("state_id"), role=identity.get("role"))
-    _require(reference["representation"] == "mpb_periodic_h_l2_v1" and reference["bloch_phase_excluded"] is True and reference["resolution"] == 64 and reference["spatial_shape"] == [64, 64], "P72_REFERENCE_CELL_IDENTITY_INVALID")
+    _validate_reference_cell_identity_values(reference, state_id=identity.get("state_id"), role=identity.get("role"))
     _require(reference["component_order"] == "supplied final axis order" and reference["component_basis"] == "LAB_CARTESIAN" and reference["mu_contract"] == "MU1_NONMAGNETIC" and reference["orientation_sign"] == 1, "P72_REFERENCE_CELL_PHYSICS_INVALID")
     _require(hashlib.sha256(_canonical(reference)).hexdigest() == identity["reference_cell_contract_sha256"], "P71_REFERENCE_CELL_DIGEST_MISMATCH")
     _require(provenance.get("mpb_k_point") == identity["reciprocal_metadata"], "P71_RECIPROCAL_METADATA_MISMATCH")
@@ -353,11 +420,11 @@ def reduce_states(states: dict[str, HState]) -> dict[str, Any]:
     return result
 
 
-def _future_result(status: str, *, failed_stage: str | None = None, failure_code: str | None = None, exception_type: str | None = None, diagnostic: ReferenceCellContractDiagnosticError | None = None) -> dict[str, Any]:
+def _future_result(status: str, *, failed_stage: str | None = None, failure_code: str | None = None, exception_type: str | None = None, diagnostic: ReferenceCellContractDiagnosticError | ReferenceCellIdentityDiagnosticError | None = None) -> dict[str, Any]:
     result = {"schema": RESULT_SCHEMA, "status": status, "scientific_acceptance_status": "PASS" if status == "PASS" else "FAIL", "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "mpb_execution": False, "field_payload_retained": False}
     if failed_stage is not None:
-        result.update({"failed_stage": failed_stage, "failure_code": failure_code or "P71_REDUCTION_FAILED", "exception_type": exception_type or "ValueError"})
-    if diagnostic is not None:
+        result.update({"failed_stage": failed_stage, "failure_code": failure_code or (diagnostic.code if diagnostic is not None else "P71_REDUCTION_FAILED"), "exception_type": exception_type or "ValueError"})
+    if isinstance(diagnostic, ReferenceCellContractDiagnosticError):
         result.update({
             "failed_state_id": diagnostic.state_id,
             "reference_cell_missing_fields": ",".join(diagnostic.missing_fields),
@@ -365,6 +432,17 @@ def _future_result(status: str, *, failed_stage: str | None = None, failure_code
         })
         if diagnostic.observed_type != "dict" or not diagnostic.missing_fields:
             result["reference_cell_observed_type"] = diagnostic.observed_type
+        if diagnostic.role is not None:
+            result["failed_role"] = diagnostic.role
+    elif isinstance(diagnostic, ReferenceCellIdentityDiagnosticError):
+        result.update({
+            "failed_state_id": diagnostic.state_id,
+            "failed_role": diagnostic.role,
+            "reference_cell_identity_mismatch_fields": ",".join(diagnostic.mismatch_fields),
+        })
+        for field in ("representation", "bloch_phase_excluded", "resolution", "spatial_shape"):
+            result[f"reference_cell_observed_{field}"] = diagnostic.observed_values[field]
+            result[f"reference_cell_observed_{field}_type"] = diagnostic.observed_types[field]
     return result
 
 
@@ -379,7 +457,7 @@ def main() -> int:
         result = reduce_states(resolve_states(bundle, bundle_path, plan))
         result["provenance"] = provenance
     except Exception as exc:
-        diagnostic = exc if isinstance(exc, ReferenceCellContractDiagnosticError) else None
+        diagnostic = exc if isinstance(exc, (ReferenceCellContractDiagnosticError, ReferenceCellIdentityDiagnosticError)) else None
         result = _future_result(
             "FAIL", failed_stage="bundle-or-reduction", failure_code=diagnostic.code if diagnostic is not None else str(exc),
             exception_type=type(exc).__name__, diagnostic=diagnostic,
