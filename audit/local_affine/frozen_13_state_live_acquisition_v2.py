@@ -135,6 +135,22 @@ def validate_acquisition_budgets(budgets: Any) -> bool:
     return True
 
 
+def validate_framework_budgets(environment: Mapping[str, str] | None = None) -> dict[str, int]:
+    """Read provider/solver authorization from the framework-owned environment."""
+    values = os.environ if environment is None else environment
+    result: dict[str, int] = {}
+    for name, output_name in (
+        ("MEPHC_PROVIDER_REQUEST_BUDGET", "provider_requests"),
+        ("MEPHC_SOLVER_EXECUTION_BUDGET", "solver_executions"),
+    ):
+        raw = values.get(name)
+        require(isinstance(raw, str) and raw.isdigit() and str(int(raw)) == raw, f"{name}_INVALID")
+        value = int(raw)
+        require(value == 13, f"{name}_NOT_13")
+        result[output_name] = value
+    return result
+
+
 def vector_digest(vectors: Any) -> str:
     values = [[[float(item.real), float(item.imag)] for item in np.asarray(vector, dtype=np.complex128)] for vector in vectors]
     return hashlib.sha256(canonical(values)).hexdigest()
@@ -182,8 +198,7 @@ def validate_snapshot(snapshot: Any, spec: Any, identity: dict[str, Any]) -> dic
 def main() -> int:
     bundle = load_bundle()
     graph, graph_sha = load_graph(bundle)
-    budgets = bundle.get("budgets") or (bundle.get("contract") or {}).get("budgets") or (bundle.get("inputs") or {}).get("budgets")
-    validate_acquisition_budgets(budgets)
+    framework_budgets = validate_framework_budgets()
     source_commit = os.environ.get("MEPHC_SOURCE_COMMIT")
     require(isinstance(source_commit, str) and source_commit, "SCIENCE_SOURCE_COMMIT_MISSING")
     namespace = supplied_namespace(bundle)
@@ -199,7 +214,7 @@ def main() -> int:
     require(not store.root.exists(), "DATASET_NAMESPACE_ALREADY_EXISTS")
     import meep as mp
     provider = LocalAffineStateProvider(resolution=64, num_bands=6, eigensolver_tolerance=1e-7, mesh_size=3, deterministic=True, polarization=mp.TM, polarization_identity="TM", default_material=mp.air)
-    counter = BudgetCounter(13, 13)
+    counter = BudgetCounter(framework_budgets["provider_requests"], framework_budgets["solver_executions"])
     records: list[dict[str, Any]] = []
     min_gap = float("inf")
     common_shape: tuple[int, int] | None = None
