@@ -37,6 +37,11 @@ def test_runtime_contract_is_bundle_bound_and_zero_side_effect_by_construction()
     assert "import meep" not in source
     assert "from meep" not in source
     assert ".solve(" not in source
+    assert "hashlib.sha256(payload)" in source
+    assert "load_binding_plan" in source
+    assert "rank1_mixed_curvature" in source
+    assert "fixed_q_frequency_derivative" in source
+    assert "P66_STATE_ROLE_SET_INVALID" in source
 
 
 def test_runtime_plan_has_fixed_p64_source_and_thirteen_bindings():
