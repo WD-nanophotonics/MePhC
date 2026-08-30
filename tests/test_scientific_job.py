@@ -108,6 +108,19 @@ def test_infrastructure_primary_artifact_is_not_executed_as_native_entrypoint():
         })
 
 
+def test_zero_budget_infrastructure_named_analyze_is_solver_free_infrastructure():
+    module = load_module("scientific_job_infrastructure_analyze_alias")
+    value = contract(
+        kind="INFRASTRUCTURE", action="analyze", entrypoint=None,
+        allowed_writes=[],
+        budgets={"native_invocations": 0, "provider_requests": 0, "solver_executions": 0},
+        expected_output={"dataset_schema": None, "result_schema": None},
+    )
+    validated = module.validate_contract(value)
+    assert validated["action"] == "infrastructure"
+    assert validated["entrypoint"] is None
+
+
 def test_acquisition_may_be_result_only_but_always_requires_result_schema():
     module = load_module("scientific_job_result_only_acquisition")
     result_only = contract(

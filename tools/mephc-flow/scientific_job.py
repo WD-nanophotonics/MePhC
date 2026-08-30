@@ -70,6 +70,12 @@ def normalize_contract(value: Any) -> Any:
     if not isinstance(value, dict) or value.get("schema") != CONTRACT_SCHEMA:
         return value
     result = json.loads(json.dumps(value))
+    raw_budgets = result.get("budgets") if isinstance(result.get("budgets"), dict) else {}
+    if (result.get("kind") == "INFRASTRUCTURE"
+            and all(raw_budgets.get(name) == 0 for name in (
+                "native_invocations", "provider_requests", "solver_executions"
+            ))):
+        result["action"] = "infrastructure"
     if (result.get("action") == "analyze" and isinstance(result.get("budgets"), dict)
             and result["budgets"].get("native_invocations") == 1):
         # An explicit Native reservation is stronger and safer than Chat's
