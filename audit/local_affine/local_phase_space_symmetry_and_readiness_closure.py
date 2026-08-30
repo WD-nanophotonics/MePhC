@@ -16,6 +16,7 @@ from audit.e8b import e8b_geometry
 ROOT = Path(__file__).resolve().parents[2]
 ARTIFACT_PATH = ROOT / "audit" / "local_affine" / "p101_local_phase_space_symmetry_closure.json"
 RESULT_SCHEMA = "mephc-local-affine-symmetry-and-trajectory-readiness-closure-v1"
+EXPECTED_ARTIFACT_SHA256 = "e12a2cba8c98e0561454cc70b3e5dc798cd053a4d2b33885979782ecdc66f915"
 P85_MINIMUM_GAP = 0.062389888324785675
 P97_MINIMUM_GAP = 0.06238988841542023
 RANK1_THRESHOLD = 0.05
@@ -183,11 +184,20 @@ def build_result(ledger: dict[str, Any]) -> dict[str, Any]:
     return result
 
 
+def load_committed_closure() -> dict[str, Any]:
+    raw = ARTIFACT_PATH.read_bytes()
+    require(hashlib.sha256(raw).hexdigest() == EXPECTED_ARTIFACT_SHA256, "P101_PROOF_ARTIFACT_SHA_MISMATCH")
+    ledger = json.loads(raw.decode("utf-8"))
+    require(ledger.get("schema") == "mephc-local-affine-p101-symmetry-closure-ledger-v1", "P101_PROOF_ARTIFACT_SCHEMA_INVALID")
+    require(ledger.get("rank1_isolation_certified") is True, "P101_PROOF_ARTIFACT_RANK1_NOT_CERTIFIED")
+    require(ledger.get("antiunitary_proof", {}).get("omega_qy_s_symmetry_forced_zero") is True, "P101_PROOF_ARTIFACT_SYMMETRY_MISSING")
+    return ledger
+
+
 def main() -> int:
     result_path = os.environ.get("MEPHC_RESULT_PATH")
     require(isinstance(result_path, str) and result_path, "P101_RESULT_PATH_MISSING")
-    ledger = build_closure()
-    write_json(ARTIFACT_PATH, ledger)
+    ledger = load_committed_closure()
     result = build_result(ledger)
     result["proof_artifact_sha256"] = hashlib.sha256(canonical(ledger)).hexdigest()
     Path(result_path).write_bytes(canonical(result))
