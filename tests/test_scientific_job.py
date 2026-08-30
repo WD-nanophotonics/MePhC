@@ -54,10 +54,23 @@ def test_science_contract_cannot_write_framework_and_analysis_is_zero_budget():
     with pytest.raises(module.ScientificJobError, match="INFRASTRUCTURE_WRITE_FORBIDDEN"):
         module.validate_contract(contract(allowed_writes=["tools/mephc-flow/new_layer.py"]))
     with pytest.raises(module.ScientificJobError, match="ANALYSIS_BUDGET_NONZERO"):
-        module.validate_contract(contract(action="analyze"))
+        module.validate_contract(contract(
+            action="analyze",
+            budgets={"native_invocations": 0, "provider_requests": 1, "solver_executions": 0},
+        ))
     analysis = contract(action="analyze", inputs={"dataset_id": "d" * 64},
                         budgets={"native_invocations": 0, "provider_requests": 0, "solver_executions": 0})
     assert module.validate_contract(analysis)["action"] == "analyze"
+
+
+def test_live_recertification_named_analyze_follows_its_explicit_native_budget():
+    module = load_module("scientific_job_live_recertification_alias")
+    value = contract(
+        action="analyze",
+        expected_output={"dataset_schema": None, "result_schema": "recertification-v1"},
+        budgets={"native_invocations": 1, "provider_requests": 1, "solver_executions": 1},
+    )
+    assert module.validate_contract(value)["action"] == "acquire"
 
 
 def test_acquisition_may_be_result_only_but_always_requires_result_schema():

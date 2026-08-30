@@ -66,11 +66,17 @@ def atomic_json(path: Path, value: dict[str, Any]) -> None:
 
 
 def normalize_contract(value: Any) -> Any:
-    """Normalize the one generic diagnostic dialect used by fresh Chat sessions."""
-    if (not isinstance(value, dict) or value.get("schema") != CONTRACT_SCHEMA
-            or str(value.get("kind", "")).casefold() != "diagnostic"):
+    """Normalize bounded fresh-Chat aliases without adding actions or states."""
+    if not isinstance(value, dict) or value.get("schema") != CONTRACT_SCHEMA:
         return value
     result = json.loads(json.dumps(value))
+    if (result.get("action") == "analyze" and isinstance(result.get("budgets"), dict)
+            and result["budgets"].get("native_invocations") == 1):
+        # An explicit Native reservation is stronger and safer than Chat's
+        # occasional use of "analyze" to describe a live recertification.
+        result["action"] = "acquire"
+    if str(result.get("kind", "")).casefold() != "diagnostic":
+        return result
     raw_budgets = result.get("budgets") if isinstance(result.get("budgets"), dict) else {}
     budgets = {
         "native_invocations": raw_budgets.get("native_invocations", 0),
