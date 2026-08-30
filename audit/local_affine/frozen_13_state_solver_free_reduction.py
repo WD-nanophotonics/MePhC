@@ -33,6 +33,7 @@ PLAN_PATH = ROOT / "audit" / "local_affine" / "p66_p64_v2_binding_plan.json"
 GRAPH_PATH = ROOT / "audit" / "local_affine" / "p2_frozen_13_state_request_graph.json"
 PLAN_SCHEMA = "mephc-local-affine-p66-p64-v2-binding-plan-v1"
 SOURCE_WORK_ORDER_ID = "MEPHC-LOCALAFFINE-P64-FROZEN-13-STATE-LIVE-ACQUISITION-20260830-428"
+_HEX64 = set("0123456789abcdef")
 
 
 def _canonical(value: Any) -> bytes:
@@ -104,6 +105,19 @@ def validate_runtime_contract(bundle: dict[str, Any], plan: dict[str, Any]) -> d
         "record_count": len(datasets),
         "binding_plan_schema": plan["schema"],
     }
+
+
+def validate_bound_dataset_descriptors(bundle: dict[str, Any], plan: dict[str, Any]) -> None:
+    """Reject incomplete descriptors before any payload is decoded."""
+    for item in bundle["datasets"]:
+        _require(isinstance(item, dict), "P70_DATASET_DESCRIPTOR_INVALID")
+        for field in ("dataset_id", "manifest_sha256", "record_key_sha256", "payload_file", "identity"):
+            _require(field in item, f"P70_DATASET_DESCRIPTOR_MISSING:{field}")
+        _require(item["dataset_id"] == plan["source_dataset_id"], "P70_DATASET_ID_MISMATCH")
+        _require(item["manifest_sha256"] == plan["source_manifest_sha256"], "P70_MANIFEST_HASH_MISMATCH")
+        _require(isinstance(item["record_key_sha256"], str) and len(item["record_key_sha256"]) == 64 and set(item["record_key_sha256"]) <= _HEX64, "P70_RECORD_KEY_FORMAT_INVALID")
+        _require(isinstance(item["identity"], dict), "P70_DATASET_IDENTITY_INVALID")
+        _require(isinstance(item["payload_file"], str) and Path(item["payload_file"]).name == item["payload_file"], "P70_PAYLOAD_DESCRIPTOR_INVALID")
 
 
 def _payload_bytes(bundle_path: Path, item: dict[str, Any]) -> bytes:
@@ -236,6 +250,7 @@ def main() -> int:
         bundle, bundle_path = load_bundle()
         plan = load_binding_plan()
         provenance = validate_runtime_contract(bundle, plan)
+        validate_bound_dataset_descriptors(bundle, plan)
         result = reduce_states(resolve_states(bundle, bundle_path, plan))
         result["provenance"] = provenance
     except Exception as exc:
