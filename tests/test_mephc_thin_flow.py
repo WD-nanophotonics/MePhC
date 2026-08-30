@@ -133,6 +133,25 @@ def test_valid_successor_response_is_accepted(tmp_path: Path):
     assert summary["recovery_action"] == "none"
 
 
+def test_request_summary_counts_retries_per_registered_target_generation(tmp_path: Path):
+    directory = tmp_path / "MEPHC-FLOW-test"
+    directory.mkdir()
+    (directory / "request.json").write_text(
+        json.dumps({"request_id": directory.name}), encoding="utf-8"
+    )
+    (directory / "events.jsonl").write_text(
+        '{"event":"request_submitted"}\n'
+        '{"event":"request_submitted"}\n'
+        '{"event":"target_rollover_authorized"}\n'
+        '{"event":"request_submitted"}\n',
+        encoding="utf-8",
+    )
+    summary = flow.request_summary(directory)
+    assert summary["submission_count"] == 1
+    assert summary["total_submission_count"] == 3
+    assert summary["recovery_action"] == "read"
+
+
 def test_awaiting_and_terminated_are_distinct(monkeypatch, tmp_path: Path):
     scope = paths(tmp_path)
     monkeypatch.setattr(flow, "source", lambda _: {"branch": "sandbox", "head": "a" * 40,

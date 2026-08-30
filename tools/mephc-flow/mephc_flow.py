@@ -238,11 +238,22 @@ def request_summary(directory: Path) -> dict[str, Any]:
     request = read_json(directory / "request.json", {})
     receipt = read_json(directory / "receipt.json", {})
     events = directory / "events.jsonl"
-    submissions = 0; captures = 0
+    submissions = 0; captures = 0; total_submissions = 0
     if events.is_file():
         lines = events.read_text(encoding="utf-8-sig", errors="replace").splitlines()
-        submissions = sum('"event":"request_submitted"' in line.replace(" ", "") for line in lines)
-        captures = sum('"event":"latest_response_captured"' in line.replace(" ", "") for line in lines)
+        for line in lines:
+            try:
+                item = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if item.get("event") == "target_rollover_authorized":
+                submissions = 0
+                captures = 0
+            elif item.get("event") == "request_submitted":
+                submissions += 1
+                total_submissions += 1
+            elif item.get("event") == "latest_response_captured":
+                captures += 1
     capture = read_json(directory / "latest-response-capture.json", {})
     found_user = capture.get("latest_user_turn_found") if isinstance(capture, dict) else None
     found_reply = capture.get("post_submission_reply_found") if isinstance(capture, dict) else None
@@ -273,6 +284,7 @@ def request_summary(directory: Path) -> dict[str, Any]:
         recovery_action = "none"
     return {"request_id": request.get("request_id", directory.name),
             "receipt_state": receipt.get("state"), "submission_count": submissions,
+            "total_submission_count": total_submissions,
             "response_received": response_received, "capture_attempt_count": captures,
             "latest_user_turn_found": found_user,
             "post_submission_reply_found": found_reply,
