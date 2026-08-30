@@ -101,6 +101,16 @@ class ReferenceCellIdentityDiagnosticError(ValueError):
         super().__init__(";".join(details))
 
 
+class ReverseOrientationDiagnosticError(ValueError):
+    """Bounded first-diamond reverse-orientation failure diagnostics."""
+
+    def __init__(self, *, diamond: str, diagnostics: dict[str, float]) -> None:
+        self.code = "P72_REVERSE_ORIENTATION_SIGN_MISMATCH"
+        self.diamond = diamond
+        self.diagnostics = diagnostics
+        super().__init__(f"{self.code};diamond={diamond}")
+
+
 def _canonical(value: Any) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode()
 
@@ -387,6 +397,28 @@ def validate_cross_state_reference_cells(states: dict[str, HState]) -> None:
     _require(len(reference_keys) == 1, "P72_REFERENCE_CELL_CROSS_STATE_MISMATCH")
 
 
+def _reverse_orientation_diagnostics(name: str, forward: Any, reverse: Any) -> dict[str, float]:
+    phase_sum = float(forward.phase + reverse.phase)
+    omega_sum = float(forward.omega_qs + reverse.omega_qs)
+    return {
+        f"reverse_diag_{name}_forward_phase": float(forward.phase),
+        f"reverse_diag_{name}_reverse_phase": float(reverse.phase),
+        f"reverse_diag_{name}_forward_omega_qs": float(forward.omega_qs),
+        f"reverse_diag_{name}_reverse_omega_qs": float(reverse.omega_qs),
+        f"reverse_diag_{name}_signed_area_qs": float(forward.signed_area_qs),
+        f"reverse_diag_{name}_minimum_link_singular_value_forward": float(forward.minimum_link_singular_value),
+        f"reverse_diag_{name}_minimum_link_singular_value_reverse": float(reverse.minimum_link_singular_value),
+        f"reverse_diag_{name}_maximum_link_principal_angle_forward": float(forward.maximum_link_principal_angle),
+        f"reverse_diag_{name}_maximum_link_principal_angle_reverse": float(reverse.maximum_link_principal_angle),
+        f"reverse_diag_{name}_direct_phase_sum": phase_sum,
+        f"reverse_diag_{name}_direct_omega_sum": omega_sum,
+        f"reverse_diag_{name}_wrapped_phase_sum": math.atan2(math.sin(phase_sum), math.cos(phase_sum)),
+        f"reverse_diag_{name}_phase_antipode_distance": min(abs(abs(float(forward.phase)) - math.pi), abs(abs(float(reverse.phase)) - math.pi)),
+        f"reverse_diag_{name}_absolute_reverse_phase_residual": abs(phase_sum),
+        f"reverse_diag_{name}_absolute_reverse_omega_residual": abs(omega_sum),
+    }
+
+
 def _diamond(states: dict[str, HState], prefix: str, axis: int, h_q: float, h_s: float) -> Any:
     return make_mixed_diamond(
         plus_q=states[f"{prefix}_PLUS_Q{'X' if axis == 0 else 'Y'}"], minus_q=states[f"{prefix}_MINUS_Q{'X' if axis == 0 else 'Y'}"],
@@ -409,7 +441,9 @@ def reduce_states(states: dict[str, HState]) -> dict[str, Any]:
     for name in diamonds:
         left, right = forward[name], reverse[name]
         _require(all(math.isfinite(float(value)) for value in (left.phase, left.omega_qs, left.signed_area_qs, left.minimum_link_singular_value, left.maximum_link_principal_angle, right.phase, right.omega_qs, right.signed_area_qs, right.minimum_link_singular_value, right.maximum_link_principal_angle)), "P72_NONFINITE_WILSON_RESULT")
-        _require(math.isclose(right.omega_qs, -left.omega_qs, rel_tol=0.0, abs_tol=1e-12) and math.isclose(right.phase, -left.phase, rel_tol=0.0, abs_tol=1e-12), "P72_REVERSE_ORIENTATION_SIGN_MISMATCH")
+        diagnostics = _reverse_orientation_diagnostics(name, left, right)
+        if not (math.isclose(right.omega_qs, -left.omega_qs, rel_tol=0.0, abs_tol=1e-12) and math.isclose(right.phase, -left.phase, rel_tol=0.0, abs_tol=1e-12)):
+            raise ReverseOrientationDiagnosticError(diamond=name, diagnostics=diagnostics)
     derivative_primary = fixed_q_frequency_derivative(states["PRIMARY_PLUS_S"], states["PRIMARY_MINUS_S"], band_index=0, h_s=0.02)
     derivative_refined = fixed_q_frequency_derivative(states["REFINED_PLUS_S"], states["REFINED_MINUS_S"], band_index=0, h_s=0.01)
     def relative_delta(left: float, right: float) -> float | None:
@@ -464,6 +498,9 @@ def _future_result(status: str, *, failed_stage: str | None = None, failure_code
         for field in ("representation", "bloch_phase_excluded", "resolution", "spatial_shape"):
             result[f"reference_cell_observed_{field}"] = diagnostic.observed_values[field]
             result[f"reference_cell_observed_{field}_type"] = diagnostic.observed_types[field]
+    elif isinstance(diagnostic, ReverseOrientationDiagnosticError):
+        result["reverse_diag_failed_diamond"] = diagnostic.diamond
+        result.update(diagnostic.diagnostics)
     return result
 
 
@@ -478,7 +515,7 @@ def main() -> int:
         result = reduce_states(resolve_states(bundle, bundle_path, plan))
         result["provenance"] = provenance
     except Exception as exc:
-        diagnostic = exc if isinstance(exc, (ReferenceCellContractDiagnosticError, ReferenceCellIdentityDiagnosticError)) else None
+        diagnostic = exc if isinstance(exc, (ReferenceCellContractDiagnosticError, ReferenceCellIdentityDiagnosticError, ReverseOrientationDiagnosticError)) else None
         result = _future_result(
             "FAIL", failed_stage="bundle-or-reduction", failure_code=diagnostic.code if diagnostic is not None else str(exc),
             exception_type=type(exc).__name__, diagnostic=diagnostic,
