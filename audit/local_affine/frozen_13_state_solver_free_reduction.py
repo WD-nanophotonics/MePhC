@@ -105,6 +105,24 @@ def _canonical(value: Any) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode()
 
 
+def _normalize_runtime_provenance(value: Any) -> Any:
+    """Build a detached P64-canonical view of frozen JSON-safe provenance."""
+    if isinstance(value, Mapping):
+        normalized: dict[str, Any] = {}
+        for key, item in value.items():
+            _require(isinstance(key, str), "P78_PROVENANCE_KEY_INVALID")
+            normalized[key] = _normalize_runtime_provenance(item)
+        return normalized
+    if isinstance(value, (tuple, list)):
+        return [_normalize_runtime_provenance(item) for item in value]
+    if value is None or isinstance(value, (bool, str, int)):
+        return value
+    if isinstance(value, float):
+        _require(math.isfinite(value), "P78_PROVENANCE_NONFINITE_FLOAT")
+        return value
+    raise ValueError("P78_PROVENANCE_VALUE_UNSUPPORTED")
+
+
 def _require(condition: bool, code: str) -> None:
     if not condition:
         raise ValueError(code)
@@ -209,7 +227,8 @@ def _validate_identity_digest(identity: dict[str, Any], binding: dict[str, Any])
 
 
 def _reference_cell_contract(snapshot: Any, *, state_id: Any = None, role: Any = None) -> Mapping[str, Any]:
-    provenance = dict(getattr(snapshot, "provenance", {}))
+    provenance = _normalize_runtime_provenance(getattr(snapshot, "provenance", {}))
+    _require(isinstance(provenance, dict), "P78_PROVENANCE_ROOT_INVALID")
     reference = provenance.get("local_affine_reference_cell_contract")
     observed_type = type(reference).__name__
     if not isinstance(reference, Mapping):
@@ -281,7 +300,8 @@ def validate_snapshot_structure(snapshot: Any, *, state_id: Any = None, role: An
         _require(values.ndim == 1 and bool(np.all(np.isfinite(values))) and math.isclose(float(np.linalg.norm(values)), 1.0, rel_tol=0.0, abs_tol=1e-10), "P72_VECTOR_INVALID")
     gram = np.asarray(snapshot.gram_matrix, dtype=np.complex128)
     _require(gram.shape == (6, 6) and bool(np.all(np.isfinite(gram))), "P72_GRAM_INVALID")
-    provenance = dict(getattr(snapshot, "provenance", {}))
+    provenance = _normalize_runtime_provenance(getattr(snapshot, "provenance", {}))
+    _require(isinstance(provenance, dict), "P78_PROVENANCE_ROOT_INVALID")
     _require(provenance.get("representation") == "mpb_periodic_h_l2_v1", "P72_REPRESENTATION_INVALID")
     reference = _reference_cell_contract(snapshot, state_id=state_id, role=role)
     _validate_reference_cell_identity_values(reference, state_id=state_id, role=role)
@@ -294,7 +314,8 @@ def _validate_snapshot_identity(snapshot: Any, item: dict[str, Any], binding: di
     validate_snapshot_structure(snapshot, state_id=identity.get("state_id"), role=identity.get("role"))
     _require(identity["payload_sha256"] == item["payload_sha256"], "P71_IDENTITY_PAYLOAD_HASH_MISMATCH")
     _require(identity["request_graph_sha256"] == hashlib.sha256(GRAPH_PATH.read_bytes()).hexdigest(), "P71_REQUEST_GRAPH_HASH_MISMATCH")
-    provenance = dict(getattr(snapshot, "provenance", {}))
+    provenance = _normalize_runtime_provenance(getattr(snapshot, "provenance", {}))
+    _require(isinstance(provenance, dict), "P78_PROVENANCE_ROOT_INVALID")
     _require(tuple(snapshot.spatial_shape) == (64, 64) and snapshot.component_count == 3, "P72_SNAPSHOT_SHAPE_INVALID")
     frequencies_array = np.asarray(snapshot.frequencies, dtype=float)
     raw_norms_array = np.asarray(snapshot.raw_norms, dtype=float)
