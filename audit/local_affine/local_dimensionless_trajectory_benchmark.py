@@ -267,6 +267,31 @@ class Coefficients:
         self.partial_s_frequency = float(partial_s_frequency)
 
 
+CANONICAL_COEFFICIENT_FIELDS = (
+    "grad_q_freq_x", "grad_q_freq_y", "omega_qx_qy", "omega_qx_s", "omega_qy_s", "partial_s_freq"
+)
+
+
+def validate_canonical_coefficient_record(record: Mapping[str, Any]) -> None:
+    require(set(record) == set(CANONICAL_COEFFICIENT_FIELDS), "P111_CANONICAL_COEFFICIENT_FIELDS_INVALID")
+    for field in CANONICAL_COEFFICIENT_FIELDS:
+        value = record[field]
+        require(type(value) in {int, float} and math.isfinite(float(value)), f"P111_CANONICAL_COEFFICIENT_FIELD_INVALID:{field}")
+
+
+def canonical_coefficient_record(coefficients: Coefficients) -> dict[str, float]:
+    record = {
+        "grad_q_freq_x": coefficients.grad_q_frequency[0],
+        "grad_q_freq_y": coefficients.grad_q_frequency[1],
+        "omega_qx_qy": coefficients.omega_qx_qy,
+        "omega_qx_s": coefficients.omega_qx_s,
+        "omega_qy_s": coefficients.omega_qy_s,
+        "partial_s_freq": coefficients.partial_s_frequency,
+    }
+    validate_canonical_coefficient_record(record)
+    return record
+
+
 def _cross_wilson(states: Mapping[str, HState], prefix: str, h_q: float) -> dict[str, Any]:
     roles = (f"{prefix}_PLUS_QX", f"{prefix}_PLUS_QY", f"{prefix}_MINUS_QX", f"{prefix}_MINUS_QY")
     links = [reference_cell_link(states[left], states[right]) for left, right in zip(roles, roles[1:] + roles[:1])]
@@ -394,6 +419,8 @@ def compact_success_projection(result: Mapping[str, Any]) -> dict[str, Any]:
     """Keep only transport-decisive scalars from the full scientific result."""
     primary = result["primary"]
     refined = result["refined"]
+    validate_canonical_coefficient_record(primary)
+    validate_canonical_coefficient_record(refined)
     primary_disp = result["transverse_displacement"]["primary"]
     refined_disp = result["transverse_displacement"]["refined"]
     primary_long = result["longitudinal_displacement"]["primary"]
@@ -436,6 +463,8 @@ def benchmark(states: Mapping[str, HState]) -> dict[str, Any]:
     ordinary = float(reconstruction["primary"]["omega_qx_qy"])
     coefficients = Coefficients((CERTIFIED["primary_grad_q_freq_x"], CERTIFIED["primary_grad_q_freq_y"]), ordinary)
     refined_coefficients = Coefficients((CERTIFIED["refined_grad_q_freq_x"], CERTIFIED["refined_grad_q_freq_y"]), float(reconstruction["refined"]["omega_qx_qy"]))
+    primary_record = canonical_coefficient_record(coefficients)
+    refined_record = canonical_coefficient_record(refined_coefficients)
     primary = _trajectory(coefficients, SCENARIO)
     refined = _trajectory(refined_coefficients, SCENARIO)
     zero_gradient = _trajectory(coefficients, SCENARIO, zero_gradient=True)
@@ -445,7 +474,8 @@ def benchmark(states: Mapping[str, HState]) -> dict[str, Any]:
     analytic_residual = (np.asarray(primary["endpoint"]) - np.asarray(analytic["rho_endpoint"])).tolist()
     full_result = {
         "schema": RESULT_SCHEMA, "status": "PASS", "classification": SCENARIO["classification"], "rank1_band_index": 0,
-        "reconstruction": reconstruction, "primary": primary, "refined": refined,
+        "reconstruction": reconstruction, "primary": primary_record, "refined": refined_record,
+        "primary_trajectory": primary, "refined_trajectory": refined,
         "terminal_primary": {"rho": primary["endpoint"], "q": primary["q_endpoint"]},
         "terminal_refined": {"rho": refined["endpoint"], "q": refined["q_endpoint"]},
         "controls": {"zero_gradient": zero_gradient, "Omega_qx_qy_off": ordinary_off, "Omega_qs_off": mixed_off},

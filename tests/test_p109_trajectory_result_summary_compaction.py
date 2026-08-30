@@ -19,8 +19,8 @@ def _load(path: Path, name: str):
 
 
 def _representative_full_result(module):
-    primary = {"omega_qx_qy": 1.25}
-    refined = {"omega_qx_qy": 1.2}
+    primary = {"grad_q_freq_x": 1e-7, "grad_q_freq_y": -0.09, "omega_qx_qy": 1.25, "omega_qx_s": -0.19127165880040325, "omega_qy_s": 0.0, "partial_s_freq": 0.009029604372262634}
+    refined = {"grad_q_freq_x": 1.1e-7, "grad_q_freq_y": -0.089, "omega_qx_qy": 1.2, "omega_qx_s": -0.19127165880040325, "omega_qy_s": 0.0, "partial_s_freq": 0.009029604372262634}
     return {
         "primary": primary, "refined": refined,
         "reconstruction": {"grad_q_frequency": {"primary": [1e-7, -0.09], "refined": [1.1e-7, -0.089]}},
