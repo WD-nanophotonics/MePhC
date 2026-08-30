@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[2]
 GRAPH_PATH = ROOT / "audit" / "local_affine" / "p84_third_scale_6_state_request_graph.json"
 Q0 = (0.0, -0.6166666666666667)
 STATE_ORDER = tuple(f"STATE_{index:02d}" for index in range(14, 20))
-RESULT_SCHEMA = "mephc-local-affine-p92-third-scale-tight-eigensolver-sensitivity-preparation-v1"
+RESULT_SCHEMA = "mephc-local-affine-third-scale-tight-eigensolver-live-acquisition-v1"
 SOLVER_CONFIGURATION = {
     "resolution": 64,
     "num_bands": 6,
@@ -187,6 +187,48 @@ def write_result(value: dict[str, Any]) -> None:
     write_json(Path(os.environ["MEPHC_RESULT_PATH"]), value)
 
 
+def failure_result(work_order_id: str, failed: dict[str, Any], provider_count: int, solver_count: int, dataset_record_count: int) -> dict[str, Any]:
+    return {
+        "schema": RESULT_SCHEMA,
+        "work_order_id": work_order_id,
+        "status": "PASS",
+        "scientific_acceptance_status": "FAIL",
+        "native_invocation_count": 1,
+        "provider_execution_count": provider_count,
+        "solver_execution_count": solver_count,
+        "dataset_record_count": dataset_record_count,
+        "failed_state_id": failed["failed_state_id"],
+        "failed_stage": failed["failed_stage"],
+        "failure_code": failed["failure_code"],
+        "exception_type": failed["exception_type"],
+        "completed_state_count": failed["completed_state_count"],
+        "field_payload_retained": False,
+    }
+
+
+def success_result(work_order_id: str, manifest: Mapping[str, Any], minimum_gap: float, rank1_pass: bool, records: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "schema": RESULT_SCHEMA,
+        "work_order_id": work_order_id,
+        "status": "PASS",
+        "scientific_acceptance_status": "PASS",
+        "dataset_id": manifest["dataset_id"],
+        "manifest_sha256": manifest["manifest_sha256"],
+        "dataset_record_count": 6,
+        "completed_state_count": 6,
+        "failed_state_count": 0,
+        "minimum_external_gap": minimum_gap,
+        "rank1_preflight_threshold": 0.05,
+        "rank1_preflight_pass": rank1_pass,
+        "solver_free_reduction_ready": solver_free_reduction_ready(6, rank1_pass),
+        "provider_execution_count": 6,
+        "solver_execution_count": 6,
+        "native_invocation_count": 1,
+        "records": records,
+        "field_payload_retained": False,
+    }
+
+
 def main() -> int:
     bundle = load_bundle()
     graph, graph_sha = load_graph(bundle)
@@ -243,12 +285,12 @@ def main() -> int:
             failed = {"failed_state_id": state_id, "failed_stage": stage, "failure_code": str(exc).strip() or type(exc).__name__, "exception_type": type(exc).__name__, "completed_state_count": len(records)}
             break
     if failed is not None:
-        write_result({"schema": RESULT_SCHEMA, "work_order_id": bundle["work_order_id"], "status": "PASS", "scientific_acceptance_status": "FAIL", "native_invocation_count": 1, "provider_execution_count": counter.provider_count, "solver_execution_count": counter.solver_count, "dataset_record_count": len(records), "failed_state": failed, "field_payload_retained": False})
+        write_result(failure_result(bundle["work_order_id"], failed, counter.provider_count, counter.solver_count, len(records)))
         return 0
     require(len(records) == 6, "DATASET_COMPLETION_COUNT_INVALID")
     rank1_pass = rank1_preflight(minimum_gap)
     manifest = store.finalize(6, {"work_order_id": bundle["work_order_id"], "source_commit": source_commit, "request_graph_sha256": graph_sha, "fresh_solve_count": 6, "cache_reuse_count": 0, "retry_count": 0})
-    write_result({"schema": RESULT_SCHEMA, "work_order_id": bundle["work_order_id"], "status": "PASS", "scientific_acceptance_status": "PASS", "dataset_id": manifest["dataset_id"], "manifest_sha256": manifest["manifest_sha256"], "dataset_record_count": 6, "completed_state_count": 6, "failed_state_count": 0, "minimum_external_gap": minimum_gap, "rank1_preflight_threshold": 0.05, "rank1_preflight_pass": rank1_pass, "solver_free_reduction_ready": solver_free_reduction_ready(6, rank1_pass), "provider_execution_count": 6, "solver_execution_count": 6, "native_invocation_count": 1, "records": records, "field_payload_retained": False})
+    write_result(success_result(bundle["work_order_id"], manifest, minimum_gap, rank1_pass, records))
     return 0
 
 
