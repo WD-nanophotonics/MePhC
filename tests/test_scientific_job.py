@@ -74,6 +74,32 @@ def test_acquisition_may_be_result_only_but_always_requires_result_schema():
         )
 
 
+def test_fresh_chat_diagnostic_dialect_normalizes_without_new_action_or_state():
+    module = load_module("scientific_job_diagnostic_normalization")
+    value = contract(
+        kind="diagnostic",
+        action="Reproduce one exact worker path and localize its failure.",
+        project="MEPHC",
+        budgets={
+            "native_invocations": 1, "provider_executions": 1,
+            "solver_executions": 1, "dataset_records": 0, "retries": 0,
+        },
+        required_capabilities=["python", "meep", "mpb"],
+        expected_output={"transport": "MEPHC_RESULT_PATH", "format": "json",
+                         "required_fields": ["schema", "status"]},
+    )
+    validated = module.validate_contract(value)
+    assert validated["kind"] == "SCIENCE"
+    assert validated["action"] == "acquire"
+    assert validated["project"] == "."
+    assert validated["budgets"] == {
+        "native_invocations": 1, "provider_requests": 1, "solver_executions": 1,
+    }
+    assert validated["expected_output"]["dataset_schema"] is None
+    assert validated["expected_output"]["result_schema"].startswith("mephc-diagnostic-result-")
+    assert set(validated["required_capabilities"]) <= module.CAPABILITIES
+
+
 def test_budget_counter_fails_before_extra_provider_or_solver():
     module = load_module("scientific_job_budget")
     counter = module.BudgetCounter(1, 1)

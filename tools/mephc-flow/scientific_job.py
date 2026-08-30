@@ -65,7 +65,38 @@ def atomic_json(path: Path, value: dict[str, Any]) -> None:
     atomic_bytes(path, canonical_bytes(value) + b"\n")
 
 
+def normalize_contract(value: Any) -> Any:
+    """Normalize the one generic diagnostic dialect used by fresh Chat sessions."""
+    if (not isinstance(value, dict) or value.get("schema") != CONTRACT_SCHEMA
+            or str(value.get("kind", "")).casefold() != "diagnostic"):
+        return value
+    result = json.loads(json.dumps(value))
+    raw_budgets = result.get("budgets") if isinstance(result.get("budgets"), dict) else {}
+    budgets = {
+        "native_invocations": raw_budgets.get("native_invocations", 0),
+        "provider_requests": raw_budgets.get("provider_requests", raw_budgets.get("provider_executions", 0)),
+        "solver_executions": raw_budgets.get("solver_executions", 0),
+    }
+    action = "acquire" if budgets["native_invocations"] else "analyze"
+    capabilities = ["exact_checkout", "sandbox_publication", "result_channel", "automatic_provenance"]
+    if action == "acquire":
+        capabilities.append("native_execution")
+        if budgets["solver_executions"]:
+            capabilities.append("mpb")
+    output = result.get("expected_output")
+    if not isinstance(output, dict) or set(output) != {"dataset_schema", "result_schema"}:
+        result_schema = "mephc-diagnostic-result-" + digest(value)[:16] + "-v1"
+        output = {"dataset_schema": None, "result_schema": result_schema}
+    result.update({
+        "kind": "SCIENCE", "action": action, "project": ".", "budgets": budgets,
+        "required_capabilities": capabilities, "expected_output": output,
+        "original_work_order_class": "DIAGNOSTIC",
+    })
+    return result
+
+
 def validate_contract(value: Any) -> dict[str, Any]:
+    value = normalize_contract(value)
     if not isinstance(value, dict) or value.get("schema") != CONTRACT_SCHEMA:
         raise ScientificJobError("WORK_ORDER_MACHINE_CONTRACT_REQUIRED")
     required = {
