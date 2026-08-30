@@ -13,6 +13,7 @@ from typing import Any
 import numpy as np
 
 from audit.e10f.e8b_local_affine_model import canonical_state_identity, digest_state_identity, make_state
+from audit.local_affine.local_affine_snapshot_codec import encode_snapshot
 from mephc.local_affine_state_provider import LocalAffineStateProvider, local_affine_reference_cell_contract
 
 
@@ -50,8 +51,8 @@ def load_budget_counter() -> Any:
     return module.BudgetCounter
 
 
-def load_runtime() -> Any:
-    path = ROOT / "tools" / "mephc-flow" / "mephc_science_runtime.py"
+def load_current_runtime() -> Any:
+    path = ROOT / "tools" / "mephc-flow" / "mephc_runtime.py"
     spec = importlib.util.spec_from_file_location("_mephc_frozen_13_runtime", path)
     require(spec is not None and spec.loader is not None, "SCIENCE_RUNTIME_MODULE_UNAVAILABLE")
     module = importlib.util.module_from_spec(spec)
@@ -202,13 +203,13 @@ def main() -> int:
     source_commit = os.environ.get("MEPHC_SOURCE_COMMIT")
     require(isinstance(source_commit, str) and source_commit, "SCIENCE_SOURCE_COMMIT_MISSING")
     namespace = supplied_namespace(bundle)
-    runtime = load_runtime()
+    runtime = load_current_runtime()
     BudgetCounter = load_budget_counter()
     job_module = importlib.util.spec_from_file_location("_mephc_frozen_13_job", ROOT / "tools" / "mephc-flow" / "scientific_job.py")
     require(job_module is not None and job_module.loader is not None, "SCIENTIFIC_JOB_MODULE_UNAVAILABLE")
     job = importlib.util.module_from_spec(job_module)
     job_module.loader.exec_module(job)
-    state_root = runtime._trusted_science_state_root()
+    state_root = runtime.SCIENCE_STATE
     namespace["request_graph_sha256"] = namespace.get("request_graph_sha256", graph_sha)
     store = job.ImmutableDatasetStore(state_root, namespace)
     require(not store.root.exists(), "DATASET_NAMESPACE_ALREADY_EXISTS")
@@ -244,7 +245,7 @@ def main() -> int:
             min_gap = min(min_gap, gap)
             key_identity = {"work_order_id": bundle["work_order_id"], "state_id": state_id, "role": item["role"], "public_q": list(item["public_q"]), "s": float(item["s"])}
             key = canonical(key_identity)
-            payload = runtime.encode_snapshot(snapshot)
+            payload = encode_snapshot(snapshot)
             record_identity = {
                 "state_id": state_id, "role": item["role"], "public_q": list(item["public_q"]), "s": float(item["s"]),
                 "canonical_state_identity": identity_before, "canonical_state_identity_sha256": digest_state_identity(identity_before),
