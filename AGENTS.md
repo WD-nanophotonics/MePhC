@@ -37,6 +37,13 @@ Continue automatically until Chat terminates the workflow. Starting or
 continuing the workflow is standing authorization for its fixed Courier
 closeout; never ask the user for per-report approval.
 
+The returned state is authoritative. Never escalate while the flow reports
+`READY`: `READY` with no job/run proves expensive work was not started, even
+if an earlier `execute` client call was interrupted, so invoke `execute` again.
+A missing contract-declared file, a missing test, or `TESTS_FAILED` is ordinary
+implementation work; repair it locally and execute again. Do not reinterpret
+these cases as uncertain Native side effects.
+
 ## Risk-based autonomy
 
 Hard invariants are limited to work-order/request/run identity, Git SHA and
@@ -68,8 +75,10 @@ For a local parser, test, Git, permission or Thin Flow defect:
 4. resume the original work order and durable IDs.
 
 The repair must remove or soften a gate, not add a service, command, state,
-certificate or work-order-specific branch. A repeated failure signature after
-one verified repair escalates to the fixed supervisor task
+certificate or work-order-specific branch. Escalate a repeated local failure
+after one repair only when Thin Flow returns `HARD_BLOCKED`, or reports
+`RUNNING` with `side_effect_state=UNKNOWN`. Do not escalate a `READY` local
+implementation or test failure. The fixed supervisor task is
 `01a04136-7e60-75c3-88cf-156581a3733e` on host `local`. The only Luna worker is
 `01a0480e-b79d-75c3-ac80-5db601b32d67`; never create or fork another worker.
 

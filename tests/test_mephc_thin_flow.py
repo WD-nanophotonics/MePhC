@@ -81,8 +81,52 @@ def test_agents_protocol_prefers_self_repair_before_fixed_supervisor_escalation(
         "never create or fork another worker",
         "allowed_writes` is advisory",
         "Missing or ambiguous Native authorization means",
+        "Never escalate while the flow reports",
+        "missing contract-declared file",
+        "side_effect_state=UNKNOWN",
     )
     assert all(item in policy for item in required)
+
+
+def test_ready_without_job_authoritatively_means_not_started(monkeypatch, tmp_path: Path):
+    scope = paths(tmp_path)
+    monkeypatch.setattr(flow, "source", lambda _: {"head": "a" * 40, "dirty": False})
+    monkeypatch.setattr(flow, "active_order", lambda _: {"work_order_id": "MEPHC-THIN-TEST-READY"})
+    monkeypatch.setattr(flow, "request_for_work_order", lambda *_: None)
+    monkeypatch.setattr(flow, "current_job", lambda *_: None)
+    result = flow.state_view(scope)
+    assert result["state"] == "READY"
+    assert result["safe_next"] == "execute"
+    assert result["side_effect_state"] == "NOT_STARTED"
+    assert result["execute_reentry_safe"] is True
+    assert result["dispatch_reached"] is False
+
+
+def test_tests_failed_is_local_ready_not_hard_blocked(monkeypatch, tmp_path: Path, capsys):
+    scope = paths(tmp_path)
+    monkeypatch.setattr(flow, "execute", lambda _: (_ for _ in ()).throw(
+        flow.FlowError("TESTS_FAILED", "missing contract test")))
+    monkeypatch.setattr(flow, "state_view", lambda _: {
+        "schema": "mephc-thin-flow-status-v1", "state": "READY", "safe_next": "execute",
+        "work_order_id": "MEPHC-THIN-TEST-READY", "job": None,
+        "side_effect_state": "NOT_STARTED", "execute_reentry_safe": True,
+    })
+    assert flow.main(["execute"], scope) == 0
+    result = json.loads(capsys.readouterr().out)
+    assert result["state"] == "READY"
+    assert result["error_code"] == "TESTS_FAILED"
+    assert result["failure_class"] == "LOCAL_IMPLEMENTATION_OR_TRANSIENT"
+    assert result["native_started"] is False
+
+
+def test_main_identity_failure_remains_hard_blocked(monkeypatch, tmp_path: Path, capsys):
+    scope = paths(tmp_path)
+    monkeypatch.setattr(flow, "execute", lambda _: (_ for _ in ()).throw(
+        flow.FlowError("ORIGIN_MAIN_MOVED")))
+    assert flow.main(["execute"], scope) == 2
+    result = json.loads(capsys.readouterr().out)
+    assert result["state"] == "HARD_BLOCKED"
+    assert result["side_effect_state"] == "UNKNOWN"
 
 
 @pytest.mark.parametrize(
@@ -397,6 +441,60 @@ def test_interrupted_execute_reconciles_same_terminal_run(monkeypatch, tmp_path:
     assert result["execution"]["native_run_id"] == run_id
     assert result["execution"]["actual_native_invocation_count"] == 1
     assert result["execution"]["failure_code"] == "CHILD_RETURN_CODE_NONZERO"
+
+
+def test_job_written_before_run_is_safe_pre_dispatch_recovery(monkeypatch, tmp_path: Path):
+    scope = paths(tmp_path)
+    work_order = "MEPHC-THIN-TEST-PREDISPATCH"
+    value = contract(work_order_id=work_order, source_commit="c" * 40)
+    identifier = flow.job_id(value, value["source_commit"])
+    run_id = "MEPHC-NATIVE-" + flow.digest({"job_id": identifier})[:24]
+    job = {
+        "schema": "mephc-thin-job-v1", "job_id": identifier,
+        "work_order_id": work_order, "contract_sha256": value["contract_sha256"],
+        "source_commit": value["source_commit"], "action": "acquire",
+        "native_run_id": run_id, "state": "running",
+        "actual_native_invocation_count": 0, "actual_provider_execution_count": 0,
+        "actual_solver_execution_count": 0, "actual_dataset_record_count": 0,
+    }
+    monkeypatch.setattr(flow, "active_contract", lambda _: ({"work_order_id": work_order}, value))
+    monkeypatch.setattr(flow, "require_source", lambda *_a, **_k: {"head": value["source_commit"]})
+    monkeypatch.setattr(flow, "ensure_checkout", lambda *_: "/checkout")
+    monkeypatch.setattr(flow, "prepare_inputs", lambda *_: (tmp_path / "bundle", "/bundle.json"))
+    launches = []
+    monkeypatch.setattr(flow, "wsl", lambda argv, **_kwargs: (
+        launches.append(argv) or subprocess.CompletedProcess(argv, 0, "", "")))
+
+    evidence = flow.side_effect_evidence(scope, job)
+    assert evidence == {
+        "side_effect_state": "DISPATCHING", "execute_reentry_safe": True,
+        "dispatch_reached": False, "process_started": False,
+    }
+    result = flow.reconcile_running(scope, job)
+    stored = json.loads((scope.state / "native-runs" / f"{run_id}.json").read_text())
+    assert stored["run_id"] == run_id
+    assert stored["process_started"] is False
+    assert result["state"] == "RUNNING"
+    assert len(launches) == 1
+
+
+def test_dispatching_record_is_never_launched_twice(monkeypatch, tmp_path: Path):
+    scope = paths(tmp_path)
+    run_id = "MEPHC-NATIVE-" + "d" * 24
+    job = {"job_id": "MEPHC-SCIENCE-" + "e" * 24, "work_order_id": "MEPHC-THIN-TEST-DISPATCH",
+           "source_commit": "c" * 40, "action": "acquire", "native_run_id": run_id,
+           "state": "running"}
+    run_root = scope.state / "native-runs"
+    run_root.mkdir(parents=True)
+    (run_root / f"{run_id}.json").write_text(json.dumps({
+        "run_id": run_id, "state": "dispatching", "process_started": False,
+    }), encoding="utf-8")
+    monkeypatch.setattr(flow, "launch_native", lambda *_: pytest.fail("must not relaunch"))
+    result = flow.reconcile_running(scope, job)
+    assert result["state"] == "RUNNING"
+    evidence = flow.side_effect_evidence(scope, job)
+    assert evidence["side_effect_state"] == "DISPATCHING"
+    assert evidence["dispatch_reached"] is True
 
 
 def test_hundred_cycle_identity_soak_has_no_duplicate_requests():

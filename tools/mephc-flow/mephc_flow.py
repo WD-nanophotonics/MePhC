@@ -44,6 +44,12 @@ SHA64 = re.compile(r"^[0-9a-f]{64}$")
 WORK_ORDER = re.compile(r"^MEPHC-[A-Z0-9][A-Z0-9._-]{7,159}$")
 HARD_RECEIPTS = {"login_error", "target_error", "hard_error", "validation_failed", "request_rejected"}
 TERMINAL_JOBS = {"succeeded", "failed", "blocked"}
+HARD_INVARIANT_ERRORS = {
+    "ACTIVE_RESPONSE_BINDING_INVALID", "ACTIVE_RESPONSE_SHA_MISMATCH",
+    "ACTIVE_WORK_ORDER_UNAVAILABLE", "CONTROL_BRANCH_NOT_SANDBOX",
+    "ORIGIN_MAIN_MOVED", "REMOTE_SANDBOX_MOVED", "SANDBOX_NOT_FAST_FORWARD",
+    "SOURCE_COMMIT_INVALID", "WORK_ORDER_CONTRACT_ID_MISMATCH",
+}
 
 
 class FlowError(RuntimeError):
@@ -359,6 +365,38 @@ def job_summary(job: dict[str, Any] | None) -> dict[str, Any] | None:
     }
 
 
+def side_effect_evidence(paths: Paths, job: dict[str, Any] | None) -> dict[str, Any]:
+    """Return the one authoritative answer to whether execute may be re-entered."""
+    if not job:
+        return {"side_effect_state": "NOT_STARTED", "execute_reentry_safe": True,
+                "dispatch_reached": False, "process_started": False}
+    if job.get("state") in TERMINAL_JOBS:
+        return {"side_effect_state": "TERMINAL", "execute_reentry_safe": False,
+                "dispatch_reached": bool(job.get("native_run_id")),
+                "process_started": actual_counts(job)["native_invocation"] > 0}
+    run_id = job.get("native_run_id")
+    if not isinstance(run_id, str):
+        return {"side_effect_state": "UNKNOWN", "execute_reentry_safe": False,
+                "dispatch_reached": False, "process_started": False}
+    run_record = read_json(paths.state / "native-runs" / f"{run_id}.json", None)
+    if run_record is None:
+        # execute writes the job before the run record and launches only after both.
+        return {"side_effect_state": "DISPATCHING", "execute_reentry_safe": True,
+                "dispatch_reached": False, "process_started": False}
+    if not isinstance(run_record, dict) or run_record.get("run_id") != run_id:
+        return {"side_effect_state": "UNKNOWN", "execute_reentry_safe": False,
+                "dispatch_reached": True, "process_started": None}
+    if run_record.get("state") in {"succeeded", "failed"}:
+        phase = "TERMINAL"
+    elif run_record.get("process_started") is True:
+        phase = "STARTED"
+    else:
+        phase = "DISPATCHING"
+    return {"side_effect_state": phase, "execute_reentry_safe": phase != "UNKNOWN",
+            "dispatch_reached": True,
+            "process_started": run_record.get("process_started") is True}
+
+
 def state_view(paths: Paths) -> dict[str, Any]:
     source_value = source(paths)
     try:
@@ -378,9 +416,10 @@ def state_view(paths: Paths) -> dict[str, Any]:
             state, safe_next = "AWAITING_REPLY", "closeout"
         else:
             state, safe_next = "AWAITING_REPLY", "closeout"
+        job = current_job(paths, order["work_order_id"])
         return {"schema": "mephc-thin-flow-status-v1", "state": state, "safe_next": safe_next,
                 "work_order_id": order["work_order_id"], "source": source_value,
-                "request": summary, "job": job_summary(current_job(paths, order["work_order_id"]))}
+                "request": summary, "job": job_summary(job), **side_effect_evidence(paths, job)}
     job = current_job(paths, order["work_order_id"])
     if job and job.get("state") in TERMINAL_JOBS:
         state, safe_next = "READY_TO_CLOSE", "closeout"
@@ -390,7 +429,7 @@ def state_view(paths: Paths) -> dict[str, Any]:
         state, safe_next = "READY", "execute"
     return {"schema": "mephc-thin-flow-status-v1", "state": state, "safe_next": safe_next,
             "work_order_id": order["work_order_id"], "source": source_value, "job": job_summary(job),
-            "request": None}
+            "request": None, **side_effect_evidence(paths, job)}
 
 
 def successor_from_text(text: str, prior_work_order_id: str | None) -> str | None:
@@ -743,11 +782,51 @@ def finish_native(paths: Paths, job: dict[str, Any], run_record: dict[str, Any])
     return execution_view(final)
 
 
+def native_record(job: dict[str, Any], contract: dict[str, Any], run_id: str) -> dict[str, Any]:
+    return {**job, "schema": "mephc-thin-native-run-v1", "run_id": run_id,
+            "state": "dispatching", "process_started": False,
+            "native_invocation_budget": contract["budgets"]["native_invocations"],
+            "provider_request_budget": contract["budgets"]["provider_requests"],
+            "solver_execution_budget": contract["budgets"]["solver_executions"],
+            "science_contract_sha256": contract["contract_sha256"],
+            "expected_output": contract["expected_output"]}
+
+
+def launch_native(paths: Paths, contract: dict[str, Any], job: dict[str, Any],
+                  checkout: str, bundle_wsl: str) -> dict[str, Any]:
+    """Launch only after the deterministic job and run records both exist."""
+    run_id = job["native_run_id"]
+    run_path = paths.state / "native-runs" / f"{run_id}.json"
+    helper = f"{checkout}/tools/mephc-flow/wsl_native_exec.py"
+    result_wsl = f"{SCIENCE_STATE_WSL}/results/{job['job_id']}.json"
+    launched = wsl([CONDA_PYTHON_WSL, helper, "--state", f"{FLOW_STATE_WSL}/native-runs/{run_id}.json",
+                    "--checkout", checkout, "--project", checkout,
+                    "--input-bundle", bundle_wsl, "--result-path", result_wsl,
+                    "--", CONDA_PYTHON_WSL, "-B", contract["entrypoint"]],
+                   timeout=7 * 24 * 3600, check=False)
+    run_record = read_json(run_path, native_record(job, contract, run_id))
+    run_record.setdefault("launcher_return_code", launched.returncode)
+    return finish_native(paths, job, run_record)
+
+
 def reconcile_running(paths: Paths, job: dict[str, Any]) -> dict[str, Any]:
     run_id = job.get("native_run_id")
     if not isinstance(run_id, str):
         raise FlowError("EXECUTION_STATE_INCOMPLETE")
-    run_record = read_json(paths.state / "native-runs" / f"{run_id}.json", {})
+    run_path = paths.state / "native-runs" / f"{run_id}.json"
+    run_record = read_json(run_path, None)
+    if run_record is None:
+        # A missing run record proves launch was not reached: it is written before launch.
+        _, contract = active_contract(paths)
+        value = require_source(paths, published=True)
+        if (job.get("work_order_id") != contract["work_order_id"]
+                or job.get("job_id") != job_id(contract, job["source_commit"])
+                or value["head"] != job.get("source_commit")):
+            raise FlowError("EXECUTION_STATE_INCOMPLETE")
+        checkout = ensure_checkout(paths, job["source_commit"])
+        _, bundle_wsl = prepare_inputs(paths, contract, job["job_id"])
+        atomic_json(run_path, native_record(job, contract, run_id))
+        return launch_native(paths, contract, job, checkout, bundle_wsl)
     if not isinstance(run_record, dict) or run_record.get("run_id") != run_id:
         raise FlowError("NATIVE_RUN_STATE_UNAVAILABLE")
     return finish_native(paths, job, run_record)
@@ -804,24 +883,10 @@ def execute(paths: Paths) -> dict[str, Any]:
     run_id = "MEPHC-NATIVE-" + digest({"job_id": identifier})[:24]
     run_path = paths.state / "native-runs" / f"{run_id}.json"
     job = {**base, "state": "running", "native_run_id": run_id}
-    native = {**job, "schema": "mephc-thin-native-run-v1", "run_id": run_id,
-              "state": "dispatching", "process_started": False,
-              "native_invocation_budget": contract["budgets"]["native_invocations"],
-              "provider_request_budget": contract["budgets"]["provider_requests"],
-              "solver_execution_budget": contract["budgets"]["solver_executions"],
-              "science_contract_sha256": contract["contract_sha256"],
-              "expected_output": contract["expected_output"]}
+    native = native_record(job, contract, run_id)
     atomic_json(job_path, job)
     atomic_json(run_path, native)
-    helper = f"{publication['checkout']}/tools/mephc-flow/wsl_native_exec.py"
-    result_wsl = f"{SCIENCE_STATE_WSL}/results/{identifier}.json"
-    launched = wsl([CONDA_PYTHON_WSL, helper, "--state", f"{FLOW_STATE_WSL}/native-runs/{run_id}.json",
-                    "--checkout", publication["checkout"], "--project", publication["checkout"],
-                    "--input-bundle", bundle_wsl, "--result-path", result_wsl,
-                    "--", CONDA_PYTHON_WSL, "-B", entrypoint], timeout=7 * 24 * 3600, check=False)
-    run_record = read_json(run_path, native)
-    run_record.setdefault("launcher_return_code", launched.returncode)
-    return finish_native(paths, job, run_record)
+    return launch_native(paths, contract, job, publication["checkout"], bundle_wsl)
 
 
 def fixed_request_id(work_order_id: str) -> tuple[str, str]:
@@ -966,6 +1031,31 @@ def parser() -> argparse.ArgumentParser:
     return result
 
 
+def command_error_view(paths: Paths, command: str, exc: FlowError) -> dict[str, Any]:
+    """Classify errors by durable evidence instead of by an agent's guess."""
+    hard = {"state": "HARD_BLOCKED", "error_code": exc.code,
+            "detail": exc.detail, "safe_next": None,
+            "side_effect_state": "UNKNOWN", "execute_reentry_safe": False}
+    if command != "execute" or exc.code in HARD_INVARIANT_ERRORS:
+        return hard
+    try:
+        view = state_view(paths)
+    except FlowError:
+        return hard
+    state = view.get("state")
+    phase = view.get("side_effect_state")
+    if state == "READY" and phase == "NOT_STARTED":
+        return {**view, "error_code": exc.code, "detail": exc.detail,
+                "failure_class": "LOCAL_IMPLEMENTATION_OR_TRANSIENT",
+                "native_started": False, "safe_next": "execute"}
+    if state == "RUNNING" and phase in {"DISPATCHING", "STARTED"}:
+        return {**view, "error_code": exc.code, "detail": exc.detail,
+                "failure_class": "DURABLE_RECONCILIATION", "safe_next": "execute"}
+    if state == "READY_TO_CLOSE" and phase == "TERMINAL":
+        return {**view, "error_code": exc.code, "detail": exc.detail}
+    return hard
+
+
 def main(argv: list[str] | None = None, paths: Paths | None = None) -> int:
     args = parser().parse_args(argv)
     scope = paths or Paths()
@@ -975,9 +1065,9 @@ def main(argv: list[str] | None = None, paths: Paths | None = None) -> int:
         print(json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False))
         return 0 if value.get("state") not in {"HARD_BLOCKED"} else 2
     except FlowError as exc:
-        print(json.dumps({"state": "HARD_BLOCKED", "error_code": exc.code,
-                          "detail": exc.detail, "safe_next": None}, indent=2, sort_keys=True))
-        return 2
+        value = command_error_view(scope, args.command, exc)
+        print(json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False))
+        return 2 if value.get("state") == "HARD_BLOCKED" else 0
 
 
 if __name__ == "__main__":
