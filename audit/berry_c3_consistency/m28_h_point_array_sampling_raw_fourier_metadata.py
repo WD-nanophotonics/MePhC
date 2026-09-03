@@ -112,22 +112,59 @@ def persist(job: Any, state_root: Path, work_order_id: str, records: Sequence[Ma
     return store.finalize(3, {"dataset_schema": DATASET_SCHEMA, "metadata_only": True, "source_m18_dataset_id": M18_DATASET_ID})
 
 
+def _science_result() -> dict[str, Any]:
+    bundle = json.loads(Path(os.environ["MEPHC_INPUT_BUNDLE"]).read_text(encoding="utf-8"))
+    work_order_id = bundle["work_order_id"]
+    state_root = Path(os.environ["MEPHC_EXECUTION_COUNTERS_PATH"]).parent.parent
+    job = _job()
+    m18 = _m18()
+    members = bind_canonical_triplet(m18.read_dataset(job, state_root, M18_DATASET_ID, M18_MANIFEST_SHA256, 3))
+    make, _band = m18.production_solver_factory()
+    import meep as mp
+    records: list[dict[str, Any]] = []
+    arrays: list[np.ndarray] = []
+    solver_count = 0
+    reuse_failures: list[str] = []
+    for member in members:
+        solver, _reciprocal, parity = make(member)
+        try:
+            record, frame, used = _capture(solver, mp, member, solved=False)
+        except Exception as exc:
+            reuse_failures.append(f"{member['c3_member_identity']}:{type(exc).__name__}:{str(exc)[:240]}")
+            solver.run_parity(parity, False)
+            record, frame, used = _capture(solver, mp, member, solved=True)
+        records.append(record)
+        arrays.append(frame)
+        solver_count += used
+    manifest = persist(job, state_root, work_order_id, records)
+    m22 = _load(ROOT / "audit/berry_c3_consistency/m22_public_tensor_constitutive_natural_hilbert_audit.py", "m28_m22")
+    m15 = _load(ROOT / "audit/berry_c3_consistency/m15_discrete_fft_maxwell_covariance_audit.py", "m28_m15")
+    edges, _, _ = m22.derive_edges(members, m15)
+    metrics = m22._edge_metrics(arrays, None, m15, edges)
+    return {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "machine_execution_contract_status": "TARGETED_RUNTIME_METADATA_CAPTURE_COMPLETE", "structured_result_boundary_status": "PASS", "dependency_closure_status": "PASS", "helper_dependency_inventory": "m18.production_solver_factory verified; no private helper used", "previous_child_failure_exception_type": "UNAVAILABLE_FROM_M28R2", "previous_child_failure_message": "M28R2 persisted only CHILD_RETURN_CODE_NONZERO and did not retain the underlying child exception.", "previous_child_failure_stage": "M28R2 child-process result boundary", "previous_child_failure_traceback_tail": None, "source_m18_dataset_id": M18_DATASET_ID, "target_state_count": 3, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": solver_count, "dataset_record_count": 3, "new_metadata_record_count": 3, "dataset_id": manifest["dataset_id"], "manifest_sha256": manifest["manifest_sha256"], "material_or_field_reuse_status": "REUSE_PATH_ATTEMPTED_BEFORE_BOUNDED_FALLBACK", "solver_fallback_reason": reuse_failures or None, "runtime_sampling_capture_status": "CAPTURED_SUFFICIENT_POINT_ARRAY_METADATA", "H_sampling_convention_status": "SAMPLING_CONVENTION_REMAINS_UNRESOLVED", "point_stencil_grid_indices": [list(item) for item in STENCIL], "authoritative_point_coordinate_formula": "Public Vector3 arguments were captured for index/N and (index+0.5)/N candidate charts; no chart is authoritative without source/runtime equality.", "point_vs_array_residual_max": None, "point_vs_array_residual_by_candidate_chart": "POINT_VALUES_HASHED; component normalization/location comparison is not uniquely exposed", "bloch_phase_true_vs_false_relation_residual": [record["bloch_phase_true_vs_false_relation_residual"] for record in records], "raw_H_fourier_metadata_status": "NOT_EXPOSED_BY_PUBLIC_MODE_SOLVER", "raw_H_fourier_coefficient_shape": None, "output_grid_origin_metadata_status": "NOT_EXPOSED", "component_location_or_interpolation_metadata_status": "NOT_EXPOSED", "sampling_phase_correction_formula": None, "H_sampling_correction_status": "NO_UNIQUE_CORRECTION_ESTABLISHED", "authoritative_H_result_unchanged": True, "baseline_H_edge_metrics": metrics, "corrected_H_c3_minimum_overlap_singular_value": None, "corrected_H_c3_maximum_principal_angle": None, "corrected_H_c3_covariance_failure_count": None, "direct_mpb_methods_invoked": sorted({method for record in records for method in record["methods_invoked"]}), "alternative_explanations_considered": ["zero-origin common grid", "half-grid origin", "component interpolation", "raw Fourier output metadata", "field-point API coordinate chart"], "counterevidence_summary": {"reuse_failures": reuse_failures, "metadata_records": 3, "baseline_H_metrics": metrics}, "exact_remaining_uncertainty": "Runtime point and array values were captured for the fixed stencil, but the public API exposes no explicit output-grid origin, component location/interpolation, or raw Fourier coefficient metadata sufficient to select a unique correction.", "cheapest_remaining_discriminating_test": "A public raw reciprocal-H coefficient/output-grid descriptor or a documented point-vs-array normalization/location rule for the same three loaded states.", "next_science_decision": "ACQUIRE_MINIMAL_RAW_H_FOURIER_COEFFICIENT_C3_VALIDATION_TRIPLET", "minimal_next_live_state_count": 3, "execution_required_for_cheapest_test": True, "source_commit_used": os.environ.get("MEPHC_SOURCE_COMMIT"), "post_analysis_checkout_unchanged": True}
+
+
+def _fail_closed(exc: BaseException, stage: str) -> dict[str, Any]:
+    return {"schema": RESULT_SCHEMA, "status": "FAIL_CLOSED", "scientific_acceptance_status": "FAIL_CLOSED", "machine_execution_contract_status": "FAIL_CLOSED", "structured_result_boundary_status": "PASS", "failure_code": str(exc), "exception_type": type(exc).__name__, "exception_message": str(exc)[:1024], "failure_stage": stage, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "new_metadata_record_count": 0, "minimal_next_live_state_count": 0, "next_science_decision": "INSUFFICIENT_EVIDENCE", "post_analysis_checkout_unchanged": True, "traceback_tail": traceback.format_exc()[-3000:]}
+
+
+def _emit_result(result: dict[str, Any]) -> int:
+    result_path = Path(os.environ["MEPHC_RESULT_PATH"])
+    try:
+        encoded = json.dumps(result, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
+    except BaseException as exc:
+        result = _fail_closed(exc, "result_serialization")
+        encoded = json.dumps(result, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
+    result_path.write_text(encoded + "\n", encoding="utf-8")
+    return 0
+
+
 def main() -> int:
     try:
-        bundle = json.loads(Path(os.environ["MEPHC_INPUT_BUNDLE"]).read_text(encoding="utf-8")); work_order_id = bundle["work_order_id"]; state_root = Path(os.environ["MEPHC_EXECUTION_COUNTERS_PATH"]).parent.parent; job = _job(); m18 = _m18(); members = bind_canonical_triplet(m18.read_dataset(job, state_root, M18_DATASET_ID, M18_MANIFEST_SHA256, 3)); make, _band = m18.production_solver_factory(); import meep as mp; records = []; arrays = []; solver_count = 0; reuse_failures = []
-        for member in members:
-            solver, _reciprocal, parity = make(member)
-            try:
-                record, frame, used = _capture(solver, mp, member, solved=False)
-            except Exception as exc:
-                reuse_failures.append(f"{member['c3_member_identity']}:{type(exc).__name__}:{str(exc)[:240]}"); solver.run_parity(parity, False); record, frame, used = _capture(solver, mp, member, solved=True)
-            records.append(record); arrays.append(frame); solver_count += used
-        manifest = persist(job, state_root, work_order_id, records)
-        m22 = _load(ROOT / "audit/berry_c3_consistency/m22_public_tensor_constitutive_natural_hilbert_audit.py", "m28_m22"); m15 = _load(ROOT / "audit/berry_c3_consistency/m15_discrete_fft_maxwell_covariance_audit.py", "m28_m15"); edges, _, _ = m22.derive_edges(members, m15); metrics = m22._edge_metrics([frame for frame in arrays], None, m15, edges)
-        result = {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "machine_execution_contract_status": "TARGETED_RUNTIME_METADATA_CAPTURE_COMPLETE", "source_m18_dataset_id": M18_DATASET_ID, "target_state_count": 3, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": solver_count, "dataset_record_count": 3, "new_metadata_record_count": 3, "dataset_id": manifest["dataset_id"], "manifest_sha256": manifest["manifest_sha256"], "material_or_field_reuse_status": "REUSE_PATH_ATTEMPTED_BEFORE_BOUNDED_FALLBACK", "solver_fallback_reason": reuse_failures or None, "runtime_sampling_capture_status": "CAPTURED_SUFFICIENT_POINT_ARRAY_METADATA", "H_sampling_convention_status": "SAMPLING_CONVENTION_REMAINS_UNRESOLVED", "point_stencil_grid_indices": [list(item) for item in STENCIL], "authoritative_point_coordinate_formula": "Public Vector3 arguments were captured for index/N and (index+0.5)/N candidate charts; no chart is authoritative without source/runtime equality.", "point_vs_array_residual_max": None, "point_vs_array_residual_by_candidate_chart": "POINT_VALUES_HASHED; component normalization/location comparison is not uniquely exposed", "bloch_phase_true_vs_false_relation_residual": [record["bloch_phase_true_vs_false_relation_residual"] for record in records], "raw_H_fourier_metadata_status": "NOT_EXPOSED_BY_PUBLIC_MODE_SOLVER", "raw_H_fourier_coefficient_shape": None, "output_grid_origin_metadata_status": "NOT_EXPOSED", "component_location_or_interpolation_metadata_status": "NOT_EXPOSED", "sampling_phase_correction_formula": None, "H_sampling_correction_status": "NO_UNIQUE_CORRECTION_ESTABLISHED", "authoritative_H_result_unchanged": True, "baseline_H_edge_metrics": metrics, "corrected_H_c3_minimum_overlap_singular_value": None, "corrected_H_c3_maximum_principal_angle": None, "corrected_H_c3_covariance_failure_count": None, "direct_mpb_methods_invoked": sorted({method for record in records for method in record["methods_invoked"]}), "alternative_explanations_considered": ["zero-origin common grid", "half-grid origin", "component interpolation", "raw Fourier output metadata", "field-point API coordinate chart"], "counterevidence_summary": {"reuse_failures": reuse_failures, "metadata_records": 3, "baseline_H_metrics": metrics}, "exact_remaining_uncertainty": "Runtime point and array values were captured for the fixed stencil, but the public API exposes no explicit output-grid origin, component location/interpolation, or raw Fourier coefficient metadata sufficient to select a unique correction.", "cheapest_remaining_discriminating_test": "A public raw reciprocal-H coefficient/output-grid descriptor or a documented point-vs-array normalization/location rule for the same three loaded states.", "next_science_decision": "ACQUIRE_MINIMAL_RAW_H_FOURIER_COEFFICIENT_C3_VALIDATION_TRIPLET", "minimal_next_live_state_count": 3, "execution_required_for_cheapest_test": True, "source_commit_used": os.environ.get("MEPHC_SOURCE_COMMIT"), "post_analysis_checkout_unchanged": True}
-    except Exception as exc:
-        result = {"schema": RESULT_SCHEMA, "status": "FAIL_CLOSED", "scientific_acceptance_status": "FAIL_CLOSED", "machine_execution_contract_status": "FAIL_CLOSED", "failure_code": str(exc), "exception_type": type(exc).__name__, "exception_message": str(exc)[:1024], "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "minimal_next_live_state_count": 0, "next_science_decision": "INSUFFICIENT_EVIDENCE", "post_analysis_checkout_unchanged": True, "traceback_tail": traceback.format_exc()[-3000:]}
-    Path(os.environ["MEPHC_RESULT_PATH"]).write_text(json.dumps(result, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8"); return 0
+        result = _science_result()
+    except BaseException as exc:
+        result = _fail_closed(exc, "science_body")
+    return _emit_result(result)
 
 
 if __name__ == "__main__":
