@@ -35,6 +35,8 @@ TARGET_DETERMINISTIC = False
 TARGET_COUNT = 3
 FULL_M4_COUNT = 24
 FULL_TRIPLET_COUNT = 8
+PRIOR_WORK_ORDER_ID = "MEPHC-BERRY-C3-M8-MINIMAL-3-STATE-RUNTIME-SPATIAL-MAP-AND-RANK2-COVARIANCE-CLOSURE-20260904-028"
+PRIOR_JOB_ID = "MEPHC-SCIENCE-056518a1922f1520e01e342a"
 ROTATION_3 = np.asarray(
     [[-0.5, -math.sqrt(3.0) / 2.0, 0.0],
      [math.sqrt(3.0) / 2.0, -0.5, 0.0],
@@ -136,6 +138,13 @@ def apply_full_c3(vector: Any, spatial_shape: Sequence[int], index_map: Any) -> 
         pulled = apply_spatial_pullback(field, mapping)
         blocks.append(np.einsum("ab,xyb->xya", ROTATION_3, pulled).reshape(-1))
     return np.concatenate(blocks)
+
+
+def apply_full_c3_frame(frame: Any, spatial_shape: Sequence[int], index_map: Any) -> np.ndarray:
+    """Transform each band column of the nested bands-2-3 payload independently."""
+    matrix = np.asarray(frame, dtype=np.complex128)
+    require(matrix.ndim == 2 and matrix.shape[1] == 2, "M8_BAND_FRAME_LAYOUT_INVALID")
+    return np.column_stack([apply_full_c3(matrix[:, index], spatial_shape, index_map) for index in range(matrix.shape[1])])
 
 
 def runtime_grid_metadata(provider: Any, snapshot: Any) -> dict[str, Any]:
@@ -296,7 +305,7 @@ def analyze_triplet(records: Sequence[Mapping[str, Any]], metadata: Mapping[str,
     mapping = metadata["_index_map"]
     ordered = sorted(records, key=lambda item: int(item["member_index"]))
     vectors = [decode_vectors(item["normalized_vectors_bands_2_3"]) for item in ordered]
-    transformed = [apply_full_c3(vector, shape, mapping) for vector in vectors]
+    transformed = [apply_full_c3_frame(vector, shape, mapping) for vector in vectors]
     edges = [rank2_metrics(transformed[index], vectors[(index + 1) % 3]) for index in range(3)]
     return {"edges": edges, "minimum_overlap_singular_value": min(item["minimum_overlap_singular_value"] for item in edges), "maximum_principal_angle": max(item["maximum_principal_angle"] for item in edges), "maximum_projector_distance": max(item["maximum_projector_distance"] for item in edges), "closure_status": "METRICS_REPORTED_WITHOUT_NUMERICAL_THRESHOLD"}
 
@@ -314,7 +323,7 @@ def analyze_all_m4(m4: Sequence[Mapping[str, Any]], metadata: Mapping[str, Any])
     for key, items in sorted(groups.items()):
         ordered = sorted(items, key=lambda item: int(item["member_index"]))
         vectors = [decode_vectors(item["normalized_vectors_bands_2_3"]) for item in ordered]
-        transformed = [apply_full_c3(vector, shape, mapping) for vector in vectors]
+        transformed = [apply_full_c3_frame(vector, shape, mapping) for vector in vectors]
         edges = [rank2_metrics(transformed[index], vectors[(index + 1) % 3]) for index in range(3)]
         all_singulars.extend(item["minimum_overlap_singular_value"] for item in edges)
         all_angles.extend(item["maximum_principal_angle"] for item in edges)
@@ -353,6 +362,64 @@ def _load_m2():
     return module
 
 
+def recover_prior_records(job: Any, m2: Any, targets: Sequence[Mapping[str, Any]], state_root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Recover only the exact records written by the prior M8 job."""
+    namespace = {
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "work_order_id": PRIOR_WORK_ORDER_ID,
+        "source_m4_dataset_id": M4_DATASET_ID,
+        "source_m2_dataset_id": M2_DATASET_ID,
+        "record_schema": DATASET_SCHEMA,
+    }
+    store = job.ImmutableDatasetStore(state_root, namespace)
+    require(store.root.is_dir(), "M8_PRIOR_LIVE_PAYLOAD_UNRECOVERABLE", "prior namespace missing")
+    records = []
+    for target in sorted(targets, key=lambda item: int(item["member_index"])):
+        key = m2.canonical({"request_key_sha256": target["request_key_sha256"], "repeat_index": TARGET_REPEAT})
+        try:
+            payload, _ = store.get(key)
+        except Exception as exc:
+            raise M8Error("M8_PRIOR_LIVE_PAYLOAD_UNRECOVERABLE", f"member={target['member_index']}:{type(exc).__name__}") from exc
+        try:
+            value = json.loads(payload.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise M8Error("M8_PRIOR_LIVE_PAYLOAD_UNRECOVERABLE", f"member={target['member_index']}:invalid-json") from exc
+        require(isinstance(value, dict), "M8_PRIOR_LIVE_PAYLOAD_UNRECOVERABLE", "record is not an object")
+        require(value.get("request_key_sha256") == target["request_key_sha256"] and value.get("member_index") == target["member_index"] and value.get("geometry_id") == TARGET_GEOMETRY and value.get("repeat_index") == TARGET_REPEAT, "M8_PRIOR_RECORD_IDENTITY_INVALID")
+        records.append(value)
+    manifest_path = store.root / "dataset-manifest.json"
+    dataset_id = None
+    manifest_sha = None
+    if manifest_path.is_file():
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        require(isinstance(manifest, dict) and manifest.get("record_count") == TARGET_COUNT and manifest.get("completion_state") == "COMPLETE", "M8_PRIOR_DATASET_MANIFEST_INVALID")
+        dataset_id, manifest_sha = manifest.get("dataset_id"), manifest.get("manifest_sha256")
+        require(isinstance(dataset_id, str) and isinstance(manifest_sha, str), "M8_PRIOR_DATASET_IDENTITY_MISSING")
+        verified = job.verify_dataset(state_root, dataset_id)
+        require(verified.get("manifest_sha256") == manifest_sha and verified.get("record_count") == TARGET_COUNT, "M8_PRIOR_DATASET_VERIFICATION_FAILED")
+    else:
+        manifest = store.finalize(TARGET_COUNT, {"source_m4_dataset_id": M4_DATASET_ID, "source_m2_dataset_id": M2_DATASET_ID, "provider_execution_count": 3, "solver_execution_count": 3})
+        dataset_id, manifest_sha = manifest["dataset_id"], manifest["manifest_sha256"]
+    return records, {"dataset_id": dataset_id, "manifest_sha256": manifest_sha, "finalized_record_count": TARGET_COUNT}
+
+
+def energy_vector_layout(records: Sequence[Mapping[str, Any]]) -> tuple[dict[str, Any], str]:
+    observed = []
+    for record in records:
+        payload = record.get("normalized_vectors_bands_2_3")
+        require(isinstance(payload, list) and len(payload) == 2, "M8_ENERGY_LAYOUT_OUTER_CONTAINER_INVALID")
+        lengths = []
+        for vector in payload:
+            require(isinstance(vector, list), "M8_ENERGY_LAYOUT_BAND_CONTAINER_INVALID")
+            lengths.append(len(vector))
+            require(all(isinstance(pair, list) and len(pair) == 2 for pair in vector), "M8_ENERGY_LAYOUT_COMPLEX_PAIR_INVALID")
+        observed.append({"outer_type": type(payload).__name__, "outer_length": len(payload), "inner_type": type(payload[0]).__name__, "band_lengths": lengths, "complex_element_count_total": sum(lengths), "encoding": "nested [band][complex_real_imag_pair]"})
+    require(len({json.dumps(item, sort_keys=True) for item in observed}) == 1, "M8_ENERGY_LAYOUT_INCONSISTENT")
+    actual = observed[0]
+    expected = "old parser expected one flat 98304-complex-component vector; actual production payload is two nested band vectors, each full sqrt(epsilon)E+H C-order state"
+    return actual, expected
+
+
 def failure(code: str, *, counts: Mapping[str, int] | None = None, detail: Mapping[str, Any] | None = None) -> dict[str, Any]:
     values = dict(counts or {})
     return {"schema": RESULT_SCHEMA, "status": "FAIL_CLOSED", "scientific_acceptance_status": "FAIL_CLOSED", "failure_code": code, "target_state_count": values.get("target", 0), "native_invocation_count": 1, "provider_execution_count": values.get("provider", 0), "solver_execution_count": values.get("solver", 0), "dataset_record_count": values.get("dataset", 0), "new_live_record_count": values.get("dataset", 0), "failed_request_count": 1 if detail else 0, "failure_detail": detail, "post_native_checkout_unchanged": True}
@@ -372,32 +439,21 @@ def main() -> int:
         targets = select_preregistered_triplet(m4, m2_records)
         counters_path = Path(os.environ.get("MEPHC_EXECUTION_COUNTERS_PATH", ""))
         require(counters_path.name, "M8_COUNTERS_PATH_MISSING")
-        store = job.ImmutableDatasetStore(counters_path.parent.parent, {"goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1", "work_order_id": bundle["work_order_id"], "source_m4_dataset_id": M4_DATASET_ID, "source_m2_dataset_id": M2_DATASET_ID, "record_schema": DATASET_SCHEMA})
-        counter = job.BudgetCounter(TARGET_COUNT, TARGET_COUNT)
-        pilot = object.__new__(m2.ProductionPilot)
-        pilot._providers = {}
-        pilot._geometry_digests = {}
-        records, failed = acquire_three_states(targets, lambda target: m2.ProductionPilot._provider(pilot, target), lambda provider, coordinate: provider.solve(tuple(float(value) for value in coordinate)), counter)
-        counts = {"target": len(records), "provider": counter.provider_count, "solver": counter.solver_count, "dataset": 0}
-        if failed:
-            result = failure("M8_PROVIDER_OR_SOLVER_FAILURE", counts=counts, detail=failed)
-        else:
-            metadata = runtime_grid_metadata(pilot._providers[(TARGET_GEOMETRY, TARGET_DETERMINISTIC)], SimpleNamespace(spatial_shape=(128, 128), provenance={}))
-            # Use the captured metadata from the first live record, retaining
-            # the private map only in memory for analysis.
-            metadata = dict(records[0]["runtime_representation_metadata"])
-            metadata["_index_map"] = build_index_map(metadata["runtime_spatial_shape"], metadata["c3_fractional_index_action_target_to_source"])
-            for record in records:
-                key = m2.canonical({"request_key_sha256": record["request_key_sha256"], "repeat_index": TARGET_REPEAT})
-                store.put(key, canonical(record), {"request_key_sha256": record["request_key_sha256"], "repeat_index": TARGET_REPEAT, "geometry_id": TARGET_GEOMETRY, "member_index": record["member_index"]})
-            manifest = store.finalize(TARGET_COUNT, {"source_m4_dataset_id": M4_DATASET_ID, "source_m2_dataset_id": M2_DATASET_ID, "provider_execution_count": counter.provider_count, "solver_execution_count": counter.solver_count})
-            counts["dataset"] = TARGET_COUNT
-            live_analysis = analyze_triplet(records, metadata)
-            all_analysis = analyze_all_m4(m4, metadata)
-            validation = validate_full_operator(metadata["runtime_spatial_shape"], metadata["_index_map"])
-            synthetic_ok = validation["synthetic_scalar_norm_preserved"] and validation["synthetic_vector_norm_preserved"] and validation["synthetic_scalar_c3_residual"] <= 1e-12 and validation["synthetic_vector_c3_residual"] <= 1e-12
-            require(synthetic_ok, "M8_SYNTHETIC_OPERATOR_VALIDATION_FAILED")
-            result = {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "source_m4_dataset_id": M4_DATASET_ID, "source_m2_dataset_id": M2_DATASET_ID, "target_state_count": TARGET_COUNT, "native_invocation_count": 1, "provider_execution_count": counter.provider_count, "solver_execution_count": counter.solver_count, "dataset_record_count": TARGET_COUNT, "new_live_record_count": TARGET_COUNT, "failed_request_count": 0, "dataset_id": manifest["dataset_id"], "manifest_sha256": manifest["manifest_sha256"], "runtime_spatial_shape": metadata["runtime_spatial_shape"], "index_to_coordinate_map_status": metadata["index_to_coordinate_map_status"], "runtime_to_serialized_vector_index_map_status": metadata["runtime_to_serialized_vector_index_map_status"], "periodic_wrap_status": metadata["periodic_wrap_status"], "runtime_spatial_map_transferability_status": "TRANSFERABLE_BY_SHARED_TRIANGULAR_BAND_GRID_CONSTRUCTION", "scientific_state_reproduction_status": "PASS_IDENTITY_CONFIGURATION_AND_BAND_PAYLOAD_PRESERVED", "c3_operator_unitarity_residual": 0.0, "c3_operator_cubed_residual": max(validation["synthetic_scalar_c3_residual"], validation["synthetic_vector_c3_residual"]), "canonical_triplet_rank2_minimum_overlap_singular_value": live_analysis["minimum_overlap_singular_value"], "canonical_triplet_rank2_maximum_principal_angle": live_analysis["maximum_principal_angle"], "canonical_triplet_rank2_maximum_projector_distance": live_analysis["maximum_projector_distance"], "full_transformed_rank2_minimum_overlap_singular_value": all_analysis["full_transformed_rank2_minimum_overlap_singular_value"], "full_transformed_rank2_maximum_principal_angle": all_analysis["full_transformed_rank2_maximum_principal_angle"], "full_transformed_rank2_maximum_projector_distance": all_analysis["full_transformed_rank2_maximum_projector_distance"], "full_transformed_c3_subspace_closure_failure_count": all_analysis["full_transformed_c3_subspace_closure_failure_count"], "runtime_spatial_map_status": "RECONSTRUCTED_AND_VALIDATED", "rank2_covariance_interpretation": "INSUFFICIENT_EVIDENCE", "next_science_decision": "INSUFFICIENT_EVIDENCE", "minimal_next_live_state_count": 0, "classification_counts": all_analysis["classification_counts"], "triplets": all_analysis["triplets"], "runtime_validation": validation, "source_commit_used": os.environ.get("MEPHC_SOURCE_COMMIT"), "post_native_checkout_unchanged": True}
+        state_root = counters_path.parent.parent
+        records, dataset = recover_prior_records(job, m2, targets, state_root)
+        actual_layout, old_parser_expectation = energy_vector_layout(records)
+        metadata = dict(records[0]["runtime_representation_metadata"])
+        metadata["_index_map"] = build_index_map(metadata["runtime_spatial_shape"], metadata["c3_fractional_index_action_target_to_source"])
+        m4_by_key = {record["request_key_sha256"]: record for record in m4}
+        for record in records:
+            source = m4_by_key.get(record["request_key_sha256"])
+            require(source is not None and source.get("solver_configuration") == record.get("solver_configuration") and source.get("geometry_id") == record.get("geometry_id") and source.get("member_index") == record.get("member_index") and source.get("repeat_index") == record.get("repeat_index"), "M8_RECOVERED_M4_IDENTITY_MISMATCH")
+            require(len(record.get("first_four_frequencies", [])) == 4 and len(record.get("normalized_vectors_bands_2_3", [])) == 2, "M8_RECOVERED_BAND_PAYLOAD_INVALID")
+        live_analysis = analyze_triplet(records, metadata)
+        all_analysis = analyze_all_m4(m4, metadata)
+        validation = validate_full_operator(metadata["runtime_spatial_shape"], metadata["_index_map"])
+        require(validation["synthetic_scalar_norm_preserved"] and validation["synthetic_vector_norm_preserved"] and validation["synthetic_scalar_c3_residual"] <= 1e-12 and validation["synthetic_vector_c3_residual"] <= 1e-12, "M8_SYNTHETIC_OPERATOR_VALIDATION_FAILED")
+        result = {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "prior_job_id": PRIOR_JOB_ID, "prior_live_payload_recovery_status": "RECOVERED_EXACT_IMMUTABLE_RECORDS", "prior_outer_dataset_record_count": 3, "prior_finalized_dataset_record_count": dataset["finalized_record_count"], "source_m4_dataset_id": M4_DATASET_ID, "source_m2_dataset_id": M2_DATASET_ID, "target_state_count": TARGET_COUNT, "energy_vector_layout_actual": actual_layout, "energy_vector_layout_expected_by_old_parser": old_parser_expectation, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "new_live_record_count": 0, "failed_request_count": 0, "dataset_id": dataset["dataset_id"], "manifest_sha256": dataset["manifest_sha256"], "runtime_spatial_shape": metadata["runtime_spatial_shape"], "index_to_coordinate_map_status": metadata["index_to_coordinate_map_status"], "runtime_to_serialized_vector_index_map_status": metadata["runtime_to_serialized_vector_index_map_status"], "periodic_wrap_status": metadata["periodic_wrap_status"], "runtime_spatial_map_transferability_status": "TRANSFERABLE_BY_SHARED_TRIANGULAR_BAND_GRID_CONSTRUCTION", "scientific_state_reproduction_status": "PASS_IDENTITY_CONFIGURATION_AND_BAND_PAYLOAD_PRESERVED", "c3_operator_unitarity_residual": 0.0, "c3_operator_cubed_residual": max(validation["synthetic_scalar_c3_residual"], validation["synthetic_vector_c3_residual"]), "canonical_triplet_rank2_minimum_overlap_singular_value": live_analysis["minimum_overlap_singular_value"], "canonical_triplet_rank2_maximum_principal_angle": live_analysis["maximum_principal_angle"], "canonical_triplet_rank2_maximum_projector_distance": live_analysis["maximum_projector_distance"], "full_transformed_rank2_minimum_overlap_singular_value": all_analysis["full_transformed_rank2_minimum_overlap_singular_value"], "full_transformed_rank2_maximum_principal_angle": all_analysis["full_transformed_rank2_maximum_principal_angle"], "full_transformed_rank2_maximum_projector_distance": all_analysis["full_transformed_rank2_maximum_projector_distance"], "full_transformed_c3_subspace_closure_failure_count": all_analysis["full_transformed_c3_subspace_closure_failure_count"], "runtime_spatial_map_status": "RECONSTRUCTED_AND_VALIDATED", "rank2_covariance_interpretation": "INSUFFICIENT_EVIDENCE", "next_science_decision": "INSUFFICIENT_EVIDENCE", "minimal_next_live_state_count": 0, "classification_counts": all_analysis["classification_counts"], "triplets": all_analysis["triplets"], "runtime_validation": validation, "source_commit_used": os.environ.get("MEPHC_SOURCE_COMMIT"), "post_native_checkout_unchanged": True}
     except (M8Error, OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         values = {"target": 0 if counter is None else 0, "provider": getattr(counter, "provider_count", 0), "solver": getattr(counter, "solver_count", 0), "dataset": 0}
         result = failure(str(exc), counts=values)

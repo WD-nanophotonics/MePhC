@@ -81,7 +81,8 @@ def test_full_operator_contains_no_numerical_degree_of_freedom():
     assert "np.linalg.lstsq" not in source
     assert "nearest" not in source.lower()
     assert "U(2)" not in source
-    assert "provider.solve(tuple(float(value) for value in coordinate))" in source
+    assert "provider.solve" not in source
+    assert "BudgetCounter" not in source
 
 
 def test_m8_is_bounded_and_does_not_claim_extra_observables():
@@ -90,3 +91,13 @@ def test_m8_is_bounded_and_does_not_claim_extra_observables():
     assert "FULL_M4_COUNT = 24" in source
     assert "Chern" not in source
     assert "Berry curvature" not in source
+
+
+def test_m8r1_accepts_the_actual_nested_two_band_energy_payload_shape():
+    pair = [[1.0, 0.0]] * (2 * 4 * 4 * 3)
+    actual, expected = M8.energy_vector_layout([{"normalized_vectors_bands_2_3": [pair, pair]}])
+    assert actual["outer_type"] == "list"
+    assert actual["outer_length"] == 2
+    assert actual["band_lengths"] == [96, 96]
+    assert actual["complex_element_count_total"] == 192
+    assert "two nested band vectors" in expected
