@@ -27,6 +27,8 @@ M13_DATASET_ID = "dcaee157184d53a6a8025a374505084e105cde49f55d9ea345b55bae058ded
 M13_MANIFEST_SHA256 = "04917fb96a15c05ed83d54004b098ae6c72fb0c9b64a61ec241941cb69905378"
 M17_DATASET_ID = "ee9ef4a7b21e5fa6a98f02f62052aa6bef8be71370f0aff85653d4235f7bac82"
 M17_MANIFEST_SHA256 = "794c63d6d4d40f4a397707d3f35cd231332dbf76b1e251ef0645742becf0c639"
+PRIOR_M18_DATASET_ID = "6aff6fe12b50c1124eea52e246a9eba832420d51f756c32702694fe4a696a1af"
+PRIOR_M18_MANIFEST_SHA256 = "7288abd0f4e9722eae1844ff9a917430d3d451ceb76682380270cb74d9f0205f"
 DATASET_SCHEMA = "mephc-berry-c3-consistency-m18-exact-mpb-operator-readback-dataset-v1"
 RESULT_SCHEMA = "mephc-berry-c3-consistency-m18-exact-mpb-operator-readback-covariance-closure-v1"
 SHAPE = (128, 128)
@@ -235,7 +237,41 @@ def _decode_field(record: Mapping[str, Any], key: str) -> np.ndarray:
 
 
 def _fresh_energy(record: Mapping[str, Any]) -> np.ndarray:
-    return np.asarray([complex(pair[0], pair[1]) for band in record["fresh_energy_vectors_bands_1_to_6"] for pair in band], dtype=np.complex128).reshape(BANDS, VECTOR_LENGTH).T
+    return decode_persisted_energy_vectors(record)
+
+
+def _validate_old_energy_payload(payload: Any) -> dict[str, Any]:
+    require(isinstance(payload, list) and len(payload) == BANDS, "M18_ENERGY_PAYLOAD_BAND_COUNT_INVALID")
+    inner_lengths = []
+    for band in payload:
+        require(isinstance(band, list), "M18_ENERGY_PAYLOAD_BAND_CONTAINER_INVALID")
+        inner_lengths.append(len(band))
+        require(len(band) == BANDS, "M18_ENERGY_PAYLOAD_OLD_SCHEMA_INVALID", str(len(band)))
+        require(all(isinstance(pair, list) and len(pair) == 2 for pair in band), "M18_ENERGY_PAYLOAD_PAIR_INVALID")
+        require(np.all(np.isfinite(np.asarray(band, dtype=float))), "M18_ENERGY_PAYLOAD_NONFINITE")
+    return {"json_type": "array", "outer_length": BANDS, "inner_lengths": inner_lengths, "leaf_type": "array", "leaf_length": 2, "element_count_at_old_decoder_level": BANDS * BANDS, "meaning": "six flattened energy-vector positions, each containing six band scalars; not six complete vectors"}
+
+
+def decode_persisted_energy_vectors(record: Mapping[str, Any]) -> np.ndarray:
+    """Strictly rebuild six full vectors from the actual persisted E/H schema."""
+    structure = _validate_old_energy_payload(record.get("fresh_energy_vectors_bands_1_to_6"))
+    e = _decode_field(record, "fresh_e_fields_bands_1_to_6")
+    h = _decode_field(record, "fresh_h_fields_bands_1_to_6")
+    require(e.shape == h.shape == (BANDS, *SHAPE, COMPONENT_COUNT), "M18_EH_READBACK_SHAPE_INVALID")
+    epsilon = np.asarray(record.get("epsilon_grid"), dtype=float)
+    require(epsilon.shape == SHAPE and np.all(np.isfinite(epsilon)) and np.all(epsilon > 0.0), "M18_READBACK_EPSILON_INVALID")
+    energy = np.concatenate([(e[band] * np.sqrt(epsilon)[..., None]).reshape(-1) for band in range(BANDS)] + [h[band].reshape(-1) for band in range(BANDS)])
+    # The persisted field arrays are band-major; form one complete E/H column
+    # per band rather than flattening the historical 6x6 diagnostic matrix.
+    columns = []
+    for band in range(BANDS):
+        column = np.concatenate([(e[band] * np.sqrt(epsilon)[..., None]).reshape(-1), h[band].reshape(-1)])
+        columns.append(column)
+    matrix = np.column_stack(columns)
+    require(matrix.shape == (VECTOR_LENGTH, BANDS) and np.all(np.isfinite(matrix)), "M18_CANONICAL_ENERGY_LAYOUT_INVALID")
+    norms = np.linalg.norm(matrix, axis=0)
+    require(np.all(norms > 0.0), "M18_CANONICAL_ENERGY_ZERO_VECTOR")
+    return matrix / norms[None, :]
 
 
 def _state_reproduction(records: Sequence[Mapping[str, Any]], m12: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
@@ -298,12 +334,44 @@ def _covariance(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     for index, edge in enumerate(edges):
         source = _fresh_energy(ordered[index])[:, 1:3]; target = _fresh_energy(ordered[(index + 1) % 3])[:, 1:3]; transformed = m15.energy_fft_transform(source, SHAPE, reciprocal, edge["folding"]); metrics.append(m15.projector_metrics(transformed, target)); transformed_residual = max(transformed_residual, float(np.max(np.abs(transformed - target))))
         intertwining = max(intertwining, float(np.linalg.norm(transformed - target) / max(np.linalg.norm(target), np.finfo(float).tiny)))
-    return {"c3_transformed_fresh_state_maxwell_residual_max": None, "operator_intertwining_residual_max": intertwining, "fresh_rank2_c3_minimum_overlap_singular_value": min(item["minimum_overlap_singular_value"] for item in metrics), "fresh_rank2_c3_maximum_principal_angle": max(item["maximum_principal_angle"] for item in metrics), "fresh_rank2_c3_covariance_failure_count": sum(item["maximum_projector_distance"] > 0.0 for item in metrics), "transformed_energy_vector_residual_max": transformed_residual}
+        target_record = ordered[(index + 1) % 3]; epsilon = np.asarray(target_record["epsilon_grid"], dtype=float).reshape(SHAPE); target_q = target_record["coordinate"]; target_freq = np.asarray(target_record["frequencies_bands_1_to_6"], dtype=float)
+        for band in range(2):
+            weighted_e = transformed[:BLOCK, band].reshape(*SHAPE, COMPONENT_COUNT); h = transformed[BLOCK:, band].reshape(*SHAPE, COMPONENT_COUNT); e = weighted_e / np.sqrt(epsilon)[..., None]
+            residual = _constitutive_residual(e, h, epsilon, float(target_freq[band + 1]), target_q)
+            transformed_residual = max(transformed_residual, residual["maxwell"])
+    return {"c3_transformed_fresh_state_maxwell_residual_max": transformed_residual, "operator_intertwining_residual_max": intertwining, "fresh_rank2_c3_minimum_overlap_singular_value": min(item["minimum_overlap_singular_value"] for item in metrics), "fresh_rank2_c3_maximum_principal_angle": max(item["maximum_principal_angle"] for item in metrics), "fresh_rank2_c3_covariance_failure_count": sum(item["maximum_projector_distance"] > 0.0 for item in metrics), "transformed_energy_vector_residual_max": transformed_residual}
 
 
 def result_for(records: Sequence[Mapping[str, Any]], manifest: Mapping[str, Any], m12: Sequence[Mapping[str, Any]], m13: Sequence[Mapping[str, Any]], counter: Any) -> dict[str, Any]:
     reproduction = _state_reproduction(records, m12); fresh_rows = [_fresh_exact_residual(item, archived=False) for item in records]; archived_rows = [_fresh_exact_residual(item, archived=True, m12_record={x["request_key_sha256"]: x for x in m12}[item["request_key_sha256"]]) for item in records]; material = _material_c3(records); covariance = _covariance(records)
     return {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "source_m12_dataset_id": M12_DATASET_ID, "source_m13_dataset_id": M13_DATASET_ID, "target_state_count": 3, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": counter.solver_count, "dataset_record_count": 3, "new_runtime_readback_record_count": 3, "dataset_id": manifest["dataset_id"], "manifest_sha256": manifest["manifest_sha256"], "exact_mpb_runtime_readback_status": "CAPTURED_SUFFICIENT_OPERATOR_READBACK", "epsilon_grid_shape": records[0]["epsilon_grid_shape"], "epsilon_grid_dtype": records[0]["epsilon_grid_dtype"], "epsilon_material_representation_type": records[0]["epsilon_material_representation_type"], "subpixel_or_smoothing_configuration": records[0]["subpixel_or_smoothing_configuration"], "field_material_grid_alignment_status": records[0]["field_material_grid_alignment_status"], "boundary_or_staggering_metadata_status": records[0]["boundary_or_staggering_metadata_status"], "epsilon_inverse_or_tensor_metadata_status": records[0]["epsilon_inverse_or_tensor_metadata_status"], "D_field_availability_status": [item["D_field_availability_status"] for item in records], "B_field_availability_status": [item["B_field_availability_status"] for item in records], **reproduction, "fresh_exact_maxwell_residual_max": max(item["maxwell"] for item in fresh_rows), "archived_exact_maxwell_residual_max": max(item["maxwell"] for item in archived_rows), "fresh_curlE_residual_max": max(item["curlE"] for item in fresh_rows), "fresh_curlH_residual_max": max(item["curlH"] for item in fresh_rows), "archived_curlE_residual_max": max(item["curlE"] for item in archived_rows), "archived_curlH_residual_max": max(item["curlH"] for item in archived_rows), "comparison_vs_M16_approximate_material": {"M16_approximate_maxwell_residual_max": 0.9986651051133764, "M18_fresh_exact_maxwell_residual_max": max(item["maxwell"] for item in fresh_rows), "interpretation": "raw same-convention comparison; no threshold invented"}, **material, **covariance, "isolated_projector_theorem_status": "RECONCILE_AFTER_EXACT_READBACK", "discrete_operator_covariance_diagnosis": "OPERATOR_COVARIANCE_SUPPORTED_ON_FRESH_AND_ARCHIVED_STATE_SUBSPACE" if covariance["fresh_rank2_c3_covariance_failure_count"] == 0 else "INTERNAL_MPB_SPECTRAL_PROJECTOR_CONTRADICTION", "remaining_unresolved_questions": ["Whether archived projector construction or state serialization caused any residual noncovariance after exact runtime readback"], "alternative_explanations_considered": ["M16 point-sampled epsilon", "MPB runtime epsilon/material grid", "D/B constitutive readback", "field/material alignment", "boundary/staggering", "Maxwell convention", "reciprocal-folding gauge", "fresh-versus-archived state reproduction", "spectral projector construction"], "counterevidence_summary": {"fresh_residuals": fresh_rows, "archived_residuals": archived_rows, "material_c3": material, "transformed_energy": covariance, "M16_approximation": 0.9986651051133764}, "cheapest_remaining_discriminating_test": "Audit projector dataset construction and spectral projector definition using existing M12/M13/M18 data only", "next_science_decision": "AUDIT_PROJECTOR_DATASET_CONSTRUCTION_AND_SPECTRAL_PROJECTOR_DEFINITION_WITH_EXISTING_DATA_ONLY", "minimal_next_live_state_count": 0, "source_commit_used": os.environ.get("MEPHC_SOURCE_COMMIT"), "post_analysis_checkout_unchanged": True}
+
+
+def recovery_result_for(records: Sequence[Mapping[str, Any]], m12: Sequence[Mapping[str, Any]], m13: Sequence[Mapping[str, Any]], prior_manifest: Mapping[str, Any], counter: Any) -> dict[str, Any]:
+    """Analyze recovered M18 evidence without creating or rerunning anything."""
+    result = result_for(records, prior_manifest, m12, m13, counter)
+    structure = _validate_old_energy_payload(records[0].get("fresh_energy_vectors_bands_1_to_6"))
+    result.update({
+        "prior_job_id": "MEPHC-SCIENCE-a62b712d45e77508eac72630",
+        "prior_readback_recovery_status": "RECOVERED_EXACT_IMMUTABLE_PRIOR_DATASET",
+        "recovered_dataset_id": prior_manifest["dataset_id"],
+        "recovered_manifest_sha256": prior_manifest["manifest_sha256"],
+        "recovered_record_count": len(records),
+        "fresh_energy_payload_structure_actual": structure,
+        "fresh_energy_payload_element_count_at_old_decoder_level": structure["element_count_at_old_decoder_level"],
+        "old_decoder_assumption": "six outer items each flattened complete 98304-complex vector; incorrect because actual 6x6 payload contains only six cross-band scalar values per flattened position",
+        "record_id_recovery_status": "ORIGINAL_RECORD_IDS_PRESERVED",
+        "native_invocation_count": 1,
+        "provider_execution_count": 0,
+        "solver_execution_count": 0,
+        "dataset_record_count": 0,
+        "recovered_prior_dataset_record_count": len(records),
+        "new_runtime_readback_record_count": 0,
+        "cheapest_remaining_discriminating_test": "Audit projector dataset construction and spectral projector definition using existing M12/M13 and recovered M18 data only",
+        "next_science_decision": "AUDIT_PROJECTOR_DATASET_CONSTRUCTION_AND_SPECTRAL_PROJECTOR_DEFINITION_WITH_EXISTING_DATA_ONLY",
+        "counterevidence_summary": {**result["counterevidence_summary"], "recovery": "Three immutable records recovered losslessly; result summary had failed only after prior persistence."},
+    })
+    return result
 
 
 def failure(code: str, exc: BaseException | None = None) -> dict[str, Any]:
@@ -314,8 +382,7 @@ def main() -> int:
     try:
         bundle = json.loads(Path(os.environ["MEPHC_INPUT_BUNDLE"]).read_text(encoding="utf-8")); require(isinstance(bundle, dict) and isinstance(bundle.get("work_order_id"), str), "M18_WORK_ORDER_MISSING")
         counters_path = Path(os.environ["MEPHC_EXECUTION_COUNTERS_PATH"]); state_root = counters_path.parent.parent; job = _job()
-        m12 = read_dataset(job, state_root, M12_DATASET_ID, M12_MANIFEST_SHA256, 3); m13 = read_dataset(job, state_root, M13_DATASET_ID, M13_MANIFEST_SHA256, 3); read_dataset(job, state_root, M17_DATASET_ID, M17_MANIFEST_SHA256, 3); members = select_triplet(m12, m13)
-        factory, _ = production_solver_factory(); counter = job.BudgetCounter(3, 3); records = capture_triplet(members, factory, counter); manifest = persist_readback(job, state_root, bundle["work_order_id"], records); result = result_for(records, manifest, m12, m13, counter)
+        m12 = read_dataset(job, state_root, M12_DATASET_ID, M12_MANIFEST_SHA256, 3); m13 = read_dataset(job, state_root, M13_DATASET_ID, M13_MANIFEST_SHA256, 3); prior = read_dataset(job, state_root, PRIOR_M18_DATASET_ID, PRIOR_M18_MANIFEST_SHA256, 3); prior_manifest = {"dataset_id": PRIOR_M18_DATASET_ID, "manifest_sha256": PRIOR_M18_MANIFEST_SHA256}; result = recovery_result_for(prior, m12, m13, prior_manifest, job.BudgetCounter(0, 0))
     except Exception as exc:
         result = failure(str(exc), exc); result["traceback_tail"] = traceback.format_exc()[-3000:]
     Path(os.environ["MEPHC_RESULT_PATH"]).write_bytes(canonical(result) + b"\n"); return 0

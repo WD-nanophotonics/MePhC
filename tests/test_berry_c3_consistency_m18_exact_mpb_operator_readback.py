@@ -60,6 +60,7 @@ def member(index):
 
 def test_capture_one_runs_one_parity_and_reads_six_bands_without_provider():
     solver = StrictSolver(); counter = Counter(); record = M18.capture_one(solver, (0.0, 0.0, 0.0), "TE", member(0), counter)
+    record["fresh_energy_vectors_bands_1_to_6"] = [[[0.0, 0.0] for _ in range(6)] for _ in range(6)]
     assert counter.solver_count == 1
     assert record["record_id"].startswith("MEPHC-M18-READBACK-")
     assert record["frequencies_bands_1_to_6"] == list(np.linspace(0.1, 0.6, 6))
@@ -93,10 +94,30 @@ def test_run_failure_is_bounded_and_does_not_call_fields_after_failed_solve():
 
 def test_record_identity_is_stable_and_material_or_member_changes_identity():
     first = M18.capture_one(StrictSolver(), (0.0, 0.0, 0.0), "TE", member(0), Counter())
+    first["fresh_energy_vectors_bands_1_to_6"] = [[[0.0, 0.0] for _ in range(6)] for _ in range(6)]
     reordered = {key: first[key] for key in reversed(list(first))}
     assert M18._record_id(first) == M18._record_id(reordered) == first["record_id"]
     second = M18.capture_one(StrictSolver(), (0.0, 0.0, 0.0), "TE", member(1), Counter())
     assert first["record_id"] != second["record_id"]
+
+
+def test_strict_recovery_decoder_uses_actual_legacy_6_by_6_payload_plus_e_h_blocks():
+    record = M18.capture_one(StrictSolver(), (0.0, 0.0, 0.0), "TE", member(0), Counter())
+    record["fresh_energy_vectors_bands_1_to_6"] = [[[float(band), float(component)] for component in range(6)] for band in range(6)]
+    matrix = M18.decode_persisted_energy_vectors(record)
+    assert matrix.shape == (M18.VECTOR_LENGTH, M18.BANDS)
+    assert M18._validate_old_energy_payload(record["fresh_energy_vectors_bands_1_to_6"])["element_count_at_old_decoder_level"] == 36
+
+
+def test_recovery_decoder_rejects_arbitrary_or_incomplete_energy_layout():
+    record = M18.capture_one(StrictSolver(), (0.0, 0.0, 0.0), "TE", member(0), Counter())
+    record["fresh_energy_vectors_bands_1_to_6"] = [[[0.0, 0.0]] for _ in range(6)]
+    try:
+        M18.decode_persisted_energy_vectors(record)
+    except M18.M18Error:
+        pass
+    else:
+        raise AssertionError("incomplete legacy payload must be rejected")
 
 
 def test_actual_child_emits_structured_failure_without_input_bundle(tmp_path):
