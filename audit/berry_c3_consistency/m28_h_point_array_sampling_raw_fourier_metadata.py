@@ -114,13 +114,13 @@ def persist(job: Any, state_root: Path, work_order_id: str, records: Sequence[Ma
 
 def main() -> int:
     try:
-        bundle = json.loads(Path(os.environ["MEPHC_INPUT_BUNDLE"]).read_text(encoding="utf-8")); work_order_id = bundle["work_order_id"]; state_root = Path(os.environ["MEPHC_EXECUTION_COUNTERS_PATH"]).parent.parent; job = _job(); m18 = _m18(); members = bind_canonical_triplet(m18.read_dataset(job, state_root, M18_DATASET_ID, M18_MANIFEST_SHA256, 3)); make, mp = m18._factory(); records = []; arrays = []; solver_count = 0; reuse_failures = []
+        bundle = json.loads(Path(os.environ["MEPHC_INPUT_BUNDLE"]).read_text(encoding="utf-8")); work_order_id = bundle["work_order_id"]; state_root = Path(os.environ["MEPHC_EXECUTION_COUNTERS_PATH"]).parent.parent; job = _job(); m18 = _m18(); members = bind_canonical_triplet(m18.read_dataset(job, state_root, M18_DATASET_ID, M18_MANIFEST_SHA256, 3)); make, _band = m18.production_solver_factory(); import meep as mp; records = []; arrays = []; solver_count = 0; reuse_failures = []
         for member in members:
-            solver, _ = make(member)
+            solver, _reciprocal, parity = make(member)
             try:
                 record, frame, used = _capture(solver, mp, member, solved=False)
             except Exception as exc:
-                reuse_failures.append(f"{member['c3_member_identity']}:{type(exc).__name__}:{str(exc)[:240]}"); solver.run_parity(mp.TE, False); record, frame, used = _capture(solver, mp, member, solved=True)
+                reuse_failures.append(f"{member['c3_member_identity']}:{type(exc).__name__}:{str(exc)[:240]}"); solver.run_parity(parity, False); record, frame, used = _capture(solver, mp, member, solved=True)
             records.append(record); arrays.append(frame); solver_count += used
         manifest = persist(job, state_root, work_order_id, records)
         m22 = _load(ROOT / "audit/berry_c3_consistency/m22_public_tensor_constitutive_natural_hilbert_audit.py", "m28_m22"); m15 = _load(ROOT / "audit/berry_c3_consistency/m15_discrete_fft_maxwell_covariance_audit.py", "m28_m15"); edges, _, _ = m22.derive_edges(members, m15); metrics = m22._edge_metrics([frame for frame in arrays], None, m15, edges)
