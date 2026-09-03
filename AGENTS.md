@@ -38,13 +38,24 @@ READY             -> edit as needed in this MePhC sandbox, then execute
 RUNNING           -> execute only to reconcile the same durable run
 READY_TO_CLOSE    -> closeout
 AWAITING_REPLY    -> closeout
-TERMINATED        -> stop
+TERMINATED        -> notify the fixed supervisor, then stop
 HARD_BLOCKED      -> bounded self-repair, then supervisor escalation
 ```
 
 Continue automatically until Chat terminates the workflow. Starting or
 continuing the workflow is standing authorization for its fixed Courier
 closeout; never ask the user for per-report approval.
+
+Before ending any Luna turn or becoming idle for any reason, including normal
+completion, a milestone, `TERMINATED`, `HARD_BLOCKED`, or the absence of a
+`safe_next`, send one structured handoff to the fixed supervisor task. The supervisor decides whether stopping is legitimate. A milestone is never by
+itself permission to stop. Use the stable identity
+`MEPHC-IDLE-HANDOFF:<work-order-id-or-null>:<state>` and include the current
+work order, state, safe next action, source SHA, durable job/request/run IDs,
+actual counts, scientific progress, and the proposed reason for becoming
+idle. After successful delivery, remain idle until the supervisor responds.
+Do not create or fork another task. A definite task-message transport failure
+may be retried once; only a second failure may be reported to the user.
 
 The returned state is authoritative. Never escalate while the flow reports
 `READY`: `READY` with no job/run proves expensive work was not started, even

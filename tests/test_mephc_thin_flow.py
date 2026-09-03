@@ -95,6 +95,13 @@ def test_agents_protocol_prefers_self_repair_before_fixed_supervisor_escalation(
     assert all(item in policy for item in required)
 
 
+def test_agents_require_supervisor_handoff_before_every_idle_transition():
+    policy = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+    assert "Before ending any Luna turn or becoming idle for any reason" in policy
+    assert "MEPHC-IDLE-HANDOFF:<work-order-id-or-null>:<state>" in policy
+    assert "The supervisor decides whether stopping is legitimate" in policy
+
+
 def test_ready_without_job_authoritatively_means_not_started(monkeypatch, tmp_path: Path):
     scope = paths(tmp_path)
     monkeypatch.setattr(flow, "source", lambda _: {"head": "a" * 40, "dirty": False})

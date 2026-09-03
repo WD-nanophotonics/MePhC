@@ -23,6 +23,7 @@ from typing import Any, Sequence
 
 
 PROJECT_ID = "MEPHC"
+SUPERVISOR_TASK_ID = "01a04136-7e60-75c3-88cf-156581a3733e"
 EXPECTED_MAIN = "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5"
 CONTROL_ROOT = Path(r"C:\Users\icywo\PycharmProjects\MePhC-Windows")
 CONTROL_ROOT_WSL = "/mnt/c/Users/icywo/PycharmProjects/MePhC-Windows"
@@ -1063,6 +1064,7 @@ def create_request(paths: Paths, report: dict[str, Any]) -> Path:
         "queue_wait_seconds": 3600, "task_difficulty": report["task_difficulty"],
         "instruction_level": report["instruction_level"], "report_policy": report["report_policy"],
         "flow_schema": "mephc-fixed-closeout-v2", "work_order_id": report["work_order_id"],
+        "idle_supervision_required": True, "supervisor_task_id": SUPERVISOR_TASK_ID,
         "report_kind": report["kind"], "message_sha256": report["message_sha256"],
         "retry_message_sha256": report["retry_message_sha256"],
         "idempotency_key": report["request_hash"]})
