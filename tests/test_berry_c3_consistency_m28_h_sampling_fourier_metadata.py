@@ -5,9 +5,11 @@ import json
 import os
 import subprocess
 import sys
+import textwrap
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 PATH = ROOT / "audit" / "berry_c3_consistency" / "m28_h_point_array_sampling_raw_fourier_metadata.py"
@@ -38,6 +40,17 @@ def test_point_arguments_use_both_candidate_charts_without_authority_guess():
 def test_h_array_shape_guard_is_exact():
     value = np.zeros((128, 128, 3), dtype=complex)
     assert M28._array(value).shape == (128, 128, 3)
+
+
+def test_pre_solve_reuse_probe_never_calls_unsafe_mpb_field_access():
+    class Unsolved:
+        all_freqs = []
+
+        def get_hfield(self, *_args, **_kwargs):
+            raise AssertionError("unsafe field access was attempted")
+
+    with pytest.raises(RuntimeError, match="MPB_FIELD_ACCESS_REQUIRES_SOLVE_KPOINT"):
+        M28._attempt_reuse_capture(Unsolved(), None, {})
 
 
 def test_canonical_triplet_binding_uses_semantic_identity():
@@ -80,3 +93,46 @@ def test_actual_subprocess_emits_one_result_and_returns_zero_for_bounded_paths(t
         if index == 2:
             assert result["status"] == "FAIL_CLOSED"
             assert result["failure_stage"] == "result_serialization"
+
+
+@pytest.mark.parametrize("fixture, expected_status", [("runtime_error", "FAIL_CLOSED"), ("system_exit", "FAIL_CLOSED"), ("metadata_unavailable", "METADATA_UNAVAILABLE")])
+def test_actual_native_child_launch_capsule_keeps_bounded_outcomes_at_exit_zero(tmp_path, fixture, expected_status):
+    state_path = tmp_path / "native-state.json"
+    bundle_path = tmp_path / "bundle.json"
+    result_path = tmp_path / "child-result.json"
+    bundle_path.write_text(json.dumps({"work_order_id": "MEPHC-BERRY-C3-M28R4-CAPSULE-REGRESSION", "action": "acquire"}), encoding="utf-8")
+    state_path.write_text(json.dumps({
+        "state": "dispatching", "job_id": "MEPHC-SCIENCE-CAPSULE", "native_run_id": "MEPHC-NATIVE-CAPSULE",
+        "work_order_id": "MEPHC-BERRY-C3-M28R4-CAPSULE-REGRESSION", "native_invocation_budget": 1,
+        "provider_request_budget": 0, "solver_execution_budget": 3,
+        "expected_output": {"result_schema": M28.CHILD_RESULT_SCHEMA},
+    }), encoding="utf-8")
+    helper = ROOT / "tools" / "mephc-flow" / "wsl_native_exec.py"
+    module_path = repr(str(PATH))
+    if fixture == "runtime_error":
+        body = "def body(): raise RuntimeError('capsule fixture runtime error')"
+    elif fixture == "system_exit":
+        body = "def body(): raise SystemExit(7)"
+    else:
+        body = "def body(): return {'status':'METADATA_UNAVAILABLE','runtime_sampling_capture_status':'RUNTIME_FIELD_METADATA_UNAVAILABLE'}"
+    child_script = textwrap.dedent(f"""
+        import importlib.util
+        import json
+        import os
+        spec = importlib.util.spec_from_file_location('m28_capsule_child', {module_path})
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        {body}
+        capsule = module._child_capsule(body)
+        open(os.environ['MEPHC_RESULT_PATH'], 'w', encoding='utf-8').write(json.dumps(capsule, sort_keys=True) + '\\n')
+    """)
+    completed = subprocess.run([
+        sys.executable, str(helper), "--state", str(state_path), "--checkout", str(ROOT), "--project", str(ROOT),
+        "--input-bundle", str(bundle_path), "--result-path", str(result_path), "--", sys.executable, "-c", child_script,
+    ], capture_output=True, text=True)
+    assert completed.returncode == 0, completed.stderr
+    result = json.loads(result_path.read_text(encoding="utf-8"))
+    assert result["schema"] == M28.CHILD_RESULT_SCHEMA
+    assert result["status"] == expected_status
+    if fixture != "metadata_unavailable":
+        assert result["exception_type"] in {"RuntimeError", "SystemExit"}

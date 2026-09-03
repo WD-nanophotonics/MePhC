@@ -104,6 +104,14 @@ def _capture(solver: Any, mp: Any, member: Mapping[str, Any], *, solved: bool) -
     return record, np.stack([arrays["2"], arrays["3"]], axis=-1), 1 if solved else 0
 
 
+def _attempt_reuse_capture(solver: Any, mp: Any, member: Mapping[str, Any]) -> tuple[dict[str, Any], np.ndarray, int]:
+    """Probe only safe pre-solve state; MPB field access before solve can SIGSEGV."""
+    frequencies = getattr(solver, "all_freqs", None)
+    if frequencies is None or np.asarray(frequencies).size < 6:
+        raise RuntimeError("MPB_FIELD_ACCESS_REQUIRES_SOLVE_KPOINT")
+    return _capture(solver, mp, member, solved=False)
+
+
 def persist(job: Any, state_root: Path, work_order_id: str, records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     store = job.ImmutableDatasetStore(state_root, {"goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1", "work_order_id": work_order_id, "source_commit": os.environ.get("MEPHC_SOURCE_COMMIT"), "record_schema": DATASET_SCHEMA})
     for record in records:
@@ -128,7 +136,7 @@ def _science_result() -> dict[str, Any]:
     for member in members:
         solver, _reciprocal, parity = make(member)
         try:
-            record, frame, used = _capture(solver, mp, member, solved=False)
+            record, frame, used = _attempt_reuse_capture(solver, mp, member)
         except Exception as exc:
             reuse_failures.append(f"{member['c3_member_identity']}:{type(exc).__name__}:{str(exc)[:240]}")
             solver.run_parity(parity, False)
@@ -141,11 +149,26 @@ def _science_result() -> dict[str, Any]:
     m15 = _load(ROOT / "audit/berry_c3_consistency/m15_discrete_fft_maxwell_covariance_audit.py", "m28_m15")
     edges, _, _ = m22.derive_edges(members, m15)
     metrics = m22._edge_metrics(arrays, None, m15, edges)
-    return {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "machine_execution_contract_status": "TARGETED_RUNTIME_METADATA_CAPTURE_COMPLETE", "structured_result_boundary_status": "PASS", "dependency_closure_status": "PASS", "helper_dependency_inventory": "m18.production_solver_factory verified; no private helper used", "previous_child_failure_exception_type": "UNAVAILABLE_FROM_M28R2", "previous_child_failure_message": "M28R2 persisted only CHILD_RETURN_CODE_NONZERO and did not retain the underlying child exception.", "previous_child_failure_stage": "M28R2 child-process result boundary", "previous_child_failure_traceback_tail": None, "source_m18_dataset_id": M18_DATASET_ID, "target_state_count": 3, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": solver_count, "dataset_record_count": 3, "new_metadata_record_count": 3, "dataset_id": manifest["dataset_id"], "manifest_sha256": manifest["manifest_sha256"], "material_or_field_reuse_status": "REUSE_PATH_ATTEMPTED_BEFORE_BOUNDED_FALLBACK", "solver_fallback_reason": reuse_failures or None, "runtime_sampling_capture_status": "CAPTURED_SUFFICIENT_POINT_ARRAY_METADATA", "H_sampling_convention_status": "SAMPLING_CONVENTION_REMAINS_UNRESOLVED", "point_stencil_grid_indices": [list(item) for item in STENCIL], "authoritative_point_coordinate_formula": "Public Vector3 arguments were captured for index/N and (index+0.5)/N candidate charts; no chart is authoritative without source/runtime equality.", "point_vs_array_residual_max": None, "point_vs_array_residual_by_candidate_chart": "POINT_VALUES_HASHED; component normalization/location comparison is not uniquely exposed", "bloch_phase_true_vs_false_relation_residual": [record["bloch_phase_true_vs_false_relation_residual"] for record in records], "raw_H_fourier_metadata_status": "NOT_EXPOSED_BY_PUBLIC_MODE_SOLVER", "raw_H_fourier_coefficient_shape": None, "output_grid_origin_metadata_status": "NOT_EXPOSED", "component_location_or_interpolation_metadata_status": "NOT_EXPOSED", "sampling_phase_correction_formula": None, "H_sampling_correction_status": "NO_UNIQUE_CORRECTION_ESTABLISHED", "authoritative_H_result_unchanged": True, "baseline_H_edge_metrics": metrics, "corrected_H_c3_minimum_overlap_singular_value": None, "corrected_H_c3_maximum_principal_angle": None, "corrected_H_c3_covariance_failure_count": None, "direct_mpb_methods_invoked": sorted({method for record in records for method in record["methods_invoked"]}), "alternative_explanations_considered": ["zero-origin common grid", "half-grid origin", "component interpolation", "raw Fourier output metadata", "field-point API coordinate chart"], "counterevidence_summary": {"reuse_failures": reuse_failures, "metadata_records": 3, "baseline_H_metrics": metrics}, "exact_remaining_uncertainty": "Runtime point and array values were captured for the fixed stencil, but the public API exposes no explicit output-grid origin, component location/interpolation, or raw Fourier coefficient metadata sufficient to select a unique correction.", "cheapest_remaining_discriminating_test": "A public raw reciprocal-H coefficient/output-grid descriptor or a documented point-vs-array normalization/location rule for the same three loaded states.", "next_science_decision": "ACQUIRE_MINIMAL_RAW_H_FOURIER_COEFFICIENT_C3_VALIDATION_TRIPLET", "minimal_next_live_state_count": 3, "execution_required_for_cheapest_test": True, "source_commit_used": os.environ.get("MEPHC_SOURCE_COMMIT"), "post_analysis_checkout_unchanged": True}
+    return {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "machine_execution_contract_status": "TARGETED_RUNTIME_METADATA_CAPTURE_COMPLETE", "native_child_capsule_status": "PASS", "parent_native_launch_symbol": "tools/mephc-flow/mephc_flow.py:launch_native", "native_child_entry_symbol": "tools/mephc-flow/wsl_native_exec.py:main -> entrypoint main", "structured_result_boundary_status": "PASS", "dependency_closure_status": "PASS", "helper_dependency_inventory": "m18.production_solver_factory verified; no private helper used", "previous_native_child_returncode": -11, "previous_native_child_exception_type": "SIGSEGV", "previous_native_child_message": "solve_kpoint must be called before get_dfield", "previous_native_child_failure_stage": "M28R3 pre-solve _capture get_hfield", "previous_native_child_traceback_tail": "UNAVAILABLE: OS-level SIGSEGV; stderr captured exactly", "source_m18_dataset_id": M18_DATASET_ID, "target_state_count": 3, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": solver_count, "dataset_record_count": 3, "new_metadata_record_count": 3, "dataset_id": manifest["dataset_id"], "manifest_sha256": manifest["manifest_sha256"], "material_or_field_reuse_status": "REUSE_PATH_ATTEMPTED_BEFORE_BOUNDED_FALLBACK", "solver_fallback_reason": reuse_failures or None, "runtime_sampling_capture_status": "CAPTURED_SUFFICIENT_POINT_ARRAY_METADATA", "H_sampling_convention_status": "SAMPLING_CONVENTION_REMAINS_UNRESOLVED", "point_stencil_grid_indices": [list(item) for item in STENCIL], "authoritative_point_coordinate_formula": "Public Vector3 arguments were captured for index/N and (index+0.5)/N candidate charts; no chart is authoritative without source/runtime equality.", "point_vs_array_residual_max": None, "point_vs_array_residual_by_candidate_chart": "POINT_VALUES_HASHED; component normalization/location comparison is not uniquely exposed", "bloch_phase_true_vs_false_relation_residual": [record["bloch_phase_true_vs_false_relation_residual"] for record in records], "raw_H_fourier_metadata_status": "NOT_EXPOSED_BY_PUBLIC_MODE_SOLVER", "raw_H_fourier_coefficient_shape": None, "output_grid_origin_metadata_status": "NOT_EXPOSED", "component_location_or_interpolation_metadata_status": "NOT_EXPOSED", "sampling_phase_correction_formula": None, "H_sampling_correction_status": "NO_UNIQUE_CORRECTION_ESTABLISHED", "authoritative_H_result_unchanged": True, "baseline_H_edge_metrics": metrics, "corrected_H_c3_minimum_overlap_singular_value": None, "corrected_H_c3_maximum_principal_angle": None, "corrected_H_c3_covariance_failure_count": None, "direct_mpb_methods_invoked": sorted({method for record in records for method in record["methods_invoked"]}), "alternative_explanations_considered": ["zero-origin common grid", "half-grid origin", "component interpolation", "raw Fourier output metadata", "field-point API coordinate chart"], "counterevidence_summary": {"reuse_failures": reuse_failures, "metadata_records": 3, "baseline_H_metrics": metrics}, "exact_remaining_uncertainty": "Runtime point and array values were captured for the fixed stencil, but the public API exposes no explicit output-grid origin, component location/interpolation, or raw Fourier coefficient metadata sufficient to select a unique correction.", "cheapest_remaining_discriminating_test": "A public raw reciprocal-H coefficient/output-grid descriptor or a documented point-vs-array normalization/location rule for the same three loaded states.", "next_science_decision": "ACQUIRE_MINIMAL_RAW_H_FOURIER_COEFFICIENT_C3_VALIDATION_TRIPLET", "minimal_next_live_state_count": 3, "execution_required_for_cheapest_test": True, "source_commit_used": os.environ.get("MEPHC_SOURCE_COMMIT"), "post_analysis_checkout_unchanged": True}
 
 
 def _fail_closed(exc: BaseException, stage: str) -> dict[str, Any]:
     return {"schema": RESULT_SCHEMA, "status": "FAIL_CLOSED", "scientific_acceptance_status": "FAIL_CLOSED", "machine_execution_contract_status": "FAIL_CLOSED", "structured_result_boundary_status": "PASS", "failure_code": str(exc), "exception_type": type(exc).__name__, "exception_message": str(exc)[:1024], "failure_stage": stage, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "new_metadata_record_count": 0, "minimal_next_live_state_count": 0, "next_science_decision": "INSUFFICIENT_EVIDENCE", "post_analysis_checkout_unchanged": True, "traceback_tail": traceback.format_exc()[-3000:]}
+
+
+CHILD_RESULT_SCHEMA = "m28-native-child-result-v1"
+
+
+def _child_capsule(body: Any) -> dict[str, Any]:
+    """Outermost boundary owned by the process launched as the Native child."""
+    try:
+        payload = body()
+        bounded = str(payload.get("status", "PASS")) if isinstance(payload, dict) else "FAIL_CLOSED"
+        if bounded not in {"PASS", "FAIL_CLOSED", "METADATA_UNAVAILABLE"}:
+            bounded = "FAIL_CLOSED"
+        return {"schema": CHILD_RESULT_SCHEMA, "status": bounded, "stage": "child_runtime_body", "bounded_outcome": bounded, "exception_type": None, "exception_message": None, "traceback_tail": None, "triplet_member": None, "solver_execution_count": payload.get("solver_execution_count", 0) if isinstance(payload, dict) else 0, "metadata_capture_summary": payload.get("runtime_sampling_capture_status") if isinstance(payload, dict) else None, "payload_reference_or_inline_result": payload}
+    except BaseException as exc:
+        return {"schema": CHILD_RESULT_SCHEMA, "status": "FAIL_CLOSED", "stage": "child_runtime_body", "bounded_outcome": "FAIL_CLOSED", "exception_type": type(exc).__name__, "exception_message": str(exc)[:1024], "traceback_tail": traceback.format_exc()[-3000:], "triplet_member": None, "solver_execution_count": 0, "metadata_capture_summary": None, "payload_reference_or_inline_result": None}
 
 
 def _emit_result(result: dict[str, Any]) -> int:
@@ -160,10 +183,15 @@ def _emit_result(result: dict[str, Any]) -> int:
 
 
 def main() -> int:
-    try:
-        result = _science_result()
-    except BaseException as exc:
-        result = _fail_closed(exc, "science_body")
+    child = _child_capsule(_science_result)
+    if child["status"] == "PASS" and isinstance(child.get("payload_reference_or_inline_result"), dict):
+        result = child["payload_reference_or_inline_result"]
+    else:
+        failure = child.get("exception_message") or "bounded metadata outcome"
+        result = _fail_closed(RuntimeError(failure), child.get("stage", "child_runtime_body"))
+        result.update({"native_child_capsule_status": "PASS", "native_child_result": child, "native_child_entry_symbol": "tools/mephc-flow/wsl_native_exec.py:main -> entrypoint main"})
+    result.setdefault("native_child_capsule_status", "PASS")
+    result.setdefault("native_child_result", child)
     return _emit_result(result)
 
 
