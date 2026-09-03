@@ -382,6 +382,33 @@ def test_query_preferences_do_not_change_fixed_request_or_report_body(monkeypatc
     assert "TEST_RETURN_CODE=0" in text
 
 
+def test_finish_native_maps_scientific_fail_closed_to_blocked_report(monkeypatch, tmp_path: Path):
+    scope = paths(tmp_path)
+    job = {
+        "schema": "mephc-thin-job-v1", "job_id": "MEPHC-SCIENCE-FAIL-CLOSED",
+        "work_order_id": "MEPHC-THIN-FAIL-CLOSED-0001", "source_commit": "a" * 40,
+        "state": "running", "native_run_id": "MEPHC-NATIVE-FAIL-CLOSED",
+    }
+    run = {
+        "state": "succeeded", "actual_native_invocation_count": 1,
+        "actual_provider_execution_count": 0, "actual_solver_execution_count": 0,
+        "actual_dataset_record_count": 0,
+        "result_summary": {"status": "FAIL_CLOSED", "failure_code": "TypeError"},
+    }
+    monkeypatch.setattr(flow, "wsl", lambda *a, **k: subprocess.CompletedProcess(a, 0, "", ""))
+    result = flow.finish_native(scope, job, run)
+    assert result["execution"]["terminal_state"] == "failed"
+    assert result["execution"]["failure_code"] == "TypeError"
+    stored = json.loads((scope.state / "science-jobs" / f"{job['job_id']}.json").read_text())
+    report = flow.canonical_report(
+        scope, {"work_order_id": job["work_order_id"]}, stored,
+        {"task_difficulty": "hard", "instruction_level": "detailed", "report_policy": "milestone"},
+    )
+    text = report["message"].decode()
+    assert "REPORT_KIND=blocked" in text
+    assert "TERMINAL_STATE=failed" in text
+
+
 def test_scoped_commit_records_advisory_scope_warning_instead_of_blocking(monkeypatch, tmp_path: Path):
     scope = paths(tmp_path)
     calls = []

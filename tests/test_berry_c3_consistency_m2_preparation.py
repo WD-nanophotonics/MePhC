@@ -113,6 +113,23 @@ def test_failed_node_is_preserved_and_not_retried():
     assert result["c3_incomplete_orbit_count"] >= 1
 
 
+def test_production_failure_stops_after_first_record_and_preserves_message():
+    plan = M2.derive_plan(M2.verify_m1_bundle())
+
+    class BrokenProduction:
+        fail_fast = True
+        provider_count = 0
+        solver_count = 0
+        dataset_count = 0
+
+        def __call__(self, _item):
+            raise TypeError("pattern is not a numeric array")
+
+    execution = M2.execute_injected_plan(plan, BrokenProduction())
+    assert len(execution["failures"]) == 1
+    assert execution["failures"][0]["exception_message"] == "pattern is not a numeric array"
+
+
 def test_unqualified_evidence_propagates_fail_closed():
     calls = []
     result = M2.run(provider_solve=fake_provider(calls, record_options={"qualification": "UNQUALIFIED"}))

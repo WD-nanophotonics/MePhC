@@ -790,6 +790,11 @@ def finish_native(paths: Paths, job: dict[str, Any], run_record: dict[str, Any])
     dirty = wsl(["/usr/bin/git", "-C", checkout, "status", "--porcelain",
                  "--untracked-files=all"]).stdout.strip()
     state, failure = run_record.get("state", "failed"), run_record.get("result_error")
+    summary = run_record.get("result_summary")
+    if state == "succeeded" and isinstance(summary, dict):
+        scientific_status = str(summary.get("scientific_acceptance_status", summary.get("status", ""))).upper()
+        if scientific_status in {"BLOCKED", "HARD_BLOCKED"} or (scientific_status in {"FAIL", "FAILED", "FAIL_CLOSED"} and summary.get("failure_code")):
+            state, failure = "failed", str(summary.get("failure_code") or f"SCIENTIFIC_RESULT_{scientific_status}")
     if dirty:
         state, failure = "failed", "EXECUTION_CHECKOUT_MUTATED"
     final = {
@@ -798,15 +803,13 @@ def finish_native(paths: Paths, job: dict[str, Any], run_record: dict[str, Any])
         "actual_provider_execution_count": int(run_record.get("actual_provider_execution_count", 0)),
         "actual_solver_execution_count": int(run_record.get("actual_solver_execution_count", 0)),
         "actual_dataset_record_count": int(run_record.get("actual_dataset_record_count", 0)),
-        "result_summary": run_record.get("result_summary"),
+        "result_summary": summary,
         "result_artifact": run_record.get("result_artifact"),
         "result_warnings": run_record.get("result_warnings", []),
         "completed_at": time.time(),
     }
     atomic_json(paths.state / "science-jobs" / f"{job['job_id']}.json", final)
     return execution_view(final)
-
-
 def reconcile_oversized_result(paths: Paths, job: dict[str, Any]) -> dict[str, Any]:
     """Upgrade an old oversized-result failure without rerunning its child process."""
     if job.get("state") != "failed" or job.get("failure_code") != "RESULT_SUMMARY_OVERSIZED":
@@ -832,8 +835,6 @@ def reconcile_oversized_result(paths: Paths, job: dict[str, Any]) -> dict[str, A
     for target, value in ((run_path, repaired_run),
                           (paths.state / "science-jobs" / f"{job['job_id']}.json", repaired_job)): atomic_json(target, value)
     return repaired_job
-
-
 def native_record(job: dict[str, Any], contract: dict[str, Any], run_id: str) -> dict[str, Any]:
     return {**job, "schema": "mephc-thin-native-run-v1", "run_id": run_id,
             "state": "dispatching", "process_started": False,
@@ -859,8 +860,6 @@ def launch_native(paths: Paths, contract: dict[str, Any], job: dict[str, Any],
     run_record = read_json(run_path, native_record(job, contract, run_id))
     run_record.setdefault("launcher_return_code", launched.returncode)
     return finish_native(paths, job, run_record)
-
-
 def reconcile_running(paths: Paths, job: dict[str, Any]) -> dict[str, Any]:
     run_id = job.get("native_run_id")
     if not isinstance(run_id, str):

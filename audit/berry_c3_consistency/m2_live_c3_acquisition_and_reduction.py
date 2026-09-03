@@ -337,6 +337,11 @@ def _wilson_diagnostics(snapshots: Sequence[Any], bands: Sequence[int], *, area:
 class ProductionPilot:
     """One logical plaquette request backed by four counted MPB point solves."""
 
+    # A production failure makes the remaining graph incomplete. Repeating a
+    # deterministic pre-provider error for every graph node only hides the root
+    # cause and wastes work, so production stops at the first failed record.
+    fail_fast = True
+
     def __init__(self, plan: Mapping[str, Any]):
         expected = (plan["future_provider_budget"], plan["future_solver_budget"])
         try:
@@ -404,7 +409,14 @@ class ProductionPilot:
         self._geometry_digests[geometry_id] = digest({
             "geometry_id": geometry_id,
             "parameters": geometry_spec,
-            "pattern": np.asarray(pattern, dtype=float).tolist(),
+            "lattice_type": "triangular",
+            "lattice_constant": 400.0,
+            "background_index": 2.7,
+            "height": 100.0,
+            "motifs": [
+                {"sides": int(geometry_spec["n1"]), "radius": float(geometry_spec["r1"]), "angle_degrees": 0.0},
+                {"sides": int(geometry_spec["n2"]), "radius": float(geometry_spec["r2"]), "angle_degrees": 60.0},
+            ],
         })
         provider = MPBLiveEnergySpectralProvider(
             geometry=geometry, geometry_lattice=band.geo_latt,
@@ -567,7 +579,9 @@ def execute_injected_plan(
             record["observable"] = _finite_observable(record.get("observable"))
             results.append(record)
         except Exception as exc:  # preserve the exact node and stage without retry
-            failures.append({"request_key_sha256": item["request_key_sha256"], "repeat_index": item["repeat_index"], "failed_stage": "provider_or_solver", "failure_code": getattr(exc, "code", type(exc).__name__), "exception_type": type(exc).__name__, "production_provider_symbol": PRODUCTION_PROVIDER_SYMBOL})
+            failures.append({"request_key_sha256": item["request_key_sha256"], "repeat_index": item["repeat_index"], "failed_stage": "provider_or_solver", "failure_code": getattr(exc, "code", type(exc).__name__), "exception_type": type(exc).__name__, "exception_message": str(exc)[:512], "production_provider_symbol": PRODUCTION_PROVIDER_SYMBOL})
+            if getattr(provider_solve, "fail_fast", False):
+                break
     return {
         "results": results,
         "failures": failures,
@@ -656,6 +670,7 @@ def compact_success(plan: Mapping[str, Any], execution: Mapping[str, Any], reduc
         "failure_code": (execution.get("failures") or [{}])[0].get("failure_code"),
         "failure_stage": (execution.get("failures") or [{}])[0].get("failed_stage"),
         "failure_exception_type": (execution.get("failures") or [{}])[0].get("exception_type"),
+        "failure_message": (execution.get("failures") or [{}])[0].get("exception_message"),
         "maximum_absolute_c3_berry_residual": reduction["maximum_absolute_c3_berry_residual"],
         "maximum_symmetric_relative_c3_berry_residual": reduction["maximum_symmetric_relative_c3_berry_residual"],
         "threshold_status": "THRESHOLD_DEFERRED",
