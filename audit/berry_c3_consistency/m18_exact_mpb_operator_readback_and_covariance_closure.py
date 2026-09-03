@@ -316,7 +316,7 @@ def _fresh_exact_residual(record: Mapping[str, Any], *, archived: bool, m12_reco
     curl_e_max = curl_h_max = maxwell_max = 0.0
     for band in range(BANDS):
         res = _constitutive_residual(e[..., band], h[..., band], epsilon, float(freq[band]), q, d_readback[..., band] if d_readback is not None else None, b_readback[..., band] if b_readback is not None else None)
-        curl_e_max = max(curl_e_max, res["curlE_residual"]); curl_h_max = max(curl_h_max, res["curlH_residual"]); maxwell_max = max(maxwell_max, res["maxwell_residual"])
+        curl_e_max = max(curl_e_max, res["curlE"]); curl_h_max = max(curl_h_max, res["curlH"]); maxwell_max = max(maxwell_max, res["maxwell"])
     return {"maxwell": maxwell_max, "curlE": curl_e_max, "curlH": curl_h_max}
 
 
