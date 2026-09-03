@@ -53,6 +53,45 @@ def test_pre_solve_reuse_probe_never_calls_unsafe_mpb_field_access():
         M28._attempt_reuse_capture(Unsolved(), None, {})
 
 
+def test_stateful_public_field_sequence_keeps_band_point_association():
+    class Vector3Type:
+        def __init__(self, x, y, z):
+            self.x, self.y, self.z = x, y, z
+
+    class FakeMP:
+        Vector3 = Vector3Type
+
+    class StatefulSolver:
+        all_freqs = [1, 2, 3, 4, 5, 6]
+
+        def __init__(self):
+            self.current_band = None
+            self.calls = []
+
+        def get_hfield(self, which_band, bloch_phase=True):
+            self.current_band = which_band
+            self.calls.append(("h", which_band, bloch_phase))
+            return np.full((128, 128, 3), which_band, dtype=complex)
+
+        def get_field_point(self, p):
+            assert self.current_band in (2, 3)
+            self.calls.append(("point", self.current_band, p.x, p.y))
+            return np.array([self.current_band, 0, 0], dtype=complex)
+
+        def get_bloch_field_point(self, p):
+            self.calls.append(("bloch-point", self.current_band, p.x, p.y))
+            return np.array([self.current_band, 0, 0], dtype=complex)
+
+    solver = StatefulSolver()
+    member = {"member_index": 0, "c3_member_identity": "IDENTITY", "coordinate": [0, 0, 0], "request_key_sha256": "k"}
+    record, _frame, used = M28._capture(solver, FakeMP, member, solved=True)
+    assert used == 1
+    assert record["loaded_field_band_sequence"] == [2, 3]
+    assert record["point_query_values"]["2:index_over_N:0,0"][0][0] == 2.0
+    assert record["point_query_values"]["3:index_over_N:0,0"][0][0] == 3.0
+    assert [call for call in solver.calls if call[0] == "h"][:2] == [("h", 2, False), ("h", 3, False)]
+
+
 def test_canonical_triplet_binding_uses_semantic_identity():
     base = {"geometry_role": "AREA_MATCHED_G15", "deterministic": False, "frame_convention": "LAB_FIXED", "repeat_index": 1}
     records = [{**base, "c3_member_identity": name, "member_index": index} for index, name in enumerate(("C3_SQUARED", "IDENTITY", "C3"))]
