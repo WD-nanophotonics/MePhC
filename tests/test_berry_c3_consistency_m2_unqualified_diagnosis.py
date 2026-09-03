@@ -84,9 +84,41 @@ def test_m3_binds_exact_dataset_descriptors_and_reads_only_payloads(tmp_path, mo
     assert result["c3_orbit_count"] == 24
 
 
+def test_m3_falls_back_to_supported_manifest_resolver_when_bundle_has_no_descriptors(tmp_path, monkeypatch):
+    records = _records()
+    payloads = {hashlib.sha256(f"key-{index}".encode()).hexdigest(): json.dumps(record, sort_keys=True, separators=(",", ":")).encode("utf-8") for index, record in enumerate(records)}
+
+    class Resolver:
+        @staticmethod
+        def verify_dataset(state_root, dataset_id):
+            assert dataset_id == M3.M3_DATASET_ID
+            return {"dataset_id": dataset_id, "manifest_sha256": M3.M3_MANIFEST_SHA256, "record_count": 72, "record_key_sha256": list(payloads)}
+
+        @staticmethod
+        def resolve_dataset_record(state_root, dataset_id, manifest_sha256, record_key_sha256):
+            assert dataset_id == M3.M3_DATASET_ID and manifest_sha256 == M3.M3_MANIFEST_SHA256
+            return {"payload": payloads[record_key_sha256]}
+
+    monkeypatch.setattr(M3, "_load_scientific_job", lambda: Resolver)
+    counters = tmp_path / "state" / "runner" / "execution-counters.json"
+    counters.parent.mkdir(parents=True)
+    monkeypatch.setenv("MEPHC_EXECUTION_COUNTERS_PATH", str(counters))
+    bundle = {
+        "schema": "mephc-thin-input-bundle-v1",
+        "work_order_id": "MEPHC-BERRY-C3-M3-72-RECORD-QUALIFICATION-ANATOMY-AND-RANK-DECISION-20260903-016",
+        "datasets": [],
+    }
+    result = M3.run_m3(bundle)
+    assert result["record_count"] == 72
+    assert result["c3_orbit_count"] == 24
+    assert result["schema"] == M3.M3_RESULT_SCHEMA
+
+
 def test_m3_entrypoint_has_no_provider_or_solver_execution_path():
     source = ENTRYPOINT.read_text(encoding="utf-8")
     m3_source = source[source.index("def analyze_m3_records"):source.index("def execute_injected_plan")]
     assert "import meep" not in m3_source
     assert "provider.solve" not in m3_source
     assert "BudgetCounter" not in m3_source
+    failure = M3.compact_m3_failure(M3.M2Error("M3_DATASET_DESCRIPTOR_COUNT_INVALID"))
+    assert failure["schema"] == M3.M3_RESULT_SCHEMA

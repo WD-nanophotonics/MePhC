@@ -764,26 +764,63 @@ def run_m3(bundle: Mapping[str, Any]) -> dict[str, Any]:
     _m3_require(bundle.get("work_order_id", "").startswith("MEPHC-BERRY-C3-M3-"), "M3_WORK_ORDER_MISMATCH")
     verify_m1_bundle()
     datasets = bundle.get("datasets")
-    _m3_require(isinstance(datasets, list) and len(datasets) == M3_RECORD_COUNT, "M3_DATASET_DESCRIPTOR_COUNT_INVALID")
-    bundle_path = Path(os.environ["MEPHC_INPUT_BUNDLE"])
     records: list[dict[str, Any]] = []
-    for descriptor in datasets:
-        _m3_require(isinstance(descriptor, Mapping), "M3_DATASET_DESCRIPTOR_INVALID")
-        _m3_require(descriptor.get("dataset_id") == M3_DATASET_ID and descriptor.get("manifest_sha256") == M3_MANIFEST_SHA256, "M3_DATASET_BINDING_MISMATCH")
-        payload_name = descriptor.get("payload_file")
-        _m3_require(isinstance(payload_name, str) and Path(payload_name).name == payload_name, "M3_PAYLOAD_REFERENCE_INVALID")
-        payload_path = bundle_path.parent / payload_name
-        payload = payload_path.read_bytes()
-        _m3_require(hashlib.sha256(payload).hexdigest() == descriptor.get("payload_sha256"), "M3_PAYLOAD_HASH_INVALID")
-        _m3_require(len(payload) == descriptor.get("payload_size_bytes"), "M3_PAYLOAD_SIZE_INVALID")
-        value = json.loads(payload.decode("utf-8"))
-        _m3_require(isinstance(value, dict), "M3_PAYLOAD_SCHEMA_INVALID")
-        records.append(value)
+    if isinstance(datasets, list) and datasets:
+        _m3_require(len(datasets) == M3_RECORD_COUNT, "M3_DATASET_DESCRIPTOR_COUNT_INVALID")
+        bundle_path = Path(os.environ["MEPHC_INPUT_BUNDLE"])
+        for descriptor in datasets:
+            _m3_require(isinstance(descriptor, Mapping), "M3_DATASET_DESCRIPTOR_INVALID")
+            _m3_require(descriptor.get("dataset_id") == M3_DATASET_ID and descriptor.get("manifest_sha256") == M3_MANIFEST_SHA256, "M3_DATASET_BINDING_MISMATCH")
+            payload_name = descriptor.get("payload_file")
+            _m3_require(isinstance(payload_name, str) and Path(payload_name).name == payload_name, "M3_PAYLOAD_REFERENCE_INVALID")
+            payload = (bundle_path.parent / payload_name).read_bytes()
+            _m3_require(hashlib.sha256(payload).hexdigest() == descriptor.get("payload_sha256"), "M3_PAYLOAD_HASH_INVALID")
+            _m3_require(len(payload) == descriptor.get("payload_size_bytes"), "M3_PAYLOAD_SIZE_INVALID")
+            value = json.loads(payload.decode("utf-8"))
+            _m3_require(isinstance(value, dict), "M3_PAYLOAD_SCHEMA_INVALID")
+            records.append(value)
+    else:
+        counters_path = Path(os.environ.get("MEPHC_EXECUTION_COUNTERS_PATH", ""))
+        _m3_require(counters_path.name, "M3_DATASET_RESOLVER_STATE_ROOT_MISSING")
+        scientific_job = _load_scientific_job()
+        verified = scientific_job.verify_dataset(counters_path.parent.parent, M3_DATASET_ID)
+        _m3_require(verified.get("manifest_sha256") == M3_MANIFEST_SHA256 and verified.get("record_count") == M3_RECORD_COUNT, "M3_DATASET_MANIFEST_BINDING_MISMATCH")
+        keys = verified.get("record_key_sha256")
+        _m3_require(isinstance(keys, list) and len(keys) == len(set(keys)) == M3_RECORD_COUNT, "M3_DATASET_RECORD_KEY_ENUMERATION_INVALID")
+        for key in keys:
+            resolved = scientific_job.resolve_dataset_record(counters_path.parent.parent, M3_DATASET_ID, M3_MANIFEST_SHA256, key)
+            payload = resolved.get("payload")
+            _m3_require(isinstance(payload, bytes), "M3_DATASET_PAYLOAD_MISSING")
+            value = json.loads(payload.decode("utf-8"))
+            _m3_require(isinstance(value, dict), "M3_PAYLOAD_SCHEMA_INVALID")
+            records.append(value)
+    _m3_require(len(records) == M3_RECORD_COUNT, "M3_DATASET_DESCRIPTOR_COUNT_INVALID")
     result = analyze_m3_records(records)
     result["plan_sha256"] = digest(PLAN_PATH.read_bytes())
     result["goal_contract_sha256"] = digest(GOAL_PATH.read_bytes())
     result["m1_graph_sha256"] = EXPECTED_GRAPH_SHA256
     return result
+
+
+def compact_m3_failure(error: M2Error) -> dict[str, Any]:
+    return {
+        "schema": M3_RESULT_SCHEMA,
+        "status": "FAIL_CLOSED",
+        "scientific_acceptance_status": "FAIL_CLOSED",
+        "failed_stage": "dataset-binding-or-analysis",
+        "failure_code": error.code,
+        "exception_type": type(error).__name__,
+        "dataset_id": M3_DATASET_ID,
+        "manifest_sha256": M3_MANIFEST_SHA256,
+        "record_count": 0,
+        "c3_orbit_count": 0,
+        "rank1_unqualified_orbit_count": 0,
+        "native_invocation_count": 1,
+        "provider_execution_count": 0,
+        "solver_execution_count": 0,
+        "dataset_record_count": 0,
+        "post_native_checkout_unchanged": True,
+    }
 
 
 def execute_injected_plan(
@@ -986,11 +1023,12 @@ def write_result(result: Mapping[str, Any]) -> None:
 
 
 def main() -> int:
+    bundle: dict[str, Any] | None = None
     try:
         bundle = _load_runtime_bundle()
         result = run_m3(bundle) if bundle["work_order_id"].startswith("MEPHC-BERRY-C3-M3-") else run()
     except M2Error as exc:
-        result = compact_failure(exc)
+        result = compact_m3_failure(exc) if bundle and bundle.get("work_order_id", "").startswith("MEPHC-BERRY-C3-M3-") else compact_failure(exc)
     write_result(result)
     print("MEPHC_RESULT_JSON=" + canonical(dict(result)).decode("utf-8"))
     return 0
