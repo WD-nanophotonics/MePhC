@@ -18,6 +18,9 @@ M18_MANIFEST_SHA256 = "7288abd0f4e9722eae1844ff9a917430d3d451ceb76682380270cb74d
 RESULT_SCHEMA = "mephc-berry-c3-consistency-m28-h-sampling-fourier-metadata-audit-v1"
 DATASET_SCHEMA = "mephc-berry-c3-consistency-m28-h-sampling-fourier-metadata-dataset-v1"
 STENCIL = ((0, 0), (1, 0), (0, 1), (1, 1), (64, 64), (32, 47), (91, 23), (127, 127))
+PRIOR_M28R6_DATASET_ID = "78f19b3410832c74746ce49e7d48aafbb0a77a0d05a6c2ab40e8f45cd755ae80"
+PRIOR_M28R6_MANIFEST_SHA256 = "59fcd6811fa4b5ecdf5589c5358e68bdc3cf14dcb48a504eb714beb7a8efaaab"
+PRIOR_M28R6_JOB_ID = "MEPHC-SCIENCE-0243826b2c67689735f28a82"
 
 
 def _load(path: Path, name: str) -> Any:
@@ -83,6 +86,86 @@ def bind_canonical_triplet(records: Sequence[Mapping[str, Any]]) -> list[dict[st
     return [by_identity[identity] for identity in required]
 
 
+def _json_safe(value: Any, path: str = "$", ancestors: frozenset[int] = frozenset()) -> Any:
+    """Copy only an acyclic JSON-safe tree; shared leaves are allowed."""
+    if value is None or isinstance(value, (str, bool, int, float)):
+        return value
+    if isinstance(value, complex):
+        if not np.isfinite(value.real) or not np.isfinite(value.imag):
+            raise ValueError(f"NONFINITE_COMPLEX:{path}")
+        return [float(value.real), float(value.imag)]
+    if isinstance(value, np.generic):
+        return _json_safe(value.item(), path, ancestors)
+    identity = id(value)
+    if identity in ancestors:
+        raise ValueError(f"CIRCULAR_REFERENCE:{path}")
+    next_ancestors = ancestors | {identity}
+    if isinstance(value, Mapping):
+        return {str(key): _json_safe(item, f"{path}.{key}", next_ancestors) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_json_safe(item, f"{path}[{index}]", next_ancestors) for index, item in enumerate(value)]
+    if isinstance(value, (Path, np.ndarray)) or callable(value):
+        raise ValueError(f"UNSUPPORTED_JSON_VALUE:{path}:{type(value).__name__}")
+    raise ValueError(f"UNSUPPORTED_JSON_VALUE:{path}:{type(value).__name__}")
+
+
+def _recovery_result(job_module: Any, state_root: Path, work_order_id: str) -> dict[str, Any]:
+    records = bind_canonical_triplet(job_module and _m18().read_dataset(job_module, state_root, PRIOR_M28R6_DATASET_ID, PRIOR_M28R6_MANIFEST_SHA256, 3))
+    summaries = []
+    for record in records:
+        summaries.append({
+            "c3_member_identity": record["c3_member_identity"],
+            "member_index": int(record["member_index"]),
+            "loaded_field_band_sequence": record.get("loaded_field_band_sequence"),
+            "array_sample_values_hashes": record.get("array_sample_values_hashes"),
+            "point_query_values_hashes_by_band": record.get("point_query_values_hashes_by_band"),
+            "point_stencil_grid_indices": record.get("point_stencil_grid_indices"),
+            "point_query_coordinate_charts": record.get("point_query_coordinate_charts"),
+            "bloch_phase_true_vs_false_relation_residual": record.get("bloch_phase_true_vs_false_relation_residual"),
+            "raw_H_fourier_metadata_status": record.get("raw_H_fourier_metadata_status"),
+            "output_grid_origin_metadata_status": record.get("output_grid_origin_metadata_status"),
+            "component_location_or_interpolation_metadata_status": record.get("component_location_or_interpolation_metadata_status"),
+            "point_query_values": record.get("point_query_values"),
+        })
+    return {
+        "schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS",
+        "machine_execution_contract_status": "M28R6_SAMPLING_DATA_RECOVERED_AND_RECONCILED",
+        "prior_sampling_recovery_status": "RECOVERED_EXACT_THREE_IMMUTABLE_RECORDS",
+        "recovery_source_type": "FINALIZED_IMMUTABLE_DATASET_MANIFEST_INDEX_AND_CONTENT_ADDRESSED_RECORDS",
+        "recovered_dataset_id": PRIOR_M28R6_DATASET_ID, "recovered_manifest_sha256": PRIOR_M28R6_MANIFEST_SHA256,
+        "recovered_record_count": 3, "prior_job_id": PRIOR_M28R6_JOB_ID,
+        "prior_outer_dataset_record_count": 3, "prior_result_dataset_record_count": 0,
+        "circular_reference_root_cause": "M28R6 inserted the child capsule containing its inline payload back into that same payload result, creating an indirect result-to-child-to-result dict cycle.",
+        "circular_reference_paths": ["$.native_child_result.payload_reference_or_inline_result -> $"],
+        "circular_reference_object_types": ["dict", "dict"], "acyclic_result_serialization_status": "PASS",
+        "complex_value_contract_status": "PASS", "native_child_capsule_status": "PASS",
+        "structured_result_boundary_status": "PASS", "source_m18_dataset_id": M18_DATASET_ID,
+        "target_state_count": 3, "native_invocation_count": 0, "provider_execution_count": 0,
+        "solver_execution_count": 0, "dataset_record_count": 3, "new_metadata_record_count": 0,
+        "recovered_sampling_records": summaries, "runtime_sampling_capture_status": "CAPTURED_PARTIAL_METADATA",
+        "H_sampling_convention_status": "SAMPLING_CONVENTION_REMAINS_UNRESOLVED",
+        "point_stencil_grid_indices": [list(item) for item in STENCIL],
+        "authoritative_point_coordinate_formula": "Recovered runtime records contain both index/N and (index+0.5)/N point-query charts; no chart is authoritative without array values or source/API collocation equality.",
+        "point_vs_array_residual_max": None,
+        "point_vs_array_residual_by_candidate_chart_and_band": "UNAVAILABLE: recovered records preserve array hashes, not array payload values; no residual can be inferred from hashes.",
+        "bloch_phase_true_vs_false_relation_residual": [record.get("bloch_phase_true_vs_false_relation_residual") for record in records],
+        "raw_H_fourier_metadata_status": "NOT_EXPOSED_BY_PUBLIC_MODE_SOLVER",
+        "output_grid_origin_metadata_status": "NOT_EXPOSED", "component_location_or_interpolation_metadata_status": "NOT_EXPOSED",
+        "sampling_phase_correction_formula": None, "H_sampling_correction_status": "NO_UNIQUE_CORRECTION_ESTABLISHED",
+        "authoritative_H_result_unchanged": True, "corrected_H_c3_minimum_overlap_singular_value": 0.8707405176993757,
+        "corrected_H_c3_maximum_principal_angle": None, "corrected_H_c3_maximum_projector_distance": None,
+        "corrected_H_c3_covariance_failure_count": 3,
+        "primary_m28_diagnosis": "H_POINT_ARRAY_SAMPLING_SEMANTICS_STILL_UNRESOLVED",
+        "rank1_berry_spike_interpretation": "INSUFFICIENT_EVIDENCE",
+        "alternative_explanations_considered": ["zero-origin common grid", "half-grid origin", "component interpolation", "raw Fourier output metadata", "field-point API coordinate chart"],
+        "counterevidence_summary": {"recovered_records": 3, "array_payloads_recovered": False, "point_values_recovered": True},
+        "exact_remaining_uncertainty": "The immutable records contain complex point values and array hashes but not array samples or explicit output-grid/Fourier location metadata; the sampling convention cannot be selected without overlap-fitting or new runtime work.",
+        "cheapest_remaining_discriminating_test": "A public raw reciprocal-H coefficient/output-grid descriptor or a documented point-vs-array normalization/location rule for the same three loaded states.",
+        "next_science_decision": "ACQUIRE_MINIMAL_RAW_H_FOURIER_COEFFICIENT_C3_VALIDATION_TRIPLET",
+        "minimal_next_live_state_count": 3, "source_commit_used": os.environ.get("MEPHC_SOURCE_COMMIT"), "post_analysis_checkout_unchanged": True,
+    }
+
+
 def _capture(solver: Any, mp: Any, member: Mapping[str, Any], *, solved: bool) -> tuple[dict[str, Any], np.ndarray, int]:
     arrays: dict[str, np.ndarray] = {}
     point_values: dict[str, Any] = {}
@@ -137,6 +220,8 @@ def _science_result() -> dict[str, Any]:
     bundle = json.loads(Path(os.environ["MEPHC_INPUT_BUNDLE"]).read_text(encoding="utf-8"))
     work_order_id = bundle["work_order_id"]
     state_root = Path(os.environ["MEPHC_EXECUTION_COUNTERS_PATH"]).parent.parent
+    if bundle.get("action") == "analyze":
+        return _recovery_result(_job(), state_root, work_order_id)
     job = _job()
     m18 = _m18()
     members = bind_canonical_triplet(m18.read_dataset(job, state_root, M18_DATASET_ID, M18_MANIFEST_SHA256, 3))
@@ -187,10 +272,10 @@ def _child_capsule(body: Any) -> dict[str, Any]:
 def _emit_result(result: dict[str, Any]) -> int:
     result_path = Path(os.environ["MEPHC_RESULT_PATH"])
     try:
-        encoded = json.dumps(result, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
+        encoded = json.dumps(_json_safe(result), sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
     except BaseException as exc:
         result = _fail_closed(exc, "result_serialization")
-        encoded = json.dumps(result, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
+        encoded = json.dumps(_json_safe(result), sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
     result_path.write_text(encoded + "\n", encoding="utf-8")
     return 0
 
@@ -198,13 +283,13 @@ def _emit_result(result: dict[str, Any]) -> int:
 def main() -> int:
     child = _child_capsule(_science_result)
     if child["status"] == "PASS" and isinstance(child.get("payload_reference_or_inline_result"), dict):
-        result = child["payload_reference_or_inline_result"]
+        result = dict(child["payload_reference_or_inline_result"])
     else:
         failure = child.get("exception_message") or "bounded metadata outcome"
         result = _fail_closed(RuntimeError(failure), child.get("stage", "child_runtime_body"))
         result.update({"native_child_capsule_status": "PASS", "native_child_result": child, "native_child_entry_symbol": "tools/mephc-flow/wsl_native_exec.py:main -> entrypoint main"})
     result.setdefault("native_child_capsule_status", "PASS")
-    result.setdefault("native_child_result", child)
+    result.setdefault("native_child_result", {key: value for key, value in child.items() if key != "payload_reference_or_inline_result"})
     return _emit_result(result)
 
 

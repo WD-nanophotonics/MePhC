@@ -100,6 +100,22 @@ def test_complex_vector_schema_round_trips_without_loss():
     assert np.array_equal(decoded, vector)
 
 
+def test_acyclic_json_builder_rejects_direct_and_indirect_cycles_but_allows_shared_values():
+    direct = {}
+    direct["self"] = direct
+    with pytest.raises(ValueError, match="CIRCULAR_REFERENCE:"):
+        M28._json_safe(direct)
+    first, second = {}, {}
+    first["second"] = second
+    second["first"] = first
+    with pytest.raises(ValueError, match="CIRCULAR_REFERENCE:"):
+        M28._json_safe(first)
+    shared = {"real": np.float64(1.25), "imag": np.float64(-2.5)}
+    safe = M28._json_safe({"left": shared, "right": shared, "vector": [1.0 + 2.0j, -3.0 + 4.0j]})
+    assert safe["left"] == safe["right"]
+    assert safe["vector"] == [[1.0, 2.0], [-3.0, 4.0]]
+
+
 def test_canonical_triplet_binding_uses_semantic_identity():
     base = {"geometry_role": "AREA_MATCHED_G15", "deterministic": False, "frame_convention": "LAB_FIXED", "repeat_index": 1}
     records = [{**base, "c3_member_identity": name, "member_index": index} for index, name in enumerate(("C3_SQUARED", "IDENTITY", "C3"))]
