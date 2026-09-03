@@ -30,8 +30,8 @@ def _datasets():
                 for member in range(3):
                     key = f"key-{index}"; index += 1
                     m4.append(_record(geometry, deterministic, frame, member, key))
-                    m2.append({"request_key_sha256": key, "geometry_id": geometry, "member_index": member, "repeat_index": 1, "solver_configuration": {"deterministic": deterministic, "stencil": "lab_fixed" if frame == "LAB_FIXED" else "c3_covariant", "resolution": 128}})
-    m2.extend({"request_key_sha256": f"extra-{index}", "geometry_id": "G15", "member_index": 0, "repeat_index": 0, "solver_configuration": {"deterministic": False, "stencil": "lab_fixed", "resolution": 128}} for index in range(48))
+                    for repeat in (0, 1, 2):
+                        m2.append({"request_key_sha256": key, "geometry_id": geometry, "member_index": member, "repeat_index": repeat, "coordinate": m4[-1]["coordinate"], "solver_configuration": {"deterministic": deterministic, "stencil": "lab_fixed" if frame == "LAB_FIXED" else "c3_covariant", "resolution": 128}})
     return m4, m2
 
 
@@ -41,6 +41,7 @@ def test_exact_cross_dataset_binding_and_grid_shape():
     assert result["m4_record_count"] == 24
     assert result["m2_record_count"] == 72
     assert result["source_binding_failure_count"] == 0
+    assert result["source_equivalent_candidate_multiplicity_max"] == 3
     assert result["reconstructed_spatial_shape_status"].startswith("RECONSTRUCTED_128x128")
     assert result["coordinate_mapping_failure_count"] == 0
     assert result["next_science_decision"] == "ACQUIRE_MINIMAL_C3_REPRESENTATION_METADATA_ONLY"
@@ -49,7 +50,8 @@ def test_exact_cross_dataset_binding_and_grid_shape():
 
 def test_wrong_source_identity_fails_closed():
     m4, m2 = _datasets()
-    m2[0]["geometry_id"] = "G16"
+    for candidate in m2[:3]:
+        candidate["geometry_id"] = "G16"
     with pytest.raises(M7.M7Error, match="M7_SOURCE_IDENTITY_CONFLICT"):
         M7.analyze(m4, m2)
 

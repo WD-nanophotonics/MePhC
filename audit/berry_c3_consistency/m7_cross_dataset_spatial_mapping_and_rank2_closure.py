@@ -64,26 +64,50 @@ def _triplet_key(record: Mapping[str, Any]) -> tuple[str, bool, str]:
     return str(record.get("geometry_id")), bool(record.get("deterministic")), str(record.get("frame_convention"))
 
 
-def bind_m4_to_m2(m4: Sequence[Mapping[str, Any]], m2: Sequence[Mapping[str, Any]]) -> dict[str, dict[str, Any]]:
-    by_key = {}
+def _same_coordinate(left: Any, right: Any) -> bool:
+    return (isinstance(left, (list, tuple)) and isinstance(right, (list, tuple))
+            and len(left) == len(right)
+            and all(math.isclose(float(a), float(b), rel_tol=0.0, abs_tol=1e-15) for a, b in zip(left, right)))
+
+
+def bind_m4_to_m2(m4: Sequence[Mapping[str, Any]], m2: Sequence[Mapping[str, Any]]) -> tuple[dict[str, dict[str, Any]], int]:
+    by_key: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for record in m2:
         key = record.get("request_key_sha256")
-        require(isinstance(key, str) and key not in by_key, "M7_M2_SOURCE_KEY_AMBIGUOUS")
-        by_key[key] = dict(record)
+        require(isinstance(key, str), "M7_M2_SOURCE_KEY_INVALID")
+        by_key[key].append(dict(record))
     bound = {}
+    multiplicity_max = max((len(items) for items in by_key.values()), default=0)
     for record in m4:
         key = record.get("request_key_sha256")
         require(isinstance(key, str) and key not in bound, "M7_M4_SOURCE_KEY_AMBIGUOUS")
-        source = by_key.get(key)
-        require(source is not None, "M7_M4_SOURCE_KEY_MISSING", str(key))
-        require(source.get("geometry_id") == record.get("geometry_id") and source.get("member_index") == record.get("member_index") and source.get("repeat_index") == record.get("repeat_index"), "M7_SOURCE_IDENTITY_CONFLICT", str(key))
-        config = source.get("solver_configuration")
-        require(isinstance(config, dict), "M7_SOURCE_CONFIGURATION_MISSING")
-        expected_frame = "LAB_FIXED" if config.get("stencil") == "lab_fixed" else "C3_COVARIANT"
-        require(expected_frame == record.get("frame_convention") and bool(config.get("deterministic")) == bool(record.get("deterministic")), "M7_SOURCE_BRANCH_CONFLICT", str(key))
-        bound[key] = source
+        candidates = by_key.get(key, [])
+        require(candidates, "M7_M4_SOURCE_KEY_MISSING", str(key))
+        matching = []
+        physical_matches = []
+        for source in candidates:
+            config = source.get("solver_configuration")
+            if not isinstance(config, dict):
+                continue
+            expected_frame = "LAB_FIXED" if config.get("stencil") == "lab_fixed" else "C3_COVARIANT"
+            physical_match = (source.get("geometry_id") == record.get("geometry_id")
+                              and source.get("member_index") == record.get("member_index")
+                              and source.get("repeat_index") == record.get("repeat_index")
+                              and _same_coordinate(source.get("coordinate"), record.get("coordinate")))
+            if physical_match:
+                physical_matches.append(source)
+            if (physical_match and expected_frame == record.get("frame_convention")
+                    and bool(config.get("deterministic")) == bool(record.get("deterministic"))):
+                target_config = record.get("solver_configuration")
+                if target_config is None or target_config == config:
+                    matching.append(source)
+        require(physical_matches or not candidates, "M7_SOURCE_IDENTITY_CONFLICT", str(key))
+        require(matching, "M7_SOURCE_SEMANTIC_BINDING_MISSING", str(key))
+        signatures = {json.dumps({field: candidate.get(field) for field in ("geometry_id", "member_index", "repeat_index", "coordinate", "solver_configuration")}, sort_keys=True, separators=(",", ":")) for candidate in matching}
+        require(len(signatures) == 1, "M7_SOURCE_SEMANTIC_AMBIGUITY", str(key))
+        bound[key] = matching[0]
     require(len(bound) == RECORD_COUNT_M4, "M7_SOURCE_BINDING_COUNT_INVALID")
-    return bound
+    return bound, multiplicity_max
 
 
 def reconstruct_grid_shape(record: Mapping[str, Any], source: Mapping[str, Any]) -> dict[str, Any]:
@@ -139,7 +163,7 @@ def raw_metrics(left: Any, right: Any) -> dict[str, float]:
 
 def analyze(m4: Sequence[Mapping[str, Any]], m2: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     require(len(m4) == RECORD_COUNT_M4 and len(m2) == RECORD_COUNT_M2, "M7_DATASET_RECORD_COUNT_INVALID")
-    bound = bind_m4_to_m2(m4, m2)
+    bound, multiplicity_max = bind_m4_to_m2(m4, m2)
     groups: dict[tuple[str, bool, str], list[Mapping[str, Any]]] = defaultdict(list)
     grid = []
     for record in m4:
@@ -161,7 +185,7 @@ def analyze(m4: Sequence[Mapping[str, Any]], m2: Sequence[Mapping[str, Any]]) ->
         triplets.append({"geometry_id": key[0], "deterministic": key[1], "frame_convention": key[2], "source_binding_status": "UNIQUE", "coordinate_mapping": mapping, "geometry_c3_equivalence_status": "GEOMETRY_C3_EQUIVALENT_SOURCE_DEFINITION", "raw_direct_edges": raw_edges, "full_transformed_edges": None, "classification": "IRREDUCIBLE_RUNTIME_METADATA_MISSING"})
     return {
         "schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "source_m4_dataset_id": M4_DATASET_ID, "source_m2_dataset_id": M2_DATASET_ID,
-        "m4_record_count": RECORD_COUNT_M4, "m2_record_count": RECORD_COUNT_M2, "c3_triplet_count": TRIPLET_COUNT, "source_binding_failure_count": 0,
+        "m4_record_count": RECORD_COUNT_M4, "m2_record_count": RECORD_COUNT_M2, "c3_triplet_count": TRIPLET_COUNT, "source_binding_failure_count": 0, "source_equivalent_candidate_multiplicity_max": multiplicity_max,
         "reconstructed_spatial_shape_status": "RECONSTRUCTED_128x128_FROM_PROVIDER_SIZE1_RESOLUTION128_AND_VECTOR_LENGTH", "grid_sampling_convention": "MPB spatial grid from committed (nx,ny,3) C-order canonical field; exact runtime sample-coordinate map is not serialized", "spatial_pullback_kind": "IRREDUCIBLE_RUNTIME_GRID_INDEX_MAP_MISSING",
         "direct_lattice_basis": [[0.5, 0.5], [math.sqrt(3.0) / 2.0, -math.sqrt(3.0) / 2.0]], "reciprocal_lattice_basis_no_2pi": [[1.0, 1.0], [math.sqrt(3.0) / 2.0, -math.sqrt(3.0) / 2.0]],
         "coordinate_mapping_failure_count": mapping_failures, "reciprocal_translation_indices": "all 24 target bindings require [0,0] in public Cartesian convention", "periodic_envelope_reciprocal_translation_gauge_status": "NO_NONTRIVIAL_TRANSLATION_GAUGE_REQUIRED_FOR_ZERO_TRANSLATIONS; provider stores bloch_phase=False periodic envelopes",
