@@ -28,6 +28,9 @@ M12_DATASET_ID = "c750df1085ddd0df8ae2ca1611d2881f378767d8fe2bc053a6ed504d99359a
 M12_MANIFEST_SHA256 = "23079cbcbdf26952ef52a5dbac5f81ec1a9b0d163e36af80fb69e102be1ed2bc"
 M13_DATASET_ID = "dcaee157184d53a6a8025a374505084e105cde49f55d9ea345b55bae058dedcd"
 M13_MANIFEST_SHA256 = "04917fb96a15c05ed83d54004b098ae6c72fb0c9b64a61ec241941cb69905378"
+PRIOR_M22_WORK_ORDER_ID = "MEPHC-BERRY-C3-M22-PUBLIC-TENSOR-CONSTITUTIVE-NATURAL-HILBERT-PROJECTOR-AUDIT-20260904-050"
+PRIOR_M22_JOB_ID = "MEPHC-SCIENCE-57a6562c1e0f87d3fdcfe3b2"
+PRIOR_M22_SOURCE_COMMIT = "d4917d1f0cc92e56bd4d28e61fa2dacb3a02ddbe"
 DATASET_SCHEMA = "mephc-berry-c3-consistency-m22-public-inverse-epsilon-tensor-metadata-dataset-v1"
 RESULT_SCHEMA = "mephc-berry-c3-consistency-m22-public-tensor-natural-hilbert-audit-v1"
 SHAPE = (128, 128)
@@ -213,6 +216,9 @@ def _record(member: Mapping[str, Any], tensor: np.ndarray, evidence: Mapping[str
 
 
 def _gram(v: np.ndarray, metric: np.ndarray | None = None) -> np.ndarray:
+    if metric is not None and np.asarray(v).ndim == 4:
+        v = np.asarray(v).reshape(-1, v.shape[-1])
+        metric = np.asarray(metric).reshape(-1, 3, 3)
     if metric is None:
         return v.conj().T @ v
     return np.einsum("nac,nab,nbd->cd", v.conj(), metric, v, optimize=True)
@@ -234,17 +240,51 @@ def _projector_action(v: np.ndarray, x: np.ndarray, metric: np.ndarray | None = 
     return q @ _inner(q, x, metric)
 
 
-def _edge_metrics(frames: Sequence[np.ndarray], metric_fields: Sequence[np.ndarray] | None, m15: Any) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+def transform_rank2_vector_frame(frame: Any, reciprocal: Any, folding: Sequence[int], m15: Any) -> np.ndarray:
+    """Transform two complete vector fields, never the rank-2 container."""
+    grid = np.asarray(frame, dtype=np.complex128)
+    require(grid.shape == (*SHAPE, COMPONENTS, 2), "M22_RANK2_GRID_SHAPE_INVALID", str(grid.shape))
+    columns = []
+    for band in range(2):
+        field = grid[..., band]
+        require(field.shape == (*SHAPE, COMPONENTS), "M22_SINGLE_FIELD_SHAPE_INVALID", str(field.shape))
+        transformed = m15.fft_transform(field, SHAPE, reciprocal, folding, R3)
+        require(transformed.shape == (*SHAPE, COMPONENTS), "M22_TRANSFORMED_FIELD_SHAPE_INVALID", str(transformed.shape))
+        columns.append(transformed.reshape(-1))
+    result = np.column_stack(columns)
+    require(result.shape == (SHAPE[0] * SHAPE[1] * COMPONENTS, 2), "M22_RANK2_FRAME_SHAPE_INVALID", str(result.shape))
+    return result
+
+
+def derive_edges(records: Sequence[Mapping[str, Any]], m15: Any) -> tuple[list[dict[str, Any]], float, float]:
+    ordered = ordered_triplet(records)
+    reciprocal_basis = np.asarray(m15.lattice_automorphisms()["reciprocal_basis"], dtype=float)
+    rotation = np.asarray(m15.R2, dtype=float)
+    edges = []
+    for index in range(3):
+        source = np.asarray(ordered[index]["coordinate"], dtype=float)
+        target = np.asarray(ordered[(index + 1) % 3]["coordinate"], dtype=float)
+        rotated = rotation @ source
+        fractional = np.linalg.solve(reciprocal_basis, rotated - target)
+        integer = np.rint(fractional).astype(int)
+        residual = float(np.linalg.norm(rotated - target - reciprocal_basis @ integer))
+        require(np.allclose(fractional, integer, rtol=0.0, atol=1e-12), "M22_EDGE_FOLDING_NONINTEGER", str(fractional))
+        edges.append({"edge_source_member": ordered[index]["c3_member_identity"], "edge_target_member": ordered[(index + 1) % 3]["c3_member_identity"], "q_source": source.tolist(), "q_target": target.tolist(), "Rq_source_minus_q_target": (rotated - target).tolist(), "G_edge_integer": integer.tolist(), "G_edge_cartesian": (reciprocal_basis @ integer).tolist(), "folding_integer_residual": residual})
+    cycle = rotation @ rotation @ np.asarray(edges[0]["G_edge_cartesian"]) + rotation @ np.asarray(edges[1]["G_edge_cartesian"]) + np.asarray(edges[2]["G_edge_cartesian"])
+    return edges, max(item["folding_integer_residual"] for item in edges), float(np.linalg.norm(cycle))
+
+
+def _edge_metrics(frames: Sequence[np.ndarray], metric_fields: Sequence[np.ndarray] | None, m15: Any, edges: Sequence[Mapping[str, Any]]) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     ordered = list(frames)
-    dummy = [{"coordinate": [0.0, 0.0]}, {"coordinate": [0.0, 0.0]}, {"coordinate": [0.0, 0.0]}]
+    reciprocal = m15.lattice_automorphisms()["c3_reciprocal_integer_automorphism"]
     if metric_fields is not None:
         # The public tensor is associated with each member; use target-member
         # semantics for the source-to-target C3 edge.
         metrics = []
         for index in range(3):
-            transformed = m15.fft_transform(ordered[index], SHAPE, m15.lattice_automorphisms()["c3_reciprocal_integer_automorphism"], (0, 0), R3)
-            target = ordered[(index + 1) % 3]
-            target_metric = metric_fields[(index + 1) % 3]
+            transformed = transform_rank2_vector_frame(ordered[index], reciprocal, edges[index]["G_edge_integer"], m15)
+            target = ordered[(index + 1) % 3].reshape(-1, 2)
+            target_metric = metric_fields[(index + 1) % 3].reshape(-1, 3, 3)
             qs, qt = _metric_q(transformed, target_metric), _metric_q(target, target_metric)
             singular = np.linalg.svd(_inner(qs, qt, target_metric), compute_uv=False)
             probe = np.column_stack((transformed, target))
@@ -254,8 +294,8 @@ def _edge_metrics(frames: Sequence[np.ndarray], metric_fields: Sequence[np.ndarr
     metrics = []
     reciprocal = m15.lattice_automorphisms()["c3_reciprocal_integer_automorphism"]
     for index in range(3):
-        transformed = m15.fft_transform(ordered[index], SHAPE, reciprocal, (0, 0), R3)
-        target = ordered[(index + 1) % 3]
+        transformed = transform_rank2_vector_frame(ordered[index], reciprocal, edges[index]["G_edge_integer"], m15)
+        target = ordered[(index + 1) % 3].reshape(-1, 2)
         qs, qt = np.linalg.qr(transformed, mode="reduced")[0], np.linalg.qr(target, mode="reduced")[0]
         singular = np.linalg.svd(qs.conj().T @ qt, compute_uv=False)
         metrics.append({"minimum_overlap_singular_value": float(np.min(singular)), "maximum_principal_angle": float(math.acos(max(-1.0, min(1.0, float(np.min(singular)))))), "maximum_projector_distance": float(math.sqrt(max(0.0, 4.0 - 2.0 * float(np.linalg.norm(qs.conj().T @ qt, ord="fro") ** 2))))})
@@ -266,35 +306,61 @@ def _interface_mask(epsilon: np.ndarray) -> np.ndarray:
     return (epsilon != np.roll(epsilon, 1, axis=0)) | (epsilon != np.roll(epsilon, 1, axis=1))
 
 
+def recover_prior_tensor_records(job: Any, state_root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Resolve the known prior namespace directly; never scan durable state."""
+    namespace = {"goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1", "work_order_id": PRIOR_M22_WORK_ORDER_ID, "source_commit": PRIOR_M22_SOURCE_COMMIT, "record_schema": DATASET_SCHEMA}
+    store = job.ImmutableDatasetStore(state_root, namespace)
+    manifest_path = store.root / "dataset-manifest.json"
+    require(manifest_path.is_file(), "M22_PRIOR_TENSOR_PAYLOAD_UNRECOVERABLE", "known prior manifest absent")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    require(manifest.get("namespace") == namespace and manifest.get("schema") == "mephc-scientific-dataset-manifest-v1" and manifest.get("record_count") == 3, "M22_PRIOR_TENSOR_MANIFEST_INVALID")
+    dataset_id, manifest_sha = manifest.get("dataset_id"), manifest.get("manifest_sha256")
+    require(isinstance(dataset_id, str) and isinstance(manifest_sha, str), "M22_PRIOR_TENSOR_MANIFEST_ID_MISSING")
+    records = ordered_triplet(read_dataset(job, state_root, dataset_id, manifest_sha, 3))
+    for record in records:
+        require(record.get("schema") == DATASET_SCHEMA and record.get("inverse_epsilon_tensor_grid_shape") == [128, 128, 3, 3], "M22_PRIOR_TENSOR_RECORD_INVALID")
+    return records, {"dataset_id": dataset_id, "manifest_sha256": manifest_sha, "record_count": 3}
+
+
+def decode_tensor_record(record: Mapping[str, Any]) -> np.ndarray:
+    payload = np.asarray(record.get("inverse_epsilon_tensor_grid"), dtype=float)
+    require(payload.shape == (*SHAPE, COMPONENTS, COMPONENTS, 2), "M22_PRIOR_TENSOR_PAYLOAD_SHAPE_INVALID", str(payload.shape))
+    tensor = payload[..., 0] + 1j * payload[..., 1]
+    require(np.all(np.isfinite(tensor)), "M22_PRIOR_TENSOR_PAYLOAD_NONFINITE")
+    return tensor
+
+
 def analyze(m18_records: Sequence[Mapping[str, Any]], tensor_records: Sequence[Mapping[str, Any]], tensors: Sequence[np.ndarray], solver_count: int, path_status: str, api_evidence: Mapping[str, Any], material_evidence: Sequence[Mapping[str, Any]], source_commit: str | None) -> dict[str, Any]:
     m18 = ordered_triplet(m18_records); tensors = [np.asarray(item, dtype=np.complex128) for item in tensors]
     require(len(tensor_records) == len(tensors) == 3, "M22_TENSOR_RECORD_COUNT_INVALID")
-    m15 = _m15(); h_frames = [_field(record, "fresh_h_fields_bands_1_to_6")[list(TARGET_BANDS)].transpose(1, 2, 3, 0).reshape(-1, 2) for record in m18]
+    m15 = _m15(); edges, folding_residual, gauge_cycle_residual = derive_edges(m18, m15); h_frames = [_field(record, "fresh_h_fields_bands_1_to_6")[list(TARGET_BANDS)].transpose(1, 2, 3, 0) for record in m18]
     d_frames = []
     d_available = True
     for record in m18:
         if record.get("fresh_d_fields_bands_1_to_6") is None:
             d_available = False; break
-        d_frames.append(_field(record, "fresh_d_fields_bands_1_to_6")[list(TARGET_BANDS)].transpose(1, 2, 3, 0).reshape(-1, 2))
-    h_metrics, h_status = _edge_metrics(h_frames, None, m15)
-    d_metrics, d_status = _edge_metrics(d_frames, tensors, m15) if d_available else ([], {"metric_positive_status": "INSUFFICIENT_D_READBACK", "metric_hermiticity_status": "INSUFFICIENT_D_READBACK"})
+        d_frames.append(_field(record, "fresh_d_fields_bands_1_to_6")[list(TARGET_BANDS)].transpose(1, 2, 3, 0))
+    h_metrics, h_status = _edge_metrics(h_frames, None, m15, edges)
+    d_metrics, d_status = _edge_metrics(d_frames, tensors, m15, edges) if d_available else ([], {"metric_positive_status": "INSUFFICIENT_D_READBACK", "metric_hermiticity_status": "INSUFFICIENT_D_READBACK"})
     tensor_residuals, b_residuals, interface_rows = [], [], []
     componentwise = np.zeros(3, dtype=float)
     offdiag, hermiticity, eig_min, eig_max, covariance = 0.0, 0.0, float("inf"), float("-inf"), 0.0
     for index, (record, eta) in enumerate(zip(m18, tensors)):
         epsilon = np.asarray(record["epsilon_grid"], dtype=float); interface = _interface_mask(epsilon)
-        offdiag = max(offdiag, float(np.max(np.abs(eta - np.einsum("...ii->...", eta)[..., None, None] * np.eye(3)))))
+        offdiag = max(offdiag, float(np.max(np.abs(eta * (1.0 - np.eye(3))))))
         hermiticity = max(hermiticity, float(np.max(np.abs(eta - eta.conj().transpose(0, 1, 3, 2)))))
         values = np.linalg.eigvalsh((eta + eta.conj().transpose(0, 1, 3, 2)).real / 2.0); eig_min = min(eig_min, float(np.min(values))); eig_max = max(eig_max, float(np.max(values)))
         if d_available:
             e, d, b, h = _field(record, "fresh_e_fields_bands_1_to_6")[list(TARGET_BANDS)], _field(record, "fresh_d_fields_bands_1_to_6")[list(TARGET_BANDS)], _field(record, "fresh_b_fields_bands_1_to_6")[list(TARGET_BANDS)], _field(record, "fresh_h_fields_bands_1_to_6")[list(TARGET_BANDS)]
-            pred = np.einsum("xyij,byj->byi", eta, d)
+            pred = np.einsum("xyij,bxyj->bxyi", eta, d)
             residual = np.abs(e - pred); tensor_residuals.append(float(np.max(residual))); componentwise = np.maximum(componentwise, np.max(residual, axis=(0, 1, 2))); b_residuals.append(float(np.max(np.abs(b - h))))
             interface_rows.append({"member_index": index, "bulk_max": float(np.max(residual[:, ~interface, :])), "interface_max": float(np.max(residual[:, interface, :]))})
         if index:
             covariance = max(covariance, float(np.max(np.abs(eta - tensors[0]))))
-    h_gram = [_gram(v) for v in h_frames]; h_offdiag = max(float(np.max(np.abs(g - np.diag(np.diag(g))))) for g in h_gram)
-    h_projector_probe = np.column_stack(h_frames[0]); h_q = np.linalg.qr(h_frames[0], mode="reduced")[0]; u = np.asarray([[0, 1], [-1, 0]], dtype=np.complex128); hu = np.linalg.qr(h_frames[0] @ u, mode="reduced")[0]; h_u2 = float(np.max(np.abs(h_q @ (h_q.conj().T @ h_projector_probe) - hu @ (hu.conj().T @ h_projector_probe))))
+    h_matrices = [v.reshape(-1, 2) for v in h_frames]; h_gram = [_gram(v) for v in h_matrices]; h_offdiag = max(float(np.max(np.abs(g - np.diag(np.diag(g))))) for g in h_gram)
+    h_projector_probe = h_matrices[0]; h_q = np.linalg.qr(h_matrices[0], mode="reduced")[0]; u = np.asarray([[0, 1], [-1, 0]], dtype=np.complex128); hu = np.linalg.qr(h_matrices[0] @ u, mode="reduced")[0]; h_u2 = float(np.max(np.abs(h_q @ (h_q.conj().T @ h_projector_probe) - hu @ (hu.conj().T @ h_projector_probe))))
+    h_projected_probe = h_q @ (h_q.conj().T @ h_projector_probe)
+    h_projector_probe = h_projected_probe
     h_fail = sum(metric["maximum_projector_distance"] > 0.0 for metric in h_metrics); d_fail = sum(metric["maximum_projector_distance"] > 0.0 for metric in d_metrics) if d_metrics else 0
     constitutive_complete = bool(d_available and tensor_residuals and b_residuals)
     diagnosis = "H_AND_D_NATURAL_SPACES_DISAGREE" if constitutive_complete and h_fail != d_fail else ("PRIOR_ENERGY_VECTOR_REPRESENTATION_OR_METRIC_ARTIFACT" if constitutive_complete and h_fail == 0 and d_fail == 0 else "PUBLIC_TENSOR_CONSTITUTIVE_MAPPING_INCOMPLETE")
@@ -317,18 +383,13 @@ def failure(code: str, exc: BaseException | None = None) -> dict[str, Any]:
 def main() -> int:
     try:
         bundle = json.loads(Path(os.environ["MEPHC_INPUT_BUNDLE"]).read_text(encoding="utf-8")); require(isinstance(bundle, dict) and isinstance(bundle.get("work_order_id"), str), "M22_WORK_ORDER_MISSING")
-        state_root = Path(os.environ["MEPHC_EXECUTION_COUNTERS_PATH"]).parent.parent; job = _job(); m18_records = ordered_triplet(read_dataset(job, state_root, M18_DATASET_ID, M18_MANIFEST_SHA256, 3)); api = public_api_evidence(); m13_records = read_dataset(job, state_root, M13_DATASET_ID, M13_MANIFEST_SHA256, 3); _ = read_dataset(job, state_root, M12_DATASET_ID, M12_MANIFEST_SHA256, 3)
-        members = [{key: record[key] for key in ("member_index", "c3_member_identity", "request_key_sha256", "coordinate")} for record in m18_records]
-        counter = job.BudgetCounter(0, 3)
-        try:
-            tensors, evidence, path_status, solver_count = _capture_zero_solve(members)
-        except Exception as exc:
-            if "M22_PUBLIC_" not in str(exc) and type(exc).__name__ not in {"RuntimeError", "TypeError", "AttributeError", "ValueError"}:
-                raise
-            tensors, evidence, path_status, solver_count = _capture_fallback(members, counter)
-            evidence[0]["fallback_exception"] = f"{type(exc).__name__}:{str(exc)[:512]}"
-        tensor_records = [_record(member, tensor, item) for member, tensor, item in zip(members, tensors, evidence)]
-        manifest = persist(job, state_root, bundle["work_order_id"], tensor_records); result = analyze(m18_records, tensor_records, tensors, solver_count, path_status, api, evidence, os.environ.get("MEPHC_SOURCE_COMMIT")); result["dataset_id"] = manifest["dataset_id"]; result["manifest_sha256"] = manifest["manifest_sha256"]
+        state_root = Path(os.environ["MEPHC_EXECUTION_COUNTERS_PATH"]).parent.parent; job = _job(); m18_records = ordered_triplet(read_dataset(job, state_root, M18_DATASET_ID, M18_MANIFEST_SHA256, 3)); _ = read_dataset(job, state_root, M13_DATASET_ID, M13_MANIFEST_SHA256, 3); _ = read_dataset(job, state_root, M12_DATASET_ID, M12_MANIFEST_SHA256, 3)
+        prior_records, prior_identity = recover_prior_tensor_records(job, state_root); tensors = [decode_tensor_record(record) for record in prior_records]
+        tensor_records = prior_records; evidence = [dict(record.get("public_capture_evidence", {})) for record in tensor_records]
+        result = analyze(m18_records, tensor_records, tensors, 0, "RECOVERED_PRIOR_PUBLIC_TENSOR_RECORDS_NO_REEXECUTION", {}, evidence, os.environ.get("MEPHC_SOURCE_COMMIT"))
+        h_before = {"stored_band_payload": list(np.asarray(m18_records[0]["fresh_h_fields_bands_1_to_6"]).shape), "decoded_single_band_field": [128, 128, 3], "rank2_frame_before_transform": [49152, 2], "rank2_frame_grid_after_fix": [128, 128, 3, 2], "rank2_frame_after_transform": [49152, 2]}
+        d_before = {"stored_band_payload": list(np.asarray(m18_records[0]["fresh_d_fields_bands_1_to_6"]).shape) if m18_records[0].get("fresh_d_fields_bands_1_to_6") is not None else None, "decoded_single_band_field": [128, 128, 3], "rank2_frame_before_transform": [49152, 2], "rank2_frame_grid_after_fix": [128, 128, 3, 2], "rank2_frame_after_transform": [49152, 2]}
+        result.update({"prior_job_id": PRIOR_M22_JOB_ID, "prior_tensor_recovery_status": "RECOVERED_EXACT_IMMUTABLE_THREE_RECORDS", "recovered_tensor_dataset_id": prior_identity["dataset_id"], "recovered_tensor_manifest_sha256": prior_identity["manifest_sha256"], "recovered_tensor_record_count": prior_identity["record_count"], "dataset_id": None, "manifest_sha256": None, "dataset_record_count": 0, "new_metadata_record_count": 0, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "H_field_shape_before_fix": h_before, "D_field_shape_before_fix": d_before, "old_transform_input_shape": [49152, 2], "field_shape_root_cause": "The previous implementation transposed the two-band container and flattened it before calling a single-field FFT helper; m15.fft_transform requires leading grid axes (128,128), so each band must be transformed separately.", "reconciled_prior_outer_dataset_records": 3, "reconciled_prior_result_dataset_record_count": 0, "prior_result_failure_code": "M15_FIELD_SHAPE_INVALID", "post_analysis_checkout_unchanged": True})
     except Exception as exc:
         result = failure(str(exc), exc); result["traceback_tail"] = traceback.format_exc()[-3000:]
     Path(os.environ["MEPHC_RESULT_PATH"]).write_text(json.dumps(result, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")

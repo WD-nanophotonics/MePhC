@@ -5,6 +5,7 @@ import importlib.util
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -80,3 +81,35 @@ def test_fallback_is_bounded_to_three_members_by_source():
     assert "for member in ordered_triplet(members)" in source
     assert "counter.consume_solver()" in source
     assert "run_parity" in source
+
+
+def test_rank2_transform_separates_bands_before_fft():
+    calls = []
+    class FFT:
+        def fft_transform(self, field, shape, reciprocal, folding, rotation):
+            calls.append((field.shape, tuple(folding)))
+            return field
+    frame = np.zeros((128, 128, 3, 2), dtype=complex)
+    result = M22.transform_rank2_vector_frame(frame, np.eye(2, dtype=int), (3, -2), FFT())
+    assert result.shape == (49152, 2)
+    assert calls == [((128, 128, 3), (3, -2)), ((128, 128, 3), (3, -2))]
+
+
+def test_rank2_transform_rejects_flattened_frame():
+    class FFT:
+        def fft_transform(self, *args):
+            raise AssertionError("malformed frame must be rejected first")
+    with pytest.raises(M22.M22Error, match="M22_RANK2_GRID_SHAPE_INVALID"):
+        M22.transform_rank2_vector_frame(np.zeros((49152, 2), dtype=complex), np.eye(2, dtype=int), (0, 0), FFT())
+
+
+def test_edge_derivation_keeps_nonzero_reciprocal_translation():
+    class Lattice:
+        R2 = np.eye(2)
+        @staticmethod
+        def lattice_automorphisms():
+            return {"reciprocal_basis": np.eye(2), "c3_reciprocal_integer_automorphism": np.eye(2, dtype=int)}
+    records = [{"member_index": i, "c3_member_identity": name, "coordinate": ([1.0, 0.0] if i == 0 else [0.0, 0.0])} for i, name in enumerate(("IDENTITY", "C3", "C3_SQUARED"))]
+    edges, residual, cycle = M22.derive_edges(records, Lattice())
+    assert edges[0]["G_edge_integer"] == [1, 0]
+    assert residual == 0.0 and cycle == 0.0
