@@ -81,6 +81,7 @@ def test_targeted_path_dispatches_exactly_24_calls_and_requests_rank2_payload():
     records, failure = M4.acquire_targets(targets, provider_getter, solve, counter)
     assert failure is None
     assert len(records) == counter.provider_count == counter.solver_count == 24
+    assert all(request["provider_symbol"] == M4.PRODUCTION_PROVIDER_SYMBOL for request in calls)
     assert all(request["band_target"]["vector_bands_zero_based"] == [1, 2] for request in calls)
     assert all(request["band_target"]["band_indices_zero_based"] == [0, 1, 2, 3] for request in calls)
 
@@ -103,3 +104,9 @@ def test_entrypoint_does_not_modify_production_modules_or_claim_nonabelian_obser
     assert "Chern" not in source
     assert "curvature" not in source
     assert "TARGET_COUNT = 24" in source
+
+
+def test_m4_request_is_accepted_by_the_production_adapter_contract():
+    m2 = M4.load_m2()
+    request = M4.single_point_request(_targets()[0])
+    assert request["provider_symbol"] == m2.PRODUCTION_PROVIDER_SYMBOL

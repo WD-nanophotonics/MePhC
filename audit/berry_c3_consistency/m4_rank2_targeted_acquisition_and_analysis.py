@@ -19,6 +19,7 @@ DATASET_SCHEMA = "mephc-berry-c3-consistency-m4-rank2-diagnostic-live-state-data
 TARGET_REPEAT = 1
 TARGET_COUNT = 24
 TRIPLET_COUNT = 8
+PRODUCTION_PROVIDER_SYMBOL = "mephc.mpb_energy_spectral_provider.MPBLiveEnergySpectralProvider"
 
 
 class M4Error(ValueError):
@@ -91,7 +92,7 @@ def single_point_request(item: Mapping[str, Any]) -> dict[str, Any]:
     coordinate = semantic.get("public_coordinate")
     require(isinstance(coordinate, list) and len(coordinate) == 2, "M4_TARGET_COORDINATE_INVALID")
     return {
-        "provider_symbol": "MPBLiveEnergySpectralProvider",
+        "provider_symbol": PRODUCTION_PROVIDER_SYMBOL,
         "request_key_sha256": item["request_key_sha256"],
         "repeat_index": TARGET_REPEAT,
         "geometry_id": semantic["geometry_id"],
