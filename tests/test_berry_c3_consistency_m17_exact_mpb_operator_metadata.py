@@ -65,6 +65,7 @@ def test_get_epsilon_requires_solve_fails_closed_without_solver_call():
     calls = []
     record = M17.capture_mode_solver_metadata(solver, member=member(), reciprocal_k_point=(0.1, 0.2, 0.0), api_calls=calls, spatial_shape=(4, 4))
     assert record["metadata_status"] == "EXACT_MPB_METADATA_REQUIRES_EIGENSOLVE"
+    assert record["record_id"].endswith(":m17")
     assert record["forbidden_solver_call_count"] == 0
     assert solver.calls == ["init_params", "get_epsilon"]
 

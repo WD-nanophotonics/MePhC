@@ -119,6 +119,23 @@ def _point_tuple(value: Any) -> list[float]:
     return [float(getattr(value, axis)) for axis in ("x", "y", "z")]
 
 
+def _incomplete_record(member: Mapping[str, Any], status: str, error: str) -> dict[str, Any]:
+    """Keep failed metadata attempts serializable for bounded reconciliation."""
+    return {
+        "schema": DATASET_SCHEMA,
+        "record_id": f"{member['request_key_sha256']}:m17",
+        "request_key_sha256": member["request_key_sha256"],
+        "member_index": int(member["member_index"]),
+        "c3_member_identity": member["c3_member_identity"],
+        "geometry_id": "G15",
+        "geometry_role": "AREA_MATCHED_G15",
+        "coordinate": list(member["coordinate"]),
+        "metadata_status": status,
+        "metadata_error": error,
+        "forbidden_solver_call_count": 0,
+    }
+
+
 def capture_mode_solver_metadata(solver: Any, *, member: Mapping[str, Any], reciprocal_k_point: Any, api_calls: list[str], spatial_shape: Sequence[int] = SHAPE) -> dict[str, Any]:
     """Capture only read-only material metadata; never invoke a solve API."""
     require(not any(name in api_calls for name in ("run", "run_parity", "solve", "all_freqs")), "M17_FORBIDDEN_SOLVER_CALL_TRACE")
@@ -128,17 +145,17 @@ def capture_mode_solver_metadata(solver: Any, *, member: Mapping[str, Any], reci
         try:
             init()
         except Exception as exc:
-            return {"member_index": int(member["member_index"]), "c3_member_identity": member["c3_member_identity"], "metadata_status": "EXACT_MPB_METADATA_REQUIRES_EIGENSOLVE", "metadata_error": f"init_params:{type(exc).__name__}:{str(exc)[:512]}", "forbidden_solver_call_count": 0}
+            return _incomplete_record(member, "EXACT_MPB_METADATA_REQUIRES_EIGENSOLVE", f"init_params:{type(exc).__name__}:{str(exc)[:512]}")
     else:
-        return {"member_index": int(member["member_index"]), "c3_member_identity": member["c3_member_identity"], "metadata_status": "EXACT_MPB_METADATA_REQUIRES_EIGENSOLVE", "metadata_error": "ModeSolver.init_params is not exposed; exact material access cannot be proven non-solving", "forbidden_solver_call_count": 0}
+        return _incomplete_record(member, "EXACT_MPB_METADATA_REQUIRES_EIGENSOLVE", "ModeSolver.init_params is not exposed; exact material access cannot be proven non-solving")
     get_epsilon = getattr(solver, "get_epsilon", None)
     if not callable(get_epsilon):
-        return {"member_index": int(member["member_index"]), "c3_member_identity": member["c3_member_identity"], "metadata_status": "EXACT_MPB_METADATA_REQUIRES_EIGENSOLVE", "metadata_error": "ModeSolver.get_epsilon is not exposed before an eigensolve", "forbidden_solver_call_count": 0}
+        return _incomplete_record(member, "EXACT_MPB_METADATA_REQUIRES_EIGENSOLVE", "ModeSolver.get_epsilon is not exposed before an eigensolve")
     api_calls.append("ModeSolver.get_epsilon")
     try:
         epsilon_raw = np.asarray(get_epsilon(), dtype=float)
     except Exception as exc:
-        return {"member_index": int(member["member_index"]), "c3_member_identity": member["c3_member_identity"], "metadata_status": "EXACT_MPB_METADATA_REQUIRES_EIGENSOLVE", "metadata_error": f"get_epsilon:{type(exc).__name__}:{str(exc)[:512]}", "forbidden_solver_call_count": 0}
+        return _incomplete_record(member, "EXACT_MPB_METADATA_REQUIRES_EIGENSOLVE", f"get_epsilon:{type(exc).__name__}:{str(exc)[:512]}")
     spatial_shape = tuple(int(value) for value in spatial_shape)
     require(epsilon_raw.size == spatial_shape[0] * spatial_shape[1], "M17_EPSILON_GRID_SHAPE_INVALID", str(epsilon_raw.shape))
     epsilon = epsilon_raw.reshape(spatial_shape)
