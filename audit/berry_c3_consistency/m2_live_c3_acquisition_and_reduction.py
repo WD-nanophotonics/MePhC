@@ -42,6 +42,10 @@ PREVIOUS_CHILD_RETURN_CODE = 2
 PREVIOUS_CHILD_EXCEPTION_TYPE = "None"
 PREVIOUS_CHILD_FAILURE_STAGE = "entrypoint_exit_policy"
 PREVIOUS_CHILD_FAILURE_CODE = "FAIL_CLOSED_RESULT_EXIT_2"
+PREVIOUS_TYPEERROR_MESSAGE = "MPBLiveEnergySpectralProvider.solve() got an unexpected keyword argument 'request'"
+PREVIOUS_TYPEERROR_CALLSITE = "legacy M2 audit adapter: provider.solve(request=production_request)"
+PREVIOUS_TYPEERROR_ARGUMENT_MISMATCH = "the legacy adapter passed the full request envelope as keyword request; solve accepts positional k_point: Sequence[float]"
+PRODUCTION_PROVIDER_PUBLIC_CALL_SIGNATURE = "solve(self, k_point: Sequence[float]) -> MPBHEnvelopeSnapshot"
 
 
 class M2Error(ValueError):
@@ -231,6 +235,24 @@ def build_production_request(item: Mapping[str, Any], constituent: Mapping[str, 
     return {"provider_symbol": PRODUCTION_PROVIDER_SYMBOL, **dict(constituent)}
 
 
+def invoke_production_request(provider: Any, production_request: Mapping[str, Any]) -> Any:
+    """Invoke the real provider with its supported public call shape.
+
+    The complete request remains available to the audit boundary and its
+    constituent identity is hashed before this representation-only
+    translation.  The production provider consumes only the graph-authorized
+    Cartesian point as its public ``k_point`` argument.
+    """
+    if production_request.get("provider_symbol") != PRODUCTION_PROVIDER_SYMBOL:
+        raise M2Error("PRODUCTION_PROVIDER_SYMBOL_MISMATCH")
+    coordinate = production_request.get("coordinate")
+    if not isinstance(coordinate, list) or len(coordinate) != 2:
+        raise M2Error("PRODUCTION_PROVIDER_COORDINATE_INVALID")
+    if not all(isinstance(value, (int, float)) and math.isfinite(float(value)) for value in coordinate):
+        raise M2Error("PRODUCTION_PROVIDER_COORDINATE_INVALID")
+    return provider.solve(tuple(float(value) for value in coordinate))
+
+
 def _load_scientific_job():
     path = ROOT / "tools" / "mephc-flow" / "scientific_job.py"
     spec = importlib.util.spec_from_file_location("berry_c3_scientific_job", path)
@@ -415,7 +437,7 @@ class ProductionPilot:
         for request in production_requests:
             self._counter.consume_provider()
             self._counter.consume_solver()
-            snapshots.append(provider.solve(request["coordinate"]))
+            snapshots.append(invoke_production_request(provider, request))
         frequencies = np.asarray([snapshot.frequencies[:4] for snapshot in snapshots], dtype=float)
         adjacent_gaps = np.diff(frequencies, axis=1)
         reductions = {
@@ -592,6 +614,10 @@ def compact_success(plan: Mapping[str, Any], execution: Mapping[str, Any], reduc
         "previous_child_exception_type": PREVIOUS_CHILD_EXCEPTION_TYPE,
         "previous_child_failure_stage": PREVIOUS_CHILD_FAILURE_STAGE,
         "previous_child_failure_code": PREVIOUS_CHILD_FAILURE_CODE,
+        "previous_typeerror_message": PREVIOUS_TYPEERROR_MESSAGE,
+        "previous_typeerror_callsite": PREVIOUS_TYPEERROR_CALLSITE,
+        "previous_typeerror_argument_mismatch": PREVIOUS_TYPEERROR_ARGUMENT_MISMATCH,
+        "production_provider_public_call_signature": PRODUCTION_PROVIDER_PUBLIC_CALL_SIGNATURE,
         "production_provider_symbol": PRODUCTION_PROVIDER_SYMBOL,
         "first_live_request_key": plan["live_requests"][0]["request_key_sha256"] if plan.get("live_requests") else None,
         "m1_request_graph_sha256": EXPECTED_GRAPH_SHA256,
@@ -647,6 +673,10 @@ def compact_failure(error: M2Error, *, plan: Mapping[str, Any] | None = None) ->
         "previous_child_exception_type": PREVIOUS_CHILD_EXCEPTION_TYPE,
         "previous_child_failure_stage": PREVIOUS_CHILD_FAILURE_STAGE,
         "previous_child_failure_code": PREVIOUS_CHILD_FAILURE_CODE,
+        "previous_typeerror_message": PREVIOUS_TYPEERROR_MESSAGE,
+        "previous_typeerror_callsite": PREVIOUS_TYPEERROR_CALLSITE,
+        "previous_typeerror_argument_mismatch": PREVIOUS_TYPEERROR_ARGUMENT_MISMATCH,
+        "production_provider_public_call_signature": PRODUCTION_PROVIDER_PUBLIC_CALL_SIGNATURE,
         "production_provider_symbol": PRODUCTION_PROVIDER_SYMBOL,
         "first_live_request_key": plan["live_requests"][0]["request_key_sha256"] if plan and plan.get("live_requests") else None,
         "failed_stage": "validation",
