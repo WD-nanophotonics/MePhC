@@ -34,3 +34,9 @@ def test_point_arguments_use_both_candidate_charts_without_authority_guess():
 def test_h_array_shape_guard_is_exact():
     value = np.zeros((128, 128, 3), dtype=complex)
     assert M28._array(value).shape == (128, 128, 3)
+
+
+def test_canonical_triplet_binding_uses_semantic_identity():
+    base = {"geometry_role": "AREA_MATCHED_G15", "deterministic": False, "frame_convention": "LAB_FIXED", "repeat_index": 1}
+    records = [{**base, "c3_member_identity": name, "member_index": index} for index, name in enumerate(("C3_SQUARED", "IDENTITY", "C3"))]
+    assert [item["c3_member_identity"] for item in M28.bind_canonical_triplet(records)] == ["IDENTITY", "C3", "C3_SQUARED"]

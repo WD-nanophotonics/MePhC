@@ -62,6 +62,24 @@ def _point(mp: Any, index: tuple[int, int], half: bool = False) -> Any:
     return mp.Vector3((index[0] + shift) / 128.0, (index[1] + shift) / 128.0, 0.0)
 
 
+def bind_canonical_triplet(records: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    """Bind by explicit immutable semantics, never by list or hash order."""
+    required = ("IDENTITY", "C3", "C3_SQUARED")
+    by_identity: dict[str, dict[str, Any]] = {}
+    for raw in records:
+        record = dict(raw)
+        identity = record.get("c3_member_identity")
+        if identity in required:
+            if identity in by_identity:
+                raise ValueError(f"M28_DUPLICATE_SEMANTIC_MEMBER:{identity}")
+            if record.get("geometry_role") != "AREA_MATCHED_G15" or record.get("deterministic") is not False or record.get("frame_convention") != "LAB_FIXED" or int(record.get("repeat_index", -1)) != 1:
+                raise ValueError(f"M28_SEMANTIC_MEMBER_METADATA_INVALID:{identity}")
+            by_identity[identity] = record
+    if set(by_identity) != set(required) or len(by_identity) != 3:
+        raise ValueError(f"M28_CANONICAL_TRIPLET_INVALID:{sorted(by_identity)}")
+    return [by_identity[identity] for identity in required]
+
+
 def _capture(solver: Any, mp: Any, member: Mapping[str, Any], *, solved: bool) -> tuple[dict[str, Any], np.ndarray, int]:
     arrays = {str(band): _array(solver.get_hfield(band, bloch_phase=False)) for band in (2, 3)}
     point_values: dict[str, Any] = {}; bloch_values: dict[str, Any] = {}; charts = ("index_over_N", "index_plus_half_over_N")
@@ -96,7 +114,7 @@ def persist(job: Any, state_root: Path, work_order_id: str, records: Sequence[Ma
 
 def main() -> int:
     try:
-        bundle = json.loads(Path(os.environ["MEPHC_INPUT_BUNDLE"]).read_text(encoding="utf-8")); work_order_id = bundle["work_order_id"]; state_root = Path(os.environ["MEPHC_EXECUTION_COUNTERS_PATH"]).parent.parent; job = _job(); m18 = _m18(); members = m18.ordered_triplet(m18.read_dataset(job, state_root, M18_DATASET_ID, M18_MANIFEST_SHA256, 3)); make, mp = m18._factory(); records = []; arrays = []; solver_count = 0; reuse_failures = []
+        bundle = json.loads(Path(os.environ["MEPHC_INPUT_BUNDLE"]).read_text(encoding="utf-8")); work_order_id = bundle["work_order_id"]; state_root = Path(os.environ["MEPHC_EXECUTION_COUNTERS_PATH"]).parent.parent; job = _job(); m18 = _m18(); members = bind_canonical_triplet(m18.read_dataset(job, state_root, M18_DATASET_ID, M18_MANIFEST_SHA256, 3)); make, mp = m18._factory(); records = []; arrays = []; solver_count = 0; reuse_failures = []
         for member in members:
             solver, _ = make(member)
             try:
