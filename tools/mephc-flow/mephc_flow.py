@@ -608,7 +608,8 @@ def scoped_commit(paths: Paths, contract: dict[str, Any]) -> dict[str, Any] | No
 
 
 def test_paths(contract: dict[str, Any]) -> list[str]:
-    declared = contract["inputs"].get("tests", ["tests/test_mephc_thin_flow.py"])
+    declared = contract["inputs"].get("tests")
+    if declared is None: declared = [path for path in contract["allowed_writes"] if path.startswith("tests/") and path.endswith(".py")] or ["tests/test_mephc_thin_flow.py"]
     if not isinstance(declared, list) or not declared:
         raise FlowError("TESTS_REQUIRED")
     result = []
@@ -627,6 +628,9 @@ def require_local_implementation(paths: Paths, contract: dict[str, Any]) -> None
     if (contract.get("action") not in {"corrective", "infrastructure"}
             and (not isinstance(entrypoint, str) or not (paths.control / Path(entrypoint)).is_file())):
         raise FlowError("ENTRYPOINT_IMPLEMENTATION_REQUIRED", str(entrypoint))
+    if contract.get("action") == "infrastructure":
+        missing = next((path for path in contract["allowed_writes"] if not (paths.control / Path(path)).is_file()), None)
+        if missing: raise FlowError("ARTIFACT_IMPLEMENTATION_REQUIRED", missing)
 
 
 def publish(paths: Paths, contract: dict[str, Any]) -> dict[str, Any]:
@@ -1150,8 +1154,6 @@ def parser() -> argparse.ArgumentParser:
     closeout_command.add_argument("--instruction-level", choices=sorted(INSTRUCTION_LEVELS))
     closeout_command.add_argument("--report-policy", choices=sorted(REPORT_POLICIES))
     return result
-
-
 def command_error_view(paths: Paths, command: str, exc: FlowError) -> dict[str, Any]:
     """Classify errors by durable evidence instead of by an agent's guess."""
     hard = {"state": "HARD_BLOCKED", "error_code": exc.code,
@@ -1175,8 +1177,6 @@ def command_error_view(paths: Paths, command: str, exc: FlowError) -> dict[str, 
     if state == "READY_TO_CLOSE" and phase == "TERMINAL":
         return {**view, "error_code": exc.code, "detail": exc.detail}
     return hard
-
-
 def main(argv: list[str] | None = None, paths: Paths | None = None) -> int:
     args = parser().parse_args(argv)
     scope = paths or Paths()
@@ -1194,7 +1194,5 @@ def main(argv: list[str] | None = None, paths: Paths | None = None) -> int:
         value = command_error_view(scope, args.command, exc)
         print(json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False))
         return 2 if value.get("state") == "HARD_BLOCKED" else 0
-
-
 if __name__ == "__main__":
     raise SystemExit(main())

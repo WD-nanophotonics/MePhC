@@ -151,6 +151,30 @@ def test_missing_local_implementation_stays_ready_before_publish(monkeypatch, tm
         flow.execute(scope)
 
 
+def test_infrastructure_requires_declared_artifacts_and_runs_declared_test(monkeypatch, tmp_path: Path):
+    scope = paths(tmp_path)
+    scope.control.mkdir(parents=True)
+    value = contract(
+        kind="INFRASTRUCTURE", action="infrastructure", entrypoint=None,
+        budgets={"native_invocations": 0, "provider_requests": 0, "solver_executions": 0},
+        inputs={},
+        allowed_writes=["audit/result.json", "tests/test_declared_result.py"],
+        expected_output={"dataset_schema": None, "result_schema": "infra-result-v1"},
+    )
+    assert flow.test_paths(value) == ["tests/test_declared_result.py"]
+    with pytest.raises(flow.FlowError, match="TEST_IMPLEMENTATION_REQUIRED"):
+        flow.require_local_implementation(scope, value)
+    test = scope.control / "tests/test_declared_result.py"
+    test.parent.mkdir(parents=True)
+    test.write_text("def test_ok(): assert True\n", encoding="utf-8")
+    with pytest.raises(flow.FlowError, match="ARTIFACT_IMPLEMENTATION_REQUIRED: audit/result.json"):
+        flow.require_local_implementation(scope, value)
+    artifact = scope.control / "audit/result.json"
+    artifact.parent.mkdir(parents=True)
+    artifact.write_text("{}\n", encoding="utf-8")
+    flow.require_local_implementation(scope, value)
+
+
 def test_oversized_terminal_result_is_reconciled_without_execution(monkeypatch, tmp_path: Path):
     scope = paths(tmp_path)
     scope.control.mkdir(parents=True)
