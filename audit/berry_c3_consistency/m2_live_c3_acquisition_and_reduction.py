@@ -761,7 +761,7 @@ def analyze_m3_records(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
 
 def run_m3(bundle: Mapping[str, Any]) -> dict[str, Any]:
     """Load only the contract-bound M2 payload descriptors for M3 analysis."""
-    _m3_require(bundle.get("work_order_id", "").startswith("MEPHC-BERRY-C3-M3-"), "M3_WORK_ORDER_MISMATCH")
+    _m3_require(bundle.get("work_order_id", "").startswith("MEPHC-BERRY-C3-M3"), "M3_WORK_ORDER_MISMATCH")
     verify_m1_bundle()
     datasets = bundle.get("datasets")
     records: list[dict[str, Any]] = []
@@ -1026,9 +1026,9 @@ def main() -> int:
     bundle: dict[str, Any] | None = None
     try:
         bundle = _load_runtime_bundle()
-        result = run_m3(bundle) if bundle["work_order_id"].startswith("MEPHC-BERRY-C3-M3-") else run()
+        result = run_m3(bundle) if bundle["work_order_id"].startswith("MEPHC-BERRY-C3-M3") else run()
     except M2Error as exc:
-        result = compact_m3_failure(exc) if bundle and bundle.get("work_order_id", "").startswith("MEPHC-BERRY-C3-M3-") else compact_failure(exc)
+        result = compact_m3_failure(exc) if bundle and bundle.get("work_order_id", "").startswith("MEPHC-BERRY-C3-M3") else compact_failure(exc)
     write_result(result)
     print("MEPHC_RESULT_JSON=" + canonical(dict(result)).decode("utf-8"))
     return 0
