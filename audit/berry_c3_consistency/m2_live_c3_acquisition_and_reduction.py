@@ -14,7 +14,6 @@ import os
 import sys
 from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
-from statistics import median
 from typing import Any
 
 
@@ -29,10 +28,6 @@ GOAL_PATH = M1_DIR / "goal_contract_v1.json"
 MACHINE_CONTRACT_PATH = M1_DIR / "m2_machine_execution_contract.json"
 RESULT_SCHEMA = "mephc-berry-c3-consistency-m2-live-c3-closure-v1"
 DATASET_SCHEMA = "mephc-berry-c3-consistency-m2-live-record-dataset-v1"
-M3_RESULT_SCHEMA = "mephc-berry-c3-consistency-m3-qualification-anatomy-and-rank-decision-v1"
-M3_DATASET_ID = "15f6ef1e1f3cc553350b8e918a586c6d7c63a1dca6fd9a4c99a0648aa690bbe4"
-M3_MANIFEST_SHA256 = "b444777dda2b3fd199fd3027199a5fa6406616a323be3064cf10947bfd82ea03"
-M3_RECORD_COUNT = 72
 M1_RESULT_SCHEMA = "mephc-berry-c3-consistency-m1r1-solver-free-preparation-v1"
 GRAPH_SCHEMA = "mephc-berry-c3-m1-content-addressed-request-graph-v1"
 EXPECTED_GRAPH_SHA256 = "0d461bf439cb5531e134f46a45c52f3b2f2be8d4845db7be32faf5e936b7af0a"
@@ -561,268 +556,6 @@ def _finite_observable(value: Any) -> float | None:
     return value
 
 
-def _m3_require(condition: bool, code: str) -> None:
-    if not condition:
-        raise M2Error(code)
-
-
-def _m3_number(value: Any) -> float | None:
-    if isinstance(value, bool) or not isinstance(value, (int, float)):
-        return None
-    value = float(value)
-    return value if math.isfinite(value) else None
-
-
-def _m3_values(value: Any) -> list[float]:
-    if not isinstance(value, list):
-        return []
-    return [number for item in value if (number := _m3_number(item)) is not None]
-
-
-def _m3_record_gap(record: Mapping[str, Any]) -> float | None:
-    value = _m3_number(record.get("minimum_adjacent_gap_band2"))
-    if value is not None:
-        return value
-    gaps = record.get("adjacent_band_gaps")
-    values = [number for row in gaps if isinstance(row, list) for number in _m3_values(row)] if isinstance(gaps, list) else []
-    return min(values) if values else None
-
-
-def _m3_transport(record: Mapping[str, Any]) -> tuple[float | None, float | None, float | None]:
-    try:
-        diagnostic = record["reductions"]["energy_eh"]["rank1_band2"]
-    except (KeyError, TypeError):
-        return None, None, None
-    singular = min(_m3_values(diagnostic.get("minimum_link_singular_values")), default=None)
-    projector = max(_m3_values(diagnostic.get("projector_distances")), default=None)
-    angle = None if singular is None else math.acos(max(-1.0, min(1.0, singular)))
-    return singular, angle, projector
-
-
-def _m3_symmetric_relative(left: float, right: float) -> float | None:
-    denominator = abs(left) + abs(right)
-    return None if denominator == 0.0 else 2.0 * abs(left - right) / denominator
-
-
-def _m3_failure_axis(record: Mapping[str, Any]) -> str:
-    status = record.get("qualification_status")
-    if status in {"QUALIFIED", "PASS", "COMPARABLE"}:
-        return "NONE"
-    gap = _m3_record_gap(record)
-    if gap is None:
-        return "CENTER_OR_SPECTRAL_ISOLATION_FAILURE"
-    singular, _angle, _projector = _m3_transport(record)
-    if singular is None:
-        return "TRANSPORT_OR_OVERLAP_FAILURE"
-    target = record.get("band_identity")
-    if target in {None, "", "rank1-withheld"} or "PENDING" in str(status):
-        return "BAND_OR_SUBSPACE_IDENTITY_FAILURE"
-    if record.get("observable") is None:
-        return "NONFINITE_OBSERVABLE_FAILURE"
-    return "MIXED_FAILURE"
-
-
-def analyze_m3_records(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
-    """Diagnose the immutable M2 records without invoking any science runtime."""
-    _m3_require(len(records) == M3_RECORD_COUNT, "M3_RECORD_COUNT_INVALID")
-    normalized = [dict(record) for record in records]
-    branches: dict[tuple[str, bool, str, int], list[dict[str, Any]]] = {}
-    for record in normalized:
-        geometry = record.get("geometry_id")
-        configuration = record.get("solver_configuration")
-        _m3_require(geometry in {"G16", "G15"}, "M3_GEOMETRY_ID_INVALID")
-        _m3_require(isinstance(configuration, Mapping), "M3_SOLVER_CONFIGURATION_MISSING")
-        deterministic = configuration.get("deterministic")
-        stencil = configuration.get("stencil")
-        repeat = record.get("repeat_index")
-        _m3_require(type(deterministic) is bool and stencil in {"lab_fixed", "c3_covariant"}, "M3_BRANCH_ID_INVALID")
-        _m3_require(type(repeat) is int and repeat in {0, 1, 2}, "M3_REPEAT_ID_INVALID")
-        _m3_require(type(record.get("member_index")) is int and record["member_index"] in {0, 1, 2}, "M3_MEMBER_ID_INVALID")
-        branches.setdefault((str(geometry), deterministic, str(stencil), repeat), []).append(record)
-    _m3_require(len(branches) == 24 and all(len(items) == 3 for items in branches.values()), "M3_ORBIT_ACCOUNTING_INVALID")
-
-    axes = {
-        "CENTER_OR_SPECTRAL_ISOLATION_FAILURE": 0,
-        "TRANSPORT_OR_OVERLAP_FAILURE": 0,
-        "BAND_OR_SUBSPACE_IDENTITY_FAILURE": 0,
-        "REFERENCE_FRAME_OR_CELL_FAILURE": 0,
-        "NONFINITE_OBSERVABLE_FAILURE": 0,
-        "MIXED_FAILURE": 0,
-    }
-    gaps = [_m3_record_gap(record) for record in normalized]
-    gap_values = [value for value in gaps if value is not None]
-    singular_values, angles, projectors = [], [], []
-    shadow_max = None
-    shadow_relative_max = None
-    shadow_repeat_spread = None
-    branch_summaries = []
-    max_context: dict[str, Any] | None = None
-    unqualified = 0
-    for key, items in sorted(branches.items()):
-        geometry, deterministic, stencil, repeat = key
-        ordered = sorted(items, key=lambda item: item["member_index"])
-        for record in ordered:
-            axis = _m3_failure_axis(record)
-            if axis != "NONE":
-                axes[axis] = axes.get(axis, 0) + 1
-        if any(_m3_failure_axis(record) != "NONE" for record in ordered):
-            unqualified += 1
-        branch_gaps = [value for value in (_m3_record_gap(record) for record in ordered) if value is not None]
-        branch_singular, branch_angles, branch_projectors = [], [], []
-        values = []
-        for record in ordered:
-            singular, angle, projector = _m3_transport(record)
-            if singular is not None:
-                singular_values.append(singular)
-                branch_singular.append(singular)
-            if angle is not None:
-                angles.append(angle)
-                branch_angles.append(angle)
-            if projector is not None:
-                projectors.append(projector)
-                branch_projectors.append(projector)
-            observable = _m3_number(record.get("observable"))
-            values.append(observable)
-        finite_values = [value for value in values if value is not None]
-        residual = None
-        relative = None
-        if finite_values:
-            residual = max(abs(value - finite_values[0]) for value in finite_values[1:])
-            relative_values = [_m3_symmetric_relative(finite_values[0], value) for value in finite_values[1:]]
-            relative_values = [value for value in relative_values if value is not None]
-            relative = max(relative_values, default=None)
-            if shadow_max is None or (residual is not None and residual > shadow_max):
-                shadow_max = residual
-                shadow_relative_max = relative
-                max_context = {"geometry_id": geometry, "deterministic": deterministic, "stencil": stencil, "repeat_index": repeat, "member_values": values}
-        branch_summaries.append({
-            "geometry_id": geometry, "deterministic": deterministic, "stencil": stencil, "repeat_index": repeat,
-            "record_count": len(ordered), "failure_axes": sorted({_m3_failure_axis(record) for record in ordered if _m3_failure_axis(record) != "NONE"}),
-            "raw_member_sign_pattern": "".join("+" if value is not None and value > 0 else "-" if value is not None and value < 0 else "0" for value in values),
-            "shadow_maximum_absolute_c3_residual": residual,
-            "shadow_maximum_symmetric_relative_c3_residual": relative,
-            "minimum_external_gap": min(branch_gaps, default=None),
-            "median_external_gap": median(branch_gaps) if branch_gaps else None,
-            "minimum_link_singular_value": min(branch_singular, default=None),
-            "maximum_principal_angle": max(branch_angles, default=None),
-            "maximum_projector_distance": max(branch_projectors, default=None),
-        })
-
-    by_branch_member: dict[tuple[str, bool, str, int], list[float]] = {}
-    for record in normalized:
-        value = _m3_number(record.get("observable"))
-        if value is not None:
-            config = record["solver_configuration"]
-            by_branch_member.setdefault((record["geometry_id"], bool(config["deterministic"]), config["stencil"], int(record["member_index"])), []).append(value)
-    spreads = []
-    for values in by_branch_member.values():
-        if len(values) == 3:
-            spreads.append(max(values) - min(values))
-    shadow_repeat_spread = max(spreads, default=None)
-    dominant = max(axes.items(), key=lambda item: item[1])[0] if any(axes.values()) else "NONE"
-    return {
-        "schema": M3_RESULT_SCHEMA,
-        "status": "PASS",
-        "scientific_acceptance_status": "PASS",
-        "dataset_id": M3_DATASET_ID,
-        "manifest_sha256": M3_MANIFEST_SHA256,
-        "record_count": len(normalized),
-        "c3_orbit_count": len(branches),
-        "rank1_unqualified_orbit_count": unqualified,
-        "dominant_qualification_failure": dominant,
-        "qualification_failure_axis_counts": axes,
-        "external_gap_global_min": min(gap_values, default=None),
-        "external_gap_global_median": median(gap_values) if gap_values else None,
-        "minimum_link_singular_value": min(singular_values, default=None),
-        "maximum_principal_angle": max(angles, default=None),
-        "maximum_projector_distance": max(projectors, default=None),
-        "qualification_failure_stage": "BAND_OR_SUBSPACE_IDENTITY_BEFORE_BERRY_COMPARISON" if dominant == "BAND_OR_SUBSPACE_IDENTITY_FAILURE" else "MULTIPLE_OR_SCIENTIFIC_GATES",
-        "shadow_maximum_absolute_c3_residual": shadow_max,
-        "shadow_maximum_relative_c3_residual": shadow_relative_max,
-        "shadow_maximum_repeat_spread": shadow_repeat_spread,
-        "maximum_shadow_context": max_context,
-        "branch_shadow_summaries": branch_summaries,
-        "deterministic_mode_shadow_status": "DESCRIPTIVE_ONLY_UNQUALIFIED_BRANCHES",
-        "frame_convention_shadow_status": "DESCRIPTIVE_ONLY_UNQUALIFIED_BRANCHES",
-        "geometry_control_shadow_status": "DESCRIPTIVE_ONLY_UNQUALIFIED_BRANCHES",
-        "rank2_feasibility_status": "REQUIRES_NEW_LIVE_EVIDENCE",
-        "rank2_candidate_band_pair": None,
-        "rank2_missing_payloads": ["normalized_vectors", "subspace_overlap_singular_values", "principal_angles", "neighboring-band_identity_per_member"],
-        "next_science_decision": "REACQUIRE_ONLY_SPECIFIC_MISSING_RANK_DIAGNOSTIC_PAYLOADS",
-        "minimal_next_live_state_count": 24,
-        "minimal_next_target_bands_or_subspace": "bands_2_and_3_rank2_candidate_with_neighboring_band_identity",
-        "minimal_next_observables": "normalized_multiband_vectors,subspace_overlap_singular_values,principal_angles,C3_member_identity",
-        "native_invocation_count": 1,
-        "provider_execution_count": 0,
-        "solver_execution_count": 0,
-        "dataset_record_count": 0,
-    }
-
-
-def run_m3(bundle: Mapping[str, Any]) -> dict[str, Any]:
-    """Load only the contract-bound M2 payload descriptors for M3 analysis."""
-    _m3_require(bundle.get("work_order_id", "").startswith("MEPHC-BERRY-C3-M3"), "M3_WORK_ORDER_MISMATCH")
-    verify_m1_bundle()
-    datasets = bundle.get("datasets")
-    records: list[dict[str, Any]] = []
-    if isinstance(datasets, list) and datasets:
-        _m3_require(len(datasets) == M3_RECORD_COUNT, "M3_DATASET_DESCRIPTOR_COUNT_INVALID")
-        bundle_path = Path(os.environ["MEPHC_INPUT_BUNDLE"])
-        for descriptor in datasets:
-            _m3_require(isinstance(descriptor, Mapping), "M3_DATASET_DESCRIPTOR_INVALID")
-            _m3_require(descriptor.get("dataset_id") == M3_DATASET_ID and descriptor.get("manifest_sha256") == M3_MANIFEST_SHA256, "M3_DATASET_BINDING_MISMATCH")
-            payload_name = descriptor.get("payload_file")
-            _m3_require(isinstance(payload_name, str) and Path(payload_name).name == payload_name, "M3_PAYLOAD_REFERENCE_INVALID")
-            payload = (bundle_path.parent / payload_name).read_bytes()
-            _m3_require(hashlib.sha256(payload).hexdigest() == descriptor.get("payload_sha256"), "M3_PAYLOAD_HASH_INVALID")
-            _m3_require(len(payload) == descriptor.get("payload_size_bytes"), "M3_PAYLOAD_SIZE_INVALID")
-            value = json.loads(payload.decode("utf-8"))
-            _m3_require(isinstance(value, dict), "M3_PAYLOAD_SCHEMA_INVALID")
-            records.append(value)
-    else:
-        counters_path = Path(os.environ.get("MEPHC_EXECUTION_COUNTERS_PATH", ""))
-        _m3_require(counters_path.name, "M3_DATASET_RESOLVER_STATE_ROOT_MISSING")
-        scientific_job = _load_scientific_job()
-        verified = scientific_job.verify_dataset(counters_path.parent.parent, M3_DATASET_ID)
-        _m3_require(verified.get("manifest_sha256") == M3_MANIFEST_SHA256 and verified.get("record_count") == M3_RECORD_COUNT, "M3_DATASET_MANIFEST_BINDING_MISMATCH")
-        keys = verified.get("record_key_sha256")
-        _m3_require(isinstance(keys, list) and len(keys) == len(set(keys)) == M3_RECORD_COUNT, "M3_DATASET_RECORD_KEY_ENUMERATION_INVALID")
-        for key in keys:
-            resolved = scientific_job.resolve_dataset_record(counters_path.parent.parent, M3_DATASET_ID, M3_MANIFEST_SHA256, key)
-            payload = resolved.get("payload")
-            _m3_require(isinstance(payload, bytes), "M3_DATASET_PAYLOAD_MISSING")
-            value = json.loads(payload.decode("utf-8"))
-            _m3_require(isinstance(value, dict), "M3_PAYLOAD_SCHEMA_INVALID")
-            records.append(value)
-    _m3_require(len(records) == M3_RECORD_COUNT, "M3_DATASET_DESCRIPTOR_COUNT_INVALID")
-    result = analyze_m3_records(records)
-    result["plan_sha256"] = digest(PLAN_PATH.read_bytes())
-    result["goal_contract_sha256"] = digest(GOAL_PATH.read_bytes())
-    result["m1_graph_sha256"] = EXPECTED_GRAPH_SHA256
-    return result
-
-
-def compact_m3_failure(error: M2Error) -> dict[str, Any]:
-    return {
-        "schema": M3_RESULT_SCHEMA,
-        "status": "FAIL_CLOSED",
-        "scientific_acceptance_status": "FAIL_CLOSED",
-        "failed_stage": "dataset-binding-or-analysis",
-        "failure_code": error.code,
-        "exception_type": type(error).__name__,
-        "dataset_id": M3_DATASET_ID,
-        "manifest_sha256": M3_MANIFEST_SHA256,
-        "record_count": 0,
-        "c3_orbit_count": 0,
-        "rank1_unqualified_orbit_count": 0,
-        "native_invocation_count": 1,
-        "provider_execution_count": 0,
-        "solver_execution_count": 0,
-        "dataset_record_count": 0,
-        "post_native_checkout_unchanged": True,
-    }
-
-
 def execute_injected_plan(
     plan: Mapping[str, Any],
     provider_solve: Callable[[Mapping[str, Any]], Mapping[str, Any]],
@@ -1023,12 +756,10 @@ def write_result(result: Mapping[str, Any]) -> None:
 
 
 def main() -> int:
-    bundle: dict[str, Any] | None = None
     try:
-        bundle = _load_runtime_bundle()
-        result = run_m3(bundle) if bundle["work_order_id"].startswith("MEPHC-BERRY-C3-M3") else run()
+        result = run()
     except M2Error as exc:
-        result = compact_m3_failure(exc) if bundle and bundle.get("work_order_id", "").startswith("MEPHC-BERRY-C3-M3") else compact_failure(exc)
+        result = compact_failure(exc)
     write_result(result)
     print("MEPHC_RESULT_JSON=" + canonical(dict(result)).decode("utf-8"))
     return 0

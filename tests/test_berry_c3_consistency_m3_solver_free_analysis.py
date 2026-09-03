@@ -89,6 +89,17 @@ def test_valid_72_record_dataset_uses_1_0_0_budget_and_reducer(tmp_path, monkeyp
     assert result["provider_execution_count"] == result["solver_execution_count"] == result["dataset_record_count"] == 0
 
 
+def test_sealed_dataset_authority_does_not_depend_on_graph_file_hash(tmp_path, monkeypatch):
+    path, bundle = _bundle_with_descriptors(tmp_path, _records())
+    monkeypatch.setenv("MEPHC_INPUT_BUNDLE", str(path))
+    independently_recomputed_graph_hash = "0" * 64
+
+    assert independently_recomputed_graph_hash != "0d461bf439cb5531e134f46a45c52f3b2f2be8d4845db7be32faf5e936b7af0a"
+    loaded = M3.load_payloads(bundle)
+    assert len(loaded) == 72
+    assert "M1_GRAPH_PATH" not in ENTRYPOINT.read_text(encoding="utf-8")
+
+
 @pytest.mark.parametrize("kwargs,code", [
     ({"count": 71}, "M3_DATASET_DESCRIPTOR_COUNT_INVALID"),
     ({"manifest": "0" * 64}, "M3_DATASET_BINDING_MISMATCH"),

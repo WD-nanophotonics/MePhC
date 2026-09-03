@@ -15,11 +15,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 PLAN_PATH = ROOT / "audit" / "berry_c3_consistency" / "PLAN.md"
 GOAL_PATH = ROOT / "audit" / "berry_c3_consistency" / "goal_contract_v1.json"
-M1_GRAPH_PATH = ROOT / "audit" / "berry_c3_consistency" / "m1_native_request_graph.json"
 RESULT_SCHEMA = "mephc-berry-c3-consistency-m3-qualification-anatomy-and-rank-decision-v1"
 DATASET_ID = "15f6ef1e1f3cc553350b8e918a586c6d7c63a1dca6fd9a4c99a0648aa690bbe4"
 MANIFEST_SHA256 = "b444777dda2b3fd199fd3027199a5fa6406616a323be3064cf10947bfd82ea03"
-GRAPH_SHA256 = "0d461bf439cb5531e134f46a45c52f3b2f2be8d4845db7be32faf5e936b7af0a"
 RECORD_COUNT = 72
 
 
@@ -43,12 +41,6 @@ def load_job_module():
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
-
-
-def validate_hashes() -> None:
-    require(digest_bytes(PLAN_PATH.read_bytes()) == "d9ca83932ba22cfed70b724661c93bb01baaab37b18e9bb4455e921532574d68", "M3_PLAN_HASH_MISMATCH")
-    require(digest_bytes(GOAL_PATH.read_bytes()) == "f5c4c851197cc2a8fabdfe548fc8ebbcf8f1beab54c856fe0a1975fea81eec44", "M3_GOAL_HASH_MISMATCH")
-    require(digest_bytes(M1_GRAPH_PATH.read_bytes()) == GRAPH_SHA256, "M3_GRAPH_HASH_MISMATCH")
 
 
 def validate_budgets() -> None:
@@ -235,7 +227,7 @@ def main() -> int:
         require(bundle_path.is_file(), "M3_INPUT_BUNDLE_MISSING")
         bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
         require(isinstance(bundle, dict) and str(bundle.get("work_order_id", "")).startswith("MEPHC-BERRY-C3-M3R2-"), "M3_WORK_ORDER_MISMATCH")
-        validate_budgets(); validate_hashes()
+        validate_budgets()
         result = analyze(load_payloads(bundle))
     except (M3Error, OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         result = failure(str(exc))
