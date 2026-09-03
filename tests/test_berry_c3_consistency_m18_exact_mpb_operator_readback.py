@@ -64,6 +64,7 @@ def test_capture_one_runs_one_parity_and_reads_six_bands_without_provider():
     assert record["record_id"].startswith("MEPHC-M18-READBACK-")
     assert record["frequencies_bands_1_to_6"] == list(np.linspace(0.1, 0.6, 6))
     assert record["D_field_availability_status"] == record["B_field_availability_status"] == "CAPTURED"
+    assert M18._fresh_energy(record).shape == (M18.VECTOR_LENGTH, M18.BANDS)
     assert solver.calls.count("run_parity") == 1
     assert all(not call.startswith("run") or call == "run_parity" for call in solver.calls)
 

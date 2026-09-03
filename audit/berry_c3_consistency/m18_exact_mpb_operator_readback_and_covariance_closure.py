@@ -199,7 +199,7 @@ def capture_one(solver: Any, reciprocal: Any, parity: Any, member: Mapping[str, 
         "epsilon_grid_sha256": hashlib.sha256(canonical(epsilon.tolist())).hexdigest(), "epsilon_grid": epsilon.tolist(),
         "fresh_e_fields_bands_1_to_6": _complex_encode(e_array.transpose(1, 2, 3, 0)), "fresh_h_fields_bands_1_to_6": _complex_encode(h_array.transpose(1, 2, 3, 0)),
         "fresh_d_fields_bands_1_to_6": _complex_encode(d_array.transpose(1, 2, 3, 0)) if d_array is not None else None, "fresh_b_fields_bands_1_to_6": _complex_encode(b_array.transpose(1, 2, 3, 0)) if b_array is not None else None,
-        "fresh_energy_vectors_bands_1_to_6": [[[float(value.real), float(value.imag)] for value in energy[:, band]] for band in range(BANDS)], "source_commit": os.environ.get("MEPHC_SOURCE_COMMIT"), "forbidden_solver_call_count": 0,
+        "fresh_energy_vectors_bands_1_to_6": [[[float(value.real), float(value.imag)] for value in energy[band]] for band in range(BANDS)], "source_commit": os.environ.get("MEPHC_SOURCE_COMMIT"), "forbidden_solver_call_count": 0,
     }
     field_digest = hashlib.sha256(e_array.tobytes() + h_array.tobytes() + (d_array.tobytes() if d_array is not None else b"") + (b_array.tobytes() if b_array is not None else b"")).hexdigest()
     record["readback_field_sha256"] = field_digest
