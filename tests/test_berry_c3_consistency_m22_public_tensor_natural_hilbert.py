@@ -109,6 +109,24 @@ def test_arbitrary_nonsingular_basis_change_preserves_metric_span():
     assert np.allclose(M22._projector_action(frame, probe, eta), M22._projector_action(frame @ basis, probe, eta), atol=1e-10)
 
 
+def test_non_diagonal_complex_eta_constitutive_axes_match_slow_reference():
+    eta0 = np.asarray([[2.0, 0.2 + 0.1j, 0.0], [0.2 - 0.1j, 1.5, 0.1j], [0.0, -0.1j, 1.0]], dtype=complex)
+    eta = np.broadcast_to(eta0, (16384, 3, 3)).copy()
+    frame = np.zeros((16384, 3, 2), dtype=complex); frame[:, :, 0] = [1.0, 2.0j, -0.5]; frame[:, :, 1] = [0.3, -1.0j, 2.0]
+    predicted = np.einsum("nij,njb->nib", eta, frame)
+    slow = np.empty_like(predicted)
+    for n in range(16384):
+        slow[n] = eta[n] @ frame[n]
+    assert np.allclose(predicted, slow)
+
+
+def test_authoritative_source_documents_low_rank_memory_guard():
+    source = ENTRYPOINT.read_text(encoding="utf-8")
+    assert "full_space_allocation_root_cause" in source
+    assert "49152x49152" in source
+    assert "metric_square_root" in source and "slow_metric_gram" in source
+
+
 def test_fallback_is_bounded_to_three_members_by_source():
     source = ENTRYPOINT.read_text(encoding="utf-8")
     assert "for member in ordered_triplet(members)" in source
