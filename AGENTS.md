@@ -57,6 +57,33 @@ idle. After successful delivery, remain idle until the supervisor responds.
 Do not create or fork another task. A definite task-message transport failure
 may be retried once; only a second failure may be reported to the user.
 
+`TERMINATED` is only a workflow/transport state. It is not evidence that the
+scientific goal succeeded or became impossible. A terminal handoff must also
+contain this compact termination review:
+
+```text
+GOAL_OUTCOME=<SUCCEEDED|BLOCKED|CONTRADICTED>
+COMPLETION_EVIDENCE=<direct evidence for the claimed outcome>
+ATTEMPTS_COMPLETED=<scientific attempts and results, not routine bookkeeping>
+UNRESOLVED_QUESTIONS=<remaining scientific uncertainties>
+ALTERNATIVE_EXPLANATIONS=<plausible competing causes>
+CHEAPEST_NEXT_TEST=<least-cost discriminating test, or NONE with reason>
+COUNTEREVIDENCE_SEARCH=<what was checked that could falsify stopping>
+WHY_STOP_IS_SUFFICIENT=<why no useful authorized continuation remains>
+```
+
+The supervisor must independently challenge the proposed termination before
+approving idle. Check the original goal and completion criteria, inspect the
+decisive numerical result rather than only `state`, and look for at least one
+plausible alternative explanation or cheaper discriminating test. Reject the
+termination and resume the same Luna when the conclusion depends on an
+untested convention, representation, gauge, coordinate transform, parser, or
+other model assumption. Approve a blocked stop only when the report shows
+that bounded attempts were made, remaining alternatives were considered, and
+no safe useful next action exists. For success, verify the stated completion
+evidence. Never describe a negative result as final merely because Chat or
+Thin Flow returned `TERMINATED`.
+
 The returned state is authoritative. Never escalate while the flow reports
 `READY`: `READY` with no job/run proves expensive work was not started, even
 if an earlier `execute` client call was interrupted, so invoke `execute` again.

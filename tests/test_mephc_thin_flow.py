@@ -100,6 +100,16 @@ def test_agents_require_supervisor_handoff_before_every_idle_transition():
     assert "Before ending any Luna turn or becoming idle for any reason" in policy
     assert "MEPHC-IDLE-HANDOFF:<work-order-id-or-null>:<state>" in policy
     assert "The supervisor decides whether stopping is legitimate" in policy
+    assert "`TERMINATED` is only a workflow/transport state" in policy
+    for field in (
+        "GOAL_OUTCOME", "COMPLETION_EVIDENCE", "ATTEMPTS_COMPLETED",
+        "UNRESOLVED_QUESTIONS", "ALTERNATIVE_EXPLANATIONS",
+        "CHEAPEST_NEXT_TEST", "COUNTEREVIDENCE_SEARCH",
+        "WHY_STOP_IS_SUFFICIENT",
+    ):
+        assert field in policy
+    assert "independently challenge the proposed termination" in policy
+    assert "untested convention, representation, gauge, coordinate transform" in policy
 
 
 def test_ready_without_job_authoritatively_means_not_started(monkeypatch, tmp_path: Path):
