@@ -159,7 +159,7 @@ def _combined(m12_records: Sequence[Mapping[str, Any]], m13_records: Sequence[Ma
 
 
 def _edges(records: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
-    ordered = sorted(records, key=lambda item: int(item["member_index"])); basis = triangular_reciprocal_basis(); edges = []
+    ordered = sorted(records, key=lambda item: int(item["member_index"])); basis = lattice_automorphisms()["reciprocal_basis"]; edges = []
     for index in range(3):
         source, target = np.asarray(ordered[index]["coordinate"], dtype=float), np.asarray(ordered[(index + 1) % 3]["coordinate"], dtype=float); rotated = R2 @ source; nf = np.linalg.solve(basis, rotated - target); n = np.rint(nf).astype(int); residual = float(np.linalg.norm(rotated - target - basis @ n)); require(np.allclose(nf, n, rtol=0.0, atol=1e-12), "M15_EDGE_FOLDING_NONINTEGER")
         edges.append({"source_k": source.tolist(), "target_k": target.tolist(), "rotated_source_k": rotated.tolist(), "folding": n.tolist(), "G": (basis @ n).tolist(), "residual": residual})

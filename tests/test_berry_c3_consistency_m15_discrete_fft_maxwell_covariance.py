@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import importlib.util
+import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -51,3 +53,21 @@ def test_fft_conventions_are_explicit_and_solver_free():
     assert "ImmutableDatasetStore" not in source
     assert "provider.solve(" not in source
     assert "numpy fftn forward exp(-2pi*i*m.x)" in source
+
+
+def test_actual_child_entrypoint_emits_structured_result_without_generic_masking(tmp_path, monkeypatch):
+    bundle = tmp_path / "bundle.json"
+    output = tmp_path / "result.json"
+    counters = tmp_path / "counters.json"
+    bundle.write_text(json.dumps({"work_order_id": "MEPHC-BERRY-C3-M15R1-TEST-00000000"}), encoding="utf-8")
+    counters.write_text("{}", encoding="utf-8")
+    expected = {"schema": M15.RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0}
+    monkeypatch.setenv("MEPHC_INPUT_BUNDLE", str(bundle))
+    monkeypatch.setenv("MEPHC_RESULT_PATH", str(output))
+    monkeypatch.setenv("MEPHC_EXECUTION_COUNTERS_PATH", str(counters))
+    monkeypatch.setattr(M15, "read_dataset", lambda *_args: [])
+    monkeypatch.setattr(M15, "analyze", lambda *_args: expected)
+    assert M15.main() == 0
+    emitted = json.loads(output.read_text(encoding="utf-8"))
+    assert emitted == expected
+    assert emitted["status"] == "PASS"
