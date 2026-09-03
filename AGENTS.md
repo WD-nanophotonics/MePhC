@@ -1,5 +1,14 @@
 # MePhC Thin Flow
 
+## Direct local interactive mode
+
+When the user explicitly starts local work from VS Code, `studio.py`, or a
+Python file, treat it as direct interactive development. Use the pinned Conda
+`mp` interpreter and the canonical editable source in this Windows sandbox.
+Do not invoke Thin Flow, Courier, or Luna unless the user explicitly asks to
+enter the automatic workflow. Local preview, calculation, plotting, testing,
+and debugging need no relay approval.
+
 ## Workspace invariants
 
 `C:\Users\icywo\PycharmProjects\MePhC-Windows` on local branch `sandbox` is

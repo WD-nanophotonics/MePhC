@@ -3,10 +3,13 @@ from __future__ import annotations
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-from matplotlib.collections import LineCollection
+from matplotlib.collections import LineCollection, PolyCollection
 from matplotlib.colors import Normalize
 import numpy as np
 from scipy.interpolate import griddata
+from scipy.spatial import ConvexHull, cKDTree
+from shapely.geometry import MultiPoint, Polygon as ShapelyPolygon
+from shapely.ops import unary_union, voronoi_diagram
 
 
 def _save_show_close(fig, save_path=None, show: bool = False, dpi: int = 100):
@@ -303,6 +306,73 @@ def _regular_grid_from_points(k_points, values, tolerance: float = 1e-10):
     return grid_x, grid_y, grid_z
 
 
+def _coalesce_scalar_samples(k_points, values, tolerance: float = 1e-10):
+    """Merge coordinate duplicates only when their scalar values agree."""
+    scale = 1.0 / float(tolerance)
+    unique_points = []
+    unique_values = []
+    positions = {}
+    for point, value in zip(k_points, values):
+        key = tuple(np.round(np.asarray(point, dtype=float) * scale).astype(np.int64))
+        if key in positions:
+            previous = unique_values[positions[key]]
+            if not np.isclose(previous, value, rtol=1e-9, atol=tolerance, equal_nan=True):
+                raise ValueError("Duplicate k-point coordinates contain conflicting scalar values.")
+            continue
+        positions[key] = len(unique_points)
+        unique_points.append(np.asarray(point, dtype=float))
+        unique_values.append(float(value))
+    return np.asarray(unique_points, dtype=float), np.asarray(unique_values, dtype=float)
+
+
+def sample_cell_polygons(k_points, domain_outline=None):
+    """Return disjoint Voronoi sample cells clipped to one physical domain."""
+    points = np.asarray(k_points, dtype=float)
+    if points.ndim != 2 or points.shape[1] != 2 or len(points) < 3:
+        raise ValueError("Sample-cell tiling requires at least three 2D k-points.")
+    if len(np.unique(np.round(points, 12), axis=0)) != len(points):
+        raise ValueError("Sample-cell tiling requires unique k-point coordinates.")
+    if domain_outline is None:
+        hull = ConvexHull(points)
+        domain = ShapelyPolygon(points[hull.vertices])
+    else:
+        outline = np.asarray(domain_outline, dtype=float)
+        if outline.ndim != 2 or outline.shape[1] != 2 or len(outline) < 3:
+            raise ValueError("domain_outline must have shape (N, 2) with N >= 3.")
+        domain = ShapelyPolygon(outline)
+    if not domain.is_valid or domain.area <= 0:
+        raise ValueError("domain_outline must define a valid non-empty polygon.")
+
+    diagram = voronoi_diagram(MultiPoint(points), envelope=domain.envelope, edges=False)
+    tree = cKDTree(points)
+    cells = []
+    indices = []
+    covered_sites = set()
+    for polygon in diagram.geoms:
+        representative = polygon.representative_point()
+        index = int(tree.query((representative.x, representative.y))[1])
+        clipped = polygon.intersection(domain)
+        if clipped.is_empty:
+            continue
+        pieces = [clipped] if clipped.geom_type == "Polygon" else list(getattr(clipped, "geoms", ()))
+        for piece in pieces:
+            if piece.geom_type != "Polygon" or piece.area <= 0:
+                continue
+            cells.append(np.asarray(piece.exterior.coords[:-1], dtype=float))
+            indices.append(index)
+            covered_sites.add(index)
+    if len(covered_sites) != len(points):
+        raise ValueError("Some k-points do not have a sample cell inside the plotting domain.")
+    union = unary_union([ShapelyPolygon(vertices) for vertices in cells])
+    tolerance = 1e-9 * max(1.0, float(domain.area))
+    total_area = sum(float(ShapelyPolygon(vertices).area) for vertices in cells)
+    if abs(total_area - float(union.area)) > tolerance:
+        raise ValueError("Sample cells overlap inside the plotting domain.")
+    if abs(float(union.area) - float(domain.area)) > tolerance:
+        raise ValueError("Sample cells do not cover the complete plotting domain.")
+    return cells, np.asarray(indices, dtype=int), domain
+
+
 def plot_scalar_field(
     k_points,
     values,
@@ -326,14 +396,18 @@ def plot_scalar_field(
     colorbar: bool = True,
     colorbar_kwargs: dict | None = None,
     shading: str = "auto",
+    render_mode: str = "linear",
+    domain_outline=None,
 ):
     """Plot scalar values over 2D Cartesian reciprocal space.
 
-    A complete regular grid is reshaped directly, with no Delaunay or scattered
-    interpolation. Only incomplete input uses SciPy ``griddata``; then
-    ``mesh_size`` controls output pixels and ``interpolation`` selects the
-    method. ``vmin``/``vmax`` set colormap limits, while ``colorbar_kwargs``
-    controls colorbar appearance.
+    ``render_mode='sample_cells'`` displays one disjoint Voronoi cell per
+    original sample and clips the cells to ``domain_outline``. A complete
+    regular grid is reshaped directly for the other modes. For scattered input,
+    ``render_mode='native'`` renders the original samples on their Delaunay
+    triangles without creating a regular display grid. ``render_mode='linear'``
+    uses SciPy ``griddata``; only then does ``mesh_size`` control output pixels.
+    ``vmin``/``vmax`` set colormap limits.
     """
     k_points = np.asarray(k_points, dtype=float)
     values = np.asarray(values, dtype=float)
@@ -344,18 +418,46 @@ def plot_scalar_field(
     if len(k_points) < 3:
         raise ValueError("At least three k-points are required to plot a scalar field.")
 
+    if render_mode not in {"sample_cells", "native", "linear"}:
+        raise ValueError("render_mode must be 'sample_cells', 'native', or 'linear'")
+
+    k_points, values = _coalesce_scalar_samples(k_points, values)
+
     regular_grid = _regular_grid_from_points(k_points, values)
-    if regular_grid is None:
+    if regular_grid is None and render_mode == "linear":
         grid_x, grid_y = np.meshgrid(
             np.linspace(k_points[:, 0].min(), k_points[:, 0].max(), int(mesh_size)),
             np.linspace(k_points[:, 1].min(), k_points[:, 1].max(), int(mesh_size)),
         )
         grid_z = griddata(k_points, values, (grid_x, grid_y), method=interpolation)
-    else:
+    elif regular_grid is not None:
         grid_x, grid_y, grid_z = regular_grid
 
     fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
-    image = ax.pcolormesh(grid_x, grid_y, grid_z, shading=shading, cmap=cmap, vmin=vmin, vmax=vmax)
+    if render_mode == "sample_cells":
+        polygons, value_indices, domain = sample_cell_polygons(k_points, domain_outline)
+        norm = Normalize(vmin=vmin, vmax=vmax)
+        norm.autoscale_None(values[value_indices])
+        image = PolyCollection(
+            polygons,
+            array=values[value_indices],
+            cmap=cmap,
+            norm=norm,
+            edgecolors="none",
+            linewidths=0.0,
+            antialiased=False,
+        )
+        ax.add_collection(image)
+        min_x, min_y, max_x, max_y = domain.bounds
+        ax.set_xlim(min_x, max_x)
+        ax.set_ylim(min_y, max_y)
+    elif regular_grid is None and render_mode == "native":
+        image = ax.tripcolor(
+            k_points[:, 0], k_points[:, 1], values,
+            shading="flat", cmap=cmap, vmin=vmin, vmax=vmax,
+        )
+    else:
+        image = ax.pcolormesh(grid_x, grid_y, grid_z, shading=shading, cmap=cmap, vmin=vmin, vmax=vmax)
     _add_colorbar(fig, ax, image, colorbar=colorbar, colorbar_label=colorbar_label, colorbar_kwargs=colorbar_kwargs)
     ax.set_aspect("equal", adjustable="box")
     _apply_axes_style(
