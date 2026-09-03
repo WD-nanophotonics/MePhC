@@ -1,0 +1,56 @@
+{
+  "schema": "mephc-berry-c3-m1-manifest-v1",
+  "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+  "work_order_id": "MEPHC-BERRY-C3-M1R1-SOLVER-FREE-BASELINE-DIAGNOSTIC-REQUEST-GRAPH-RECOVERY-20260903-003",
+  "source_commit": "8c70adabcad979d96e56156634c8348da076d8e8",
+  "base_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "publication_rule": "Thin Flow records the final sandbox commit containing this manifest; origin/main is unchanged.",
+  "allowed_writes": [
+    "audit/berry_c3_consistency/m1_frozen_record_inventory.json",
+    "audit/berry_c3_consistency/m1_c3_orbit_baseline.json",
+    "audit/berry_c3_consistency/m1_solver_free_diagnostic_harness.py",
+    "audit/berry_c3_consistency/m1_native_request_graph.json",
+    "audit/berry_c3_consistency/m1_manifest.json",
+    "tests/test_berry_c3_consistency_m1.py"
+  ],
+  "artifact_hashes": {
+    "audit/berry_c3_consistency/m1_frozen_record_inventory.json": "22493ad5c0709582d5b24a8699428b03711ec0397dcbb0e362aa2593a313f4a4",
+    "audit/berry_c3_consistency/m1_c3_orbit_baseline.json": "554050f133b4c286ca072796f7c548506d471e1cfc9a8ab6884bceff8e3aa899",
+    "audit/berry_c3_consistency/m1_solver_free_diagnostic_harness.py": "2b4c5354bcf074b9dbd39b365db0f28819632c1e0217b200972adff708c87222",
+    "audit/berry_c3_consistency/m1_native_request_graph.json": "1841b2484be329e94b9a3e3a8fa2134be87b9e0d26fd563ba9b2c330088581eb",
+    "audit/berry_c3_consistency/m1_manifest.json": "SELF_HASH_EXCLUDED_FROM_OWN_HASH",
+    "tests/test_berry_c3_consistency_m1.py": "7d69a955a13532bf462ab40692ac92ac7d790a30c2091fbf17e4de78fc884cae"
+  },
+  "contract_evidence_hashes": {
+    "audit/berry_c3_consistency/PLAN.md": "d9ca83932ba22cfed70b724661c93bb01baaab37b18e9bb4455e921532574d68",
+    "audit/berry_c3_consistency/goal_contract_v1.json": "f5c4c851197cc2a8fabdfe548fc8ebbcf8f1beab54c856fe0a1975fea81eec44"
+  },
+  "manifest_hash_definition": "SHA-256 of canonical manifest content with artifact_hashes.m1_manifest.json excluded; self-reference is intentionally excluded.",
+  "inventory_record_count": 1,
+  "complete_c3_orbit_count": 0,
+  "incomplete_c3_orbit_count": 1,
+  "future_request_graph_node_count": 24,
+  "future_expanded_request_count": 72,
+  "future_independent_repeat_count": 3,
+  "budgets": {
+    "native": 0,
+    "provider": 0,
+    "solver": 0,
+    "dataset": 0
+  },
+  "actual_counts": {
+    "native": 0,
+    "provider": 0,
+    "solver": 0,
+    "dataset": 0
+  },
+  "explicit_tests": [
+    "tests/test_berry_c3_consistency_m1.py",
+    "tests/test_mephc_thin_flow.py"
+  ],
+  "compile_check": "audit/berry_c3_consistency/m1_solver_free_diagnostic_harness.py",
+  "science_execution": "NONE",
+  "frozen_payload_read": false,
+  "absence_is_not_zero": true,
+  "status": "READY_FOR_THIN_FLOW_EXECUTION"
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "mephc-berry-c3-m1-frozen-record-inventory-v1",
+  "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+  "inventory_policy": "Read-only inventory of authoritative scalar metadata; frozen payload bytes and durable state were not opened.",
+  "records": [
+    {
+      "record_id": "TRILATT-FROZEN-BC-LATEST",
+      "source_path": "/home/icy/TriLatt/data/_tmp/bc_latest.pkl",
+      "source_sha256": "d602a09400000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 16627,
+      "evidence_kind": "FROZEN_OBSERVATION_METADATA_ONLY",
+      "read_only": true,
+      "geometry": {
+        "a400": 400,
+        "r1": 80,
+        "r2": 75,
+        "n1": 16,
+        "n2": 16,
+        "theta_degrees": 120,
+        "n_eff": 2.7,
+        "height": 100
+      },
+      "solver": {
+        "polarization": "TE",
+        "resolution": 128,
+        "step": 0.001,
+        "grid_n": 36,
+        "num_bands": 2,
+        "band_index_zero_based": 1,
+        "symmetry_domain": "raw_hbz"
+      },
+      "sampling": {
+        "k_center": [
+          0.6666666666666666,
+          0.0
+        ],
+        "orbit_seed_offset_grid_units": 7,
+        "grid_denominator": 36,
+        "rotation_degrees": [
+          0,
+          120,
+          240
+        ],
+        "priority": 7,
+        "independent_repeat_count": 3
+      },
+      "observed_orbit_values_approx": [
+        -257.4838,
+        193.9787,
+        46.92
+      ],
+      "record_content_read": false,
+      "provenance_status": "EXPLICIT_CONTRACT_METADATA_ONLY",
+      "missing_fields": [
+        "member coordinates",
+        "per-member scientific identities",
+        "qualification certificates",
+        "per-member raw observables"
+      ]
+    }
+  ],
+  "inventory_record_count": 1,
+  "complete_member_evidence": false,
+  "absence_is_not_zero": true
+}

@@ -1,0 +1,782 @@
+{
+  "authoritative_frozen_record_reuse": "none for exact M2 identities",
+  "expanded_future_request_count": 72,
+  "future_native_invocation_count": 72,
+  "future_provider_request_count": 72,
+  "future_solver_execution_count": 72,
+  "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+  "graph_sha256": "0d461bf439cb5531e134f46a45c52f3b2f2be8d4845db7be32faf5e936b7af0a",
+  "nodes": [
+    {
+      "request_key_sha256": "2e796fd77fab503463eacfb16895ef0ad6424439458c9c183f52e73b642dbff1",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G16",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 0,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.4722222222222222,
+          0.0
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": false,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "lab_fixed",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "e853b01c4e4064c982bd3d70ee7e4b436cf106e987ad1685751e3eee1c059836",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G16",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 1,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.7638888888888888,
+          -0.16839382851364085
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": false,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "lab_fixed",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "762c20329da8636f2b343c96259553c4136a06d81f017914c4f91a994bea129d",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G16",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 2,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.763888888888889,
+          0.16839382851364076
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": false,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "lab_fixed",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "10658a74e60f691884745d942fa9ab7e5944c40cfd789e9eb0520ed67e19ad77",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G16",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 0,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.4722222222222222,
+          0.0
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": false,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "c3_covariant",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "2824abca3899df6519f5862f4076a5894c6ac15b28b0ed19a99862340f94a8a8",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G16",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 1,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.7638888888888888,
+          -0.16839382851364085
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": false,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "c3_covariant",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "b9937e5be063aa29424fa5941b0948bb7b4189e98f096b37aecacc85fdb6377a",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G16",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 2,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.763888888888889,
+          0.16839382851364076
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": false,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "c3_covariant",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "f5aa1ebc2a1af1b8e8c761d48e67cc2533f131997a08fb512deba9737a507bac",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G16",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 0,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.4722222222222222,
+          0.0
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": true,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "lab_fixed",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "9eef544cb67aea178e0e6eeb4152fb77473ca937bc428b004f45837f1a1df95c",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G16",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 1,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.7638888888888888,
+          -0.16839382851364085
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": true,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "lab_fixed",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "d98b03f0aa63a41398c87b38577b1f976567e1ea37aefbd6b85f4335ce427686",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G16",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 2,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.763888888888889,
+          0.16839382851364076
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": true,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "lab_fixed",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "eb582db8ea16d4b761f53cc6c4068c13e8357bb6bc6cbafc0c674c868d2f3080",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G16",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 0,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.4722222222222222,
+          0.0
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": true,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "c3_covariant",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "eaab1eedbbdcaf5169f0094de5d9dd20651091eb288995138a3d9fb90b4db3eb",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G16",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 1,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.7638888888888888,
+          -0.16839382851364085
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": true,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "c3_covariant",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "ed51baa9e8cae66e31ac072b898688cb02ca1cf5e7f36ceeee532797abcb1992",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G16",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 2,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.763888888888889,
+          0.16839382851364076
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": true,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "c3_covariant",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "bd99f8139a5b868931888250baf3cdd5eec717a14d30859f44a1d314d59e2d71",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G15",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 0,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.4722222222222222,
+          0.0
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": false,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "lab_fixed",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "783a93256739a8dc2872f57fc0c6cafc94a0cb955df18fc28b230310698daa38",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G15",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 1,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.7638888888888888,
+          -0.16839382851364085
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": false,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "lab_fixed",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "6272a056d39a1e581173feeaa0379fe923d9a5b5748acae606fc4067f40bbd04",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G15",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 2,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.763888888888889,
+          0.16839382851364076
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": false,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "lab_fixed",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "7442662666a4ded14fbeae83f7ba3d5ed4919dff83566e737b413ad68b990516",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G15",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 0,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.4722222222222222,
+          0.0
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": false,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "c3_covariant",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "8271748494e42dab2e5364a0b40cf4a93ee6e438b51ff4a450a2cf241ca382da",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G15",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 1,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.7638888888888888,
+          -0.16839382851364085
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": false,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "c3_covariant",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "cbcf72f319c395cc9c0745f35e7ef0a7dd0a8aa376085853dca12d30e615f183",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G15",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 2,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.763888888888889,
+          0.16839382851364076
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": false,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "c3_covariant",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "942d76e9f6c664e1b275d6eaa56001edcb620abf3a98f132b2b83262fff3094b",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G15",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 0,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.4722222222222222,
+          0.0
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": true,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "lab_fixed",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "563b332c63821bb013043c22d00800b99a96500b47903f08a6194c05885c2908",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G15",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 1,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.7638888888888888,
+          -0.16839382851364085
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": true,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "lab_fixed",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "ce95caa5165bfaeccd5e1cbdaaeb0a698c565e6ae59cd4e1e3ad6b3c7341b465",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G15",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 2,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.763888888888889,
+          0.16839382851364076
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": true,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "lab_fixed",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "23a91ffde785dd913095ece2b35426950821287ec094a83b92fe5cfbb33e2266",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G15",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 0,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.4722222222222222,
+          0.0
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": true,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "c3_covariant",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "fd45a578b0e5a46db39395d79e3d75081c009cfd4b2a1271537056c23977942c",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G15",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 1,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.7638888888888888,
+          -0.16839382851364085
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": true,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "c3_covariant",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    },
+    {
+      "request_key_sha256": "bc088e07fcb0fe5a86806c1b3ba974d05bf41487af8bb2e596a4c143a940d6cc",
+      "semantic_identity": {
+        "band_target": {
+          "band_index_zero_based": 1,
+          "num_bands": 4,
+          "rank1_qualification": "withheld_until_evidence"
+        },
+        "domain_id": "raw_hbz",
+        "geometry_id": "G15",
+        "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+        "independent_repeat_count": 3,
+        "member_index": 2,
+        "milestone": "M2",
+        "orbit_id": "M7",
+        "public_coordinate": [
+          0.763888888888889,
+          0.16839382851364076
+        ],
+        "rationale": "M1 has no authoritative reusable record for this exact identity",
+        "role": "M7_ORBIT_MEMBER",
+        "solver_configuration": {
+          "deterministic": true,
+          "mesh_size": 3,
+          "polarization": "TE",
+          "resolution": 128,
+          "stencil": "c3_covariant",
+          "step": 0.001,
+          "tolerance": 1e-07
+        }
+      }
+    }
+  ],
+  "repeat_policy": "three independent repeats per semantic node",
+  "schema": "mephc-berry-c3-m1-content-addressed-request-graph-v1",
+  "self_hash_excluded": true
+}

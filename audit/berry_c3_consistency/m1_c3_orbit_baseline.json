@@ -1,0 +1,56 @@
+{
+  "schema": "mephc-berry-c3-m1-orbit-baseline-v1",
+  "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+  "orbit_id": "M7",
+  "center": [
+    0.6666666666666666,
+    0.0
+  ],
+  "seed": [
+    0.4722222222222222,
+    0.0
+  ],
+  "action": {
+    "rotation_degrees": [
+      0,
+      120,
+      240
+    ],
+    "matrix_120_degrees": [
+      [-0.4999999999999998, -0.8660254037844387],
+      [0.8660254037844387, -0.4999999999999998]
+    ],
+    "determinant": 0.9999999999999999,
+    "determinant_status": "PASS",
+    "c3_cubed_identity": true,
+    "pseudoscalar_rule": "preserve_sign_under_proper_C3"
+  },
+  "members": [
+    {
+      "member_index": 0,
+      "coordinate": [0.4722222222222222, 0.0],
+      "evidence_status": "MISSING_FROZEN_MEMBER_EVIDENCE"
+    },
+    {
+      "member_index": 1,
+      "coordinate": [0.7638888888888888, -0.16839382851364085],
+      "evidence_status": "MISSING_FROZEN_MEMBER_EVIDENCE"
+    },
+    {
+      "member_index": 2,
+      "coordinate": [0.763888888888889, 0.16839382851364076],
+      "evidence_status": "MISSING_FROZEN_MEMBER_EVIDENCE"
+    }
+  ],
+  "classification": "INCOMPLETE_EVIDENCE",
+  "coordinate_axis": "PASS_FOR_DECLARED_ACTION",
+  "scientific_identity_axis": "INCOMPLETE",
+  "qualification_axis": "INCOMPLETE",
+  "numerical_axis": "NOT_COMPARABLE",
+  "observed_frozen_summary": {
+    "values_approx": [-257.4838, 193.9787, 46.92],
+    "assigned_to_members": false
+  },
+  "no_scientific_symmetrization": true,
+  "no_absence_as_zero": true
+}
