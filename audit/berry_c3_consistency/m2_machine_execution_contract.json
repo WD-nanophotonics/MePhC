@@ -1,0 +1,51 @@
+{
+  "schema": "mephc-berry-c3-m2-machine-execution-contract-v1",
+  "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+  "milestone": "M2",
+  "source_entrypoint": "audit/berry_c3_consistency/m2_live_c3_acquisition_and_reduction.py",
+  "entrypoint_arguments": [],
+  "m1_source_commit": "56e2bd30fcdd1eccaeb8b9addecb27b7129a9e6c",
+  "m1_request_graph_sha256": "0d461bf439cb5531e134f46a45c52f3b2f2be8d4845db7be32faf5e936b7af0a",
+  "m1_graph_node_count": 24,
+  "reused_frozen_record_count": 0,
+  "future_live_request_count": 72,
+  "future_provider_budget": 72,
+  "future_solver_budget": 72,
+  "native_invocation_budget": 1,
+  "independent_repeat_count": 3,
+  "exact_request_authority": "verified M1 canonical semantic graph only",
+  "frozen_reuse_rule": "reuse only exact semantic identity match; current M1 inventory has no complete member identity",
+  "dataset_schema": "mephc-berry-c3-consistency-m2-live-record-dataset-v1",
+  "result_schema": "mephc-berry-c3-consistency-m2-live-c3-closure-v1",
+  "result_projection_contract": "audit/berry_c3_consistency/m2_compact_result_projection_contract.json",
+  "runtime_no_source_mutation": true,
+  "runtime_write_scope": "MEPHC_RESULT_PATH only",
+  "runtime_execution_rule": "verify plan, goal, M1 artifact hashes, graph hash, and every request key before the first provider execution",
+  "runtime_duplicate_rule": "execute each verified semantic node at most once per declared independent repeat index",
+  "runtime_failure_rule": "preserve exact request key and stage; never retry with changed parameters or create a replacement node",
+  "c3_rule": {
+    "rotation": "proper C3, determinant +1",
+    "pseudoscalar": "preserve Berry sign unless an explicit plan transformation applies",
+    "missing_or_unqualified": "fail closed; never assign numerical zero",
+    "threshold": "use only PLAN.md thresholds; otherwise report raw residuals and THRESHOLD_DEFERRED"
+  },
+  "plan_path": "audit/berry_c3_consistency/PLAN.md",
+  "goal_contract_path": "audit/berry_c3_consistency/goal_contract_v1.json",
+  "m1_artifact_paths": [
+    "audit/berry_c3_consistency/m1_frozen_record_inventory.json",
+    "audit/berry_c3_consistency/m1_c3_orbit_baseline.json",
+    "audit/berry_c3_consistency/m1_solver_free_diagnostic_harness.py",
+    "audit/berry_c3_consistency/m1_native_request_graph.json",
+    "audit/berry_c3_consistency/m1_manifest.json",
+    "tests/test_berry_c3_consistency_m1.py"
+  ],
+  "future_native_contract": "exactly one orchestration invocation; no additional Native authority",
+  "future_science_contract_required": true,
+  "m2p_actual_counts": {
+    "native": 0,
+    "provider": 0,
+    "solver": 0,
+    "dataset": 0
+  },
+  "status": "READY_FOR_SUCCESSOR_SCIENCE_WORK_ORDER"
+}

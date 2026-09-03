@@ -1,0 +1,57 @@
+{
+  "schema": "mephc-berry-c3-m2-compact-result-projection-contract-v1",
+  "result_schema": "mephc-berry-c3-consistency-m2-live-c3-closure-v1",
+  "projection_policy": "bounded top-level scalars only; raw arrays, payloads, and large provenance are excluded",
+  "success_required_fields": [
+    "schema",
+    "status",
+    "scientific_acceptance_status",
+    "m1_request_graph_sha256",
+    "graph_node_count",
+    "reused_frozen_record_count",
+    "future_live_request_count",
+    "provider_request_count",
+    "solver_execution_count",
+    "dataset_record_count",
+    "c3_complete_orbit_count",
+    "c3_incomplete_orbit_count",
+    "c3_unqualified_orbit_count",
+    "c3_inconsistent_orbit_count",
+    "failed_request_count",
+    "threshold_status",
+    "actual_counts"
+  ],
+  "failure_required_fields": [
+    "schema",
+    "status",
+    "scientific_acceptance_status",
+    "failed_stage",
+    "failure_code",
+    "exception_type",
+    "m1_request_graph_sha256",
+    "graph_node_count",
+    "reused_frozen_record_count",
+    "future_live_request_count",
+    "actual_counts"
+  ],
+  "bounded_value_rules": {
+    "status": "PASS|FAIL_CLOSED",
+    "threshold_status": "THRESHOLD_DEFERRED or a plan-defined threshold result",
+    "actual_counts": "native/provider/solver/dataset scalar counters only",
+    "failure_identity": "request key or orbit identifier may be included as one bounded string"
+  },
+  "forbidden_projection_fields": [
+    "raw_solver_arrays",
+    "complete_orbit_member_payloads",
+    "large_provenance_dictionaries",
+    "encoded_blobs",
+    "per-field_vectors"
+  ],
+  "validator": "tools/mephc-flow/wsl_native_exec.py::load_result",
+  "m2p_actual_counts": {
+    "native": 0,
+    "provider": 0,
+    "solver": 0,
+    "dataset": 0
+  }
+}

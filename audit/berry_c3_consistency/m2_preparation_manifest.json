@@ -1,0 +1,66 @@
+{
+  "schema": "mephc-berry-c3-m2-preparation-manifest-v1",
+  "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+  "work_order_id": "MEPHC-BERRY-C3-M2P-LIVE-EXECUTION-HARNESS-MACHINE-CONTRACT-AND-RECERTIFICATION-20260903-004",
+  "parent_work_order_id": "MEPHC-BERRY-C3-M1R1-SOLVER-FREE-BASELINE-DIAGNOSTIC-REQUEST-GRAPH-RECOVERY-20260903-003",
+  "source_commit_before_publication": "56e2bd30fcdd1eccaeb8b9addecb27b7129a9e6c",
+  "base_main_sha": "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5",
+  "final_source_commit_semantics": "Thin Flow publication commit containing all five M2P artifacts",
+  "allowed_writes": [
+    "audit/berry_c3_consistency/m2_live_c3_acquisition_and_reduction.py",
+    "audit/berry_c3_consistency/m2_machine_execution_contract.json",
+    "audit/berry_c3_consistency/m2_compact_result_projection_contract.json",
+    "audit/berry_c3_consistency/m2_preparation_manifest.json",
+    "tests/test_berry_c3_consistency_m2_preparation.py"
+  ],
+  "artifact_hashes": {
+    "audit/berry_c3_consistency/m2_live_c3_acquisition_and_reduction.py": "52c119308fd10a1cffc2a1108ab62a600389cfd365d7d4bc9e8d700cfeb50d24",
+    "audit/berry_c3_consistency/m2_machine_execution_contract.json": "70ff0317483d01b700d4446195b59fbb7ac8c27f195a0e89c15666a1e1a02f9c",
+    "audit/berry_c3_consistency/m2_compact_result_projection_contract.json": "93ea006d5955652deb74e2f61ebea5f823dc332a292443f4e98b65048f4cfb23",
+    "audit/berry_c3_consistency/m2_preparation_manifest.json": "SELF_HASH_EXCLUDED_FROM_OWN_HASH",
+    "tests/test_berry_c3_consistency_m2_preparation.py": "6daf8755ce772b443ef8ffe65d31296affa48c3e7811ee6b24965ef0306a2c83"
+  },
+  "m1_artifact_hashes": {
+    "m1_c3_orbit_baseline.json": "554050f133b4c286ca072796f7c548506d471e1cfc9a8ab6884bceff8e3aa899",
+    "m1_frozen_record_inventory.json": "22493ad5c0709582d5b24a8699428b03711ec0397dcbb0e362aa2593a313f4a4",
+    "m1_manifest.json": "df4eea3d4757165e01b43420ee3de2c365edd95f7655c2389aa7d88d9076e900",
+    "m1_native_request_graph.json": "1841b2484be329e94b9a3e3a8fa2134be87b9e0d26fd563ba9b2c330088581eb",
+    "m1_solver_free_diagnostic_harness.py": "2b4c5354bcf074b9dbd39b365db0f28819632c1e0217b200972adff708c87222",
+    "test_berry_c3_consistency_m1.py": "7d69a955a13532bf462ab40692ac92ac7d790a30c2091fbf17e4de78fc884cae"
+  },
+  "authority_hashes": {
+    "audit/berry_c3_consistency/PLAN.md": "d9ca83932ba22cfed70b724661c93bb01baaab37b18e9bb4455e921532574d68",
+    "audit/berry_c3_consistency/goal_contract_v1.json": "f5c4c851197cc2a8fabdfe548fc8ebbcf8f1beab54c856fe0a1975fea81eec44"
+  },
+  "m1_request_graph_sha256": "0d461bf439cb5531e134f46a45c52f3b2f2be8d4845db7be32faf5e936b7af0a",
+  "m1_graph_node_count": 24,
+  "reused_frozen_record_count": 0,
+  "future_live_request_count": 72,
+  "future_provider_budget": 72,
+  "future_solver_budget": 72,
+  "future_native_invocation_count": 1,
+  "dataset_schema": "mephc-berry-c3-consistency-m2-live-record-dataset-v1",
+  "result_schema": "mephc-berry-c3-consistency-m2-live-c3-closure-v1",
+  "runtime_no_source_mutation": true,
+  "declared_tests": [
+    "tests/test_berry_c3_consistency_m2_preparation.py",
+    "tests/test_berry_c3_consistency_m1.py",
+    "tests/test_mephc_thin_flow.py"
+  ],
+  "compile_target": "audit/berry_c3_consistency/m2_live_c3_acquisition_and_reduction.py",
+  "m2p_budgets": {
+    "native": 0,
+    "provider": 0,
+    "solver": 0,
+    "dataset": 0
+  },
+  "m2p_actual_counts": {
+    "native": 0,
+    "provider": 0,
+    "solver": 0,
+    "dataset": 0
+  },
+  "science_execution": "NONE",
+  "status": "READY_FOR_THIN_FLOW_EXECUTION",
+  "manifest_hash_definition": "Self hash is excluded to avoid a circular commit hash; every other declared artifact hash is content-addressed."
+}
