@@ -2,7 +2,10 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
+import subprocess
+import sys
 
 import numpy as np
 
@@ -52,3 +55,13 @@ def test_m9_has_no_expensive_execution_or_fit_path():
     assert "import meep" not in source
     assert "lstsq" not in source
     assert "U(2)" not in source
+
+
+def test_actual_child_entry_emits_structured_result_on_bounded_input_failure(tmp_path):
+    result_path = tmp_path / "m9-result.json"
+    completed = subprocess.run([sys.executable, str(ENTRYPOINT)], env={"MEPHC_RESULT_PATH": str(result_path)}, capture_output=True, text=True, check=False)
+    assert completed.returncode == 0
+    result = json.loads(result_path.read_text(encoding="utf-8"))
+    assert result["schema"] == M9.RESULT_SCHEMA
+    assert result["status"] == "FAIL_CLOSED"
+    assert "failure_code" in result

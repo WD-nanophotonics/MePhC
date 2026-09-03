@@ -110,13 +110,13 @@ def decode_frame(payload: Any) -> np.ndarray:
     return np.column_stack([np.asarray([complex(pair[0], pair[1]) for pair in vector], dtype=np.complex128) for vector in payload])
 
 
-def projector(frame: Any) -> np.ndarray:
-    matrix = np.asarray(frame, dtype=np.complex128)
-    return matrix @ np.linalg.pinv(matrix.conj().T @ matrix) @ matrix.conj().T
-
-
 def projector_distance(left: Any, right: Any) -> float:
-    return float(np.linalg.norm(np.asarray(left) - np.asarray(right), ord="fro"))
+    """Evaluate ||P_left-P_right||_F without materializing a huge projector."""
+    left_q, _ = np.linalg.qr(np.asarray(left, dtype=np.complex128), mode="reduced")
+    right_q, _ = np.linalg.qr(np.asarray(right, dtype=np.complex128), mode="reduced")
+    rank_left, rank_right = left_q.shape[1], right_q.shape[1]
+    overlap_norm_sq = float(np.linalg.norm(left_q.conj().T @ right_q, ord="fro") ** 2)
+    return float(math.sqrt(max(0.0, rank_left + rank_right - 2.0 * overlap_norm_sq)))
 
 
 def rank2_metrics(left: Any, right: Any) -> dict[str, float]:
@@ -153,7 +153,7 @@ def triplet_analysis(records: Sequence[Mapping[str, Any]], shape: Sequence[int],
     neg = [apply_energy_frame(frame, shape, inverse_direction, R3.T) for frame in frames]
     auth_metrics = [rank2_metrics(auth[i], frames[(i + 1) % 3]) for i in range(3)]
     neg_metrics = [rank2_metrics(neg[i], frames[(i + 1) % 3]) for i in range(3)]
-    covariance_failures = sum(projector_distance(projector(frames[(i + 1) % 3]), projector(auth[i])) > 0.0 for i in range(3))
+    covariance_failures = sum(projector_distance(frames[(i + 1) % 3], auth[i]) > 0.0 for i in range(3))
     return {"authoritative": auth_metrics, "negative": neg_metrics, "minimum": min(item["minimum_overlap_singular_value"] for item in auth_metrics), "angle": max(item["maximum_principal_angle"] for item in auth_metrics), "distance": max(item["maximum_projector_distance"] for item in auth_metrics), "negative_minimum": min(item["minimum_overlap_singular_value"] for item in neg_metrics), "negative_angle": max(item["maximum_principal_angle"] for item in neg_metrics), "negative_distance": max(item["maximum_projector_distance"] for item in neg_metrics), "covariance_failures": covariance_failures}
 
 
@@ -170,7 +170,7 @@ def all_m4_analysis(records: Sequence[Mapping[str, Any]], shape: Sequence[int], 
         transformed = [apply_energy_frame(frame, shape, authoritative, R3) for frame in frames]
         edge = [rank2_metrics(transformed[i], frames[(i + 1) % 3]) for i in range(3)]
         singulars.extend(item["minimum_overlap_singular_value"] for item in edge); angles.extend(item["maximum_principal_angle"] for item in edge); distances.extend(item["maximum_projector_distance"] for item in edge)
-        local_failures = sum(projector_distance(projector(frames[(i + 1) % 3]), projector(transformed[i])) > 0.0 for i in range(3))
+        local_failures = sum(projector_distance(frames[(i + 1) % 3], transformed[i]) > 0.0 for i in range(3))
         failures += local_failures
         triplets.append({"geometry_id": key[0], "deterministic": key[1], "frame_convention": key[2], "full_transformed_rank2_minimum_overlap_singular_value": min(item["minimum_overlap_singular_value"] for item in edge), "full_transformed_rank2_maximum_principal_angle": max(item["maximum_principal_angle"] for item in edge), "full_transformed_rank2_maximum_projector_distance": max(item["maximum_projector_distance"] for item in edge), "projector_covariance_failure_count": local_failures})
     return {"triplets": triplets, "minimum": min(singulars), "angle": max(angles), "distance": max(distances), "failures": failures}
@@ -196,10 +196,10 @@ def main() -> int:
         authoritative = build_index_map(shape, action)
         inverse_direction = build_index_map(shape, action @ action)
         synthetic = direction_sensitive_synthetic_check(shape, authoritative, inverse_direction)
-        canonical = triplet_analysis(m8, shape, authoritative, inverse_direction)
+        canonical_analysis = triplet_analysis(m8, shape, authoritative, inverse_direction)
         all8 = all_m4_analysis(m4, shape, authoritative)
         convention = maxwell_covariance_convention()
-        result = {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "source_m4_dataset_id": M4_DATASET_ID, "source_m8_dataset_id": M8_DATASET_ID, "c3_triplet_count": 8, **convention, "pullback_orientation_status": "CONSISTENT_WITH_MAXWELL_COVARIANCE", "c3_operator_unitarity_residual": 0.0, "c3_operator_cubed_residual": max(synthetic["authoritative_scalar_c3_residual"], float(np.finfo(float).eps)), "canonical_authoritative_rank2_minimum_overlap_singular_value": canonical["minimum"], "canonical_authoritative_rank2_maximum_principal_angle": canonical["angle"], "canonical_authoritative_rank2_maximum_projector_distance": canonical["distance"], "canonical_inverse_negative_control_minimum_overlap_singular_value": canonical["negative_minimum"], "canonical_inverse_negative_control_maximum_principal_angle": canonical["negative_angle"], "canonical_inverse_negative_control_maximum_projector_distance": canonical["negative_distance"], "all8_authoritative_rank2_minimum_overlap_singular_value": all8["minimum"], "all8_authoritative_rank2_maximum_principal_angle": all8["angle"], "all8_authoritative_rank2_maximum_projector_distance": all8["distance"], "full_transformed_c3_subspace_covariance_failure_count": all8["failures"], "spectral_c3_unordered_pair_residual_max": 4.838929056782959e-06, "rank2_covariance_interpretation": "RANK2_SUBSPACE_COVARIANCE_REJECTED", "next_science_decision": "STOP_RANK2_AND_AUDIT_MAXWELL_STATE_IDENTITY_OR_PROVIDER_EXTRACTION", "minimal_next_live_state_count": 0, "runtime_spatial_map_status": "RECONSTRUCTED_AND_VALIDATED", "runtime_spatial_map_transferability_status": "TRANSFERABLE_BY_SHARED_TRIANGULAR_BAND_GRID_CONSTRUCTION", "synthetic_direction_audit": synthetic, "all8_triplets": all8["triplets"], "source_commit_used": os.environ.get("MEPHC_SOURCE_COMMIT"), "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "post_native_checkout_unchanged": True}
+        result = {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "source_m4_dataset_id": M4_DATASET_ID, "source_m8_dataset_id": M8_DATASET_ID, "c3_triplet_count": 8, **convention, "pullback_orientation_status": "CONSISTENT_WITH_MAXWELL_COVARIANCE", "c3_operator_unitarity_residual": 0.0, "c3_operator_cubed_residual": max(synthetic["authoritative_scalar_c3_residual"], float(np.finfo(float).eps)), "canonical_authoritative_rank2_minimum_overlap_singular_value": canonical_analysis["minimum"], "canonical_authoritative_rank2_maximum_principal_angle": canonical_analysis["angle"], "canonical_authoritative_rank2_maximum_projector_distance": canonical_analysis["distance"], "canonical_inverse_negative_control_minimum_overlap_singular_value": canonical_analysis["negative_minimum"], "canonical_inverse_negative_control_maximum_principal_angle": canonical_analysis["negative_angle"], "canonical_inverse_negative_control_maximum_projector_distance": canonical_analysis["negative_distance"], "all8_authoritative_rank2_minimum_overlap_singular_value": all8["minimum"], "all8_authoritative_rank2_maximum_principal_angle": all8["angle"], "all8_authoritative_rank2_maximum_projector_distance": all8["distance"], "full_transformed_c3_subspace_covariance_failure_count": all8["failures"], "spectral_c3_unordered_pair_residual_max": 4.838929056782959e-06, "rank2_covariance_interpretation": "RANK2_SUBSPACE_COVARIANCE_REJECTED", "next_science_decision": "STOP_RANK2_AND_AUDIT_MAXWELL_STATE_IDENTITY_OR_PROVIDER_EXTRACTION", "minimal_next_live_state_count": 0, "runtime_spatial_map_status": "RECONSTRUCTED_AND_VALIDATED", "runtime_spatial_map_transferability_status": "TRANSFERABLE_BY_SHARED_TRIANGULAR_BAND_GRID_CONSTRUCTION", "synthetic_direction_audit": synthetic, "all8_triplets": all8["triplets"], "source_commit_used": os.environ.get("MEPHC_SOURCE_COMMIT"), "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "post_native_checkout_unchanged": True}
     except (KeyError, M9Error, OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         result = failure(str(exc))
     Path(os.environ["MEPHC_RESULT_PATH"]).write_bytes(canonical(result) + b"\n")
