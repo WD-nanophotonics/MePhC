@@ -1,0 +1,177 @@
+{
+  "schema": "mephc-scientific-goal-v1",
+  "goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1",
+  "title": "Berry C3 internal-consistency qualification",
+  "base_source_commit": "5ce290db535da8a78e073a1763b9ec83240a6716",
+  "project": "MEPHC",
+  "target_band_one_based": 2,
+  "frozen_observation": {
+    "path": "/home/icy/TriLatt/data/_tmp/bc_latest.pkl",
+    "sha256": "d602a094e662103274fd53502bcdb5da41518ac53e61a2518b6962cdc97ca88d",
+    "size_bytes": 16627,
+    "read_only": true,
+    "geometry": {
+      "a": 400.0,
+      "r1": 80.0,
+      "r2": 75.0,
+      "n1": 16,
+      "n2": 16,
+      "theta1_degrees": 0.0,
+      "theta2_degrees": 60.0,
+      "n_eff": 2.7,
+      "height": 100.0
+    },
+    "solver": {
+      "polarization": "TE",
+      "resolution": 128,
+      "step": 0.001,
+      "grid_n": 36,
+      "num_bands": 2,
+      "band_index_zero_based": 1,
+      "symmetry": "raw_hbz"
+    },
+    "sample_count": 631,
+    "strongest_orbit_values_approx": [-257.4838, 193.9787, 46.92]
+  },
+  "geometries": {
+    "G16": {
+      "role": "screenshot_geometry_approximate_c3",
+      "r1": 80.0,
+      "r2": 75.0,
+      "n1": 16,
+      "n2": 16
+    },
+    "G15": {
+      "role": "area_matched_exact_c3_control",
+      "area_scale_factor": 1.0017919605440295,
+      "r1": 80.14335684352235,
+      "r2": 75.13439704080221,
+      "n1": 15,
+      "n2": 15
+    }
+  },
+  "sampling": {
+    "k": [0.6666666666666666, 0.0],
+    "k_role": "spectral_only_until_rank1_qualified",
+    "grid_denominator": 36,
+    "orbit_seed_offsets": [1, 4, 7, 10],
+    "priority_offset": 7,
+    "rotation_degrees": [0, 120, 240],
+    "independent_rotated_solves_required": true,
+    "symmetry_expansion_forbidden": true
+  },
+  "milestones": [
+    {
+      "id": "M1",
+      "name": "solver_free_baseline_and_diagnostic_harness",
+      "native_budget": 0,
+      "provider_budget": 0,
+      "solver_budget": 0,
+      "deliverables": [
+        "frozen_record_inventory",
+        "c3_orbit_residual_baseline",
+        "audit_only_diagnostic_harness",
+        "fake_provider_tests",
+        "content_addressed_native_request_graph",
+        "exact_provider_and_solver_demand"
+      ]
+    },
+    {
+      "id": "M2",
+      "name": "bounded_m7_native_pilot_and_solver_free_analysis",
+      "requires_explicit_successor_machine_budget": true,
+      "repeats": 3,
+      "minimum_num_bands": 4,
+      "base_tolerance": 1e-7,
+      "base_mesh_size": 3,
+      "deterministic_values": [false, true],
+      "stencils": ["lab_fixed", "c3_covariant"],
+      "geometries": ["G16", "G15"],
+      "orbit_seed_offsets": [7],
+      "conditional_controls": {
+        "tolerance": 1e-9,
+        "mesh_sizes": [1, 3]
+      }
+    },
+    {
+      "id": "M3",
+      "name": "conditional_extension_full_map_and_synthesis",
+      "maximum_additional_native_acquisitions": 1,
+      "requires_unresolved_predeclared_causal_branch": true,
+      "primary_resolutions": [64, 128],
+      "primary_steps": [0.006944444444444444, 0.003472222222222222, 0.001],
+      "conditional_resolutions": [32, 96],
+      "conditional_steps": [0.001736111111111111, 0.0005],
+      "full_map_gate": "pilot_method_qualified",
+      "full_map": {
+        "geometry": "G15",
+        "grid_n": 36,
+        "domain": "raw_hbz",
+        "independent_points": true
+      }
+    }
+  ],
+  "diagnostic_fields": [
+    "exact_k",
+    "geometry_digest",
+    "resolution",
+    "step",
+    "tolerance",
+    "mesh_size",
+    "deterministic",
+    "first_four_frequencies",
+    "adjacent_gaps",
+    "iteration_evidence",
+    "link_magnitudes",
+    "link_phases",
+    "wilson_phase",
+    "branch_margin",
+    "rank1_band2",
+    "composite_1_2",
+    "composite_2_3",
+    "energy_eh_reduction",
+    "h_only_reduction"
+  ],
+  "qualification": {
+    "repeat_estimator": "robust_three_repeat_dispersion",
+    "orbit_rule": "all_pairwise_differences_within_combined_uncertainty",
+    "sign_rule": "significant_only_when_both_intervals_exclude_zero",
+    "rank1_gap_signal_to_uncertainty_minimum": 10.0,
+    "rank1_link_signal_to_repeat_noise_minimum": 10.0,
+    "branch_margin_to_phase_uncertainty_minimum": 5.0,
+    "rank1_failure_status": "RANK1_WITHHELD",
+    "mechanical_monotonicity_required": false
+  },
+  "causal_classes": [
+    "PHYSICAL_APPROXIMATE_C3_GEOMETRY",
+    "RANDOM_INITIALIZATION",
+    "STENCIL_ORIENTATION",
+    "PLANE_WAVE_OR_GEOMETRY_RESOLUTION",
+    "BAND_ASSOCIATION_OR_NEAR_DEGENERACY",
+    "BRANCH_OR_PLAQUETTE_SCALE",
+    "FIELD_REPRESENTATION_OR_NORMALIZATION",
+    "MULTIPLE_IDENTIFIED_CAUSES",
+    "UNRESOLVED_UNDER_BOUNDED_EXPERIMENT"
+  ],
+  "forbidden": [
+    "rewrite_existing_records",
+    "scientific_symmetrization",
+    "sector_value_copying",
+    "spike_deletion",
+    "scientific_interpolation",
+    "native_without_exact_machine_budget",
+    "blind_native_retry",
+    "origin_main_movement",
+    "parallel_luna_worker"
+  ],
+  "workflow": {
+    "worker_task_id": "01a0480e-b79d-75c3-ac80-5db601b32d67",
+    "query_preferences": {
+      "task_difficulty": "challenge",
+      "instruction_level": "manual_book",
+      "report_policy": "milestone"
+    },
+    "ordinary_work_order_count_target": 3,
+    "public_commands": ["status", "resume", "execute", "closeout"]
+  }
+}
