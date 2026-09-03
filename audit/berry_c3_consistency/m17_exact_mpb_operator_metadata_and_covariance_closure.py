@@ -51,6 +51,38 @@ def digest(value: Any) -> str:
     return hashlib.sha256(canonical(value)).hexdigest()
 
 
+def record_identity_payload(record: Mapping[str, Any]) -> dict[str, Any]:
+    """Select only immutable semantic/content fields for record identity."""
+    payload = {
+        "schema": record.get("schema", DATASET_SCHEMA),
+        "source_physical_state_identity": {
+            "request_key_sha256": record.get("request_key_sha256"),
+            "member_index": record.get("member_index"),
+            "c3_member_identity": record.get("c3_member_identity"),
+            "geometry_id": record.get("geometry_id"),
+            "geometry_role": record.get("geometry_role"),
+            "coordinate": record.get("coordinate"),
+        },
+        "runtime_material_grid_identity": {
+            "metadata_status": record.get("metadata_status"),
+            "metadata_error": record.get("metadata_error"),
+            "epsilon_grid_sha256": record.get("epsilon_grid_sha256"),
+            "exact_mpb_epsilon_grid_shape": record.get("exact_mpb_epsilon_grid_shape"),
+            "epsilon_grid_dtype": record.get("epsilon_grid_dtype"),
+            "epsilon_material_representation_type": record.get("epsilon_material_representation_type"),
+            "epsilon_inverse_or_tensor_metadata_status": record.get("epsilon_inverse_or_tensor_metadata_status"),
+            "subpixel_or_smoothing_configuration": record.get("subpixel_or_smoothing_configuration"),
+        },
+        "source_commit": record.get("source_commit", os.environ.get("MEPHC_SOURCE_COMMIT")),
+    }
+    return payload
+
+
+def deterministic_record_id(record: Mapping[str, Any]) -> str:
+    """Generate an insertion-order-independent content-semantic identity."""
+    return "MEPHC-M17-METADATA-" + digest(record_identity_payload(record))
+
+
 def _load(path: Path, name: str) -> Any:
     spec = importlib.util.spec_from_file_location(name, path)
     require(spec is not None and spec.loader is not None, "M17_DEPENDENCY_UNAVAILABLE", str(path))
@@ -121,9 +153,8 @@ def _point_tuple(value: Any) -> list[float]:
 
 def _incomplete_record(member: Mapping[str, Any], status: str, error: str) -> dict[str, Any]:
     """Keep failed metadata attempts serializable for bounded reconciliation."""
-    return {
+    record = {
         "schema": DATASET_SCHEMA,
-        "record_id": f"{member['request_key_sha256']}:m17",
         "request_key_sha256": member["request_key_sha256"],
         "member_index": int(member["member_index"]),
         "c3_member_identity": member["c3_member_identity"],
@@ -134,6 +165,9 @@ def _incomplete_record(member: Mapping[str, Any], status: str, error: str) -> di
         "metadata_error": error,
         "forbidden_solver_call_count": 0,
     }
+    record["source_commit"] = os.environ.get("MEPHC_SOURCE_COMMIT")
+    record["record_id"] = deterministic_record_id(record)
+    return record
 
 
 def capture_mode_solver_metadata(solver: Any, *, member: Mapping[str, Any], reciprocal_k_point: Any, api_calls: list[str], spatial_shape: Sequence[int] = SHAPE) -> dict[str, Any]:
@@ -186,6 +220,8 @@ def capture_mode_solver_metadata(solver: Any, *, member: Mapping[str, Any], reci
         "epsilon_grid": epsilon.tolist(), "epsilon_inverse_grid": inverse,
         "forbidden_solver_call_count": 0,
     }
+    record["source_commit"] = os.environ.get("MEPHC_SOURCE_COMMIT")
+    record["record_id"] = deterministic_record_id(record)
     return record
 
 
@@ -207,6 +243,11 @@ def capture_triplet_metadata(members: Sequence[Mapping[str, Any]], *, runtime_fa
 def persist_metadata(job: Any, state_root: Path, work_order_id: str, records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     namespace = {"goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1", "work_order_id": work_order_id, "source_commit": os.environ.get("MEPHC_SOURCE_COMMIT"), "record_schema": DATASET_SCHEMA}
     store = job.ImmutableDatasetStore(state_root, namespace)
+    identities = []
+    for record in records:
+        require(isinstance(record.get("record_id"), str) and record["record_id"] == deterministic_record_id(record), "M17_RECORD_ID_INVALID", str(record.get("member_index")))
+        identities.append(record["record_id"])
+    require(len(identities) == len(set(identities)), "M17_RECORD_ID_NOT_UNIQUE")
     for record in records:
         key = canonical({"work_order_id": work_order_id, "member_index": int(record["member_index"]), "record_id": record["record_id"]})
         store.put(key, canonical(dict(record)), {"member_index": int(record["member_index"]), "c3_member_identity": record["c3_member_identity"], "metadata_status": record["metadata_status"]})
