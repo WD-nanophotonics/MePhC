@@ -312,6 +312,8 @@ def _projector_action(v: np.ndarray, x: np.ndarray, metric: np.ndarray | None = 
 def transform_rank2_vector_frame(frame: Any, reciprocal: Any, folding: Sequence[int], m15: Any) -> np.ndarray:
     """Transform two complete vector fields, never the rank-2 container."""
     grid = np.asarray(frame, dtype=np.complex128)
+    if grid.shape == (SHAPE[0] * SHAPE[1], COMPONENTS, 2):
+        grid = grid.reshape(*SHAPE, COMPONENTS, 2)
     require(grid.shape == (*SHAPE, COMPONENTS, 2), "M22_RANK2_GRID_SHAPE_INVALID", str(grid.shape))
     columns = []
     for band in range(2):
