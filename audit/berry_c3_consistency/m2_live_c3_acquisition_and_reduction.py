@@ -38,6 +38,10 @@ POINT_SOLVES_PER_PLAQUETTE = 4
 PREVIOUS_FAILURE_STAGE = "pre_provider_binding"
 PREVIOUS_FAILURE_CODE = "PRODUCTION_PROVIDER_BINDING_REQUIRED"
 PRODUCTION_PROVIDER_SYMBOL = "mephc.mpb_energy_spectral_provider.MPBLiveEnergySpectralProvider"
+PREVIOUS_CHILD_RETURN_CODE = 2
+PREVIOUS_CHILD_EXCEPTION_TYPE = "None"
+PREVIOUS_CHILD_FAILURE_STAGE = "entrypoint_exit_policy"
+PREVIOUS_CHILD_FAILURE_CODE = "FAIL_CLOSED_RESULT_EXIT_2"
 
 
 class M2Error(ValueError):
@@ -461,6 +465,44 @@ class ProductionPilot:
         return self.dataset_manifest
 
 
+class _BootstrapFakeBoundary:
+    """Subprocess-only strict boundary for child bootstrap recertification."""
+
+    def __init__(self) -> None:
+        self.calls: list[str] = []
+        self.records = 0
+
+    @property
+    def provider_count(self) -> int:
+        return len(self.calls)
+
+    @property
+    def solver_count(self) -> int:
+        return len(self.calls)
+
+    @property
+    def dataset_count(self) -> int:
+        return self.records
+
+    def __call__(self, item: Mapping[str, Any]) -> dict[str, Any]:
+        semantic = validate_semantic_request(item)
+        for request in expand_constituent_requests(item):
+            production = build_production_request(item, request)
+            key = production["constituent_request_key_sha256"]
+            if key in self.calls:
+                raise M2Error("FAKE_CONSTITUENT_REQUEST_DUPLICATE")
+            self.calls.append(key)
+        self.records += 1
+        return {
+            "record_id": f"bootstrap-{item['request_key_sha256']}-{item['repeat_index']}",
+            "orbit_id": semantic["orbit_id"], "member_index": semantic["member_index"],
+            "coordinate": semantic["public_coordinate"], "geometry_id": semantic["geometry_id"],
+            "domain_id": semantic["domain_id"], "band_identity": "band-1-of-4",
+            "subspace_identity": "rank1-withheld", "qualification_status": "QUALIFIED",
+            "observable": 1.0,
+        }
+
+
 def _finite_observable(value: Any) -> float | None:
     if value is None:
         return None
@@ -546,7 +588,12 @@ def compact_success(plan: Mapping[str, Any], execution: Mapping[str, Any], reduc
         "scientific_acceptance_status": "PASS" if not execution.get("failures") and reduction["incomplete_orbit_count"] == 0 and reduction["unqualified_orbit_count"] == 0 and reduction["inconsistent_orbit_count"] == 0 else "FAIL_CLOSED",
         "previous_failure_stage": PREVIOUS_FAILURE_STAGE,
         "previous_failure_code": PREVIOUS_FAILURE_CODE,
+        "previous_child_return_code": PREVIOUS_CHILD_RETURN_CODE,
+        "previous_child_exception_type": PREVIOUS_CHILD_EXCEPTION_TYPE,
+        "previous_child_failure_stage": PREVIOUS_CHILD_FAILURE_STAGE,
+        "previous_child_failure_code": PREVIOUS_CHILD_FAILURE_CODE,
         "production_provider_symbol": PRODUCTION_PROVIDER_SYMBOL,
+        "first_live_request_key": plan["live_requests"][0]["request_key_sha256"] if plan.get("live_requests") else None,
         "m1_request_graph_sha256": EXPECTED_GRAPH_SHA256,
         "request_graph_sha256": EXPECTED_GRAPH_SHA256,
         "pilot_semantic_record_count": plan["future_live_request_count"],
@@ -596,7 +643,12 @@ def compact_failure(error: M2Error, *, plan: Mapping[str, Any] | None = None) ->
         "scientific_acceptance_status": "FAIL_CLOSED",
         "previous_failure_stage": PREVIOUS_FAILURE_STAGE,
         "previous_failure_code": PREVIOUS_FAILURE_CODE,
+        "previous_child_return_code": PREVIOUS_CHILD_RETURN_CODE,
+        "previous_child_exception_type": PREVIOUS_CHILD_EXCEPTION_TYPE,
+        "previous_child_failure_stage": PREVIOUS_CHILD_FAILURE_STAGE,
+        "previous_child_failure_code": PREVIOUS_CHILD_FAILURE_CODE,
         "production_provider_symbol": PRODUCTION_PROVIDER_SYMBOL,
+        "first_live_request_key": plan["live_requests"][0]["request_key_sha256"] if plan and plan.get("live_requests") else None,
         "failed_stage": "validation",
         "failure_code": error.code,
         "exception_type": type(error).__name__,
@@ -619,6 +671,8 @@ def compact_failure(error: M2Error, *, plan: Mapping[str, Any] | None = None) ->
 def run(*, provider_solve: Callable[[Mapping[str, Any]], Mapping[str, Any]] | None = None, frozen_records: Sequence[Mapping[str, Any]] = ()) -> dict[str, Any]:
     bundle = verify_m1_bundle()
     plan = derive_plan(bundle)
+    if provider_solve is None and os.environ.get("MEPHC_M2_TEST_FAKE_BOUNDARY") == "1":
+        provider_solve = _BootstrapFakeBoundary()
     if provider_solve is None:
         provider_solve = ProductionPilot(plan)
     execution = execute_injected_plan(plan, provider_solve, frozen_records)
@@ -645,7 +699,8 @@ def main() -> int:
     except M2Error as exc:
         result = compact_failure(exc)
     write_result(result)
-    return 0 if result.get("status") == "PASS" else 2
+    print("MEPHC_RESULT_JSON=" + canonical(dict(result)).decode("utf-8"))
+    return 0
 
 
 if __name__ == "__main__":
