@@ -51,6 +51,13 @@ def signed_modes(size: int) -> tuple[int, ...]:
     return tuple(int(value) for value in np.rint(np.fft.fftfreq(size) * size).astype(int))
 
 
+def canonical_mode(value: int, size: int) -> int:
+    """Map an integer to numpy's exact even/odd signed representative set."""
+    wrapped = int(value) % int(size)
+    positive_max = (int(size) - 1) // 2
+    return wrapped if wrapped <= positive_max else wrapped - int(size)
+
+
 def common_support(size: int) -> set[tuple[int, int]]:
     allowed = set(signed_modes(size)) & set(signed_modes(SOURCE_N))
     return {(x, y) for x in allowed for y in allowed}
@@ -81,7 +88,10 @@ def periodic_transform(field: np.ndarray, size: int, reciprocal: np.ndarray, fol
     for mx in modes:
         for my in modes:
             raw = np.asarray(reciprocal, dtype=int) @ np.asarray([mx, my]) + np.asarray(folding, dtype=int)
-            target[position[int(raw[0]) % size if int(raw[0]) % size < size // 2 else int(raw[0]) % size - size], position[int(raw[1]) % size if int(raw[1]) % size < size // 2 else int(raw[1]) % size - size], :] = source[position[mx], position[my], :]
+            # Array placement is a modulo address.  Signed representatives
+            # are used only for support/class reporting, never as a lookup
+            # key for an odd-grid target array.
+            target[int(raw[0]) % size, int(raw[1]) % size, :] = source[position[mx], position[my], :]
     return np.einsum("ab,xyb->xya", m15.R3, np.fft.ifftn(target, axes=(0, 1)), optimize=True)
 
 
@@ -95,7 +105,7 @@ def orbit_complete_support(support: set[tuple[int, int]], reciprocal: np.ndarray
         value = start; valid = True
         for folding in foldings:
             raw = reciprocal @ np.asarray(value) + np.asarray(folding, dtype=int)
-            value = tuple(int(raw[i]) % size if int(raw[i]) % size < size // 2 else int(raw[i]) % size - size for i in range(2))
+            value = tuple(canonical_mode(int(raw[i]), size) for i in range(2))
             valid = valid and value in support
         if valid and value == start:
             complete.add(start)
@@ -107,6 +117,30 @@ def energy_fraction(field: np.ndarray, support: set[tuple[int, int]]) -> float:
     kept = sum(float(np.sum(np.abs(coeff[pos[x], pos[y], :]) ** 2)) for x, y in support)
     total = float(np.sum(np.abs(coeff) ** 2))
     return kept / max(total, np.finfo(float).eps)
+
+
+def mode_index_audit() -> dict[str, Any]:
+    rows = {}
+    for size in (127, 128, 129):
+        labels = signed_modes(size)
+        label_to_index = {label: index for index, label in enumerate(labels)}
+        failures = 0
+        for index, label in enumerate(labels):
+            if label_to_index[canonical_mode(index, size)] != index:
+                failures += 1
+        rows[str(size)] = {"valid_signed_mode_range": [min(labels), max(labels)], "roundtrip_failure_count": failures, "has_unique_nonzero_nyquist": size % 2 == 0}
+    # The previous even-grid rule was r < n//2 else r-n.  For n=127,
+    # residue 63 therefore became the invalid signed label -64.
+    return {"rows": rows, "signed_mode_roundtrip_failure_count": sum(item["roundtrip_failure_count"] for item in rows.values()), "old_signed_representative_formula": "r if r < n//2 else r-n", "raw_residue_causing_minus64": 63, "minus64_reproduction": {"size": 127, "array_residue": 63, "old_result": -64, "valid_result": 63}}
+
+
+def embedding_roundtrip_residual(field: np.ndarray, size: int, support: set[tuple[int, int]]) -> float:
+    coeff = np.fft.fftn(field, axes=(0, 1)); embedded = embed_coefficients(coeff, size, support); recovered = np.fft.fftn(np.fft.ifftn(embedded, axes=(0, 1)), axes=(0, 1)) / ((size / SOURCE_N) ** 2)
+    source_positions = {mode: index for index, mode in enumerate(signed_modes(SOURCE_N))}
+    error = 0.0
+    for x, y in support:
+        error = max(error, float(np.max(np.abs(recovered[x % size, y % size] - coeff[source_positions[x], source_positions[y]]))))
+    return error
 
 
 def edge_metrics(frames: Sequence[np.ndarray], size: int, support: set[tuple[int, int]], edges: Sequence[Mapping[str, Any]], reciprocal: np.ndarray, m23: Any, m15: Any) -> list[dict[str, float]]:
@@ -129,10 +163,10 @@ def shell_trajectory(frames: Sequence[np.ndarray], size: int, edges: Sequence[Ma
 
 def analyze(records: Sequence[Mapping[str, Any]], source_commit: str | None) -> dict[str, Any]:
     m23, m15 = _m23(), _m15(); m22 = m23._m22(); ordered = m22.ordered_triplet(records); edges, fold_residual, gauge_residual = m22.derive_edges(ordered, m15); lattice = m15.lattice_automorphisms(); reciprocal = np.asarray(lattice["c3_reciprocal_integer_automorphism"], dtype=int); frames = [m23._field(record, "fresh_h_fields_bands_1_to_6")[list(TARGET_BANDS)].transpose(1, 2, 3, 0) for record in ordered]; full_support = common_support(SOURCE_N); full_metrics = edge_metrics(frames, SOURCE_N, full_support, edges, reciprocal, m23, m15); baseline_min = min(item["minimum_overlap_singular_value"] for item in full_metrics)
-    comparisons = {}; class_counts = {}; all_shells = {}
+    comparisons = {}; class_counts = {}; all_shells = {}; index_audit = mode_index_audit()
     for size in (127, 129):
         support = common_support(size); matched = edge_metrics(frames, SOURCE_N, support, edges, reciprocal, m23, m15); odd = edge_metrics(frames, size, support, edges, reciprocal, m23, m15); orbit = orbit_complete_support(support, reciprocal, [edge["G_edge_integer"] for edge in edges], SOURCE_N); orbit_metrics = edge_metrics(frames, size, orbit, edges, reciprocal, m23, m15)
-        comparisons[str(size)] = {"common_mode_count": len(support), "orbit_complete_common_mode_count": len(orbit), "retained_H_field_energy_fraction_by_member_band": [[energy_fraction(frame[..., band], support) for band in range(2)] for frame in frames], "odd_metrics": odd, "matched128_metrics": matched, "orbit_complete_metrics": orbit_metrics, "odd_minus_matched128_overlap_improvement": min(item["minimum_overlap_singular_value"] for item in odd) - min(item["minimum_overlap_singular_value"] for item in matched), "odd_minimum_overlap": min(item["minimum_overlap_singular_value"] for item in odd), "matched_minimum_overlap": min(item["minimum_overlap_singular_value"] for item in matched), "class_support_definition": "exact signed integer intersection; no unknown coefficient inference"}
+        comparisons[str(size)] = {"common_mode_count": len(support), "orbit_complete_common_mode_count": len(orbit), "retained_H_field_energy_fraction_by_member_band": [[energy_fraction(frame[..., band], support) for band in range(2)] for frame in frames], "integer_label_embedding_roundtrip_residual_max": max(embedding_roundtrip_residual(frame[..., band], size, support) for frame in frames for band in range(2)), "odd_metrics": odd, "matched128_metrics": matched, "orbit_complete_metrics": orbit_metrics, "odd_minus_matched128_overlap_improvement": min(item["minimum_overlap_singular_value"] for item in odd) - min(item["minimum_overlap_singular_value"] for item in matched), "odd_minimum_overlap": min(item["minimum_overlap_singular_value"] for item in odd), "matched_minimum_overlap": min(item["minimum_overlap_singular_value"] for item in matched), "class_support_definition": "exact signed integer intersection; no unknown coefficient inference"}
         all_shells[str(size)] = {"odd": shell_trajectory(frames, size, edges, reciprocal, m23, m15), "matched128": shell_trajectory(frames, SOURCE_N, edges, reciprocal, m23, m15)}
         class_counts[str(size)] = {"common": len(support), "orbit_complete": len(orbit)}
     special_support = {mode for mode in full_support if -64 not in mode}
@@ -142,7 +176,7 @@ def analyze(records: Sequence[Mapping[str, Any]], source_commit: str | None) -> 
     parity = odd_improvement_127 > 1e-6 and odd_improvement_129 > 1e-6 and odd_improvement_127 > 0.0 and odd_improvement_129 > 0.0
     diagnosis = "VALIDATED_BROAD_H_C3_FAILURE_ON_ORDINARY_COMMON_SUPPORT" if broad else ("EVEN_GRID_ALIASING_EXPLAINS_H_C3_FAILURE" if parity else "TRUNCATION_EFFECT_NOT_GRID_PARITY")
     status = "C3_FAILURE_STABLE_ACROSS_COMMON_SUPPORT_AND_GRID_PARITY" if broad else ("ODD_GRID_SPECIFIC_C3_RESTORATION" if parity else "EMULATION_INCONCLUSIVE_DUE_TO_RETAINED_ENERGY_LOSS")
-    return {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "machine_execution_contract_status": "SOLVER_FREE_ODD_GRID_COMMON_SUPPORT_EMULATION_COMPLETE", "source_m18_dataset_id": M18_DATASET_ID, "target_state_count": 3, "native_invocation_count": 0, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "m25_baseline_H_c3_minimum_overlap_singular_value": baseline_min, "m25_baseline_H_c3_edge_metrics": full_metrics, "common_mode_count_127": comparisons["127"]["common_mode_count"], "common_mode_count_129": comparisons["129"]["common_mode_count"], "orbit_complete_common_mode_count_127": comparisons["127"]["orbit_complete_common_mode_count"], "orbit_complete_common_mode_count_129": comparisons["129"]["orbit_complete_common_mode_count"], "retained_energy_fraction_127_min": min(sum(row) / 2 for row in comparisons["127"]["retained_H_field_energy_fraction_by_member_band"]), "retained_energy_fraction_129_min": min(sum(row) / 2 for row in comparisons["129"]["retained_H_field_energy_fraction_by_member_band"]), "H127_c3_minimum_overlap_singular_value": comparisons["127"]["odd_minimum_overlap"], "H128_matched127_c3_minimum_overlap_singular_value": comparisons["127"]["matched_minimum_overlap"], "H129_c3_minimum_overlap_singular_value": comparisons["129"]["odd_minimum_overlap"], "H128_matched129_c3_minimum_overlap_singular_value": comparisons["129"]["matched_minimum_overlap"], "odd_minus_matched128_overlap_improvement_127": odd_improvement_127, "odd_minus_matched128_overlap_improvement_129": odd_improvement_129, "orbit_complete_H_c3_minimum_overlap_singular_value_127": min(item["minimum_overlap_singular_value"] for item in comparisons["127"]["orbit_complete_metrics"]), "orbit_complete_H_c3_minimum_overlap_singular_value_129": min(item["minimum_overlap_singular_value"] for item in comparisons["129"]["orbit_complete_metrics"]), "shell_stability_summary": all_shells, "H_sampling_metadata_status": "NATIVE_FIELD_LOCATION_METADATA_STILL_REQUIRED", "source_confirmed_H_sampling_semantics": "M18 source confirms get_hfield(band,bloch_phase=False) and canonical (x,y,component) storage; native component locations/interpolation remain unexposed.", "exact_existing_array_sampling_correction_applied": False, "odd_grid_emulation_status": status, "primary_m26_diagnosis": diagnosis, "rank1_berry_spike_interpretation": "NATURAL_SPACE_REIMPLEMENTATION_REQUIRED_BEFORE_INTERPRETATION", "alternative_explanations_considered": ["even-grid Nyquist alias", "common-support truncation", "high Fourier shell sensitivity", "native H sampling locations", "broad state-family failure"], "counterevidence_summary": {"M25_special_mode_union_residual_fraction": 0.11878153600795853, "M25_ordinary_residual_fraction": 0.8812184639920414, "full128_metrics": full_metrics, "special_modes_removed_counterfactual_metrics": special_metrics, "class_counts_by_grid": class_counts}, "exact_remaining_uncertainty": "Odd-grid emulation preserves only common known coefficients and cannot establish what a fresh odd-grid eigensolve would return; native H component locations remain unexposed.", "cheapest_remaining_discriminating_test": "A metadata-only native H sampling/location audit on existing M18 states; a fresh odd-grid triplet is not justified until this emulation is interpreted.", "next_science_decision": "ACQUIRE_MINIMAL_ODD_GRID_OR_RESOLUTION_C3_VALIDATION_TRIPLET" if status == "ODD_GRID_SPECIFIC_C3_RESTORATION" else "ACQUIRE_MINIMAL_FRESH_H_NATURAL_SPACE_C3_VALIDATION_TRIPLET" if status == "EMULATION_INCONCLUSIVE_DUE_TO_RETAINED_ENERGY_LOSS" else "FIX_SOURCE_CONFIRMED_H_SAMPLING_OR_GRID_REPRESENTATION_AND_REANALYZE_EXISTING_DATA_ONLY", "minimal_next_live_state_count": 0, "execution_required_for_cheapest_test": False, "edge_reciprocal_folding_vectors": edges, "folding_integer_residual_max": fold_residual, "gauge_cycle_residual": gauge_residual, "source_commit_used": source_commit, "post_analysis_checkout_unchanged": True}
+    return {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "machine_execution_contract_status": "SOLVER_FREE_ODD_GRID_COMMON_SUPPORT_EMULATION_COMPLETE", "source_m18_dataset_id": M18_DATASET_ID, "target_state_count": 3, "native_invocation_count": 0, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "old_signed_representative_formula": index_audit["old_signed_representative_formula"], "raw_residue_causing_minus64": index_audit["raw_residue_causing_minus64"], "valid_signed_mode_range_127": index_audit["rows"]["127"]["valid_signed_mode_range"], "valid_signed_mode_range_128": index_audit["rows"]["128"]["valid_signed_mode_range"], "valid_signed_mode_range_129": index_audit["rows"]["129"]["valid_signed_mode_range"], "signed_mode_roundtrip_failure_count": index_audit["signed_mode_roundtrip_failure_count"], "mode_index_root_cause": "The old even-grid threshold r<n//2 mapped residue 63 to invalid label -64 for n=127; corrected code uses direct modulo array placement and parity-correct labels only for set/report operations.", "target_mapping_keyerror_count": 0, "m25_baseline_H_c3_minimum_overlap_singular_value": baseline_min, "m25_baseline_H_c3_edge_metrics": full_metrics, "common_mode_count_127": comparisons["127"]["common_mode_count"], "common_mode_count_129": comparisons["129"]["common_mode_count"], "orbit_complete_common_mode_count_127": comparisons["127"]["orbit_complete_common_mode_count"], "orbit_complete_common_mode_count_129": comparisons["129"]["orbit_complete_common_mode_count"], "retained_energy_fraction_127_min": min(sum(row) / 2 for row in comparisons["127"]["retained_H_field_energy_fraction_by_member_band"]), "retained_energy_fraction_129_min": min(sum(row) / 2 for row in comparisons["129"]["retained_H_field_energy_fraction_by_member_band"]), "H127_c3_minimum_overlap_singular_value": comparisons["127"]["odd_minimum_overlap"], "H128_matched127_c3_minimum_overlap_singular_value": comparisons["127"]["matched_minimum_overlap"], "H129_c3_minimum_overlap_singular_value": comparisons["129"]["odd_minimum_overlap"], "H128_matched129_c3_minimum_overlap_singular_value": comparisons["129"]["matched_minimum_overlap"], "odd_minus_matched128_overlap_improvement_127": odd_improvement_127, "odd_minus_matched128_overlap_improvement_129": odd_improvement_129, "orbit_complete_H_c3_minimum_overlap_singular_value_127": min(item["minimum_overlap_singular_value"] for item in comparisons["127"]["orbit_complete_metrics"]), "orbit_complete_H_c3_minimum_overlap_singular_value_129": min(item["minimum_overlap_singular_value"] for item in comparisons["129"]["orbit_complete_metrics"]), "shell_stability_summary": all_shells, "H_sampling_metadata_status": "NATIVE_FIELD_LOCATION_METADATA_STILL_REQUIRED", "source_confirmed_H_sampling_semantics": "M18 source confirms get_hfield(band,bloch_phase=False) and canonical (x,y,component) storage; native component locations/interpolation remain unexposed.", "exact_existing_array_sampling_correction_applied": False, "odd_grid_emulation_status": status, "primary_m26_diagnosis": diagnosis, "rank1_berry_spike_interpretation": "NATURAL_SPACE_REIMPLEMENTATION_REQUIRED_BEFORE_INTERPRETATION", "alternative_explanations_considered": ["even-grid Nyquist alias", "common-support truncation", "high Fourier shell sensitivity", "native H sampling locations", "broad state-family failure"], "counterevidence_summary": {"M25_special_mode_union_residual_fraction": 0.11878153600795853, "M25_ordinary_residual_fraction": 0.8812184639920414, "full128_metrics": full_metrics, "special_modes_removed_counterfactual_metrics": special_metrics, "class_counts_by_grid": class_counts}, "exact_remaining_uncertainty": "Odd-grid emulation preserves only common known coefficients and cannot establish what a fresh odd-grid eigensolve would return; native H component locations remain unexposed.", "cheapest_remaining_discriminating_test": "A metadata-only native H sampling/location audit on existing M18 states; a fresh odd-grid triplet is not justified until this emulation is interpreted.", "next_science_decision": "ACQUIRE_MINIMAL_ODD_GRID_OR_RESOLUTION_C3_VALIDATION_TRIPLET" if status == "ODD_GRID_SPECIFIC_C3_RESTORATION" else "ACQUIRE_MINIMAL_FRESH_H_NATURAL_SPACE_C3_VALIDATION_TRIPLET" if status == "EMULATION_INCONCLUSIVE_DUE_TO_RETAINED_ENERGY_LOSS" else "FIX_SOURCE_CONFIRMED_H_SAMPLING_OR_GRID_REPRESENTATION_AND_REANALYZE_EXISTING_DATA_ONLY", "minimal_next_live_state_count": 0, "execution_required_for_cheapest_test": False, "edge_reciprocal_folding_vectors": edges, "folding_integer_residual_max": fold_residual, "gauge_cycle_residual": gauge_residual, "source_commit_used": source_commit, "post_analysis_checkout_unchanged": True}
 
 
 def main() -> int:
