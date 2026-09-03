@@ -100,6 +100,21 @@ def test_sealed_dataset_authority_does_not_depend_on_graph_file_hash(tmp_path, m
     assert "M1_GRAPH_PATH" not in ENTRYPOINT.read_text(encoding="utf-8")
 
 
+def test_current_work_order_binding_is_dynamic_and_mismatch_fails_closed():
+    for historical_name in (
+        "MEPHC-BERRY-C3-M3R2-HISTORICAL",
+        "MEPHC-BERRY-C3-M3R3-HISTORICAL",
+        "MEPHC-BERRY-C3-M3R4-HISTORICAL",
+        "MEPHC-BERRY-C3-FUTURE-ARBITRARY",
+    ):
+        bundle = {"work_order_id": historical_name}
+        assert M3.validate_work_order_binding(bundle, historical_name) == historical_name
+    with pytest.raises(M3.M3Error, match="M3_WORK_ORDER_BINDING_MISMATCH"):
+        M3.validate_work_order_binding({"work_order_id": "MEPHC-BERRY-C3-CURRENT"}, "MEPHC-BERRY-C3-OTHER")
+    source = ENTRYPOINT.read_text(encoding="utf-8")
+    assert "startswith(\"MEPHC-BERRY-C3-M3" not in source
+
+
 @pytest.mark.parametrize("kwargs,code", [
     ({"count": 71}, "M3_DATASET_DESCRIPTOR_COUNT_INVALID"),
     ({"manifest": "0" * 64}, "M3_DATASET_BINDING_MISMATCH"),

@@ -48,6 +48,16 @@ def validate_budgets() -> None:
     require(os.environ.get("MEPHC_SOLVER_EXECUTION_BUDGET") == "0", "M3_SOLVER_BUDGET_NOT_ZERO")
 
 
+def validate_work_order_binding(bundle: dict[str, Any], runtime_work_order_id: str | None = None) -> str:
+    """Bind the process context to the current bundle without historical-id gates."""
+    contract_work_order_id = bundle.get("work_order_id")
+    require(isinstance(contract_work_order_id, str) and contract_work_order_id, "M3_WORK_ORDER_MISSING")
+    runtime_id = runtime_work_order_id if runtime_work_order_id is not None else os.environ.get("MEPHC_WORK_ORDER_ID")
+    if runtime_id is not None:
+        require(runtime_id == contract_work_order_id, "M3_WORK_ORDER_BINDING_MISMATCH")
+    return contract_work_order_id
+
+
 def load_payloads(bundle: dict[str, Any]) -> list[dict[str, Any]]:
     descriptors = bundle.get("datasets")
     if isinstance(descriptors, list) and descriptors:
@@ -226,7 +236,8 @@ def main() -> int:
         bundle_path = Path(os.environ.get("MEPHC_INPUT_BUNDLE", ""))
         require(bundle_path.is_file(), "M3_INPUT_BUNDLE_MISSING")
         bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
-        require(isinstance(bundle, dict) and str(bundle.get("work_order_id", "")).startswith("MEPHC-BERRY-C3-M3R2-"), "M3_WORK_ORDER_MISMATCH")
+        require(isinstance(bundle, dict), "M3_INPUT_BUNDLE_SCHEMA_INVALID")
+        validate_work_order_binding(bundle)
         validate_budgets()
         result = analyze(load_payloads(bundle))
     except (M3Error, OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
