@@ -117,7 +117,7 @@ def test_unqualified_evidence_propagates_fail_closed():
     calls = []
     result = M2.run(provider_solve=fake_provider(calls, record_options={"qualification": "UNQUALIFIED"}))
     assert result["c3_unqualified_orbit_count"] == 24
-    assert result["scientific_acceptance_status"] == "PASS"
+    assert result["scientific_acceptance_status"] == "FAIL_CLOSED"
 
 
 def test_compact_success_and_failure_pass_actual_summary_loader(tmp_path):

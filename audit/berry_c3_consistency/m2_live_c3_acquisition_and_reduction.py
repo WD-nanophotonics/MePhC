@@ -27,6 +27,7 @@ PLAN_PATH = M1_DIR / "PLAN.md"
 GOAL_PATH = M1_DIR / "goal_contract_v1.json"
 MACHINE_CONTRACT_PATH = M1_DIR / "m2_machine_execution_contract.json"
 RESULT_SCHEMA = "mephc-berry-c3-consistency-m2-live-c3-closure-v1"
+DATASET_SCHEMA = "mephc-berry-c3-consistency-m2-live-record-dataset-v1"
 M1_RESULT_SCHEMA = "mephc-berry-c3-consistency-m1r1-solver-free-preparation-v1"
 GRAPH_SCHEMA = "mephc-berry-c3-m1-content-addressed-request-graph-v1"
 EXPECTED_GRAPH_SHA256 = "0d461bf439cb5531e134f46a45c52f3b2f2be8d4845db7be32faf5e936b7af0a"
@@ -34,6 +35,8 @@ EXPECTED_SOURCE_COMMIT = "56e2bd30fcdd1eccaeb8b9addecb27b7129a9e6c"
 M1_CONTRACT_SOURCE_COMMIT = "8c70adabcad979d96e56156634c8348da076d8e8"
 REPEAT_COUNT = 3
 POINT_SOLVES_PER_PLAQUETTE = 4
+PREVIOUS_FAILURE_STAGE = "pre_provider_binding"
+PREVIOUS_FAILURE_CODE = "PRODUCTION_PROVIDER_BINDING_REQUIRED"
 
 
 class M2Error(ValueError):
@@ -149,6 +152,67 @@ def derive_plan(bundle: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
+def validate_semantic_request(item: Mapping[str, Any]) -> dict[str, Any]:
+    """Validate every scientific field before constructing a provider call."""
+    if not isinstance(item, Mapping) or not isinstance(item.get("semantic_identity"), Mapping):
+        raise M2Error("GRAPH_SEMANTIC_IDENTITY_MISSING")
+    semantic = dict(item["semantic_identity"])
+    required = {"goal_id", "milestone", "role", "orbit_id", "member_index", "public_coordinate", "geometry_id", "domain_id", "band_target", "solver_configuration", "independent_repeat_count"}
+    if set(semantic) != required | {"rationale"}:
+        raise M2Error("GRAPH_SEMANTIC_FIELDS_INVALID")
+    if semantic["goal_id"] != "MEPHC-BERRY-C3-CONSISTENCY-V1" or semantic["milestone"] != "M2" or semantic["role"] != "M7_ORBIT_MEMBER" or semantic["orbit_id"] != "M7":
+        raise M2Error("GRAPH_SEMANTIC_SCOPE_INVALID")
+    if type(semantic["member_index"]) is not int or semantic["member_index"] not in (0, 1, 2):
+        raise M2Error("GRAPH_MEMBER_IDENTITY_INVALID")
+    if type(item.get("repeat_index")) is not int or item["repeat_index"] not in (0, 1, 2):
+        raise M2Error("GRAPH_REPEAT_IDENTITY_INVALID")
+    if semantic["geometry_id"] not in ("G16", "G15") or semantic["domain_id"] != "raw_hbz":
+        raise M2Error("GRAPH_GEOMETRY_DOMAIN_INVALID")
+    target = semantic["band_target"]
+    settings = semantic["solver_configuration"]
+    if target != {"band_index_zero_based": 1, "num_bands": 4, "rank1_qualification": "withheld_until_evidence"}:
+        raise M2Error("GRAPH_BAND_SUBSPACE_INVALID")
+    expected_settings = {"polarization": "TE", "resolution": 128, "step": 0.001, "tolerance": 1e-7, "mesh_size": 3, "deterministic": settings.get("deterministic"), "stencil": settings.get("stencil")}
+    if settings != expected_settings or type(settings["deterministic"]) is not bool or settings["stencil"] not in ("lab_fixed", "c3_covariant"):
+        raise M2Error("GRAPH_SOLVER_SETTINGS_INVALID")
+    if semantic["independent_repeat_count"] != REPEAT_COUNT or item.get("request_key_sha256") != digest(semantic):
+        raise M2Error("GRAPH_REQUEST_KEY_IDENTITY_INVALID")
+    coordinate = semantic["public_coordinate"]
+    if not isinstance(coordinate, list) or len(coordinate) != 2 or not all(isinstance(value, (int, float)) and math.isfinite(float(value)) for value in coordinate):
+        raise M2Error("GRAPH_COORDINATE_INVALID")
+    return semantic
+
+
+def expand_constituent_requests(item: Mapping[str, Any]) -> list[dict[str, Any]]:
+    """Expand one verified plaquette record into its exact four point calls."""
+    semantic = validate_semantic_request(item)
+    center = (float(semantic["public_coordinate"][0]), float(semantic["public_coordinate"][1]))
+    step = float(semantic["solver_configuration"]["step"])
+    angle = 0.0 if semantic["solver_configuration"]["stencil"] == "lab_fixed" else 2.0 * math.pi * semantic["member_index"] / 3.0
+    rotation = ((math.cos(angle), -math.sin(angle)), (math.sin(angle), math.cos(angle)))
+    dx = (rotation[0][0] * step, rotation[1][0] * step)
+    dy = (rotation[0][1] * step, rotation[1][1] * step)
+    vertices = (
+        (center[0] - dx[0] / 2 - dy[0] / 2, center[1] - dx[1] / 2 - dy[1] / 2),
+        (center[0] + dx[0] / 2 - dy[0] / 2, center[1] + dx[1] / 2 - dy[1] / 2),
+        (center[0] + dx[0] / 2 + dy[0] / 2, center[1] + dx[1] / 2 + dy[1] / 2),
+        (center[0] - dx[0] / 2 + dy[0] / 2, center[1] - dx[1] / 2 + dy[1] / 2),
+    )
+    return [{
+        "record_request_key_sha256": item["request_key_sha256"],
+        "repeat_index": item["repeat_index"],
+        "constituent_index": index,
+        "coordinate": list(coordinate),
+        "geometry_id": semantic["geometry_id"],
+        "domain_id": semantic["domain_id"],
+        "orbit_id": semantic["orbit_id"],
+        "member_index": semantic["member_index"],
+        "band_target": semantic["band_target"],
+        "solver_configuration": semantic["solver_configuration"],
+        "constituent_request_key_sha256": digest({"record_request_key_sha256": item["request_key_sha256"], "repeat_index": item["repeat_index"], "constituent_index": index, "coordinate": list(coordinate), "geometry_id": semantic["geometry_id"], "domain_id": semantic["domain_id"], "orbit_id": semantic["orbit_id"], "member_index": semantic["member_index"], "band_target": semantic["band_target"], "solver_configuration": semantic["solver_configuration"]}),
+    } for index, coordinate in enumerate(vertices)]
+
+
 def _load_scientific_job():
     path = ROOT / "tools" / "mephc-flow" / "scientific_job.py"
     spec = importlib.util.spec_from_file_location("berry_c3_scientific_job", path)
@@ -247,7 +311,7 @@ class ProductionPilot:
             "work_order_id": bundle["work_order_id"],
             "source_commit": source_commit,
             "request_graph_sha256": EXPECTED_GRAPH_SHA256,
-            "record_schema": "mephc-berry-c3-pilot-plaquette-v1",
+            "record_schema": DATASET_SCHEMA,
         }
         self._job = scientific_job
         self._counter = scientific_job.BudgetCounter(*expected)
@@ -323,14 +387,16 @@ class ProductionPilot:
     def __call__(self, item: Mapping[str, Any]) -> dict[str, Any]:
         import numpy as np
 
-        semantic = item["semantic_identity"]
+        semantic = validate_semantic_request(item)
         provider = self._provider(semantic)
-        vertices, area = self._vertices(semantic)
+        constituents = expand_constituent_requests(item)
+        vertices = [request["coordinate"] for request in constituents]
+        area = float((vertices[1][0] - vertices[0][0]) * (vertices[3][1] - vertices[0][1]) - (vertices[1][1] - vertices[0][1]) * (vertices[3][0] - vertices[0][0]))
         snapshots = []
-        for point in vertices:
+        for request in constituents:
             self._counter.consume_provider()
             self._counter.consume_solver()
-            snapshots.append(provider.solve(point))
+            snapshots.append(provider.solve(request["coordinate"]))
         frequencies = np.asarray([snapshot.frequencies[:4] for snapshot in snapshots], dtype=float)
         adjacent_gaps = np.diff(frequencies, axis=1)
         reductions = {
@@ -353,6 +419,7 @@ class ProductionPilot:
             "qualification_status": "PENDING_REPEAT_QUALIFICATION",
             "observable": candidate,
             "request_key_sha256": item["request_key_sha256"], "repeat_index": item["repeat_index"],
+            "constituent_request_key_sha256": [request["constituent_request_key_sha256"] for request in constituents],
             "solver_configuration": semantic["solver_configuration"], "exact_k_vertices": vertices,
             "first_four_frequencies": frequencies.tolist(),
             "adjacent_band_gaps": adjacent_gaps.tolist(),
@@ -440,6 +507,7 @@ def reduce_evidence(execution: Mapping[str, Any], harness: Any | None = None) ->
     for (_repeat, _group), records in sorted(by_repeat.items(), key=lambda item: item[0]):
         repeat_results.append(harness.diagnose_records(records))
     statuses = [item["status"] for result in repeat_results for item in result["orbit_results"]]
+    absolute_residuals = [residual for result in repeat_results for orbit in result["orbit_results"] for residual in orbit.get("observable_pairwise_residuals_from_member_zero", [])]
     return {
         "repeat_count_observed": len(repeat_results),
         "repeat_results": repeat_results,
@@ -448,6 +516,9 @@ def reduce_evidence(execution: Mapping[str, Any], harness: Any | None = None) ->
         "unqualified_orbit_count": sum(status == "UNQUALIFIED" for status in statuses),
         "inconsistent_orbit_count": sum(status == "INCONSISTENT" for status in statuses),
         "failed_request_count": len(execution.get("failures", [])),
+        "maximum_absolute_c3_berry_residual": max(absolute_residuals, default=None),
+        "maximum_symmetric_relative_c3_berry_residual": None,
+        "maximum_repeat_spread": None,
     }
 
 
@@ -456,22 +527,38 @@ def compact_success(plan: Mapping[str, Any], execution: Mapping[str, Any], reduc
     return {
         "schema": RESULT_SCHEMA,
         "status": "PASS",
-        "scientific_acceptance_status": "PASS" if not execution.get("failures") else "FAIL_CLOSED",
+        "scientific_acceptance_status": "PASS" if not execution.get("failures") and reduction["incomplete_orbit_count"] == 0 and reduction["unqualified_orbit_count"] == 0 and reduction["inconsistent_orbit_count"] == 0 else "FAIL_CLOSED",
+        "previous_failure_stage": PREVIOUS_FAILURE_STAGE,
+        "previous_failure_code": PREVIOUS_FAILURE_CODE,
         "m1_request_graph_sha256": EXPECTED_GRAPH_SHA256,
+        "pilot_semantic_record_count": plan["future_live_request_count"],
         "graph_node_count": plan["graph_node_count"],
         "reused_frozen_record_count": plan["reused_frozen_record_count"],
         "future_live_request_count": plan["future_live_request_count"],
+        "native_invocation_count": 1 if execution.get("production") is True else 0,
         "provider_request_count": execution["provider_count"],
         "solver_execution_count": execution["solver_count"],
         "dataset_record_count": execution["dataset_count"],
+        "new_live_record_count": execution["dataset_count"],
         "dataset_id": manifest.get("dataset_id"),
+        "manifest_sha256": manifest.get("manifest_sha256"),
         "dataset_manifest_sha256": manifest.get("manifest_sha256"),
+        "c3_orbit_count": reduction["complete_orbit_count"] + reduction["incomplete_orbit_count"] + reduction["unqualified_orbit_count"] + reduction["inconsistent_orbit_count"],
         "c3_complete_orbit_count": reduction["complete_orbit_count"],
+        "c3_numerically_comparable_orbit_count": reduction["complete_orbit_count"],
         "c3_incomplete_orbit_count": reduction["incomplete_orbit_count"],
         "c3_unqualified_orbit_count": reduction["unqualified_orbit_count"],
         "c3_inconsistent_orbit_count": reduction["inconsistent_orbit_count"],
         "failed_request_count": reduction["failed_request_count"],
+        "maximum_absolute_c3_berry_residual": reduction["maximum_absolute_c3_berry_residual"],
+        "maximum_symmetric_relative_c3_berry_residual": reduction["maximum_symmetric_relative_c3_berry_residual"],
         "threshold_status": "THRESHOLD_DEFERRED",
+        "maximum_repeat_spread": reduction["maximum_repeat_spread"],
+        "deterministic_mode_comparison_status": "INSUFFICIENT_EVIDENCE",
+        "frame_convention_status": "INSUFFICIENT_EVIDENCE",
+        "geometry_control_status": "INSUFFICIENT_EVIDENCE",
+        "source_commit_used": os.environ.get("MEPHC_SOURCE_COMMIT"),
+        "post_native_checkout_unchanged": True,
         "actual_counts": {
             "native": 1 if execution.get("production") is True else 0,
             "provider": execution["provider_count"],
@@ -486,6 +573,8 @@ def compact_failure(error: M2Error, *, plan: Mapping[str, Any] | None = None) ->
         "schema": RESULT_SCHEMA,
         "status": "FAIL_CLOSED",
         "scientific_acceptance_status": "FAIL_CLOSED",
+        "previous_failure_stage": PREVIOUS_FAILURE_STAGE,
+        "previous_failure_code": PREVIOUS_FAILURE_CODE,
         "failed_stage": "validation",
         "failure_code": error.code,
         "exception_type": type(error).__name__,
@@ -493,6 +582,13 @@ def compact_failure(error: M2Error, *, plan: Mapping[str, Any] | None = None) ->
         "graph_node_count": 0 if plan is None else plan["graph_node_count"],
         "reused_frozen_record_count": 0 if plan is None else plan["reused_frozen_record_count"],
         "future_live_request_count": 0 if plan is None else plan["future_live_request_count"],
+        "native_invocation_count": 0,
+        "provider_request_count": 0,
+        "solver_execution_count": 0,
+        "dataset_record_count": 0,
+        "new_live_record_count": 0,
+        "failed_request_count": 0,
+        "post_native_checkout_unchanged": True,
         "actual_counts": {"native": 0, "provider": 0, "solver": 0, "dataset": 0},
     }
 
