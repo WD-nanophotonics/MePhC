@@ -47,6 +47,12 @@ PREVIOUS_TYPEERROR_CALLSITE = "legacy M2 audit adapter: provider.solve(" + "requ
 PREVIOUS_TYPEERROR_ARGUMENT_MISMATCH = "the legacy adapter passed the full request envelope as keyword request; solve accepts positional k_point: Sequence[float]"
 PRODUCTION_PROVIDER_PUBLIC_CALL_SIGNATURE = "solve(self, k_point: Sequence[float]) -> MPBHEnvelopeSnapshot"
 PRODUCTION_PROVIDER_CALL_FORM = "provider.solve(k_point)"
+GOLDEN_LIVE_ENTRYPOINT = "audit/e8b/run_e8b.py"
+GOLDEN_PROVIDER_SYMBOL = PRODUCTION_PROVIDER_SYMBOL
+GOLDEN_STATE_TYPE = "audit.e8b.e8b_geometry.solver_geometry(state) -> (geometry, geometry_lattice)"
+GOLDEN_PROVIDER_CONSTRUCTOR_PATTERN = "MPBLiveEnergySpectralProvider(geometry=geometry, geometry_lattice=lattice, resolution=..., num_bands=..., polarization=..., default_material=..., eigensolver_tolerance=..., deterministic=..., mesh_size=..., phase_callback=...)"
+GOLDEN_SOLVE_PATTERN = "provider.solve(tuple(float(x) for x in q))"
+GOLDEN_SNAPSHOT_EXTRACTION_PATTERN = "raw=provider.solve(...); frequencies=raw.frequencies; vectors=raw.normalized_vectors"
 
 
 class M2Error(ValueError):
@@ -620,6 +626,10 @@ def compact_success(plan: Mapping[str, Any], execution: Mapping[str, Any], reduc
         "previous_typeerror_argument_mismatch": PREVIOUS_TYPEERROR_ARGUMENT_MISMATCH,
         "production_provider_public_call_signature": PRODUCTION_PROVIDER_PUBLIC_CALL_SIGNATURE,
         "production_provider_call_form": PRODUCTION_PROVIDER_CALL_FORM,
+        "golden_live_entrypoint": GOLDEN_LIVE_ENTRYPOINT,
+        "golden_provider_symbol": GOLDEN_PROVIDER_SYMBOL,
+        "golden_state_type": GOLDEN_STATE_TYPE,
+        "golden_solve_pattern": GOLDEN_SOLVE_PATTERN,
         "production_provider_symbol": PRODUCTION_PROVIDER_SYMBOL,
         "first_live_request_key": plan["live_requests"][0]["request_key_sha256"] if plan.get("live_requests") else None,
         "m1_request_graph_sha256": EXPECTED_GRAPH_SHA256,
@@ -680,6 +690,10 @@ def compact_failure(error: M2Error, *, plan: Mapping[str, Any] | None = None) ->
         "previous_typeerror_argument_mismatch": PREVIOUS_TYPEERROR_ARGUMENT_MISMATCH,
         "production_provider_public_call_signature": PRODUCTION_PROVIDER_PUBLIC_CALL_SIGNATURE,
         "production_provider_call_form": PRODUCTION_PROVIDER_CALL_FORM,
+        "golden_live_entrypoint": GOLDEN_LIVE_ENTRYPOINT,
+        "golden_provider_symbol": GOLDEN_PROVIDER_SYMBOL,
+        "golden_state_type": GOLDEN_STATE_TYPE,
+        "golden_solve_pattern": GOLDEN_SOLVE_PATTERN,
         "production_provider_symbol": PRODUCTION_PROVIDER_SYMBOL,
         "first_live_request_key": plan["live_requests"][0]["request_key_sha256"] if plan and plan.get("live_requests") else None,
         "failed_stage": "validation",
