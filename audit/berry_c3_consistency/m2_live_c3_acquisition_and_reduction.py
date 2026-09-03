@@ -37,6 +37,7 @@ REPEAT_COUNT = 3
 POINT_SOLVES_PER_PLAQUETTE = 4
 PREVIOUS_FAILURE_STAGE = "pre_provider_binding"
 PREVIOUS_FAILURE_CODE = "PRODUCTION_PROVIDER_BINDING_REQUIRED"
+PRODUCTION_PROVIDER_SYMBOL = "mephc.mpb_energy_spectral_provider.MPBLiveEnergySpectralProvider"
 
 
 class M2Error(ValueError):
@@ -211,6 +212,19 @@ def expand_constituent_requests(item: Mapping[str, Any]) -> list[dict[str, Any]]
         "solver_configuration": semantic["solver_configuration"],
         "constituent_request_key_sha256": digest({"record_request_key_sha256": item["request_key_sha256"], "repeat_index": item["repeat_index"], "constituent_index": index, "coordinate": list(coordinate), "geometry_id": semantic["geometry_id"], "domain_id": semantic["domain_id"], "orbit_id": semantic["orbit_id"], "member_index": semantic["member_index"], "band_target": semantic["band_target"], "solver_configuration": semantic["solver_configuration"]}),
     } for index, coordinate in enumerate(vertices)]
+
+
+def build_production_request(item: Mapping[str, Any], constituent: Mapping[str, Any]) -> dict[str, Any]:
+    """Build the explicit production-provider input without scientific defaults."""
+    semantic = validate_semantic_request(item)
+    required = {"record_request_key_sha256", "repeat_index", "constituent_index", "coordinate", "geometry_id", "domain_id", "orbit_id", "member_index", "band_target", "solver_configuration", "constituent_request_key_sha256"}
+    if set(constituent) != required:
+        raise M2Error("PRODUCTION_REQUEST_FIELDS_INVALID")
+    if constituent["record_request_key_sha256"] != item["request_key_sha256"] or constituent["repeat_index"] != item["repeat_index"]:
+        raise M2Error("PRODUCTION_REQUEST_PARENT_IDENTITY_MISMATCH")
+    if any(constituent[field] != semantic[field] for field in ("geometry_id", "domain_id", "orbit_id", "member_index", "band_target", "solver_configuration")):
+        raise M2Error("PRODUCTION_REQUEST_SEMANTIC_DRIFT")
+    return {"provider_symbol": PRODUCTION_PROVIDER_SYMBOL, **dict(constituent)}
 
 
 def _load_scientific_job():
@@ -392,8 +406,9 @@ class ProductionPilot:
         constituents = expand_constituent_requests(item)
         vertices = [request["coordinate"] for request in constituents]
         area = float((vertices[1][0] - vertices[0][0]) * (vertices[3][1] - vertices[0][1]) - (vertices[1][1] - vertices[0][1]) * (vertices[3][0] - vertices[0][0]))
+        production_requests = [build_production_request(item, request) for request in constituents]
         snapshots = []
-        for request in constituents:
+        for request in production_requests:
             self._counter.consume_provider()
             self._counter.consume_solver()
             snapshots.append(provider.solve(request["coordinate"]))
@@ -419,7 +434,8 @@ class ProductionPilot:
             "qualification_status": "PENDING_REPEAT_QUALIFICATION",
             "observable": candidate,
             "request_key_sha256": item["request_key_sha256"], "repeat_index": item["repeat_index"],
-            "constituent_request_key_sha256": [request["constituent_request_key_sha256"] for request in constituents],
+            "constituent_request_key_sha256": [request["constituent_request_key_sha256"] for request in production_requests],
+            "production_provider_symbol": PRODUCTION_PROVIDER_SYMBOL,
             "solver_configuration": semantic["solver_configuration"], "exact_k_vertices": vertices,
             "first_four_frequencies": frequencies.tolist(),
             "adjacent_band_gaps": adjacent_gaps.tolist(),
@@ -480,7 +496,7 @@ def execute_injected_plan(
             record["observable"] = _finite_observable(record.get("observable"))
             results.append(record)
         except Exception as exc:  # preserve the exact node and stage without retry
-            failures.append({"request_key_sha256": item["request_key_sha256"], "repeat_index": item["repeat_index"], "failed_stage": "provider_or_solver", "failure_code": getattr(exc, "code", type(exc).__name__), "exception_type": type(exc).__name__})
+            failures.append({"request_key_sha256": item["request_key_sha256"], "repeat_index": item["repeat_index"], "failed_stage": "provider_or_solver", "failure_code": getattr(exc, "code", type(exc).__name__), "exception_type": type(exc).__name__, "production_provider_symbol": PRODUCTION_PROVIDER_SYMBOL})
     return {
         "results": results,
         "failures": failures,
@@ -526,11 +542,13 @@ def compact_success(plan: Mapping[str, Any], execution: Mapping[str, Any], reduc
     manifest = execution.get("dataset_manifest") or {}
     return {
         "schema": RESULT_SCHEMA,
-        "status": "PASS",
+        "status": "PASS" if not execution.get("failures") else "FAIL_CLOSED",
         "scientific_acceptance_status": "PASS" if not execution.get("failures") and reduction["incomplete_orbit_count"] == 0 and reduction["unqualified_orbit_count"] == 0 and reduction["inconsistent_orbit_count"] == 0 else "FAIL_CLOSED",
         "previous_failure_stage": PREVIOUS_FAILURE_STAGE,
         "previous_failure_code": PREVIOUS_FAILURE_CODE,
+        "production_provider_symbol": PRODUCTION_PROVIDER_SYMBOL,
         "m1_request_graph_sha256": EXPECTED_GRAPH_SHA256,
+        "request_graph_sha256": EXPECTED_GRAPH_SHA256,
         "pilot_semantic_record_count": plan["future_live_request_count"],
         "graph_node_count": plan["graph_node_count"],
         "reused_frozen_record_count": plan["reused_frozen_record_count"],
@@ -550,6 +568,9 @@ def compact_success(plan: Mapping[str, Any], execution: Mapping[str, Any], reduc
         "c3_unqualified_orbit_count": reduction["unqualified_orbit_count"],
         "c3_inconsistent_orbit_count": reduction["inconsistent_orbit_count"],
         "failed_request_count": reduction["failed_request_count"],
+        "failure_code": (execution.get("failures") or [{}])[0].get("failure_code"),
+        "failure_stage": (execution.get("failures") or [{}])[0].get("failed_stage"),
+        "failure_exception_type": (execution.get("failures") or [{}])[0].get("exception_type"),
         "maximum_absolute_c3_berry_residual": reduction["maximum_absolute_c3_berry_residual"],
         "maximum_symmetric_relative_c3_berry_residual": reduction["maximum_symmetric_relative_c3_berry_residual"],
         "threshold_status": "THRESHOLD_DEFERRED",
@@ -575,6 +596,7 @@ def compact_failure(error: M2Error, *, plan: Mapping[str, Any] | None = None) ->
         "scientific_acceptance_status": "FAIL_CLOSED",
         "previous_failure_stage": PREVIOUS_FAILURE_STAGE,
         "previous_failure_code": PREVIOUS_FAILURE_CODE,
+        "production_provider_symbol": PRODUCTION_PROVIDER_SYMBOL,
         "failed_stage": "validation",
         "failure_code": error.code,
         "exception_type": type(error).__name__,
@@ -588,6 +610,7 @@ def compact_failure(error: M2Error, *, plan: Mapping[str, Any] | None = None) ->
         "dataset_record_count": 0,
         "new_live_record_count": 0,
         "failed_request_count": 0,
+        "request_graph_sha256": EXPECTED_GRAPH_SHA256,
         "post_native_checkout_unchanged": True,
         "actual_counts": {"native": 0, "provider": 0, "solver": 0, "dataset": 0},
     }
