@@ -6,6 +6,7 @@ import itertools
 import json
 import math
 import os
+import traceback
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -125,7 +126,7 @@ def energy_fft_transform(frame: Any, shape: Sequence[int], reciprocal_automorphi
 
 
 def prior_real_space_transform(frame: Any, shape: Sequence[int], direct_automorphism: Any, folding: Sequence[int]) -> np.ndarray:
-    mapping = _m12().build_index_map(shape, np.asarray(direct_automorphism, dtype=int)); return _m14().apply_folding_gauge(frame, shape, mapping, folding, 1)
+    mapping = _m9().build_index_map(shape, np.asarray(direct_automorphism, dtype=int)); return _m14().apply_folding_gauge(frame, shape, mapping, folding, 1)
 
 
 def _m14() -> Any:
@@ -175,8 +176,8 @@ def analyze(m12_records: Sequence[Mapping[str, Any]], m13_records: Sequence[Mapp
     return result
 
 
-def failure(code: str) -> dict[str, Any]:
-    return {"schema": RESULT_SCHEMA, "status": "FAIL_CLOSED", "scientific_acceptance_status": "FAIL_CLOSED", "failure_code": code, "target_state_count": 0, "c3_edge_count": 0, "discrete_grid_representation_status": "INSUFFICIENT_EXISTING_METADATA", "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "post_analysis_checkout_unchanged": True}
+def failure(code: str, *, exception_type: str | None = None, exception_message: str | None = None, failure_stage: str | None = None, traceback_tail: str | None = None) -> dict[str, Any]:
+    return {"schema": RESULT_SCHEMA, "status": "FAIL_CLOSED", "scientific_acceptance_status": "FAIL_CLOSED", "failure_code": code, "previous_child_failure_underlying_code": "ATTRIBUTE_ERROR_MISSING_BUILD_INDEX_MAP_HELPER", "previous_child_failure_exception_type": "AttributeError", "previous_child_failure_message": "M15 first failed in _edges because triangular_reciprocal_basis was undefined; after repair the second failed in prior_real_space_transform because M12 has no build_index_map; both were local helper-reference errors.", "previous_child_failure_history": [{"exception_type": "NameError", "message": "name 'triangular_reciprocal_basis' is not defined", "callsite": "_edges"}, {"exception_type": "AttributeError", "message": "module 'm15_m12_helpers' has no attribute 'build_index_map'", "callsite": "prior_real_space_transform"}], "exception_type": exception_type, "exception_message": exception_message, "failure_stage": failure_stage, "traceback_tail": traceback_tail, "target_state_count": 0, "c3_edge_count": 0, "discrete_grid_representation_status": "INSUFFICIENT_EXISTING_METADATA", "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "post_analysis_checkout_unchanged": True}
 
 
 def main() -> int:
@@ -184,9 +185,20 @@ def main() -> int:
         bundle_path = Path(os.environ.get("MEPHC_INPUT_BUNDLE", "")); require(bundle_path.is_file(), "M15_INPUT_BUNDLE_MISSING"); bundle = json.loads(bundle_path.read_text(encoding="utf-8")); require(isinstance(bundle, dict) and isinstance(bundle.get("work_order_id"), str), "M15_WORK_ORDER_MISSING")
         counters = Path(os.environ.get("MEPHC_EXECUTION_COUNTERS_PATH", "")); require(counters.name, "M15_COUNTERS_PATH_MISSING"); state_root = counters.parent.parent; job = _job(); m12 = read_dataset(job, state_root, M12_DATASET_ID, M12_MANIFEST_SHA256, 3); m13 = read_dataset(job, state_root, M13_DATASET_ID, M13_MANIFEST_SHA256, 3); runtime = {"runtime_spatial_shape": list(SHAPE)}
         result = analyze(m12, m13, runtime)
-    except (KeyError, M15Error, OSError, UnicodeDecodeError, json.JSONDecodeError, TypeError, ValueError) as exc:
-        result = failure(str(exc))
-    Path(os.environ["MEPHC_RESULT_PATH"]).write_bytes(canonical(result) + b"\n"); return 0
+    except Exception as exc:
+        # Scientific negative/insufficient outcomes and local bounded errors
+        # are both data, never a process-level wrapper failure.
+        result = failure("M15_UNEXPECTED_EXCEPTION" if not isinstance(exc, (KeyError, M15Error, OSError, UnicodeDecodeError, json.JSONDecodeError, TypeError, ValueError)) else str(exc), exception_type=type(exc).__name__, exception_message=str(exc)[:1024], failure_stage="m15_child_entrypoint", traceback_tail=traceback.format_exc()[-3000:])
+    try:
+        Path(os.environ["MEPHC_RESULT_PATH"]).write_bytes(canonical(result) + b"\n")
+    except Exception as exc:
+        # The runner always supplies RESULT_PATH; retain a final best-effort
+        # in-process diagnostic while still returning successfully.
+        fallback = failure("M15_RESULT_SERIALIZATION_FAILURE", exception_type=type(exc).__name__, exception_message=str(exc)[:1024], failure_stage="result_serialization", traceback_tail=traceback.format_exc()[-3000:])
+        result_path = os.environ.get("MEPHC_RESULT_PATH")
+        if result_path:
+            Path(result_path).write_text(json.dumps(fallback, sort_keys=True, separators=(",", ":"), ensure_ascii=False) + "\n", encoding="utf-8")
+    return 0
 
 
 if __name__ == "__main__":

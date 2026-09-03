@@ -4,6 +4,8 @@ from __future__ import annotations
 import importlib.util
 import json
 import os
+import subprocess
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -71,3 +73,31 @@ def test_actual_child_entrypoint_emits_structured_result_without_generic_masking
     emitted = json.loads(output.read_text(encoding="utf-8"))
     assert emitted == expected
     assert emitted["status"] == "PASS"
+
+
+def test_prior_real_space_reconstruction_uses_canonical_m9_index_map():
+    values = M15.lattice_automorphisms()
+    frame = np.zeros((2 * 4 * 4 * 3, 2), dtype=np.complex128)
+    frame[2::3, :] = 1.0
+    frame[4 * 4 * 3 + 2::3, :] = 1.0
+    mapping = M15._m9().build_index_map((4, 4), values["c3_direct_integer_automorphism"])
+    result = M15.prior_real_space_transform(frame, (4, 4), values["c3_direct_integer_automorphism"], (0, 0))
+    assert result.shape == frame.shape
+    assert mapping.shape == (4, 4, 2)
+
+
+def test_actual_subprocess_emits_one_structured_result_and_returns_zero(tmp_path):
+    bundle = tmp_path / "bundle.json"
+    result = tmp_path / "result.json"
+    counters = tmp_path / "counters.json"
+    bundle.write_text(json.dumps({"work_order_id": "MEPHC-BERRY-C3-M15R2-TEST-00000000", "dataset_bindings_v2": {"inputs": [{"dataset_id": M15.M12_DATASET_ID, "manifest_sha256": M15.M12_MANIFEST_SHA256, "record_count": 3}, {"dataset_id": M15.M13_DATASET_ID, "manifest_sha256": M15.M13_MANIFEST_SHA256, "record_count": 3}]}}), encoding="utf-8")
+    counters.write_text("{}", encoding="utf-8")
+    env = os.environ.copy()
+    env.update({"MEPHC_INPUT_BUNDLE": str(bundle), "MEPHC_RESULT_PATH": str(result), "MEPHC_EXECUTION_COUNTERS_PATH": str(counters)})
+    completed = subprocess.run([sys.executable, str(ENTRYPOINT)], env=env, capture_output=True, text=True, check=False)
+    assert completed.returncode == 0
+    emitted = json.loads(result.read_text(encoding="utf-8"))
+    assert emitted["schema"] == M15.RESULT_SCHEMA
+    assert emitted["status"] == "FAIL_CLOSED"
+    assert isinstance(emitted["exception_type"], str) and emitted["exception_type"]
+    assert isinstance(emitted["traceback_tail"], str) and emitted["traceback_tail"]
