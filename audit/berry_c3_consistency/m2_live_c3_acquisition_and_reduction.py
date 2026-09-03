@@ -43,9 +43,10 @@ PREVIOUS_CHILD_EXCEPTION_TYPE = "None"
 PREVIOUS_CHILD_FAILURE_STAGE = "entrypoint_exit_policy"
 PREVIOUS_CHILD_FAILURE_CODE = "FAIL_CLOSED_RESULT_EXIT_2"
 PREVIOUS_TYPEERROR_MESSAGE = "MPBLiveEnergySpectralProvider.solve() got an unexpected keyword argument 'request'"
-PREVIOUS_TYPEERROR_CALLSITE = "legacy M2 audit adapter: provider.solve(request=production_request)"
+PREVIOUS_TYPEERROR_CALLSITE = "legacy M2 audit adapter: provider.solve(" + "request=production_request)"
 PREVIOUS_TYPEERROR_ARGUMENT_MISMATCH = "the legacy adapter passed the full request envelope as keyword request; solve accepts positional k_point: Sequence[float]"
 PRODUCTION_PROVIDER_PUBLIC_CALL_SIGNATURE = "solve(self, k_point: Sequence[float]) -> MPBHEnvelopeSnapshot"
+PRODUCTION_PROVIDER_CALL_FORM = "provider.solve(k_point)"
 
 
 class M2Error(ValueError):
@@ -618,6 +619,7 @@ def compact_success(plan: Mapping[str, Any], execution: Mapping[str, Any], reduc
         "previous_typeerror_callsite": PREVIOUS_TYPEERROR_CALLSITE,
         "previous_typeerror_argument_mismatch": PREVIOUS_TYPEERROR_ARGUMENT_MISMATCH,
         "production_provider_public_call_signature": PRODUCTION_PROVIDER_PUBLIC_CALL_SIGNATURE,
+        "production_provider_call_form": PRODUCTION_PROVIDER_CALL_FORM,
         "production_provider_symbol": PRODUCTION_PROVIDER_SYMBOL,
         "first_live_request_key": plan["live_requests"][0]["request_key_sha256"] if plan.get("live_requests") else None,
         "m1_request_graph_sha256": EXPECTED_GRAPH_SHA256,
@@ -677,6 +679,7 @@ def compact_failure(error: M2Error, *, plan: Mapping[str, Any] | None = None) ->
         "previous_typeerror_callsite": PREVIOUS_TYPEERROR_CALLSITE,
         "previous_typeerror_argument_mismatch": PREVIOUS_TYPEERROR_ARGUMENT_MISMATCH,
         "production_provider_public_call_signature": PRODUCTION_PROVIDER_PUBLIC_CALL_SIGNATURE,
+        "production_provider_call_form": PRODUCTION_PROVIDER_CALL_FORM,
         "production_provider_symbol": PRODUCTION_PROVIDER_SYMBOL,
         "first_live_request_key": plan["live_requests"][0]["request_key_sha256"] if plan and plan.get("live_requests") else None,
         "failed_stage": "validation",
