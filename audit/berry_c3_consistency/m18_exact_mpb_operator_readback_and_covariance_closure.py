@@ -45,6 +45,15 @@ class M18Error(ValueError):
     pass
 
 
+RESIDUAL_ROW_KEYS = (
+    "state_identity",
+    "band_index",
+    "curlE_residual",
+    "curlH_residual",
+    "maxwell_residual",
+)
+
+
 def require(condition: bool, code: str, detail: str = "") -> None:
     if not condition:
         raise M18Error(f"{code}:{detail}" if detail else code)
@@ -288,7 +297,30 @@ def _state_reproduction(records: Sequence[Mapping[str, Any]], m12: Sequence[Mapp
     return {"fresh_vs_M12_frequency_reproduction_residual_max": freq_max, "fresh_vs_archived_rank2_subspace_minimum_overlap_singular_value": min(overlaps), "scientific_state_reproduction_status": "EXACT_SEMANTIC_TRIPLET_BOUND; RAW_FREQUENCY_AND_RANK2_RESIDUALS_REPORTED_WITHOUT_INVENTED_THRESHOLD"}
 
 
-def _constitutive_residual(e: np.ndarray, h: np.ndarray, epsilon: np.ndarray, omega: float, q: Sequence[float], d: np.ndarray | None = None, b: np.ndarray | None = None) -> dict[str, float]:
+def _validate_residual_row(row: Mapping[str, Any]) -> dict[str, Any]:
+    require(isinstance(row, Mapping), "M18_RESIDUAL_ROW_NOT_OBJECT")
+    require(set(row) == set(RESIDUAL_ROW_KEYS), "M18_RESIDUAL_ROW_SCHEMA_INVALID")
+    for key in RESIDUAL_ROW_KEYS:
+        require(key in row, "M18_RESIDUAL_ROW_FIELD_MISSING", key)
+    state_identity = row["state_identity"]
+    band_index = row["band_index"]
+    require(isinstance(state_identity, str) and bool(state_identity), "M18_RESIDUAL_ROW_STATE_INVALID")
+    require(isinstance(band_index, (int, np.integer)) and not isinstance(band_index, bool), "M18_RESIDUAL_ROW_BAND_INVALID")
+    require(1 <= int(band_index) <= BANDS, "M18_RESIDUAL_ROW_BAND_OUT_OF_RANGE", str(band_index))
+    values = {key: float(row[key]) for key in RESIDUAL_ROW_KEYS[2:]}
+    require(all(np.isfinite(value) and value >= 0.0 for value in values.values()), "M18_RESIDUAL_ROW_VALUE_INVALID", state_identity)
+    return {"state_identity": state_identity, "band_index": int(band_index), **values}
+
+
+def _validate_residual_rows(rows: Sequence[Mapping[str, Any]], expected_state: str) -> list[dict[str, Any]]:
+    require(len(rows) == BANDS, "M18_RESIDUAL_ROW_COUNT_INVALID", str(len(rows)))
+    validated = [_validate_residual_row(row) for row in rows]
+    require(all(row["state_identity"] == expected_state for row in validated), "M18_RESIDUAL_ROW_STATE_MISMATCH", expected_state)
+    require([row["band_index"] for row in validated] == list(range(1, BANDS + 1)), "M18_RESIDUAL_ROW_BAND_SEQUENCE_INVALID")
+    return validated
+
+
+def _constitutive_residual(e: np.ndarray, h: np.ndarray, epsilon: np.ndarray, omega: float, q: Sequence[float], d: np.ndarray | None = None, b: np.ndarray | None = None, *, state_identity: str, band_index: int) -> dict[str, Any]:
     m16 = _m16(); curl_e, curl_h = m16.maxwell_curl(e, q), m16.maxwell_curl(h, q)
     constitutive_d = epsilon[..., None] * e if d is None else d
     constitutive_b = h if b is None else b
@@ -296,13 +328,20 @@ def _constitutive_residual(e: np.ndarray, h: np.ndarray, epsilon: np.ndarray, om
     second = curl_h + 1j * float(omega) * constitutive_d
     e_scale = max(float(np.linalg.norm(curl_e)), abs(float(omega)) * float(np.linalg.norm(constitutive_b)), np.finfo(float).tiny)
     h_scale = max(float(np.linalg.norm(curl_h)), abs(float(omega)) * float(np.linalg.norm(constitutive_d)), np.finfo(float).tiny)
-    return {"maxwell": float(max(np.linalg.norm(first) / e_scale, np.linalg.norm(second) / h_scale)), "curlE": float(np.linalg.norm(first) / e_scale), "curlH": float(np.linalg.norm(second) / h_scale)}
+    return _validate_residual_row({
+        "state_identity": state_identity,
+        "band_index": band_index,
+        "curlE_residual": float(np.linalg.norm(first) / e_scale),
+        "curlH_residual": float(np.linalg.norm(second) / h_scale),
+        "maxwell_residual": float(max(np.linalg.norm(first) / e_scale, np.linalg.norm(second) / h_scale)),
+    })
 
 
-def _fresh_exact_residual(record: Mapping[str, Any], *, archived: bool, m12_record: Mapping[str, Any] | None = None) -> dict[str, float]:
+def _fresh_exact_residual(record: Mapping[str, Any], *, archived: bool, m12_record: Mapping[str, Any] | None = None) -> dict[str, Any]:
     m16 = _m16(); epsilon = np.asarray(record["epsilon_grid"], dtype=float).reshape(SHAPE)
     if archived:
-        frame = m16.decode_bands(m12_record["normalized_vectors_bands_1_to_6"])
+        require(m12_record is not None, "M18_ARCHIVED_RECORD_MISSING")
+        frame = _m12().decode_bands(m12_record["normalized_vectors_bands_1_to_6"])
         e = frame[:BLOCK].T.reshape(BANDS, *SHAPE, COMPONENT_COUNT).transpose(1, 2, 3, 0) / np.sqrt(epsilon)[..., None, None]
         h = frame[BLOCK:].T.reshape(BANDS, *SHAPE, COMPONENT_COUNT).transpose(1, 2, 3, 0)
     else:
@@ -313,11 +352,12 @@ def _fresh_exact_residual(record: Mapping[str, Any], *, archived: bool, m12_reco
     if archived:
         d_readback = b_readback = None
     freq = np.asarray(record["frequencies_bands_1_to_6"], dtype=float); q = record["coordinate"]
-    curl_e_max = curl_h_max = maxwell_max = 0.0
+    state_identity = str(record["c3_member_identity"])
+    rows = []
     for band in range(BANDS):
-        res = _constitutive_residual(e[..., band], h[..., band], epsilon, float(freq[band]), q, d_readback[..., band] if d_readback is not None else None, b_readback[..., band] if b_readback is not None else None)
-        curl_e_max = max(curl_e_max, res["curlE"]); curl_h_max = max(curl_h_max, res["curlH"]); maxwell_max = max(maxwell_max, res["maxwell"])
-    return {"maxwell": maxwell_max, "curlE": curl_e_max, "curlH": curl_h_max}
+        rows.append(_constitutive_residual(e[..., band], h[..., band], epsilon, float(freq[band]), q, d_readback[..., band] if d_readback is not None else None, b_readback[..., band] if b_readback is not None else None, state_identity=state_identity, band_index=band + 1))
+    rows = _validate_residual_rows(rows, state_identity)
+    return {"maxwell": max(row["maxwell_residual"] for row in rows), "curlE": max(row["curlE_residual"] for row in rows), "curlH": max(row["curlH_residual"] for row in rows), "rows": rows}
 
 
 def _material_c3(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
@@ -337,14 +377,14 @@ def _covariance(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
         target_record = ordered[(index + 1) % 3]; epsilon = np.asarray(target_record["epsilon_grid"], dtype=float).reshape(SHAPE); target_q = target_record["coordinate"]; target_freq = np.asarray(target_record["frequencies_bands_1_to_6"], dtype=float)
         for band in range(2):
             weighted_e = transformed[:BLOCK, band].reshape(*SHAPE, COMPONENT_COUNT); h = transformed[BLOCK:, band].reshape(*SHAPE, COMPONENT_COUNT); e = weighted_e / np.sqrt(epsilon)[..., None]
-            residual = _constitutive_residual(e, h, epsilon, float(target_freq[band + 1]), target_q)
-            transformed_residual = max(transformed_residual, residual["maxwell"])
+            residual = _constitutive_residual(e, h, epsilon, float(target_freq[band + 1]), target_q, state_identity=str(target_record["c3_member_identity"]), band_index=band + 2)
+            transformed_residual = max(transformed_residual, residual["maxwell_residual"])
     return {"c3_transformed_fresh_state_maxwell_residual_max": transformed_residual, "operator_intertwining_residual_max": intertwining, "fresh_rank2_c3_minimum_overlap_singular_value": min(item["minimum_overlap_singular_value"] for item in metrics), "fresh_rank2_c3_maximum_principal_angle": max(item["maximum_principal_angle"] for item in metrics), "fresh_rank2_c3_covariance_failure_count": sum(item["maximum_projector_distance"] > 0.0 for item in metrics), "transformed_energy_vector_residual_max": transformed_residual}
 
 
 def result_for(records: Sequence[Mapping[str, Any]], manifest: Mapping[str, Any], m12: Sequence[Mapping[str, Any]], m13: Sequence[Mapping[str, Any]], counter: Any) -> dict[str, Any]:
     reproduction = _state_reproduction(records, m12); fresh_rows = [_fresh_exact_residual(item, archived=False) for item in records]; archived_rows = [_fresh_exact_residual(item, archived=True, m12_record={x["request_key_sha256"]: x for x in m12}[item["request_key_sha256"]]) for item in records]; material = _material_c3(records); covariance = _covariance(records)
-    return {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "source_m12_dataset_id": M12_DATASET_ID, "source_m13_dataset_id": M13_DATASET_ID, "target_state_count": 3, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": counter.solver_count, "dataset_record_count": 3, "new_runtime_readback_record_count": 3, "dataset_id": manifest["dataset_id"], "manifest_sha256": manifest["manifest_sha256"], "exact_mpb_runtime_readback_status": "CAPTURED_SUFFICIENT_OPERATOR_READBACK", "epsilon_grid_shape": records[0]["epsilon_grid_shape"], "epsilon_grid_dtype": records[0]["epsilon_grid_dtype"], "epsilon_material_representation_type": records[0]["epsilon_material_representation_type"], "subpixel_or_smoothing_configuration": records[0]["subpixel_or_smoothing_configuration"], "field_material_grid_alignment_status": records[0]["field_material_grid_alignment_status"], "boundary_or_staggering_metadata_status": records[0]["boundary_or_staggering_metadata_status"], "epsilon_inverse_or_tensor_metadata_status": records[0]["epsilon_inverse_or_tensor_metadata_status"], "D_field_availability_status": [item["D_field_availability_status"] for item in records], "B_field_availability_status": [item["B_field_availability_status"] for item in records], **reproduction, "fresh_exact_maxwell_residual_max": max(item["maxwell"] for item in fresh_rows), "archived_exact_maxwell_residual_max": max(item["maxwell"] for item in archived_rows), "fresh_curlE_residual_max": max(item["curlE"] for item in fresh_rows), "fresh_curlH_residual_max": max(item["curlH"] for item in fresh_rows), "archived_curlE_residual_max": max(item["curlE"] for item in archived_rows), "archived_curlH_residual_max": max(item["curlH"] for item in archived_rows), "comparison_vs_M16_approximate_material": {"M16_approximate_maxwell_residual_max": 0.9986651051133764, "M18_fresh_exact_maxwell_residual_max": max(item["maxwell"] for item in fresh_rows), "interpretation": "raw same-convention comparison; no threshold invented"}, **material, **covariance, "isolated_projector_theorem_status": "RECONCILE_AFTER_EXACT_READBACK", "discrete_operator_covariance_diagnosis": "OPERATOR_COVARIANCE_SUPPORTED_ON_FRESH_AND_ARCHIVED_STATE_SUBSPACE" if covariance["fresh_rank2_c3_covariance_failure_count"] == 0 else "INTERNAL_MPB_SPECTRAL_PROJECTOR_CONTRADICTION", "remaining_unresolved_questions": ["Whether archived projector construction or state serialization caused any residual noncovariance after exact runtime readback"], "alternative_explanations_considered": ["M16 point-sampled epsilon", "MPB runtime epsilon/material grid", "D/B constitutive readback", "field/material alignment", "boundary/staggering", "Maxwell convention", "reciprocal-folding gauge", "fresh-versus-archived state reproduction", "spectral projector construction"], "counterevidence_summary": {"fresh_residuals": fresh_rows, "archived_residuals": archived_rows, "material_c3": material, "transformed_energy": covariance, "M16_approximation": 0.9986651051133764}, "cheapest_remaining_discriminating_test": "Audit projector dataset construction and spectral projector definition using existing M12/M13/M18 data only", "next_science_decision": "AUDIT_PROJECTOR_DATASET_CONSTRUCTION_AND_SPECTRAL_PROJECTOR_DEFINITION_WITH_EXISTING_DATA_ONLY", "minimal_next_live_state_count": 0, "source_commit_used": os.environ.get("MEPHC_SOURCE_COMMIT"), "post_analysis_checkout_unchanged": True}
+    return {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "source_m12_dataset_id": M12_DATASET_ID, "source_m13_dataset_id": M13_DATASET_ID, "target_state_count": 3, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": counter.solver_count, "dataset_record_count": 3, "new_runtime_readback_record_count": 3, "dataset_id": manifest["dataset_id"], "manifest_sha256": manifest["manifest_sha256"], "exact_mpb_runtime_readback_status": "CAPTURED_SUFFICIENT_OPERATOR_READBACK", "epsilon_grid_shape": records[0]["epsilon_grid_shape"], "epsilon_grid_dtype": records[0]["epsilon_grid_dtype"], "epsilon_material_representation_type": records[0]["epsilon_material_representation_type"], "subpixel_or_smoothing_configuration": records[0]["subpixel_or_smoothing_configuration"], "field_material_grid_alignment_status": records[0]["field_material_grid_alignment_status"], "boundary_or_staggering_metadata_status": records[0]["boundary_or_staggering_metadata_status"], "epsilon_inverse_or_tensor_metadata_status": records[0]["epsilon_inverse_or_tensor_metadata_status"], "D_field_availability_status": [item["D_field_availability_status"] for item in records], "B_field_availability_status": [item["B_field_availability_status"] for item in records], **reproduction, "fresh_exact_maxwell_residual_max": max(item["maxwell"] for item in fresh_rows), "archived_exact_maxwell_residual_max": max(item["maxwell"] for item in archived_rows), "fresh_curlE_residual_max": max(item["curlE"] for item in fresh_rows), "fresh_curlH_residual_max": max(item["curlH"] for item in fresh_rows), "archived_curlE_residual_max": max(item["curlE"] for item in archived_rows), "archived_curlH_residual_max": max(item["curlH"] for item in archived_rows), "residual_row_schema_actual": {"keys": list(RESIDUAL_ROW_KEYS), "types": {key: ("string" if key == "state_identity" else "integer" if key == "band_index" else "finite_nonnegative_number") for key in RESIDUAL_ROW_KEYS}, "semantics": "one validated row per state and band"}, "residual_row_schema_expected_by_old_aggregator": {"keys": ["curlE_residual", "curlH_residual", "maxwell_residual"], "semantics": "legacy scalar fields indexed on a producer row that actually exposed maxwell/curlE/curlH"}, "residual_contract_root_cause": "producer and consumer used different residual field names; the old consumer indexed curlE_residual although the producer returned curlE", "fresh_residual_rows": [row["rows"] for row in fresh_rows], "archived_residual_rows": [row["rows"] for row in archived_rows], "comparison_vs_M16_approximate_material": {"M16_approximate_maxwell_residual_max": 0.9986651051133764, "M18_fresh_exact_maxwell_residual_max": max(item["maxwell"] for item in fresh_rows), "interpretation": "raw same-convention comparison; no threshold invented"}, **material, **covariance, "isolated_projector_theorem_status": "RECONCILE_AFTER_EXACT_READBACK", "discrete_operator_covariance_diagnosis": "OPERATOR_COVARIANCE_SUPPORTED_ON_FRESH_AND_ARCHIVED_STATE_SUBSPACE" if covariance["fresh_rank2_c3_covariance_failure_count"] == 0 else "INTERNAL_MPB_SPECTRAL_PROJECTOR_CONTRADICTION", "remaining_unresolved_questions": ["Whether archived projector construction or state serialization caused any residual noncovariance after exact runtime readback"], "alternative_explanations_considered": ["M16 point-sampled epsilon", "MPB runtime epsilon/material grid", "D/B constitutive readback", "field/material alignment", "boundary/staggering", "Maxwell convention", "reciprocal-folding gauge", "fresh-versus-archived state reproduction", "spectral projector construction"], "counterevidence_summary": {"fresh_residuals": fresh_rows, "archived_residuals": archived_rows, "material_c3": material, "transformed_energy": covariance, "M16_approximation": 0.9986651051133764}, "cheapest_remaining_discriminating_test": "Audit projector dataset construction and spectral projector definition using existing M12/M13/M18 data only", "next_science_decision": "AUDIT_PROJECTOR_DATASET_CONSTRUCTION_AND_SPECTRAL_PROJECTOR_DEFINITION_WITH_EXISTING_DATA_ONLY", "minimal_next_live_state_count": 0, "source_commit_used": os.environ.get("MEPHC_SOURCE_COMMIT"), "post_analysis_checkout_unchanged": True}
 
 
 def recovery_result_for(records: Sequence[Mapping[str, Any]], m12: Sequence[Mapping[str, Any]], m13: Sequence[Mapping[str, Any]], prior_manifest: Mapping[str, Any], counter: Any) -> dict[str, Any]:

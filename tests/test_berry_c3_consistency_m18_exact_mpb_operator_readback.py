@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -118,6 +119,51 @@ def test_recovery_decoder_rejects_arbitrary_or_incomplete_energy_layout():
         pass
     else:
         raise AssertionError("incomplete legacy payload must be rejected")
+
+
+def test_residual_row_schema_is_canonical_and_explicit():
+    row = M18._constitutive_residual(
+        np.ones((*M18.SHAPE, 3), dtype=np.complex128),
+        np.ones((*M18.SHAPE, 3), dtype=np.complex128),
+        np.ones(M18.SHAPE),
+        0.2,
+        (0.0, 0.0),
+        state_identity="IDENTITY",
+        band_index=1,
+    )
+    assert tuple(row) == M18.RESIDUAL_ROW_KEYS
+    assert row["state_identity"] == "IDENTITY" and row["band_index"] == 1
+    assert all(np.isfinite(row[key]) for key in M18.RESIDUAL_ROW_KEYS[2:])
+
+
+@pytest.mark.parametrize("bad_row", [
+    {"state_identity": "IDENTITY", "band_index": 1, "curlH_residual": 0.0, "maxwell_residual": 0.0},
+    {"state_identity": "IDENTITY", "band_index": 1, "curlE_residual": float("nan"), "curlH_residual": 0.0, "maxwell_residual": 0.0},
+    {"state_identity": "IDENTITY", "band_index": 1, "curlE_residual": 0.0, "curlH_residual": 0.0, "maxwell_residual": 0.0, "extra": 1},
+])
+def test_residual_row_validation_rejects_missing_nonfinite_or_malformed_rows(bad_row):
+    with pytest.raises(M18.M18Error):
+        M18._validate_residual_row(bad_row)
+
+
+def test_recovered_record_result_for_completes_with_canonical_rows(monkeypatch):
+    records = [M18.capture_one(StrictSolver(), (0.0, 0.0, 0.0), "TE", member(index), Counter()) for index in range(3)]
+    m12 = []
+    m12_module = M18._m12()
+    for record in records:
+        record["fresh_energy_vectors_bands_1_to_6"] = [[[float(band), float(component)] for component in range(6)] for band in range(6)]
+        m12.append({
+            "request_key_sha256": record["request_key_sha256"],
+            "frequencies_bands_1_to_6": record["frequencies_bands_1_to_6"],
+            "normalized_vectors_bands_1_to_6": m12_module.encode_bands(M18.decode_persisted_energy_vectors(record)),
+        })
+    monkeypatch.setattr(M18, "_material_c3", lambda _: {"exact_runtime_epsilon_grid_c3_residual_max": 0.0, "exact_runtime_material_c3_covariance_status": "EXACT_ZERO"})
+    monkeypatch.setattr(M18, "_covariance", lambda _: {"c3_transformed_fresh_state_maxwell_residual_max": 0.0, "operator_intertwining_residual_max": 0.0, "fresh_rank2_c3_minimum_overlap_singular_value": 1.0, "fresh_rank2_c3_maximum_principal_angle": 0.0, "fresh_rank2_c3_covariance_failure_count": 0})
+    result = M18.result_for(records, {"dataset_id": "d", "manifest_sha256": "m"}, m12, [], Counter())
+    assert result["status"] == "PASS"
+    assert len(result["fresh_residual_rows"]) == len(result["archived_residual_rows"]) == 3
+    assert all(len(rows) == M18.BANDS for rows in result["fresh_residual_rows"])
+    assert result["residual_contract_root_cause"]
 
 
 def test_actual_child_emits_structured_failure_without_input_bundle(tmp_path):
