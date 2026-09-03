@@ -71,25 +71,33 @@ def test_stateful_public_field_sequence_keeps_band_point_association():
         def get_hfield(self, which_band, bloch_phase=True):
             self.current_band = which_band
             self.calls.append(("h", which_band, bloch_phase))
-            return np.full((128, 128, 3), which_band, dtype=complex)
+            return np.full((128, 128, 3), which_band + 0.25j, dtype=complex)
 
         def get_field_point(self, p):
             assert self.current_band in (2, 3)
             self.calls.append(("point", self.current_band, p.x, p.y))
-            return np.array([self.current_band, 0, 0], dtype=complex)
+            return np.array([self.current_band + 0.5j, 2.0 + 3.0j, -1.0 + 0.75j], dtype=complex)
 
         def get_bloch_field_point(self, p):
             self.calls.append(("bloch-point", self.current_band, p.x, p.y))
-            return np.array([self.current_band, 0, 0], dtype=complex)
+            return np.array([self.current_band + 0.5j, 2.0 + 3.0j, -1.0 + 0.75j], dtype=complex)
 
     solver = StatefulSolver()
     member = {"member_index": 0, "c3_member_identity": "IDENTITY", "coordinate": [0, 0, 0], "request_key_sha256": "k"}
     record, _frame, used = M28._capture(solver, FakeMP, member, solved=True)
     assert used == 1
     assert record["loaded_field_band_sequence"] == [2, 3]
-    assert record["point_query_values"]["2:index_over_N:0,0"][0][0] == 2.0
-    assert record["point_query_values"]["3:index_over_N:0,0"][0][0] == 3.0
+    assert record["point_query_values"]["2:index_over_N:0,0"] == [[2.0, 0.5], [2.0, 3.0], [-1.0, 0.75]]
+    assert record["point_query_values"]["3:index_over_N:0,0"] == [[3.0, 0.5], [2.0, 3.0], [-1.0, 0.75]]
     assert [call for call in solver.calls if call[0] == "h"][:2] == [("h", 2, False), ("h", 3, False)]
+
+
+def test_complex_vector_schema_round_trips_without_loss():
+    vector = np.asarray([1.25 + 2.5j, -3.0 + 0.125j, 4.5 - 6.75j], dtype=np.complex128)
+    encoded = M28._vector(vector)
+    assert encoded == [[1.25, 2.5], [-3.0, 0.125], [4.5, -6.75]]
+    decoded = np.asarray([complex(real, imag) for real, imag in encoded], dtype=np.complex128)
+    assert np.array_equal(decoded, vector)
 
 
 def test_canonical_triplet_binding_uses_semantic_identity():
