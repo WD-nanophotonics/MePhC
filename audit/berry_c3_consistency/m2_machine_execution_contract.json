@@ -9,8 +9,10 @@
   "m1_graph_node_count": 24,
   "reused_frozen_record_count": 0,
   "future_live_request_count": 72,
-  "future_provider_budget": 72,
-  "future_solver_budget": 72,
+  "future_provider_budget": 288,
+  "future_solver_budget": 288,
+  "future_dataset_record_count": 72,
+  "point_solves_per_plaquette": 4,
   "native_invocation_budget": 1,
   "independent_repeat_count": 3,
   "exact_request_authority": "verified M1 canonical semantic graph only",
@@ -20,7 +22,7 @@
   "result_projection_contract": "audit/berry_c3_consistency/m2_compact_result_projection_contract.json",
   "runtime_no_source_mutation": true,
   "runtime_write_scope": "MEPHC_RESULT_PATH only",
-  "runtime_execution_rule": "verify plan, goal, M1 artifact hashes, graph hash, and every request key before the first provider execution",
+  "runtime_execution_rule": "one bounded preflight, then 72 independent plaquettes with four counted point solves each",
   "runtime_duplicate_rule": "execute each verified semantic node at most once per declared independent repeat index",
   "runtime_failure_rule": "preserve exact request key and stage; never retry with changed parameters or create a replacement node",
   "c3_rule": {
@@ -39,7 +41,7 @@
     "audit/berry_c3_consistency/m1_manifest.json",
     "tests/test_berry_c3_consistency_m1.py"
   ],
-  "future_native_contract": "exactly one orchestration invocation; no additional Native authority",
+  "future_native_contract": "exactly one orchestration invocation with provider=288, solver=288 and dataset records=72; no additional Native authority",
   "future_science_contract_required": true,
   "m2p_actual_counts": {
     "native": 0,

@@ -14,11 +14,11 @@
     "tests/test_berry_c3_consistency_m2_preparation.py"
   ],
   "artifact_hashes": {
-    "audit/berry_c3_consistency/m2_live_c3_acquisition_and_reduction.py": "52c119308fd10a1cffc2a1108ab62a600389cfd365d7d4bc9e8d700cfeb50d24",
-    "audit/berry_c3_consistency/m2_machine_execution_contract.json": "70ff0317483d01b700d4446195b59fbb7ac8c27f195a0e89c15666a1e1a02f9c",
-    "audit/berry_c3_consistency/m2_compact_result_projection_contract.json": "93ea006d5955652deb74e2f61ebea5f823dc332a292443f4e98b65048f4cfb23",
+    "audit/berry_c3_consistency/m2_live_c3_acquisition_and_reduction.py": "472c4909d46bd483961e279a62aa37e199c8910dca3e99db012b0640ff28b1a1",
+    "audit/berry_c3_consistency/m2_machine_execution_contract.json": "0ee03a8961e71259d633abc850d3ce26efcae4a20bce88f74246a63f790594b3",
+    "audit/berry_c3_consistency/m2_compact_result_projection_contract.json": "19a6da593783169f0fa8f4429f9cfad8827f08508f7f4406ac4a7aff029e2106",
     "audit/berry_c3_consistency/m2_preparation_manifest.json": "SELF_HASH_EXCLUDED_FROM_OWN_HASH",
-    "tests/test_berry_c3_consistency_m2_preparation.py": "6daf8755ce772b443ef8ffe65d31296affa48c3e7811ee6b24965ef0306a2c83"
+    "tests/test_berry_c3_consistency_m2_preparation.py": "c8db33887cb43a0c8f005e1e7e3916b400024f1d8197b16fa7b7b89797044d2a"
   },
   "m1_artifact_hashes": {
     "m1_c3_orbit_baseline.json": "554050f133b4c286ca072796f7c548506d471e1cfc9a8ab6884bceff8e3aa899",
@@ -36,8 +36,10 @@
   "m1_graph_node_count": 24,
   "reused_frozen_record_count": 0,
   "future_live_request_count": 72,
-  "future_provider_budget": 72,
-  "future_solver_budget": 72,
+  "future_provider_budget": 288,
+  "future_solver_budget": 288,
+  "future_dataset_record_count": 72,
+  "point_solves_per_plaquette": 4,
   "future_native_invocation_count": 1,
   "dataset_schema": "mephc-berry-c3-consistency-m2-live-record-dataset-v1",
   "result_schema": "mephc-berry-c3-consistency-m2-live-c3-closure-v1",

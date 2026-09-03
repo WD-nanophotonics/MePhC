@@ -13,6 +13,8 @@
     "provider_request_count",
     "solver_execution_count",
     "dataset_record_count",
+    "dataset_id",
+    "dataset_manifest_sha256",
     "c3_complete_orbit_count",
     "c3_incomplete_orbit_count",
     "c3_unqualified_orbit_count",
@@ -37,7 +39,7 @@
   "bounded_value_rules": {
     "status": "PASS|FAIL_CLOSED",
     "threshold_status": "THRESHOLD_DEFERRED or a plan-defined threshold result",
-    "actual_counts": "native/provider/solver/dataset scalar counters only",
+    "actual_counts": "native/provider/solver/dataset scalar counters only; production target is 1/288/288/72",
     "failure_identity": "request key or orbit identifier may be included as one bounded string"
   },
   "forbidden_projection_fields": [
