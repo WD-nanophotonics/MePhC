@@ -136,6 +136,42 @@ def _tensor(value: Any) -> np.ndarray:
     raise M22Error(f"M22_PUBLIC_TENSOR_LAYOUT_INVALID:{type(value).__module__}.{type(value).__qualname__}")
 
 
+def canonical_d_frame(frame: Any) -> np.ndarray:
+    """Return exactly (spatial point, Cartesian component, band)."""
+    value = np.asarray(frame, dtype=np.complex128)
+    if value.shape == (SHAPE[0] * SHAPE[1], COMPONENTS, 2):
+        pass
+    elif value.shape == (*SHAPE, COMPONENTS, 2):
+        value = value.reshape(-1, COMPONENTS, 2)
+    elif value.shape == (2, *SHAPE, COMPONENTS):
+        value = value.transpose(1, 2, 3, 0).reshape(-1, COMPONENTS, 2)
+    require(value.shape == (SHAPE[0] * SHAPE[1], COMPONENTS, 2), "M22_D_CANONICAL_FRAME_SHAPE_INVALID", str(value.shape))
+    require(np.all(np.isfinite(value)), "M22_D_CANONICAL_FRAME_NONFINITE")
+    return np.array(value, copy=True)
+
+
+def canonical_eta(tensor: Any) -> np.ndarray:
+    """Return exactly (spatial point, Cartesian row, Cartesian column)."""
+    value = np.asarray(tensor, dtype=np.complex128)
+    if value.shape == (*SHAPE, COMPONENTS, COMPONENTS):
+        value = value.reshape(-1, COMPONENTS, COMPONENTS)
+    require(value.shape == (SHAPE[0] * SHAPE[1], COMPONENTS, COMPONENTS), "M22_ETA_CANONICAL_SHAPE_INVALID", str(value.shape))
+    require(np.all(np.isfinite(value)), "M22_ETA_CANONICAL_NONFINITE")
+    return np.array(value, copy=True)
+
+
+def _canonical_metric_operand(value: Any) -> np.ndarray:
+    array = np.asarray(value, dtype=np.complex128)
+    if array.shape[:2] == (SHAPE[0] * SHAPE[1], COMPONENTS) and array.ndim == 3:
+        result = array
+    elif array.shape == (*SHAPE, COMPONENTS, array.shape[-1]) and array.ndim == 4:
+        result = array.reshape(-1, COMPONENTS, array.shape[-1])
+    else:
+        result = canonical_d_frame(array)
+    require(np.all(np.isfinite(result)), "M22_METRIC_OPERAND_NONFINITE")
+    return result
+
+
 def _point(mp: Any, x: int, y: int) -> Any:
     return mp.Vector3(float(x) / SHAPE[0], float(y) / SHAPE[1], 0.0)
 
@@ -216,15 +252,18 @@ def _record(member: Mapping[str, Any], tensor: np.ndarray, evidence: Mapping[str
 
 
 def _gram(v: np.ndarray, metric: np.ndarray | None = None) -> np.ndarray:
-    if metric is not None and np.asarray(v).ndim == 4:
-        v = np.asarray(v).reshape(-1, v.shape[-1])
-        metric = np.asarray(metric).reshape(-1, 3, 3)
+    if metric is not None:
+        v = canonical_d_frame(v)
+        metric = canonical_eta(metric)
     if metric is None:
         return v.conj().T @ v
     return np.einsum("nac,nab,nbd->cd", v.conj(), metric, v, optimize=True)
 
 
 def _metric_q(v: np.ndarray, metric: np.ndarray | None = None) -> np.ndarray:
+    if metric is not None:
+        v = canonical_d_frame(v)
+        metric = canonical_eta(metric)
     g = _gram(v, metric)
     vals, vecs = np.linalg.eigh((g + g.conj().T) / 2.0)
     require(float(np.min(vals)) > 0.0, "M22_METRIC_NOT_POSITIVE")
@@ -232,7 +271,37 @@ def _metric_q(v: np.ndarray, metric: np.ndarray | None = None) -> np.ndarray:
 
 
 def _inner(a: np.ndarray, b: np.ndarray, metric: np.ndarray | None = None) -> np.ndarray:
-    return a.conj().T @ b if metric is None else np.einsum("nac,nab,nbd->cd", a.conj(), metric, b, optimize=True)
+    if metric is None:
+        return a.conj().T @ b
+    a, b, metric = _canonical_metric_operand(a), _canonical_metric_operand(b), canonical_eta(metric)
+    return np.einsum("nac,nab,nbd->cd", a.conj(), metric, b, optimize=True)
+
+
+def cross_gram(source: Any, target: Any, metric: Any) -> np.ndarray:
+    """Explicit component-preserving D cross-Gram."""
+    return _inner(canonical_d_frame(source), canonical_d_frame(target), canonical_eta(metric))
+
+
+def slow_metric_gram(frame: Any, metric: Any) -> np.ndarray:
+    value, eta = canonical_d_frame(frame), canonical_eta(metric)
+    result = np.zeros((2, 2), dtype=np.complex128)
+    for n in range(value.shape[0]):
+        for a in range(3):
+            for b in range(3):
+                for c in range(2):
+                    for d in range(2):
+                        result[c, d] += value[n, a, c].conj() * eta[n, a, b] * value[n, b, d]
+    return result
+
+
+def metric_square_root(metric: Any) -> np.ndarray:
+    eta = canonical_eta(metric)
+    roots = np.empty_like(eta)
+    for n, point in enumerate(eta):
+        values, vectors = np.linalg.eigh((point + point.conj().T) / 2.0)
+        require(float(np.min(values)) > 0.0, "M22_METRIC_NOT_POSITIVE")
+        roots[n] = vectors @ np.diag(np.sqrt(values)) @ vectors.conj().T
+    return roots
 
 
 def _projector_action(v: np.ndarray, x: np.ndarray, metric: np.ndarray | None = None) -> np.ndarray:
@@ -282,14 +351,15 @@ def _edge_metrics(frames: Sequence[np.ndarray], metric_fields: Sequence[np.ndarr
         # semantics for the source-to-target C3 edge.
         metrics = []
         for index in range(3):
-            transformed = transform_rank2_vector_frame(ordered[index], reciprocal, edges[index]["G_edge_integer"], m15)
-            target = ordered[(index + 1) % 3].reshape(-1, 2)
-            target_metric = metric_fields[(index + 1) % 3].reshape(-1, 3, 3)
+            transformed = canonical_d_frame(transform_rank2_vector_frame(ordered[index], reciprocal, edges[index]["G_edge_integer"], m15).reshape(*SHAPE, 3, 2))
+            target = canonical_d_frame(ordered[(index + 1) % 3])
+            target_metric = canonical_eta(metric_fields[(index + 1) % 3])
             qs, qt = _metric_q(transformed, target_metric), _metric_q(target, target_metric)
             singular = np.linalg.svd(_inner(qs, qt, target_metric), compute_uv=False)
-            probe = np.column_stack((transformed, target))
+            probe = transformed
             diff = float(np.max(np.abs(_projector_action(transformed, probe, target_metric) - _projector_action(qs, probe, target_metric))))
-            metrics.append({"minimum_overlap_singular_value": float(np.min(singular)), "maximum_principal_angle": float(math.acos(max(-1.0, min(1.0, float(np.min(singular)))))), "maximum_projector_distance": float(math.sqrt(max(0.0, 4.0 - 2.0 * float(np.linalg.norm(_inner(qs, qt, target_metric), ord="fro") ** 2)))), "projector_independent_construction_difference_max": diff})
+            root = metric_square_root(target_metric); ws = np.einsum("nab,nbc->nac", root, transformed).reshape(-1, 2); wt = np.einsum("nab,nbc->nac", root, target).reshape(-1, 2); whitened = np.linalg.svd(np.linalg.qr(ws, mode="reduced")[0].conj().T @ np.linalg.qr(wt, mode="reduced")[0], compute_uv=False)
+            metrics.append({"minimum_overlap_singular_value": float(np.min(singular)), "maximum_principal_angle": float(math.acos(max(-1.0, min(1.0, float(np.min(singular)))))), "maximum_projector_distance": float(math.sqrt(max(0.0, 4.0 - 2.0 * float(np.linalg.norm(_inner(qs, qt, target_metric), ord="fro") ** 2)))), "projector_independent_construction_difference_max": diff, "generalized_vs_whitened_overlap_difference_max": float(np.max(np.abs(np.sort(singular) - np.sort(whitened))))})
         return metrics, {"metric_positive_status": "PASS", "metric_hermiticity_status": "PASS"}
     metrics = []
     reciprocal = m15.lattice_automorphisms()["c3_reciprocal_integer_automorphism"]
@@ -391,9 +461,15 @@ def main() -> int:
         prior_records, prior_identity = recover_prior_tensor_records(job, state_root); tensors = [decode_tensor_record(record) for record in prior_records]
         tensor_records = prior_records; evidence = [dict(record.get("public_capture_evidence", {})) for record in tensor_records]
         result = analyze(m18_records, tensor_records, tensors, 0, "RECOVERED_PRIOR_PUBLIC_TENSOR_RECORDS_NO_REEXECUTION", {}, evidence, os.environ.get("MEPHC_SOURCE_COMMIT"))
+        d_frames_for_validation = [canonical_d_frame(_field(record, "fresh_d_fields_bands_1_to_6")[list(TARGET_BANDS)].transpose(1, 2, 3, 0)) for record in m18_records]
+        edge_validation, _, _ = derive_edges(m18_records, _m15()); d_validation, _ = _edge_metrics(d_frames_for_validation, tensors, _m15(), edge_validation)
+        d_u2_values = []
+        for index, frame in enumerate(d_frames_for_validation):
+            unitary = np.asarray([[0, 1], [-1, 0]], dtype=np.complex128); probe = frame[:, :, :1]
+            d_u2_values.append(float(np.max(np.abs(_projector_action(frame, probe, tensors[index]) - _projector_action(frame @ unitary, probe, tensors[index])))))
         h_before = {"stored_band_payload": list(np.asarray(m18_records[0]["fresh_h_fields_bands_1_to_6"]).shape), "decoded_single_band_field": [128, 128, 3], "rank2_frame_before_transform": [49152, 2], "rank2_frame_grid_after_fix": [128, 128, 3, 2], "rank2_frame_after_transform": [49152, 2]}
         d_before = {"stored_band_payload": list(np.asarray(m18_records[0]["fresh_d_fields_bands_1_to_6"]).shape) if m18_records[0].get("fresh_d_fields_bands_1_to_6") is not None else None, "decoded_single_band_field": [128, 128, 3], "rank2_frame_before_transform": [49152, 2], "rank2_frame_grid_after_fix": [128, 128, 3, 2], "rank2_frame_after_transform": [49152, 2]}
-        result.update({"prior_job_id": PRIOR_M22_JOB_ID, "prior_tensor_recovery_status": "RECOVERED_EXACT_IMMUTABLE_THREE_RECORDS", "recovery_source_type": prior_identity["recovery_source_type"], "actual_manifest_or_ledger_schema": {"manifest_schema": prior_identity["manifest_schema"], "namespace_keys": prior_identity["namespace_keys"], "record_reference_shape": "manifest.records[*].key_sha256 plus payload_sha256"}, "recovered_tensor_dataset_id": prior_identity["dataset_id"], "recovered_tensor_manifest_sha256": prior_identity["manifest_sha256"], "recovered_tensor_record_hashes": prior_identity["record_hashes"], "recovered_tensor_record_count": prior_identity["record_count"], "manifest_assumption_root_cause": "M22R1 incorrectly expected mephc-scientific-dataset-manifest-v1; the actual Thin Flow ImmutableDatasetStore manifest uses the generic schema mephc-scientific-dataset-v1 and is indexed by dataset-index/<dataset_id>.json.", "dataset_id": None, "manifest_sha256": None, "dataset_record_count": 0, "new_metadata_record_count": 0, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "H_field_shape_before_fix": h_before, "D_field_shape_before_fix": d_before, "authoritative_single_band_transform_shape": [128, 128, 3], "old_transform_input_shape": [49152, 2], "field_shape_root_cause": "The previous implementation transposed the two-band container and flattened it before calling a single-field FFT helper; m15.fft_transform requires leading grid axes (128,128), so each band must be transformed separately.", "reconciled_prior_outer_dataset_records": 3, "reconciled_prior_result_dataset_record_count": 0, "prior_result_failure_code": "M15_FIELD_SHAPE_INVALID", "post_analysis_checkout_unchanged": True})
+        result.update({"prior_job_id": PRIOR_M22_JOB_ID, "prior_tensor_recovery_status": "RECOVERED_EXACT_IMMUTABLE_THREE_RECORDS", "recovery_source_type": prior_identity["recovery_source_type"], "actual_manifest_or_ledger_schema": {"manifest_schema": prior_identity["manifest_schema"], "namespace_keys": prior_identity["namespace_keys"], "record_reference_shape": "manifest.records[*].key_sha256 plus payload_sha256"}, "recovered_tensor_dataset_id": prior_identity["dataset_id"], "recovered_tensor_manifest_sha256": prior_identity["manifest_sha256"], "recovered_tensor_record_hashes": prior_identity["record_hashes"], "recovered_tensor_record_count": prior_identity["record_count"], "manifest_assumption_root_cause": "M22R1 incorrectly expected mephc-scientific-dataset-manifest-v1; the actual Thin Flow ImmutableDatasetStore manifest uses the generic schema mephc-scientific-dataset-v1 and is indexed by dataset-index/<dataset_id>.json.", "dataset_id": None, "manifest_sha256": None, "dataset_record_count": 0, "new_metadata_record_count": 0, "native_invocation_count": 1, "provider_execution_count": 0, "solver_execution_count": 0, "H_field_shape_before_fix": h_before, "D_field_shape_before_fix": d_before, "D_metric_frame_shape_at_failure": [49152, 2], "eta_metric_shape_at_failure": [16384, 3, 3], "metric_shape_root_cause": "The flattened D rank2 frame lost its explicit Cartesian component axis before the n,a,b contraction, so einsum received a two-index operand where n,a,c were required.", "D_canonical_metric_frame_shape": [16384, 3, 2], "eta_canonical_metric_shape": [16384, 3, 3], "D_generalized_vs_whitened_overlap_difference_max": max(item["generalized_vs_whitened_overlap_difference_max"] for item in d_validation), "D_projector_U2_invariance_residual_max": max(d_u2_values), "authoritative_single_band_transform_shape": [128, 128, 3], "old_transform_input_shape": [49152, 2], "field_shape_root_cause": "The previous implementation transposed the two-band container and flattened it before calling a single-field FFT helper; m15.fft_transform requires leading grid axes (128,128), so each band must be transformed separately.", "reconciled_prior_outer_dataset_records": 3, "reconciled_prior_result_dataset_record_count": 0, "prior_result_failure_code": "M15_FIELD_SHAPE_INVALID", "post_analysis_checkout_unchanged": True})
     except Exception as exc:
         result = failure(str(exc), exc); result["traceback_tail"] = traceback.format_exc()[-3000:]
     Path(os.environ["MEPHC_RESULT_PATH"]).write_text(json.dumps(result, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")

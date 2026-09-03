@@ -40,8 +40,8 @@ def test_tensor_parser_accepts_matrix_like_attributes():
 
 def test_material_metric_is_hermitian_and_positive():
     rng = np.random.default_rng(22)
-    v = rng.normal(size=(32, 3, 2)) + 1j * rng.normal(size=(32, 3, 2))
-    eta = np.broadcast_to(np.diag([1.0, 2.0, 3.0]), (32, 3, 3)).astype(complex)
+    v = rng.normal(size=(16384, 3, 2)) + 1j * rng.normal(size=(16384, 3, 2))
+    eta = np.broadcast_to(np.diag([1.0, 2.0, 3.0]), (16384, 3, 3)).astype(complex)
     gram = M22._gram(v, eta)
     assert np.allclose(gram, gram.conj().T)
     assert np.all(np.linalg.eigvalsh(gram) > 0.0)
@@ -49,16 +49,16 @@ def test_material_metric_is_hermitian_and_positive():
 
 def test_metric_whitening_is_identity():
     rng = np.random.default_rng(23)
-    v = rng.normal(size=(40, 3, 2)) + 1j * rng.normal(size=(40, 3, 2))
-    eta = np.broadcast_to(np.diag([1.0, 1.5, 2.0]), (40, 3, 3)).astype(complex)
+    v = rng.normal(size=(16384, 3, 2)) + 1j * rng.normal(size=(16384, 3, 2))
+    eta = np.broadcast_to(np.diag([1.0, 1.5, 2.0]), (16384, 3, 3)).astype(complex)
     q = M22._metric_q(v, eta)
     assert np.allclose(M22._gram(q, eta), np.eye(2), atol=1e-12)
 
 
 def test_projector_is_invariant_under_fixed_u2_basis_change():
     rng = np.random.default_rng(24)
-    v = rng.normal(size=(24, 3, 2)) + 1j * rng.normal(size=(24, 3, 2))
-    eta = np.broadcast_to(np.eye(3), (24, 3, 3)).astype(complex)
+    v = rng.normal(size=(16384, 3, 2)) + 1j * rng.normal(size=(16384, 3, 2))
+    eta = np.broadcast_to(np.eye(3), (16384, 3, 3)).astype(complex)
     u = np.asarray([[0, 1], [-1, 0]], dtype=complex)
     probe = v[:, :, :1]
     assert np.allclose(M22._projector_action(v, probe, eta), M22._projector_action(v @ u, probe, eta), atol=1e-12)
@@ -74,6 +74,39 @@ def test_tensor_encoding_is_complex_pair_and_explicit_axes():
     encoded = M22._complex_encode(np.eye(3, dtype=complex)[None, None])
     assert encoded[0][0][0][1] == [0.0, 0.0]
     assert encoded[0][0][1][1] == [1.0, 0.0]
+
+
+def test_d_canonicalizers_preserve_explicit_point_component_band_axes():
+    grid = np.zeros((128, 128, 3, 2), dtype=complex)
+    eta = np.broadcast_to(np.eye(3), (128, 128, 3, 3)).astype(complex)
+    assert M22.canonical_d_frame(grid).shape == (16384, 3, 2)
+    assert M22.canonical_eta(eta).shape == (16384, 3, 3)
+
+
+def test_generalized_gram_matches_independent_slow_loop():
+    rng = np.random.default_rng(25)
+    frame = rng.normal(size=(16384, 3, 2)) + 1j * rng.normal(size=(16384, 3, 2))
+    eta = np.broadcast_to(np.diag([1.0, 1.5, 2.0]), (16384, 3, 3)).astype(complex)
+    assert np.allclose(M22._gram(frame, eta), M22.slow_metric_gram(frame, eta), atol=1e-10)
+    assert np.allclose(M22.cross_gram(frame, frame, eta), M22.slow_metric_gram(frame, eta), atol=1e-10)
+
+
+def test_eta_square_root_whitening_agrees_with_metric_gram():
+    rng = np.random.default_rng(26)
+    frame = rng.normal(size=(16384, 3, 2)) + 1j * rng.normal(size=(16384, 3, 2))
+    eta = np.broadcast_to(np.diag([1.0, 2.0, 4.0]), (16384, 3, 3)).astype(complex)
+    root = M22.metric_square_root(eta)
+    whitened = np.einsum("nab,nbc->nac", root, frame)
+    assert np.allclose(M22._gram(frame, eta), whitened.reshape(-1, 2).conj().T @ whitened.reshape(-1, 2), atol=1e-10)
+
+
+def test_arbitrary_nonsingular_basis_change_preserves_metric_span():
+    rng = np.random.default_rng(27)
+    frame = rng.normal(size=(16384, 3, 2)) + 1j * rng.normal(size=(16384, 3, 2))
+    eta = np.broadcast_to(np.diag([1.0, 1.2, 1.8]), (16384, 3, 3)).astype(complex)
+    basis = np.asarray([[2.0, 1.0], [0.5, 1.5]], dtype=complex)
+    probe = frame[:, :, :1]
+    assert np.allclose(M22._projector_action(frame, probe, eta), M22._projector_action(frame @ basis, probe, eta), atol=1e-10)
 
 
 def test_fallback_is_bounded_to_three_members_by_source():
