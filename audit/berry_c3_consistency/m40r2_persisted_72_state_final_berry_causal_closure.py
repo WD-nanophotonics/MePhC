@@ -348,7 +348,7 @@ def main() -> int:
         m38 = _load(ROOT / "audit" / "berry_c3_consistency" / "m38_supplied_exact_mpb_source_semantics_raw_native_c3.py", "m40r2_m38")
         parent, records, recovery_status = recover_parent(job, state_root)
         m18 = _read_dataset(job, state_root, M18_DATASET_ID, M18_MANIFEST_SHA256, M18_SCHEMA, 3)
-        m39r1 = _read_dataset(job, state_root, M39R1_DATASET_ID, M39R1_MANIFEST_SHA256, M39.DATASET_SCHEMA, 14)
+        m39r1 = _read_dataset(job, state_root, M39R1_DATASET_ID, M39R1_MANIFEST_SHA256, m39.DATASET_SCHEMA, 14)
         centers = _centers(m18, m39r1)
         try:
             m2 = _read_dataset(job, state_root, M2_DATASET_ID, M2_MANIFEST_SHA256, "mephc-berry-c3-pilot-plaquette-v1", 72)
