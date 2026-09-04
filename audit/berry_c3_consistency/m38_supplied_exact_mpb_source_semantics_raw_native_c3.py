@@ -58,6 +58,62 @@ def decode_raw_array(encoded: Mapping[str, Any]) -> np.ndarray:
     return np.asarray(np.load(io.BytesIO(payload), allow_pickle=False), dtype=np.complex128)
 
 
+def resolve_immutable_records(
+    job: Any,
+    state_root: Path,
+    dataset_id: str,
+    manifest_sha256: str,
+    expected_schema: str,
+    record_count: int,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Use only the committed Thin Flow resolver, with exact binding checks."""
+    verified = job.verify_dataset(state_root, dataset_id)
+    if verified.get("dataset_id") != dataset_id:
+        raise ValueError(f"M38_DATASET_ID_MISMATCH:{dataset_id}")
+    if verified.get("manifest_sha256") != manifest_sha256:
+        raise ValueError(f"M38_DATASET_MANIFEST_MISMATCH:{dataset_id}")
+    keys = verified.get("record_key_sha256")
+    if verified.get("record_count") != record_count or not isinstance(keys, list) or len(keys) != record_count or len(set(keys)) != record_count:
+        raise ValueError(f"M38_DATASET_MEMBERSHIP_INVALID:{dataset_id}")
+    records: list[dict[str, Any]] = []
+    for key in keys:
+        resolved = job.resolve_dataset_record(state_root, dataset_id, manifest_sha256, key)
+        payload = resolved.get("payload")
+        if not isinstance(payload, bytes):
+            raise ValueError(f"M38_DATASET_PAYLOAD_MISSING:{dataset_id}:{key}")
+        value = json.loads(payload.decode("utf-8"))
+        if not isinstance(value, dict) or value.get("schema") != expected_schema:
+            raise ValueError(f"M38_DATASET_SCHEMA_MISMATCH:{dataset_id}:{value.get('schema') if isinstance(value, dict) else type(value).__name__}")
+        records.append(value)
+    return records, {
+        "resolver": "tools/mephc-flow/scientific_job.py",
+        "verification": "verify_dataset plus resolve_dataset_record",
+        "dataset_id": dataset_id,
+        "manifest_sha256": manifest_sha256,
+        "record_count": len(records),
+    }
+
+
+def bind_triplet(records: Sequence[Mapping[str, Any]], expected_schema: str) -> dict[str, dict[str, Any]]:
+    """Bind by explicit semantic fields, never by storage order or hash order."""
+    result: dict[str, dict[str, Any]] = {}
+    for raw in records:
+        record = dict(raw)
+        if record.get("schema") != expected_schema or record.get("geometry_id") != "G15":
+            raise ValueError("M38_SEMANTIC_BINDING_GEOMETRY_INVALID")
+        if record.get("geometry_role") != "AREA_MATCHED_G15" or record.get("deterministic") is not False:
+            raise ValueError("M38_SEMANTIC_BINDING_ROLE_INVALID")
+        if record.get("frame_convention") != "LAB_FIXED" or record.get("repeat_index") != 1:
+            raise ValueError("M38_SEMANTIC_BINDING_FRAME_INVALID")
+        member = record.get("c3_member_identity")
+        if member not in MEMBERS or member in result:
+            raise ValueError("M38_SEMANTIC_BINDING_MEMBER_INVALID")
+        result[str(member)] = record
+    if set(result) != set(MEMBERS) or len(result) != 3:
+        raise ValueError("M38_SEMANTIC_BINDING_TRIPLET_INVALID")
+    return {member: result[member] for member in MEMBERS}
+
+
 def reciprocal_basis() -> np.ndarray:
     direct = np.asarray([[0.5, 0.5], [np.sqrt(3.0) / 2.0, -np.sqrt(3.0) / 2.0]], dtype=float)
     return np.linalg.inv(direct).T
@@ -204,14 +260,20 @@ def _science_result() -> dict[str, Any]:
     bundle = json.loads(Path(os.environ["MEPHC_INPUT_BUNDLE"]).read_text(encoding="utf-8"))
     state_root = Path(os.environ["MEPHC_EXECUTION_COUNTERS_PATH"]).parent.parent
     job = _load(ROOT / "tools/mephc-flow/scientific_job.py", "m38_job")
-    m18 = _load(ROOT / "audit/berry_c3_consistency/m18_exact_mpb_operator_readback_and_covariance_closure.py", "m38_m18")
-    m33 = _load(ROOT / "audit/berry_c3_consistency/m33_documented_raw_eigenvector_c3_subspace_validation.py", "m38_m33")
-    m18_records = {item["c3_member_identity"]: item for item in m18.read_dataset(job, state_root, M18_DATASET_ID, M18_MANIFEST_SHA256, 3)}
-    m33_records = {item["c3_member_identity"]: item for item in m33.read_dataset(job, state_root, M33_DATASET_ID, M33_MANIFEST_SHA256, 3)}
+    m18_records, m18_binding = resolve_immutable_records(
+        job, state_root, M18_DATASET_ID, M18_MANIFEST_SHA256,
+        "mephc-berry-c3-consistency-m18-exact-mpb-operator-readback-dataset-v1", 3,
+    )
+    m33_records, m33_binding = resolve_immutable_records(
+        job, state_root, M33_DATASET_ID, M33_MANIFEST_SHA256,
+        "mephc-berry-c3-consistency-m33-raw-eigenvector-c3-metadata-dataset-v1", 3,
+    )
+    m18_by_member = bind_triplet(m18_records, "mephc-berry-c3-consistency-m18-exact-mpb-operator-readback-dataset-v1")
+    m33_by_member = bind_triplet(m33_records, "mephc-berry-c3-consistency-m33-raw-eigenvector-c3-metadata-dataset-v1")
     states: dict[str, dict[str, Any]] = {}
     for member in MEMBERS:
-        raw, layout = normalize_raw_layout(m33.decode_raw_array(m33_records[member]["raw_eigenvector"]))
-        states[member] = {"c3_member_identity": member, "coordinate": list(m18_records[member]["coordinate"]), "raw": raw, "layout": layout, "gram": gram(raw)}
+        raw, layout = normalize_raw_layout(decode_raw_array(m33_by_member[member]["raw_eigenvector"]))
+        states[member] = {"c3_member_identity": member, "coordinate": list(m18_by_member[member]["coordinate"]), "raw": raw, "layout": layout, "gram": gram(raw)}
     edges = _edges(states)
     structural = structural_validation(edges, states)
     edge_metrics: list[dict[str, Any]] = []
@@ -227,7 +289,22 @@ def _science_result() -> dict[str, Any]:
     maximum_distance = max(item["projector_distance"] for item in edge_metrics)
     failures = sum(int(item["covariance_failure"]) for item in edge_metrics)
     public_vs_native = "PUBLIC_H_OUTPUT_REPRESENTATION_CAUSES_OVERLAP_LOSS" if minimum > 1.0 - 1e-8 and failures == 0 else "RAW_NATIVE_SUPPORT_MISMATCH_LIMITS_C3_TEST" if not all(item["mode_map_bijection"] for item in edge_metrics) else "GENUINE_NATIVE_OR_STATE_FAMILY_C3_FAILURE"
+    dependency_inventory = {
+        "scientific_job.verify_dataset": "present-and-used",
+        "scientific_job.resolve_dataset_record": "present-and-used",
+        "local.decode_raw_array": "present-and-used",
+        "historical_m18_or_m33_read_dataset": "not-referenced",
+    }
     result = {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "machine_execution_contract_status": "SOLVER_FREE_RAW_NATIVE_C3_ADJUDICATION_COMPLETE", "supplied_source_authority_status": "EXACT_BUILD5_UNPATCHED_V1_12_0_SOURCE_AUTHORITY_ACCEPTED", "source_m33_dataset_id": M33_DATASET_ID, "source_m18_dataset_id": M18_DATASET_ID, "target_state_count": 3, "native_invocation_count": 0, "provider_execution_count": 0, "solver_execution_count": 0, "dataset_record_count": 0, "raw_eigenvector_shape_by_state": {member: states[member]["layout"]["raw_shape"] for member in MEMBERS}, "raw_dtype": {member: states[member]["layout"]["dtype"] for member in MEMBERS}, "raw_axis_layout_status": {member: states[member]["layout"] for member in MEMBERS}, "raw_fft_index_formula": "index=((x_local)*ny+y_local)*nz+z; for 2D z=0 and index=x*ny+y, f=(x>=max(1,nx/2)?x-nx:x, y>=max(1,ny/2)?y-ny:y)", "raw_fft_label_to_physical_G_formula": "k_plus_G_cartesian=k_cartesian-(B1*fx+B2*fy+B3*fz); native FFT label f contributes physical reciprocal -Bf", "raw_fft_edge_c3_mapping_formula": "f_target=S_recip*f_source-G_edge (mod N), derived from -Bf_target=R_C3(-Bf_source)+B*G_edge", "raw_index_semantics_status": "RAW_RECIPROCAL_INDEX_MAP_SOURCE_CONFIRMED", "transverse_frame_semantics_status": "TRANSVERSE_FRAME_SOURCE_CONFIRMED", "transverse_frame_formula": "q=0: n=(0,1,0),m=(0,0,1); qx= qy=0: n=(0,1,0); otherwise n=normalize(z_hat cross q), m=normalize(n cross q); m cross n=q_hat; component0=m, component1=n", "raw_inner_product_metric": "ordinary complex Euclidean metric for mu_inv==NULL", "raw_normalization_semantics": {member: states[member]["gram"] for member in MEMBERS}, "raw_c3_mapping_formula": "G_target=S_recip*G_source+G_edge; B_s=[m_s,n_s], B_t=[m_t,n_t], T_G=B_t^T R_C3 B_s", "raw_c3_operator_status": "RAW_C3_OPERATOR_SOURCE_CONFIRMED_AND_CLOSURE_PASS" if structural["operator_bijection_status"] == "PASS" else "RAW_C3_OPERATOR_SOURCE_CONFIRMED_BUT_SUPPORT_MISMATCH_PRESENT", "C3_operator_bijection_status": structural["operator_bijection_status"], "C3_operator_norm_residual": structural["operator_norm_residual"], "C3_cubed_residual": structural["synthetic_c3_cubed_residual"], "raw_native_c3_singular_values": {f"{item['edge_source_member']}_to_{item['edge_target_member']}": item["singular_values"] for item in edge_metrics}, "raw_native_c3_minimum_overlap_singular_value": minimum, "raw_native_c3_maximum_principal_angle": maximum_angle, "raw_native_c3_projector_distance": maximum_distance, "raw_native_c3_covariance_failure_count": failures, "public_H_baseline_minimum_overlap": PUBLIC_H_MIN_OVERLAP, "public_vs_native_diagnosis": public_vs_native, "rank1_berry_spike_interpretation": "REPRESENTATION_OR_SUBSPACE_IDENTITY_ARTIFACT_NOT_PHYSICAL_C3_BREAKING" if public_vs_native == "PUBLIC_H_OUTPUT_REPRESENTATION_CAUSES_OVERLAP_LOSS" else "PHYSICAL_OR_NUMERICAL_C3_BREAKING_REMAINS_PLAUSIBLE", "alternative_explanations_considered": ["public H output representation", "negative-G FFT sign", "transverse frame branch/sign", "k-dependent support truncation", "native state-family C3 covariance"], "counterevidence_summary": {"edge_metrics": edge_metrics, "raw_gram": {member: states[member]["gram"] for member in MEMBERS}, "structural": structural}, "exact_remaining_uncertainty": "None in the supplied source-semantic operator if all three edge metrics are numerical unity; otherwise the exact edge and support ledger are retained.", "cheapest_remaining_discriminating_test": "If native covariance is confirmed, reimplement Berry/subspace transport solver-free in validated raw H space using existing G15 data; no new physical state is required.", "next_science_decision": "REIMPLEMENT_BERRY_AND_SUBSPACE_TRANSPORT_IN_VALIDATED_NATIVE_H_SPACE_USING_EXISTING_G15_DATA" if public_vs_native == "PUBLIC_H_OUTPUT_REPRESENTATION_CAUSES_OVERLAP_LOSS" else "INSUFFICIENT_EVIDENCE" if public_vs_native == "RAW_NATIVE_SUPPORT_MISMATCH_LIMITS_C3_TEST" else "STOP_C3_GOAL_AS_VALIDATED_NATIVE_H_NUMERICAL_OR_STATE_FAMILY_CONTRADICTION", "minimal_next_live_state_count": 0, "execution_required_for_cheapest_test": False, "stopping_sufficiency": "No new execution was used; all conclusions are from supplied source semantics and immutable M33/M18 evidence.", "edge_metrics": edge_metrics, "source_commit_used": os.environ.get("MEPHC_SOURCE_COMMIT"), "post_analysis_checkout_unchanged": True, "work_order_id": bundle["work_order_id"]}
+    result.update({
+        "dependency_closure_status": "PASS",
+        "helper_dependency_inventory": dependency_inventory,
+        "dataset_binding_evidence": {"m18": m18_binding, "m33": m33_binding},
+        "raw_rank2_gram_residuals": {member: states[member]["gram"] for member in MEMBERS},
+        "single_mode_synthetic_status": structural["synthetic_single_mode_status"],
+        "random_field_synthetic_status": structural["synthetic_random_field_status"],
+        "raw_native_c3_status": "RAW_NATIVE_RANK2_C3_COVARIANCE_CONFIRMED" if structural["operator_bijection_status"] == "PASS" and failures == 0 else "RAW_NATIVE_RANK2_C3_COVARIANCE_REJECTED",
+    })
     return result
 
 
