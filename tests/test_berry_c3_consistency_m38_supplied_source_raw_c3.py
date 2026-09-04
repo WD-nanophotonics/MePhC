@@ -84,3 +84,11 @@ def test_cross_dataset_binding_uses_actual_m33_vocabulary_without_role_field():
     assert list(right) == ["IDENTITY", "C3", "C3_SQUARED"]
     assert evidence["status"] == "SEMANTIC_BINDING_PASS"
     assert all("shared_identity_fields" in row for row in evidence["mapping_table"])
+
+
+def test_c3_closure_is_measured_not_hard_coded():
+    source = (ROOT / "audit/berry_c3_consistency/m38_supplied_exact_mpb_source_semantics_raw_native_c3.py").read_text(encoding="utf-8")
+    assert '"synthetic_c3_cubed_residual": 0.0' not in source
+    assert "synthetic_random_field_closure_residual" in source
+    assert "synthetic_one_hot_closure_residual" in source
+    assert "closure_pass = bool(" in source

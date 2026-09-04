@@ -279,16 +279,62 @@ def rank2_metrics(transformed: np.ndarray, target: np.ndarray) -> dict[str, Any]
 
 def structural_validation(edges: Sequence[Mapping[str, Any]], states: Mapping[str, Mapping[str, Any]]) -> dict[str, Any]:
     rng = np.random.default_rng(38)
-    current = rng.normal(size=(N * N, 2)) + 1j * rng.normal(size=(N * N, 2))
+    current = (rng.normal(size=(1, N * N, 2)) + 1j * rng.normal(size=(1, N * N, 2))).astype(np.complex128)
     block_norm = 0.0
     bijection = True
+    inverse_consistency = True
     for edge in edges:
         source = states[edge["edge_source_member"]]
         target = states[edge["edge_target_member"]]
-        _, ledger = apply_raw_operator(current[None, ...], source["coordinate"], target["coordinate"], edge["G_edge_integer"])
+        _, ledger = apply_raw_operator(current, source["coordinate"], target["coordinate"], edge["G_edge_integer"])
         bijection = bijection and ledger["bijection"]
         block_norm = max(block_norm, ledger["block_norm_residual"])
-    return {"operator_bijection_status": "PASS" if bijection else "FAIL", "operator_norm_residual": block_norm, "synthetic_single_mode_status": "PASS", "synthetic_random_field_status": "PASS", "synthetic_c3_cubed_residual": 0.0}
+        mapped = ledger["mapped_indices"]
+        inverse_consistency = inverse_consistency and np.array_equal(np.sort(mapped), np.arange(N * N))
+
+    def apply_edge(field: np.ndarray, edge: Mapping[str, Any]) -> np.ndarray:
+        source = states[edge["edge_source_member"]]
+        target = states[edge["edge_target_member"]]
+        value, _ = apply_raw_operator(field, source["coordinate"], target["coordinate"], edge["G_edge_integer"])
+        return value
+
+    def closure(field: np.ndarray) -> tuple[np.ndarray, list[float]]:
+        initial_norm = float(np.linalg.norm(field))
+        value = field.copy()
+        norm_residuals: list[float] = []
+        for edge in edges:
+            before = float(np.linalg.norm(value))
+            value = apply_edge(value, edge)
+            norm_residuals.append(abs(float(np.linalg.norm(value)) - before) / max(before, np.finfo(float).eps))
+        return value, norm_residuals
+
+    random_final, random_norm_residuals = closure(current)
+    random_closure_residual = float(np.linalg.norm(random_final - current) / max(np.linalg.norm(current), np.finfo(float).eps))
+    one_hot_residuals: list[float] = []
+    one_hot_norm_residuals: list[float] = []
+    for index, component in ((0, 0), (N * N // 2, 1), (N * N - 1, 0)):
+        one_hot = np.zeros((1, N * N, 2), dtype=np.complex128)
+        one_hot[0, index, component] = 1.0 + 0.25j
+        final, norm_residuals = closure(one_hot)
+        one_hot_residuals.append(float(np.linalg.norm(final - one_hot)))
+        one_hot_norm_residuals.extend(norm_residuals)
+    one_hot_closure_residual = max(one_hot_residuals)
+    norm_residual = max([block_norm, *random_norm_residuals, *one_hot_norm_residuals])
+    closure_pass = bool(bijection and inverse_consistency and random_closure_residual < 1e-10 and one_hot_closure_residual < 1e-10 and norm_residual < 1e-10)
+    return {
+        "operator_bijection_status": "PASS" if bijection else "FAIL",
+        "operator_inverse_map_status": "PASS" if inverse_consistency else "FAIL",
+        "operator_norm_residual": float(norm_residual),
+        "single_mode_synthetic_status": "PASS" if one_hot_closure_residual < 1e-10 else "FAIL",
+        "random_field_synthetic_status": "PASS" if random_closure_residual < 1e-10 else "FAIL",
+        "synthetic_random_field_closure_residual": random_closure_residual,
+        "synthetic_one_hot_closure_residual": one_hot_closure_residual,
+        "synthetic_one_hot_closure_residuals": one_hot_residuals,
+        "synthetic_random_field_norm_residuals": random_norm_residuals,
+        "synthetic_one_hot_norm_residual_max": max(one_hot_norm_residuals),
+        "synthetic_c3_cubed_residual": max(random_closure_residual, one_hot_closure_residual),
+        "synthetic_closure_status": "PASS" if closure_pass else "FAIL",
+    }
 
 
 def _edges(states: Mapping[str, Mapping[str, Any]]) -> list[dict[str, Any]]:
@@ -338,7 +384,8 @@ def _science_result() -> dict[str, Any]:
     maximum_angle = max(item["maximum_principal_angle"] for item in edge_metrics)
     maximum_distance = max(item["projector_distance"] for item in edge_metrics)
     failures = sum(int(item["covariance_failure"]) for item in edge_metrics)
-    public_vs_native = "PUBLIC_H_OUTPUT_REPRESENTATION_CAUSES_OVERLAP_LOSS" if minimum > 1.0 - 1e-8 and failures == 0 else "RAW_NATIVE_SUPPORT_MISMATCH_LIMITS_C3_TEST" if not all(item["mode_map_bijection"] for item in edge_metrics) else "GENUINE_NATIVE_OR_STATE_FAMILY_C3_FAILURE"
+    structural_pass = structural["synthetic_closure_status"] == "PASS" and structural["operator_bijection_status"] == "PASS"
+    public_vs_native = "INSUFFICIENT_EVIDENCE" if not structural_pass else "PUBLIC_H_OUTPUT_REPRESENTATION_CAUSES_OVERLAP_LOSS" if minimum > 1.0 - 1e-8 and failures == 0 else "RAW_NATIVE_SUPPORT_MISMATCH_LIMITS_C3_TEST" if not all(item["mode_map_bijection"] for item in edge_metrics) else "GENUINE_NATIVE_OR_STATE_FAMILY_C3_FAILURE"
     dependency_inventory = {
         "scientific_job.verify_dataset": "present-and-used",
         "scientific_job.resolve_dataset_record": "present-and-used",
@@ -358,7 +405,13 @@ def _science_result() -> dict[str, Any]:
         "raw_rank2_gram_residuals": {member: states[member]["gram"] for member in MEMBERS},
         "single_mode_synthetic_status": structural["synthetic_single_mode_status"],
         "random_field_synthetic_status": structural["synthetic_random_field_status"],
-        "raw_native_c3_status": "RAW_NATIVE_RANK2_C3_COVARIANCE_CONFIRMED" if structural["operator_bijection_status"] == "PASS" and failures == 0 else "RAW_NATIVE_RANK2_C3_COVARIANCE_REJECTED",
+        "synthetic_closure_status": structural["synthetic_closure_status"],
+        "synthetic_random_field_closure_residual": structural["synthetic_random_field_closure_residual"],
+        "synthetic_one_hot_closure_residual": structural["synthetic_one_hot_closure_residual"],
+        "synthetic_random_field_norm_residuals": structural["synthetic_random_field_norm_residuals"],
+        "synthetic_one_hot_norm_residual_max": structural["synthetic_one_hot_norm_residual_max"],
+        "raw_c3_operator_status": "RAW_C3_OPERATOR_SOURCE_CONFIRMED_AND_CLOSURE_PASS" if structural_pass else "RAW_C3_OPERATOR_STRUCTURAL_VALIDATION_FAIL",
+        "raw_native_c3_status": "INSUFFICIENT_EVIDENCE" if not structural_pass else "RAW_NATIVE_RANK2_C3_COVARIANCE_CONFIRMED" if failures == 0 else "RAW_NATIVE_RANK2_C3_COVARIANCE_REJECTED",
     })
     return result
 
