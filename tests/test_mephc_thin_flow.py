@@ -102,7 +102,7 @@ def test_agents_require_supervisor_handoff_before_every_idle_transition():
     assert "Before ending any Luna turn or becoming idle for any reason" in policy
     assert "MEPHC-IDLE-HANDOFF:<work-order-id-or-null>:<state>" in policy
     assert "The supervisor decides whether stopping is legitimate" in policy
-    assert "`TERMINATED` is only a workflow/transport state" in policy
+    assert "`TERMINATED` is only valid after that approval" in policy
     for field in (
         "GOAL_OUTCOME", "COMPLETION_EVIDENCE", "ATTEMPTS_COMPLETED",
         "UNRESOLVED_QUESTIONS", "ALTERNATIVE_EXPLANATIONS",
@@ -112,6 +112,9 @@ def test_agents_require_supervisor_handoff_before_every_idle_transition():
         assert field in policy
     assert "independently challenge the proposed termination" in policy
     assert "untested convention, representation, gauge, coordinate transform" in policy
+    assert "Project -> Goal -> Milestone/Branch -> Work\nOrder -> Job/Run" in policy
+    assert "HARD_BLOCKED / TERMINATION_REVIEW_REQUIRED" in policy
+    assert "Goal closure never terminates the" in policy
 
 
 def test_ready_without_job_authoritatively_means_not_started(monkeypatch, tmp_path: Path):
@@ -401,6 +404,24 @@ def test_query_preferences_do_not_change_fixed_request_or_report_body(monkeypatc
     assert "TEST_RETURN_CODE=0" in text
 
 
+def test_report_names_project_goal_work_order_and_job_scopes(monkeypatch, tmp_path: Path):
+    scope = paths(tmp_path)
+    order = {"work_order_id": "MEPHC-THIN-SCOPE-0001"}
+    job = {"state": "succeeded", "source_commit": "a" * 40, "job_id": "MEPHC-JOB-SCOPE",
+           "result_summary": {"goal_completion_status": "ACTIVE",
+                              "next_science_decision": "STOP_ONE_CAUSAL_BRANCH"}}
+    report = flow.canonical_report(scope, order, job, {
+        "task_difficulty": "hard", "instruction_level": "detailed",
+        "report_policy": "milestone",
+    }, contract(inputs={"goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1"}))
+    text = report["message"].decode()
+    assert "WORKFLOW_SCOPE=PROJECT" in text
+    assert "ACTIVE_GOAL_ID=MEPHC-BERRY-C3-CONSISTENCY-V1" in text
+    assert "WORK_ORDER_OUTCOME=COMPLETED" in text
+    assert "GOAL_OUTCOME_CLAIM=ACTIVE" in text
+    assert "RESULT_NEXT_SCIENCE_DECISION=STOP_ONE_CAUSAL_BRANCH" in text
+
+
 def test_finish_native_maps_scientific_fail_closed_to_blocked_report(monkeypatch, tmp_path: Path):
     scope = paths(tmp_path)
     job = {
@@ -613,6 +634,62 @@ def test_remote_reviewer_deferral_is_persistent_hard_block_without_resend(monkey
     assert restarted["error_code"] == "LOCAL_SUPERVISOR_REQUIRED"
     assert flow.closeout(scope)["error_code"] == "LOCAL_SUPERVISOR_REQUIRED"
     assert called["courier"] == 0
+
+
+def test_legacy_chat_termination_is_a_supervisor_proposal_not_a_state_transition(tmp_path: Path):
+    scope = paths(tmp_path)
+    work_order = "MEPHC-THIN-TERMINATION-REVIEW-0001"
+    request_id, _ = flow.fixed_request_id(work_order)
+    directory = scope.outbox / request_id
+    directory.mkdir(parents=True)
+    (directory / "request.json").write_text(json.dumps({
+        "project_id": "MEPHC", "request_id": request_id, "work_order_id": work_order,
+    }), encoding="utf-8")
+    (directory / "receipt.json").write_text(json.dumps({"state": "response_received"}), encoding="utf-8")
+    (directory / "response.txt").write_text(
+        "WORKFLOW_TERMINATED=true\nGOAL_OUTCOME=CONTRADICTED\n"
+        "COMPLETION_EVIDENCE=one branch rejected\nCHEAPEST_NEXT_TEST=deterministic pilot\n",
+        encoding="utf-8")
+    result = flow.consume_response(scope, directory)
+    assert result["state"] == "HARD_BLOCKED"
+    assert result["error_code"] == "TERMINATION_REVIEW_REQUIRED"
+    assert not (scope.legacy_state / "runner" / "workflow-ledger.json").exists()
+    evidence = json.loads((directory / flow.local_supervisor.FILENAME).read_text())
+    assert evidence["reason"] == "PROJECT_TERMINATION_REVIEW"
+    assert evidence["goal_outcome"] == "CONTRADICTED"
+
+
+def test_explicit_project_termination_review_uses_the_same_supervisor_gate(tmp_path: Path):
+    parsed = flow.local_supervisor.parse(
+        "LOCAL_SUPERVISOR_REQUIRED=true\n"
+        "LOCAL_SUPERVISOR_REASON=PROJECT_TERMINATION_REVIEW\n"
+        "MISSING_REMOTE_EVIDENCE=no useful successor identified\n")
+    assert parsed is not None
+    assert parsed["error_code"] == "TERMINATION_REVIEW_REQUIRED"
+
+
+def test_only_complete_fixed_supervisor_review_can_approve_project_termination(tmp_path: Path):
+    scope = paths(tmp_path)
+    directory = scope.outbox / "MEPHC-FLOW-TERMINATION"
+    directory.mkdir(parents=True)
+    (directory / flow.local_supervisor.FILENAME).write_text(json.dumps({
+        "error_code": "TERMINATION_REVIEW_REQUIRED", "reason": "PROJECT_TERMINATION_REVIEW",
+    }), encoding="utf-8")
+    review = {name: "checked" for name in (
+        "completion_evidence", "attempts_completed", "unresolved_questions",
+        "alternative_explanations", "cheapest_next_test", "counterevidence_search",
+        "why_stop_is_sufficient")}
+    with pytest.raises(ValueError, match="TERMINATION_REVIEW_INCOMPLETE"):
+        flow.local_supervisor.approve_termination(
+            directory, scope.legacy_state / "runner" / "workflow-ledger.json",
+            "wrong-task", flow.SUPERVISOR_TASK_ID, review)
+    decision = flow.local_supervisor.approve_termination(
+        directory, scope.legacy_state / "runner" / "workflow-ledger.json",
+        flow.SUPERVISOR_TASK_ID, flow.SUPERVISOR_TASK_ID, review)
+    assert decision["reviewer_task_id"] == flow.SUPERVISOR_TASK_ID
+    ledger = json.loads((scope.legacy_state / "runner" / "workflow-ledger.json").read_text())
+    assert ledger["workflow_state"] == "terminated"
+    assert (directory / "supervisor-termination-approval.json").is_file()
 
 
 def test_captured_remote_reviewer_deferral_is_consumed_without_successor(monkeypatch, tmp_path: Path):

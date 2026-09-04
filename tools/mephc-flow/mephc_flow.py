@@ -409,7 +409,7 @@ def state_view(paths: Paths) -> dict[str, Any]:
         if isinstance(requirement, dict):
             job = current_job(paths, order["work_order_id"])
             return {"schema": "mephc-thin-flow-status-v1", "state": "HARD_BLOCKED",
-                    "error_code": "LOCAL_SUPERVISOR_REQUIRED", "safe_next": None,
+                    "error_code": requirement.get("error_code", "LOCAL_SUPERVISOR_REQUIRED"), "safe_next": None,
                     "work_order_id": order["work_order_id"], "source": source_value,
                     "request": summary, "job": job_summary(job),
                     "local_supervisor_requirement": requirement,
@@ -454,7 +454,7 @@ def local_supervisor_result(paths: Paths, directory: Path,
     request = read_json(directory / "request.json", {})
     work_order_id = request.get("work_order_id")
     job = current_job(paths, work_order_id) if isinstance(work_order_id, str) else None
-    return {"state": "HARD_BLOCKED", "error_code": "LOCAL_SUPERVISOR_REQUIRED",
+    return {"state": "HARD_BLOCKED", "error_code": evidence.get("error_code", "LOCAL_SUPERVISOR_REQUIRED"),
             "safe_next": None, "work_order_id": work_order_id,
             "request": request_summary(directory), "job": job_summary(job),
             "local_supervisor_requirement": evidence,
@@ -466,11 +466,6 @@ def consume_response(paths: Paths, directory: Path) -> dict[str, Any]:
     if receipt.get("state") != "response_received" or not response.is_file():
         raise FlowError("RESPONSE_NOT_RECEIPT_BOUND")
     text = response.read_text(encoding="utf-8-sig")
-    if re.search(r"^WORKFLOW_TERMINATED=true$", text.replace("\r\n", "\n"), re.MULTILINE):
-        atomic_json(paths.legacy_state / "runner" / "workflow-ledger.json", {
-            "schema": "mephc-workflow-ledger-v2", "workflow_state": "terminated",
-            "pending_job_id": None, "updated_at": time.time()})
-        return {"state": "TERMINATED", "safe_next": None}
     requirement = local_supervisor.persist(
         directory, response, text, read_json(directory / "request.json", {}))
     if requirement is not None:
@@ -528,14 +523,6 @@ def consume_captured_response(paths: Paths, directory: Path) -> dict[str, Any] |
     if captured is None:
         return None
     raw_path, body = captured
-    if re.search(r"^WORKFLOW_TERMINATED=true$", body, re.MULTILINE):
-        atomic_json(paths.legacy_state / "runner" / "workflow-ledger.json", {
-            "schema": "mephc-workflow-ledger-v2", "workflow_state": "terminated",
-            "pending_job_id": None, "updated_at": time.time()})
-        atomic_json(directory / "thin-captured-reply.json", {
-            "schema": "mephc-thin-captured-reply-v1", "terminal": True,
-            "raw_sha256": digest(raw_path.read_bytes()), "consumed_at": time.time()})
-        return {"state": "TERMINATED", "safe_next": None}
     requirement = local_supervisor.persist(
         directory, raw_path, body, read_json(directory / "request.json", {}))
     if requirement is not None:
@@ -993,12 +980,19 @@ def tracked_artifact_sha256(paths: Paths, source_commit: str, relative: str) -> 
 
 
 def canonical_report(paths: Paths, order: dict[str, Any], job: dict[str, Any],
-                     preferences: dict[str, str]) -> dict[str, Any]:
+                     preferences: dict[str, str], contract: dict[str, Any] | None = None) -> dict[str, Any]:
     request_id, key = fixed_request_id(order["work_order_id"])
     counts = actual_counts(job)
     kind = "complete" if job.get("state") == "succeeded" else "blocked"
-    lines = ["MEPHC_THIN_FLOW_REPORT=true", f"WORK_ORDER_ID={order['work_order_id']}",
+    inputs = contract.get("inputs", {}) if isinstance(contract, dict) else {}
+    goal_id = inputs.get("goal_id", "UNSPECIFIED") if isinstance(inputs, dict) else "UNSPECIFIED"
+    summary = job.get("result_summary")
+    goal_outcome = summary.get("goal_completion_status", "ACTIVE") if isinstance(summary, dict) else "ACTIVE"
+    lines = ["MEPHC_THIN_FLOW_REPORT=true", "WORKFLOW_SCOPE=PROJECT",
+             f"ACTIVE_GOAL_ID={goal_id}", f"WORK_ORDER_ID={order['work_order_id']}",
              f"REPORT_KIND={kind}", f"TERMINAL_STATE={job.get('state')}",
+             f"WORK_ORDER_OUTCOME={'COMPLETED' if kind == 'complete' else 'BLOCKED'}",
+             f"GOAL_OUTCOME_CLAIM={goal_outcome}",
              f"SOURCE_COMMIT={job.get('source_commit')}", f"JOB_ID={job.get('job_id')}",
              f"NATIVE_INVOCATIONS={counts['native_invocation']}",
              f"PROVIDER_EXECUTIONS={counts['provider']}", f"SOLVER_EXECUTIONS={counts['solver']}",
@@ -1024,7 +1018,6 @@ def canonical_report(paths: Paths, order: dict[str, Any], job: dict[str, Any],
             lines.append("ARTIFACT_SHA256=" + ",".join(artifacts))
     if tests:
         lines.extend(["TESTS=" + ",".join(tests), "TEST_RETURN_CODE=0"])
-    summary = job.get("result_summary")
     if isinstance(summary, dict):
         for name, value in sorted(summary.items()):
             if re.fullmatch(r"[A-Za-z][A-Za-z0-9_]{0,63}", name) and isinstance(value, (str, int, float, bool)):
@@ -1088,7 +1081,7 @@ def closeout_once(paths: Paths, requested: dict[str, str | None] | None = None) 
         except FlowError:
             contract = None
         preferences = adaptive_query_preferences(contract, job, requested or {})
-        directory = create_request(paths, canonical_report(paths, order, job, preferences))
+        directory = create_request(paths, canonical_report(paths, order, job, preferences, contract))
     requirement = local_supervisor.load(directory)
     if isinstance(requirement, dict):
         return local_supervisor_result(paths, directory, requirement)

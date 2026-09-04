@@ -57,8 +57,15 @@ idle. After successful delivery, remain idle until the supervisor responds.
 Do not create or fork another task. A definite task-message transport failure
 may be retried once; only a second failure may be reported to the user.
 
-`TERMINATED` is only a workflow/transport state. It is not evidence that the
-scientific goal succeeded or became impossible. A terminal handoff must also
+The semantic hierarchy is fixed: Project -> Goal -> Milestone/Branch -> Work
+Order -> Job/Run. A `STOP_*` scientific decision, negative result, milestone,
+job terminal state, work-order closeout, or Goal closure never terminates the
+Project workflow. Chat must issue a substantive successor, including the next
+project-level Goal when the current Goal closes. `WORKFLOW_TERMINATED=true` is
+only a project-level termination proposal and maps to
+`HARD_BLOCKED / TERMINATION_REVIEW_REQUIRED` until this supervisor approves it.
+`TERMINATED` is only valid after that approval and is not evidence that the
+scientific goal succeeded or became impossible. A terminal proposal handoff must also
 contain this compact termination review:
 
 ```text
