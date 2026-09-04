@@ -44,6 +44,14 @@ def test_raw_layout_requires_exact_two_bands_and_components():
         raise AssertionError("unexpected acceptance of non-M33 mode count")
 
 
+def test_native_mode_component_band_layout_is_transposed_to_band_mode_component():
+    raw = np.arange(m38.N * m38.N * 4).reshape(m38.N * m38.N, 2, 2)
+    normalized, evidence = m38.normalize_raw_layout(raw)
+    assert normalized.shape == (2, m38.N * m38.N, 2)
+    assert np.array_equal(normalized, np.transpose(raw, (2, 0, 1)))
+    assert evidence["axis_layout_status"] == "NATIVE_MODE_TRANSVERSE_COMPONENT_BAND_FROM_H_DATA"
+
+
 def test_source_is_solver_free_and_no_overlap_fit():
     source = (ROOT / "audit/berry_c3_consistency/m38_supplied_exact_mpb_source_semantics_raw_native_c3.py").read_text(encoding="utf-8")
     assert "run_parity" not in source

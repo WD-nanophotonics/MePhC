@@ -120,6 +120,12 @@ or an uncertain write; query the original durable ID.
 
 For unclear scientific goals, budgets or conclusions, close out a zero-side-
 effect clarification result so Chat can issue a corrected successor contract.
+If Chat returns `LOCAL_SUPERVISOR_REQUIRED=true`, the remote reviewer has
+declared that decisive evidence is unavailable in remote Git. Thin Flow maps
+that receipt to `HARD_BLOCKED / LOCAL_SUPERVISOR_REQUIRED`. Escalate it
+directly to the fixed supervisor with the original work-order/request/job/run
+IDs and actual counts. Do not close out again, create a clarification or
+corrective work order, resend Courier, rerun science, or ask the user.
 For a local parser, test, Git, permission or Thin Flow defect:
 
 1. diagnose the exact failure without rerunning scientific work;

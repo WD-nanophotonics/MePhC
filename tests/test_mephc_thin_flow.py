@@ -91,6 +91,8 @@ def test_agents_protocol_prefers_self_repair_before_fixed_supervisor_escalation(
         "Never escalate while the flow reports",
         "missing contract-declared file",
         "side_effect_state=UNKNOWN",
+        "LOCAL_SUPERVISOR_REQUIRED=true",
+        "Do not close out again",
     )
     assert all(item in policy for item in required)
 
@@ -572,6 +574,74 @@ def test_closeout_consumes_post_submission_capture_despite_wrong_envelope(monkey
     assert not (directory / "response.txt").exists()
     evidence = json.loads((directory / "thin-captured-reply.json").read_text())
     assert evidence["envelope_mismatch_tolerated"] is True
+
+
+def test_remote_reviewer_deferral_is_persistent_hard_block_without_resend(monkeypatch, tmp_path: Path):
+    scope = paths(tmp_path)
+    work_order = "MEPHC-THIN-TEST-00000021"
+    request_id, _ = flow.fixed_request_id(work_order)
+    directory = scope.outbox / request_id
+    directory.mkdir(parents=True)
+    (directory / "request.json").write_text(json.dumps({
+        "project_id": "MEPHC", "request_id": request_id,
+        "work_order_id": work_order, "fingerprint": "fixed",
+    }), encoding="utf-8")
+    (directory / "receipt.json").write_text(
+        json.dumps({"state": "response_received"}), encoding="utf-8")
+    (directory / "events.jsonl").write_text(
+        '{"event":"request_submitted"}\n', encoding="utf-8")
+    (directory / "response.txt").write_text(
+        "LOCAL_SUPERVISOR_REQUIRED=true\n"
+        "LOCAL_SUPERVISOR_REASON=LOCAL_FRAMEWORK_STATE\n"
+        "MISSING_REMOTE_EVIDENCE=uncommitted runner state\n", encoding="utf-8")
+    monkeypatch.setattr(flow, "active_order", lambda _: {"work_order_id": work_order, "text": ""})
+    monkeypatch.setattr(flow, "source", lambda _: {"head": "a" * 40, "dirty": False})
+    called = {"courier": 0}
+    monkeypatch.setattr(flow, "courier", lambda *_: called.__setitem__("courier", called["courier"] + 1))
+
+    consumed = flow.closeout(scope)
+    assert consumed["state"] == "HARD_BLOCKED"
+    assert consumed["error_code"] == "LOCAL_SUPERVISOR_REQUIRED"
+    assert consumed["local_supervisor_requirement"]["reason"] == "LOCAL_FRAMEWORK_STATE"
+    assert called["courier"] == 0
+    persisted = json.loads((directory / flow.local_supervisor.FILENAME).read_text())
+    assert persisted["missing_remote_evidence"] == "uncommitted runner state"
+
+    restarted = flow.state_view(scope)
+    assert restarted["state"] == "HARD_BLOCKED"
+    assert restarted["safe_next"] is None
+    assert restarted["error_code"] == "LOCAL_SUPERVISOR_REQUIRED"
+    assert flow.closeout(scope)["error_code"] == "LOCAL_SUPERVISOR_REQUIRED"
+    assert called["courier"] == 0
+
+
+def test_captured_remote_reviewer_deferral_is_consumed_without_successor(monkeypatch, tmp_path: Path):
+    scope = paths(tmp_path)
+    work_order = "MEPHC-THIN-TEST-00000022"
+    request_id, _ = flow.fixed_request_id(work_order)
+    directory = scope.outbox / request_id
+    directory.mkdir(parents=True)
+    request = {"project_id": "MEPHC", "request_id": request_id,
+               "work_order_id": work_order, "fingerprint": "fixed"}
+    (directory / "request.json").write_text(json.dumps(request), encoding="utf-8")
+    (directory / "receipt.json").write_text(
+        json.dumps({"state": "response_protocol_error"}), encoding="utf-8")
+    raw = ("LOCAL_SUPERVISOR_REQUIRED=true\n"
+           "LOCAL_SUPERVISOR_REASON=CROSS_REPOSITORY_STATE\n"
+           "MISSING_REMOTE_EVIDENCE=local dependency binding\n").encode()
+    (directory / "latest-response.raw.txt").write_bytes(raw)
+    (directory / "latest-response-capture.json").write_text(json.dumps({
+        "raw_path": "latest-response.raw.txt", "raw_sha256": hashlib.sha256(raw).hexdigest(),
+        "post_submission_reply_found": True,
+    }), encoding="utf-8")
+    monkeypatch.setattr(flow, "active_order", lambda _: {"work_order_id": work_order, "text": ""})
+    monkeypatch.setattr(flow, "courier", lambda *_: subprocess.CompletedProcess([], 1, "", ""))
+    result = flow.closeout(scope)
+    assert result["state"] == "HARD_BLOCKED"
+    assert result["error_code"] == "LOCAL_SUPERVISOR_REQUIRED"
+    assert result["request"]["submission_count"] == 0
+    assert (directory / flow.local_supervisor.FILENAME).is_file()
+    assert json.loads((directory / "thin-captured-reply.json").read_text())["local_supervisor_required"] is True
 
 
 def test_capture_binding_accepts_courier_fingerprint_when_request_schema_omits_it(tmp_path: Path):

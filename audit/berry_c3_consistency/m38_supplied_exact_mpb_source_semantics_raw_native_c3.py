@@ -213,12 +213,16 @@ def frame_block(q_source: Sequence[float], q_target: Sequence[float]) -> np.ndar
 
 def normalize_raw_layout(raw: np.ndarray) -> tuple[np.ndarray, dict[str, Any]]:
     value = np.asarray(raw, dtype=np.complex128)
-    if value.ndim != 3 or value.shape[0] != 2:
+    if value.ndim != 3:
         raise ValueError(f"M38_RAW_LAYOUT_INVALID:{value.shape}")
-    if value.shape[-1] == 2:
+    if value.shape[0] == N * N and value.shape[1] == 2 and value.shape[2] == 2:
+        # MPB H.data[(mode*2+component)*p+band] decodes as (mode,component,band).
+        result = np.transpose(value, (2, 0, 1))
+        status = "NATIVE_MODE_TRANSVERSE_COMPONENT_BAND_FROM_H_DATA"
+    elif value.shape[0] == 2 and value.shape[-1] == 2:
         result = value
         status = "BAND_MODE_TRANSVERSE_COMPONENT"
-    elif value.shape[1] == 2:
+    elif value.shape[0] == 2 and value.shape[1] == 2:
         result = np.moveaxis(value, 1, -1)
         result = np.moveaxis(result, 1, 1)
         status = "BAND_TRANSVERSE_COMPONENT_MODE_NATIVE_MATRIX"

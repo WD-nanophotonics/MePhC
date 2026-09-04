@@ -21,6 +21,12 @@ from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any, Sequence
 
+_SUPERVISOR_SPEC = importlib.util.spec_from_file_location(
+    "mephc_local_supervisor", Path(__file__).with_name("local_supervisor.py"))
+if _SUPERVISOR_SPEC is None or _SUPERVISOR_SPEC.loader is None: raise RuntimeError("local supervisor support unavailable")
+local_supervisor = importlib.util.module_from_spec(_SUPERVISOR_SPEC)
+_SUPERVISOR_SPEC.loader.exec_module(local_supervisor)
+
 
 PROJECT_ID = "MEPHC"
 SUPERVISOR_TASK_ID = "01a04136-7e60-75c3-88cf-156581a3733e"
@@ -71,15 +77,12 @@ class Paths:
     legacy_state: Path = LEGACY_STATE_UNC
     courier: Path = COURIER
 
-
 def canonical(value: Any) -> bytes:
     return (json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False) + "\n").encode()
-
 
 def digest(value: Any) -> str:
     payload = value if isinstance(value, bytes) else canonical(value)
     return hashlib.sha256(payload).hexdigest()
-
 
 def atomic_json(path: Path, value: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -87,13 +90,11 @@ def atomic_json(path: Path, value: dict[str, Any]) -> None:
     temporary.write_bytes(canonical(value))
     os.replace(temporary, path)
 
-
 def atomic_bytes(path: Path, value: bytes) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
     temporary.write_bytes(value)
     os.replace(temporary, path)
-
 
 def read_json(path: Path, default: Any = None) -> Any:
     try:
@@ -102,7 +103,6 @@ def read_json(path: Path, default: Any = None) -> Any:
         return default
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise FlowError("STATE_JSON_INVALID", path.name) from exc
-
 
 def run(argv: Sequence[str], *, cwd: Path | None = None, timeout: int = 600,
         check: bool = True) -> subprocess.CompletedProcess[str]:
@@ -120,12 +120,10 @@ def run(argv: Sequence[str], *, cwd: Path | None = None, timeout: int = 600,
         raise FlowError("COMMAND_FAILED", (result.stderr or result.stdout)[-3000:])
     return result
 
-
 def git(paths: Paths, *args: str, check: bool = True, timeout: int = 600) -> subprocess.CompletedProcess[str]:
     return run(["git", "-c", f"safe.directory={paths.control}", "-c", "commit.gpgsign=false",
                 "-c", "core.autocrlf=true", "-C", str(paths.control), *args],
                check=check, timeout=timeout)
-
 
 def wsl(argv: Sequence[str], *, cwd: str | None = None, check: bool = True,
         timeout: int = 600) -> subprocess.CompletedProcess[str]:
@@ -133,7 +131,6 @@ def wsl(argv: Sequence[str], *, cwd: str | None = None, check: bool = True,
     if cwd:
         prefix += ["--cd", cwd]
     return run([*prefix, "--", *argv], check=check, timeout=timeout)
-
 
 def source(paths: Paths) -> dict[str, Any]:
     return {
@@ -143,7 +140,6 @@ def source(paths: Paths) -> dict[str, Any]:
         "origin_sandbox": git(paths, "rev-parse", "refs/remotes/origin/sandbox").stdout.strip(),
         "dirty": bool(git(paths, "status", "--porcelain", "--untracked-files=all").stdout.strip()),
     }
-
 
 def require_source(paths: Paths, *, published: bool = False) -> dict[str, Any]:
     value = source(paths)
@@ -155,7 +151,6 @@ def require_source(paths: Paths, *, published: bool = False) -> dict[str, Any]:
         raise FlowError("SOURCE_NOT_PUBLISHED")
     return value
 
-
 def remote_refs(paths: Paths) -> tuple[str, str]:
     result = git(paths, "ls-remote", "--heads", "origin", "main", "sandbox", timeout=120)
     refs = {line.split()[1]: line.split()[0] for line in result.stdout.splitlines() if len(line.split()) == 2}
@@ -163,7 +158,6 @@ def remote_refs(paths: Paths) -> tuple[str, str]:
         return refs["refs/heads/main"], refs["refs/heads/sandbox"]
     except KeyError as exc:
         raise FlowError("REMOTE_REFS_INCOMPLETE") from exc
-
 
 def ensure_checkout(paths: Paths, commit: str) -> str:
     if not SHA40.fullmatch(commit):
@@ -185,11 +179,9 @@ def ensure_checkout(paths: Paths, commit: str) -> str:
         raise FlowError("EXECUTION_CHECKOUT_NOT_LINUX_NATIVE")
     return checkout
 
-
 def ledger(paths: Paths) -> dict[str, Any]:
     value = read_json(paths.legacy_state / "runner" / "workflow-ledger.json", {})
     return value if isinstance(value, dict) else {}
-
 
 def active_order(paths: Paths) -> dict[str, Any]:
     value = ledger(paths)
@@ -208,7 +200,6 @@ def active_order(paths: Paths) -> dict[str, Any]:
         raise FlowError("ACTIVE_RESPONSE_SHA_MISMATCH")
     text = local.read_text(encoding="utf-8-sig")
     return {"work_order_id": work_order_id, "response_sha256": response_sha, "text": text}
-
 
 def contract_from_text(text: str) -> dict[str, Any]:
     normalized = text.replace("\r\n", "\n")
@@ -230,7 +221,6 @@ def contract_from_text(text: str) -> dict[str, Any]:
             return value
     raise FlowError("WORK_ORDER_MACHINE_CONTRACT_REQUIRED")
 
-
 def science_module(paths: Paths):
     path = paths.control / "tools" / "mephc-flow" / "scientific_job.py"
     spec = importlib.util.spec_from_file_location("_mephc_thin_science", path)
@@ -240,7 +230,6 @@ def science_module(paths: Paths):
     sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module
-
 
 def native_helper_module(paths: Paths):
     module_path = paths.control / "tools" / "mephc-flow" / "wsl_native_exec.py"
@@ -260,7 +249,6 @@ def active_contract(paths: Paths) -> tuple[dict[str, Any], dict[str, Any]]:
     if contract["work_order_id"] != order["work_order_id"]:
         raise FlowError("WORK_ORDER_CONTRACT_ID_MISMATCH")
     return order, contract
-
 
 def request_summary(directory: Path) -> dict[str, Any]:
     request = read_json(directory / "request.json", {})
@@ -298,7 +286,8 @@ def request_summary(directory: Path) -> dict[str, Any]:
                 successor_match
                 and WORK_ORDER.fullmatch(successor_match.group(1).strip())
             )
-            invalid_response_capture = not terminated and not successor_valid
+            supervisor_required = local_supervisor.parse(response_text) is not None
+            invalid_response_capture = not terminated and not successor_valid and not supervisor_required
         except OSError:
             invalid_response_capture = True
     response_received = response_path.is_file() and not invalid_response_capture
@@ -319,7 +308,6 @@ def request_summary(directory: Path) -> dict[str, Any]:
             "invalid_response_capture": invalid_response_capture,
             "recovery_action": recovery_action}
 
-
 def request_for_work_order(paths: Paths, work_order_id: str) -> Path | None:
     request_id, _ = fixed_request_id(work_order_id)
     directory = paths.outbox / request_id
@@ -330,7 +318,6 @@ def request_for_work_order(paths: Paths, work_order_id: str) -> Path | None:
         raise FlowError("CLOSEOUT_REQUEST_BINDING_MISMATCH")
     return directory
 
-
 def current_job(paths: Paths, work_order_id: str) -> dict[str, Any] | None:
     root = paths.state / "science-jobs"
     matches = []
@@ -340,7 +327,6 @@ def current_job(paths: Paths, work_order_id: str) -> dict[str, Any] | None:
             if isinstance(value, dict) and value.get("work_order_id") == work_order_id:
                 matches.append((path.stat().st_mtime_ns, value))
     return max(matches, key=lambda item: item[0])[1] if matches else None
-
 
 def actual_counts(job: dict[str, Any]) -> dict[str, int]:
     legacy = job.get("result") if isinstance(job.get("result"), dict) else {}
@@ -356,7 +342,6 @@ def actual_counts(job: dict[str, Any]) -> dict[str, int]:
         "dataset": int(job.get("actual_dataset_record_count",
                                legacy.get("actual_dataset_record_count", 0))),
     }
-
 
 def job_summary(job: dict[str, Any] | None) -> dict[str, Any] | None:
     if not job:
@@ -375,7 +360,6 @@ def job_summary(job: dict[str, Any] | None) -> dict[str, Any] | None:
         "actual_solver_execution_count": counts["solver"],
         "actual_dataset_record_count": counts["dataset"],
     }
-
 
 def side_effect_evidence(paths: Paths, job: dict[str, Any] | None) -> dict[str, Any]:
     """Return the one authoritative answer to whether execute may be re-entered."""
@@ -408,7 +392,6 @@ def side_effect_evidence(paths: Paths, job: dict[str, Any] | None) -> dict[str, 
             "dispatch_reached": True,
             "process_started": run_record.get("process_started") is True}
 
-
 def state_view(paths: Paths) -> dict[str, Any]:
     source_value = source(paths)
     try:
@@ -422,6 +405,15 @@ def state_view(paths: Paths) -> dict[str, Any]:
     request = request_for_work_order(paths, order["work_order_id"])
     if request:
         summary = request_summary(request)
+        requirement = local_supervisor.load(request)
+        if isinstance(requirement, dict):
+            job = current_job(paths, order["work_order_id"])
+            return {"schema": "mephc-thin-flow-status-v1", "state": "HARD_BLOCKED",
+                    "error_code": "LOCAL_SUPERVISOR_REQUIRED", "safe_next": None,
+                    "work_order_id": order["work_order_id"], "source": source_value,
+                    "request": summary, "job": job_summary(job),
+                    "local_supervisor_requirement": requirement,
+                    **side_effect_evidence(paths, job)}
         if summary["receipt_state"] in HARD_RECEIPTS:
             state, safe_next = "HARD_BLOCKED", None
         elif summary["response_received"]:
@@ -443,7 +435,6 @@ def state_view(paths: Paths) -> dict[str, Any]:
             "work_order_id": order["work_order_id"], "source": source_value, "job": job_summary(job),
             "request": None, **side_effect_evidence(paths, job)}
 
-
 def successor_from_text(text: str, prior_work_order_id: str | None) -> str | None:
     normalized = text.replace("\r\n", "\n")
     match = re.search(r"^NEXT_WORK_ORDER_ID\s*[:=]\s*([^\n]+)$", normalized, re.MULTILINE)
@@ -458,6 +449,16 @@ def successor_from_text(text: str, prior_work_order_id: str | None) -> str | Non
         return None
     return candidate if candidate != prior_work_order_id else None
 
+def local_supervisor_result(paths: Paths, directory: Path,
+                            evidence: dict[str, Any]) -> dict[str, Any]:
+    request = read_json(directory / "request.json", {})
+    work_order_id = request.get("work_order_id")
+    job = current_job(paths, work_order_id) if isinstance(work_order_id, str) else None
+    return {"state": "HARD_BLOCKED", "error_code": "LOCAL_SUPERVISOR_REQUIRED",
+            "safe_next": None, "work_order_id": work_order_id,
+            "request": request_summary(directory), "job": job_summary(job),
+            "local_supervisor_requirement": evidence,
+            **side_effect_evidence(paths, job)}
 
 def consume_response(paths: Paths, directory: Path) -> dict[str, Any]:
     response = directory / "response.txt"
@@ -470,6 +471,10 @@ def consume_response(paths: Paths, directory: Path) -> dict[str, Any]:
             "schema": "mephc-workflow-ledger-v2", "workflow_state": "terminated",
             "pending_job_id": None, "updated_at": time.time()})
         return {"state": "TERMINATED", "safe_next": None}
+    requirement = local_supervisor.persist(
+        directory, response, text, read_json(directory / "request.json", {}))
+    if requirement is not None:
+        return local_supervisor_result(paths, directory, requirement)
     request = read_json(directory / "request.json", {})
     successor = successor_from_text(text, request.get("work_order_id"))
     if successor is None:
@@ -482,7 +487,6 @@ def consume_response(paths: Paths, directory: Path) -> dict[str, Any]:
         "active_response_sha256": response_sha, "pending_job_id": None, "updated_at": time.time()})
     return {"state": "READY", "work_order_id": successor, "response_sha256": response_sha,
             "safe_next": "resume"}
-
 
 def _captured_body(text: str) -> str:
     """Extract an optional Courier envelope without using it as authorization."""
@@ -503,7 +507,6 @@ def _captured_body(text: str) -> str:
         raise FlowError("CAPTURED_RESPONSE_EMPTY")
     return normalized
 
-
 def captured_response(paths: Paths, directory: Path) -> tuple[Path, str] | None:
     manifest = read_json(directory / "latest-response-capture.json", {})
     if not isinstance(manifest, dict) or manifest.get("post_submission_reply_found") is not True:
@@ -520,7 +523,6 @@ def captured_response(paths: Paths, directory: Path) -> tuple[Path, str] | None:
         raise FlowError("CAPTURED_RESPONSE_SHA_MISMATCH")
     return path, _captured_body(raw.decode("utf-8-sig"))
 
-
 def consume_captured_response(paths: Paths, directory: Path) -> dict[str, Any] | None:
     captured = captured_response(paths, directory)
     if captured is None:
@@ -534,6 +536,14 @@ def consume_captured_response(paths: Paths, directory: Path) -> dict[str, Any] |
             "schema": "mephc-thin-captured-reply-v1", "terminal": True,
             "raw_sha256": digest(raw_path.read_bytes()), "consumed_at": time.time()})
         return {"state": "TERMINATED", "safe_next": None}
+    requirement = local_supervisor.persist(
+        directory, raw_path, body, read_json(directory / "request.json", {}))
+    if requirement is not None:
+        atomic_json(directory / "thin-captured-reply.json", {
+            "schema": "mephc-thin-captured-reply-v1", "terminal": False,
+            "local_supervisor_required": True,
+            "raw_sha256": requirement["response_sha256"], "consumed_at": time.time()})
+        return local_supervisor_result(paths, directory, requirement)
     request = read_json(directory / "request.json", {})
     successor = successor_from_text(body, request.get("work_order_id"))
     if successor is None:
@@ -552,7 +562,6 @@ def consume_captured_response(paths: Paths, directory: Path) -> dict[str, Any] |
         "capture_binding_warning": True, "consumed_at": time.time()})
     return {"state": "READY", "work_order_id": successor,
             "response_sha256": response_sha, "safe_next": "resume"}
-
 
 def resume(paths: Paths) -> dict[str, Any]:
     view = state_view(paths)
@@ -580,7 +589,6 @@ def resume(paths: Paths) -> dict[str, Any]:
             "work_order_id": order["work_order_id"], "contract": contract,
             "safe_next": "execute"}
 
-
 def dirty_paths(paths: Paths) -> list[str]:
     result = git(paths, "status", "--porcelain=v1", "--untracked-files=all")
     changed = []
@@ -589,7 +597,6 @@ def dirty_paths(paths: Paths) -> list[str]:
             raise FlowError("SCOPED_CHANGE_INVALID")
         changed.append(line[3:].replace("\\", "/"))
     return changed
-
 
 def scoped_commit(paths: Paths, contract: dict[str, Any]) -> dict[str, Any] | None:
     changed = dirty_paths(paths)
@@ -606,7 +613,6 @@ def scoped_commit(paths: Paths, contract: dict[str, Any]) -> dict[str, Any] | No
         raise FlowError("SCOPED_COMMIT_DIRTY")
     return {"changed_files": sorted(changed), "source_commit": git(paths, "rev-parse", "HEAD").stdout.strip(),
             "scope_warnings": [f"outside_declared_scope:{path}" for path in outside]}
-
 
 def test_paths(contract: dict[str, Any]) -> list[str]:
     declared = contract["inputs"].get("tests")
@@ -632,7 +638,6 @@ def require_local_implementation(paths: Paths, contract: dict[str, Any]) -> None
     if contract.get("action") == "infrastructure":
         missing = next((path for path in contract["allowed_writes"] if not (paths.control / Path(path)).is_file()), None)
         if missing: raise FlowError("ARTIFACT_IMPLEMENTATION_REQUIRED", missing)
-
 
 def publish(paths: Paths, contract: dict[str, Any]) -> dict[str, Any]:
     commit = scoped_commit(paths, contract)
@@ -670,7 +675,6 @@ def publish(paths: Paths, contract: dict[str, Any]) -> dict[str, Any]:
     atomic_json(paths.state / "publish" / f"{value['head']}.json", evidence)
     return {"source_commit": value["head"], "checkout": checkout, "tests": tests, "commit": commit}
 
-
 def dataset_bindings(contract: dict[str, Any]) -> list[dict[str, str]]:
     values = contract["inputs"].get("datasets", [])
     if not isinstance(values, list):
@@ -687,7 +691,6 @@ def dataset_bindings(contract: dict[str, Any]) -> list[dict[str, str]]:
         raise FlowError("DATASET_BINDINGS_V2_REQUIRED")
     return result
 
-
 def validate_input_bindings(paths: Paths, contract: dict[str, Any]) -> list[dict[str, Any]]:
     """Resolve every historical input before editing, publication or Native."""
     bindings = dataset_bindings(contract)
@@ -702,7 +705,6 @@ def validate_input_bindings(paths: Paths, contract: dict[str, Any]) -> list[dict
             raise FlowError(str(exc)) from exc
         resolved.append({key: value for key, value in record.items() if key != "payload"})
     return resolved
-
 
 def prepare_inputs(paths: Paths, contract: dict[str, Any], job_id: str) -> tuple[Path, str]:
     module = science_module(paths)
@@ -726,12 +728,10 @@ def prepare_inputs(paths: Paths, contract: dict[str, Any], job_id: str) -> tuple
     relative = bundle.relative_to(paths.science_state).as_posix()
     return bundle, f"{SCIENCE_STATE_WSL}/{relative}/bundle.json"
 
-
 def job_id(contract: dict[str, Any], commit: str) -> str:
     return "MEPHC-SCIENCE-" + digest({"work_order_id": contract["work_order_id"],
                                       "contract_sha256": contract["contract_sha256"],
                                       "source_commit": commit, "action": contract["action"]})[:24]
-
 
 def pre_execution_block(paths: Paths, contract: dict[str, Any], failure_code: str) -> dict[str, Any]:
     """Persist a zero-execution terminal result against the published source."""
@@ -751,7 +751,6 @@ def pre_execution_block(paths: Paths, contract: dict[str, Any], failure_code: st
     }
     atomic_json(paths.state / "science-jobs" / f"{identifier}.json", final)
     return execution_view(final)
-
 
 def pre_contract_block(paths: Paths, order: dict[str, Any], failure_code: str) -> dict[str, Any]:
     """Turn a malformed Chat contract into a zero-execution clarification result."""
@@ -774,7 +773,6 @@ def pre_contract_block(paths: Paths, order: dict[str, Any], failure_code: str) -
     }
     atomic_json(paths.state / "science-jobs" / f"{identifier}.json", final)
     return execution_view(final)
-
 
 def execution_view(job: dict[str, Any]) -> dict[str, Any]:
     terminal = job.get("state") in TERMINAL_JOBS
@@ -1091,6 +1089,9 @@ def closeout_once(paths: Paths, requested: dict[str, str | None] | None = None) 
             contract = None
         preferences = adaptive_query_preferences(contract, job, requested or {})
         directory = create_request(paths, canonical_report(paths, order, job, preferences))
+    requirement = local_supervisor.load(directory)
+    if isinstance(requirement, dict):
+        return local_supervisor_result(paths, directory, requirement)
     summary = request_summary(directory)
     if summary["receipt_state"] in HARD_RECEIPTS:
         return {"state": "HARD_BLOCKED", **summary, "safe_next": None}
