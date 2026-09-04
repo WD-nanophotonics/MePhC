@@ -259,7 +259,15 @@ def _load_matrix(job: Any, state_root: Path) -> tuple[dict[int, list[dict[str, A
     m47_rows = m47.m41r3._read_dataset(job, state_root, M47_DATASET_ID, M47_MANIFEST_SHA256, M47_SCHEMA, 36)
     m18 = m47.m41r3._read_dataset(job, state_root, m47.m41r3.M18_DATASET_ID, m47.m41r3.M18_MANIFEST_SHA256, m47.m41r3.M18_SCHEMA, 3)
     m39r1 = m47.m41r3._read_dataset(job, state_root, m47.m41r3.M39R1_DATASET_ID, m47.m41r3.M39R1_MANIFEST_SHA256, m47.m41r3.M39R1_SCHEMA, 14)
-    matrix = {resolution: [row for row in source if row.get("configuration_id") == f"R{resolution}_T1E9_M3"] for resolution, source in ((64, m41), (96, m41), (128, m41), (160, m44), (192, m44), (224, m46), (256, m47_rows))}
+    def select(source: Sequence[Mapping[str, Any]], resolution: int) -> list[dict[str, Any]]:
+        rows = [dict(row) for row in source if int(row.get("resolution", -1)) == resolution and row.get("geometry_id") == "G15" and row.get("stencil") == "C3_COVARIANT" and int(row.get("mesh_size", -1)) == 3]
+        if len(rows) != 36:
+            raise ValueError(f"M48_RESOLUTION_RECORD_COUNT_INVALID:{resolution}:{len(rows)}")
+        configurations = {str(row.get("configuration_id")) for row in rows}
+        if configurations != {f"R{resolution}_T1E9_M3"}:
+            raise ValueError(f"M48_RESOLUTION_CONFIGURATION_INVALID:{resolution}:{sorted(configurations)}")
+        return rows
+    matrix = {resolution: select(source, resolution) for resolution, source in ((64, m41), (96, m41), (128, m41), (160, m44), (192, m44), (224, m46), (256, m47_rows))}
     if any(len(rows) != 36 for rows in matrix.values()):
         raise ValueError("M48_SEVEN_RESOLUTION_MATRIX_INVALID")
     return matrix, m47.m41r3._centers(m18, m39r1), m47.m41r3._load(ROOT / "audit/berry_c3_consistency/m38_supplied_exact_mpb_source_semantics_raw_native_c3.py", "m48_m38"), m47.m41r3._load(ROOT / "audit/berry_c3_consistency/m39_g15_deterministic_repeat_band_association_worst_orbit_pilot.py", "m48_m39")
