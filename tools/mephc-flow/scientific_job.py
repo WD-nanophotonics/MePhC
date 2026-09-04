@@ -91,6 +91,19 @@ def _normalize_dataset_catalog(inputs: dict[str, Any], warnings: list[str]) -> N
     """Lift exact legacy hash pairs into the named read-only catalog dialect."""
     if "datasets" in inputs:
         return
+    v2 = inputs.get("dataset_bindings_v2")
+    if isinstance(v2, dict) and v2.get("version") == 2 and isinstance(v2.get("inputs"), list):
+        catalog = {}
+        for index, item in enumerate(v2["inputs"]):
+            if not isinstance(item, dict):
+                return
+            role = item.get("role", f"input_{index}")
+            if not isinstance(role, str) or not role or role in catalog:
+                return
+            catalog[role] = {key: value for key, value in item.items() if key != "role"}
+        inputs["datasets"] = catalog
+        warnings.append("dataset_bindings_v2_normalized")
+        return
     catalog: dict[str, dict[str, Any]] = {}
     for key, value in list(inputs.items()):
         if key.endswith("_dataset_id") and SHA64(value):
@@ -127,7 +140,15 @@ def normalize_contract(value: Any) -> Any:
     source_commit = raw.get("source_commit", raw.get("source_sha", raw.get("SOURCE_SHA")))
     inputs = raw.get("inputs") if isinstance(raw.get("inputs"), dict) else {}
     _normalize_dataset_catalog(inputs, warnings)
-    raw_budgets = raw.get("budgets") if isinstance(raw.get("budgets"), dict) else {}
+    def declared(name: str) -> Any:
+        if name in raw:
+            return raw[name]
+        if name in inputs:
+            warnings.append(f"nested_contract_field_promoted:{name}")
+            return inputs[name]
+        return None
+    candidate_budgets = declared("budgets")
+    raw_budgets = candidate_budgets if isinstance(candidate_budgets, dict) else {}
     native, bad_native = _budget(raw_budgets, "native_invocations")
     providers, bad_provider = _budget(raw_budgets, "provider_requests", "provider_executions")
     solvers, bad_solver = _budget(raw_budgets, "solver_executions")
@@ -165,7 +186,8 @@ def normalize_contract(value: Any) -> Any:
         "provider_requests": providers if native else 0,
         "solver_executions": solvers if native else 0,
     }
-    output = raw.get("expected_output") if isinstance(raw.get("expected_output"), dict) else {}
+    candidate_output = declared("expected_output")
+    output = candidate_output if isinstance(candidate_output, dict) else {}
     dataset_schema = output.get("dataset_schema") if isinstance(output.get("dataset_schema"), str) else None
     result_schema = output.get("result_schema") if isinstance(output.get("result_schema"), str) else None
     if action in {"acquire", "analyze"} and not result_schema:
@@ -178,7 +200,7 @@ def normalize_contract(value: Any) -> Any:
             capabilities.append("mpb")
     if "datasets" in inputs:
         capabilities.extend(["private_retention", "cross_commit_dataset_read"])
-    allowed = _strings(raw.get("allowed_writes"))
+    allowed = _strings(declared("allowed_writes"))
     if action != "infrastructure" and any(path.startswith("tools/mephc-flow/") for path in allowed):
         warnings.append("framework_write_outside_advisory_scope")
     raw_query = raw.get("query_preferences") if isinstance(raw.get("query_preferences"), dict) else {}
@@ -209,8 +231,8 @@ def normalize_contract(value: Any) -> Any:
         "required_capabilities": capabilities,
         "allowed_writes": allowed,
         "expected_output": {"dataset_schema": dataset_schema, "result_schema": result_schema},
-        "acceptance_criteria": _strings(raw.get("acceptance_criteria")),
-        "forbidden": _strings(raw.get("forbidden")),
+        "acceptance_criteria": _strings(declared("acceptance_criteria")),
+        "forbidden": _strings(declared("forbidden")),
         "mode": "CORRECTIVE" if action == "corrective" else "STANDARD",
         "original_work_order_class": str(raw.get("kind", "UNSPECIFIED")),
         "contract_warnings": sorted(set(warnings)),
@@ -452,9 +474,11 @@ def verify_dataset_catalog(state_root: Path, values: dict[str, Any]) -> list[dic
             raise ScientificJobError("DATASET_NAMESPACE_BINDING_MISMATCH")
         declared_schema = item.get("dataset_schema")
         actual_schema = manifest.get("namespace", {}).get("record_schema")
-        if declared_schema is not None and declared_schema != actual_schema:
-            raise ScientificJobError("DATASET_SCHEMA_BINDING_MISMATCH")
         payload_schema = item.get("payload_schema")
+        if declared_schema is not None and declared_schema != actual_schema:
+            if payload_schema is not None and payload_schema != declared_schema:
+                raise ScientificJobError("DATASET_SCHEMA_BINDING_MISMATCH")
+            payload_schema = declared_schema
         if payload_schema is not None:
             for record in manifest["records"]:
                 payload = (state_root / "datasets" / actual_namespace / "records" / f"{record['key_sha256']}.payload").read_bytes()

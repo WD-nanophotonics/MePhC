@@ -549,6 +549,28 @@ def test_legacy_dataset_hash_pairs_normalize_to_verified_named_catalog():
     assert "legacy_dataset_fields_normalized" in normalized["contract_warnings"]
 
 
+def test_nested_machine_fields_and_v2_dataset_catalog_are_normalized():
+    raw = {"schema": "mephc-science-work-order-v1", "kind": "SCIENCE",
+           "work_order_id": "MEPHC-THIN-TEST-NESTED-MACHINE-CONTRACT", "source_commit": "a" * 40,
+           "action": "acquire", "entrypoint": "audit/test.py", "inputs": {
+               "budgets": {"native_invocations": 1, "provider_requests": 144, "solver_executions": 144},
+               "expected_output": {"dataset_schema": "new-data-v1", "result_schema": "result-v1"},
+               "allowed_writes": ["audit/test.py", "tests/test.py"],
+               "acceptance_criteria": ["one bounded acquisition"], "forbidden": ["main promotion"],
+               "dataset_bindings_v2": {"version": 2, "inputs": [{"role": "baseline",
+                   "access": "READ_ONLY", "dataset_id": "b" * 64,
+                   "manifest_sha256": "c" * 64, "dataset_schema": "baseline-v1",
+                   "record_count": 72}], "outputs": []}}}
+    normalized = science.normalize_contract(raw)
+    assert normalized["action"] == "acquire"
+    assert normalized["budgets"] == {"native_invocations": 1, "provider_requests": 144,
+                                      "solver_executions": 144}
+    assert normalized["expected_output"] == {"dataset_schema": "new-data-v1", "result_schema": "result-v1"}
+    assert normalized["allowed_writes"] == ["audit/test.py", "tests/test.py"]
+    assert normalized["inputs"]["datasets"]["baseline"]["record_count"] == 72
+    assert "dataset_bindings_v2_normalized" in normalized["contract_warnings"]
+
+
 def test_missing_dataset_blocks_before_native(monkeypatch, tmp_path: Path):
     scope = paths(tmp_path)
     value = contract(inputs={
