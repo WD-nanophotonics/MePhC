@@ -381,6 +381,52 @@ def verify_dataset(state_root: Path, dataset_id: str) -> dict[str, Any]:
     }
 
 
+def verify_dataset_catalog(state_root: Path, values: dict[str, Any]) -> list[dict[str, Any]]:
+    """Expand named whole-dataset provenance only after full hash verification."""
+    resolved = []
+    for name, item in values.items():
+        if not isinstance(name, str) or not name or not isinstance(item, dict):
+            raise ScientificJobError("DATASET_BINDINGS_INVALID")
+        access = item.get("access")
+        namespace = item.get("namespace_sha256")
+        dataset_id = item.get("dataset_id")
+        if access == "READ_ONLY_BY_NAMESPACE":
+            if not SHA64(namespace):
+                raise ScientificJobError("DATASET_BINDING_INVALID")
+            try:
+                manifest = json.loads((state_root / "datasets" / namespace / "dataset-manifest.json").read_text(encoding="utf-8"))
+            except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+                raise ScientificJobError("DATASET_NOT_FOUND") from exc
+            if manifest.get("namespace_sha256") != namespace:
+                raise ScientificJobError("DATASET_NAMESPACE_BINDING_MISMATCH")
+            dataset_id = manifest.get("dataset_id")
+        elif access != "READ_ONLY":
+            raise ScientificJobError("DATASET_BINDING_INVALID")
+        if not SHA64(dataset_id):
+            raise ScientificJobError("DATASET_BINDING_INVALID")
+        verified = verify_dataset(state_root, dataset_id)
+        expected_manifest = item.get("manifest_sha256")
+        if expected_manifest is not None and expected_manifest != verified["manifest_sha256"]:
+            raise ScientificJobError("DATASET_MANIFEST_BINDING_MISMATCH")
+        if type(item.get("record_count")) is not int or item["record_count"] != verified["record_count"]:
+            raise ScientificJobError("DATASET_RECORD_COUNT_MISMATCH")
+        try:
+            index = json.loads((state_root / "dataset-index" / f"{dataset_id}.json").read_text(encoding="utf-8"))
+            actual_namespace = index["namespace_sha256"]
+            manifest = json.loads((state_root / "datasets" / actual_namespace / "dataset-manifest.json").read_text(encoding="utf-8"))
+        except (OSError, KeyError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise ScientificJobError("DATASET_NOT_FOUND") from exc
+        if namespace is not None and namespace != actual_namespace:
+            raise ScientificJobError("DATASET_NAMESPACE_BINDING_MISMATCH")
+        declared_schema = item.get("dataset_schema")
+        actual_schema = manifest.get("namespace", {}).get("record_schema")
+        if declared_schema is not None and declared_schema != actual_schema:
+            raise ScientificJobError("DATASET_SCHEMA_BINDING_MISMATCH")
+        resolved.append({"name": name, "access": access, "dataset_id": dataset_id,
+                         "namespace_sha256": actual_namespace, **verified})
+    return resolved
+
+
 def resolve_dataset_record(
     state_root: Path, dataset_id: str, manifest_sha256: str, record_key_sha256: str,
 ) -> dict[str, Any]:

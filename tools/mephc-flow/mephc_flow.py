@@ -678,6 +678,11 @@ def dataset_bindings(contract: dict[str, Any]) -> list[dict[str, str]]:
 
 def validate_input_bindings(paths: Paths, contract: dict[str, Any]) -> list[dict[str, Any]]:
     """Resolve every historical input before editing, publication or Native."""
+    values = contract["inputs"].get("datasets", [])
+    if isinstance(values, dict):
+        module = science_module(paths)
+        try: return module.verify_dataset_catalog(paths.state, values)
+        except module.ScientificJobError as exc: raise FlowError(str(exc)) from exc
     bindings = dataset_bindings(contract)
     if not bindings:
         return []
@@ -698,14 +703,17 @@ def prepare_inputs(paths: Paths, contract: dict[str, Any], job_id: str) -> tuple
     if bundle.exists():
         shutil.rmtree(bundle)
     bundle.mkdir(parents=True)
-    for index, binding in enumerate(dataset_bindings(contract)):
-        try:
-            record = module.resolve_dataset_record(paths.science_state, **binding)
-        except module.ScientificJobError as exc:
-            raise FlowError(str(exc)) from exc
-        payload = bundle / f"{index}.payload"
-        atomic_bytes(payload, record.pop("payload"))
-        resolved.append({**binding, **record, "payload_file": payload.name})
+    values = contract["inputs"].get("datasets", [])
+    if isinstance(values, dict):
+        try: resolved = module.verify_dataset_catalog(paths.state, values)
+        except module.ScientificJobError as exc: raise FlowError(str(exc)) from exc
+    else:
+        for index, binding in enumerate(dataset_bindings(contract)):
+            try: record = module.resolve_dataset_record(paths.science_state, **binding)
+            except module.ScientificJobError as exc: raise FlowError(str(exc)) from exc
+            payload = bundle / f"{index}.payload"
+            atomic_bytes(payload, record.pop("payload"))
+            resolved.append({**binding, **record, "payload_file": payload.name})
     value = {"schema": "mephc-thin-input-bundle-v1", "work_order_id": contract["work_order_id"],
              "contract_sha256": contract["contract_sha256"], "inputs": contract["inputs"],
              "datasets": resolved}

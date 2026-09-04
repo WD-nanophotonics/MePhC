@@ -496,6 +496,40 @@ def test_legacy_dataset_reference_is_rejected_before_execution():
         flow.dataset_bindings(value)
 
 
+def test_named_read_only_dataset_catalog_is_verified_before_dispatch(monkeypatch, tmp_path: Path):
+    scope = paths(tmp_path)
+    monkeypatch.setattr(flow, "science_module", lambda _: science)
+    parent = science.ImmutableDatasetStore(scope.state, {"record_schema": "parent-v1"})
+    parent.put(b"parent-key", b"parent", {})
+    parent_manifest = parent.finalize(1, {})
+    control = science.ImmutableDatasetStore(scope.state, {"record_schema": "control-v1"})
+    control.put(b"control-key", b"control", {})
+    control_manifest = control.finalize(1, {})
+    value = contract(inputs={"datasets": {
+        "parent": {"access": "READ_ONLY_BY_NAMESPACE", "namespace_sha256": parent.namespace_sha256,
+                   "dataset_schema": "parent-v1", "record_count": 1},
+        "control": {"access": "READ_ONLY", "dataset_id": control_manifest["dataset_id"],
+                    "manifest_sha256": control_manifest["manifest_sha256"],
+                    "dataset_schema": "control-v1", "record_count": 1},
+    }})
+    resolved = flow.validate_input_bindings(scope, value)
+    assert [item["name"] for item in resolved] == ["parent", "control"]
+    assert all(len(item["record_key_sha256"]) == 1 for item in resolved)
+
+
+def test_named_dataset_catalog_rejects_wrong_manifest_before_dispatch(monkeypatch, tmp_path: Path):
+    scope = paths(tmp_path)
+    monkeypatch.setattr(flow, "science_module", lambda _: science)
+    store = science.ImmutableDatasetStore(scope.state, {"record_schema": "control-v1"})
+    store.put(b"key", b"payload", {})
+    manifest = store.finalize(1, {})
+    value = contract(inputs={"datasets": {"control": {
+        "access": "READ_ONLY", "dataset_id": manifest["dataset_id"],
+        "manifest_sha256": "f" * 64, "dataset_schema": "control-v1", "record_count": 1}}})
+    with pytest.raises(flow.FlowError, match="DATASET_MANIFEST_BINDING_MISMATCH"):
+        flow.validate_input_bindings(scope, value)
+
+
 def test_missing_dataset_blocks_before_native(monkeypatch, tmp_path: Path):
     scope = paths(tmp_path)
     value = contract(inputs={
