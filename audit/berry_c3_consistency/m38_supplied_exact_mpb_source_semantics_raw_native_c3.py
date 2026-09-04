@@ -94,17 +94,41 @@ def resolve_immutable_records(
     }
 
 
-def bind_triplet(records: Sequence[Mapping[str, Any]], expected_schema: str) -> dict[str, dict[str, Any]]:
+def semantic_field_inventory(records: Sequence[Mapping[str, Any]]) -> dict[str, dict[str, Any]]:
+    """Return bounded key/type/scalar evidence without exposing raw payloads."""
+    inventory: dict[str, dict[str, Any]] = {}
+    for record in records:
+        for key, value in record.items():
+            if key in {"raw_eigenvector", "epsilon_grid", "h_arrays_by_band", "point_grids_by_chart_band"}:
+                continue
+            if isinstance(value, bool):
+                type_name, compact = "boolean", value
+            elif isinstance(value, (str, int, float)) or value is None:
+                type_name, compact = type(value).__name__, value
+            elif isinstance(value, list) and len(value) <= 4 and all(isinstance(item, (str, int, float, bool)) or item is None for item in value):
+                type_name, compact = "array", list(value)
+            elif isinstance(value, Mapping):
+                type_name, compact = "object", {"keys": sorted(str(item) for item in value)}
+            else:
+                type_name, compact = type(value).__name__, None
+            inventory.setdefault(str(key), {"types": set(), "values": []})["types"].add(type_name)
+            if compact not in inventory[str(key)]["values"] and len(inventory[str(key)]["values"]) < 6:
+                inventory[str(key)]["values"].append(compact)
+    return {key: {"types": sorted(value["types"]), "compact_values": value["values"]} for key, value in sorted(inventory.items())}
+
+
+def bind_triplet(records: Sequence[Mapping[str, Any]], expected_schema: str, *, require_runtime_metadata: bool) -> dict[str, dict[str, Any]]:
     """Bind by explicit semantic fields, never by storage order or hash order."""
     result: dict[str, dict[str, Any]] = {}
     for raw in records:
         record = dict(raw)
         if record.get("schema") != expected_schema or record.get("geometry_id") != "G15":
             raise ValueError("M38_SEMANTIC_BINDING_GEOMETRY_INVALID")
-        if record.get("geometry_role") != "AREA_MATCHED_G15" or record.get("deterministic") is not False:
-            raise ValueError("M38_SEMANTIC_BINDING_ROLE_INVALID")
-        if record.get("frame_convention") != "LAB_FIXED" or record.get("repeat_index") != 1:
-            raise ValueError("M38_SEMANTIC_BINDING_FRAME_INVALID")
+        if require_runtime_metadata:
+            if record.get("geometry_role") != "AREA_MATCHED_G15" or record.get("deterministic") is not False:
+                raise ValueError("M38_SEMANTIC_BINDING_ROLE_INVALID")
+            if record.get("frame_convention") != "LAB_FIXED" or record.get("repeat_index") != 1:
+                raise ValueError("M38_SEMANTIC_BINDING_FRAME_INVALID")
         member = record.get("c3_member_identity")
         if member not in MEMBERS or member in result:
             raise ValueError("M38_SEMANTIC_BINDING_MEMBER_INVALID")
@@ -112,6 +136,26 @@ def bind_triplet(records: Sequence[Mapping[str, Any]], expected_schema: str) -> 
     if set(result) != set(MEMBERS) or len(result) != 3:
         raise ValueError("M38_SEMANTIC_BINDING_TRIPLET_INVALID")
     return {member: result[member] for member in MEMBERS}
+
+
+def bind_cross_dataset_triplet(
+    m18_records: Sequence[Mapping[str, Any]],
+    m33_records: Sequence[Mapping[str, Any]],
+) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]], dict[str, Any]]:
+    m18_by_member = bind_triplet(m18_records, "mephc-berry-c3-consistency-m18-exact-mpb-operator-readback-dataset-v1", require_runtime_metadata=True)
+    m33_by_member = bind_triplet(m33_records, "mephc-berry-c3-consistency-m33-raw-eigenvector-c3-metadata-dataset-v1", require_runtime_metadata=False)
+    mapping: list[dict[str, Any]] = []
+    for member in MEMBERS:
+        left, right = m33_by_member[member], m18_by_member[member]
+        shared: list[str] = []
+        if left.get("request_key_sha256") and left.get("request_key_sha256") == right.get("request_key_sha256"):
+            shared.append("request_key_sha256")
+        if left.get("source_m18_record_id") and left.get("source_m18_record_id") == right.get("record_id"):
+            shared.append("source_m18_record_id=record_id")
+        if not shared:
+            raise ValueError(f"M38_SEMANTIC_BINDING_SHARED_IDENTITY_MISSING:{member}")
+        mapping.append({"member": member, "m33_record_id": left.get("record_id"), "m18_record_id": right.get("record_id"), "shared_identity_fields": shared, "member_index_m33": left.get("member_index"), "member_index_m18": right.get("member_index")})
+    return m18_by_member, m33_by_member, {"status": "SEMANTIC_BINDING_PASS", "source_fields": ["c3_member_identity", "geometry_id", "geometry_role", "deterministic", "frame_convention", "repeat_index", "request_key_sha256", "source_m18_record_id", "record_id"], "mapping_table": mapping}
 
 
 def reciprocal_basis() -> np.ndarray:
@@ -268,8 +312,7 @@ def _science_result() -> dict[str, Any]:
         job, state_root, M33_DATASET_ID, M33_MANIFEST_SHA256,
         "mephc-berry-c3-consistency-m33-raw-eigenvector-c3-metadata-dataset-v1", 3,
     )
-    m18_by_member = bind_triplet(m18_records, "mephc-berry-c3-consistency-m18-exact-mpb-operator-readback-dataset-v1")
-    m33_by_member = bind_triplet(m33_records, "mephc-berry-c3-consistency-m33-raw-eigenvector-c3-metadata-dataset-v1")
+    m18_by_member, m33_by_member, semantic_binding = bind_cross_dataset_triplet(m18_records, m33_records)
     states: dict[str, dict[str, Any]] = {}
     for member in MEMBERS:
         raw, layout = normalize_raw_layout(decode_raw_array(m33_by_member[member]["raw_eigenvector"]))
@@ -300,6 +343,11 @@ def _science_result() -> dict[str, Any]:
         "dependency_closure_status": "PASS",
         "helper_dependency_inventory": dependency_inventory,
         "dataset_binding_evidence": {"m18": m18_binding, "m33": m33_binding},
+        "semantic_binding_status": semantic_binding["status"],
+        "semantic_binding_source_fields": semantic_binding["source_fields"],
+        "semantic_binding_mapping_table": semantic_binding["mapping_table"],
+        "semantic_field_inventory_m18": semantic_field_inventory(m18_records),
+        "semantic_field_inventory_m33": semantic_field_inventory(m33_records),
         "raw_rank2_gram_residuals": {member: states[member]["gram"] for member in MEMBERS},
         "single_mode_synthetic_status": structural["synthetic_single_mode_status"],
         "random_field_synthetic_status": structural["synthetic_random_field_status"],

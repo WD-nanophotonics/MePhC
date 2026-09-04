@@ -49,3 +49,19 @@ def test_source_is_solver_free_and_no_overlap_fit():
     assert "run_parity" not in source
     assert "import meep" not in source
     assert "scipy.optimize" not in source
+
+
+def test_cross_dataset_binding_uses_actual_m33_vocabulary_without_role_field():
+    m18 = [
+        {"schema": "mephc-berry-c3-consistency-m18-exact-mpb-operator-readback-dataset-v1", "geometry_id": "G15", "geometry_role": "AREA_MATCHED_G15", "deterministic": False, "frame_convention": "LAB_FIXED", "repeat_index": 1, "c3_member_identity": member, "request_key_sha256": f"key-{member}", "record_id": f"m18-{member}"}
+        for member in ("C3_SQUARED", "IDENTITY", "C3")
+    ]
+    m33 = [
+        {"schema": "mephc-berry-c3-consistency-m33-raw-eigenvector-c3-metadata-dataset-v1", "geometry_id": "G15", "c3_member_identity": member, "request_key_sha256": f"key-{member}", "record_id": f"m33-{member}", "raw_eigenvector": {}}
+        for member in ("C3", "IDENTITY", "C3_SQUARED")
+    ]
+    left, right, evidence = m38.bind_cross_dataset_triplet(m18, m33)
+    assert list(left) == ["IDENTITY", "C3", "C3_SQUARED"]
+    assert list(right) == ["IDENTITY", "C3", "C3_SQUARED"]
+    assert evidence["status"] == "SEMANTIC_BINDING_PASS"
+    assert all("shared_identity_fields" in row for row in evidence["mapping_table"])
