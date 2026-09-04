@@ -61,8 +61,16 @@ def _fit(values: Mapping[int, float]) -> dict[str, Any]:
     fits: dict[str, Any] = {}
     for triple in TRIPLES:
         if all(n in values for n in triple):
-            fits["-".join(map(str, triple))] = m45._fit_model(
-                triple, [float(values[n]) for n in triple])
+            try:
+                fits["-".join(map(str, triple))] = m45._fit_model(
+                    triple, [float(values[n]) for n in triple])
+            except (ArithmeticError, FloatingPointError):
+                # A zero denominator at an extreme trial p is unsupported
+                # evidence, not a reason to fail the complete family.
+                fits["-".join(map(str, triple))] = {
+                    "status": "NO_ASYMPTOTIC_MODEL",
+                    "reason": "numerical_zero_denominator",
+                }
     return fits
 
 

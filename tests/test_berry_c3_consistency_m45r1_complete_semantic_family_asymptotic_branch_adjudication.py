@@ -30,6 +30,14 @@ def test_semantic_sequence_keeps_repeat_identity_and_fits_both_triples():
     assert result["fits"]["128-160-192"]["status"] == "VALID_POSITIVE_P"
 
 
+def test_unsupported_fit_arithmetic_is_withheld_not_family_failure(monkeypatch):
+    def fail(*args, **kwargs):
+        raise ZeroDivisionError("zero denominator")
+    monkeypatch.setattr(m45r1.m45, "_fit_model", fail)
+    result = m45r1._fit({n: float(n) for n in m45r1.RESOLUTIONS})
+    assert all(item["status"] == "NO_ASYMPTOTIC_MODEL" for item in result.values())
+
+
 @pytest.mark.parametrize(
     ("spectral", "berry", "expected"),
     [("ALL_TWO_TRIPLE", "ALL_TWO_TRIPLE", "COMPLETE_FAMILY_ASYMPTOTIC_CONTINUUM_C3_PASS"),
