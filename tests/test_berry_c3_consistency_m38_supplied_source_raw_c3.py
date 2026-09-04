@@ -92,3 +92,17 @@ def test_c3_closure_is_measured_not_hard_coded():
     assert "synthetic_random_field_closure_residual" in source
     assert "synthetic_one_hot_closure_residual" in source
     assert "closure_pass = bool(" in source
+
+
+def test_executed_structural_result_projection_uses_canonical_keys():
+    states = {member: {"coordinate": [0.0, 0.0, 0.0]} for member in ("IDENTITY", "C3", "C3_SQUARED")}
+    edges = [
+        {"edge_source_member": "IDENTITY", "edge_target_member": "C3", "G_edge_integer": [0, 0]},
+        {"edge_source_member": "C3", "edge_target_member": "C3_SQUARED", "G_edge_integer": [0, 0]},
+        {"edge_source_member": "C3_SQUARED", "edge_target_member": "IDENTITY", "G_edge_integer": [0, 0]},
+    ]
+    structural = m38.structural_validation(edges, states)
+    projected = m38.structural_result_fields(structural, False, 3)
+    assert set(("single_mode_synthetic_status", "random_field_synthetic_status", "synthetic_closure_status")) <= set(projected)
+    assert "synthetic_single_mode_status" not in structural
+    assert projected["raw_c3_operator_status"] == "RAW_C3_OPERATOR_STRUCTURAL_VALIDATION_FAIL"

@@ -353,6 +353,21 @@ def _edges(states: Mapping[str, Mapping[str, Any]]) -> list[dict[str, Any]]:
     return result
 
 
+def structural_result_fields(structural: Mapping[str, Any], structural_pass: bool, failures: int) -> dict[str, Any]:
+    """Project the measured structural record using the canonical result keys."""
+    return {
+        "single_mode_synthetic_status": structural["single_mode_synthetic_status"],
+        "random_field_synthetic_status": structural["random_field_synthetic_status"],
+        "synthetic_closure_status": structural["synthetic_closure_status"],
+        "synthetic_random_field_closure_residual": structural["synthetic_random_field_closure_residual"],
+        "synthetic_one_hot_closure_residual": structural["synthetic_one_hot_closure_residual"],
+        "synthetic_random_field_norm_residuals": structural["synthetic_random_field_norm_residuals"],
+        "synthetic_one_hot_norm_residual_max": structural["synthetic_one_hot_norm_residual_max"],
+        "raw_c3_operator_status": "RAW_C3_OPERATOR_SOURCE_CONFIRMED_AND_CLOSURE_PASS" if structural_pass else "RAW_C3_OPERATOR_STRUCTURAL_VALIDATION_FAIL",
+        "raw_native_c3_status": "INSUFFICIENT_EVIDENCE" if not structural_pass else "RAW_NATIVE_RANK2_C3_COVARIANCE_CONFIRMED" if failures == 0 else "RAW_NATIVE_RANK2_C3_COVARIANCE_REJECTED",
+    }
+
+
 def _science_result() -> dict[str, Any]:
     bundle = json.loads(Path(os.environ["MEPHC_INPUT_BUNDLE"]).read_text(encoding="utf-8"))
     state_root = Path(os.environ["MEPHC_EXECUTION_COUNTERS_PATH"]).parent.parent
@@ -403,15 +418,7 @@ def _science_result() -> dict[str, Any]:
         "semantic_field_inventory_m18": semantic_field_inventory(m18_records),
         "semantic_field_inventory_m33": semantic_field_inventory(m33_records),
         "raw_rank2_gram_residuals": {member: states[member]["gram"] for member in MEMBERS},
-        "single_mode_synthetic_status": structural["synthetic_single_mode_status"],
-        "random_field_synthetic_status": structural["synthetic_random_field_status"],
-        "synthetic_closure_status": structural["synthetic_closure_status"],
-        "synthetic_random_field_closure_residual": structural["synthetic_random_field_closure_residual"],
-        "synthetic_one_hot_closure_residual": structural["synthetic_one_hot_closure_residual"],
-        "synthetic_random_field_norm_residuals": structural["synthetic_random_field_norm_residuals"],
-        "synthetic_one_hot_norm_residual_max": structural["synthetic_one_hot_norm_residual_max"],
-        "raw_c3_operator_status": "RAW_C3_OPERATOR_SOURCE_CONFIRMED_AND_CLOSURE_PASS" if structural_pass else "RAW_C3_OPERATOR_STRUCTURAL_VALIDATION_FAIL",
-        "raw_native_c3_status": "INSUFFICIENT_EVIDENCE" if not structural_pass else "RAW_NATIVE_RANK2_C3_COVARIANCE_CONFIRMED" if failures == 0 else "RAW_NATIVE_RANK2_C3_COVARIANCE_REJECTED",
+        **structural_result_fields(structural, structural_pass, failures),
     })
     return result
 
