@@ -1,4 +1,4 @@
-"""M39: one fresh-solver, four-band deterministic/repeat G15 pilot."""
+"""M39R1: one recovery batch for four-band deterministic/repeat G15 evidence."""
 from __future__ import annotations
 
 import base64
@@ -20,8 +20,8 @@ M18_DATASET_ID = "6aff6fe12b50c1124eea52e246a9eba832420d51f756c32702694fe4a696a1
 M18_MANIFEST_SHA256 = "7288abd0f4e9722eae1844ff9a917430d3d451ceb76682380270cb74d9f0205f"
 M33_DATASET_ID = "b92b495ea440d1054007b413823d767b2b4fb10b1e01063cbb87a689c1cfcb6d"
 M33_MANIFEST_SHA256 = "dd03a3f456ae27af658f42a366967eedb6a5dbfd07ccbbb0ac8d778537f19278"
-DATASET_SCHEMA = "mephc-berry-c3-consistency-m39-g15-deterministic-repeat-band-association-dataset-v1"
-RESULT_SCHEMA = "mephc-berry-c3-consistency-m39-g15-deterministic-repeat-band-association-worst-orbit-pilot-v1"
+DATASET_SCHEMA = "mephc-berry-c3-consistency-m39r1-g15-deterministic-repeat-band-association-recovery-dataset-v1"
+RESULT_SCHEMA = "mephc-berry-c3-consistency-m39r1-deterministic-repeat-band-association-causal-adjudication-v1"
 M18_SCHEMA = "mephc-berry-c3-consistency-m18-exact-mpb-operator-readback-dataset-v1"
 M33_SCHEMA = "mephc-berry-c3-consistency-m33-raw-eigenvector-c3-metadata-dataset-v1"
 G15 = {"a": 400.0, "r1": 80.14335684352235, "r2": 75.13439704080221, "n1": 15, "n2": 15, "theta1_degrees": 0.0, "theta2_degrees": 60.0, "n_eff": 2.7, "height": 100.0}
@@ -112,6 +112,22 @@ def build_schedule() -> list[dict[str, Any]]:
     return schedule
 
 
+def build_recovery_schedule() -> list[dict[str, Any]]:
+    """Return only the fourteen new states authorized by the M39R1 contract."""
+    schedule: list[dict[str, Any]] = []
+    for repeat_index in (1, 2, 3):
+        for member_index, member in enumerate(MEMBERS):
+            schedule.append({"member_index": member_index, "c3_member_identity": member, "deterministic": True, "repeat_index": repeat_index})
+    for member_index, member in enumerate(MEMBERS):
+        schedule.append({"member_index": member_index, "c3_member_identity": member, "deterministic": False, "repeat_index": 0})
+    for member in ("C3", "C3_SQUARED"):
+        schedule.append({"member_index": MEMBERS.index(member), "c3_member_identity": member, "deterministic": False, "repeat_index": 1})
+    keys = {(item["c3_member_identity"], item["deterministic"], item["repeat_index"]) for item in schedule}
+    if len(schedule) != 14 or len(keys) != 14 or ("IDENTITY", True, 0) in keys:
+        raise ValueError("M39R1_RECOVERY_SCHEDULE_INVALID")
+    return schedule
+
+
 def resolve_records(job: Any, state_root: Path, dataset_id: str, manifest: str, schema: str, count: int) -> list[dict[str, Any]]:
     verified = job.verify_dataset(state_root, dataset_id)
     if verified.get("dataset_id") != dataset_id or verified.get("manifest_sha256") != manifest or verified.get("record_count") != count:
@@ -144,7 +160,7 @@ def bind_m18(records: Sequence[Mapping[str, Any]]) -> dict[str, dict[str, Any]]:
 
 
 def request_spec(member: Mapping[str, Any], schedule_item: Mapping[str, Any], source_commit: str) -> dict[str, Any]:
-    value = {"goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1", "geometry_id": "G15", "member": schedule_item["c3_member_identity"], "member_index": int(schedule_item["member_index"]), "coordinate": list(member["coordinate"]), "deterministic": bool(schedule_item["deterministic"]), "repeat_index": int(schedule_item["repeat_index"]), "num_bands": BANDS, "resolution": N, "tolerance": 1e-7, "mesh_size": 3, "polarization": "TE", "source_commit": source_commit}
+    value = {"goal_id": "MEPHC-BERRY-C3-CONSISTENCY-V1", "geometry_id": "G15", "c3_member_identity": schedule_item["c3_member_identity"], "member_index": int(schedule_item["member_index"]), "coordinate": list(member["coordinate"]), "deterministic": bool(schedule_item["deterministic"]), "repeat_index": int(schedule_item["repeat_index"]), "num_bands": BANDS, "resolution": N, "tolerance": 1e-7, "mesh_size": 3, "polarization": "TE", "source_commit": source_commit}
     value["request_key_sha256"] = hashlib.sha256(_canonical(value)).hexdigest()
     return value
 
@@ -166,7 +182,8 @@ def capture_state(mp: Any, solver: Any, reciprocal: Any, spec: Mapping[str, Any]
     raw_native = np.asarray(solver.get_eigenvectors(1, BANDS))
     raw, layout = normalize_raw(raw_native)
     grams = raw_gram(raw)
-    gaps = {"lower_gap": float(frequencies[1] - frequencies[0]), "internal_split": float(frequencies[2] - frequencies[1]), "upper_gap": float(frequencies[3] - frequencies[2]), "minimum_external_gap": float(min(frequencies[1] - frequencies[0], frequencies[3] - frequencies[2]))}
+    lower_gap, internal_split, upper_gap = float(frequencies[1] - frequencies[0]), float(frequencies[2] - frequencies[1]), float(frequencies[3] - frequencies[2])
+    gaps = {"lower_gap": lower_gap, "internal_split": internal_split, "upper_gap": upper_gap, "band2_isolation_gap": float(min(lower_gap, internal_split)), "band3_isolation_gap": float(min(internal_split, upper_gap)), "minimum_external_rank2_gap": float(min(lower_gap, upper_gap))}
     evidence = {"requested_tolerance": 1e-7, "iteration_evidence_status": "UNAVAILABLE_NO_PUBLIC_RUNTIME_FIELD", "public_runtime_fields": {}}
     for name in ("iterations", "iteration_count", "residual", "residual_norm", "last_residual"):
         if hasattr(solver, name):
@@ -225,31 +242,57 @@ def _loop_records(records: Sequence[Mapping[str, Any]], deterministic: bool, rep
 def same_k_analysis(records: Sequence[Mapping[str, Any]]) -> tuple[dict[str, Any], dict[str, Any]]:
     frequency_dispersion: dict[str, Any] = {}
     rank2_repeat: dict[str, Any] = {}
+    rank1_repeat: dict[str, Any] = {}
     det_by_member = {member: [item for item in records if item["c3_member_identity"] == member and item["deterministic"]] for member in MEMBERS}
     nondet_by_member = {member: [item for item in records if item["c3_member_identity"] == member and not item["deterministic"]] for member in MEMBERS}
     for member in MEMBERS:
         det_freq = np.asarray([item["frequencies_bands_1_to_4"] for item in det_by_member[member]], dtype=float)
         non_freq = np.asarray([item["frequencies_bands_1_to_4"] for item in nondet_by_member[member]], dtype=float)
-        frequency_dispersion[member] = {"deterministic_three_repeat_frequency_min": det_freq.min(axis=0).tolist(), "deterministic_three_repeat_frequency_max": det_freq.max(axis=0).tolist(), "deterministic_three_repeat_frequency_dispersion": (det_freq.max(axis=0) - det_freq.min(axis=0)).tolist(), "nondeterministic_two_repeat_frequency_spread": (non_freq.max(axis=0) - non_freq.min(axis=0)).tolist()}
+        det_gaps = [item["adjacent_gaps"] for item in det_by_member[member]]
+        det_gap_matrix = np.asarray([[item["band2_isolation_gap"], item["band3_isolation_gap"], item["minimum_external_rank2_gap"]] for item in det_gaps], dtype=float)
+        frequency_dispersion[member] = {"deterministic_three_repeat_frequency_min": det_freq.min(axis=0).tolist(), "deterministic_three_repeat_frequency_max": det_freq.max(axis=0).tolist(), "deterministic_three_repeat_frequency_dispersion": (det_freq.max(axis=0) - det_freq.min(axis=0)).tolist(), "deterministic_band_isolation_gap_dispersion": (det_gap_matrix.max(axis=0) - det_gap_matrix.min(axis=0)).tolist(), "nondeterministic_two_repeat_frequency_spread": (non_freq.max(axis=0) - non_freq.min(axis=0)).tolist() if len(non_freq) > 1 else None}
         pairs = []
         for left_index in range(len(det_by_member[member])):
             for right_index in range(left_index + 1, len(det_by_member[member])):
                 left, right = normalize_raw(decode_raw(det_by_member[member][left_index]["raw_eigenvector"]))[0], normalize_raw(decode_raw(det_by_member[member][right_index]["raw_eigenvector"]))[0]
-                pairs.append({"repeat_pair": [left_index, right_index], **low_rank_metrics(left, right)})
-        nondet_left = normalize_raw(decode_raw(nondet_by_member[member][0]["raw_eigenvector"]))[0]
-        nondet_right = normalize_raw(decode_raw(nondet_by_member[member][1]["raw_eigenvector"]))[0]
+                rank2 = low_rank_metrics(left, right)
+                rank1 = [float(abs(np.vdot(left[band].reshape(-1), right[band].reshape(-1)) / (np.linalg.norm(left[band]) * np.linalg.norm(right[band])))) for band in range(BANDS)]
+                pairs.append({"repeat_pair": [left_index, right_index], "rank1_same_band_absolute_overlaps": rank1, "rank2": rank2})
+        nondet_left = normalize_raw(decode_raw(nondet_by_member[member][0]["raw_eigenvector"]))[0] if nondet_by_member[member] else None
+        if len(nondet_by_member[member]) > 1:
+            nondet_right = normalize_raw(decode_raw(nondet_by_member[member][1]["raw_eigenvector"]))[0]
+            nondet_rank2 = low_rank_metrics(nondet_left, nondet_right)
+            nondet_rank1 = [float(abs(np.vdot(nondet_left[band].reshape(-1), nondet_right[band].reshape(-1)) / (np.linalg.norm(nondet_left[band]) * np.linalg.norm(nondet_right[band])))) for band in range(BANDS)]
+        else:
+            nondet_rank2, nondet_rank1 = None, None
         deterministic_first = normalize_raw(decode_raw(det_by_member[member][0]["raw_eigenvector"]))[0]
-        rank2_repeat[member] = {"deterministic_pairwise_rank2": pairs, "nondeterministic_pair_rank2": low_rank_metrics(nondet_left, nondet_right), "deterministic_vs_nondeterministic_rank2": low_rank_metrics(deterministic_first, nondet_left)}
-    return frequency_dispersion, rank2_repeat
+        det_non_rank2 = low_rank_metrics(deterministic_first, nondet_left) if nondet_left is not None else None
+        rank2_repeat[member] = {"deterministic_pairwise": pairs, "nondeterministic_pair_rank2": nondet_rank2, "deterministic_vs_nondeterministic_rank2": det_non_rank2}
+        rank1_repeat[member] = {"deterministic_pairwise_same_band_absolute_overlaps": [item["rank1_same_band_absolute_overlaps"] for item in pairs], "nondeterministic_pair_same_band_absolute_overlaps": nondet_rank1, "deterministic_vs_nondeterministic_same_band_absolute_overlaps": [float(abs(np.vdot(deterministic_first[band].reshape(-1), nondet_left[band].reshape(-1)) / (np.linalg.norm(deterministic_first[band]) * np.linalg.norm(nondet_left[band])))) for band in range(BANDS)] if nondet_left is not None else None}
+    return frequency_dispersion, {"rank1": rank1_repeat, "rank2": rank2_repeat}
 
 
-def analyze_records(records: Sequence[Mapping[str, Any]], m18_by_member: Mapping[str, Mapping[str, Any]]) -> dict[str, Any]:
+def classify_causal(*, deterministic_minimum: float, nondeterministic_minimum: float, combined_repeat_uncertainty: float, deterministic_repeat_spread: float, cross_c3_deficit: float, adjacent_pair_stable: bool, adjacent_pair_noncanonical: bool, deterministic_same_k_stable: bool) -> str:
+    causes: list[str] = []
+    improvement = deterministic_minimum - nondeterministic_minimum
+    if deterministic_same_k_stable and adjacent_pair_stable and improvement > combined_repeat_uncertainty:
+        causes.append("RANDOM_INITIALIZATION")
+    if adjacent_pair_noncanonical or not adjacent_pair_stable:
+        causes.append("BAND_ASSOCIATION_OR_NEAR_DEGENERACY")
+    if deterministic_same_k_stable and adjacent_pair_stable and abs(improvement) <= combined_repeat_uncertainty and deterministic_repeat_spread < cross_c3_deficit:
+        causes.append("REMAINING_NUMERICAL_OR_PHYSICAL_C3_BREAKING")
+    if len(causes) > 1:
+        return "MULTIPLE_IDENTIFIED_CAUSES"
+    return causes[0] if causes else "UNRESOLVED_UNDER_BOUNDED_EXPERIMENT"
+
+
+def analyze_records(records: Sequence[Mapping[str, Any]], m18_by_member: Mapping[str, Mapping[str, Any]], historical_records: Sequence[Mapping[str, Any]] | None = None) -> dict[str, Any]:
     m38 = _load(ROOT / "audit" / "berry_c3_consistency" / "m38_supplied_exact_mpb_source_semantics_raw_native_c3.py", "m39_m38_pure_helpers")
     state_shapes = {member: normalize_raw(decode_raw(next(item for item in records if item["c3_member_identity"] == member and item["deterministic"])["raw_eigenvector"]))[1] for member in MEMBERS}
     coordinates = {member: list(m18_by_member[member]["coordinate"]) for member in MEMBERS}
     edge_states = {member: {"c3_member_identity": member, "coordinate": coordinates[member]} for member in MEMBERS}
     edges = m38._edges(edge_states)
-    loops = [(True, 0), (True, 1), (True, 2), (False, 0), (False, 1)]
+    loops = [(True, 1), (True, 2), (True, 3), (False, 0)]
     rank1_by_loop: list[dict[str, Any]] = []
     rank2_edges: list[dict[str, Any]] = []
     for deterministic, repeat_index in loops:
@@ -264,7 +307,8 @@ def analyze_records(records: Sequence[Mapping[str, Any]], m18_by_member: Mapping
             transformed, ledger = m38.apply_raw_operator(source, source_coord, target_coord, edge["G_edge_integer"])
             pair_rows = [low_rank_metrics(transformed, target, (1, 2), pair) for pair in ((0, 1), (1, 2), (2, 3))]
             canonical_phase, polar_residual, canonical_singular = polar_det_phase(transformed, target)
-            rank2_loop_edges.append({**edge, "mode_map_bijection": bool(ledger["bijection"]), "adjacent_pair_metrics": pair_rows, "canonical_pair_metrics": low_rank_metrics(transformed, target), "canonical_polar_det_phase": canonical_phase, "canonical_polar_unitary_residual": polar_residual, "canonical_overlap_singular_values": canonical_singular})
+            best_pair = max(pair_rows, key=lambda row: (row["minimum_singular_value"], tuple(-item for item in row["target_pair"])))
+            rank2_loop_edges.append({**edge, "mode_map_bijection": bool(ledger["bijection"]), "adjacent_pair_metrics": pair_rows, "best_target_pair": best_pair["target_pair"], "best_target_pair_minimum_singular_value": best_pair["minimum_singular_value"], "canonical_pair_metrics": low_rank_metrics(transformed, target), "canonical_polar_det_phase": canonical_phase, "canonical_polar_unitary_residual": polar_residual, "canonical_overlap_singular_values": canonical_singular})
         for band_key in ("band_2", "band_3"):
             links = [edge_row[band_key]["same_index_link"] for edge_row in rank1_edges]
             loop_phase = float(np.angle(np.prod([complex(item[0], item[1]) for item in links])))
@@ -274,13 +318,18 @@ def analyze_records(records: Sequence[Mapping[str, Any]], m18_by_member: Mapping
     frequency_dispersion, repeat_analysis = same_k_analysis(records)
     det_loops = [item for item in rank1_by_loop if item["deterministic"]]
     nondet_loops = [item for item in rank1_by_loop if not item["deterministic"]]
-    phases_by_band = {band: [item["wilson_phase"] for item in det_loops if item["band"] == band] for band in (2, 3)}
+    phases_by_band = {str(band): [item["wilson_phase"] for item in det_loops if item["band"] == band] for band in (2, 3)}
     phase_uncertainty = {str(band): float(max(values) - min(values)) if values else None for band, values in phases_by_band.items()}
     all_links = [edge["link_magnitude"] for loop in rank1_by_loop for edge in loop["edges"]]
     min_link = float(min(all_links)) if all_links else None
-    freq_noise = max(max(max(value["deterministic_three_repeat_frequency_dispersion"]) for value in frequency_dispersion.values()), np.finfo(float).eps)
-    link_noise = max(max(max(abs(complex(edge["same_index_link"][0], edge["same_index_link"][1]) - 1.0) for edge in loop["edges"]) for loop in rank1_by_loop), np.finfo(float).eps)
-    rank1_qualification = {str(band): {"gap_signal_to_uncertainty": float(min(item["adjacent_gaps"]["internal_split"] for item in records) / freq_noise), "link_signal_to_repeat_noise": float(min_link / link_noise) if min_link is not None else None, "branch_margin_to_phase_uncertainty": None if phase_uncertainty[str(band)] in (None, 0.0) else float(min(item["branch_margin"] for item in rank1_by_loop if item["band"] == band) / phase_uncertainty[str(band)]), "status": "RANK1_WITHHELD"} for band in (2, 3)}
+    deterministic_loops = {(item["band"], item["edge_source_member"], item["edge_target_member"]): [] for item in det_loops for edge in item["edges"]}
+    for loop in det_loops:
+        for edge in loop["edges"]:
+            deterministic_loops[(loop["band"], edge["edge_source_member"], edge["edge_target_member"])].append(edge["link_magnitude"])
+    link_repeat_noise = max((max(values) - min(values) for values in deterministic_loops.values() if values), default=0.0)
+    band_gap_signal = {"2": min(float(item["adjacent_gaps"]["band2_isolation_gap"]) for item in records), "3": min(float(item["adjacent_gaps"]["band3_isolation_gap"]) for item in records)}
+    band_gap_noise = {"2": max(float(value["deterministic_band_isolation_gap_dispersion"][0]) for value in frequency_dispersion.values()), "3": max(float(value["deterministic_band_isolation_gap_dispersion"][1]) for value in frequency_dispersion.values())}
+    rank1_qualification = {str(band): {"gap_signal_to_uncertainty": float(band_gap_signal[str(band)] / band_gap_noise[str(band)]) if band_gap_noise[str(band)] > 0.0 else float("inf") if band_gap_signal[str(band)] > 0.0 else 0.0, "link_signal_to_repeat_noise": float(min_link / link_repeat_noise) if min_link is not None and link_repeat_noise > 0.0 else float("inf") if min_link is not None and min_link > 0.0 else 0.0, "branch_margin_to_phase_uncertainty": float(min(item["branch_margin"] for item in rank1_by_loop if item["band"] == band) / phase_uncertainty[str(band)]) if phase_uncertainty[str(band)] not in (None, 0.0) else float("inf"), "status": "RANK1_WITHHELD"} for band in (2, 3)}
     for band, value in rank1_qualification.items():
         if value["gap_signal_to_uncertainty"] >= 10.0 and value["link_signal_to_repeat_noise"] is not None and value["link_signal_to_repeat_noise"] >= 10.0 and (value["branch_margin_to_phase_uncertainty"] is None or value["branch_margin_to_phase_uncertainty"] >= 5.0):
             value["status"] = "RANK1_QUALIFIED"
@@ -289,13 +338,16 @@ def analyze_records(records: Sequence[Mapping[str, Any]], m18_by_member: Mapping
     nondeterministic_rank2 = [value for loop in rank2_edges if not loop["deterministic"] for value in loop["edges"]]
     deterministic_min = min((row["canonical_pair_metrics"]["minimum_singular_value"] for row in deterministic_rank2), default=float("nan"))
     nondeterministic_min = min((row["canonical_pair_metrics"]["minimum_singular_value"] for row in nondeterministic_rank2), default=float("nan"))
-    primary = "UNRESOLVED_UNDER_BOUNDED_EXPERIMENT"
-    if deterministic_rank2 and nondeterministic_rank2 and abs(deterministic_min - nondeterministic_min) <= 0.01 and all(value["canonical_pair_metrics"]["target_pair"] == [2, 3] for value in deterministic_rank2):
-        primary = "REMAINING_NUMERICAL_OR_PHYSICAL_C3_BREAKING"
-    elif any(row["best_target_band"] not in (2, 3) for loop in rank1_by_loop for row in loop["edges"]):
-        primary = "BAND_ASSOCIATION_OR_NEAR_DEGENERACY"
+    deterministic_best_pairs = [tuple(row["best_target_pair"]) for row in deterministic_rank2]
+    adjacent_pair_stable = bool(deterministic_best_pairs) and len(set(deterministic_best_pairs)) == 1
+    adjacent_pair_noncanonical = any(pair != (2, 3) for pair in deterministic_best_pairs)
+    deterministic_repeat_spread = max((1.0 - row["rank2"]["minimum_singular_value"] for value in repeat_analysis["rank2"].values() for row in value["deterministic_pairwise"]), default=0.0)
+    nondeterministic_repeat_spread = max((1.0 - value["nondeterministic_pair_rank2"]["minimum_singular_value"] for value in repeat_analysis["rank2"].values() if value["nondeterministic_pair_rank2"]), default=0.0)
+    combined_repeat_uncertainty = deterministic_repeat_spread + nondeterministic_repeat_spread
+    primary = classify_causal(deterministic_minimum=deterministic_min, nondeterministic_minimum=nondeterministic_min, combined_repeat_uncertainty=combined_repeat_uncertainty, deterministic_repeat_spread=deterministic_repeat_spread, cross_c3_deficit=max(0.0, 1.0 - deterministic_min), adjacent_pair_stable=adjacent_pair_stable, adjacent_pair_noncanonical=adjacent_pair_noncanonical, deterministic_same_k_stable=deterministic_repeat_spread < max(0.0, 1.0 - deterministic_min))
     next_decision = {"RANDOM_INITIALIZATION": "DETERMINISTIC_WORST_ORBIT_BERRY_RECOMPUTATION", "BAND_ASSOCIATION_OR_NEAR_DEGENERACY": "ADAPTIVE_VALIDATED_SUBSPACE_TRANSPORT_ON_EXISTING_M39_RAW_BANDS", "REMAINING_NUMERICAL_OR_PHYSICAL_C3_BREAKING": "BOUNDED_RESOLUTION_TOLERANCE_CONVERGENCE_PILOT", "MULTIPLE_IDENTIFIED_CAUSES": "PRIORITIZE_CHEAPEST_IDENTIFIED_CAUSAL_CONTROL", "UNRESOLVED_UNDER_BOUNDED_EXPERIMENT": "TARGETED_NEXT_DISCRIMINANT_FROM_M39_EVIDENCE"}[primary]
-    return {"raw_eigenvector_shape_by_state": state_shapes, "first_four_frequencies_by_state": {str(_state_key(item)): item["frequencies_bands_1_to_4"] for item in records}, "adjacent_gaps_by_state": {str(_state_key(item)): item["adjacent_gaps"] for item in records}, "solver_convergence_evidence": {str(_state_key(item)): item["solver_convergence_evidence"] for item in records}, "same_k_repeat_frequency_dispersion": frequency_dispersion, "same_k_rank1_repeat_overlap": repeat_analysis, "same_k_rank2_repeat_singular_values": repeat_analysis, "c3_rank1_link_magnitudes": rank1_by_loop, "c3_rank1_link_phases": rank1_by_loop, "c3_rank1_wilson_phases": {str(band): phases_by_band[str(band)] for band in (2, 3)}, "c3_rank1_branch_margins": {str(band): [item["branch_margin"] for item in rank1_by_loop if item["band"] == band] for band in (2, 3)}, "c3_rank1_qualification_status": rank1_qualification, "c3_rank2_edge_metrics": rank2_edges, "c3_rank2_adjacent_pair_association": [{"deterministic": loop["deterministic"], "repeat_index": loop["repeat_index"], "edges": [{"edge_source_member": row["edge_source_member"], "edge_target_member": row["edge_target_member"], "pairs": row["adjacent_pair_metrics"]} for row in loop["edges"]]} for loop in rank2_edges], "c3_rank2_holonomy_phase": [loop["holonomy_phase"] for loop in rank2_edges], "c3_rank2_branch_margin": [loop["branch_margin"] for loop in rank2_edges], "deterministic_vs_nondeterministic_effect_summary": {"deterministic_minimum_canonical_rank2": deterministic_min, "nondeterministic_minimum_canonical_rank2": nondeterministic_min, "m38_baseline_minimum": PUBLIC_M38_MIN, "m38_baseline_failures": PUBLIC_M38_FAILURES}, "primary_causal_class": primary, "causal_evidence": {"deterministic_minimum": deterministic_min, "nondeterministic_minimum": nondeterministic_min, "qualification_ratios": rank1_qualification}, "counterevidence_summary": {"edge_count": len(edges), "loop_count": len(loops), "same_k": repeat_analysis, "rank2_minimums": rank2_minima}, "exact_remaining_uncertainty": "Rank1 qualification is withheld unless all goal-contract ratios pass; causal classification remains bounded by the 15-state pilot.", "next_science_decision": next_decision, "goal_completion_status": "NOT_COMPLETE_CONTINUE_CAUSAL_BRANCH"}
+    historical_provenance = {"m18_frequency_gap_control": {member: {"source_dataset_id": M18_DATASET_ID, "record_id": m18_by_member[member].get("record_id"), "frequencies_bands_1_to_4": m18_by_member[member].get("frequencies_bands_1_to_4"), "used_with_new_identity_repeat0": True} for member in MEMBERS}, "m33_raw_two_band_control": {str(item.get("c3_member_identity")): {"source_dataset_id": M33_DATASET_ID, "record_id": item.get("record_id"), "raw_shape": (item.get("raw_eigenvector") or {}).get("shape"), "used_only_for_bands_2_3_raw_metrics": True} for item in (historical_records or [])}, "combined_realization": False, "note": "M18 frequencies and M33 raw coefficients remain separate metric-specific historical controls; no cross-record frequency/raw quantity is computed."}
+    return {"raw_eigenvector_shape_by_state": state_shapes, "first_four_frequencies_by_state": {str(_state_key(item)): item["frequencies_bands_1_to_4"] for item in records}, "adjacent_gaps_by_state": {str(_state_key(item)): item["adjacent_gaps"] for item in records}, "solver_convergence_evidence": {str(_state_key(item)): item["solver_convergence_evidence"] for item in records}, "same_k_repeat_frequency_dispersion": frequency_dispersion, "same_k_rank1_repeat_overlap": repeat_analysis["rank1"], "same_k_rank2_repeat_singular_values": repeat_analysis["rank2"], "c3_rank1_target_band_association": rank1_by_loop, "c3_rank1_link_magnitudes": rank1_by_loop, "c3_rank1_link_phases": rank1_by_loop, "c3_rank1_wilson_phases": {str(band): phases_by_band[str(band)] for band in (2, 3)}, "c3_rank1_phase_uncertainty": phase_uncertainty, "c3_rank1_branch_margins": {str(band): [item["branch_margin"] for item in rank1_by_loop if item["band"] == band] for band in (2, 3)}, "c3_rank1_qualification_status": rank1_qualification, "c3_rank2_edge_metrics": rank2_edges, "c3_rank2_adjacent_pair_association": [{"deterministic": loop["deterministic"], "repeat_index": loop["repeat_index"], "edges": [{"edge_source_member": row["edge_source_member"], "edge_target_member": row["edge_target_member"], "pairs": row["adjacent_pair_metrics"], "best_target_pair": row["best_target_pair"]} for row in loop["edges"]]} for loop in rank2_edges], "c3_rank2_best_pair_stability": {"stable": adjacent_pair_stable, "noncanonical": adjacent_pair_noncanonical, "deterministic_best_pairs": [list(pair) for pair in deterministic_best_pairs]}, "c3_rank2_holonomy_phase": [loop["holonomy_phase"] for loop in rank2_edges], "c3_rank2_branch_margin": [loop["branch_margin"] for loop in rank2_edges], "deterministic_vs_nondeterministic_effect_summary": {"deterministic_minimum_canonical_rank2": deterministic_min, "nondeterministic_minimum_canonical_rank2": nondeterministic_min, "combined_observed_repeat_uncertainty": combined_repeat_uncertainty, "deterministic_repeat_spread": deterministic_repeat_spread, "nondeterministic_repeat_spread": nondeterministic_repeat_spread, "m38_baseline_minimum": PUBLIC_M38_MIN, "m38_baseline_failures": PUBLIC_M38_FAILURES}, "historical_control_provenance": historical_provenance, "primary_causal_class": primary, "causal_evidence": {"deterministic_minimum": deterministic_min, "nondeterministic_minimum": nondeterministic_min, "qualification_ratios": rank1_qualification, "adjacent_pair_stable": adjacent_pair_stable, "adjacent_pair_noncanonical": adjacent_pair_noncanonical}, "counterevidence_summary": {"edge_count": len(edges), "loop_count": len(loops), "same_k": repeat_analysis, "rank2_minimums": rank2_minima}, "exact_remaining_uncertainty": "Rank1 qualification is withheld unless all goal-contract ratios pass; causal classification remains bounded by the 14-new-state recovery and metric-specific historical control.", "next_science_decision": next_decision, "goal_completion_status": "NOT_COMPLETE_CONTINUE_CAUSAL_BRANCH"}
 
 
 def persist_dataset(job: Any, state_root: Path, work_order_id: str, records: Sequence[Mapping[str, Any]], source_commit: str) -> dict[str, Any]:
@@ -303,7 +355,7 @@ def persist_dataset(job: Any, state_root: Path, work_order_id: str, records: Seq
     for record in records:
         key = _canonical({"work_order_id": work_order_id, "request_key_sha256": record["request_key_sha256"]})
         store.put(key, _canonical(dict(record)), {"member": record["c3_member_identity"], "deterministic": record["deterministic"], "repeat_index": record["repeat_index"]})
-    return store.finalize(15, {"dataset_schema": DATASET_SCHEMA, "source_m18_dataset_id": M18_DATASET_ID, "source_m33_dataset_id": M33_DATASET_ID, "new_state_count": 15, "deterministic_state_count": 9, "nondeterministic_state_count": 6})
+    return store.finalize(14, {"dataset_schema": DATASET_SCHEMA, "source_m18_dataset_id": M18_DATASET_ID, "source_m33_dataset_id": M33_DATASET_ID, "new_state_count": 14, "deterministic_state_count": 9, "nondeterministic_state_count": 5})
 
 
 def main() -> int:
@@ -319,27 +371,27 @@ def main() -> int:
         m18_records = resolve_records(job, state_root, M18_DATASET_ID, M18_MANIFEST_SHA256, M18_SCHEMA, 3)
         m18_by_member = bind_m18(m18_records)
         historical = resolve_records(job, state_root, M33_DATASET_ID, M33_MANIFEST_SHA256, M33_SCHEMA, 3)
-        schedule = build_schedule()
+        schedule = build_recovery_schedule()
         specs = [request_spec(m18_by_member[item["c3_member_identity"]], item, source_commit) for item in schedule]
-        if len({item["request_key_sha256"] for item in specs}) != 15:
-            raise ValueError("M39_REQUEST_KEY_NOT_UNIQUE")
+        if len({item["request_key_sha256"] for item in specs}) != 14:
+            raise ValueError("M39R1_REQUEST_KEY_NOT_UNIQUE")
         import meep as mp
         from meep import mpb
         from mephc.band import Band
         band = Band(a=G15["a"], r1=G15["r1"], r2=G15["r2"], n_eff=G15["n_eff"], h=G15["height"], resolution=N, lattice_type="triangular", polarization="TE", structure_type="slab")
         pattern = band.create_unitcell(G15["n1"], G15["theta1_degrees"], G15["n2"], G15["theta2_degrees"], show=False)
         geometry = band.create_material_block() + band.convert_ndarray_to_meep_geo(pattern, rectify=True)
-        counter = job.BudgetCounter(15, 15)
+        counter = job.BudgetCounter(14, 14)
         for spec in specs:
             solver, reciprocal = _solver_factory(mp, mpb, band, geometry, spec)
             records.append(capture_state(mp, solver, reciprocal, spec, counter, source_commit))
-        if len(records) != 15 or counter.provider_count != 15 or counter.solver_count != 15:
-            raise ValueError(f"M39_EXECUTION_COUNT_INVALID:{len(records)}:{counter.provider_count}:{counter.solver_count}")
+        if len(records) != 14 or counter.provider_count != 14 or counter.solver_count != 14:
+            raise ValueError(f"M39R1_EXECUTION_COUNT_INVALID:{len(records)}:{counter.provider_count}:{counter.solver_count}")
         dataset = persist_dataset(job, state_root, bundle["work_order_id"], records, source_commit)
-        analysis = analyze_records(records, m18_by_member)
-        result = {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "machine_execution_contract_status": "ONE_NATIVE_BATCHED_FIFTEEN_STATE_G15_RAW_MPB_PILOT_COMPLETE", "work_order_id": bundle["work_order_id"], "native_invocation_count": 1, "provider_execution_count": counter.provider_count, "solver_execution_count": counter.solver_count, "dataset_record_count": len(records), "dataset_id": dataset["dataset_id"], "manifest_sha256": dataset["manifest_sha256"], "source_m18_dataset_id": M18_DATASET_ID, "source_m33_dataset_id": M33_DATASET_ID, "request_schedule_summary": {"state_count": len(specs), "deterministic_state_count": sum(item["deterministic"] for item in specs), "nondeterministic_state_count": sum(not item["deterministic"] for item in specs), "schedule": specs}, "deterministic_repeat_count": 3, "nondeterministic_repeat_count": 2, "m38_reproduction_status": "M38_BASELINE_0P8707448645792748_THREE_FAILURES_REPORTED", "post_analysis_checkout_unchanged": True, "source_commit_used": source_commit, **analysis}
+        analysis = analyze_records(records, m18_by_member, historical)
+        result = {"schema": RESULT_SCHEMA, "status": "PASS", "scientific_acceptance_status": "PASS", "machine_execution_contract_status": "ONE_RECOVERY_NATIVE_BATCHED_FOURTEEN_NEW_STATES_G15_RAW_MPB_COMPLETE", "work_order_id": bundle["work_order_id"], "native_invocation_count": 1, "provider_execution_count": counter.provider_count, "solver_execution_count": counter.solver_count, "dataset_record_count": len(records), "dataset_id": dataset["dataset_id"], "manifest_sha256": dataset["manifest_sha256"], "prior_consumed_budget": {"native_invocations": 1, "provider_requests": 1, "solver_executions": 1, "durable_records": 0}, "cumulative_m39_chain_counts": {"native_invocations": 2, "provider_requests": 15, "solver_executions": 15, "durable_new_records": 14}, "source_m18_dataset_id": M18_DATASET_ID, "source_m33_dataset_id": M33_DATASET_ID, "recovery_schedule_summary": {"state_count": len(specs), "deterministic_state_count": sum(item["deterministic"] for item in specs), "nondeterministic_state_count": sum(not item["deterministic"] for item in specs), "deterministic_repeats": [1, 2, 3], "new_nondeterministic_repeat0_members": list(MEMBERS), "new_nondeterministic_repeat1_members": ["C3", "C3_SQUARED"], "schedule": specs}, "deterministic_repeat_count": 3, "nondeterministic_repeat_count": 1, "m38_reproduction_status": "M38_BASELINE_0P8707448645792748_THREE_FAILURES_REPORTED", "post_analysis_checkout_unchanged": True, "source_commit_used": source_commit, **analysis}
     except BaseException as exc:
-        result = {"schema": RESULT_SCHEMA, "status": "FAIL_CLOSED" if not records else "PARTIAL_ACQUISITION", "scientific_acceptance_status": "FAIL_CLOSED", "machine_execution_contract_status": "M39_FAIL_CLOSED", "work_order_id": bundle.get("work_order_id"), "native_invocation_count": 1 if records or counter is not None else 0, "provider_execution_count": getattr(counter, "provider_count", 0), "solver_execution_count": getattr(counter, "solver_count", 0), "dataset_record_count": 0, "failure_code": str(exc)[:1024], "failure_stage": "acquisition_or_analysis", "exception_type": type(exc).__name__, "actual_completed_state_count": len(records), "expected_state_count": 15, "m38_reproduction_status": "NOT_COMPLETED", "goal_completion_status": "NOT_COMPLETE", "next_science_decision": "TARGETED_NEXT_DISCRIMINANT_FROM_M39_EVIDENCE", "source_commit_used": source_commit, "post_analysis_checkout_unchanged": True}
+        result = {"schema": RESULT_SCHEMA, "status": "FAIL_CLOSED" if not records else "PARTIAL_ACQUISITION", "scientific_acceptance_status": "FAIL_CLOSED", "machine_execution_contract_status": "M39R1_FAIL_CLOSED", "work_order_id": bundle.get("work_order_id"), "native_invocation_count": 1 if records or counter is not None else 0, "provider_execution_count": getattr(counter, "provider_count", 0), "solver_execution_count": getattr(counter, "solver_count", 0), "dataset_record_count": 0, "failure_code": str(exc)[:1024], "failure_stage": "acquisition_or_analysis", "exception_type": type(exc).__name__, "actual_completed_state_count": len(records), "expected_state_count": 14, "prior_consumed_budget": {"native_invocations": 1, "provider_requests": 1, "solver_executions": 1, "durable_records": 0}, "cumulative_m39_chain_counts": {"native_invocations": 2 if records or counter is not None else 1, "provider_requests": 1 + getattr(counter, "provider_count", 0), "solver_executions": 1 + getattr(counter, "solver_count", 0), "durable_new_records": len(records)}, "m38_reproduction_status": "NOT_COMPLETED", "goal_completion_status": "NOT_COMPLETE_CONTINUE_CAUSAL_BRANCH", "next_science_decision": "TARGETED_NEXT_DISCRIMINANT_FROM_M39R1_EVIDENCE", "source_commit_used": source_commit, "post_analysis_checkout_unchanged": True}
     Path(os.environ["MEPHC_RESULT_PATH"]).write_text(json.dumps(_safe(result), sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")
     return 0
 
