@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 
 import numpy as np
@@ -46,3 +47,15 @@ def test_circular_reference_is_not_a_linear_branch_cut_statistic():
     values = m40r3.branch_safe_phases([3.14, -3.14, 3.139])
     assert np.isfinite(values["median"])
     assert values["maximum_pairwise_wrapped_distance"] < 0.01
+
+
+def test_rank2_canonical_edge_is_acyclic_and_json_serializable():
+    pairs = [
+        {"target_pair": [1, 2], "minimum_singular_value": 0.8, "overlap_matrix": np.eye(2)},
+        {"target_pair": [2, 3], "minimum_singular_value": 0.9, "overlap_matrix": np.eye(2)},
+        {"target_pair": [3, 4], "minimum_singular_value": 0.7, "overlap_matrix": np.eye(2)},
+    ]
+    edge = m40r3.m40r2._rank2_edge(pairs, 2)
+    assert all(item is not edge for item in edge["competing_target_pairs"])
+    assert edge["best_target_pair"] == [2, 3]
+    json.dumps(m40r3._safe(edge), allow_nan=False)

@@ -230,6 +230,16 @@ def _rank2_pair(m38: Any, source: np.ndarray, target: np.ndarray, source_k: Sequ
             "captured_weight": float(np.sum(singular ** 2)), "polar_unitary": polar}
 
 
+def _rank2_edge(pairs: Sequence[Mapping[str, Any]], edge_index: int) -> dict[str, Any]:
+    """Select the canonical pair without embedding the result inside itself."""
+    canonical = dict(next(item for item in pairs if item["target_pair"] == [2, 3]))
+    best = max(pairs, key=lambda item: (item["minimum_singular_value"], tuple(-v for v in item["target_pair"])))
+    canonical.update({"edge_index": edge_index, "competing_target_pairs": [dict(item) for item in pairs],
+                      "best_target_pair": best["target_pair"],
+                      "best_target_pair_minimum_singular_value": best["minimum_singular_value"]})
+    return canonical
+
+
 def _circular_distance(values: Sequence[float]) -> float:
     return float(max((abs(float(np.angle(np.exp(1j * (a - b))))) for a, b in itertools.combinations(values, 2)), default=0.0))
 
@@ -250,11 +260,8 @@ def analyze(records: Sequence[Mapping[str, Any]], centers: Mapping[str, Sequence
             one = _rank1(m38, source, target, left["coordinate"], right["coordinate"])
             one["edge_index"] = edge_index
             pairs = [_rank2_pair(m38, source, target, left["coordinate"], right["coordinate"], pair) for pair in itertools.combinations(range(4), 2)]
-            canonical = next(item for item in pairs if item["target_pair"] == [2, 3])
-            best = max(pairs, key=lambda item: (item["minimum_singular_value"], tuple(-v for v in item["target_pair"])))
-            canonical.update({"edge_index": edge_index, "competing_target_pairs": pairs, "best_target_pair": best["target_pair"], "best_target_pair_minimum_singular_value": best["minimum_singular_value"]})
             rank1_edges.append(one)
-            rank2_edges.append(canonical)
+            rank2_edges.append(_rank2_edge(pairs, edge_index))
         area = _area([row["coordinate"] for row in rows])
         wilson = complex(1.0, 0.0)
         for edge in rank1_edges:
