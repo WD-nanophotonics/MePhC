@@ -87,6 +87,36 @@ def _entrypoint(value: Any) -> str | None:
     return str(candidate)
 
 
+def _normalize_dataset_catalog(inputs: dict[str, Any], warnings: list[str]) -> None:
+    """Lift exact legacy hash pairs into the named read-only catalog dialect."""
+    if "datasets" in inputs:
+        return
+    catalog: dict[str, dict[str, Any]] = {}
+    for key, value in list(inputs.items()):
+        if key.endswith("_dataset_id") and SHA64(value):
+            prefix = key.removesuffix("_dataset_id")
+            manifest = inputs.get(f"{prefix}_manifest_sha256")
+            if not SHA64(manifest):
+                continue
+            item: dict[str, Any] = {"access": "READ_ONLY", "dataset_id": value,
+                                    "manifest_sha256": manifest}
+        elif key.endswith("_namespace_sha256") and SHA64(value):
+            prefix = key.removesuffix("_namespace_sha256")
+            item = {"access": "READ_ONLY_BY_NAMESPACE", "namespace_sha256": value}
+        else:
+            continue
+        record_schema = inputs.get(f"{prefix}_record_schema")
+        payload_schema = inputs.get(f"{prefix}_payload_schema")
+        count = inputs.get(f"{prefix}_expected_record_count", inputs.get(f"{prefix}_record_count"))
+        if isinstance(record_schema, str): item["dataset_schema"] = record_schema
+        if isinstance(payload_schema, str): item["payload_schema"] = payload_schema
+        if type(count) is int: item["record_count"] = count
+        catalog[prefix] = item
+    if catalog:
+        inputs["datasets"] = catalog
+        warnings.append("legacy_dataset_fields_normalized")
+
+
 def normalize_contract(value: Any) -> Any:
     """Reduce Chat dialects to one minimum-risk execution intent."""
     if not isinstance(value, dict):
@@ -96,6 +126,7 @@ def normalize_contract(value: Any) -> Any:
     work_order_id = raw.get("work_order_id", raw.get("WORK_ORDER_ID"))
     source_commit = raw.get("source_commit", raw.get("source_sha", raw.get("SOURCE_SHA")))
     inputs = raw.get("inputs") if isinstance(raw.get("inputs"), dict) else {}
+    _normalize_dataset_catalog(inputs, warnings)
     raw_budgets = raw.get("budgets") if isinstance(raw.get("budgets"), dict) else {}
     native, bad_native = _budget(raw_budgets, "native_invocations")
     providers, bad_provider = _budget(raw_budgets, "provider_requests", "provider_executions")
@@ -408,7 +439,8 @@ def verify_dataset_catalog(state_root: Path, values: dict[str, Any]) -> list[dic
         expected_manifest = item.get("manifest_sha256")
         if expected_manifest is not None and expected_manifest != verified["manifest_sha256"]:
             raise ScientificJobError("DATASET_MANIFEST_BINDING_MISMATCH")
-        if type(item.get("record_count")) is not int or item["record_count"] != verified["record_count"]:
+        expected_count = item.get("record_count")
+        if expected_count is not None and (type(expected_count) is not int or expected_count != verified["record_count"]):
             raise ScientificJobError("DATASET_RECORD_COUNT_MISMATCH")
         try:
             index = json.loads((state_root / "dataset-index" / f"{dataset_id}.json").read_text(encoding="utf-8"))
@@ -422,6 +454,16 @@ def verify_dataset_catalog(state_root: Path, values: dict[str, Any]) -> list[dic
         actual_schema = manifest.get("namespace", {}).get("record_schema")
         if declared_schema is not None and declared_schema != actual_schema:
             raise ScientificJobError("DATASET_SCHEMA_BINDING_MISMATCH")
+        payload_schema = item.get("payload_schema")
+        if payload_schema is not None:
+            for record in manifest["records"]:
+                payload = (state_root / "datasets" / actual_namespace / "records" / f"{record['key_sha256']}.payload").read_bytes()
+                try:
+                    payload_value = json.loads(payload.decode("utf-8"))
+                except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+                    raise ScientificJobError("DATASET_PAYLOAD_SCHEMA_INVALID") from exc
+                if not isinstance(payload_value, dict) or payload_value.get("schema") != payload_schema:
+                    raise ScientificJobError("DATASET_PAYLOAD_SCHEMA_MISMATCH")
         resolved.append({"name": name, "access": access, "dataset_id": dataset_id,
                          "namespace_sha256": actual_namespace, **verified})
     return resolved

@@ -530,6 +530,25 @@ def test_named_dataset_catalog_rejects_wrong_manifest_before_dispatch(monkeypatc
         flow.validate_input_bindings(scope, value)
 
 
+def test_legacy_dataset_hash_pairs_normalize_to_verified_named_catalog():
+    raw = {"schema": "mephc-science-work-order-v1", "kind": "SCIENCE",
+           "work_order_id": "MEPHC-THIN-TEST-LEGACY-DATASETS", "source_commit": "a" * 40,
+           "action": "analyze", "entrypoint": "audit/test.py",
+           "budgets": {"native_invocations": 0, "provider_requests": 0, "solver_executions": 0},
+           "inputs": {"parent_namespace_sha256": "a" * 64,
+                      "parent_record_schema": "parent-v1", "parent_expected_record_count": 72,
+                      "control_dataset_id": "b" * 64, "control_manifest_sha256": "c" * 64,
+                      "control_payload_schema": "control-v1"}}
+    normalized = science.normalize_contract(raw)
+    assert normalized["inputs"]["datasets"] == {
+        "parent": {"access": "READ_ONLY_BY_NAMESPACE", "namespace_sha256": "a" * 64,
+                   "dataset_schema": "parent-v1", "record_count": 72},
+        "control": {"access": "READ_ONLY", "dataset_id": "b" * 64,
+                    "manifest_sha256": "c" * 64, "payload_schema": "control-v1"},
+    }
+    assert "legacy_dataset_fields_normalized" in normalized["contract_warnings"]
+
+
 def test_missing_dataset_blocks_before_native(monkeypatch, tmp_path: Path):
     scope = paths(tmp_path)
     value = contract(inputs={
