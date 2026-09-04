@@ -21,6 +21,14 @@ def test_exact_18_plaquette_schedule_and_72_vertices():
     assert {(item["c3_member_identity"], item["repeat_index"], item["stencil"]) for item in schedule}.__len__() == 18
 
 
+def test_member_centers_are_bound_independently_from_m18_and_cross_checked():
+    centers = [{"c3_member_identity": member, "geometry_id": "G15", "geometry_role": "AREA_MATCHED_G15", "deterministic": False, "coordinate": [float(index), float(index) + 0.25]} for index, member in enumerate(m40.MEMBERS)]
+    repeated = [{"c3_member_identity": member, "geometry_id": "G15", "coordinate": [float(index), float(index) + 0.25]} for index, member in enumerate(m40.MEMBERS) for _ in range(2)]
+    bound = m40.bind_member_centers(centers, repeated)
+    assert len(bound) == 3
+    assert len({tuple(value) for value in bound.values()}) == 3
+
+
 def test_actual_counterclockwise_area_is_computed_from_vertices_for_both_stencils():
     for member_index in range(3):
         for stencil in ("LAB_FIXED", "C3_COVARIANT"):
@@ -45,3 +53,4 @@ def test_neighbor_transfer_has_no_c3_rotation_or_dense_projector_path():
     source = (ROOT / "audit/berry_c3_consistency/m40_deterministic_raw_h_worst_orbit_berry_plaquette_closure.py").read_text(encoding="utf-8")
     assert "apply_raw_operator" not in source
     assert "32768, 32768" not in source
+    assert "mephc-berry-c3-pilot-plaquette-v1" in source
