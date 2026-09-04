@@ -206,12 +206,10 @@ def contract_from_text(text: str) -> dict[str, Any]:
     for line in normalized.splitlines():
         match = re.match(r"^WORK_ORDER_CONTRACT_JSON\s*[:=]\s*(\{.*\})\s*$", line)
         if match:
-            try:
-                value = json.loads(match.group(1))
-            except json.JSONDecodeError:
-                continue
-            if isinstance(value, dict):
-                return value
+            for payload in (match.group(1), match.group(1) + "}"):
+                try: value = json.loads(payload)
+                except json.JSONDecodeError: continue
+                if isinstance(value, dict): return value
     for block in re.findall(r"```(?:json)?\s*(\{.*?\})\s*```", normalized, re.DOTALL | re.IGNORECASE):
         try:
             value = json.loads(block)

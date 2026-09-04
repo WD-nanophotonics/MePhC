@@ -65,6 +65,15 @@ def test_public_cli_is_only_four_commands():
         "challenge", "manual_book", "milestone")
 
 
+def test_contract_parser_repairs_only_one_missing_final_root_brace():
+    raw = {"work_order_id": "MEPHC-THIN-TEST-BRACE", "inputs": {"goal_id": "GOAL"}}
+    payload = json.dumps(raw, separators=(",", ":"))
+    repaired = flow.contract_from_text("WORK_ORDER_CONTRACT_JSON=" + payload[:-1])
+    assert repaired == raw
+    with pytest.raises(flow.FlowError, match="WORK_ORDER_MACHINE_CONTRACT_REQUIRED"):
+        flow.contract_from_text("WORK_ORDER_CONTRACT_JSON=" + payload[:-2])
+
+
 def test_closeout_launcher_is_zero_argument_and_fixed():
     launcher = (ROOT / "mephc-closeout.cmd").read_text(encoding="utf-8").lower()
     assert 'if not "%~1"==""' in launcher
