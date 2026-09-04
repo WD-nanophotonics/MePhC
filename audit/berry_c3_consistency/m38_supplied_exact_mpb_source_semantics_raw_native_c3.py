@@ -269,9 +269,12 @@ def rank2_metrics(transformed: np.ndarray, target: np.ndarray) -> dict[str, Any]
     q_left, _ = np.linalg.qr(left, mode="reduced")
     q_right, _ = np.linalg.qr(right, mode="reduced")
     singular = np.linalg.svd(q_left.conj().T @ q_right, compute_uv=False)
-    projectors = q_left @ q_left.conj().T - q_right @ q_right.conj().T
+    # ||P-Q||_F^2 = 2r - 2||Q_left^H Q_right||_F^2.  Keep this rank-2:
+    # explicitly forming either ambient projector would allocate O(mode_count^2).
+    projector_distance = float(np.sqrt(max(0.0, 2.0 * len(singular)
+                                                 - 2.0 * np.sum(singular ** 2))))
     minimum = float(np.min(singular))
-    return {"singular_values": [float(item) for item in singular], "minimum_overlap_singular_value": minimum, "maximum_principal_angle": float(np.arccos(np.clip(minimum, -1.0, 1.0))), "projector_distance": float(np.linalg.norm(projectors)), "covariance_failure": bool(minimum < 1.0 - 1e-8)}
+    return {"singular_values": [float(item) for item in singular], "minimum_overlap_singular_value": minimum, "maximum_principal_angle": float(np.arccos(np.clip(minimum, -1.0, 1.0))), "projector_distance": projector_distance, "covariance_failure": bool(minimum < 1.0 - 1e-8)}
 
 
 def structural_validation(edges: Sequence[Mapping[str, Any]], states: Mapping[str, Mapping[str, Any]]) -> dict[str, Any]:

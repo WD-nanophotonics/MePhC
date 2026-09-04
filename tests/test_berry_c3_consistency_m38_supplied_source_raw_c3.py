@@ -52,6 +52,17 @@ def test_native_mode_component_band_layout_is_transposed_to_band_mode_component(
     assert evidence["axis_layout_status"] == "NATIVE_MODE_TRANSVERSE_COMPONENT_BAND_FROM_H_DATA"
 
 
+def test_rank2_projector_distance_uses_low_rank_identity_and_matches_dense_reference():
+    rng = np.random.default_rng(38)
+    left = rng.normal(size=(2, 9, 2)) + 1j * rng.normal(size=(2, 9, 2))
+    right = rng.normal(size=(2, 9, 2)) + 1j * rng.normal(size=(2, 9, 2))
+    measured = m38.rank2_metrics(left, right)["projector_distance"]
+    q_left, _ = np.linalg.qr(left.reshape(2, -1).T, mode="reduced")
+    q_right, _ = np.linalg.qr(right.reshape(2, -1).T, mode="reduced")
+    dense = np.linalg.norm(q_left @ q_left.conj().T - q_right @ q_right.conj().T)
+    assert np.isclose(measured, dense, atol=1e-12)
+
+
 def test_source_is_solver_free_and_no_overlap_fit():
     source = (ROOT / "audit/berry_c3_consistency/m38_supplied_exact_mpb_source_semantics_raw_native_c3.py").read_text(encoding="utf-8")
     assert "run_parity" not in source
