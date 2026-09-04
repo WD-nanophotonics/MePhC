@@ -25,8 +25,10 @@ def test_m18_control_requires_six_band_field_and_returns_first_four():
 
 def test_nested_edge_grouping_uses_edge_identity_and_repeat_dispersion():
     loops = [
-        {"repeat_index": 1, "edges": [{"edge_source_member": "IDENTITY", "edge_target_member": "C3", "band_2": {"link_magnitude": 0.90}, "band_3": {"link_magnitude": 0.80}}]},
-        {"repeat_index": 2, "edges": [{"edge_source_member": "IDENTITY", "edge_target_member": "C3", "band_2": {"link_magnitude": 0.95}, "band_3": {"link_magnitude": 0.75}}]},
+        {"repeat_index": 1, "band": 2, "edges": [{"edge_source_member": "IDENTITY", "edge_target_member": "C3", "link_magnitude": 0.90}]},
+        {"repeat_index": 2, "band": 2, "edges": [{"edge_source_member": "IDENTITY", "edge_target_member": "C3", "link_magnitude": 0.95}]},
+        {"repeat_index": 1, "band": 3, "edges": [{"edge_source_member": "IDENTITY", "edge_target_member": "C3", "link_magnitude": 0.80}]},
+        {"repeat_index": 2, "band": 3, "edges": [{"edge_source_member": "IDENTITY", "edge_target_member": "C3", "link_magnitude": 0.75}]},
     ]
     noise, grouped = m39r2._grouped_link_noise(loops)
     assert grouped[("IDENTITY", "C3", 2)] == [0.90, 0.95]

@@ -177,8 +177,8 @@ def _grouped_link_noise(deterministic_rank1_loops: Sequence[Mapping[str, Any]]) 
     grouped: dict[tuple[str, str, int], list[float]] = {}
     for loop in deterministic_rank1_loops:
         for edge in loop["edges"]:
-            for band in (2, 3):
-                grouped.setdefault((str(edge["edge_source_member"]), str(edge["edge_target_member"]), band), []).append(float(edge[f"band_{band}"]["link_magnitude"]))
+            band = int(loop["band"])
+            grouped.setdefault((str(edge["edge_source_member"]), str(edge["edge_target_member"]), band), []).append(float(edge["link_magnitude"]))
     return max((max(values) - min(values) for values in grouped.values()), default=0.0), grouped
 
 
@@ -250,12 +250,14 @@ def _analyze(records: Sequence[Mapping[str, Any]], m18: Mapping[str, Mapping[str
     min_link = min((float(edge["link_magnitude"]) for loop in det_rank1 for edge in loop["edges"]), default=0.0)
     qualification = {}
     for band in (2, 3):
-        band_links = [row[f"band_{band}"]["link_magnitude"] for row in rank1_loops for _ in [0]]
+        band_links = [edge["link_magnitude"] for row in rank1_loops if row["band"] == band for edge in row["edges"]]
         link_signal = min(float(value) for value in band_links)
         band_link_groups: dict[tuple[str, str], list[float]] = {}
         for loop in det_rank1:
+            if loop["band"] != band:
+                continue
             for edge in loop["edges"]:
-                band_link_groups.setdefault((edge["edge_source_member"], edge["edge_target_member"]), []).append(float(edge[f"band_{band}"]["link_magnitude"]))
+                band_link_groups.setdefault((edge["edge_source_member"], edge["edge_target_member"]), []).append(float(edge["link_magnitude"]))
         band_link_noise = max((max(values) - min(values) for values in band_link_groups.values()), default=0.0)
         band_branch = [item["branch_margin"] for item in det_rank1 if item["band"] == band]
         qualification[str(band)] = {"gap_signal_to_uncertainty": float(gap_signal[str(band)] / gap_noise[str(band)]) if gap_noise[str(band)] > 0 else float("inf") if gap_signal[str(band)] > 0 else 0.0, "link_signal_to_repeat_noise": float(link_signal / band_link_noise) if band_link_noise > 0 else float("inf") if link_signal > 0 else 0.0, "branch_margin_to_phase_uncertainty": float(min(band_branch) / phase_uncertainty[str(band)]) if phase_uncertainty[str(band)] > 0 else float("inf"), "status": "RANK1_WITHHELD"}
