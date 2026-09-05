@@ -10,6 +10,8 @@ from pathlib import Path
 from typing import Any
 
 FILENAME = "local-supervisor-required.json"
+RESOLUTION_FILENAME = "local-supervisor-resolution.json"
+SUCCESSOR_RESPONSE_FILENAME = "local-supervisor-successor.txt"
 
 
 def parse(text: str) -> dict[str, str] | None:
@@ -62,6 +64,59 @@ def persist(directory: Path, response_path: Path, text: str,
                                     ensure_ascii=False) + "\n", encoding="utf-8")
     os.replace(temporary, path)
     return evidence
+
+
+def load_resolution(directory: Path, requirement: dict[str, Any],
+                    expected_reviewer_task_id: str) -> dict[str, Any] | None:
+    try:
+        value = json.loads((directory / RESOLUTION_FILENAME).read_text(encoding="utf-8-sig"))
+    except FileNotFoundError:
+        return None
+    if not isinstance(value, dict):
+        raise ValueError("SUPERVISOR_RESOLUTION_INVALID")
+    bindings = (
+        value.get("schema") == "mephc-local-supervisor-resolution-v1",
+        value.get("reviewer_task_id") == expected_reviewer_task_id,
+        value.get("prior_work_order_id") == requirement.get("work_order_id"),
+        value.get("request_id") == requirement.get("request_id"),
+        value.get("response_sha256") == requirement.get("response_sha256"),
+        isinstance(value.get("successor_contract"), dict),
+    )
+    if not all(bindings):
+        raise ValueError("SUPERVISOR_RESOLUTION_BINDING_INVALID")
+    successor = value["successor_contract"].get(
+        "work_order_id", value["successor_contract"].get("WORK_ORDER_ID"))
+    if not isinstance(successor, str) or successor == requirement.get("work_order_id"):
+        raise ValueError("SUPERVISOR_RESOLUTION_SUCCESSOR_INVALID")
+    return value
+
+
+def resolve(directory: Path, reviewer_task_id: str, expected_reviewer_task_id: str,
+            successor_contract: dict[str, Any], rationale: str) -> dict[str, Any]:
+    requirement = load(directory)
+    if not requirement or requirement.get("error_code") != "LOCAL_SUPERVISOR_REQUIRED":
+        raise ValueError("LOCAL_SUPERVISOR_REQUIREMENT_REQUIRED")
+    if reviewer_task_id != expected_reviewer_task_id:
+        raise ValueError("SUPERVISOR_ID_INVALID")
+    successor = successor_contract.get("work_order_id", successor_contract.get("WORK_ORDER_ID"))
+    if not isinstance(successor, str) or successor == requirement.get("work_order_id"):
+        raise ValueError("SUPERVISOR_RESOLUTION_SUCCESSOR_INVALID")
+    decision = {
+        "schema": "mephc-local-supervisor-resolution-v1",
+        "reviewer_task_id": reviewer_task_id,
+        "prior_work_order_id": requirement.get("work_order_id"),
+        "request_id": requirement.get("request_id"),
+        "response_sha256": requirement.get("response_sha256"),
+        "successor_contract": successor_contract,
+        "rationale": str(rationale)[:4000],
+        "resolved_at": time.time(),
+    }
+    path = directory / RESOLUTION_FILENAME
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    temporary.write_text(json.dumps(decision, sort_keys=True, separators=(",", ":"),
+                                    ensure_ascii=False) + "\n", encoding="utf-8")
+    os.replace(temporary, path)
+    return decision
 
 
 def approve_termination(directory: Path, ledger_path: Path, reviewer_task_id: str,

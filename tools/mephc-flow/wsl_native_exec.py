@@ -12,6 +12,14 @@ from pathlib import Path
 
 MAX_INLINE_RESULT_BYTES = 65536
 MAX_RESULT_ARTIFACT_BYTES = 64 * 1024 * 1024
+DECISIVE_RESULT_KEYS = (
+    "schema", "status", "scientific_acceptance_status", "failure_code",
+    "classification", "result_classification", "causal_outcome",
+    "next_science_decision", "goal_completion_status", "work_order_id",
+    "dataset_id", "manifest_sha256", "record_key_sha256", "record_count",
+    "actual_native_invocation_count", "actual_provider_execution_count",
+    "actual_solver_execution_count", "actual_dataset_record_count",
+)
 def atomic(path: Path, value: dict) -> None:
     temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
     temporary.write_text(json.dumps(value, sort_keys=True) + "\n", encoding="utf-8")
@@ -47,7 +55,11 @@ def load_result(path: Path, expected_schema: str | None = None) -> tuple[dict, d
     if stats["size_bytes"] <= MAX_INLINE_RESULT_BYTES:
         return value, artifact, warnings
     summary = {}
-    for name in sorted(value):
+    ordered_names = list(DECISIVE_RESULT_KEYS)
+    ordered_names.extend(name for name in sorted(value) if name not in DECISIVE_RESULT_KEYS)
+    for name in ordered_names:
+        if name not in value:
+            continue
         item = value[name]
         if isinstance(item, (str, int, float, bool)) or item is None:
             encoded = json.dumps(item, ensure_ascii=False, separators=(",", ":")).encode("utf-8")

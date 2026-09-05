@@ -720,6 +720,50 @@ def test_remote_reviewer_deferral_is_persistent_hard_block_without_resend(monkey
     assert called["courier"] == 0
 
 
+def test_fixed_supervisor_resolution_is_consumed_by_resume_without_courier_or_science(
+        monkeypatch, tmp_path: Path):
+    base = paths(tmp_path)
+    scope = flow.Paths(control=ROOT, state=base.state,
+                       science_state=base.science_state,
+                       outbox=base.legacy_state / "outbox",
+                       legacy_state=base.legacy_state, courier=base.courier)
+    prior = "MEPHC-THIN-TEST-SUPERVISOR-0001"
+    successor = "MEPHC-THIN-TEST-SUPERVISOR-0002"
+    request_id, _ = flow.fixed_request_id(prior)
+    directory = scope.outbox / request_id
+    directory.mkdir(parents=True)
+    response = directory / "response.txt"
+    response.write_text(
+        "LOCAL_SUPERVISOR_REQUIRED=true\nLOCAL_SUPERVISOR_REASON=LOCAL_RESULT_DETAIL\n",
+        encoding="utf-8")
+    request = {"project_id": "MEPHC", "request_id": request_id, "work_order_id": prior}
+    (directory / "request.json").write_text(json.dumps(request), encoding="utf-8")
+    requirement = flow.local_supervisor.persist(directory, response, response.read_text(), request)
+    successor_contract = contract(
+        work_order_id=successor, kind="SCIENCE", action="analyze", entrypoint=None,
+        allowed_writes=[], budgets={"native_invocations": 0, "provider_requests": 0,
+                                    "solver_executions": 0},
+        required_capabilities=[], expected_output={"dataset_schema": None,
+                                                   "result_schema": None})
+    flow.local_supervisor.resolve(
+        directory, flow.SUPERVISOR_TASK_ID, flow.SUPERVISOR_TASK_ID,
+        successor_contract, "Use the verified local result and continue solver-free.")
+    ledger_path = scope.legacy_state / "runner" / "workflow-ledger.json"
+    ledger_path.parent.mkdir(parents=True)
+    ledger_path.write_text(json.dumps({
+        "workflow_state": "available", "active_work_order_id": prior,
+        "active_response_path": f"{flow.OUTBOX_WSL}/{request_id}/response.txt",
+        "active_response_sha256": hashlib.sha256(response.read_bytes()).hexdigest(),
+    }), encoding="utf-8")
+    monkeypatch.setattr(flow, "source", lambda _: {"head": "a" * 40, "dirty": False})
+    monkeypatch.setattr(flow, "current_job", lambda *_: None)
+    assert flow.state_view(scope)["safe_next"] == "resume"
+    resumed = flow.resume(scope)
+    assert resumed["state"] == "READY"
+    assert resumed["work_order_id"] == successor
+    assert resumed["safe_next"] == "execute"
+    rebound = json.loads(ledger_path.read_text())
+    assert rebound["active_work_order_id"] == successor
 def test_legacy_chat_termination_is_a_supervisor_proposal_not_a_state_transition(tmp_path: Path):
     scope = paths(tmp_path)
     work_order = "MEPHC-THIN-TERMINATION-REVIEW-0001"

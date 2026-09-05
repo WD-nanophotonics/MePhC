@@ -79,6 +79,28 @@ def test_missing_and_malformed_fail_but_oversized_is_externalized(tmp_path):
     assert state["result_warnings"] == ["result_schema_mismatch"]
 
 
+def test_oversized_summary_prioritizes_decisive_scientific_fields(tmp_path):
+    helper = load()
+    result = tmp_path / "decisive.json"
+    value = {f"aaa_{index:03d}": index for index in range(80)}
+    value.update({
+        "schema": "science-v1", "status": "PASS",
+        "classification": "MESH_INSENSITIVE_C3_FAILURE",
+        "causal_outcome": "RECIPROCAL_TRUNCATION_REMAINS",
+        "next_science_decision": "RUN_SOLVER_FREE_COVARIANCE_DIAGNOSTIC",
+        "dataset_id": "d" * 64, "manifest_sha256": "e" * 64,
+        "payload": list(range(20000)),
+    })
+    write_result(result, value)
+    summary, _, warnings = helper.load_result(result, "science-v1")
+    assert summary["classification"] == "MESH_INSENSITIVE_C3_FAILURE"
+    assert summary["causal_outcome"] == "RECIPROCAL_TRUNCATION_REMAINS"
+    assert summary["next_science_decision"] == "RUN_SOLVER_FREE_COVARIANCE_DIAGNOSTIC"
+    assert summary["dataset_id"] == "d" * 64
+    assert summary["manifest_sha256"] == "e" * 64
+    assert warnings == ["result_summary_externalized"]
+
+
 def test_nonzero_child_preserves_counters_without_accepting_result(tmp_path):
     helper = load()
     stdout, stderr = streams(tmp_path)

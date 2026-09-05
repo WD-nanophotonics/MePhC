@@ -26,8 +26,6 @@ _SUPERVISOR_SPEC = importlib.util.spec_from_file_location(
 if _SUPERVISOR_SPEC is None or _SUPERVISOR_SPEC.loader is None: raise RuntimeError("local supervisor support unavailable")
 local_supervisor = importlib.util.module_from_spec(_SUPERVISOR_SPEC)
 _SUPERVISOR_SPEC.loader.exec_module(local_supervisor)
-
-
 PROJECT_ID = "MEPHC"
 SUPERVISOR_TASK_ID = "01a04136-7e60-75c3-88cf-156581a3733e"
 EXPECTED_MAIN = "5a4e9e839eff40f582c2404ff3eadd2bf8b676b5"
@@ -60,14 +58,10 @@ HARD_INVARIANT_ERRORS = {
     "ORIGIN_MAIN_MOVED", "REMOTE_SANDBOX_MOVED", "SANDBOX_NOT_FAST_FORWARD",
     "SOURCE_COMMIT_INVALID", "WORK_ORDER_CONTRACT_ID_MISMATCH",
 }
-
-
 class FlowError(RuntimeError):
     def __init__(self, code: str, detail: str = "") -> None:
         self.code, self.detail = code, detail
         super().__init__(f"{code}: {detail}" if detail else code)
-
-
 @dataclass(frozen=True)
 class Paths:
     control: Path = CONTROL_ROOT
@@ -76,7 +70,6 @@ class Paths:
     outbox: Path = OUTBOX_UNC
     legacy_state: Path = LEGACY_STATE_UNC
     courier: Path = COURIER
-
 def canonical(value: Any) -> bytes:
     return (json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False) + "\n").encode()
 
@@ -95,7 +88,6 @@ def atomic_bytes(path: Path, value: bytes) -> None:
     temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
     temporary.write_bytes(value)
     os.replace(temporary, path)
-
 def read_json(path: Path, default: Any = None) -> Any:
     try:
         return json.loads(path.read_text(encoding="utf-8-sig"))
@@ -103,7 +95,6 @@ def read_json(path: Path, default: Any = None) -> Any:
         return default
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise FlowError("STATE_JSON_INVALID", path.name) from exc
-
 def run(argv: Sequence[str], *, cwd: Path | None = None, timeout: int = 600,
         check: bool = True) -> subprocess.CompletedProcess[str]:
     if not argv or any(not isinstance(item, str) or not item or "\x00" in item for item in argv):
@@ -119,19 +110,16 @@ def run(argv: Sequence[str], *, cwd: Path | None = None, timeout: int = 600,
     if check and result.returncode:
         raise FlowError("COMMAND_FAILED", (result.stderr or result.stdout)[-3000:])
     return result
-
 def git(paths: Paths, *args: str, check: bool = True, timeout: int = 600) -> subprocess.CompletedProcess[str]:
     return run(["git", "-c", f"safe.directory={paths.control}", "-c", "commit.gpgsign=false",
                 "-c", "core.autocrlf=true", "-C", str(paths.control), *args],
                check=check, timeout=timeout)
-
 def wsl(argv: Sequence[str], *, cwd: str | None = None, check: bool = True,
         timeout: int = 600) -> subprocess.CompletedProcess[str]:
     prefix = ["wsl.exe", "-d", "Ubuntu"]
     if cwd:
         prefix += ["--cd", cwd]
     return run([*prefix, "--", *argv], check=check, timeout=timeout)
-
 def source(paths: Paths) -> dict[str, Any]:
     return {
         "branch": git(paths, "symbolic-ref", "--quiet", "--short", "HEAD").stdout.strip(),
@@ -406,11 +394,16 @@ def state_view(paths: Paths) -> dict[str, Any]:
         requirement = local_supervisor.load(request)
         if isinstance(requirement, dict):
             job = current_job(paths, order["work_order_id"])
+            try: resolution = local_supervisor.load_resolution(request, requirement, SUPERVISOR_TASK_ID)
+            except ValueError as exc:
+                resolution, requirement = None, {**requirement, "resolution_error": str(exc)}
             return {"schema": "mephc-thin-flow-status-v1", "state": "HARD_BLOCKED",
-                    "error_code": requirement.get("error_code", "LOCAL_SUPERVISOR_REQUIRED"), "safe_next": None,
+                    "error_code": requirement.get("error_code", "LOCAL_SUPERVISOR_REQUIRED"),
+                    "safe_next": "resume" if resolution else None,
                     "work_order_id": order["work_order_id"], "source": source_value,
                     "request": summary, "job": job_summary(job),
                     "local_supervisor_requirement": requirement,
+                    "local_supervisor_resolution": resolution,
                     **side_effect_evidence(paths, job)}
         if summary["receipt_state"] in HARD_RECEIPTS:
             state, safe_next = "HARD_BLOCKED", None
@@ -447,6 +440,16 @@ def successor_from_text(text: str, prior_work_order_id: str | None) -> str | Non
         return None
     return candidate if candidate != prior_work_order_id else None
 
+def activate_successor(paths: Paths, successor: str, response_path: Path) -> dict[str, Any]:
+    response_sha = digest(response_path.read_bytes())
+    atomic_json(paths.legacy_state / "runner" / "workflow-ledger.json", {
+        "schema": "mephc-workflow-ledger-v2", "workflow_state": "available",
+        "active_work_order_id": successor, "pending_job_id": None,
+        "active_response_path": f"{OUTBOX_WSL}/{response_path.parent.name}/{response_path.name}",
+        "active_response_sha256": response_sha, "updated_at": time.time()})
+    return {"state": "READY", "work_order_id": successor, "response_sha256": response_sha,
+            "safe_next": "resume"}
+
 def local_supervisor_result(paths: Paths, directory: Path,
                             evidence: dict[str, Any]) -> dict[str, Any]:
     request = read_json(directory / "request.json", {})
@@ -472,14 +475,7 @@ def consume_response(paths: Paths, directory: Path) -> dict[str, Any]:
     successor = successor_from_text(text, request.get("work_order_id"))
     if successor is None:
         raise FlowError("RESPONSE_WORK_ORDER_ID_INVALID")
-    response_sha = digest(response.read_bytes())
-    atomic_json(paths.legacy_state / "runner" / "workflow-ledger.json", {
-        "schema": "mephc-workflow-ledger-v2", "workflow_state": "available",
-        "active_work_order_id": successor,
-        "active_response_path": f"{OUTBOX_WSL}/{directory.name}/response.txt",
-        "active_response_sha256": response_sha, "pending_job_id": None, "updated_at": time.time()})
-    return {"state": "READY", "work_order_id": successor, "response_sha256": response_sha,
-            "safe_next": "resume"}
+    return activate_successor(paths, successor, response)
 
 def _captured_body(text: str) -> str:
     """Extract an optional Courier envelope without using it as authorization."""
@@ -534,19 +530,12 @@ def consume_captured_response(paths: Paths, directory: Path) -> dict[str, Any] |
     if successor is None:
         return None
     response_sha = digest(raw_path.read_bytes())
-    atomic_json(paths.legacy_state / "runner" / "workflow-ledger.json", {
-        "schema": "mephc-workflow-ledger-v2", "workflow_state": "available",
-        "active_work_order_id": successor,
-        "active_response_path": f"{OUTBOX_WSL}/{directory.name}/{raw_path.name}",
-        "active_response_sha256": response_sha, "pending_job_id": None,
-        "updated_at": time.time()})
     atomic_json(directory / "thin-captured-reply.json", {
         "schema": "mephc-thin-captured-reply-v1", "terminal": False,
         "successor_work_order_id": successor, "raw_sha256": response_sha,
         "envelope_mismatch_tolerated": True,
         "capture_binding_warning": True, "consumed_at": time.time()})
-    return {"state": "READY", "work_order_id": successor,
-            "response_sha256": response_sha, "safe_next": "resume"}
+    return activate_successor(paths, successor, raw_path)
 
 def resume(paths: Paths) -> dict[str, Any]:
     view = state_view(paths)
@@ -556,6 +545,18 @@ def resume(paths: Paths) -> dict[str, Any]:
             return consume_response(paths, directory)
         return view
     if view["state"] == "HARD_BLOCKED":
+        resolution = view.get("local_supervisor_resolution")
+        if isinstance(resolution, dict):
+            directory = request_for_work_order(paths, view["work_order_id"])
+            if directory is None: raise FlowError("SUPERVISOR_RESOLUTION_REQUEST_MISSING")
+            contract = resolution["successor_contract"]
+            successor = contract.get("work_order_id", contract.get("WORK_ORDER_ID"))
+            text = ("WORK_ORDER_CONTRACT_JSON=" + json.dumps(
+                contract, sort_keys=True, separators=(",", ":"), ensure_ascii=False) + "\n")
+            response_path = directory / local_supervisor.SUCCESSOR_RESPONSE_FILENAME
+            atomic_bytes(response_path, text.encode("utf-8"))
+            activate_successor(paths, successor, response_path)
+            return resume(paths)
         return view
     if view["state"] in {"AWAITING_WORK_ORDER", "TERMINATED"}:
         return view
