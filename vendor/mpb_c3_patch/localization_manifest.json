@@ -1,11 +1,11 @@
 {
-  "schema": "mephc-m64r4r1-localization-manifest-v1",
+  "schema": "mephc-m64r4r2-localization-manifest-v1",
   "source_sha256": "8d2b206254b217f66a53c1ad20cc0c369b93b0e71ee671d68e333a583eaaeda4",
   "installed_libmpb_sha256": "884071022f8c5230909e269c63b17cef120b51d2a4ee22b862c6a7005d209dbc",
   "package_build": "mpi_mpich_hef3cbd5_5",
   "instrumentation": "TRACE_ONLY;NO_EQUATION_OR_SOLVER_STATE_CHANGE",
   "stages": ["input/native k representation", "reciprocal label/index", "q or k+G vector and metric q2", "transverse basis/projector", "homogeneous operator action or Rayleigh quantity", "eigensolver eigenvalue plus residual/convergence metadata", "eigenvalue-to-frequency conversion", "band sorting/Python-visible frequency"],
-  "localization_status": "M64R4R1_ISOLATED_RUNTIME_IDENTITY_REQUIRED_BEFORE_UNIQUE_STAGE",
+  "localization_status": "M64R4R2_HELPER_CLOSURE_AND_ISOLATED_RUNTIME_REQUIRED",
   "scientific_patch_status": "NOT_APPLIED",
   "installed_backend_touched": false,
   "isolated_build_performed": true,

@@ -44,3 +44,9 @@ M64R4R1 keeps the M64R3 schema explicit and maps its four records by semantic
 probe key. It derives the three frozen coordinates independently from the
 M61R1/M50 authority and requires the child process to prove the mapped
 isolated libmpb path and SHA-256 from its runtime ledger.
+
+M64R4R2 makes the Build5 verifier self-contained and uses a derived
+repeat/source-residual/machine-identity compatibility guard. A rebuilt
+isolated library is compared with the hash actually mapped by each child;
+the installed reference hash remains separate provenance and is never used as
+the rebuilt-artifact identity.
