@@ -39,3 +39,8 @@ M64R4 binds the recovered isolated Build5 driver and recipe file hashes. It
 consumes M64R3's four baseline records without rerunning them, builds into a
 fresh temporary prefix, and accounts for each new eigensolve before the child
 call. A failed build or non-unique localization remains a no-patch result.
+
+M64R4R1 keeps the M64R3 schema explicit and maps its four records by semantic
+probe key. It derives the three frozen coordinates independently from the
+M61R1/M50 authority and requires the child process to prove the mapped
+isolated libmpb path and SHA-256 from its runtime ledger.
