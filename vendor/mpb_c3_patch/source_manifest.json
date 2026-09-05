@@ -8,7 +8,7 @@
   "original_touched_file_hashes": {},
   "patched_touched_file_hashes": {},
   "patch_sha256": null,
-  "localization": "M64R3_DATA_DRIVEN_SOURCE_DISCOVERY_BEFORE_PATCH",
-  "build_isolation": "NO_INSTALLED_BACKEND_TOUCH;ISOLATED_BUILD_REQUIRED_BEFORE_PATCH",
+  "localization": "M64R4_ISOLATED_BUILD_BEFORE_UNIQUE_STAGE",
+  "build_isolation": "EXACT_DRIVER_HASH_BOUND;NO_INSTALLED_BACKEND_TOUCH;PATCH_CONDITIONAL",
   "runtime_identity": null
 }

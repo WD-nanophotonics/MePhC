@@ -34,3 +34,8 @@ M64R3 removes the downstream-name assumption: source functions, build inputs,
 callgraph edges, and semantic stage candidates are discovered from the exact
 tarball. The four native baseline probes are retained as an unpatched trace;
 no MPB hunk is applied unless the isolated runtime proves one earliest stage.
+
+M64R4 binds the recovered isolated Build5 driver and recipe file hashes. It
+consumes M64R3's four baseline records without rerunning them, builds into a
+fresh temporary prefix, and accounts for each new eigensolve before the child
+call. A failed build or non-unique localization remains a no-patch result.
