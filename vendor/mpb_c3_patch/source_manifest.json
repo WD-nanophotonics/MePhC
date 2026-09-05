@@ -8,7 +8,7 @@
   "original_touched_file_hashes": {},
   "patched_touched_file_hashes": {},
   "patch_sha256": null,
-  "localization": "M64R4_ISOLATED_BUILD_BEFORE_UNIQUE_STAGE",
-  "build_isolation": "EXACT_DRIVER_HASH_BOUND;NO_INSTALLED_BACKEND_TOUCH;PATCH_CONDITIONAL",
+  "localization": "M64R4R3_PORTABLE_GNUCONFIG_BEFORE_UNIQUE_STAGE",
+  "build_isolation": "PORTABLE_DRIVER_HASH_BOUND;NO_INSTALLED_BACKEND_TOUCH;PATCH_CONDITIONAL",
   "runtime_identity": null
 }

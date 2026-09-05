@@ -21,8 +21,17 @@ mkdir -p "$build_dir/source" "$install_prefix"
 tar -xzf "$source_archive" --strip-components=1 -C "$build_dir/source"
 cd "$build_dir/source"
 
-gnuconfig_root=${MPB_GNUCONFIG_ROOT:-/home/icy/miniconda3/share/gnuconfig}
-[[ -f "$gnuconfig_root/config.sub" && -f "$gnuconfig_root/config.guess" ]] || { echo "gnuconfig unavailable" >&2; exit 8; }
+gnuconfig_root=""
+for candidate in "${MPB_GNUCONFIG_ROOT:-}" "${MPB_BUILD_PREFIX:+$MPB_BUILD_PREFIX/share/gnuconfig}" "${MPB_DEP_PREFIX:+$MPB_DEP_PREFIX/share/gnuconfig}"; do
+  if [[ -n "$candidate" && -f "$candidate/config.sub" && -f "$candidate/config.guess" ]]; then
+    gnuconfig_root=$(realpath "$candidate")
+    break
+  fi
+done
+[[ -n "$gnuconfig_root" ]] || { echo "gnuconfig unavailable: provide MPB_GNUCONFIG_ROOT, MPB_BUILD_PREFIX, or MPB_DEP_PREFIX" >&2; exit 8; }
+echo "GNUCONFIG_ROOT=$gnuconfig_root"
+echo "GNUCONFIG_CONFIG_SUB_SHA256=$(sha256sum "$gnuconfig_root/config.sub" | awk '{print $1}')"
+echo "GNUCONFIG_CONFIG_GUESS_SHA256=$(sha256sum "$gnuconfig_root/config.guess" | awk '{print $1}')"
 cp "$gnuconfig_root/config.sub" "$gnuconfig_root/config.guess" .
 
 if [[ -n "${MPB_PATCH_FILE:-}" ]]; then

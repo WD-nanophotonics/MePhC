@@ -50,3 +50,8 @@ repeat/source-residual/machine-identity compatibility guard. A rebuilt
 isolated library is compared with the hash actually mapped by each child;
 the installed reference hash remains separate provenance and is never used as
 the rebuilt-artifact identity.
+
+M64R4R3 makes the isolated driver portable: gnuconfig is resolved only from
+explicit environment roots or their `share/gnuconfig` dependency paths, and
+the selected `config.sub`/`config.guess` hashes are recorded. No machine-home
+default, download, or filesystem crawl is permitted.

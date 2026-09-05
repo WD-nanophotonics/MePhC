@@ -18,6 +18,8 @@
     "build5_recipe/repodata_record.json": "c2d83ec70550cd05d53f6d84ae4ae4861179141af24d35579e534a7bc02a7982"
   },
   "isolated_build_driver": "vendor/mpb_c3_patch/build_exact_build5.sh",
+  "isolated_build_driver_sha256": "b1c343e8568f361ba633ccba5d9ef36cbee74ffc2e46773c2d32a845bb187c83",
+  "gnuconfig_resolution": "EXPLICIT_MPB_GNUCONFIG_ROOT_OR_MPB_BUILD_PREFIX_SHARE_GNUCONFIG_OR_MPB_DEP_PREFIX_SHARE_GNUCONFIG_ONLY",
   "source_url": "https://github.com/NanoComp/mpb/releases/download/v1.12.0/mpb-1.12.0.tar.gz",
   "source_sha256": "8d2b206254b217f66a53c1ad20cc0c369b93b0e71ee671d68e333a583eaaeda4",
   "source_artifact": "vendor/mpb_c3_patch/source/mpb-1.12.0.tar.gz",
