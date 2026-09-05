@@ -1,0 +1,20 @@
+{
+  "schema": "mephc-mpb-build5-source-provenance-v1",
+  "package_name": "mpb",
+  "package_version": "1.12.0",
+  "package_build": "mpi_mpich_hef3cbd5_5",
+  "package_build_number": 5,
+  "package_subdir": "linux-aarch64",
+  "package_url": "https://conda.anaconda.org/conda-forge/linux-aarch64/mpb-1.12.0-mpi_mpich_hef3cbd5_5.conda",
+  "package_sha256": "2fe38481906992a9a121a252c46689996d991501b0040698e0917e7a71d6ae22",
+  "installed_conda_metadata_sha256": "21d4a271d2182d17cc89aa00ae3c12c122de4547d5d8173a0d404bc8f1feda93",
+  "conda_recipe_sha256": "0fc7d07ecb8c4ad408a40c0b2864e033aacda9e46e9331737d15c53857beac19",
+  "source_url": "https://github.com/NanoComp/mpb/releases/download/v1.12.0/mpb-1.12.0.tar.gz",
+  "source_sha256": "8d2b206254b217f66a53c1ad20cc0c369b93b0e71ee671d68e333a583eaaeda4",
+  "source_artifact": "vendor/mpb_c3_patch/source/mpb-1.12.0.tar.gz",
+  "cached_libmpb_sha256": "884071022f8c5230909e269c63b17cef120b51d2a4ee22b862c6a7005d209dbc",
+  "installed_libmpb_sha256": "884071022f8c5230909e269c63b17cef120b51d2a4ee22b862c6a7005d209dbc",
+  "binary_identity_status": "EXACT_CACHE_AND_INSTALLED_LIBMPB_MATCH",
+  "source_identity_status": "EXACT_BUILD5_RECIPE_SOURCE_SHA_MATCH",
+  "installed_backend_touched": false
+}
