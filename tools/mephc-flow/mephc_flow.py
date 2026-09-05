@@ -1030,7 +1030,7 @@ def canonical_report(paths: Paths, order: dict[str, Any], job: dict[str, Any],
             if re.fullmatch(r"[A-Za-z][A-Za-z0-9_]{0,63}", name) and isinstance(value, (str, int, float, bool)):
                 lines.append(f"RESULT_{name.upper()}={value}")
     message = ("\n".join(lines) + "\n").encode()
-    retry_lines = [line for line in lines if not line.startswith("RESULT_")]
+    retry_lines = [line for line in lines if not line.startswith("RESULT_") or line.split("=", 1)[0] in {"RESULT_STATUS", "RESULT_SCIENTIFIC_ACCEPTANCE_STATUS", "RESULT_CLASSIFICATION", "RESULT_CAUSAL_OUTCOME", "RESULT_NEXT_SCIENCE_DECISION", "RESULT_FAILURE_CODE", "RESULT_FAILURE_STAGE", "RESULT_ZERO_SOLVER_REASON"}]
     retry_lines.extend(["REPORT_RETRY_COMPACT=true", f"FULL_REPORT_SHA256={digest(message)}"])
     retry_message = ("\n".join(retry_lines) + "\n").encode()
     return {"request_id": request_id, "request_hash": key, "work_order_id": order["work_order_id"],

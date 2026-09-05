@@ -394,7 +394,8 @@ def test_query_preferences_do_not_change_fixed_request_or_report_body(monkeypatc
     order = {"work_order_id": "MEPHC-THIN-PREFERENCE-0001"}
     job = {"work_order_id": order["work_order_id"], "action": "acquire", "state": "succeeded",
            "source_commit": "a" * 40, "job_id": "MEPHC-SCIENCE-PREFERENCE",
-           "changed_files": ["audit/result.json"], "tests": ["tests/test_result.py"]}
+           "changed_files": ["audit/result.json"], "tests": ["tests/test_result.py"],
+           "result_summary": {"classification": "DECISIVE_BRANCH", "next_science_decision": "CONTINUE_SCIENCE", "large_detail": "x" * 2000}}
     monkeypatch.setattr(flow, "tracked_artifact_sha256", lambda *_: "b" * 64)
     first = flow.canonical_report(scope, order, job, {
         "task_difficulty": "normal", "instruction_level": "normal",
@@ -411,6 +412,10 @@ def test_query_preferences_do_not_change_fixed_request_or_report_body(monkeypatc
     assert f"ARTIFACT_SHA256=audit/result.json:{'b' * 64}" in text
     assert "TESTS=tests/test_result.py" in text
     assert "TEST_RETURN_CODE=0" in text
+    retry = first["retry_message"].decode()
+    assert "RESULT_CLASSIFICATION=DECISIVE_BRANCH" in retry
+    assert "RESULT_NEXT_SCIENCE_DECISION=CONTINUE_SCIENCE" in retry
+    assert "RESULT_LARGE_DETAIL=" not in retry
 
 
 def test_report_names_project_goal_work_order_and_job_scopes(monkeypatch, tmp_path: Path):
