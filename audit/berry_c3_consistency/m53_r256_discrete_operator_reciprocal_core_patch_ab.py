@@ -65,14 +65,16 @@ def _edge_maps(states: Mapping[str, Mapping[str, Any]]) -> dict[str, dict[str, A
         target = str(edge["edge_target_member"])
         name = f"{source}_to_{target}"
         g_edge = np.asarray(edge["G_edge_integer"], dtype=int)
-        exact_labels: list[tuple[int, int] | None] = []
+        exact_labels: list[tuple[int, int]] = []
         wrapped_labels: list[tuple[int, int]] = []
         common: list[int] = []
         wrap_vectors: dict[str, int] = {}
         for index, label in enumerate(labels):
             exact = tuple(int(v) for v in (automorphism @ np.asarray(label, dtype=int) - g_edge))
             wrapped = labels[m38.fft_index(exact, shape=(N, N))]
-            exact_labels.append(exact if exact in label_index else None)
+            # Keep the unwrapped integer label even when it lies outside the
+            # finite window: boundary q-readback needs F(f), not a sentinel.
+            exact_labels.append(exact)
             wrapped_labels.append(wrapped)
             if exact in label_index:
                 common.append(index)
@@ -140,8 +142,6 @@ def _operator_readback(edges: Mapping[str, Mapping[str, Any]], states: Mapping[s
         for index in range(MODE_COUNT):
             label = np.asarray(m38.fft_label(index, shape=(N, N)), dtype=float)
             exact = edge["exact_labels"][index]
-            if exact is None:
-                continue
             exact_vec = np.asarray(exact, dtype=float)
             wrapped_vec = np.asarray(edge["wrapped_labels"][index], dtype=float)
             q_source = source_k - basis @ label
