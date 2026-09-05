@@ -255,7 +255,7 @@ def main() -> int:
         catalogs = {mesh: _catalog(job, state_root, dataset_id, manifest, schema) for mesh, dataset_id, manifest, schema in MESH_DATASETS}
         edges_by_vertex = {}
         for vertex in range(4):
-            states = {member: next(item for item in catalogs[5] if item["vertex"] == vertex and item["repeat"] == 0 and item["member"] == member) for member in MEMBERS}
+            states = {member: {**next(item for item in catalogs[5] if item["vertex"] == vertex and item["repeat"] == 0 and item["member"] == member), "c3_member_identity": member} for member in MEMBERS}
             edges_by_vertex[vertex] = _exact_support(m38, states)
         structural = {str(vertex): {name: {key: value for key, value in edge.items() if not isinstance(value, np.ndarray)} for name, edge in edges.items()} for vertex, edges in edges_by_vertex.items()}
         analyses = {str(mesh): _mesh_analysis(job, state_root, dataset, catalogs[mesh], m39, edges_by_vertex) for mesh, dataset in ((mesh, item) for mesh, item in zip((1, 3, 5), MESH_DATASETS))}
