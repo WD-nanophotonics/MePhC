@@ -9,6 +9,15 @@
   "package_sha256": "2fe38481906992a9a121a252c46689996d991501b0040698e0917e7a71d6ae22",
   "installed_conda_metadata_sha256": "21d4a271d2182d17cc89aa00ae3c12c122de4547d5d8173a0d404bc8f1feda93",
   "conda_recipe_sha256": "0fc7d07ecb8c4ad408a40c0b2864e033aacda9e46e9331737d15c53857beac19",
+  "recipe_files": {
+    "build5_recipe/build.sh": "6b3ccfdcefb77408aa95743a6a0de0937ffc24817ea220de333de2e54189667c",
+    "build5_recipe/conda_build_config.yaml": "8e49e1118d9459f8491ef5eb1830e5273bff043e2571d72c9c0057bd6ec324d0",
+    "build5_recipe/hash_input.json": "a85635230ab65f95cd9bb7a1683de6a2e6c3d536a64a77fc8605730272be681d",
+    "build5_recipe/installed_conda_record.json": "21d4a271d2182d17cc89aa00ae3c12c122de4547d5d8173a0d404bc8f1feda93",
+    "build5_recipe/meta.yaml": "0fc7d07ecb8c4ad408a40c0b2864e033aacda9e46e9331737d15c53857beac19",
+    "build5_recipe/repodata_record.json": "c2d83ec70550cd05d53f6d84ae4ae4861179141af24d35579e534a7bc02a7982"
+  },
+  "isolated_build_driver": "vendor/mpb_c3_patch/build_exact_build5.sh",
   "source_url": "https://github.com/NanoComp/mpb/releases/download/v1.12.0/mpb-1.12.0.tar.gz",
   "source_sha256": "8d2b206254b217f66a53c1ad20cc0c369b93b0e71ee671d68e333a583eaaeda4",
   "source_artifact": "vendor/mpb_c3_patch/source/mpb-1.12.0.tar.gz",

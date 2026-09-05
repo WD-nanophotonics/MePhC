@@ -30,3 +30,14 @@ def test_supervisor_recovered_exact_build5_recipe_source_artifact():
     assert data["binary_identity_status"] == "EXACT_CACHE_AND_INSTALLED_LIBMPB_MATCH"
     assert hashlib.sha256(artifact.read_bytes()).hexdigest() == data["source_sha256"]
     assert data["installed_backend_touched"] is False
+
+
+def test_build5_recipe_files_and_isolated_driver_are_bound():
+    data = json.loads(PROVENANCE.read_text(encoding="utf-8"))
+    for relative, expected in data["recipe_files"].items():
+        assert hashlib.sha256((PROVENANCE.parent / relative).read_bytes()).hexdigest() == expected
+    driver = ROOT / data["isolated_build_driver"]
+    text = driver.read_text(encoding="utf-8")
+    assert "active environment is immutable" in text
+    assert "--with-hermitian-eps" in text
+    assert "make check" in text

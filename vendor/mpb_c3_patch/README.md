@@ -15,6 +15,13 @@ downloaded artifact is preserved under `source/`, and
 identity.  Future work must build only from that artifact in an isolated
 prefix and must not modify the installed backend.
 
+The exact recovered Conda recipe is retained byte-for-byte under
+`build5_recipe/`. `build_exact_build5.sh` reproduces its configure flags in a
+fresh build directory and fresh prefix, verifies the source archive first,
+and refuses the active Conda prefix.  An optional `MPB_PATCH_FILE` is applied
+only inside that isolated source tree.  Every scientific child must still
+record the resolved isolated library path and hash before using it.
+
 M64R2 adds a trace-only dynamic localization boundary. Its entrypoint binds
 the frozen M50/M60/M61R1/M63 evidence, records exact source/symbol hashes, and
 uses only predeclared homogeneous probes. The instrumentation patch is

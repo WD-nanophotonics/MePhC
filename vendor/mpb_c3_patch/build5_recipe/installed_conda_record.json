@@ -1,0 +1,112 @@
+{
+  "name": "mpb",
+  "version": "1.12.0",
+  "build": "mpi_mpich_hef3cbd5_5",
+  "build_number": 5,
+  "channel": "https://conda.anaconda.org/conda-forge/linux-aarch64",
+  "subdir": "linux-aarch64",
+  "fn": "mpb-1.12.0-mpi_mpich_hef3cbd5_5.conda",
+  "md5": "bf136d388079468644f8a0045c8eadf4",
+  "url": "https://conda.anaconda.org/conda-forge/linux-aarch64/mpb-1.12.0-mpi_mpich_hef3cbd5_5.conda",
+  "sha256": "2fe38481906992a9a121a252c46689996d991501b0040698e0917e7a71d6ae22",
+  "depends": [
+    "_openmp_mutex",
+    "fftw >=3.3.10,<4.0a0",
+    "hdf5 >=1.14.6,<1.14.7.0a0 mpi_mpich_*",
+    "libblas >=3.9.0,<4.0a0",
+    "libcblas >=3.9.0,<4.0a0",
+    "libgcc >=14",
+    "libgfortran",
+    "libgfortran5 >=14.3.0",
+    "liblapack >=3.9.0,<4.0a0",
+    "mpich >=4.3.1,<5.0a0"
+  ],
+  "constrains": [],
+  "license": "GPL-2.0-or-later",
+  "timestamp": 1755491992875,
+  "size": 69068,
+  "_requested_specs": [],
+  "package_tarball_full_path": "/home/icy/miniconda3/pkgs/mpb-1.12.0-mpi_mpich_hef3cbd5_5.conda",
+  "extracted_package_dir": "/home/icy/miniconda3/pkgs/mpb-1.12.0-mpi_mpich_hef3cbd5_5",
+  "files": [
+    "include/mpb.h",
+    "include/mpb/eigensolver.h",
+    "include/mpb/matrices.h",
+    "include/mpb/maxwell.h",
+    "include/mpb/scalar.h",
+    "include/mpb/verbosity.h",
+    "lib/libmpb.so",
+    "lib/libmpb.so.6",
+    "lib/libmpb.so.6.0.0"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": [
+      {
+        "_path": "include/mpb.h",
+        "path_type": "hardlink",
+        "sha256": "8d0d70b563c48225d24edd6161b3561971aac4785f228093062355a887b7b46f",
+        "size_in_bytes": 528,
+        "sha256_in_prefix": "8d0d70b563c48225d24edd6161b3561971aac4785f228093062355a887b7b46f"
+      },
+      {
+        "_path": "include/mpb/eigensolver.h",
+        "path_type": "hardlink",
+        "sha256": "c3eafedaef0d3b25426915784b7cce826aa33a300fc2d8ab3c9c8207594e8af5",
+        "size_in_bytes": 3669,
+        "sha256_in_prefix": "c3eafedaef0d3b25426915784b7cce826aa33a300fc2d8ab3c9c8207594e8af5"
+      },
+      {
+        "_path": "include/mpb/matrices.h",
+        "path_type": "hardlink",
+        "sha256": "7ceb64d2f1f4b00038d1f1a0f1bf3d164b93e16d6bcf515ef8d9b8d5358bb6e7",
+        "size_in_bytes": 5196,
+        "sha256_in_prefix": "7ceb64d2f1f4b00038d1f1a0f1bf3d164b93e16d6bcf515ef8d9b8d5358bb6e7"
+      },
+      {
+        "_path": "include/mpb/maxwell.h",
+        "path_type": "hardlink",
+        "sha256": "50ae226bfe26aafc367d33bfa2cbf6d5b0b986c4d4d7f7af06fce2336247a760",
+        "size_in_bytes": 9773,
+        "sha256_in_prefix": "50ae226bfe26aafc367d33bfa2cbf6d5b0b986c4d4d7f7af06fce2336247a760"
+      },
+      {
+        "_path": "include/mpb/scalar.h",
+        "path_type": "hardlink",
+        "sha256": "7edb27756cb9bdd4e5d2456bab8ce57b83977caf19d8f5c8dba3e2b31cff2129",
+        "size_in_bytes": 7284,
+        "sha256_in_prefix": "7edb27756cb9bdd4e5d2456bab8ce57b83977caf19d8f5c8dba3e2b31cff2129"
+      },
+      {
+        "_path": "include/mpb/verbosity.h",
+        "path_type": "hardlink",
+        "sha256": "6a3c7871277fb233a2aae6c72c9f2b5e392592d8910473f4d295ce1c2e7c50fb",
+        "size_in_bytes": 1083,
+        "sha256_in_prefix": "6a3c7871277fb233a2aae6c72c9f2b5e392592d8910473f4d295ce1c2e7c50fb"
+      },
+      {
+        "_path": "lib/libmpb.so",
+        "path_type": "softlink",
+        "sha256": "884071022f8c5230909e269c63b17cef120b51d2a4ee22b862c6a7005d209dbc",
+        "size_in_bytes": 144712
+      },
+      {
+        "_path": "lib/libmpb.so.6",
+        "path_type": "softlink",
+        "sha256": "884071022f8c5230909e269c63b17cef120b51d2a4ee22b862c6a7005d209dbc",
+        "size_in_bytes": 144712
+      },
+      {
+        "_path": "lib/libmpb.so.6.0.0",
+        "path_type": "hardlink",
+        "sha256": "884071022f8c5230909e269c63b17cef120b51d2a4ee22b862c6a7005d209dbc",
+        "size_in_bytes": 144712,
+        "sha256_in_prefix": "884071022f8c5230909e269c63b17cef120b51d2a4ee22b862c6a7005d209dbc"
+      }
+    ]
+  },
+  "link": {
+    "source": "/home/icy/miniconda3/pkgs/mpb-1.12.0-mpi_mpich_hef3cbd5_5",
+    "type": 1
+  }
+}

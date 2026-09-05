@@ -1,0 +1,30 @@
+{
+  "name": "mpb",
+  "version": "1.12.0",
+  "build": "mpi_mpich_hef3cbd5_5",
+  "build_number": 5,
+  "channel": "https://conda.anaconda.org/conda-forge/linux-aarch64",
+  "subdir": "linux-aarch64",
+  "fn": "mpb-1.12.0-mpi_mpich_hef3cbd5_5.conda",
+  "md5": "bf136d388079468644f8a0045c8eadf4",
+  "url": "https://conda.anaconda.org/conda-forge/linux-aarch64/mpb-1.12.0-mpi_mpich_hef3cbd5_5.conda",
+  "sha256": "2fe38481906992a9a121a252c46689996d991501b0040698e0917e7a71d6ae22",
+  "arch": "aarch64",
+  "platform": "linux",
+  "depends": [
+    "_openmp_mutex",
+    "fftw >=3.3.10,<4.0a0",
+    "hdf5 >=1.14.6,<1.14.7.0a0 mpi_mpich_*",
+    "libblas >=3.9.0,<4.0a0",
+    "libcblas >=3.9.0,<4.0a0",
+    "libgcc >=14",
+    "libgfortran",
+    "libgfortran5 >=14.3.0",
+    "liblapack >=3.9.0,<4.0a0",
+    "mpich >=4.3.1,<5.0a0"
+  ],
+  "constrains": [],
+  "license": "GPL-2.0-or-later",
+  "timestamp": 1755491992875,
+  "size": 69068
+}
