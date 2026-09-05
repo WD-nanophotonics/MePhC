@@ -1,0 +1,4 @@
+# M64R2 TRACE-ONLY instrumentation boundary.
+# No source hunk is applied until one unique earliest broken native stage is
+# proven by an isolated Build5 runtime. This placeholder is intentionally
+# non-applicable and cannot alter equations, ordering, tolerances, or solver state.

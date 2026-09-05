@@ -1,4 +1,4 @@
-# M64R1 intentionally contains no patch hunk.
+# M64R1/M64R2 intentionally contain NO SCIENTIFIC PATCH and no patch hunk.
 # Exact source identity is verified, but static inspection alone did not localize
 # a first broken native layer. Do not apply an unlocalized hunk.
 # Do not modify installed MPB or substitute another release.

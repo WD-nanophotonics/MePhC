@@ -8,7 +8,7 @@
   "original_touched_file_hashes": {},
   "patched_touched_file_hashes": {},
   "patch_sha256": null,
-  "localization": "NOT_LOCALIZED_STATIC_SOURCE_AUDIT_ONLY",
-  "build_isolation": "NO_INSTALLED_BACKEND_TOUCH;NO_PATCHED_BUILD_PERFORMED",
+  "localization": "M64R2_TRACE_ONLY_UNTIL_UNIQUE_EARLIEST_STAGE",
+  "build_isolation": "NO_INSTALLED_BACKEND_TOUCH;ISOLATED_BUILD_REQUIRED_BEFORE_PATCH",
   "runtime_identity": null
 }

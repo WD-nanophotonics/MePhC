@@ -14,3 +14,11 @@ downloaded artifact is preserved under `source/`, and
 `source_build5_provenance.json` records the complete package/source/library
 identity.  Future work must build only from that artifact in an isolated
 prefix and must not modify the installed backend.
+
+M64R2 adds a trace-only dynamic localization boundary. Its entrypoint binds
+the frozen M50/M60/M61R1/M63 evidence, records exact source/symbol hashes, and
+uses only predeclared homogeneous probes. The instrumentation patch is
+intentionally non-applicable: no scientific source hunk may be introduced
+until an isolated Build5 runtime proves one unique earliest broken stage. The
+installed backend is never modified, and a bounded no-patch result is valid
+when that localization proof is unavailable.
