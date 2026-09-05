@@ -277,7 +277,7 @@ def main() -> int:
         counters = Path(os.environ["MEPHC_EXECUTION_COUNTERS_PATH"])
         state_root = counters.parent.parent
         frequency_rows = {str(mesh): _read_frequency_rows(job, state_root, dataset) for mesh, dataset in zip(MESHES, m52r1.MESH_DATASETS)}
-        frequency = {mesh: frequency_ledger(frequency_rows[str(mesh)]) for mesh in (1, 3, 5)}
+        frequency = {str(mesh): frequency_ledger(frequency_rows[str(mesh)]) for mesh in (1, 3, 5)}
         require(frequency["5"]["failure_count"] > 0, "M54_MESH5_FREQUENCY_FAILURE_NOT_REPRODUCED")
         member = frequency_rows["5"][(0, 0, MEMBERS[0])]
         index_map = build_index_map()
