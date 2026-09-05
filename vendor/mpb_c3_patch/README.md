@@ -22,3 +22,8 @@ intentionally non-applicable: no scientific source hunk may be introduced
 until an isolated Build5 runtime proves one unique earliest broken stage. The
 installed backend is never modified, and a bounded no-patch result is valid
 when that localization proof is unavailable.
+
+M64R3 removes the downstream-name assumption: source functions, build inputs,
+callgraph edges, and semantic stage candidates are discovered from the exact
+tarball. The four native baseline probes are retained as an unpatched trace;
+no MPB hunk is applied unless the isolated runtime proves one earliest stage.
