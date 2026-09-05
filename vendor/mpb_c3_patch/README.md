@@ -1,10 +1,11 @@
 # M64 isolated source boundary
 
-M64 requires the exact MPB 1.12.0 unpatched source accepted by M38. No such
-source artifact is available in this workspace, so no hunk is applied, no
-isolated build is attempted, and the installed Meep/MPB environment is not
-modified. The Thin Flow entrypoint reports `R256_NATIVE_HOMOGENEOUS_DEFECT_NOT_LOCALIZED_NO_PATCH`
-with zero patched scientific solves and requests supervisor reconciliation.
+M64R1 verifies the exact MPB 1.12.0 Build5 source accepted by M38. Static
+inspection identifies the reciprocal-k and Maxwell operator source path, but
+does not by itself prove the first runtime layer responsible for M63's
+same-shell deformation. Therefore no unlocalized hunk is applied, no installed
+backend is touched, and no patched scientific solve is run. The entrypoint
+reports `R256_NATIVE_HOMOGENEOUS_DEFECT_NOT_LOCALIZED_NO_PATCH`.
 
 Supervisor recovery subsequently found the exact Build5 Conda recipe and
 package payload in the pinned environment cache.  The recipe binds the

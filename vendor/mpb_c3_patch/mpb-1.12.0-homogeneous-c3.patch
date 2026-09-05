@@ -1,3 +1,4 @@
-# M64 intentionally contains no patch hunk.
-# The exact MPB 1.12.0 Build5 source artifact was not present in the workspace.
-# Do not apply this file to installed MPB or substitute another release.
+# M64R1 intentionally contains no patch hunk.
+# Exact source identity is verified, but static inspection alone did not localize
+# a first broken native layer. Do not apply an unlocalized hunk.
+# Do not modify installed MPB or substitute another release.

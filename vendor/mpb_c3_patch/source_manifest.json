@@ -1,14 +1,14 @@
 {
   "schema": "mephc-m64-source-manifest-v1",
   "authority": "EXACT_BUILD5_UNPATCHED_V1_12_0_SOURCE_AUTHORITY_ACCEPTED_BY_M38",
-  "source_available_in_workspace": false,
+  "source_available_in_workspace": true,
   "installed_backend_touched": false,
-  "source_origin": null,
+  "source_origin": "vendor/mpb_c3_patch/source/mpb-1.12.0.tar.gz",
   "source_version": "MPB 1.12.0",
   "original_touched_file_hashes": {},
   "patched_touched_file_hashes": {},
   "patch_sha256": null,
-  "localization": "NOT_LOCALIZED_EXACT_SOURCE_ARTIFACT_UNAVAILABLE",
-  "build_isolation": "NO_BUILD_PERFORMED",
+  "localization": "NOT_LOCALIZED_STATIC_SOURCE_AUDIT_ONLY",
+  "build_isolation": "NO_INSTALLED_BACKEND_TOUCH;NO_PATCHED_BUILD_PERFORMED",
   "runtime_identity": null
 }

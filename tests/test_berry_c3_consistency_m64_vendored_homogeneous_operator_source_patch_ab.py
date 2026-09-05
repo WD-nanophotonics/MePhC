@@ -12,7 +12,7 @@ PROVENANCE = ROOT / "vendor/mpb_c3_patch/source_build5_provenance.json"
 
 
 def test_source_boundary_is_fail_closed_without_exact_artifact():
-    data = json.loads(MANIFEST.read_text(encoding="utf-8")); assert data["source_available_in_workspace"] is False and data["installed_backend_touched"] is False
+    data = json.loads(MANIFEST.read_text(encoding="utf-8")); assert data["source_available_in_workspace"] is True and data["installed_backend_touched"] is False
 
 
 def test_patch_artifact_contains_no_unverified_hunk():
